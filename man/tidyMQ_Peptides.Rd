@@ -13,7 +13,7 @@ tidyMQ_Peptides(MQPeptides)
 parse MQ peptides.txt
 }
 \examples{
-peptides_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "SRMService")
+peptides_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
 peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\\t")
 colnames(peptides_txt)
 tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
@@ -21,7 +21,7 @@ tmp <- strsplit(tmp, ";")
 length(unique(tmp[[1]]))
 mq_peptides <-tidyMQ_Peptides(peptides_txt)
 mq_peptides
-peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "SRMService")
+peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "LFQService")
 peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\\t")
 tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
 tmp <- strsplit(tmp, ";")

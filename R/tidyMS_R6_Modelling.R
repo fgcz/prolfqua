@@ -22,7 +22,7 @@ rocs <- function(data ,response, predictor){
 #' @importFrom purrr map
 #' @examples
 #' library(tidyverse)
-#' library(SRMService)
+#' library(LFQService)
 #' config <- spectronautDIAData250_config$clone(deep=T)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
@@ -61,7 +61,7 @@ compute_roc <- function(data, config){
 #' @importFrom purrr map
 #' @examples
 #'
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' library(glue)
 #' config <- spectronautDIAData250_config$clone(deep=T)

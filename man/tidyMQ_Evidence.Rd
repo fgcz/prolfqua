@@ -11,7 +11,7 @@ read evidence file
 }
 \examples{
 library(tidyverse)
-evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = "SRMService")
+evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = "LFQService")
 evidence_txt <- read.csv(evidence_txt, header=TRUE, stringsAsFactors = FALSE, sep="\\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)
 }

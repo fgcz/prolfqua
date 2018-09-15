@@ -16,7 +16,7 @@ find proteins wich have 2 peptides in at least x percent of samples in main fact
 \examples{
 
 rm(list=ls())
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 config <- spectronautDIAData250_config$clone(deep=T)
 config$parameter$min_nr_of_notNA  <- 20

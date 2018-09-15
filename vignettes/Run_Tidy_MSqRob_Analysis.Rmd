@@ -29,7 +29,7 @@ rm(list=ls())
 library(tidyverse)
 library(readxl)
 library(yaml)
-library(SRMService)
+library(LFQService)
 library(MSqRob)
 options(warn=0)
 ```
@@ -43,7 +43,7 @@ config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
 
 
-PAnnotated <- SRMService::spectronautDIAData250
+PAnnotated <- LFQService::spectronautDIAData250
 PAnnotated$Isotope.Label <- "light"
 PAnnotated <- PAnnotated %>% dplyr::filter(!grepl("_Decoy$",PG.ProteinAccessions ))
 resData <- setup_analysis(PAnnotated, config)

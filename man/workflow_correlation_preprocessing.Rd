@@ -10,7 +10,7 @@ workflow_correlation_preprocessing(data, config, minCorrelation = 0.7)
 correlation preprocessing
 }
 \examples{
-library(SRMService)
+library(LFQService)
 rm(list=ls())
 config <- spectronautDIAData250_config$clone(deep=T)
 config$parameter$min_nr_of_notNA  <- 20

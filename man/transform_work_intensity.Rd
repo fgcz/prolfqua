@@ -11,12 +11,12 @@ Transform intensity
 }
 \examples{
 library(tidyverse)
-config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
-analysis <- SRMService::spectronautDIAData250_analysis
+config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQService::spectronautDIAData250_analysis
 x <- transform_work_intensity(analysis, config, transform = log2)
 stopifnot("log2_FG.Quantity" \%in\% colnames(x))
-config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
-analysis <- SRMService::spectronautDIAData250_analysis
+config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQService::spectronautDIAData250_analysis
 x <- transform_work_intensity(analysis, config, transform = asinh)
 stopifnot("asinh_FG.Quantity" \%in\% colnames(x))
 }

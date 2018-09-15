@@ -11,7 +11,7 @@ run \link{rankPrecursorsByIntensity} first
 }
 \examples{
 
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 config <- spectronautDIAData250_config$clone(deep=T)
 res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)

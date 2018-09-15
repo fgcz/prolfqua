@@ -1,4 +1,4 @@
 library(testthat)
-library(SRMService)
+library(LFQService)
 
-test_check("SRMService")
+test_check("LFQService")

@@ -15,8 +15,8 @@ spectronautDIAData250_analysis
 A data frame wich goes along with the \link{spectronautDIAData250_config}.
 }
 \examples{
-data <- SRMService::spectronautDIAData250
-xx <-  SRMService::spectronautDIAData250_config
+data <- LFQService::spectronautDIAData250
+xx <-  LFQService::spectronautDIAData250_config
 
 spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
 usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )

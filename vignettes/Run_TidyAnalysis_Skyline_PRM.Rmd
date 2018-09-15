@@ -70,7 +70,7 @@ if(1){
 ```
 
 ```{r}
-resDataLog <- SRMService::transform_work_intensity(resData , skylineconfig, log2)
+resDataLog <- LFQService::transform_work_intensity(resData , skylineconfig, log2)
 
 figs3 <- applyToHierarchyBySample(resDataLog, skylineconfig, medpolishPly)
 figs3 <- figs3 %>% mutate(plotlog = map2(data, UQ(proteinIDsymbol) , linePlotHierarchy_configuration, skylineconfig))

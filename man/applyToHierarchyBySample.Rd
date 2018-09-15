@@ -11,12 +11,12 @@ applyToHierarchyBySample(data, config, func, hierarchy_level = 1,
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 }
 \examples{
-config <- SRMService::skylineconfig$clone(deep=TRUE)
-data <- SRMService::sample_analysis
+config <- LFQService::skylineconfig$clone(deep=TRUE)
+data <- LFQService::sample_analysis
 x <- applyToHierarchyBySample(data, config, medpolishPly)
 x \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) \%>\% unnest()
-config <- SRMService::skylineconfig$clone(deep=TRUE)
+config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
-config <- SRMService::skylineconfig$clone(deep=TRUE)
+config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
 }

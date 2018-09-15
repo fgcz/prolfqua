@@ -12,7 +12,7 @@ Perform anova analysis
 }
 \examples{
 
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 library(glue)
 config <- spectronautDIAData250_config$clone(deep=T)

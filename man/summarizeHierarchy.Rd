@@ -10,7 +10,7 @@ summarizeHierarchy(x, configuration, hierarchy_level = 1, factor_level = 0)
 Summarize peptide Counts
 }
 \examples{
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"

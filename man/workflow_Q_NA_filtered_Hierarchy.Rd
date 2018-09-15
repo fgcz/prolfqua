@@ -11,7 +11,7 @@ workflow_Q_NA_filtered_Hierarchy(data, config, percent = 60,
 Get Protein Intensities after QValue NA filtering and medianpolish
 }
 \examples{
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 rm(list=ls())
 config <- spectronautDIAData250_config$clone(deep=T)

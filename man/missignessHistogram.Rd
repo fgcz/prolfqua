@@ -11,10 +11,10 @@ Histogram summarizing missigness
 }
 \examples{
 library(tidyverse)
-library(SRMService)
+library(LFQService)
 xx <- completeCases(sample_analysis,skylineconfig)
 skylineconfig$parameter$maxQValue_Threshold <- 0.01
-xx <- SRMService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- completeCases(xx, skylineconfig)
 missignessHistogram(xx,skylineconfig)
 setNa <- function(x){ifelse(x < 100, NA, x)}

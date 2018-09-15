@@ -10,8 +10,8 @@ removeLarge_Q_Values(data, config)
 sets intensities to NA if maxQValue_Threshold exceeded
 }
 \examples{
-analysis <- SRMService::spectronautDIAData250_analysis
-config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQService::spectronautDIAData250_analysis
+config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(analysis, config)
 }
 \seealso{

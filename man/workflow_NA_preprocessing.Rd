@@ -10,7 +10,7 @@ workflow_NA_preprocessing(data, config, percent = 60, factor_level = 1)
 filter QVAlues and NA's and factor information
 }
 \examples{
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 rm(list=ls())
 config <- spectronautDIAData250_config$clone(deep=T)

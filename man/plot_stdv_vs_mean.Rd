@@ -10,7 +10,7 @@ plot_stdv_vs_mean(data, config)
 stddev vs mean
 }
 \examples{
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)

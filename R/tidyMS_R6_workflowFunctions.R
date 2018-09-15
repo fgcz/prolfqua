@@ -3,7 +3,7 @@
 #' @export
 #' @family workflow functions
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' rm(list=ls())
 #' config <- spectronautDIAData250_config$clone(deep=T)
 #' config$parameter$min_nr_of_notNA  <- 20
@@ -66,7 +66,7 @@ workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.
 #' @examples
 #' rm(list=ls())
 #' library(tidyverse)
-#' library(SRMService)
+#' library(LFQService)
 #' config <- spectronautDIAData250_config$clone(deep=T)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
@@ -119,7 +119,7 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
 #' @export
 #' @family workflow functions
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
 #' config <- spectronautDIAData250_config$clone(deep=T)
@@ -155,7 +155,7 @@ workflow_NA_preprocessing <- function(data, config, percent = 60, factor_level =
 #' @export
 #' @family workflow functions
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
 #' config <- spectronautDIAData250_config$clone(deep=T)
@@ -183,7 +183,7 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                                       factor_level = factor_level)
   data_NA_QVal_condition <- inner_join(resNACondition, data_NA_QVal )
 
-  resDataLog <- SRMService::transform_work_intensity(data_NA_QVal_condition , config, log2)
+  resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
 
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
   figs3 <- applyToHierarchyBySample(resDataLog, config, medpolishPly, hierarchy_level = hierarchy_level)

@@ -6,8 +6,8 @@ output:
   pdf_document: default
   html_document: default
 params:
-  configuration:  !r quote(SRMService::skylineconfig)
-  data: !r quote(SRMService::sample_analysis)
+  configuration:  !r quote(LFQService::skylineconfig)
+  data: !r quote(LFQService::sample_analysis)
 vignette: >
   %\VignetteIndexEntry{Summarize Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +18,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(SRMService)
+library(LFQService)
 
 knitr::opts_chunk$set(echo = FALSE, message=FALSE)
 data <- eval(params$data)

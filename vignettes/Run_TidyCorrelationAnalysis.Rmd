@@ -33,7 +33,7 @@ library(dplyr)
 library(ggplot2)
 
 rm(list=ls())
-library(SRMService)
+library(LFQService)
 config <- createSpectronautPeptideConfiguration()
 config$table$factors[["coding"]] = "coding"
 config$table$factors[["sex"]] = "sex"
@@ -68,7 +68,7 @@ if(0){
 ```
 
 ```{r}
-longFormat <- SRMService::spectronautDIAData250
+longFormat <- LFQService::spectronautDIAData250
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 
@@ -84,7 +84,7 @@ longNoDecoy <- setup_analysis(longFormat, config)
 data <- longNoDecoy
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
 longQSummaries <- summariseQValues(longNoDecoy, config)
-SRMService::getMissingStats(longQSummaries, config)
+LFQService::getMissingStats(longQSummaries, config)
 
 ```
 
@@ -92,12 +92,12 @@ SRMService::getMissingStats(longQSummaries, config)
 ## Filter by NA's
 
 ```{r}
-SRMService::hierarchyCounts(longQSummaries, config)
+LFQService::hierarchyCounts(longQSummaries, config)
 qvalFilt <- longQSummaries %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
-SRMService::hierarchyCounts(qvalFilt, config)
+LFQService::hierarchyCounts(qvalFilt, config)
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
-SRMService::hierarchyCounts(longQNASummaries, config)
+LFQService::hierarchyCounts(longQNASummaries, config)
 ```
 
 

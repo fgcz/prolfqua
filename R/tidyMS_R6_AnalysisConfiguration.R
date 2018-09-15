@@ -32,7 +32,6 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      isotopeLabel = character(),
                                      # do you want to model charge sequence etc?
 
-
                                      ident_qValue = character(), # rename to score (smaller better)
                                      ident_Score = character(), # larger better
                                      workIntensity = NULL, # could be list with names and functions
@@ -555,13 +554,13 @@ reestablishCondition <- function(data,
 #' @export
 #' @importFrom purrr map
 #' @examples
-#' config <- SRMService::skylineconfig$clone(deep=TRUE)
-#' data <- SRMService::sample_analysis
+#' config <- LFQService::skylineconfig$clone(deep=TRUE)
+#' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)
 #' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% unnest()
-#' config <- SRMService::skylineconfig$clone(deep=TRUE)
+#' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
-#' config <- SRMService::skylineconfig$clone(deep=TRUE)
+#' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
 applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, unnest = FALSE)
 {
@@ -585,7 +584,7 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
@@ -611,7 +610,7 @@ summarize_cv <- function(data, config){
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
@@ -640,7 +639,7 @@ plot_stat_density_median <- function(data, config, stat = c("CV","sd")){
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
@@ -680,7 +679,7 @@ plot_stat_violin_median <- function(data, config , stat=c("CV","sd")){
 #' stddev vs mean
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)

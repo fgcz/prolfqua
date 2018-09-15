@@ -15,8 +15,8 @@
 #' @export
 #' @family filter functions
 #' @examples
-#' analysis <- SRMService::spectronautDIAData250_analysis
-#' config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQService::spectronautDIAData250_analysis
+#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(analysis, config)
 removeLarge_Q_Values <- function(data, config){
   data <- data %>%
@@ -29,8 +29,8 @@ removeLarge_Q_Values <- function(data, config){
 #' @family filter functions
 #' @examples
 #'
-#' analysis <- SRMService::spectronautDIAData250_analysis
-#' config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQService::spectronautDIAData250_analysis
+#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
 #'
 #' config$table$getWorkIntensity()
 #'
@@ -46,12 +46,12 @@ remove_small_intensities <- function(data, config, threshold = 1){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- SRMService::spectronautDIAData250_analysis
+#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQService::spectronautDIAData250_analysis
 #' x <- transform_work_intensity(analysis, config, transform = log2)
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
-#' config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- SRMService::spectronautDIAData250_analysis
+#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQService::spectronautDIAData250_analysis
 #' x <- transform_work_intensity(analysis, config, transform = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 transform_work_intensity <- function(data,
@@ -315,7 +315,7 @@ applyToIntensityMatrix <- function(data, config, .func){
 #' finds decorrelated measues
 #' @export
 decorelatedPly <- function(x, config , corThreshold = 0.7){
-  res <- SRMService::transitionCorrelationsJack(x)
+  res <- LFQService::transitionCorrelationsJack(x)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
   tibble(!!config$table$hierarchyKeys(TRUE)[1] := rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
@@ -466,7 +466,7 @@ rankPrecursorsByIntensity <- function(data, config){
 #' @export
 #' @examples
 #'
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' config <- spectronautDIAData250_config$clone(deep=T)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
@@ -531,7 +531,7 @@ rankPrecursorsByNAs <- function(data, config){
 #' @examples
 #'
 #' rm(list=ls())
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' config <- spectronautDIAData250_config$clone(deep=T)
 #' config$parameter$min_nr_of_notNA  <- 20

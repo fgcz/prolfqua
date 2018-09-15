@@ -12,7 +12,7 @@ apply correlation filtering and impuation
 \examples{
 rm(list=ls())
 library(tidyverse)
-library(SRMService)
+library(LFQService)
 config <- spectronautDIAData250_config$clone(deep=T)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis

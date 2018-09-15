@@ -10,7 +10,7 @@ plot_stat_density(data, config, stat = c("CV", "mean", "sd"))
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 }
 \examples{
-library(SRMService)
+library(LFQService)
 library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)

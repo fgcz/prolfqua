@@ -11,8 +11,8 @@ sets intensities smaller than threshold to NA
 }
 \examples{
 
-analysis <- SRMService::spectronautDIAData250_analysis
-config <- SRMService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQService::spectronautDIAData250_analysis
+config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
 
 config$table$getWorkIntensity()
 

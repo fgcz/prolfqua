@@ -25,7 +25,7 @@ fig.height = 10
 rm(list=ls())
 library(conflicted)
 library(tidyverse)
-library(SRMService)
+library(LFQService)
 ```
 
 ```{r}
@@ -34,7 +34,7 @@ outdir <- tempdir()
 
 
 ```{r}
-allDataM <- SRMService::skylineSRM_HL_data
+allDataM <- LFQService::skylineSRM_HL_data
 head(allDataM)
 
 
@@ -118,7 +118,7 @@ dev.off()
 
 ```{r}
 
-HLfigs3 <- SRMService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
+HLfigs3 <- LFQService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
 HLfigs3 <- inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
 
 linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
