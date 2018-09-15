@@ -45,7 +45,7 @@
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' sample_analysis <- SRMService::remove_small_intensities(sample_analysis, skylineconfig, threshold = 30)
+#' sample_analysis <- remove_small_intensities(sample_analysis, skylineconfig, threshold = 30)
 #' usethis::use_data( sample_analysis , overwrite = TRUE )
 "sample_analysis"
 
@@ -113,8 +113,8 @@
 #'
 #' @source \url{http://www.fgcz.ch/}
 #' @examples
-#' data <- SRMService::spectronautDIAData250
-#' xx <-  SRMService::spectronautDIAData250_config
+#' data <- LFQService::spectronautDIAData250
+#' xx <-  LFQService::spectronautDIAData250_config
 #'
 #' spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
 #' usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )

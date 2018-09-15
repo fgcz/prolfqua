@@ -10,8 +10,8 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-URL: https://github.com/protViz/SRMService
-BugReports: https://github.com/protViz/SRMService/issues
+URL: https://github.com/wolski/LFQService
+BugReports: https://github.com/wolski/LFQService/issues
 Repository: CRAN
 Imports:
     tidyverse,

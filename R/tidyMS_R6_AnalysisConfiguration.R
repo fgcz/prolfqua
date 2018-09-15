@@ -246,12 +246,12 @@ linePlotHierarchy_default <- function(data,
 #' extracts the relevant information from the configuration to make the plot.
 #' @export
 #' @examples
-#' library(SRMService)
-#' conf <- SRMService::skylineconfig$clone(deep=TRUE)
-#' xnested <- SRMService::sample_analysis %>%
+#' library(LFQService)
+#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
-#' SRMService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+#' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
   rev_hnames <- rev(names(configuration$table$hierarchy))
   res <- linePlotHierarchy_default(res, proteinName = proteinName,
@@ -286,7 +286,7 @@ linePlotHierarchy_QuantLine <- function(p, data, aes_y,  configuration){
 #'
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
@@ -336,7 +336,7 @@ summarizeProteins <- function( x, configuration ){
 #' Summarize peptide Counts
 #' @export
 #' @examples
-#' library(SRMService)
+#' library(LFQService)
 #' library(tidyverse)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
@@ -399,10 +399,10 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' library(SRMService)
+#' library(LFQService)
 #' xx <- completeCases(sample_analysis,skylineconfig)
 #' skylineconfig$parameter$maxQValue_Threshold <- 0.01
-#' xx <- SRMService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- completeCases(xx, skylineconfig)
 #' missignessHistogram(xx,skylineconfig)
 #' setNa <- function(x){ifelse(x < 100, NA, x)}

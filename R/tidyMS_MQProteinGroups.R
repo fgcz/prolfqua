@@ -2,7 +2,7 @@
 #' @export
 #' @param MQProteinGroups data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
-#' protein_txt <- system.file("samples/maxquant_txt/MSQC1/proteinGroups.txt",package = "SRMService")
+#' protein_txt <- system.file("samples/maxquant_txt/MSQC1/proteinGroups.txt",package = "LFQService")
 #' protein_txt <- read.csv(protein_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
@@ -40,7 +40,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
 #' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
-#' peptides_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "SRMService")
+#' peptides_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' colnames(peptides_txt)
 #' tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
@@ -48,7 +48,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
 #' length(unique(tmp[[1]]))
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
 #' mq_peptides
-#' peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "SRMService")
+#' peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "LFQService")
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
 #' tmp <- strsplit(tmp, ";")
@@ -106,7 +106,7 @@ tidyMQ_Peptides <- function(MQPeptides){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = "SRMService")
+#' evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = "LFQService")
 #' evidence_txt <- read.csv(evidence_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
 tidyMQ_Evidence <- function(Evidence){
@@ -137,7 +137,7 @@ tidyMQ_Evidence <- function(Evidence){
 #' @export
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "SRMService")
+#' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' allData <- tidyMQ_All(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 #' res <- tidyMQ_All(zip_archive)
@@ -167,7 +167,7 @@ tidyMQ_All <- function(txt_directory){
 #' @export
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "SRMService")
+#' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' allData <- tidyMQ_All(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 #' res <- tidyMQ_PeptideProtein(zip_archive)
