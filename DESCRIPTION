@@ -1,0 +1,32 @@
+Package: LFQService
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+URL: https://github.com/protViz/SRMService
+BugReports: https://github.com/protViz/SRMService/issues
+Repository: CRAN
+Imports:
+    tidyverse,
+    ggplot2,
+    broom,
+    quantable,
+    conflicted,
+    yaml
+Suggests:
+    testthat,
+    ggplot2,
+    knitr,
+    rmarkdown,
+    MSqRob
+Remotes:
+    protViz/quantable,
+    statOmics/MSqRob
+RoxygenNote: 6.0.1

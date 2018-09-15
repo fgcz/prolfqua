@@ -1,0 +1,141 @@
+---
+title: "DIA data analysis with MSqROB"
+author: "Functional Genomics Center Zurich"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+vignette: >
+  %\VignetteIndexEntry{DIA data analysis with MSqROB}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+echo = FALSE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
+
+```
+
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(readxl)
+library(yaml)
+library(SRMService)
+library(MSqRob)
+options(warn=0)
+```
+
+
+```{r}
+config <- createSpectronautPeptideConfiguration()
+config$table$factors[["coding"]] = "coding"
+config$table$factors[["sex"]] = "sex"
+config$table$factors[["age"]] = "age"
+config$table$factors[["Sample_id"]] = "Sample.Name"
+
+
+PAnnotated <- SRMService::spectronautDIAData250
+PAnnotated$Isotope.Label <- "light"
+PAnnotated <- PAnnotated %>% dplyr::filter(!grepl("_Decoy$",PG.ProteinAccessions ))
+resData <- setup_analysis(PAnnotated, config)
+```
+
+```{r}
+summary(resData$EG.Qvalue[!is.na(resData$FG.Quantity) ])
+
+resData <- removeLarge_Q_Values(resData, config)
+resData <- remove_small_intensities(resData, config,threshold = 100)
+
+sum(is.na(select(resData, config$table$getWorkIntensity())))
+resDataLog <- transform_work_intensity(resData,config, transformation = log2)
+```
+
+# normalize data ----
+
+```{r}
+resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
+
+
+ggplot(resDataLog, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
+  geom_line(stat="density")
+head(resDataLog$coding)
+
+first20 <- unique(resDataLog$protein_Id)[1:20]
+resDataLog20 <-resDataLog %>% dplyr::filter(protein_Id %in% first20)
+
+proteins <- MSqRob::df2protdata(data.frame(resDataLog20),
+                                acc_col = config$table$hierarchyKeys()[1],
+                                run_name = config$table$fileName,
+                                quant_cols = config$table$getWorkIntensity(),
+                                annotations = NULL)
+```
+
+Fixed effects
+
+
+```{r}
+fixed <- c("coding")
+#Random effects, for label-free data, it is best to always keep "Sequence"
+random <- c("precursor_Id","R.FileName" )
+```
+
+#Do you want to save the model?
+
+```{r}
+save_model <- TRUE #Alternative: save_model <- FALSE
+
+#To which folder do you want to export the Excel file(s) and the saved model file (if you chose to do so)? Please do not use a trailing "/" here!
+export_folder <- "./tmp/"
+
+#Construct the contrast matrix L for testing on the fold changes of interest (i.e. our research hypotheses)
+L <- makeContrast(contrasts=c("codingPartialResponders - codingResponders",
+                              "codingResponders - codingControl"),
+                  levels=c("codingResponders","codingPartialResponders","codingControl", "codingNonResponders"))
+```
+
+#Set the significance threshold (default: 5% FDR)
+
+
+```{r}
+FDRlevel=0.05
+
+#Fit the models
+models <- fit.model(protdata=proteins, response="quant_value", fixed=fixed, random=random)
+
+#Test the appropriate research hypotheses
+results <- test.contrast_adjust(models, L)
+
+
+names(results)[1]
+for(i in 1:length(results)){
+  tmp <- quantable::matrix_to_tibble(results[[i]])
+  tmp$contrast <- names(results)[i]
+  results[[i]] <- tmp
+}
+```
+
+
+
+```{r}
+allContrasts <- bind_rows(results)
+#write.csv(results,file=file.path(outdir,"MSqRobSignificances.tsv"))
+library(quantable)
+
+#pdf(file.path(outdir,"MSqRob_pValue_Volcano.pdf"))
+quantable::multigroupVolcano(allContrasts,effect = "estimate", type="pval", condition="contrast",xintercept = c(-1,1),label = )
+#dev.off()
+
+#pdf(file.path(outdir,"MSqRob_qValue_Volcano.pdf"))
+quantable::multigroupVolcano(allContrasts,effect = "estimate", type="qval", condition="contrast",xintercept = c(-1,1),label = )
+#dev.off()
+
+```

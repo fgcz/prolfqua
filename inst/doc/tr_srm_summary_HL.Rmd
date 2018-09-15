@@ -1,0 +1,19 @@
+---
+title: "Summarize Peptide Level Measurements"
+author: "WEW@FGCZ.ETHZ.CH"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+params:
+  configuration:  !r quote(SRMService::skylineconfig_HL)
+  data: !r quote(SRMService::sample_analysis_HL)
+vignette: >
+  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r includeMissingInOne, child = "tr_srm_summary.Rmd"}
+```
