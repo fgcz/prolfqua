@@ -5,7 +5,7 @@
 #' @examples
 #' library(LFQService)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' res <- workflow_correlation_preprocessing(data,config)
@@ -67,7 +67,7 @@ workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.
 #' rm(list=ls())
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' res <- workflow_corr_filter_impute(data,config)
@@ -122,7 +122,7 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' data <- spectronautDIAData250_analysis
 #' hierarchyCounts(data, config)
 #' tmp <-workflow_NA_preprocessing(data, config)
@@ -158,11 +158,11 @@ workflow_NA_preprocessing <- function(data, config, percent = 60, factor_level =
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' data <- spectronautDIAData250_analysis
 #' tmp <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=2)
 #' nrow(tmp$data)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=1)
 #' nrow(res$data)
 #' res$newconfig

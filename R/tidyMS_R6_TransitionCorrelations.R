@@ -233,17 +233,21 @@ toWide <- function(data,
 #' transform long to wide
 #' @export
 #' @examples
+#' config <- skylineconfig$clone(deep=TRUE)
 #' res <- toWideConfig(sample_analysis, skylineconfig)
-#' res <- toWideConfig(sample_analysis, skylineconfig, as.matrix = TRUE)
+#' res
+#' res <- toWideConfig(sample_analysis, config, as.matrix = TRUE)
+#' head(res)
 #' res <- scale(res)
 #'
 toWideConfig <- function(data, config , as.matrix = FALSE){
-  res <- toWide( data, c(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1]) ,
+  res <- toWide( data, c(config$table$hierarchyKeys()) ,
                  config$table$sampleName,
                  value = config$table$getWorkIntensity() )
   if(as.matrix){
-    resMat <- as.matrix(select(res,-(1:2)))
-    names <- res %>% select(1:2) %>% unite(precursor_id, 1,2, sep="~") %>% pull()
+    resMat <- as.matrix(select(res,-one_of(config$table$hierarchyKeys())))
+    names <- res %>% select_at(config$table$hierarchyKeys()) %>%
+      unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep="~") %>% pull()
     rownames(resMat) <- names
     res <- resMat
   }
@@ -266,7 +270,7 @@ gatherItBack <- function(x,value,config,data = NULL){
     tibble::as_tibble(x)
   )
   x <- gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
-  x <- tidyr::separate(x, "row.names",  c(config$table$hierarchyKeys()[1],config$table$hierarchyKeys(TRUE)[1]), sep="~")
+  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~")
   if(!is.null(data)){
     x <- inner_join(data, x)
     config$table$setWorkIntensity(value)
@@ -441,7 +445,7 @@ rankProteinPrecursors <- function(data,
 #' @export
 #' @examples
 #'
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' X <-res %>% select(c(config$table$hierarchyKeys(), srm_meanInt, srm_meanIntRank)) %>% distinct()
@@ -468,7 +472,7 @@ rankPrecursorsByIntensity <- function(data, config){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' res %>% select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
@@ -501,7 +505,7 @@ aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1
 #' Ranks precursors by NAs (adds new column .NARank)
 #' @export
 #' @examples
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByNAs(res,config)
 #' colnames(res)
@@ -533,7 +537,7 @@ rankPrecursorsByNAs <- function(data, config){
 #' rm(list=ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' data <- removeLarge_Q_Values(data, config)

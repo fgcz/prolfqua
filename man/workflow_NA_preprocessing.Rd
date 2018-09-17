@@ -26,3 +26,4 @@ stopifnot(FALSE==(is.grouped_df(tmp)))
 Other workflow functions: \code{\link{workflow_Q_NA_filtered_Hierarchy}},
   \code{\link{workflow_correlation_preprocessing}}
 }
+\concept{workflow functions}

@@ -28,3 +28,4 @@ hierarchyCounts(res$data, res$newconfig)
 Other workflow functions: \code{\link{workflow_NA_preprocessing}},
   \code{\link{workflow_correlation_preprocessing}}
 }
+\concept{workflow functions}

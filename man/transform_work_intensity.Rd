@@ -4,7 +4,8 @@
 \alias{transform_work_intensity}
 \title{Transform intensity}
 \usage{
-transform_work_intensity(data, config, transformation, intesityNewName = NULL)
+transform_work_intensity(data, config, transformation,
+  intesityNewName = NULL)
 }
 \description{
 Transform intensity

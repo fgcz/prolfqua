@@ -23,7 +23,7 @@ rocs <- function(data ,response, predictor){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' x <- sample(data$protein_Id,2)
@@ -64,7 +64,7 @@ compute_roc <- function(data, config){
 #' library(LFQService)
 #' library(tidyverse)
 #' library(glue)
-#' config <- spectronautDIAData250_config$clone(deep=T)
+#' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' data <- transform_work_intensity(data, config, log2)

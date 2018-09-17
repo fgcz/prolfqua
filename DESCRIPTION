@@ -2,11 +2,10 @@ Package: LFQService
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Witold Wolski <wewolski@gmail.com>
+Maintainer: Witold Wolski <wewolski@gmail.com>
+Description: Analysing and LFQ experiments in service mode.
+License: GPL
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
@@ -14,19 +13,23 @@ URL: https://github.com/wolski/LFQService
 BugReports: https://github.com/wolski/LFQService/issues
 Repository: CRAN
 Imports:
-    tidyverse,
-    ggplot2,
     broom,
-    quantable,
     conflicted,
-    yaml
-Suggests:
-    testthat,
+    dplyr,
     ggplot2,
+    glue,
+    heatmap3,
+    quantable,
+    purrr,
+    readxl,
+    tidyverse,
+    yaml,
+    MSqRob,
+Suggests:
     knitr,
     rmarkdown,
-    MSqRob
+    testthat
 Remotes:
     protViz/quantable,
     statOmics/MSqRob
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0.9000
