@@ -12,7 +12,7 @@ Apply roc analysis on main factor on lowest level
 \examples{
 library(tidyverse)
 library(LFQService)
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis
 x <- sample(data$protein_Id,2)

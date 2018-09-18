@@ -14,11 +14,11 @@ Get Protein Intensities after QValue NA filtering and medianpolish
 library(LFQService)
 library(tidyverse)
 rm(list=ls())
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 data <- spectronautDIAData250_analysis
 tmp <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=2)
 nrow(tmp$data)
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 res <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=1)
 nrow(res$data)
 res$newconfig

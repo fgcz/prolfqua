@@ -15,7 +15,7 @@ Perform anova analysis
 library(LFQService)
 library(tidyverse)
 library(glue)
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis
 data <- transform_work_intensity(data, config, log2)

@@ -2,34 +2,47 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{proteins_WithXPeptidesInCondition}
 \alias{proteins_WithXPeptidesInCondition}
-\title{find proteins wich have 2 peptides in at least x percent of samples in main factor.}
+\title{Find proteins (hierarchy_level = 1)
+wich have n peptides (hierarchy_level=2)
+in at least x percent of samples in one of the main factor levels.}
 \usage{
 proteins_WithXPeptidesInCondition(data, config, percent = 60,
-  factor_level = 1)
+  hierarchy_level = 2, factor_level = 1)
+}
+\arguments{
+\item{data}{data}
+
+\item{config}{configuration}
+
+\item{percent}{of not NA in factor}
+
+\item{hierarchy_level}{hierlevel}
+
+\item{factor_level}{faclevel}
 }
 \value{
 tibble with hierarchy Id's
 }
 \description{
-find proteins wich have 2 peptides in at least x percent of samples in main factor.
+Find proteins (hierarchy_level = 1)
+wich have n peptides (hierarchy_level=2)
+in at least x percent of samples in one of the main factor levels.
 }
 \examples{
 
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis
 data <- removeLarge_Q_Values(data, config)
 hierarchyCounts(data, config)
-res <- proteins_WithXPeptidesInCondition(data, config,percent = 60)
-tmp <- inner_join(res, data )
+res <- proteins_WithXPeptidesInCondition(data, config,percent = 60, hierarchy_level=2)
+res <- proteins_WithXPeptidesInCondition(data, config,percent = 60, hierarchy_level=3)
+tmp <- inner_join(res$res, data )
 hierarchyCounts(tmp, config)
-res2 <- select(res, config$table$hierarchyKeys()[1]) \%>\% distinct()
-tmp2 <- inner_join(res2, data )
-hierarchyCounts(tmp2, config)
 res3 <- proteins_WithXPeptidesInCondition(data, config,percent = 90)
-tmp2 <- inner_join(res3, data )
+tmp2 <- inner_join(res3$res, data )
 hierarchyCounts(tmp2, config)
 }

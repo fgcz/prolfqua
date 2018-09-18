@@ -13,7 +13,7 @@ filter QVAlues and NA's and factor information
 library(LFQService)
 library(tidyverse)
 rm(list=ls())
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 data <- spectronautDIAData250_analysis
 hierarchyCounts(data, config)
 tmp <-workflow_NA_preprocessing(data, config)

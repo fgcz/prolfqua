@@ -143,8 +143,7 @@ workflow_NA_preprocessing <- function(data, config, percent = 60, factor_level =
                                                       config,
                                                       percent = percent,
                                                       factor_level = factor_level)
-  data_NA_QVal_condition <- inner_join(resNACondition, data_NA_QVal )
-
+  data_NA_QVal_condition <- inner_join(resNACondition$res, data_NA_QVal )
   # Complete cases
   data_NA_QVal_condition <- completeCases( data_NA_QVal_condition , config)
   return(data_NA_QVal_condition)
@@ -181,7 +180,7 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                                       config,
                                                       percent =percent,
                                                       factor_level = factor_level)
-  data_NA_QVal_condition <- inner_join(resNACondition, data_NA_QVal )
+  data_NA_QVal_condition <- inner_join(resNACondition$res, data_NA_QVal )
 
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
 

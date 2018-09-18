@@ -24,7 +24,7 @@
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
 #'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' usethis::use_data( skylineconfig , overwrite = TRUE )
+#' #usethis::use_data( skylineconfig , overwrite = TRUE )
 "skylineconfig"
 
 #' A data frame wich goes along with the \link{skylineconfig}
@@ -46,7 +46,7 @@
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' sample_analysis <- remove_small_intensities(sample_analysis, skylineconfig, threshold = 30)
-#' usethis::use_data( sample_analysis , overwrite = TRUE )
+#' #usethis::use_data( sample_analysis , overwrite = TRUE )
 "sample_analysis"
 
 # skylineSRM_HL_data ----
@@ -66,7 +66,7 @@
 #' skylineconfig_HL$table$factors[["treatment_c"]] <- "Condition2"
 #' skylineconfig_HL$table$factors[["time_c"]] <- "time"
 #' skylineconfig_HL$parameter$is_intensity_transformed = FALSE
-#' usethis::use_data( skylineconfig_HL , overwrite = TRUE )
+#' #usethis::use_data( skylineconfig_HL , overwrite = TRUE )
 "skylineconfig_HL"
 
 #' A data frame wich goes along with the \link{skylineconfig_HL}.
@@ -83,7 +83,7 @@
 #' data(skylineSRM_HL_data)
 #' skylineSRM_HL_data$Area[skylineSRM_HL_data$Area == 0] <- NA
 #' sample_analysis_HL <- setup_analysis(skylineSRM_HL_data, skylineconfig_HL)
-#' usethis::use_data( sample_analysis_HL , overwrite = TRUE )
+#' #usethis::use_data( sample_analysis_HL , overwrite = TRUE )
 "sample_analysis_HL"
 
 #spectronautDIAData250----
@@ -104,7 +104,7 @@
 #' spectronautDIAData250_config$table$factors[["sex"]] = "sex"
 #' spectronautDIAData250_config$table$factors[["age"]] = "age"
 #' spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
-#' usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
+#' #usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
 #'
 "spectronautDIAData250_config"
 
@@ -117,5 +117,5 @@
 #' xx <-  LFQService::spectronautDIAData250_config
 #'
 #' spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
-#' usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
+#' #usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
 "spectronautDIAData250_analysis"

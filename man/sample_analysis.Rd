@@ -29,6 +29,6 @@ skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 data(skylinePRMSampleData)
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 sample_analysis <- remove_small_intensities(sample_analysis, skylineconfig, threshold = 30)
-usethis::use_data( sample_analysis , overwrite = TRUE )
+#usethis::use_data( sample_analysis , overwrite = TRUE )
 }
 \keyword{datasets}

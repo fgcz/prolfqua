@@ -13,7 +13,7 @@ run \link{rankPrecursorsByIntensity} first
 
 library(LFQService)
 library(tidyverse)
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByIntensity(res,config)
 res \%>\% select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\% distinct() \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))

@@ -12,7 +12,7 @@ correlation preprocessing
 \examples{
 library(LFQService)
 rm(list=ls())
-config <- spectronautDIAData250_config$clone(deep=T)
+config <- spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis
 res <- workflow_correlation_preprocessing(data,config)

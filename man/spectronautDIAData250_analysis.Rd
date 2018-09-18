@@ -19,6 +19,6 @@ data <- LFQService::spectronautDIAData250
 xx <-  LFQService::spectronautDIAData250_config
 
 spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
-usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
+#usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
 }
 \keyword{datasets}
