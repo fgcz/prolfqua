@@ -703,7 +703,7 @@ plot_stdv_vs_mean <- function(data, config){
 }
 
 
-.string.to.colors = function(string, colors=NULL){
+.string.to.colors <- function(string, colors=NULL){
   if (is.factor(string)){
     string = as.character(string)
   }
@@ -758,9 +758,10 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' @importFrom heatmap3 heatmap3
 #' @examples
 #' library(tidyverse)
+#' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' #plot_heatmap(data, config)
+#' plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- select(data, c(config$table$sampleName, config$table$factorKeys())) %>%
@@ -772,4 +773,39 @@ plot_heatmap <- function(data, config){
   rownames(ColSideColors) <- annot$sampleName
   res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
   heatmap3::heatmap3(res, ColSideColors = ColSideColors,labRow="",showRowDendro =FALSE)
+}
+#' plot heatmap of NA values
+#' @export
+#' @importFrom heatmap3 heatmap3 showLegend
+#' @examples
+#'
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#' plot_NA_heatmap(data, config)
+plot_NA_heatmap <- function(data, config){
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- select(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+    distinct() %>% arrange(sampleName)
+  stopifnot(annot$sampleName == colnames(res))
+
+  factors <- select(annot, config$table$factorKeys())
+  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
+  rownames(ColSideColors) <- annot$sampleName
+
+  res[!is.na(res)] <- 0
+  res[is.na(res)] <- 1
+  res <- res[apply(res,1, sum) > 0,]
+  heatmap3::heatmap3(res,
+                     distfun = function(x){dist(x, method="binary")},
+                     scale="none",
+                     col=c("white","black"),
+                     labRow = "",
+                     ColSideColors = ColSideColors,
+                     #showRowDendro = FALSE,
+                     legendfun = function()
+                       showLegend(legend=c("NA"),
+                                  col=c("black"),
+                                  cex=1.5))
 }
