@@ -130,20 +130,27 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
 #' config$get
 #' hierarchyCounts(tmp, config)
 #' stopifnot(FALSE==(is.grouped_df(tmp)))
-workflow_NA_preprocessing <- function(data, config, percent = 60, factor_level = 1){
+workflow_NA_preprocessing <- function(data,
+                                      config,
+                                      percent = 60,
+                                      hierarchy_level = 2,
+                                      factor_level = 1){
   stat_input <- hierarchyCounts(data, config)
   data_NA <- removeLarge_Q_Values(data, config)
   data_NA <- summariseQValues(data_NA, config)
 
   data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
-
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
+  dim(data_NA_QVal)
+  resNACondition <- filter_levels_by_missing(data_NA_QVal,
+                                             config,
+                                             percent = percent,
+                                             factor_level = factor_level)
 
-  resNACondition <- proteins_WithXPeptidesInCondition(data_NA_QVal,
-                                                      config,
-                                                      percent = percent,
-                                                      factor_level = factor_level)
-  data_NA_QVal_condition <- inner_join(resNACondition$res, data_NA_QVal )
+  protID <- summarizeHierarchy(resNACondition,config) %>%
+    dplyr::filter(!!sym(config$table$hierarchyKeys()[hierarchy_level]) >= config$parameter$min_peptides_protein)
+
+  data_NA_QVal_condition <- protID %>% select(config$table$hierarchyKeys()[1]) %>% inner_join(resNACondition)
   # Complete cases
   data_NA_QVal_condition <- completeCases( data_NA_QVal_condition , config)
   return(data_NA_QVal_condition)
@@ -171,24 +178,16 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                              percent = 60,
                                              hierarchy_level=1,
                                              factor_level=1){
-  stat_input <- hierarchyCounts(data, config)
-  data_NA <- removeLarge_Q_Values(data, config)
-  data_NA <- summariseQValues(data_NA, config)
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
-  stat_qval <- hierarchyCounts(data_NA_QVal, config)
-  resNACondition <- proteins_WithXPeptidesInCondition(data_NA_QVal,
-                                                      config,
-                                                      percent =percent,
-                                                      factor_level = factor_level)
-  data_NA_QVal_condition <- inner_join(resNACondition$res, data_NA_QVal )
+
+  data_NA_QVal_condition <- workflow_NA_preprocessing(data, config=config,
+                                                      percent=percent,
+                                                      hierarchy_level = 2,
+                                                      factor_level = factor_level
+  )
 
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
-
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
   figs3 <- applyToHierarchyBySample(resDataLog, config, medpolishPly, hierarchy_level = hierarchy_level)
-  colnames(figs3$data[[1]])
-  colnames(figs3$medpolishPly[[1]])
-
   protIntensity <- figs3 %>% select(config$table$hierarchyKeys()[1:hierarchy_level], medpolishPly) %>% unnest()
 
   newconfig <- make_reduced_hierarchy_config(config,

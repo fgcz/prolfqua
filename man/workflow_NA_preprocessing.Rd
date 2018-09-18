@@ -4,7 +4,8 @@
 \alias{workflow_NA_preprocessing}
 \title{filter QVAlues and NA's and factor information}
 \usage{
-workflow_NA_preprocessing(data, config, percent = 60, factor_level = 1)
+workflow_NA_preprocessing(data, config, percent = 60,
+  hierarchy_level = 2, factor_level = 1)
 }
 \description{
 filter QVAlues and NA's and factor information

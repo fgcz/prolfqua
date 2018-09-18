@@ -55,9 +55,9 @@ remove_small_intensities <- function(data, config, threshold = 1){
 #' x <- transform_work_intensity(analysis, config, transform = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 transform_work_intensity <- function(data,
-                                 config,
-                                 transformation,
-                                 intesityNewName = NULL){
+                                     config,
+                                     transformation,
+                                     intesityNewName = NULL){
   x <- as.list( match.call() )
   if(is.null(intesityNewName)){
     newcol <- paste(as.character(x$transformation), config$table$getWorkIntensity(), sep="_")
@@ -124,13 +124,13 @@ plot_sample_correlation <- function(data, config){
   matrix <- toWideConfig(data, config, as.matrix = TRUE)
   M <- cor(matrix, use="pairwise.complete.obs")
   if(nrow(M)>12){
-  corrplot::corrplot.mixed(M,upper="ellipse",
-                           lower="pie",
-                           diag="u",
-                           tl.cex=.6,
-                           tl.pos="lt",
-                           tl.col="black",
-                           mar=c(2,5,5,2))
+    corrplot::corrplot.mixed(M,upper="ellipse",
+                             lower="pie",
+                             diag="u",
+                             tl.cex=.6,
+                             tl.pos="lt",
+                             tl.col="black",
+                             mar=c(2,5,5,2))
   } else{
     corrplot::corrplot.mixed(M,upper="ellipse",
                              lower="number",
@@ -528,21 +528,10 @@ rankPrecursorsByNAs <- function(data, config){
   return(data)
 }
 
-
-#' Find proteins (hierarchy_level = 1)
-#' wich have n peptides (hierarchy_level=2)
-#' in at least x percent of samples in one of the main factor levels.
-#'
-#' @param data data
-#' @param config configuration
-#' @param percent of not NA in factor
-#' @param hierarchy_level hierlevel
-#' @param factor_level faclevel
-#' @return tibble with hierarchy Id's
-#'
+#' removes measurments with less than percent 60 missing values in factor
 #' @export
-#'
 #' @examples
+#'
 #'
 #' rm(list=ls())
 #' library(LFQService)
@@ -552,45 +541,30 @@ rankPrecursorsByNAs <- function(data, config){
 #' data <- spectronautDIAData250_analysis
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchyCounts(data, config)
-#' res <- proteins_WithXPeptidesInCondition(data, config,percent = 60, hierarchy_level=2)
-#' res <- proteins_WithXPeptidesInCondition(data, config,percent = 60, hierarchy_level=3)
-#' tmp <- inner_join(res$res, data )
-#' hierarchyCounts(tmp, config)
-#' res3 <- proteins_WithXPeptidesInCondition(data, config,percent = 90)
-#' tmp2 <- inner_join(res3$res, data )
-#' hierarchyCounts(tmp2, config)
-proteins_WithXPeptidesInCondition <- function(data,
-                                              config,
-                                              percent = 60,
-                                              hierarchy_level = 2,
-                                              factor_level = 1 ){
+#' res <- filter_levels_by_missing(data, config,percent = 60)
+#' data1 <-completeCases(data, config)
+#' hierarchyCounts(res, config)
+#' summarizeHierarchy(res,config) %>% filter(!!sym(config$table$hierarchyKeys()[2]) > 1)
+filter_levels_by_missing <- function(data,
+                                     config,
+                                     percent = 60,
+                                     factor_level = 1 ){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
   column <- config$table$getWorkIntensity()
 
   data <- completeCases( data , config)
-
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- data %>%
-    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factorKeys()[1:factor_level]))) %>%
+    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factorKeys()[1:factor_level] ))) %>%
     dplyr::summarise(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
     mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>% ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
-
-  summaryPerPrecursorFilteredIDs <- summaryPerPrecursorFiltered %>%
-    select(!!!syms(c(table$hierarchyKeys()[1:hierarchy_level],table$factorKeys()[1:factor_level]))) %>% distinct()
-
-  # count nr peptides per protein in condition
-  summaryPerPrecursorFilteredIDs <- summaryPerPrecursorFilteredIDs %>%
-    group_by(!!!syms(c(config$table$hierarchyKeys()[1], table$factorKeys()[1:factor_level]))) %>%
-    summarise(n=n()) %>%
-    dplyr::filter(n >= config$parameter$min_peptides_protein) %>% arrange(n) %>% ungroup()
-
-  res <- summaryPerPrecursorFilteredIDs %>%
-    select(config$table$hierarchyKeys()[1]) %>% distinct()
-  return(list(res = res,
-              summaryPerPrecursorFilteredIDs = summaryPerPrecursorFilteredIDs))
+  summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>% select(c(table$hierarchyKeys())) %>% distinct()
+  stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
+  res <- summaryPerPrecursorFiltered %>% left_join(data)
+  return(ungroup(res))
 }
 
 

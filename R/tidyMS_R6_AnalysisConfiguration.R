@@ -344,9 +344,9 @@ summarizeProteins <- function( x, configuration ){
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' res <- summarizeHierarchy(sample_analysis, skylineconfig)
 #' res2 <- summarizeHierarchy(sample_analysis, skylineconfig, factor_level=1)
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level =2, factor_level=0 )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level =3 )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level =4 )
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 2, factor_level=0 )
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 3 )
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4 )
 #'
 summarizeHierarchy <- function(x,
                                configuration,
@@ -365,10 +365,10 @@ summarizeHierarchy <- function(x,
   precursor <- x %>% select(hierarchy, factors) %>% distinct()
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  funs(n_distnict = n_distinct))
+      dplyr::summarize_at( hierarchy[-1],  funs( n_distinct))
   }else{
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs(n_distnict = n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n_distinct))
   }
   return(x3)
 }
