@@ -742,11 +742,11 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
  if(R2){
    cres <- cres^2
  }
- annot <- select(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+ annot <- select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
      distinct() %>% arrange(sampleName)
  stopifnot(annot$sampleName == colnames(cres))
 
- factors <- select(annot, config$table$factorKeys())
+ factors <- select_at(annot, config$table$factorKeys())
  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
  rownames(ColSideColors) <- annot$sampleName
  heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
@@ -764,11 +764,11 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- select(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
     distinct() %>% arrange(sampleName)
   stopifnot(annot$sampleName == colnames(res))
 
-  factors <- select(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
@@ -786,11 +786,11 @@ plot_heatmap <- function(data, config){
 #' plot_NA_heatmap(data, config)
 plot_NA_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- select(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
     distinct() %>% arrange(sampleName)
   stopifnot(annot$sampleName == colnames(res))
 
-  factors <- select(annot, config$table$factorKeys())
+  factors <- select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
 

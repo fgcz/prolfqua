@@ -245,7 +245,7 @@ toWideConfig <- function(data, config , as.matrix = FALSE){
                  config$table$sampleName,
                  value = config$table$getWorkIntensity() )
   if(as.matrix){
-    resMat <- as.matrix(select(res,-one_of(config$table$hierarchyKeys())))
+    resMat <- as.matrix(dplyr::select(res,-one_of(config$table$hierarchyKeys())))
     names <- res %>% select_at(config$table$hierarchyKeys()) %>%
       unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep="~") %>% pull()
     rownames(resMat) <- names
