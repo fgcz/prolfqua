@@ -4,8 +4,8 @@
 \alias{transitionCorrelationsJack}
 \title{Compute correlation matrix with jack}
 \usage{
-transitionCorrelationsJack(dataX, distmethod = function(x) {     cor(x, use =
-  "pairwise.complete.obs", method = "pearson") })
+transitionCorrelationsJack(dataX, distmethod = function(x) {     cor(x,
+  use = "pairwise.complete.obs", method = "pearson") })
 }
 \arguments{
 \item{dataX}{data.frame with transition intensities per peptide}

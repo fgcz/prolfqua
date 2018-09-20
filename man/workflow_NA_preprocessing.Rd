@@ -4,8 +4,8 @@
 \alias{workflow_NA_preprocessing}
 \title{filter QVAlues and NA's and factor information}
 \usage{
-workflow_NA_preprocessing(data, config, percent = 60, hierarchy_level = 2,
-  factor_level = 1)
+workflow_NA_preprocessing(data, config, percent = 60,
+  hierarchy_level = 2, factor_level = 1)
 }
 \description{
 filter QVAlues and NA's and factor information
@@ -27,3 +27,4 @@ stopifnot(FALSE==(is.grouped_df(tmp)))
 Other workflow functions: \code{\link{workflow_Q_NA_filtered_Hierarchy}},
   \code{\link{workflow_correlation_preprocessing}}
 }
+\concept{workflow functions}

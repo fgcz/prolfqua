@@ -14,7 +14,7 @@ vignette: >
   
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = FALSE,
+echo = TRUE,
 message = FALSE,
 warning = FALSE,
 fig.width = 10,
@@ -23,7 +23,7 @@ fig.height = 10
 
 ```
 
-
+# Setup Data
 
 ```{r}
 rm(list=ls())
@@ -31,8 +31,6 @@ library(conflicted)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-
-rm(list=ls())
 library(LFQService)
 config <- createSpectronautPeptideConfiguration()
 config$table$factors[["coding"]] = "coding"
@@ -44,7 +42,7 @@ x <- R6extractValues(config)
 ```
 
 
-```{r include=FALSE, eval=FALSE}
+```{r include=FALSE, eval=FALSE, echo=FALSE}
 if(0){
   not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
            "PEP.GroupingKey", "PEP.GroupingKeyType",   "PEP.IsProteotypic",               "PEP.NrOfMissedCleavages",

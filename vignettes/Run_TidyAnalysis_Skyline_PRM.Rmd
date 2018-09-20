@@ -13,7 +13,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = FALSE,
+echo = TRUE,
 message = FALSE,
 warning = FALSE,
 fig.width = 10,
@@ -86,13 +86,14 @@ invisible(lapply(figs3$figsMed[1:3], print))
 dev.off()
 ```
 
-# Get the intensities..
+# Compute protein level intensities
 
 ```{r}
 table <- skylineconfig$table
-protIntensity <- figs3 %>% select(names(table$hierarchy)[1], medpolishPly) %>% unnest()
+protIntensity <- figs3 %>% select(table$hierarchyKeys()[1], medpolishPly) %>% unnest()
 ```
 
+## normalize them by CIRT
 
 ```{r}
 CiRT <- protIntensity %>% dplyr::filter(protein_Id == "CiRT standards")
@@ -110,6 +111,8 @@ p <- ggplot(proteinIntensity, aes(x =sampleName , y=log2Med_log2MedCiRT, group=p
 p
 
 ```
+
+
 
 ```{r eval=FALSE}
 pdf(file.path(outdir,"allProteinsOnePlot.pdf"))
@@ -136,10 +139,11 @@ plotProt <- function(data, title){
 }
 
 plotProt(protRez3$data[[3]], protRez3$protein_Id[[3]])
-protRez3 <- protRez3 %>% mutate(plot = map2(data,protein_Id, plotProt))
 ```
 
 ```{r eval=FALSE}
+protRez3 <- protRez3 %>% mutate(plot = map2(data,protein_Id, plotProt))
+
 pdf(file.path(outdir,"allProtFigsNorm.pdf"))
 invisible(lapply(protRez3$plot[1:3], print))
 dev.off()
