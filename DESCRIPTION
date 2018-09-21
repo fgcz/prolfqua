@@ -1,6 +1,6 @@
 Package: LFQService
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Analysing and LFQ experiments in service mode.
 Version: 0.1.0
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>

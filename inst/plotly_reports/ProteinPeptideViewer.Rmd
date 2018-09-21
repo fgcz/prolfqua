@@ -1,0 +1,85 @@
+---
+title: "Protein - Peptide - Volcano Browser - V0.1"
+author : wew@fgcz.ethz.ch
+output:
+   flexdashboard::flex_dashboard:
+   orientation: rows
+   social: menu
+   source_code: embed
+   theme: cerulean
+---
+
+```{r}
+library(plotly)
+library(crosstalk)
+library(tidyverse)
+library(readr)
+```
+
+```{r Make dataset}
+rm(list=ls())
+#prot <- read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_ChildrenDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/LinearModelP_Values.txt")
+#pep <- readr::read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_ChildrenDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/PEPTIDE_P_VALUES.txt")
+
+prot <- read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_AdultDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/LinearModelP_Values.txt")
+pep <- readr::read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_AdultDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/PEPTIDE_P_VALUES.txt")
+
+prot <- prot %>% dplyr::rename(prot=protein_Id, fc = estimate, pval=p.value)
+prot <- prot %>%filter(lhs == "NR - c") %>% select(-rhs)
+pep <- pep %>% dplyr::rename(prot=protein_Id, fc = estimate, pval=p.value)
+pep <- pep %>% tidyr::unite("prot_pep", prot,modPeptide_Id,remove=FALSE )
+peptide <- pep %>%filter(lhs == "NR - c") %>% select(-rhs)
+#prot <- data.frame(prot = c("A","B","C"), fc = c(2,3,-1), pval = c(0.1,0.01,0.4), mean = c(3,10,20))
+#peptide <- data.frame(prot = c("A","A","B","B","B","C"), peptideID = c("ax","bx","cd","ad","bd","ca"), fc = c(2,3,1,2.2,1.3,-1), pval = c(0.1,0.01,0.01,0.4,0.1,0.4))
+
+```
+
+<!--### Filters-->
+
+```{r}
+library(crosstalk)
+# Notice the 'group = ' argument - this does the trick!
+shared_prot <- SharedData$new(prot, ~prot, group = "Choose protein")
+shared_pep <- SharedData$new(peptide, ~prot, group = "Choose protein")
+# You don't need this second filter now
+#filter_select("owner", "Car owner:", shared_pep, ~ owner)
+```
+
+# Volcano Plots
+
+##
+
+
+### Protein Volcano
+
+```{r}
+
+#filter_select("prot", "Protein :", shared_prot, ~prot)
+plot_ly(shared_prot, x = ~fc, y = ~ I(-log10(pval)) , type="scatter" , mode="markers", text=~prot) %>% highlight("plotly_click") 
+
+```
+
+### Peptide Volcano
+
+```{r}
+plot_ly(data=shared_pep, x = ~fc, y = ~ I(-log10(pval)),  mode="markers", type="scatter", text=~prot_pep)
+
+```
+
+##
+
+### Proteins
+
+```{r}
+DT::datatable(shared_prot)
+```
+
+### Peptides
+
+```{r}
+DT::datatable(shared_pep)
+```
+
+
+
+

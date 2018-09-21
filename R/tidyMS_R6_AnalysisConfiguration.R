@@ -149,14 +149,14 @@ setup_analysis <- function(data, configuration ,sep="~"){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
-    data <- unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
   }
   data <- select(data , -one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
     if( length(table$factors[[i]]) > 1){
-      data <- unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
+      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
     }else{
       newname <-table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -168,7 +168,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
   if(!sampleName  %in% names(data)){
     message("creating sampleName")
 
-    data <- data %>%  unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
+    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
       select(sampleName, table$fileName) %>% distinct() %>%
       mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
       inner_join(data, by=table$fileName)
@@ -187,9 +187,10 @@ setup_analysis <- function(data, configuration ,sep="~"){
 
 #' Complete cases
 #' @export
+#' @importFrom tidyr complete
 #'
 completeCases <- function(data, config){
-  data <- complete( data ,
+  data <- tidyr::complete( data ,
                     nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
                     nesting(!!!syms(c( config$table$fileName , config$table$sampleName, config$table$factorKeys() ))))
   return(data)
@@ -218,7 +219,7 @@ linePlotHierarchy_default <- function(data,
       ))
     }else{
       formula <- sprintf("~%s",factor)
-      data <- unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
+      data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
                                    group="fragment_label",
@@ -245,12 +246,19 @@ linePlotHierarchy_default <- function(data,
 #' extracts the relevant information from the configuration to make the plot.
 #' @export
 #' @examples
+#' library(tidyverse)
 #' library(LFQService)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
 #' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+#' rm(list=ls())
+#' confHL <- LFQService::skylineconfig_HL$clone(deep=TRUE)
+#' tt <- LFQService::sample_analysis_HL
+#' head(tt)
+#' xnested <- LFQService::sample_analysis_HL %>% group_by_at(confHL$table$hierarchyKeys()[1]) %>% tidyr::nest()
+#' LFQService::linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]],confHL)
 linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
   rev_hnames <- rev(names(configuration$table$hierarchy))
   res <- linePlotHierarchy_default(res, proteinName = proteinName,
@@ -514,7 +522,7 @@ spreadValueVarsIsotopeLabel <- function(resData, configuration){
   idVars <- table$idVars()
   resData2 <- resData %>% select(c(table$idVars(), table$valueVars()) )
   resData2 <- resData2 %>% gather(variable, value, - idVars  )
-  resData2 <- resData2 %>%  unite(temp, table$isotopeLabel, variable )
+  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
   HLData <- resData2 %>% spread(temp,value)
   invisible(HLData)
 }
