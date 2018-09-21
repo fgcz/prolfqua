@@ -4,7 +4,7 @@
 \alias{decorelatedPly}
 \title{finds decorrelated measues}
 \usage{
-decorelatedPly(x, config, corThreshold = 0.7)
+decorelatedPly(x, corThreshold = 0.7)
 }
 \description{
 finds decorrelated measues

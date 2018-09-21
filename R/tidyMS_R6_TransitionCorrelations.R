@@ -202,13 +202,13 @@ summariseQValues <- function(data,
 #'  group_by_at(skylineconfig$table$hierarchyKeys()[1]) %>%
 #'  tidyr::nest()
 #' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
-#' dim(xx)
 #' stopifnot(dim(xx)==c(103,22))
+#'
 extractIntensities <- function(x, configuration){
   table <- configuration$table
   x <- x %>%
     select( c( table$sampleName,
-               table$hierarchyKeys(TRUE)[1],
+               table$hierarchyKeys()[-1],
                table$getWorkIntensity()) ) %>%
     spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
@@ -318,10 +318,10 @@ applyToIntensityMatrix <- function(data, config, .func){
 
 #' finds decorrelated measues
 #' @export
-decorelatedPly <- function(x, config , corThreshold = 0.7){
+decorelatedPly <- function(x, corThreshold = 0.7){
   res <- LFQService::transitionCorrelationsJack(x)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
-  tibble(!!config$table$hierarchyKeys(TRUE)[1] := rownames(res), srm_decorelated = rownames(res) %in% decorelated)
+  tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
 #' marks decorrelated elements
@@ -329,16 +329,24 @@ decorelatedPly <- function(x, config , corThreshold = 0.7){
 #' @importFrom purrr map
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
+#' @examples
+#'
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- completeCases(data, config)
+#' mean(is.na(data$Area))
+#' dataI <- markDecorrelated(data, config)
+#' head(dataI)
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data %>%  group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
   qvalFiltX <- qvalFiltX %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
-
   HLfigs2 <- qvalFiltX %>%
-    dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly, config, minCorrelation))
+    dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     select(config$table$hierarchyKeys()[1], "srmDecor") %>% unnest()
-  qvalFiltX <- inner_join(data, unnest_res, by=c(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1]) )
+  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~")
+  qvalFiltX <- inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
   return(qvalFiltX)
 }
 
@@ -357,27 +365,37 @@ simpleImpute <- function(data){
   res[is.na(res)] <- imp[is.na(res)]
   return(res)
 }
-
 #' imputation based on correlation assumption
 #' @export
 #' @importFrom purrr map
+#' @examples
+#' library(LFQService)
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- completeCases(data, config)
+#' mean(is.na(data$Area))
+#' dataI <- impute_correlationBased(data, config)
+#' mean(is.na(dataI$srm_ImputedIntensity))
+#'
 impute_correlationBased <- function(x , config){
   nestedX <- x %>%  group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
   nestedX <- nestedX %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
 
   gatherItback <- function(x,config){
     x <- dplyr::bind_cols(
-      tibble::tibble(!!config$table$hierarchyKeys(TRUE)[1] := rownames(x)),
+      row=rownames(x),
       tibble::as_tibble(x)
     )
     gather(x,key= !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
-  nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
 
+  nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
   unnest_res <- nestedX %>% select(config$table$hierarchyKeys()[1], "imputed") %>% unnest()
+  unnest_res <- unnest_res %>% separate("row",config$table$hierarchyKeys()[-1], sep="~" )
+
   qvalFiltX <- inner_join(x, unnest_res,
-                          by=c(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], config$table$sampleName) )
+                          by=c(config$table$hierarchyKeys(), config$table$sampleName) )
   config$table$setWorkIntensity("srm_ImputedIntensity")
   return(qvalFiltX)
 }

@@ -15,3 +15,12 @@ marks decorrelated elements
  do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 }
 
+\examples{
+
+data <- sample_analysis
+config <- skylineconfig$clone(deep=TRUE)
+data <- completeCases(data, config)
+mean(is.na(data$Area))
+dataI <- markDecorrelated(data, config)
+head(dataI)
+}

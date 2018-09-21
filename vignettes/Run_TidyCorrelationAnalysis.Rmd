@@ -23,7 +23,6 @@ fig.height = 10
 
 ```
 
-# Setup Data
 
 ```{r}
 rm(list=ls())
@@ -32,6 +31,12 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(LFQService)
+```
+
+
+# Setup Data
+
+```{r}
 config <- createSpectronautPeptideConfiguration()
 config$table$factors[["coding"]] = "coding"
 config$table$factors[["sex"]] = "sex"
@@ -82,7 +87,7 @@ longNoDecoy <- setup_analysis(longFormat, config)
 data <- longNoDecoy
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
 longQSummaries <- summariseQValues(longNoDecoy, config)
-LFQService::getMissingStats(longQSummaries, config)
+knitr::kable(head(LFQService::getMissingStats(longQSummaries, config)))
 
 ```
 
@@ -90,18 +95,21 @@ LFQService::getMissingStats(longQSummaries, config)
 ## Filter by NA's
 
 ```{r}
-LFQService::hierarchyCounts(longQSummaries, config)
+knitr::kable(LFQService::hierarchyCounts(longQSummaries, config))
+```
+
+```{r}
 qvalFilt <- longQSummaries %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
 LFQService::hierarchyCounts(qvalFilt, config)
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
-LFQService::hierarchyCounts(longQNASummaries, config)
+knitr::kable(LFQService::hierarchyCounts(longQNASummaries, config))
 ```
 
 
 ```{r}
 tmp <- toWideConfig(longQNASummaries, config, as.matrix = TRUE)
-quantable::simpleheatmap(cor(log2(tmp), use="pairwise.complete.obs"), margin=c(15,5))
+plot_heatmap_cor(longQNASummaries, config)
 
 ```
 
@@ -112,7 +120,7 @@ quantable::simpleheatmap(cor(log2(tmp), use="pairwise.complete.obs"), margin=c(1
 xx <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2], FALSE)
 longQNASummaries <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
 qvalFiltV <- dplyr::filter(longQNASummaries, nr_peptide_Id_by_protein_Id > 1)
-hierarchyCounts(qvalFiltV,config)
+knitr::kable(hierarchyCounts(qvalFiltV,config))
 
 ```
 
@@ -120,22 +128,27 @@ hierarchyCounts(qvalFiltV,config)
 # Correlation Filtering
 
 ```{r}
-
+#config$table$popWorkIntensity()
 qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
 xx <- markDecorrelated(qvalFiltV, config)
-hierarchyCounts(xx, config)
-qvalFiltCorr <- dplyr::filter(xx, srm_decorelated == FALSE)
-hierarchyCounts(qvalFiltCorr, config)
+mean(xx$srm_decorelated)
+nested <- xx %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
 
+dim(nested$data[[1]])
+linePlotHierarchy_configuration(nested$data[[1]], nested$protein_Id[[1]], config) + 
+  geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
+linePlotHierarchy_configuration(nested$data[[2]], nested$protein_Id[[2]], config) + 
+  geom_line(aes_string(linetype = "srm_decorelated"))
+
+knitr::kable(hierarchyCounts(xx, config))
+qvalFiltCorr <- dplyr::filter(xx, srm_decorelated == FALSE)
+knitr::kable(hierarchyCounts(qvalFiltCorr, config))
 ```
 
 
 
 ```{r}
-intensitiesD <- toWideConfig(qvalFiltCorr, config, as.matrix = TRUE)
-bb <- cor( intensitiesD, use="pairwise.complete.obs")
-quantable::simpleheatmap(bb, margin=c(15,5))
-
+plot_heatmap_cor(qvalFiltCorr, config)
 ```
 
 ### Rank precursors by Intensity
@@ -143,12 +156,7 @@ quantable::simpleheatmap(bb, margin=c(15,5))
 ```{r}
 qvalFiltCorr %>% select(protein_Id,precursor_Id, srm_NrNotNAs) %>% distinct()
 qvalFiltCorrSI <- rankPrecursorsByIntensity(qvalFiltCorr, config)
-
-config$table$getWorkIntensity()
-qvalFiltCorrSI %>% select(protein_Id,precursor_Id, starts_with("srm_")) %>% distinct()
-
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorrSI, config)
-qvalFiltImputed %>% select(protein_Id,precursor_Id, starts_with("srm_")) %>% distinct()
 
 ```
 
@@ -182,7 +190,5 @@ xx <- inner_join(nrPep,proteinsWide)
 #readr::write_csv(xx, path="output/proteinQuantsTidy.txt")
 
 ```
-
-# Combine all in one function.
 
 
