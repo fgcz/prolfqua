@@ -15,7 +15,4 @@ skylineconfig <- createSkylineConfiguration()
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 skylineconfig$table$factorKeys()
 skylineconfig$table$hierarchyKeys()
-# ACHTUNG ##
-# when making changes to this object you need to regenerate the data.
-# usethis::use_data(skylineconfig, overwrite = TRUE)
 }

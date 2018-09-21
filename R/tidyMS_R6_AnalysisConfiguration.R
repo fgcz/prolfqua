@@ -24,10 +24,12 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 
                                      fileName = NULL,
                                      factors = list(), # ordering is important - first is considered the main
+                                     factorLevel=integer(),
 
                                      sampleName = "sampleName",
                                      # measurement levels
                                      hierarchy = list(),
+                                     hierarchyLevel = 1,
                                      retentionTime = NULL,
                                      isotopeLabel = character(),
                                      # do you want to model charge sequence etc?
@@ -64,6 +66,13 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                          return(rev(names(self$hierarchy)))
                                        }else{
                                          return(names(self$hierarchy))
+                                       }
+                                     },
+                                     hkeysLevel = function(rev= FALSE){
+                                       if(rev){
+                                         self$hierarchy[-(1:self$hierarchyLevel)]
+                                       }else{
+                                         return(self$hierarchy[1:self$hierarchyLevel])
                                        }
                                      },
                                      factorKeys = function(){
@@ -149,14 +158,14 @@ setup_analysis <- function(data, configuration ,sep="~"){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
+    data <- unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
   }
   data <- select(data , -one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
     if( length(table$factors[[i]]) > 1){
-      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
+      data <- unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
     }else{
       newname <-table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -168,7 +177,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
   if(!sampleName  %in% names(data)){
     message("creating sampleName")
 
-    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
+    data <- data %>%  unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
       select(sampleName, table$fileName) %>% distinct() %>%
       mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
       inner_join(data, by=table$fileName)
@@ -187,10 +196,9 @@ setup_analysis <- function(data, configuration ,sep="~"){
 
 #' Complete cases
 #' @export
-#' @importFrom tidyr complete
 #'
 completeCases <- function(data, config){
-  data <- tidyr::complete( data ,
+  data <- complete( data ,
                     nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
                     nesting(!!!syms(c( config$table$fileName , config$table$sampleName, config$table$factorKeys() ))))
   return(data)
@@ -219,7 +227,7 @@ linePlotHierarchy_default <- function(data,
       ))
     }else{
       formula <- sprintf("~%s",factor)
-      data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
+      data <- unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
                                    group="fragment_label",
@@ -246,19 +254,12 @@ linePlotHierarchy_default <- function(data,
 #' extracts the relevant information from the configuration to make the plot.
 #' @export
 #' @examples
-#' library(tidyverse)
 #' library(LFQService)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
 #' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
-#' rm(list=ls())
-#' confHL <- LFQService::skylineconfig_HL$clone(deep=TRUE)
-#' tt <- LFQService::sample_analysis_HL
-#' head(tt)
-#' xnested <- LFQService::sample_analysis_HL %>% group_by_at(confHL$table$hierarchyKeys()[1]) %>% tidyr::nest()
-#' LFQService::linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]],confHL)
 linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
   rev_hnames <- rev(names(configuration$table$hierarchy))
   res <- linePlotHierarchy_default(res, proteinName = proteinName,
@@ -373,10 +374,10 @@ summarizeHierarchy <- function(x,
   precursor <- x %>% select(hierarchy, factors) %>% distinct()
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  funs( n = n_distinct))
+      dplyr::summarize_at( hierarchy[-1],  funs( n_distinct))
   }else{
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n = n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n_distinct))
   }
   return(x3)
 }
@@ -522,7 +523,7 @@ spreadValueVarsIsotopeLabel <- function(resData, configuration){
   idVars <- table$idVars()
   resData2 <- resData %>% select(c(table$idVars(), table$valueVars()) )
   resData2 <- resData2 %>% gather(variable, value, - idVars  )
-  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
+  resData2 <- resData2 %>%  unite(temp, table$isotopeLabel, variable )
   HLData <- resData2 %>% spread(temp,value)
   invisible(HLData)
 }
@@ -562,6 +563,7 @@ reestablishCondition <- function(data,
 #' @export
 #' @importFrom purrr map
 #' @examples
+#' library(LFQService)
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)
@@ -572,14 +574,12 @@ reestablishCondition <- function(data,
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
 applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, unnest = FALSE)
 {
+  config$table$hierarchyLevel <- hierarchy_level
   x <- as.list( match.call() )
-  func = medpolishPly
-
   makeName <- make.names(as.character(x$func))
-  xnested <- data %>% group_by_at(config$table$hierarchyKeys()[1:hierarchy_level]) %>% nest()
+  xnested <- data %>% group_by_at(names(config$table$hkeysLevel())) %>% nest()
 
   xnested <- xnested %>% mutate(spreadMatrix = map(data, extractIntensities, config))
-
   xnested <- xnested %>% mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>% mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
   if(unnest){
@@ -748,20 +748,20 @@ plot_stdv_vs_mean <- function(data, config){
 #' plot_heatmap_cor(data, config)
 #' plot_heatmap_cor(data, config, R2=TRUE)
 plot_heatmap_cor <- function(data, config, R2 = FALSE){
- res <-  toWideConfig(data, config , as.matrix = TRUE)
- cres <- cor(res,use = "pa")
- if(R2){
-   cres <- cres^2
- }
- annot <- select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
-     distinct() %>% arrange(sampleName)
- stopifnot(annot$sampleName == colnames(cres))
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  cres <- cor(res,use = "pa")
+  if(R2){
+    cres <- cres^2
+  }
+  annot <- select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+    distinct() %>% arrange(sampleName)
+  stopifnot(annot$sampleName == colnames(cres))
 
- factors <- select_at(annot, config$table$factorKeys())
- ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
- rownames(ColSideColors) <- annot$sampleName
- heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
-                    main=ifelse(R2, "R^2", "correlation"))
+  factors <- select_at(annot, config$table$factorKeys())
+  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
+  rownames(ColSideColors) <- annot$sampleName
+  heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
+                     main=ifelse(R2, "R^2", "correlation"))
 }
 
 #' plot heatmap with annotations

@@ -30,4 +30,3 @@ Other plotting: \code{\link{plot_sample_correlation}}
 
 Other plotting: \code{\link{plot_sample_correlation}}
 }
-\concept{plotting}

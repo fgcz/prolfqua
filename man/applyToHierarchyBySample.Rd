@@ -11,6 +11,7 @@ applyToHierarchyBySample(data, config, func, hierarchy_level = 1,
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 }
 \examples{
+library(LFQService)
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 data <- LFQService::sample_analysis
 x <- applyToHierarchyBySample(data, config, medpolishPly)

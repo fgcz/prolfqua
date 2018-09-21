@@ -18,7 +18,7 @@ spectronautDIAData250_config$table$factors[["coding"]] = "coding"
 spectronautDIAData250_config$table$factors[["sex"]] = "sex"
 spectronautDIAData250_config$table$factors[["age"]] = "age"
 spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
-#usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
+usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
 
 }
 \keyword{datasets}

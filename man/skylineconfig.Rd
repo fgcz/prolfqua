@@ -12,9 +12,11 @@ skylineconfig
 A configuration which matches the \link{sample_analysis} data.
 }
 \examples{
-skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+skylineconfig <- LFQService::createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
  ident_qValue="Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#usethis::use_data( skylineconfig , overwrite = TRUE )
+
+usethis::use_data( skylineconfig , overwrite = TRUE )
+skylineconfig$table$hkeysLevel()
 }
 \keyword{datasets}

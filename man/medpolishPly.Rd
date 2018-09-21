@@ -12,4 +12,3 @@ medpolishPly(x, name = FALSE)
 \description{
 compute tukeys median polish from peptide or precursor intensities
 }
-\concept{matrix manipulation}

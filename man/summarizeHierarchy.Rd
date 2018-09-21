@@ -4,8 +4,7 @@
 \alias{summarizeHierarchy}
 \title{Summarize peptide Counts}
 \usage{
-summarizeHierarchy(x, configuration, hierarchy_level = 1,
-  factor_level = 0)
+summarizeHierarchy(x, configuration, hierarchy_level = 1, factor_level = 0)
 }
 \description{
 Summarize peptide Counts

@@ -204,11 +204,11 @@ summariseQValues <- function(data,
 #' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
 #' stopifnot(dim(xx)==c(103,22))
 #'
-extractIntensities <- function(x, configuration){
+extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
     select( c( table$sampleName,
-               table$hierarchyKeys()[-1],
+               names(table$hkeysLevel(TRUE)),
                table$getWorkIntensity()) ) %>%
     spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
