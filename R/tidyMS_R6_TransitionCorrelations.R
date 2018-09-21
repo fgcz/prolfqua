@@ -378,6 +378,7 @@ simpleImpute <- function(data){
 #' mean(is.na(dataI$srm_ImputedIntensity))
 #'
 impute_correlationBased <- function(x , config){
+  x <- completeCases(x, config)
   nestedX <- x %>%  group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
   nestedX <- nestedX %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
 
