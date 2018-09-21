@@ -373,10 +373,10 @@ summarizeHierarchy <- function(x,
   precursor <- x %>% select(hierarchy, factors) %>% distinct()
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  funs( n_distinct))
+      dplyr::summarize_at( hierarchy[-1],  funs( n = n_distinct))
   }else{
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n = n_distinct))
   }
   return(x3)
 }
@@ -573,10 +573,13 @@ reestablishCondition <- function(data,
 applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, unnest = FALSE)
 {
   x <- as.list( match.call() )
+  func = medpolishPly
+
   makeName <- make.names(as.character(x$func))
   xnested <- data %>% group_by_at(config$table$hierarchyKeys()[1:hierarchy_level]) %>% nest()
 
   xnested <- xnested %>% mutate(spreadMatrix = map(data, extractIntensities, config))
+
   xnested <- xnested %>% mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>% mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
   if(unnest){
