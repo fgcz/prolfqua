@@ -1,0 +1,188 @@
+---
+title: "test"
+author: 'Witold Wolski Std Nr:'
+date: "September 19, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+library(crosstalk)
+library(GGally)
+```
+
+```{r}
+sd <- SharedData$new(txhousing, ~year)
+p <- ggplot(sd, aes(month, median)) +
+  geom_line(aes(group = year)) + 
+  geom_smooth(data = txhousing, method = "gam") + 
+  facet_wrap(~ city)
+
+ggplotly(p, tooltip = "year") %>%
+  highlight(defaultValues = 2015, color = "red")
+```
+
+
+```{r}
+d <- SharedData$new(iris)
+p <- GGally::ggpairs(d, aes(color = Species), columns = 1:4)
+highlight(ggplotly(p), on = "plotly_selected")
+```
+
+
+```{r}
+
+sd <- SharedData$new(txhousing, ~city)
+p <- ggplot(sd, aes(date, median)) + geom_line()
+gg <- ggplotly(p, tooltip = "city")
+
+# Persistent mode can still be enabled in this case by holding the
+# shift key when hovering over lines
+highlight(gg, on = "plotly_hover", dynamic = TRUE)
+
+# Persistent mode can be set permanently like so
+highlight(gg, on = "plotly_hover", dynamic = TRUE, persistent = TRUE)
+
+```
+
+
+
+```{r}
+library(plotly)
+# requires an experimental version of leaflet
+# devtools::install_github("rstudio/leaflet#346")
+library(leaflet)
+
+sd <- SharedData$new(quakes)
+
+# let plotly & leaflet know this is persistent selection
+options(persistent = TRUE)
+
+p <- plot_ly(sd, x = ~depth, y = ~mag) %>% 
+  add_markers(alpha = 0.5) %>%
+  highlight("plotly_selected", dynamic = TRUE)
+
+map <- leaflet(sd) %>% 
+  addTiles() %>% 
+  addCircles()
+
+bscols(widths = c(6, 6), p, map)
+
+```
+
+
+```{r}
+sd <- SharedData$new(txhousing, ~city, group = "Choose a city")
+plot_ly(sd, x = ~date, y = ~median) %>%
+  group_by(city) %>%
+  add_lines(text = ~city, hoverinfo = "text") %>%
+  highlight(on = "plotly_hover", persistent = TRUE, selectize = TRUE)
+
+```
+
+
+```{r}
+library(plotly)
+
+sd <- highlight_key(txhousing, ~city, "Select a city")
+
+base <- plot_ly(sd, color = I("black"), height = 400) %>%
+  group_by(city)
+
+p1 <- base %>%
+  summarise(miss = sum(is.na(median))) %>%
+  filter(miss > 0) %>%
+  add_markers(x = ~miss, y = ~forcats::fct_reorder(city, miss), hoverinfo = "x+y") %>%
+  layout(
+    barmode = "overlay",
+    xaxis = list(title = "Number of months missing"),
+    yaxis = list(title = "")
+  ) 
+
+p2 <- base %>%
+  add_lines(x = ~date, y = ~median, alpha = 0.3) %>%
+  layout(xaxis = list(title = ""))
+
+subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>% 
+  hide_legend() %>%
+  highlight(dynamic = TRUE, selectize = TRUE)
+```
+
+
+```{r}
+d <- SharedData$new(mtcars)
+scatterplot <- plot_ly(d, x = ~mpg, y = ~disp) %>%
+  add_markers(color = I("black"))
+
+subplot(
+  plot_ly(d, y = ~disp, color = I("black")) %>% 
+    add_boxplot(name = "overall"),
+  scatterplot, shareY = TRUE
+) %>% highlight("plotly_selected")
+
+```
+
+
+```{r}
+p <- subplot(
+  plot_ly(d, x = ~factor(vs)) %>% add_histogram(color = I("black")),
+  scatterplot
+) 
+
+# Selections are actually additional traces, and, by default, 
+# plotly.js will try to dodge bars placed under the same category
+p %>% 
+  layout(barmode = "overlay") %>%
+  highlight("plotly_selected")
+```
+
+
+```{r}
+# if you don't want to highlight individual points, you could specify
+# `class` as the key variable here, instead of the default (rownames)
+m <- SharedData$new(mpg)
+p <- ggplot(m, aes(displ, hwy, colour = class)) +
+    geom_point() +
+    geom_smooth(se = FALSE, method = "lm")
+ggplotly(p) %>% highlight("plotly_hover")
+```
+
+
+```{r}
+m <- SharedData$new(mpg)
+p1 <- ggplot(m, aes(displ, fill = class)) + geom_density()
+p2 <- ggplot(m, aes(displ, hwy, fill = class)) + geom_point()
+subplot(p1, p2) %>% highlight("plotly_click") %>% hide_legend()
+
+```
+
+
+# Hierarchical selection
+
+```{r}
+d <- data.frame(x = 1:4, y = 1:4)
+d$key <- lapply(1:4, function(x) letters[seq_len(x)])
+d
+
+```
+
+
+```{r}
+
+SharedData$new(d, ~key) %>%
+  plot_ly(x = ~x, y = ~y) %>%
+  highlight("plotly_selected") %>%
+  layout(dragmode = "lasso")
+```
+
+
+```{r}
+demo("tour-basic", package = "plotly")
+```
