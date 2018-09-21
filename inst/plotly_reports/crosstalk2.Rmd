@@ -1,0 +1,72 @@
+---
+title: "blabla"
+output:
+   flexdashboard::flex_dashboard:
+   orientation: rows
+   social: menu
+   source_code: embed
+   theme: cerulean
+---
+
+```{r}
+library(plotly)
+library(crosstalk)
+library(tidyverse)
+```
+
+```{r Make dataset}
+df1 <- data.frame(owner =  c("John", rep("Mark",4)),
+                  hp = c(250, 120, 250, 100, 110),
+                  car = structure(c(2L, 2L, 2L, 1L, 1L), .Label = c("benz", "bmw"), class = "factor"),
+                  id = structure(1:5, .Label = c("car1", "car2", "car3", "car4", "car5"), class = "factor"))
+
+
+df2 <- data.frame(car = structure(c(1L, 2L, 1L, 2L), .Label = c("benz", "bmw"), class = "factor"),
+                  owner = structure(c(1L, 1L, 2L, 2L), .Label = c("John", "Mark"), class = "factor"),
+                  freq = c(0L, 1L, 2L, 2L))
+
+
+```
+
+#
+
+##
+
+### Filters
+
+```{r}
+library(crosstalk)
+# Notice the 'group = ' argument - this does the trick!
+shared_df1 <- SharedData$new(df1, ~owner, group = "Choose owner")
+shared_df2 <- SharedData$new(df2, ~owner, group = "Choose owner")
+
+filter_select("owner", "Car owner:", shared_df1, ~owner)
+# You don't need this second filter now
+# filter_select("owner", "Car owner:", shared_df2, ~ owner)
+```
+
+### Plot1 with plotly
+
+```{r}
+plot_ly(shared_df1, x = ~id, y = ~hp, color = ~owner) %>% add_markers() %>% highlight("plotly_click")
+```
+
+### Plots with plotly
+
+```{r}
+plot_ly(shared_df2, x = ~owner, y = ~freq, color = ~car) %>% group_by(owner) %>% add_bars()
+```
+
+##
+
+### Dataframe 1
+
+```{r}
+DT::datatable(shared_df1)
+```
+
+### Dataframe 2
+
+```{r}
+DT::datatable(shared_df2)
+```

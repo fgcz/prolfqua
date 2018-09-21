@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+author: "Witold Wolski"
+date: "21 September 2018"
+output: html_document
+---
+
+#
+
+##
+
+### Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+foo <- data.frame(foo = c("A","B","C"), fc = c(2,3,-1), val = c(0.1,0.01,0.4))
+shared_prot <- SharedData$new(foo, ~foo, group = "Choose protein")
+
+
+x <- filter_select("foo", "Foo :", shared_prot, ~foo)
+p <- plot_ly(shared_prot, x = ~fc, y = ~ val , type="scatter" , mode="markers") %>% highlight("plotly_click")# %>% add_markers() 
+bscols(x,p)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
