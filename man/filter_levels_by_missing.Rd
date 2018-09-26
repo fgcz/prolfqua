@@ -11,7 +11,6 @@ removes measurments with less than percent 60 missing values in factor
 }
 \examples{
 
-
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
@@ -23,5 +22,6 @@ hierarchyCounts(data, config)
 res <- filter_levels_by_missing(data, config,percent = 60)
 data1 <-completeCases(data, config)
 hierarchyCounts(res, config)
-summarizeHierarchy(res,config) \%>\% filter(!!sym(config$table$hierarchyKeys()[2]) > 1)
+summarizeHierarchy(res,config) \%>\% dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
+
 }

@@ -141,14 +141,14 @@ workflow_NA_preprocessing <- function(data,
 
   data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
-  dim(data_NA_QVal)
   resNACondition <- filter_levels_by_missing(data_NA_QVal,
                                              config,
                                              percent = percent,
                                              factor_level = factor_level)
 
   protID <- summarizeHierarchy(resNACondition,config) %>%
-    dplyr::filter(!!sym(config$table$hierarchyKeys()[hierarchy_level]) >= config$parameter$min_peptides_protein)
+    dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[hierarchy_level],"_n"))
+                  >= config$parameter$min_peptides_protein)
 
   data_NA_QVal_condition <- protID %>% select(config$table$hierarchyKeys()[1]) %>% inner_join(resNACondition)
   # Complete cases

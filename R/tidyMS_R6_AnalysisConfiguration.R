@@ -255,39 +255,34 @@ linePlotHierarchy_default <- function(data,
 #' @export
 #' @examples
 #' library(LFQService)
+#' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
 #' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+#'
 linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
   rev_hnames <- rev(names(configuration$table$hierarchy))
-  res <- linePlotHierarchy_default(res, proteinName = proteinName,
-                                   sample = configuration$table$sampleName,
-                                   intensity = configuration$table$getWorkIntensity(),
-                                   peptide = rev_hnames[2],
-                                   fragment = rev_hnames[1],
-                                   factor = names(configuration$table$factors)[1],
-                                   isotopeLabel = configuration$table$isotopeLabel,
-                                   separate = separate,
-                                   log_y = !configuration$parameter$is_intensity_transformed
+  if(length(rev_hnames) > 2){
+    peptide <- rev_hnames[2]
+    fragment <- rev_hnames[1]
+  }else{
+    peptide <- rev_hnames[1]
+    fragment <- rev_hnames[1]
+  }
+  res <- LFQService:::linePlotHierarchy_default(res, proteinName = proteinName,
+                                                sample = configuration$table$sampleName,
+                                                intensity = configuration$table$getWorkIntensity(),
+                                                peptide = peptide,
+                                                fragment = fragment,
+                                                factor = names(configuration$table$factors)[1],
+                                                isotopeLabel = configuration$table$isotopeLabel,
+                                                separate = separate,
+                                                log_y = !configuration$parameter$is_intensity_transformed
   )
   return(res)
 }
-
-#' add quantline to plot
-#' @export
-linePlotHierarchy_QuantLine <- function(p, data, aes_y,  configuration){
-  table <- configuration$table
-  p + geom_line(data=data,
-                aes_string(x = table$sampleName , y = aes_y, group=1),
-                size=1.3,
-                color="black",
-                linetype="dashed") +
-    geom_point(data=data,
-               aes_string(x = table$sampleName , y = aes_y, group=1), color="black", shape=10)
-}
-
 # Functions - summary ----
 
 #' Count distinct elements for each level of hierarchy
@@ -374,10 +369,10 @@ summarizeHierarchy <- function(x,
   precursor <- x %>% select(hierarchy, factors) %>% distinct()
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  funs( n_distinct))
+      dplyr::summarize_at( hierarchy[-1],  funs( n = n_distinct))
   }else{
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n = n_distinct))
   }
   return(x3)
 }
@@ -772,6 +767,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
+#' detach(conflicted)
 #' plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
@@ -795,7 +791,7 @@ plot_heatmap <- function(data, config){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' plot_NA_heatmap(data, config)
-plot_NA_heatmap <- function(data, config){
+plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
     distinct() %>% arrange(sampleName)
@@ -814,7 +810,7 @@ plot_NA_heatmap <- function(data, config){
                      col=c("white","black"),
                      labRow = "",
                      ColSideColors = ColSideColors,
-                     #showRowDendro = FALSE,
+                     showRowDendro = showRowDendro,
                      legendfun = function()
                        showLegend(legend=c("NA"),
                                   col=c("black"),
