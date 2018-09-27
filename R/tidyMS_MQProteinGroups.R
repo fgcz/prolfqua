@@ -12,9 +12,9 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
   }
   colnames(MQProteinGroups) <- tolower(colnames(MQProteinGroups))
 
-  pint <- select(MQProteinGroups, "protein.group.id" = "id", starts_with("intensity."))
-  pintLFQ <- select(MQProteinGroups, "protein.group.id" = "id", starts_with("lfq.intensity."))
-  meta <- select(MQProteinGroups,
+  pint <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("intensity."))
+  pintLFQ <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("lfq.intensity."))
+  meta <- dplyr::select(MQProteinGroups,
                  "protein.ids" = "protein.ids",
                  "majority.protein.ids" = "majority.protein.ids",
                  "nr.peptides" = "peptides",
@@ -63,7 +63,7 @@ tidyMQ_Peptides <- function(MQPeptides){
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   #return(MQPeptides)
   sc <- sym("potential.contaminant")
-  meta <- select(MQPeptides, "peptide.id" = "id",
+  meta <- dplyr::select(MQPeptides, "peptide.id" = "id",
                  "sequence",
                  "proteins",
                  "leading.razor.protein",
@@ -74,20 +74,20 @@ tidyMQ_Peptides <- function(MQPeptides){
                  "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE))
 
-  pint <- select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
+  pint <- dplyr::select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
 
   PepIntensities <- pint %>%
     gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
     mutate(raw.file = gsub("intensity.","",raw.file))
 
   if(0){
-    pint <- select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
+    pint <- dplyr::select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
     PepLFQIntensities <- pint %>%
       gather(key="raw.file", value="peptide.lfq.intensity", starts_with("intensity.")) %>%
       mutate(raw.file = gsub("intensity.","",raw.file))
   }
 
-  idtype <- select(MQPeptides, "peptide.id"="id", starts_with("identification.type."))
+  idtype <- dplyr::select(MQPeptides, "peptide.id"="id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
       gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
@@ -114,7 +114,7 @@ tidyMQ_Evidence <- function(Evidence){
     Evidence <- read.csv(Evidence, header=TRUE, stringsAsFactors = FALSE, sep="\t")
   }
   colnames(Evidence) <- tolower(colnames(Evidence))
-  res <- select(Evidence,
+  res <- dplyr::select(Evidence,
                 "evidence.id" = "id",
                 "peptide.id",
                 "raw.file",

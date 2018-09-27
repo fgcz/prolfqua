@@ -15,8 +15,8 @@ res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByNAs(res,config)
 colnames(res)
 x <- res \%>\%
-  select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(T)[1], "srm_NrNotNAs") \%>\%
+  dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(T)[1], "srm_NrNotNAs") \%>\%
   distinct() \%>\% summarize(sum(srm_NrNotNAs)) \%>\% pull()
 stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
-res \%>\% select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) \%>\% distinct() \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
+res \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) \%>\% distinct() \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 }

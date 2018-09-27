@@ -160,7 +160,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
   {
     data <- unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
   }
-  data <- select(data , -one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
+  data <- dplyr::select(data , -one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
@@ -178,17 +178,17 @@ setup_analysis <- function(data, configuration ,sep="~"){
     message("creating sampleName")
 
     data <- data %>%  unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
-      select(sampleName, table$fileName) %>% distinct() %>%
+      dplyr::select(sampleName, table$fileName) %>% distinct() %>%
       mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
       inner_join(data, by=table$fileName)
   } else{
     warning(sampleName, " already exists")
   }
 
-  data <- data %>% select(-one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
+  data <- data %>% dplyr::select(-one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
 
   # Make implicit NA's explicit
-  data <- data %>% select(c(configuration$table$idVars(),configuration$table$valueVars()))
+  data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
   data <- completeCases( data , configuration)
 
   return( data )
@@ -314,7 +314,7 @@ hierarchyCounts <- function(x, configuration){
 summarizeProteins <- function( x, configuration ){
   rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
 
-  precursorSum <- x %>% select(rev_hierarchy) %>% distinct() %>%
+  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% distinct() %>%
     group_by_at(rev_hierarchy[-1]) %>%
     dplyr::summarize(nrFragments = n())
 
@@ -365,7 +365,7 @@ summarizeHierarchy <- function(x,
   }
 
   hierarchy <- hierarchy[hierarchy_level:length(hierarchy)]
-  precursor <- x %>% select(hierarchy, factors) %>% distinct()
+  precursor <- x %>% dplyr::select(hierarchy, factors) %>% distinct()
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
       dplyr::summarize_at( hierarchy[-1],  funs( n = n_distinct))
@@ -458,7 +458,7 @@ missingPerConditionCumsum <- function(x,configuration,nrfactors = 1){
 
   xxcs <-xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
     dplyr::mutate(cs = cumsum(nrTransitions))
-  res <- xxcs  %>% select(-nrTransitions)
+  res <- xxcs  %>% dplyr::select(-nrTransitions)
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
@@ -515,7 +515,7 @@ missingPerCondition <- function(x, configuration, nrfactors = 1){
 spreadValueVarsIsotopeLabel <- function(resData, configuration){
   table <- configuration$table
   idVars <- table$idVars()
-  resData2 <- resData %>% select(c(table$idVars(), table$valueVars()) )
+  resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
   resData2 <- resData2 %>% gather(variable, value, - idVars  )
   resData2 <- resData2 %>%  unite(temp, table$isotopeLabel, variable )
   HLData <- resData2 %>% spread(temp,value)
@@ -545,7 +545,7 @@ reestablishCondition <- function(data,
                                  configuration
 ){
   table <- configuration$table
-  xx <- data %>%  select(c(table$sampleName,
+  xx <- data %>%  dplyr::select(c(table$sampleName,
                            table$factorKeys(),
                            table$fileName,
                            table$isotopeLabel)) %>% distinct()
@@ -766,8 +766,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' detach(conflicted)
-#' plot_heatmap(data, config)
+#' #plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
@@ -789,7 +788,7 @@ plot_heatmap <- function(data, config){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' plot_NA_heatmap(data, config)
+#' #plot_NA_heatmap(data, config)
 plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%

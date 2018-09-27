@@ -4,7 +4,7 @@
 \alias{toWideConfig}
 \title{transform long to wide}
 \usage{
-toWideConfig(data, config, as.matrix = FALSE)
+toWideConfig(data, config, as.matrix = FALSE, fileName = FALSE)
 }
 \description{
 transform long to wide

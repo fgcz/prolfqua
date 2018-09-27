@@ -150,7 +150,7 @@ workflow_NA_preprocessing <- function(data,
     dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[hierarchy_level],"_n"))
                   >= config$parameter$min_peptides_protein)
 
-  data_NA_QVal_condition <- protID %>% select(config$table$hierarchyKeys()[1]) %>% inner_join(resNACondition)
+  data_NA_QVal_condition <- protID %>% dplyr::select(config$table$hierarchyKeys()[1]) %>% inner_join(resNACondition)
   # Complete cases
   data_NA_QVal_condition <- completeCases( data_NA_QVal_condition , config)
   return(data_NA_QVal_condition)
@@ -188,7 +188,7 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
   figs3 <- applyToHierarchyBySample(resDataLog, config, medpolishPly, hierarchy_level = hierarchy_level)
-  protIntensity <- figs3 %>% select(config$table$hierarchyKeys()[1:hierarchy_level], medpolishPly) %>% unnest()
+  protIntensity <- figs3 %>% dplyr::select(config$table$hierarchyKeys()[1:hierarchy_level], medpolishPly) %>% unnest()
 
   newconfig <- make_reduced_hierarchy_config(config,
                                              workIntensity = "medpolish",
