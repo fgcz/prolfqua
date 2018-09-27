@@ -263,13 +263,12 @@ linePlotHierarchy_default <- function(data,
 #' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
 linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
-  rev_hnames <- rev(names(configuration$table$hierarchy))
+  rev_hnames <- configuration$table$hierarchyKeys(TRUE)
+  fragment <- rev_hnames[1]
+  peptide <- rev_hnames[1]
+
   if(length(rev_hnames) > 2){
     peptide <- rev_hnames[2]
-    fragment <- rev_hnames[1]
-  }else{
-    peptide <- rev_hnames[1]
-    fragment <- rev_hnames[1]
   }
   res <- LFQService:::linePlotHierarchy_default(res, proteinName = proteinName,
                                                 sample = configuration$table$sampleName,
