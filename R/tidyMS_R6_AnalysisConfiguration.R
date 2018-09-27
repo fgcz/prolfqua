@@ -754,8 +754,9 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
   factors <- select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
-  heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
+  res <- heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
                      main=ifelse(R2, "R^2", "correlation"))
+  invisible(res)
 }
 
 #' plot heatmap with annotations
@@ -766,7 +767,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' #plot_heatmap(data, config)
+#' plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
@@ -777,7 +778,8 @@ plot_heatmap <- function(data, config){
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
-  heatmap3::heatmap3(res, ColSideColors = ColSideColors,labRow="",showRowDendro =FALSE)
+  res <- heatmap3::heatmap3(res, ColSideColors = ColSideColors,labRow="",showRowDendro =FALSE)
+  invisible(res)
 }
 #' plot heatmap of NA values
 #' @export
@@ -788,7 +790,7 @@ plot_heatmap <- function(data, config){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' #plot_NA_heatmap(data, config)
+#' plot_NA_heatmap(data, config)
 plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
@@ -802,7 +804,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
   res <- res[apply(res,1, sum) > 0,]
-  heatmap3::heatmap3(res,
+  res <- heatmap3::heatmap3(res,
                      distfun = function(x){dist(x, method="binary")},
                      scale="none",
                      col=c("white","black"),
@@ -813,4 +815,5 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
                        showLegend(legend=c("NA"),
                                   col=c("black"),
                                   cex=1.5))
+  invisible(res)
 }
