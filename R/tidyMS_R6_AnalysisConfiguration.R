@@ -282,6 +282,20 @@ linePlotHierarchy_configuration <- function(res, proteinName, configuration, sep
   )
   return(res)
 }
+
+#' add quantline to plot
+#' @export
+linePlotHierarchy_QuantLine <- function(p, data, aes_y,  configuration){
+  table <- configuration$table
+  p + geom_line(data=data,
+                aes_string(x = table$sampleName , y = aes_y, group=1),
+                size=1.3,
+                color="black",
+                linetype="dashed") +
+    geom_point(data=data,
+               aes_string(x = table$sampleName , y = aes_y, group=1), color="black", shape=10)
+}
+
 # Functions - summary ----
 
 #' Count distinct elements for each level of hierarchy
@@ -739,7 +753,7 @@ plot_stdv_vs_mean <- function(data, config){
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' plot_heatmap_cor(data, config)
+#' LFQService::plot_heatmap_cor(data, config)
 #' plot_heatmap_cor(data, config, R2=TRUE)
 plot_heatmap_cor <- function(data, config, R2 = FALSE){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
@@ -767,7 +781,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' plot_heatmap(data, config)
+#' #plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
