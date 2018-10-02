@@ -567,7 +567,10 @@ reestablishCondition <- function(data,
   res
 }
 
-#' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+#' applys func - a function working on matrix for each protein.
+#'
+#' Returning a vector of the same length as the number of samples.
+#' Can be used to compute column summaries per protein
 #' @export
 #' @importFrom purrr map
 #' @examples

@@ -13,6 +13,6 @@ plot correlation heatmap with annations
 library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-plot_heatmap_cor(data, config)
+LFQService::plot_heatmap_cor(data, config)
 plot_heatmap_cor(data, config, R2=TRUE)
 }

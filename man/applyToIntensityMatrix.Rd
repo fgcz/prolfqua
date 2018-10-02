@@ -12,6 +12,7 @@ apply Function To matrix
 \examples{
 
 conf <- skylineconfig$clone(deep = TRUE)
+
 res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
 stopifnot("Area_base..scale" \%in\% colnames(res))
 stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
