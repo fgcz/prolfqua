@@ -148,7 +148,10 @@ plot_sample_correlation <- function(data, config){
 
 
 # Summarize Q Values ----
+#'
 #' Compute QValue summaries for each precursor
+#' adds two columns srm_QValueMin - nth smallest qvalue for each precursor
+#' srm_QValueNR - nr of precursors passing the threshold
 #' @export
 #' @param data data
 #' @param config configuration
@@ -156,13 +159,16 @@ plot_sample_correlation <- function(data, config){
 #' config <- skylineconfig$clone(deep=TRUE)
 #' res <- summariseQValues(sample_analysis, config)
 #' stopifnot(c("srm_QValueMin", "srm_QValueNR") %in% colnames(res))
+#' head(res)
+#' hist(unique(res$srm_QValueMin))
+#' hist(unique(res$srm_QValueNR))
 summariseQValues <- function(data,
                              config
 ){
   QValueMin <- "srm_QValueMin"
   QValueNR <- "srm_QValueNR"
 
-  precursorID <- config$table$hierarchyKeys(TRUE)[1]
+  precursorIDs <- config$table$hierarchyKeys()
   fileName <- config$table$fileName
   QValue  <- config$table$ident_qValue
   minNumberOfQValues <- config$parameter$minNumberOfQValues
@@ -172,13 +178,13 @@ summariseQValues <- function(data,
   npass <-  function(x,thresh = maxQValThreshold){sum(x < thresh)}
 
   qValueSummaries <- data %>%
-    dplyr::select(fileName, precursorID, config$table$ident_qValue) %>%
-    dplyr::group_by_at(precursorID) %>%
+    dplyr::select(!!!syms(c(fileName, precursorIDs, config$table$ident_qValue))) %>%
+    dplyr::group_by_at(precursorIDs) %>%
     dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,minNumberOfQValues ),
                                                     !!QValueNR  := npass(., maxQValThreshold)
     ))
   print(colnames(qValueSummaries))
-  data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorID))
+  data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorIDs))
   message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
   return(data)
 }

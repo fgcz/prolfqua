@@ -2,13 +2,14 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{applyToHierarchyBySample}
 \alias{applyToHierarchyBySample}
-\title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
+\title{applys func - a function working on matrix for each protein.}
 \usage{
 applyToHierarchyBySample(data, config, func, hierarchy_level = 1,
   unnest = FALSE)
 }
 \description{
-applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+Returning a vector of the same length as the number of samples.
+Can be used to compute column summaries per protein
 }
 \examples{
 library(LFQService)

@@ -2,7 +2,9 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{summariseQValues}
 \alias{summariseQValues}
-\title{Compute QValue summaries for each precursor}
+\title{Compute QValue summaries for each precursor
+adds two columns srm_QValueMin - nth smallest qvalue for each precursor
+srm_QValueNR - nr of precursors passing the threshold}
 \usage{
 summariseQValues(data, config)
 }
@@ -13,6 +15,8 @@ summariseQValues(data, config)
 }
 \description{
 Compute QValue summaries for each precursor
+adds two columns srm_QValueMin - nth smallest qvalue for each precursor
+srm_QValueNR - nr of precursors passing the threshold
 }
 \examples{
 config <- skylineconfig$clone(deep=TRUE)
