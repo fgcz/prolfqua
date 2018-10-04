@@ -20,7 +20,7 @@ names(res)
 
 }
 \seealso{
-Other workflow functions: \code{\link{workflow_NA_preprocessing}},
+Other workflow functions: \code{\link{workflow_DIA_NA_preprocessing}},
   \code{\link{workflow_Q_NA_filtered_Hierarchy}}
 }
 \concept{workflow functions}
