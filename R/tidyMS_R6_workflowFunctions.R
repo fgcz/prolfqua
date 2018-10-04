@@ -190,7 +190,7 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                                       percent=percent,
                                                       hierarchy_level = 2,
                                                       factor_level = factor_level
-  )
+  )$data
 
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
