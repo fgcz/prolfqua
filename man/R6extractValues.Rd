@@ -6,6 +6,9 @@
 \usage{
 R6extractValues(r6class)
 }
+\arguments{
+\item{r6class}{r6 class}
+}
 \description{
 Helper function to extract all value slots in an R6 object
 }
