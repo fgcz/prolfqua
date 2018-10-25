@@ -14,11 +14,7 @@
 workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.7){
   stat_input <- hierarchyCounts(data, config)
 
-  data_NA <- removeLarge_Q_Values(data, config)
-  data_NA <- summariseQValues(data_NA, config)
-
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
-
+  data_NA_QVal <- filter_byQValue(data, config)
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
 
   # remove transitions with large numbers of NA's
@@ -74,10 +70,8 @@ workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.
 workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
   stat_input <- hierarchyCounts(data, config)
 
-  data_NA <- removeLarge_Q_Values(data, config)
-  data_NA <- summariseQValues(data_NA, config)
+  data_NA_QVal <- filter_byQValue(data, config)
 
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
 
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
 
@@ -125,36 +119,49 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' data <- spectronautDIAData250_analysis
 #' hierarchyCounts(data, config)
-#' tmp <-workflow_NA_preprocessing(data, config)
-#' tmp <-workflow_NA_preprocessing(data, config, percent=70)
-#' config$get
-#' hierarchyCounts(tmp, config)
-#' stopifnot(FALSE==(is.grouped_df(tmp)))
-workflow_NA_preprocessing <- function(data,
-                                      config,
-                                      percent = 60,
-                                      hierarchy_level = 2,
-                                      factor_level = 1){
+#' tmp <-workflow_DIA_NA_preprocessing(data, config)
+#' hierarchyCounts(tmp$data, config)
+#' tmp <-workflow_DIA_NA_preprocessing(data, config, percent=70)
+#' hierarchyCounts(tmp$data, config)
+#' stopifnot(FALSE==(is.grouped_df(tmp$data)))
+workflow_DIA_NA_preprocessing <- function(data,
+                                          config,
+                                          percent = 60,
+                                          hierarchy_level = 2,
+                                          factor_level = 1,
+                                          min_peptides_protein = config$parameter$min_peptides_protein)
+{
   stat_input <- hierarchyCounts(data, config)
-  data_NA <- removeLarge_Q_Values(data, config)
-  data_NA <- summariseQValues(data_NA, config)
 
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
+  data_NA_QVal <- filter_byQValue(data, config)
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
+
   resNACondition <- filter_levels_by_missing(data_NA_QVal,
                                              config,
                                              percent = percent,
                                              factor_level = factor_level)
 
+  stat_naFilter <- hierarchyCounts(resNACondition, config)
   protID <- summarizeHierarchy(resNACondition,config) %>%
     dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[hierarchy_level],"_n"))
-                  >= config$parameter$min_peptides_protein)
+                  >= min_peptides_protein)
 
-  data_NA_QVal_condition <- protID %>% dplyr::select(config$table$hierarchyKeys()[1]) %>% inner_join(resNACondition)
+  data_NA_QVal_condition <- protID %>%
+    dplyr::select(config$table$hierarchyKeys()[1]) %>%
+    inner_join(resNACondition)
+
   # Complete cases
   data_NA_QVal_condition <- completeCases( data_NA_QVal_condition , config)
-  return(data_NA_QVal_condition)
+  stat_peptidFitler <- hierarchyCounts(data_NA_QVal_condition, config)
+  stats = list(stat_input=stat_input,
+               stat_qval = stat_qval,
+               stat_naFilter = stat_naFilter,
+               stat_peptidFitler = stat_peptidFitler
+  )
+  return(list(data=data_NA_QVal_condition,stats=stats))
 }
+
+
 
 #' Get Protein Intensities after QValue NA filtering and medianpolish
 #'
@@ -179,11 +186,11 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                              hierarchy_level=1,
                                              factor_level=1){
 
-  data_NA_QVal_condition <- workflow_NA_preprocessing(data, config=config,
+  data_NA_QVal_condition <- workflow_DIA_NA_preprocessing(data, config=config,
                                                       percent=percent,
                                                       hierarchy_level = 2,
                                                       factor_level = factor_level
-  )
+  )$data
 
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)

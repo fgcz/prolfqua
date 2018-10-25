@@ -183,10 +183,25 @@ summariseQValues <- function(data,
     dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,minNumberOfQValues ),
                                                     !!QValueNR  := npass(., maxQValThreshold)
     ))
-  print(colnames(qValueSummaries))
   data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorIDs))
   message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
   return(data)
+}
+
+#' filter data by max and min Q Value threshold
+#'
+#' employs parameters ident_qValue, minNumberOfQValues,
+#' maxQValue_Threshold and qValThreshold
+#' @export
+#' @examples
+#' config <- skylineconfig$clone(deep=TRUE)
+#' summarizeHierarchy(sample_analysis, config)
+#' res <- filter_byQValue(sample_analysis, config)
+#' summarizeHierarchy(res, config)
+filter_byQValue <- function(data, config){
+  data_NA <- removeLarge_Q_Values(data, config)
+  data_NA <- summariseQValues(data_NA, config)
+  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
 }
 
 

@@ -122,6 +122,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 
 # Functions - Configuration ----
 #' Helper function to extract all value slots in an R6 object
+#' @param r6class r6 class
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)

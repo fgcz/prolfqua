@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
 Description: Analysing and LFQ experiments in service mode.
-License: GPL
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
