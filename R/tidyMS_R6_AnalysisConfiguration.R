@@ -575,6 +575,7 @@ reestablishCondition <- function(data,
 #' @importFrom purrr map
 #' @examples
 #' library(LFQService)
+#' library(tidyverse)
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)

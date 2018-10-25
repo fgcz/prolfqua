@@ -13,6 +13,7 @@ Can be used to compute column summaries per protein
 }
 \examples{
 library(LFQService)
+library(tidyverse)
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 data <- LFQService::sample_analysis
 x <- applyToHierarchyBySample(data, config, medpolishPly)

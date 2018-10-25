@@ -171,7 +171,7 @@ tidyMQ_All <- function(txt_directory){
 #' allData <- tidyMQ_All(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 #' res <- tidyMQ_PeptideProtein(zip_archive)
-tidyMQ_PeptideProtein <- function(txt_directory){
+tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
   if(grepl("\\.zip$",txt_directory)){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
@@ -186,6 +186,12 @@ tidyMQ_PeptideProtein <- function(txt_directory){
   mq_proteins <- tidyMQ_ProteinGroups(proteins_txt)
   mq_peptides <- tidyMQ_Peptides(peptides_txt)
   resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
-  return(resProt_Pep)
+
+  if(.all){
+    return(list(resProt_Pep = resProt_Pep, mq_proteins = mq_proteins, mq_peptides = mq_peptides))
+  }else{
+    return(resProt_Pep)
+  }
+
 }
 

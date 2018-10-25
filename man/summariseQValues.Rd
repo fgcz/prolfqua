@@ -22,4 +22,7 @@ srm_QValueNR - nr of precursors passing the threshold
 config <- skylineconfig$clone(deep=TRUE)
 res <- summariseQValues(sample_analysis, config)
 stopifnot(c("srm_QValueMin", "srm_QValueNR") \%in\% colnames(res))
+head(res)
+hist(unique(res$srm_QValueMin))
+hist(unique(res$srm_QValueNR))
 }

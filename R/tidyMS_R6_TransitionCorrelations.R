@@ -213,14 +213,12 @@ summariseQValues <- function(data,
 extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
-    select( c( table$sampleName,
+    dplyr::select( c( table$sampleName,
                names(table$hkeysLevel(TRUE)),
                table$getWorkIntensity()) ) %>%
     spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
 }
-
-
 
 #' transform long to wide
 #' @export
