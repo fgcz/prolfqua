@@ -4,7 +4,7 @@
 \alias{tidyMQ_PeptideProtein}
 \title{Generating mq all level file.}
 \usage{
-tidyMQ_PeptideProtein(txt_directory)
+tidyMQ_PeptideProtein(txt_directory, .all = FALSE)
 }
 \description{
 Generating mq all level file.

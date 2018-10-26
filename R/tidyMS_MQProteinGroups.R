@@ -177,21 +177,90 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
+    mod_spec_peptides_txt <- read.csv(unz(txt_directory,"modificationSpecificPeptides.txt"),
+                                       header=TRUE, sep="\t", stringsAsFactors = FALSE)
 
   }else{
     proteins_txt <- file.path(txt_directory, "proteinGroups.txt")
     peptides_txt <- file.path(txt_directory, "peptides.txt")
-
+    mod_spec_peptides_txt <- file.path(txt_directory, "modificationSpecificPeptides.txt")
   }
   mq_proteins <- tidyMQ_ProteinGroups(proteins_txt)
   mq_peptides <- tidyMQ_Peptides(peptides_txt)
+  mq_modSpecPeptides <- tidyMQ_modificationSpecificPeptides(mod_spec_peptides_txt)
+
   resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
 
   if(.all){
-    return(list(resProt_Pep = resProt_Pep, mq_proteins = mq_proteins, mq_peptides = mq_peptides))
+    return(list(resProt_Pep = resProt_Pep,
+                mq_proteins = mq_proteins,
+                mq_peptides = mq_peptides,
+                mq_modSpecPeptides = mq_modSpecPeptides))
   }else{
     return(resProt_Pep)
   }
 
 }
+
+
+
+#' parse MQ modificationSpecificPeptides.txt
+#' @export
+#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
+#' @examples
+#' peptides_txt <- "d:/projects/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
+#' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+#' MQPeptides <- peptides_txt
+#' head(MQPeptides)
+#' mq_peptides <- tidyMQ_modificationSpecificPeptides(peptides_txt)
+#'
+#' head(mq_peptides)
+#'
+tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
+  if(is.character(MQPeptides)){
+    MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+  }
+  colnames(MQPeptides) <- tolower(colnames(MQPeptides))
+  #return(MQPeptides)
+  sc <- sym("potential.contaminant")
+  colnames(MQPeptides)
+  meta <- dplyr::select(MQPeptides,
+                        "mod.spec.peptide.id" = "id",
+                        "peptide.id",
+                        "sequence",
+                        "proteins",
+                        "protein.group.id"="protein.group.ids",
+                        "peptide.score" ="score",
+                        "pep",
+                        "missed.cleavages",
+                        "potential.contaminant" = ends_with("contaminant")) %>%
+    mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE))
+
+  pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
+  PepIntensities <- pint %>%
+    gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
+    mutate(raw.file = gsub("intensity.","",raw.file))
+
+  if(0){
+    pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
+    PepLFQIntensities <- pint %>%
+      gather(key="raw.file", value="peptide.lfq.intensity", starts_with("intensity.")) %>%
+      mutate(raw.file = gsub("intensity.","",raw.file))
+  }
+
+  idtype <- dplyr::select(MQPeptides, "mod.spec.peptide.id"="id", starts_with("identification.type."))
+  if(ncol(idtype) > 1){ # if only one file no id type is provided
+    PepIDType <- idtype %>%
+      gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
+      mutate(raw.file = gsub("identification.type.","",raw.file))
+    PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.spec.peptide.id", "raw.file" ))
+  }else{
+    PepIntensities$id.type <- "By MS/MS"
+  }
+  xx <- inner_join(meta , PepIntensities, by="mod.spec.peptide.id")
+  xx$proteotypic <-!grepl(";",xx$protein.group.id)
+  xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
+  return(xx)
+}
+
 
