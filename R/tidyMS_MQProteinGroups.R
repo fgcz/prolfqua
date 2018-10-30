@@ -297,11 +297,3 @@ tidyMQ_allPeptides <- function(MQPeptides){
 }
 
 
-peptides_txt <- "d:/projects/p2621_HumanAgeInteraction/data/721705/Deamidation (NQ)Sites.txt"
-peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
-colnames(peptides_txt)
-
-
-peptides_txt <- "d:/projects/p2621_HumanAgeInteraction/data/721705/Oxidation (M)Sites.txt"
-peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
-colnames(peptides_txt)
