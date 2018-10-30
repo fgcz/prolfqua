@@ -13,7 +13,7 @@ tidyMQ_allPeptides(MQPeptides)
 parse MQ allPeptides.txt
 }
 \examples{
-peptides_txt <- "d:/projects/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
+peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
 peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\\t")
 MQPeptides <- peptides_txt
 head(MQPeptides)
