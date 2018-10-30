@@ -140,6 +140,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
+#' library(tidyverse)
 #' peptides_txt <- "d:/projects/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' MQPeptides <- peptides_txt
@@ -168,7 +169,9 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "unique.groups" = "unique..groups.",
                         "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
-    mutate(!!"unique.groups" := case_when( !!"unique.groups" == "yes" ~ TRUE, !!"unique.groups" == "no" ~ FALSE))
+    mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
+                                           !!sym("unique.groups") == "no" ~ FALSE))
+
 
   pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
@@ -228,7 +231,8 @@ tidyMQ_Peptides <- function(MQPeptides){
                         "unique.groups" = "unique..groups.",
                         "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
-    mutate(!!"unique.groups" := case_when( !!"unique.groups" == "yes" ~ TRUE, !!"unique.groups" == "no" ~ FALSE))
+    mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
+                                           !!sym("unique.groups") == "no" ~ FALSE))
 
   pint <- dplyr::select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
 
