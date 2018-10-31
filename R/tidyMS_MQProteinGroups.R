@@ -154,9 +154,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
-  #return(MQPeptides)
   sc <- sym("potential.contaminant")
-  colnames(MQPeptides)
   meta <- dplyr::select(MQPeptides,
                         "mod.spec.peptide.id" = "id",
                         "peptide.id",
@@ -175,8 +173,9 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
-                                           !!sym("unique.groups") == "no" ~ FALSE))
-
+                                           !!sym("unique.groups") == "no" ~ FALSE)) %>%
+    mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
+                                           !!sym("unique.proteins") == "no" ~ FALSE))
 
   pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
