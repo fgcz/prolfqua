@@ -180,13 +180,13 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 
   pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
-    gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
+    gather(key="raw.file", value="mod.spec.peptide.intensity", starts_with("intensity.")) %>%
     mutate(raw.file = gsub("intensity.","",raw.file))
 
   idtype <- dplyr::select(MQPeptides, "mod.spec.peptide.id"="id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
+      gather(key="raw.file", value="mod.spec.id.type", starts_with("identification.type.")) %>%
       mutate(raw.file = gsub("identification.type.","",raw.file))
     PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.spec.peptide.id", "raw.file" ))
   }else{
