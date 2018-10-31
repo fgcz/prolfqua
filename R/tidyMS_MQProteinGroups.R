@@ -164,12 +164,14 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "modifications",
                         "proteins",
                         "protein.group.id"="protein.group.ids",
+                        "mass",
                         "retention.time",
                         "peptide.score" ="score",
                         "delta.score",
                         "pep",
                         "missed.cleavages",
                         "unique.groups" = "unique..groups.",
+                        "unique.proteins" = "unique..proteins.",
                         "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
