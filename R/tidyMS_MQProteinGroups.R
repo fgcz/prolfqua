@@ -156,7 +156,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   sc <- sym("potential.contaminant")
   meta <- dplyr::select(MQPeptides,
-                        "mod.spec.peptide.id" = "id",
+                        "mod.peptide.id" = "id",
                         "peptide.id",
                         "sequence",
                         "modifications",
@@ -164,7 +164,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "protein.group.id"="protein.group.ids",
                         "mass",
                         "retention.time",
-                        "peptide.score" ="score",
+                        "mod.peptide.score" ="score",
                         "delta.score",
                         "pep",
                         "missed.cleavages",
@@ -177,21 +177,21 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
                                            !!sym("unique.proteins") == "no" ~ FALSE))
 
-  pint <- dplyr::select(MQPeptides,"mod.spec.peptide.id"= "id", starts_with("intensity."))
+  pint <- dplyr::select(MQPeptides,"mod.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
-    gather(key="raw.file", value="mod.spec.peptide.intensity", starts_with("intensity.")) %>%
+    gather(key="raw.file", value="mod.peptide.intensity", starts_with("intensity.")) %>%
     mutate(raw.file = gsub("intensity.","",raw.file))
 
-  idtype <- dplyr::select(MQPeptides, "mod.spec.peptide.id"="id", starts_with("identification.type."))
+  idtype <- dplyr::select(MQPeptides, "mod.peptide.id"="id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      gather(key="raw.file", value="mod.spec.id.type", starts_with("identification.type.")) %>%
+      gather(key="raw.file", value="mod.id.type", starts_with("identification.type.")) %>%
       mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.spec.peptide.id", "raw.file" ))
+    PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx <- inner_join(meta , PepIntensities, by="mod.spec.peptide.id")
+  xx <- inner_join(meta , PepIntensities, by="mod.peptide.id")
   xx$proteotypic <-!grepl(";",xx$protein.group.id)
   xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
   return(xx)
