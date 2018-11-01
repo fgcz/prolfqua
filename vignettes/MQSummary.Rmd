@@ -1,0 +1,182 @@
+---
+title: "Summarize Peptide Level Measurements"
+author: "WEW@FGCZ.ETHZ.CH"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+params:
+  configuration:  !r quote(LFQService::skylineconfig)
+  data: !r quote(LFQService::sample_analysis)
+  plot_density: TRUE
+  plot_sd_vs_mean: FALSE
+vignette: >
+  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(LFQService)
+
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE, fig.with = 8, fig.height = 4)
+data <- eval(params$data)
+config <- eval(params$configuration)
+if(is.null(params$plot_density)){
+  params$plot_density <- TRUE
+}
+if(is.null(params$plot_sd_vs_mean)){
+  params$plot_sd_vs_mean <- FALSE
+}
+old <- theme_set(theme_classic())
+```
+
+## Summarize levels
+
+```{r hierarchyCounts}
+x <- hierarchyCounts( data , config )
+knitr::kable(data.frame(NR = x), caption="number of peptides and proteins")
+```
+
+
+```{r proteinSummaries}
+data <- LFQService::remove_small_intensities(data, config)
+data <- LFQService::completeCases(data,config)
+
+x3 <- summarizeHierarchy(data, config)
+x3 <- x3 %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+                                             peptide_Id_n > 1 ~ "two and more"))
+
+res <- x3 %>% group_by(protein_with) %>% summarize(n=n())
+knitr::kable(res, caption = "nr of proteins with more than on peptide.")
+ggplot(x3, aes(x = protein_with)) + geom_bar(stat="count")
+```
+
+```{r filterOnPeptideNr}
+x3 %>% filter(peptide_Id_n > 1) -> x4
+data <- inner_join(data, x4, by="protein_Id")
+```
+
+```{r missingFigIntensityHistorgram, fig.width=7}
+p <- missignessHistogram(data, config)
+xx1 <- missingPerCondition(data, config)
+xx2 <- missingPerConditionCumsum(data, config)
+gridExtra::grid.arrange(p, xx1$figure, xx2$figure, ncol=1)
+
+```
+
+# Raw Intensity Distribution
+
+```{r plotDistributions, fig.cap="Violin plot of Coefficient of Variations (CV)."}
+stats_res <- summarize_cv(data, config)
+if(params$plot_density){
+  p1 <- LFQService::plot_stat_density(stats_res, config, stat="CV") + labs(tag = "A") + xlim(0, 150)
+  p2 <- LFQService::plot_stat_density_median(stats_res, config, stat="CV") + labs(tag = "B") + xlim(0, 150)
+  gridExtra::grid.arrange(p1,p2)
+}else{
+  p1 <- LFQService::plot_stat_violin(stats_res, config, stat="CV") + labs(tag='A')
+  p2 <- LFQService::plot_stat_violin_median(stats_res, config, stat="CV") + labs(tag='B')
+  gridExtra::grid.arrange(p1,p2)
+}
+```
+
+```{r}
+if(params$plot_sd_vs_mean){
+  p0 <-plot_stdv_vs_mean(stats_res, config)  + labs(tag='A') # takes to long to plot.
+}
+```
+
+```{r computeCVQuantiles, include=FALSE}
+toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){ 
+  tibble(probs = probs, quantiles = quantile(x, probs , na.rm = T)) 
+}
+
+stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest()-> xx 
+xx %>% mutate(cv_quantiles = map(data, ~toQuantiles(.$CV) )) %>%
+  select(Pathology, cv_quantiles) %>%
+  unnest() %>%
+  spread(Pathology,quantiles) -> cv_quantiles_res
+
+```
+
+
+```{r printTable}
+knitr::kable(cv_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantiles.")
+```
+
+
+
+```{r intensityDistribution, fig.cap="Not normalized intensity distribution."}
+if(params$plot_density){
+  p0 <- LFQService::plot_intensity_distribution_density(data,config)
+  p0
+} else{
+  p1 <- LFQService::plot_intensity_distribution_violin(data,config)
+  p1
+}
+
+```
+
+
+# Transformed Intensity Distribution
+
+Here we apply the `vsn::justvsn` transformation to the data
+
+```{r transformIntensities}
+dataTransformed <- LFQService::applyToIntensityMatrix(data, config, vsn::justvsn)
+```
+
+
+```{r sdviolinplots,fig.cap="Visualization of peptide standard deviations. A) all. B) - for low (bottom 50) and high intensity peptides (top 50)."}
+stats_res <- summarize_cv(dataTransformed, config)
+
+if(params$plot_density){
+  p1 <- LFQService::plot_stat_density(stats_res, config, stat="sd") + labs(tag = "A") + xlim(0, 2)
+  p2 <- LFQService::plot_stat_density_median(stats_res, config, stat="sd") + labs(tag = "B") + xlim(0, 2)
+  gridExtra::grid.arrange(p1,p2)
+}else{
+  p1 <- LFQService::plot_stat_violin(stats_res, config, stat="sd") + labs(tag = "A")
+  p2 <- LFQService::plot_stat_violin_median(stats_res, config, stat="sd") + labs(tag = "B")
+  gridExtra::grid.arrange(p1,p2)
+}
+```
+
+```{r fig.cap="Standard Deviation vs Mean"}
+if(params$plot_sd_vs_mean){
+  p0 <- plot_stdv_vs_mean(stats_res, config) + labs(tag="A")
+}
+```
+
+
+
+
+```{r plotTransformedIntensityDistributions, fig.cap="Intensity distribution of Samples after transformation. A - plot_density plot B - violin plot."}
+if(params$plot_density){
+  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) + labs(tag= "A")
+  p1
+} else{ 
+  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed,config) + labs(tag="B")
+  p2
+}
+```
+
+# Sample Heatmaps
+
+```{r correlationHeat, fig.height = 7, fig.cap="Sample Correlation Heatmap."}
+plot_heatmap_cor(dataTransformed,config)
+
+```
+
+```{r overviewHeat, fig.cap="Sample and peptide/protein Heatmap."}
+if(params$plot_sd_vs_mean){
+  plot_heatmap(dataTransformed,config)
+}
+```
+
+
+
