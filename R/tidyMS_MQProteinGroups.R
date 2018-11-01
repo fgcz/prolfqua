@@ -297,4 +297,27 @@ tidyMQ_allPeptides <- function(MQPeptides){
   return(xx)
 }
 
+#' convert modification specific to peptide level
+#' @export
+from_modSpecific_2_peptide <- function(resPepProt) {
+  resPepProt$mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
+  dd <- setdiff(colnames(resPepProt$mq_peptides) , c("leading.razor.protein","id.type"))
+
+  xx <- mq_modSpecPeptides %>%
+    group_by(peptide.id, raw.file ) %>%
+    mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
+           pep = min(pep, na.rm=TRUE),
+           peptide.score = max(mod.peptide.score, na.rm=TRUE))
+
+  dimcheck <- mq_modSpecPeptides %>% select(peptide.id, raw.file ) %>% distinct() %>% nrow()
+
+  peptides <- xx %>% select( dd) %>% distinct()
+  peptides %>% group_by(peptide.id, raw.file ) %>% summarise(n=n()) %>% filter(n>1)
+
+  gr <- peptides %>% filter(peptide.id == 288 )
+
+  stopifnot( dimcheck == nrow(peptides) )
+  return(peptides)
+}
+
 
