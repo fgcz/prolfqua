@@ -135,9 +135,9 @@ mean(xx$srm_decorelated)
 nested <- xx %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
 
 dim(nested$data[[1]])
-linePlotHierarchy_configuration(nested$data[[1]], nested$protein_Id[[1]], config) + 
+plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
-linePlotHierarchy_configuration(nested$data[[2]], nested$protein_Id[[2]], config) + 
+plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"))
 
 knitr::kable(hierarchyCounts(xx, config))
@@ -170,18 +170,18 @@ proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,config,func = mea
 
 # nest transtions
 xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
-linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[1],config)
-linePlotHierarchy_configuration(xnested$data[[3]], xnested$protein_Id[3],config)
-linePlotHierarchy_configuration(xnested$data[[4]], xnested$protein_Id[4],config)
+plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
+plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
+plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 
 # nest protein quants.
 figs3 <- xnested %>% mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])) ,
-                                           linePlotHierarchy_configuration, config))
+                                           plot_hierarchies_line, config))
 ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest(.key = "topNIntensity")
 
 figs4 <- inner_join(figs3,ff)
 
-linePlotHierarchy_QuantLine(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
+plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
 proteinsWide <- spread(proteinIntensities, sampleName,srm_mean_na_3)
 
 #quantable::simpleheatmap(t(scale(t(log2(1+proteinsWide[2:ncol(proteinsWide)])))), margins = c(16,5))

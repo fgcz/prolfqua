@@ -13,6 +13,7 @@ tidyMQ_allPeptides(MQPeptides)
 parse MQ allPeptides.txt
 }
 \examples{
+if(FALSE){
 peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
 peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\\t")
 MQPeptides <- peptides_txt
@@ -25,5 +26,5 @@ mq_peptides \%>\% dplyr::filter(sequence != "") -> idid
 head(idid)
 unique(idid$modified.sequence)
 head(mq_peptides)
-
+}
 }

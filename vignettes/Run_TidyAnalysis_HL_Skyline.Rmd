@@ -60,11 +60,11 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 proteinIDsymbol <- sym(skylineconfig$table$hierarchyKeys()[1])
 
 xnested <- resData %>% group_by(UQ(proteinIDsymbol)) %>% nest()
-linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfig)
+plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfig)
 ```
 
 ```{r fig.cap="transitions in separate plot."}
-linePlotHierarchy_configuration(xnested$data[[3]], xnested$protein_Id[[3]], skylineconfig, separate = TRUE)
+plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[[3]], skylineconfig, separate = TRUE)
 ```
 
 \clearpage
@@ -74,7 +74,7 @@ linePlotHierarchy_configuration(xnested$data[[3]], xnested$protein_Id[[3]], skyl
 
 ```{r eval=FALSE}
 figs <- xnested %>%
-  mutate(plot = map2(data, UQ(proteinIDsymbol) , linePlotHierarchy_configuration, skylineconfig, separate = TRUE))
+  mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig, separate = TRUE))
 
 pdf(file.path(outdir,"allProteins.pdf"), width = 10, height = 10)
 invisible(lapply(figs$plot[1:3], print))
@@ -109,8 +109,8 @@ skylineconfigHL$table$getWorkIntensity()
 ## Plot heavy to light ratio
 
 ```{r}
-linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
-HLfigs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , linePlotHierarchy_configuration, skylineconfig))
+plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
+HLfigs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 ```
 
@@ -129,14 +129,14 @@ dev.off()
 HLfigs3 <- LFQService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
 HLfigs3 <- inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
 
-p <- linePlotHierarchy_configuration(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
-  linePlotHierarchy_QuantLine(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
+p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
+  plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
 p
 ```
 
 ```{r eval=FALSE}
 
-HLfigs3 <- HLfigs3 %>% mutate(figsMed = map2(plot, medpolishPly, linePlotHierarchy_QuantLine, "medpolish", skylineconfig))
+HLfigs3 <- HLfigs3 %>% mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)
 invisible(lapply(HLfigs3$figsMed[2:5], print))

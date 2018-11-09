@@ -15,4 +15,5 @@ txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService
 allData <- tidyMQ_All(txt_directory)
 zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 res <- tidyMQ_PeptideProtein(zip_archive)
+
 }

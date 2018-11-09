@@ -93,9 +93,11 @@ tidyMQ_All <- function(txt_directory){
   mq_peptides <- tidyMQ_Peptides(peptides_txt)
   mq_evidence <- tidyMQ_Evidence(evidence_txt)
 
+  resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
   resProt_Pep_Evidence <- inner_join(resProt_Pep, mq_evidence, by = c("protein.group.id", "raw.file", "peptide.id"))
   return(resProt_Pep_Evidence)
 }
+
 
 #' Generating mq all level file.
 #'
@@ -106,6 +108,7 @@ tidyMQ_All <- function(txt_directory){
 #' allData <- tidyMQ_All(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 #' res <- tidyMQ_PeptideProtein(zip_archive)
+#'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
   if(grepl("\\.zip$",txt_directory)){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
@@ -141,6 +144,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
 #' library(tidyverse)
+#' if(FALSE){
 #' peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' MQPeptides <- peptides_txt
@@ -148,7 +152,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' mq_peptides <- tidyMQ_modificationSpecificPeptides(peptides_txt)
 #'
 #' head(mq_peptides)
-#'
+#' }
 tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
     MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
@@ -170,12 +174,16 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "missed.cleavages",
                         "unique.groups" = "unique..groups.",
                         "unique.proteins" = "unique..proteins.",
+                        "reverse" = "reverse",
                         "potential.contaminant" = ends_with("contaminant")) %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
     mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
-                                           !!sym("unique.proteins") == "no" ~ FALSE))
+                                           !!sym("unique.proteins") == "no" ~ FALSE)) %>%
+    mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
+                                     !!sym("reverse") == "" ~ FALSE)) %>%
+
 
   pint <- dplyr::select(MQPeptides,"mod.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
@@ -202,8 +210,9 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
 #' library(tidyverse)
-#' peptide_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
-#' #peptide_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
+#'
+#' #peptide_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
+#' peptide_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
 #' peptides_txt <- read.csv(peptide_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
 #' peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "LFQService")
@@ -261,6 +270,7 @@ tidyMQ_Peptides <- function(MQPeptides){
 #' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @examples
+#' if(FALSE){
 #' peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' MQPeptides <- peptides_txt
@@ -273,7 +283,7 @@ tidyMQ_Peptides <- function(MQPeptides){
 #' head(idid)
 #' unique(idid$modified.sequence)
 #' head(mq_peptides)
-#'
+#'}
 tidyMQ_allPeptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
     MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
@@ -312,10 +322,6 @@ from_modSpecific_2_peptide <- function(resPepProt) {
   dimcheck <- mq_modSpecPeptides %>% select(peptide.id, raw.file ) %>% distinct() %>% nrow()
 
   peptides <- xx %>% select( dd) %>% distinct()
-  peptides %>% group_by(peptide.id, raw.file ) %>% summarise(n=n()) %>% filter(n>1)
-
-  gr <- peptides %>% filter(peptide.id == 288 )
-
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }

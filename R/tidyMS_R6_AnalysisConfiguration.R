@@ -207,7 +207,7 @@ completeCases <- function(data, config){
 
 # Functions - Plotting ----
 #' Plot peptide and fragments
-linePlotHierarchy_default <- function(data,
+plot_hierarchies_line_default <- function(data,
                                       proteinName,
                                       sample,
                                       intensity,
@@ -261,9 +261,9 @@ linePlotHierarchy_default <- function(data,
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
-#' LFQService::linePlotHierarchy_configuration(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+#' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
-linePlotHierarchy_configuration <- function(res, proteinName, configuration, separate=FALSE){
+plot_hierarchies_line <- function(res, proteinName, configuration, separate=FALSE){
   rev_hnames <- configuration$table$hierarchyKeys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
@@ -271,7 +271,7 @@ linePlotHierarchy_configuration <- function(res, proteinName, configuration, sep
   if(length(rev_hnames) > 2){
     peptide <- rev_hnames[2]
   }
-  res <- LFQService:::linePlotHierarchy_default(res, proteinName = proteinName,
+  res <- LFQService:::plot_hierarchies_line_default(res, proteinName = proteinName,
                                                 sample = configuration$table$sampleName,
                                                 intensity = configuration$table$getWorkIntensity(),
                                                 peptide = peptide,
@@ -286,7 +286,7 @@ linePlotHierarchy_configuration <- function(res, proteinName, configuration, sep
 
 #' add quantline to plot
 #' @export
-linePlotHierarchy_QuantLine <- function(p, data, aes_y,  configuration){
+plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
   table <- configuration$table
   p + geom_line(data=data,
                 aes_string(x = table$sampleName , y = aes_y, group=1),
@@ -295,6 +295,39 @@ linePlotHierarchy_QuantLine <- function(p, data, aes_y,  configuration){
                 linetype="dashed") +
     geom_point(data=data,
                aes_string(x = table$sampleName , y = aes_y, group=1), color="black", shape=10)
+}
+
+#' plot peptides by factors and its levels.
+#'
+#' @export
+#' @examples
+#' library(LFQService)
+#' library(tidyverse)
+#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' xnested <- LFQService::sample_analysis %>%
+#'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
+#'
+#' LFQService::plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
+plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
+  ddd %>%  gather("factor","level",config$table$factorKeys()) -> ddlong
+  ddlong <- as.data.frame(unclass(ddlong))
+  p <- ggplot(ddlong, aes_string(x = config$table$hierarchyKeys(rev = TRUE)[1],
+                                 y = config$table$getWorkIntensity(),
+                                 fill="level"
+  )) +
+    facet_wrap(~factor, ncol=1) +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle =45, hjust = 0.5, vjust=0.5)) +
+    ggtitle(proteinName)
+  if(!config$parameter$is_intensity_transformed){
+    p <- p + scale_y_continuous(trans="log10")
+  }
+  if(boxplot){
+    p <- p + geom_boxplot()
+  }else{
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width=0.4)
+  }
+  return(p)
 }
 
 # Functions - summary ----
