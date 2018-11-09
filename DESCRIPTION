@@ -17,6 +17,7 @@ Imports:
     conflicted,
     dplyr,
     ggplot2,
+    ggbeeswarm,
     glue,
     heatmap3,
     quantable,
