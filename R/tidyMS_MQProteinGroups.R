@@ -155,7 +155,13 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' }
 tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
-    MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    if(grepl("\\.zip$",MQPeptides)){
+      print(MQPeptides)
+      MQPeptides <- read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
+                               header=TRUE, sep="\t", stringsAsFactors = FALSE)
+    }else{
+      MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    }
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   meta <- dplyr::select(MQPeptides,
@@ -181,7 +187,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
     mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
-                                           !!sym("unique.proteins") == "no" ~ FALSE)) %>%
+                                             !!sym("unique.proteins") == "no" ~ FALSE)) %>%
     mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                      !!sym("reverse") == "" ~ FALSE))
 
@@ -292,25 +298,27 @@ tidyMQ_allPeptides <- function(MQPeptides){
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   colnames(MQPeptides)
   xx <- dplyr::select(MQPeptides,
-                        "raw.file",
-                        "type",
-                        "charge",
-                        "m.z",
-                        "mass",
-                        "retention.time",
-                        "sequence",
-                        "modified.sequence",
-                        "proteins",
-                        "peptide.score" ="score",
-                        "intensity",
-                        "ms.ms.count") %>%
+                      "raw.file",
+                      "type",
+                      "charge",
+                      "m.z",
+                      "mass",
+                      "retention.time",
+                      "sequence",
+                      "modified.sequence",
+                      "proteins",
+                      "peptide.score" ="score",
+                      "intensity",
+                      "ms.ms.count") %>%
     mutate(sequence = str_trim(sequence), modified.sequence = str_trim(modified.sequence))
   return(xx)
 }
 
 #' convert modification specific to peptide level
+#' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 #' @export
-from_modSpecific_2_peptide <- function(resPepProt) {
+#'
+tidyMQ_from_modSpecific_to_peptide <- function(resPepProt) {
   resPepProt$mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
   dd <- setdiff(colnames(resPepProt$mq_peptides) , c("leading.razor.protein","id.type"))
 
@@ -326,5 +334,26 @@ from_modSpecific_2_peptide <- function(resPepProt) {
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }
+
+#' Same protein group id might have different names in the protein field.
+#' this function selects the protein name mentioned most in association with a protein group id.
+#' @export
+#' @param modSpecData
+tidyMQ_top_protein_name <- function(modSpecData){
+  modSpecData <- modSpecData %>% filter(!is.na(proteins))
+  nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% distinct() %>% nrow()
+  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% distinct()
+  groupIDprotein %>% separate_rows(proteins, sep=";",convert =TRUE) -> groupIDprotein_Separated
+  groupIDprotein_Separated %>% group_by(protein.group.id) %>% nest() -> groupIDprotein_Separated
+
+  extractMostFreqNamePerGroup <- function(ff){
+    aa <- sort(table(ff),decreasing = TRUE)
+    sort(names(aa[aa == max(aa)]), decreasing = TRUE)[1]
+  }
+  topProtein <- groupIDprotein_Separated %>% mutate(top_protein = map_chr(data,  extractMostFreqNamePerGroup)) %>% dplyr::select(protein.group.id, top_protein)
+  stopifnot(nrow(topProtein) == nrProteinGroups)
+  resPepProtAnnot <- inner_join(modSpecData,topProtein )
+}
+
 
 
