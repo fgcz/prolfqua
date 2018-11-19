@@ -232,7 +232,12 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' head(mq_peptides)
 tidyMQ_Peptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
-    MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    if(grepl("\\.zip$",MQPeptides)){
+      MQPeptides <- read.csv(unz(MQPeptides,"peptides.txt"),
+                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+    }else{
+      MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    }
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   sc <- sym("potential.contaminant")
@@ -318,19 +323,19 @@ tidyMQ_allPeptides <- function(MQPeptides){
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 #' @export
 #'
-tidyMQ_from_modSpecific_to_peptide <- function(resPepProt) {
-  resPepProt$mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
-  dd <- setdiff(colnames(resPepProt$mq_peptides) , c("leading.razor.protein","id.type"))
+tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
+  mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
+  relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
 
   xx <- mq_modSpecPeptides %>%
     group_by(peptide.id, raw.file ) %>%
     mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
            pep = min(pep, na.rm=TRUE),
-           peptide.score = max(mod.peptide.score, na.rm=TRUE))
+           peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>% ungroup()
 
   dimcheck <- mq_modSpecPeptides %>% select(peptide.id, raw.file ) %>% distinct() %>% nrow()
 
-  peptides <- xx %>% select( dd) %>% distinct()
+  peptides <- xx %>% select( relevantColumns ) %>% distinct()
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }
