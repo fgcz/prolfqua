@@ -158,7 +158,6 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
-  sc <- sym("potential.contaminant")
   meta <- dplyr::select(MQPeptides,
                         "mod.peptide.id" = "id",
                         "peptide.id",
@@ -175,14 +174,16 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "unique.groups" = "unique..groups.",
                         "unique.proteins" = "unique..proteins.",
                         "reverse" = "reverse",
-                        "potential.contaminant" = ends_with("contaminant")) %>%
-    mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
+                        "potential.contaminant" = ends_with("contaminant"))
+
+  sc <- sym("potential.contaminant")
+  meta <- meta %>%  mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
     mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
                                            !!sym("unique.proteins") == "no" ~ FALSE)) %>%
     mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
-                                     !!sym("reverse") == "" ~ FALSE)) %>%
+                                     !!sym("reverse") == "" ~ FALSE))
 
 
   pint <- dplyr::select(MQPeptides,"mod.peptide.id"= "id", starts_with("intensity."))
