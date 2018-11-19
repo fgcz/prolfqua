@@ -24,8 +24,7 @@ Imports:
     purrr,
     readxl,
     tidyverse,
-    yaml,
-    MSqRob,
+    yaml
 Suggests:
     knitr,
     rmarkdown,
@@ -33,4 +32,4 @@ Suggests:
 Remotes:
     protViz/quantable,
     statOmics/MSqRob
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.1
