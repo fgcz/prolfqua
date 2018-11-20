@@ -349,6 +349,24 @@ hierarchyCounts <- function(x, configuration){
   return(res)
 }
 
+#' Count distinct elements for each level of hierarchy per sample
+#' @export
+#' @example
+#' library(LFQService)
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+#' data(skylinePRMSampleData)
+#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+#' hierarchy_counts_sample(sample_analysis, skylineconfig)
+#'
+hierarchy_counts_sample <- function(data, configuration){
+  hierarchy <- names( configuration$table$hierarchy )
+  data %>% filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
+  res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>% summarise_at( hierarchy, n_distinct )
+  return(res)
+}
+
+
 #' Light only version.
 #' Summarize Protein counts
 #' @export

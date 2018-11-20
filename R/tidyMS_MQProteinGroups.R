@@ -322,7 +322,8 @@ tidyMQ_allPeptides <- function(MQPeptides){
 #' convert modification specific to peptide level
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 #' @export
-#'
+#' @param mq_modSpecPeptides modeSpecPeptides.txt
+#' @param mq_peptides mq_peptides
 tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
   mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
   relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
@@ -343,7 +344,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 #' Same protein group id might have different names in the protein field.
 #' this function selects the protein name mentioned most in association with a protein group id.
 #' @export
-#' @param modSpecData
+#' @param modSpecData modeSpecPeptides.txt
 tidyMQ_top_protein_name <- function(modSpecData){
   modSpecData <- modSpecData %>% filter(!is.na(proteins))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% distinct() %>% nrow()

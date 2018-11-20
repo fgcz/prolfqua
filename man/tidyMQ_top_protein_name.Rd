@@ -7,6 +7,9 @@ this function selects the protein name mentioned most in association with a prot
 \usage{
 tidyMQ_top_protein_name(modSpecData)
 }
+\arguments{
+\item{modSpecData}{modeSpecPeptides.txt}
+}
 \description{
 Same protein group id might have different names in the protein field.
 this function selects the protein name mentioned most in association with a protein group id.

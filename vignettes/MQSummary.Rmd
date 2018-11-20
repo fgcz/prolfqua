@@ -34,13 +34,25 @@ if(is.null(params$plot_sd_vs_mean)){
   params$plot_sd_vs_mean <- FALSE
 }
 old <- theme_set(theme_classic())
+
 ```
 
-## Summarize levels
+# Summarize dataset
+
 
 ```{r hierarchyCounts}
 x <- hierarchyCounts( data , config )
-knitr::kable(data.frame(NR = x), caption="number of peptides and proteins")
+knitr::kable(data.frame(NR = x), caption="Number of peptides and proteins")
+```
+
+
+```{r hierarchyCountsSample }
+knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "Number of qunatified peptides and proteins per sample.")
+```
+
+```{r sampleNameRawFileMapping}
+sampleNameRawFileMapping <- data %>% dplyr::select(config$table$sampleName, config$table$fileName) %>%distinct()
+knitr::kable(sampleNameRawFileMapping, caption = "Sample Name to Raw file mapping")
 ```
 
 
@@ -54,6 +66,9 @@ x3 <- x3 %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
 
 res <- x3 %>% group_by(protein_with) %>% summarize(n=n())
 knitr::kable(res, caption = "nr of proteins with more than on peptide.")
+```
+
+```{r, fig.height=3, fig.with=4, fig.cap="Number of proteins with one or more peptides."}
 ggplot(x3, aes(x = protein_with)) + geom_bar(stat="count")
 ```
 
@@ -62,7 +77,7 @@ x3 %>% filter(peptide_Id_n > 1) -> x4
 data <- inner_join(data, x4, by="protein_Id")
 ```
 
-```{r missingFigIntensityHistorgram, fig.width=7}
+```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0,1,2 etc. mssing value."}
 p <- missignessHistogram(data, config)
 xx1 <- missingPerCondition(data, config)
 xx2 <- missingPerConditionCumsum(data, config)
@@ -70,9 +85,19 @@ gridExtra::grid.arrange(p, xx1$figure, xx2$figure, ncol=1)
 
 ```
 
-# Raw Intensity Distribution
 
-```{r plotDistributions, fig.cap="Violin plot of Coefficient of Variations (CV)."}
+```{r missignessHistogram, fig.cap="Missigness patterns.", fig.width=7, fig.height=8}
+plot_NA_heatmap(data, config)
+```
+
+\clearpage
+
+
+# Summarize Quantification
+
+## Raw Intensity Distribution
+
+```{r plotDistributions, fig.cap="Density plot of peptide level Coefficient of Variations (CV)."}
 stats_res <- summarize_cv(data, config)
 if(params$plot_density){
   p1 <- LFQService::plot_stat_density(stats_res, config, stat="CV") + labs(tag = "A") + xlim(0, 150)
@@ -96,11 +121,11 @@ toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){
   tibble(probs = probs, quantiles = quantile(x, probs , na.rm = T)) 
 }
 
-stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest()-> xx 
+stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
 xx %>% mutate(cv_quantiles = map(data, ~toQuantiles(.$CV) )) %>%
-  select(Pathology, cv_quantiles) %>%
+  dplyr::select(!!sym(config$table$factorKeys()[1]), cv_quantiles) %>%
   unnest() %>%
-  spread(Pathology,quantiles) -> cv_quantiles_res
+  spread(!!sym(config$table$factorKeys()[1]),quantiles) -> cv_quantiles_res
 
 ```
 
@@ -111,7 +136,7 @@ knitr::kable(cv_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantile
 
 
 
-```{r intensityDistribution, fig.cap="Not normalized intensity distribution."}
+```{r intensityDistribution, fig.cap="Not normalized intensity distribution.", fig.height=4}
 if(params$plot_density){
   p0 <- LFQService::plot_intensity_distribution_density(data,config)
   p0
@@ -123,9 +148,11 @@ if(params$plot_density){
 ```
 
 
-# Transformed Intensity Distribution
 
-Here we apply the `vsn::justvsn` transformation to the data
+## Transformed Intensity Distribution
+
+We apply the `vsn::justvsn` transformation to the data. This transformation transfroms and scales the data to reduce the variance.
+Because of this, we can't report CV anymore but report standard deviations.
 
 ```{r transformIntensities}
 dataTransformed <- LFQService::applyToIntensityMatrix(data, config, vsn::justvsn)
@@ -146,31 +173,51 @@ if(params$plot_density){
 }
 ```
 
+
 ```{r fig.cap="Standard Deviation vs Mean"}
 if(params$plot_sd_vs_mean){
   p0 <- plot_stdv_vs_mean(stats_res, config) + labs(tag="A")
 }
 ```
 
+```{r computeSDQuantiles, include=FALSE}
+toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){ 
+  tibble(probs = probs, quantiles = quantile(x, probs , na.rm = T)) 
+}
+
+stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
+xx %>% mutate(sd_quantiles = map(data, ~toQuantiles(.$sd) )) %>%
+  dplyr::select(!!sym(config$table$factorKeys()[1]), sd_quantiles) %>%
+  unnest() %>%
+  spread(!!sym(config$table$factorKeys()[1]),quantiles) -> sd_quantiles_res
+
+```
+
+
+```{r printSDTable}
+knitr::kable(sd_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantiles.")
+```
 
 
 
-```{r plotTransformedIntensityDistributions, fig.cap="Intensity distribution of Samples after transformation. A - plot_density plot B - violin plot."}
+```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation."}
 if(params$plot_density){
-  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) + labs(tag= "A")
+  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) 
   p1
 } else{ 
-  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed,config) + labs(tag="B")
+  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed,config) 
   p2
 }
 ```
 
-# Sample Heatmaps
+\clearpage
 
-```{r correlationHeat, fig.height = 7, fig.cap="Sample Correlation Heatmap."}
+
+
+```{r correlationHeat, fig.height = 5, fig.cap="Peptide intensity correlation between samples Heatmap."}
 plot_heatmap_cor(dataTransformed,config)
-
 ```
+
 
 ```{r overviewHeat, fig.cap="Sample and peptide/protein Heatmap."}
 if(params$plot_sd_vs_mean){
@@ -178,5 +225,33 @@ if(params$plot_sd_vs_mean){
 }
 ```
 
+\clearpage
+
+# Sample Size Calculation for peptide level data.
+
+We estimated the _Variance_ of the measurement using the QC samples. For each protein we can compute the standard deviation based on the 4 QC samples. The distribution of the standard deviations is shown in Figure \@ref(fig:sdviolinplots).
+
+This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of 2 at a significance level of $1-0.05$ and power of $0.8$ for $25, 50, 75, 90$ percent of the proteins.
+
+```{r sampleSize}
+sd <- na.omit(stats_res$sd)
+sd[sd < 0.05] <- sample(sd[sd >= 0.05], sum(sd < 0.05))
+getSampleSize <- function(sd){power.t.test(delta = 1, sd=sd ,power=0.8,sig.level=0.05)$n}
+N <- sapply(sd, getSampleSize)
+
+sampN <- as.matrix(quantile(N, probs= c(.25,.5,.75,.9)))
+colnames(sampN) <- c( "sampleSize")
+
+knitr::kable(sampN, caption="Sample size needed to report a fold change greater than 2 with a significance level of 0.05 and power 0.8.")
+
+```
 
 
+The _power_ of a test is $1-\beta$, where $beta$ is the probability of a Type 2 error (failing to reject the null hypothesis when the alternative hypothesis is true).
+In other words, if you have a $20\%$ chance of failing to detect a real difference, then the power of your test is $.8$.
+
+
+_Significance_ is equal to $1 - \alpha$, where $\alpha$ is the probability of making a Type 1 Error. That is, alpha represents the chance of a falsely rejecting H0 and picking up a false-positive effect. Alpha is usually set at 0.05, for a $95\%$ significance.
+
+
+Fold change : Suppose you are comparing a treatment group to a placebo group, and you will be measuring some continuous response variable which, you hope, will be affected by the treatment. We can consider the mean response in the treatment group, $\mu_1$, and the mean response in the placebo group, $\mu_2$. We can then define $\Delta = \mu_1 – \mu_2$. The smaller the difference you want to detect, the larger the required sample size.

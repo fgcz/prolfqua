@@ -5,7 +5,12 @@
 \title{convert modification specific to peptide level
 aggregates mod.peptide.intensity, takes min of pep and max of peptide.score}
 \usage{
-tidyMQ_from_modSpecific_to_peptide(resPepProt)
+tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
+}
+\arguments{
+\item{mq_modSpecPeptides}{modeSpecPeptides.txt}
+
+\item{mq_peptides}{mq_peptides}
 }
 \description{
 convert modification specific to peptide level
