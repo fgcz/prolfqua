@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{filter_levels_by_missing}
 \alias{filter_levels_by_missing}
-\title{removes measurments with less than percent 60 missing values in factor}
+\title{removes measurments with less than percent=60 missing values in factor_level = 1}
 \usage{
 filter_levels_by_missing(data, config, percent = 60, factor_level = 1)
 }
 \description{
-removes measurments with less than percent 60 missing values in factor
+removes measurments with less than percent=60 missing values in factor_level = 1
 }
 \examples{
 

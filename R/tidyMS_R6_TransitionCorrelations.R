@@ -573,7 +573,7 @@ rankPrecursorsByNAs <- function(data, config){
   return(data)
 }
 
-#' removes measurments with less than percent 60 missing values in factor
+#' removes measurments with less than percent=60 missing values in factor_level = 1
 #' @export
 #' @examples
 #'
