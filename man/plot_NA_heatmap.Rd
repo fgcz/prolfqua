@@ -4,7 +4,7 @@
 \alias{plot_NA_heatmap}
 \title{plot heatmap of NA values}
 \usage{
-plot_NA_heatmap(data, config, showRowDendro = FALSE)
+plot_NA_heatmap(data, config, showRowDendro = FALSE, cexCol = 1)
 }
 \description{
 plot heatmap of NA values
@@ -15,5 +15,5 @@ library(tidyverse)
 library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-plot_NA_heatmap(data, config)
+plot_NA_heatmap(data, config, cexCol=1)
 }

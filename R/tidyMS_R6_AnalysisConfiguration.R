@@ -335,6 +335,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
 # Functions - summize factors ----
 
 #' table factors
+#' @export
 #' @examples
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' configuration <- conf
@@ -879,7 +880,7 @@ plot_heatmap <- function(data, config){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' plot_NA_heatmap(data, config)
+#' plot_NA_heatmap(data, config, cexCol=1)
 plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
