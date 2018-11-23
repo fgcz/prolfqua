@@ -341,9 +341,12 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
 #' configuration <- conf
 #' data <- LFQService::sample_analysis
 #' xx <- table_factors(data,configuration )
+#' xx
 #' xx %>% select(configuration$table$factorKeys()) %>% table()
 table_factors <- function(data, configuration){
-  factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>% distinct()
+  factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
+    distinct() %>%
+    arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
 }
 
@@ -356,7 +359,6 @@ table_factors <- function(data, configuration){
 #' library(LFQService)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' data(skylinePRMSampleData)
 #'
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' hierarchyCounts(sample_analysis, skylineconfig)
