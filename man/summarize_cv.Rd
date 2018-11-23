@@ -4,7 +4,7 @@
 \alias{summarize_cv}
 \title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
 \usage{
-summarize_cv(data, config)
+summarize_cv(data, config, all = TRUE)
 }
 \description{
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples

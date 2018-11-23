@@ -686,7 +686,7 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
 #'
 #' res <- summarize_cv(data, config)
 #' res$CV <- res$sd/res$mean
-summarize_cv <- function(data, config){
+summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
   hierarchyFactor <- data %>%
     group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
@@ -694,11 +694,13 @@ summarize_cv <- function(data, config){
 
   hierarchyFactor <- hierarchyFactor %>% mutate_at(config$table$factorKeys()[1], funs(as.character) )
 
-  hierarchy <- data %>%
-    group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-    summarise(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
-  hierarchy <- mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
-  res <- bind_rows(hierarchyFactor,hierarchy)
+  if(all){
+    hierarchy <- data %>%
+      group_by(!!!syms( config$table$hierarchyKeys() )) %>%
+      summarise(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
+    hierarchy <- mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
+    res <- bind_rows(hierarchyFactor,hierarchy)
+  }
   res %>% mutate(CV = sd/mean*100) -> res
   return(res)
 }
