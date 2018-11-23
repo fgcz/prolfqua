@@ -332,6 +332,22 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
 
 # Functions - summary ----
 
+# Functions - summize factors ----
+
+#' table factors
+#' @examples
+#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' configuration <- conf
+#' data <- LFQService::sample_analysis
+#' xx <- table_factors(data,configuration )
+#' xx %>% select(configuration$table$factorKeys()) %>% table()
+table_factors <- function(data, configuration){
+  factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>% distinct()
+  return(factorsTab)
+}
+
+
+
 #' Count distinct elements for each level of hierarchy
 #'
 #' @export
@@ -353,6 +369,7 @@ hierarchyCounts <- function(x, configuration){
 #' @export
 #' @example
 #' library(LFQService)
+#' library(tidyverse)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
@@ -863,7 +880,7 @@ plot_heatmap <- function(data, config){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' plot_NA_heatmap(data, config)
-plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
+plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
     distinct() %>% arrange(sampleName)
@@ -883,6 +900,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE ){
                      labRow = "",
                      ColSideColors = ColSideColors,
                      showRowDendro = showRowDendro,
+                     cexCol = cexCol,
                      legendfun = function()
                        showLegend(legend=c("NA"),
                                   col=c("black"),
