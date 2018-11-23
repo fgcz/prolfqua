@@ -699,11 +699,35 @@ summarize_cv <- function(data, config, all = TRUE){
       group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       summarise(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
     hierarchy <- mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
-    res <- bind_rows(hierarchyFactor,hierarchy)
+    hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
-  res %>% mutate(CV = sd/mean*100) -> res
+  hierarchyFactor %>% mutate(CV = sd/mean*100) -> res
   return(res)
 }
+
+#' Compute theoretical sample sizes from factor level standard deviations
+#' @export
+#' @examples
+#'
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#'
+#' res <- lfq_power_t_test(data, config)
+lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.level=0.05){
+  if(!config$parameter$is_intensity_transformed){
+    warning("Intensities are not transformed yet.")
+  }
+  stats_res <- summarize_cv(dataTransformed, config, all=FALSE)
+  sd <- na.omit(stats_res$sd)
+  quantilesSD <- quantile(sd,seq(0.2,1,length=10))
+  getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
+  N <- sapply(quantilesSD, getSampleSize)
+  sampleSizes <- data.frame( quantile = names(N) , sd = round(quantilesSD, digits=3), N_exact = round(N, digits=2) , N = round(N, digits=0))
+  rownames(sampleSizes) <- NULL
+}
+
+
+
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
 #' @examples
