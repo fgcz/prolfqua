@@ -332,17 +332,20 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
 
 # Functions - summary ----
 
-# Functions - summize factors ----
+# Functions - summarize factors ----
 
 #' table factors
 #' @export
 #' @examples
+#' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' configuration <- conf
 #' data <- LFQService::sample_analysis
 #' xx <- table_factors(data,configuration )
 #' xx
-#' xx %>% select(configuration$table$factorKeys()) %>% table()
+#' xx %>% group_by(!!sym(configuration$table$factorKeys()))
+#' %>% summarize(n = n())
+#'
 table_factors <- function(data, configuration){
   factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
     distinct() %>%
@@ -351,6 +354,7 @@ table_factors <- function(data, configuration){
 }
 
 
+# Functions - summarize hierarchies
 
 #' Count distinct elements for each level of hierarchy
 #'
@@ -719,11 +723,12 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
   }
   stats_res <- summarize_cv(dataTransformed, config, all=FALSE)
   sd <- na.omit(stats_res$sd)
-  quantilesSD <- quantile(sd,seq(0.2,1,length=10))
+  quantilesSD <- quantile(sd,seq(0.2,1,length=9))
   getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
   N <- sapply(quantilesSD, getSampleSize)
-  sampleSizes <- data.frame( quantile = names(N) , sd = round(quantilesSD, digits=3), N_exact = round(N, digits=2) , N = round(N, digits=0))
+  sampleSizes <- data.frame( quantile = names(N) , sd = round(quantilesSD, digits=3), N_exact = ceiling(N) , N = round(N, digits=0))
   rownames(sampleSizes) <- NULL
+  return(sampleSizes)
 }
 
 

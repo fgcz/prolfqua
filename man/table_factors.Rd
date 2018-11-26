@@ -10,10 +10,13 @@ table_factors(data, configuration)
 table factors
 }
 \examples{
+library(tidyverse)
 conf <- LFQService::skylineconfig$clone(deep=TRUE)
 configuration <- conf
 data <- LFQService::sample_analysis
 xx <- table_factors(data,configuration )
 xx
-xx \%>\% select(configuration$table$factorKeys()) \%>\% table()
+xx \%>\% group_by(!!sym(configuration$table$factorKeys()))
+\%>\% summarize(n = n())
+
 }
