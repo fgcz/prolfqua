@@ -208,15 +208,15 @@ completeCases <- function(data, config){
 # Functions - Plotting ----
 #' Plot peptide and fragments
 plot_hierarchies_line_default <- function(data,
-                                      proteinName,
-                                      sample,
-                                      intensity,
-                                      peptide,
-                                      fragment,
-                                      factor,
-                                      isotopeLabel,
-                                      separate = FALSE,
-                                      log_y=FALSE
+                                          proteinName,
+                                          sample,
+                                          intensity,
+                                          peptide,
+                                          fragment,
+                                          factor,
+                                          isotopeLabel,
+                                          separate = FALSE,
+                                          log_y=FALSE
 ){
   if(length(isotopeLabel)){
     if(separate){
@@ -272,14 +272,14 @@ plot_hierarchies_line <- function(res, proteinName, configuration, separate=FALS
     peptide <- rev_hnames[2]
   }
   res <- LFQService:::plot_hierarchies_line_default(res, proteinName = proteinName,
-                                                sample = configuration$table$sampleName,
-                                                intensity = configuration$table$getWorkIntensity(),
-                                                peptide = peptide,
-                                                fragment = fragment,
-                                                factor = names(configuration$table$factors)[1],
-                                                isotopeLabel = configuration$table$isotopeLabel,
-                                                separate = separate,
-                                                log_y = !configuration$parameter$is_intensity_transformed
+                                                    sample = configuration$table$sampleName,
+                                                    intensity = configuration$table$getWorkIntensity(),
+                                                    peptide = peptide,
+                                                    fragment = fragment,
+                                                    factor = names(configuration$table$factors)[1],
+                                                    isotopeLabel = configuration$table$isotopeLabel,
+                                                    separate = separate,
+                                                    log_y = !configuration$parameter$is_intensity_transformed
   )
   return(res)
 }
@@ -631,9 +631,9 @@ reestablishCondition <- function(data,
 ){
   table <- configuration$table
   xx <- data %>%  dplyr::select(c(table$sampleName,
-                           table$factorKeys(),
-                           table$fileName,
-                           table$isotopeLabel)) %>% distinct()
+                                  table$factorKeys(),
+                                  table$fileName,
+                                  table$isotopeLabel)) %>% distinct()
   res <- inner_join(xx,medpolishRes, by=table$sampleName)
   res
 }
@@ -875,7 +875,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
-                     main=ifelse(R2, "R^2", "correlation"))
+                            main=ifelse(R2, "R^2", "correlation"))
   invisible(res)
 }
 
@@ -926,17 +926,19 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
   res <- res[apply(res,1, sum) > 0,]
-  res <- heatmap3::heatmap3(res,
-                     distfun = function(x){dist(x, method="binary")},
-                     scale="none",
-                     col=c("white","black"),
-                     labRow = "",
-                     ColSideColors = ColSideColors,
-                     showRowDendro = showRowDendro,
-                     cexCol = cexCol,
-                     legendfun = function()
-                       showLegend(legend=c("NA"),
-                                  col=c("black"),
-                                  cex=1.5))
+  if(nrow(res) > 0){
+    res <- heatmap3::heatmap3(res,
+                              distfun = function(x){dist(x, method="binary")},
+                              scale="none",
+                              col=c("white","black"),
+                              labRow = "",
+                              ColSideColors = ColSideColors,
+                              showRowDendro = showRowDendro,
+                              cexCol = cexCol,
+                              legendfun = function()
+                                showLegend(legend=c("NA"),
+                                           col=c("black"),
+                                           cex=1.5))
+  }
   invisible(res)
 }

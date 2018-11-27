@@ -11,7 +11,9 @@ visualize correlation among samples
 }
 \examples{
 config <- skylineconfig$clone(deep=TRUE)
-analysis <- transform_work_intensity(sample_analysis, config, log2)
+analysis <- remove_small_intensities(sample_analysis, config)
+analysis <- transform_work_intensity(analysis, config, log2)
+mm <- toWideConfig(analysis, config, as.matrix = TRUE)
 plot_sample_correlation(analysis, config)
 }
 \seealso{

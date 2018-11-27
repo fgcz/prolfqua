@@ -118,7 +118,9 @@ plot_intensity_distribution_density <- function(data, config){
 #' @rdname plot_sample_correlation
 #' @examples
 #' config <- skylineconfig$clone(deep=TRUE)
-#' analysis <- transform_work_intensity(sample_analysis, config, log2)
+#' analysis <- remove_small_intensities(sample_analysis, config)
+#' analysis <- transform_work_intensity(analysis, config, log2)
+#' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
 #' plot_sample_correlation(analysis, config)
 plot_sample_correlation <- function(data, config){
   matrix <- toWideConfig(data, config, as.matrix = TRUE)
