@@ -9,3 +9,13 @@ hierarchy_counts_sample(data, configuration)
 \description{
 Count distinct elements for each level of hierarchy per sample
 }
+\examples{
+library(LFQService)
+library(tidyverse)
+skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+data(skylinePRMSampleData)
+sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+hierarchy_counts_sample(sample_analysis, skylineconfig)
+
+}

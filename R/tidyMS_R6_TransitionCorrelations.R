@@ -223,7 +223,7 @@ filter_byQValue <- function(data, config){
 #'  group_by_at(skylineconfig$table$hierarchyKeys()[1]) %>%
 #'  tidyr::nest()
 #' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
-#' stopifnot(dim(xx)==c(103,22))
+#' stopifnot(dim(xx)==c(104,22))
 #'
 extractIntensities <- function(x, configuration ){
   table <- configuration$table

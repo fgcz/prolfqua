@@ -342,9 +342,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
 #' configuration <- conf
 #' data <- LFQService::sample_analysis
 #' xx <- table_factors(data,configuration )
-#' xx
-#' xx %>% group_by(!!sym(configuration$table$factorKeys()))
-#' %>% summarize(n = n())
+#' xx %>% group_by(!!sym(configuration$table$factorKeys())) %>% summarize(n = n())
 #'
 table_factors <- function(data, configuration){
   factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
@@ -374,7 +372,7 @@ hierarchyCounts <- function(x, configuration){
 
 #' Count distinct elements for each level of hierarchy per sample
 #' @export
-#' @example
+#' @examples
 #' library(LFQService)
 #' library(tidyverse)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
@@ -389,8 +387,6 @@ hierarchy_counts_sample <- function(data, configuration){
   res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>% summarise_at( hierarchy, n_distinct )
   return(res)
 }
-
-
 #' Light only version.
 #' Summarize Protein counts
 #' @export
@@ -475,8 +471,7 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
   table <- configuration$table
   factors <- head(table$factorKeys(), nrfactors)
   missingPrec <- x %>% group_by_at(c(factors,
-                                     table$hierarchyKeys()[1],
-                                     tail(table$hierarchyKeys(),1),
+                                     table$hierarchyKeys(),
                                      table$isotopeLabel
   ))
 
@@ -726,7 +721,10 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
   quantilesSD <- quantile(sd,seq(0.2,1,length=9))
   getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
   N <- sapply(quantilesSD, getSampleSize)
-  sampleSizes <- data.frame( quantile = names(N) , sd = round(quantilesSD, digits=3), N_exact = ceiling(N) , N = round(N, digits=0))
+  sampleSizes <- data.frame( quantile = names(N) ,
+                             sd = round(quantilesSD, digits=3),
+                             N_exact = round(N, digits=3),
+                             N = ceiling(N))
   rownames(sampleSizes) <- NULL
   return(sampleSizes)
 }
@@ -859,9 +857,10 @@ plot_stdv_vs_mean <- function(data, config){
 #' @examples
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
-#' LFQService::plot_heatmap_cor(data, config)
-#' plot_heatmap_cor(data, config, R2=TRUE)
+#' config <- skylineconfig$clone( deep=TRUE )
+#' LFQService::plot_heatmap_cor( data, config )
+#' plot_heatmap_cor( data, config, R2=TRUE )
+#'
 plot_heatmap_cor <- function(data, config, R2 = FALSE){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   cres <- cor(res,use = "pa")
