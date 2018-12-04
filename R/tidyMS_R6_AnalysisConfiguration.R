@@ -227,7 +227,8 @@ plot_hierarchies_line_default <- function(data,
                                    color= peptide
       ))
     }else{
-      formula <- sprintf("~%s",factor)
+      formula <- sprintf("~%s",paste(factor, collapse=" + "))
+      print(formula)
       data <- unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
@@ -237,7 +238,7 @@ plot_hierarchies_line_default <- function(data,
     }
     p <- p +  geom_point(aes_string(shape= isotopeLabel)) + geom_line(aes_string(linetype = isotopeLabel))
   }else{
-    formula <- sprintf("~%s",factor)
+    formula <- sprintf("~%s", paste(factor, collapse=" + "))
     p <- ggplot(data, aes_string(x = sample, y = intensity, group=fragment,  color= peptide))
     p <- p +  geom_point() + geom_line()
   }
@@ -272,17 +273,18 @@ plot_hierarchies_line <- function(res, proteinName, configuration, factor_level=
     peptide <- rev_hnames[2]
   }
   res <- LFQService:::plot_hierarchies_line_default(res, proteinName = proteinName,
-                                                    sample = configuration$table$sampleName,
-                                                    intensity = configuration$table$getWorkIntensity(),
-                                                    peptide = peptide,
-                                                    fragment = fragment,
-                                                    factor = configuration$table$factorKeys()[1:factor_level],
-                                                    isotopeLabel = configuration$table$isotopeLabel,
-                                                    separate = separate,
-                                                    log_y = !configuration$parameter$is_intensity_transformed
+                                                   sample = configuration$table$sampleName,
+                                                   intensity = configuration$table$getWorkIntensity(),
+                                                   peptide = peptide,
+                                                   fragment = fragment,
+                                                   factor = configuration$table$factorKeys()[1:factor_level],
+                                                   isotopeLabel = configuration$table$isotopeLabel,
+                                                   separate = separate,
+                                                   log_y = !configuration$parameter$is_intensity_transformed
   )
   return(res)
 }
+
 
 #' add quantline to plot
 #' @export
