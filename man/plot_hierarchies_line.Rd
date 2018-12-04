@@ -4,7 +4,8 @@
 \alias{plot_hierarchies_line}
 \title{extracts the relevant information from the configuration to make the plot.}
 \usage{
-plot_hierarchies_line(res, proteinName, configuration, separate = FALSE)
+plot_hierarchies_line(res, proteinName, configuration, factor_level = 1,
+  separate = FALSE)
 }
 \description{
 extracts the relevant information from the configuration to make the plot.

@@ -4,7 +4,8 @@
 \alias{plot_hierarchies_boxplot}
 \title{plot peptides by factors and its levels.}
 \usage{
-plot_hierarchies_boxplot(ddd, proteinName, config, boxplot = TRUE)
+plot_hierarchies_boxplot(ddd, proteinName, config, factor_level = 1,
+  boxplot = TRUE)
 }
 \description{
 plot peptides by factors and its levels.

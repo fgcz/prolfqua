@@ -263,7 +263,7 @@ plot_hierarchies_line_default <- function(data,
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
-plot_hierarchies_line <- function(res, proteinName, configuration, separate=FALSE){
+plot_hierarchies_line <- function(res, proteinName, configuration, factor_level=1, separate=FALSE){
   rev_hnames <- configuration$table$hierarchyKeys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
@@ -276,7 +276,7 @@ plot_hierarchies_line <- function(res, proteinName, configuration, separate=FALS
                                                     intensity = configuration$table$getWorkIntensity(),
                                                     peptide = peptide,
                                                     fragment = fragment,
-                                                    factor = names(configuration$table$factors)[1],
+                                                    factor = configuration$table$factorKeys()[1:factor_level],
                                                     isotopeLabel = configuration$table$isotopeLabel,
                                                     separate = separate,
                                                     log_y = !configuration$parameter$is_intensity_transformed
@@ -308,14 +308,21 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
 #'
 #' LFQService::plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
-plot_hierarchies_boxplot <- function(ddd, proteinName, config, boxplot=TRUE){
+plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1, boxplot=TRUE){
+
+  stopifnot(factor_level <= length(config$table$factorKeys()))
+
+  factor <- config$table$factorKeys()[1:factor_level]
+  isotopeLabel <- config$table$isotopeLabel
+
+  formula <- paste(paste( isotopeLabel, collapse="+"), "~", paste(factor , collapse = "+"))
   ddd %>%  gather("factor","level",config$table$factorKeys()) -> ddlong
   ddlong <- as.data.frame(unclass(ddlong))
   p <- ggplot(ddlong, aes_string(x = config$table$hierarchyKeys(rev = TRUE)[1],
                                  y = config$table$getWorkIntensity(),
                                  fill="level"
   )) +
-    facet_wrap(~factor, ncol=1) +
+    facet_wrap(as.formula(formula), ncol=1) +
     theme_classic() +
     theme(axis.text.x = element_text(angle =45, hjust = 0.5, vjust=0.5)) +
     ggtitle(proteinName)
