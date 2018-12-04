@@ -115,16 +115,16 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
 
 #' get lmer forumula for full model from config
 #' @export
-full_model_formula_lmer <- function(config){
+model_full_lmer <- function(config, factor_level=2){
   if(length(config$table$factorKeys()) > 2)
   {
     error("can't automatically create model formula")
   }
   formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
                                "1 + ",
-                               paste(config$table$factorKeys(), collapse=" + "),
+                               paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
                                " + ",
-                               paste(config$table$factorKeys(), collapse=" * "),
+                               paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
                                paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
   ))
   print(formula)
@@ -138,9 +138,9 @@ full_model_formula_lmer <- function(config){
 
 #' get mixed model no interactions with peptide random, factor from config
 #' @export
-model_no_interaction_formula_lmer <- function(config){
+model_no_interaction_lmer <- function(config, factor_level=2){
   formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
-                               paste(config$table$factorKeys(), collapse="+"),
+                               paste(config$table$factorKeys()[1:factor_level], collapse="+"),
                                paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
   ))
   print(formula)
@@ -154,9 +154,9 @@ model_no_interaction_formula_lmer <- function(config){
 
 #' get mixed model no interactions with peptide and sample random factor, from config
 #' @export
-model_no_interaction_and_sample_lmer <- function(config){
+model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
   formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
-                               paste(config$table$factorKeys(), collapse="+"),
+                               paste(config$table$factorKeys()[1:factor_level], collapse="+"),
                                paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"),
                                paste0(" + (1|", config$table$sampleName,")"),
   ))

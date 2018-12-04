@@ -4,7 +4,7 @@
 \alias{model_no_interaction_and_sample_lmer}
 \title{get mixed model no interactions with peptide and sample random factor, from config}
 \usage{
-model_no_interaction_and_sample_lmer(config)
+model_no_interaction_and_sample_lmer(config, factor_level = 2)
 }
 \description{
 get mixed model no interactions with peptide and sample random factor, from config

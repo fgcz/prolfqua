@@ -312,18 +312,15 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1, boxplot=TRUE){
 
   stopifnot(factor_level <= length(config$table$factorKeys()))
-
-  factor <- config$table$factorKeys()[1:factor_level]
   isotopeLabel <- config$table$isotopeLabel
-
-  formula <- paste(paste( isotopeLabel, collapse="+"), "~", paste(factor , collapse = "+"))
-  ddd %>%  gather("factor","level",config$table$factorKeys()) -> ddlong
+  ddd %>%  gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
   ddlong <- as.data.frame(unclass(ddlong))
+
   p <- ggplot(ddlong, aes_string(x = config$table$hierarchyKeys(rev = TRUE)[1],
                                  y = config$table$getWorkIntensity(),
                                  fill="level"
   )) +
-    facet_wrap(as.formula(formula), ncol=1) +
+    facet_wrap(~factor, ncol=1) +
     theme_classic() +
     theme(axis.text.x = element_text(angle =45, hjust = 0.5, vjust=0.5)) +
     ggtitle(proteinName)
@@ -333,7 +330,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
   if(boxplot){
     p <- p + geom_boxplot()
   }else{
-    p <- p + ggbeeswarm::geom_quasirandom(dodge.width=0.4)
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width=0.7)
   }
   return(p)
 }
