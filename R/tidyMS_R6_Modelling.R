@@ -68,10 +68,10 @@ compute_roc <- function(data, config){
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' data <- transform_work_intensity(data, config, log2)
-#' compute_anova(data, config, hierarchy_level= 2, factor_level=1)
-#' compute_anova(data, config, hierarchy_level = 1, factor_level=2)
-#' compute_anova(data, config, hierarchy_level= 2, factor_level=2)
-compute_anova <- function(data, config, .formula=NULL, hierarchy_level=1, factor_level=1){
+#' compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
+#' compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
+#' compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
+compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, factor_level=1){
   aovmodelfit <- function(x, formula){
     tryCatch(anova(lm(formula , data=x)), error = function(e) return(NULL))
   }
@@ -108,3 +108,99 @@ compute_anova <- function(data, config, .formula=NULL, hierarchy_level=1, factor
   res <- inner_join(inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
   return(res)
 }
+
+# mixed linear models ----
+
+# Creating models from configuration ----
+
+#' get lmer forumula for full model from config
+#' @export
+full_model_formula_lmer <- function(config){
+  if(length(config$table$factorKeys()) > 2)
+  {
+    error("can't automatically create model formula")
+  }
+  formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
+                               "1 + ",
+                               paste(config$table$factorKeys(), collapse=" + "),
+                               " + ",
+                               paste(config$table$factorKeys(), collapse=" * "),
+                               paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
+  ))
+  print(formula)
+  res <- function(x){
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+                          error=function(e){print(e);return=NULL})
+    return(modelTest)
+  }
+  return(res)
+}
+
+#' get mixed model no interactions with peptide random, factor from config
+#' @export
+model_no_interaction_formula_lmer <- function(config){
+  formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
+                               paste(config$table$factorKeys(), collapse="+"),
+                               paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
+  ))
+  print(formula)
+  res <- function(x){
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+                          error=function(e){print(e);return=NULL})
+    return(modelTest)
+  }
+  return(res)
+}
+
+#' get mixed model no interactions with peptide and sample random factor, from config
+#' @export
+model_no_interaction_and_sample_lmer <- function(config){
+  formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
+                               paste(config$table$factorKeys(), collapse="+"),
+                               paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"),
+                               paste0(" + (1|", config$table$sampleName,")"),
+  ))
+  print(formula)
+  res <- function(x){
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+                          error=function(e){print(e);return=NULL})
+    return(modelTest)
+  }
+  return(res)
+}
+
+# extracting results ----
+
+#' get all comparisons
+#' @export
+contrast_tukey_multcomp <- function(model, factor){
+  mcpDef <- mcp(Dummy="Tukey")
+  names(mcpDef) <- factor
+  glt <- glht(model, mcpDef)
+  xx <- dplyr::inner_join(
+    broom::tidy(summary(glt)),
+    broom::tidy(confint(glt)), by=c("lhs","rhs")
+  )
+  return(xx)
+}
+
+#' get all model coefficients
+#' @export
+coef_df <-  function(x){
+  x <- coef(summary(x));
+  x<- data.frame(row.names(x), x);
+  return(x)
+}
+
+#' run analysis of variance on model and get results
+#' @export
+anova_df <- function(x){
+  x <- anova(x)
+  colnames(x) <- make.names(colnames(x))
+  x <- data.frame(rownames(x), x)
+  return(x)
+}
+
+
+
+
