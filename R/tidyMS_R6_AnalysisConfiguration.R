@@ -228,7 +228,6 @@ plot_hierarchies_line_default <- function(data,
       ))
     }else{
       formula <- sprintf("~%s",paste(factor, collapse=" + "))
-      print(formula)
       data <- unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
