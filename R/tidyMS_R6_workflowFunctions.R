@@ -136,7 +136,7 @@ workflow_DIA_NA_preprocessing <- function(data,
   data_NA_QVal <- filter_byQValue(data, config)
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
 
-  resNACondition <- filter_levels_by_missing(data_NA_QVal,
+  resNACondition <- filter_factor_levels_by_missing(data_NA_QVal,
                                              config,
                                              percent = percent,
                                              factor_level = factor_level)

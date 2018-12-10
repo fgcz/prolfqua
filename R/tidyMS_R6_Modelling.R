@@ -116,7 +116,7 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
 #' get lmer forumula for full model from config
 #' @export
 model_full_lmer <- function(config, factor_level=2){
-  if(length(config$table$factorKeys()) > 2)
+  if(factor_level > 2)
   {
     error("can't automatically create model formula")
   }
@@ -144,7 +144,11 @@ model_no_interaction_lmer <- function(config, factor_level=2){
                                paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
   ))
   print(formula)
-  res <- function(x){
+  res <- function(x, get_formula=FALSE){
+    if(get_formula)
+    {
+      return(formula)
+    }
     modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
@@ -177,9 +181,11 @@ contrast_tukey_multcomp <- function(model, factor){
   mcpDef <- mcp(Dummy="Tukey")
   names(mcpDef) <- factor
   glt <- glht(model, mcpDef)
+  sglt <- broom::tidy(summary(glt))
+  ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
   xx <- dplyr::inner_join(
-    broom::tidy(summary(glt)),
-    broom::tidy(confint(glt)), by=c("lhs","rhs")
+    sglt,
+    ciglt, by=c("lhs","rhs")
   )
   return(xx)
 }

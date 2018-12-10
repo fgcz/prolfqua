@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{removeLarge_Q_Values}
 \alias{removeLarge_Q_Values}
-\title{sets intensities to NA if maxQValue_Threshold exceeded}
+\title{sets intensities to NA if qVal_individual_threshold exceeded}
 \usage{
 removeLarge_Q_Values(data, config)
 }
 \description{
-sets intensities to NA if maxQValue_Threshold exceeded
+sets intensities to NA if qVal_individual_threshold exceeded
 }
 \examples{
 analysis <- LFQService::spectronautDIAData250_analysis

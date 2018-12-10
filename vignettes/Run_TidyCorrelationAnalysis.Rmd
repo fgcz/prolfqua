@@ -99,7 +99,7 @@ knitr::kable(LFQService::hierarchyCounts(longQSummaries, config))
 ```
 
 ```{r}
-qvalFilt <- longQSummaries %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
+qvalFilt <- longQSummaries %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 LFQService::hierarchyCounts(qvalFilt, config)
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)

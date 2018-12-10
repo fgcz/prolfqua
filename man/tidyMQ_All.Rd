@@ -2,17 +2,10 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_All}
 \alias{tidyMQ_All}
-\title{Generating mq all level file.}
+\title{Generating mq all level file incuding evidence - modseqPeptide still missing.}
 \usage{
 tidyMQ_All(txt_directory)
 }
 \description{
-Generating mq all level file.
-}
-\examples{
-
-txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
-allData <- tidyMQ_All(txt_directory)
-zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
-res <- tidyMQ_All(zip_archive)
+Generating mq all level file incuding evidence - modseqPeptide still missing.
 }

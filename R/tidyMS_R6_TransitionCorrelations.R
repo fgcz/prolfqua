@@ -11,7 +11,7 @@
   return(data)
 }
 
-#' sets intensities to NA if maxQValue_Threshold exceeded
+#' sets intensities to NA if qVal_individual_threshold exceeded
 #' @export
 #' @family filter functions
 #' @examples
@@ -20,7 +20,7 @@
 #' res <- removeLarge_Q_Values(analysis, config)
 removeLarge_Q_Values <- function(data, config){
   data <- data %>%
-    dplyr::filter(!!sym(config$table$ident_qValue) < config$parameter$maxQValue_Threshold)
+    dplyr::filter(!!sym(config$table$ident_qValue) < config$parameter$qVal_individual_threshold)
   return(data)
 }
 
@@ -173,17 +173,17 @@ summariseQValues <- function(data,
   precursorIDs <- config$table$hierarchyKeys()
   fileName <- config$table$fileName
   QValue  <- config$table$ident_qValue
-  minNumberOfQValues <- config$parameter$minNumberOfQValues
-  maxQValThreshold <- config$parameter$maxQValue_Threshold
+  qVal_minNumber_below_experiment_threshold <- config$parameter$qVal_minNumber_below_experiment_threshold
+  maxqVal_experiment_threshold <- config$parameter$qVal_individual_threshold
 
-  nthbestQValue <-  function(x,minNumberOfQValues){sort(x)[minNumberOfQValues]}
-  npass <-  function(x,thresh = maxQValThreshold){sum(x < thresh)}
+  nthbestQValue <-  function(x,qVal_minNumber_below_experiment_threshold){sort(x)[qVal_minNumber_below_experiment_threshold]}
+  npass <-  function(x,thresh = maxqVal_experiment_threshold){sum(x < thresh)}
 
   qValueSummaries <- data %>%
     dplyr::select(!!!syms(c(fileName, precursorIDs, config$table$ident_qValue))) %>%
     dplyr::group_by_at(precursorIDs) %>%
-    dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,minNumberOfQValues ),
-                                                    !!QValueNR  := npass(., maxQValThreshold)
+    dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,qVal_minNumber_below_experiment_threshold ),
+                                                    !!QValueNR  := npass(., maxqVal_experiment_threshold)
     ))
   data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorIDs))
   message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
@@ -192,18 +192,19 @@ summariseQValues <- function(data,
 
 #' filter data by max and min Q Value threshold
 #'
-#' employs parameters ident_qValue, minNumberOfQValues,
-#' maxQValue_Threshold and qValThreshold
+#' employs parameters ident_qValue, qVal_minNumber_below_experiment_threshold,
+#' qVal_individual_threshold and qVal_experiment_threshold
 #' @export
 #' @examples
 #' config <- skylineconfig$clone(deep=TRUE)
+#'
 #' summarizeHierarchy(sample_analysis, config)
 #' res <- filter_byQValue(sample_analysis, config)
 #' summarizeHierarchy(res, config)
 filter_byQValue <- function(data, config){
   data_NA <- removeLarge_Q_Values(data, config)
   data_NA <- summariseQValues(data_NA, config)
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qValThreshold )   )
+  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 }
 
 
@@ -225,7 +226,7 @@ filter_byQValue <- function(data, config){
 #'  group_by_at(skylineconfig$table$hierarchyKeys()[1]) %>%
 #'  tidyr::nest()
 #' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
-#' stopifnot(dim(xx)==c(104,22))
+#' stopifnot(dim(xx)==c(103,22))
 #'
 extractIntensities <- function(x, configuration ){
   table <- configuration$table
@@ -587,12 +588,12 @@ rankPrecursorsByNAs <- function(data, config){
 #' data <- spectronautDIAData250_analysis
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchyCounts(data, config)
-#' res <- filter_levels_by_missing(data, config,percent = 60)
+#' res <- filter_factor_levels_by_missing(data, config,percent = 60)
 #' data1 <-completeCases(data, config)
 #' hierarchyCounts(res, config)
 #' summarizeHierarchy(res,config) %>% dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
-filter_levels_by_missing <- function(data,
+filter_factor_levels_by_missing <- function(data,
                                      config,
                                      percent = 60,
                                      factor_level = 1 ){

@@ -13,7 +13,7 @@ Histogram summarizing missigness
 library(tidyverse)
 library(LFQService)
 xx <- completeCases(sample_analysis,skylineconfig)
-skylineconfig$parameter$maxQValue_Threshold <- 0.01
+skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- completeCases(xx, skylineconfig)
 missignessHistogram(xx,skylineconfig)

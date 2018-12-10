@@ -5,10 +5,9 @@ library(R6)
 #' @export
 AnalysisParameters <- R6::R6Class("AnalysisParameters",
                                   public = list(
-                                    maxQValue_Threshold  = 0.05,
-                                    nrOfSigQvalues_Threshold = 5,
-                                    qValThreshold = 0.01,
-                                    minNumberOfQValues = 3,
+                                    qVal_individual_threshold  = 0.05,
+                                    qVal_experiment_threshold = 0.01,
+                                    qVal_minNumber_below_experiment_threshold = 3,
                                     is_intensity_transformed = FALSE, # important for some plotting functions
                                     min_nr_of_notNA = 1, # how many values per transition total
                                     min_nr_of_notNA_condition = 0, # how many not missing in condition
@@ -272,14 +271,14 @@ plot_hierarchies_line <- function(res, proteinName, configuration, factor_level=
     peptide <- rev_hnames[2]
   }
   res <- LFQService:::plot_hierarchies_line_default(res, proteinName = proteinName,
-                                                   sample = configuration$table$sampleName,
-                                                   intensity = configuration$table$getWorkIntensity(),
-                                                   peptide = peptide,
-                                                   fragment = fragment,
-                                                   factor = configuration$table$factorKeys()[1:factor_level],
-                                                   isotopeLabel = configuration$table$isotopeLabel,
-                                                   separate = separate,
-                                                   log_y = !configuration$parameter$is_intensity_transformed
+                                                    sample = configuration$table$sampleName,
+                                                    intensity = configuration$table$getWorkIntensity(),
+                                                    peptide = peptide,
+                                                    fragment = fragment,
+                                                    factor = configuration$table$factorKeys()[1:factor_level],
+                                                    isotopeLabel = configuration$table$isotopeLabel,
+                                                    separate = separate,
+                                                    log_y = !configuration$parameter$is_intensity_transformed
   )
   return(res)
 }
@@ -493,7 +492,7 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
 #' library(tidyverse)
 #' library(LFQService)
 #' xx <- completeCases(sample_analysis,skylineconfig)
-#' skylineconfig$parameter$maxQValue_Threshold <- 0.01
+#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- completeCases(xx, skylineconfig)
 #' missignessHistogram(xx,skylineconfig)
@@ -723,14 +722,21 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
   }
   stats_res <- summarize_cv(dataTransformed, config, all=FALSE)
   sd <- na.omit(stats_res$sd)
-  quantilesSD <- quantile(sd,seq(0.2,1,length=9))
-  getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
-  N <- sapply(quantilesSD, getSampleSize)
-  sampleSizes <- data.frame( quantile = names(N) ,
-                             sd = round(quantilesSD, digits=3),
-                             N_exact = round(N, digits=3),
-                             N = ceiling(N))
-  rownames(sampleSizes) <- NULL
+  if(length(sd) > 0){
+    quantilesSD <- quantile(sd,seq(0.2,1,length=9))
+    getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
+    N <- sapply(quantilesSD, getSampleSize)
+    sampleSizes <- data.frame( quantile = names(N) ,
+                               sd = round(quantilesSD, digits=3),
+                               N_exact = round(N, digits=3),
+                               N = ceiling(N))
+    rownames(sampleSizes) <- NULL
+  }else{
+    sampleSizes <- data.frame(quantile = names(N) ,
+                              sd =NA,
+                              N_exact = NA,
+                              N = NA)
+  }
   return(sampleSizes)
 }
 

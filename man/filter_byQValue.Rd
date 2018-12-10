@@ -7,11 +7,12 @@
 filter_byQValue(data, config)
 }
 \description{
-employs parameters ident_qValue, minNumberOfQValues,
-maxQValue_Threshold and qValThreshold
+employs parameters ident_qValue, qVal_minNumber_below_experiment_threshold,
+qVal_individual_threshold and qVal_experiment_threshold
 }
 \examples{
 config <- skylineconfig$clone(deep=TRUE)
+
 summarizeHierarchy(sample_analysis, config)
 res <- filter_byQValue(sample_analysis, config)
 summarizeHierarchy(res, config)
