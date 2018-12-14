@@ -119,6 +119,17 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
   return(newConfig)
 }
 
+#' create interaction column from factors
+#' @export
+#' @examples
+make_interaction_column <- function(data, config){
+  intr <- dplyr::select(data, config$table$factorKeys()[1:config$table$factorLevel])
+  intr <- purrr::map2_dfc(columns, intr, paste0)
+  colnames(intr) <- paste0("interaction_",columns)
+  data$interaction <- interaction(intr)
+  return(data)
+}
+
 # Functions - Configuration ----
 #' Helper function to extract all value slots in an R6 object
 #' @param r6class r6 class
@@ -724,7 +735,7 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
   sd <- na.omit(stats_res$sd)
   if(length(sd) > 0){
     quantilesSD <- quantile(sd,seq(0.2,1,length=9))
-    getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd ,power=power,sig.level=sig.level)$n}
+    getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
     N <- sapply(quantilesSD, getSampleSize)
     sampleSizes <- data.frame( quantile = names(N) ,
                                sd = round(quantilesSD, digits=3),
@@ -732,7 +743,7 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
                                N = ceiling(N))
     rownames(sampleSizes) <- NULL
   }else{
-    sampleSizes <- data.frame(quantile = names(N) ,
+    sampleSizes <- data.frame(quantile = NA ,
                               sd =NA,
                               N_exact = NA,
                               N = NA)
@@ -938,7 +949,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res[is.na(res)] <- 1
   res <- res[apply(res,1, sum) > 0,]
   if(nrow(res) > 0){
-    res <- heatmap3::heatmap3(res,
+    res_plot <- heatmap3::heatmap3(res,
                               distfun = function(x){dist(x, method="binary")},
                               scale="none",
                               col=c("white","black"),
@@ -951,5 +962,5 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
                                            col=c("black"),
                                            cex=1.5))
   }
-  invisible(res)
+  invisible(list(res = res, res_plot=res_plot))
 }
