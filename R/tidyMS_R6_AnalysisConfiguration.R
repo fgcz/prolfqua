@@ -122,11 +122,21 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' create interaction column from factors
 #' @export
 #' @examples
-make_interaction_column <- function(data, config){
-  intr <- dplyr::select(data, config$table$factorKeys()[1:config$table$factorLevel])
+make_interaction_column <- function(data, columns, sep="."){
+  intr <- dplyr::select(data, columns)
   intr <- purrr::map2_dfc(columns, intr, paste0)
   colnames(intr) <- paste0("interaction_",columns)
-  data$interaction <- interaction(intr)
+  data$interaction <- interaction(intr, sep=sep)
+  return(data)
+}
+
+
+#' create interaction column from factors
+#' @export
+#' @examples
+make_interaction_column_config <- function(data, config){
+  columns <- config$table$factorKeys()[1:config$table$factorLevel]
+  data <- make_interaction_column(data, columns)
   return(data)
 }
 

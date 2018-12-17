@@ -207,6 +207,100 @@ anova_df <- function(x){
   return(x)
 }
 
+# visualize modelling results ----
+
+#' Plot prdictions
+#' @export
+#'
+plot_lme4_peptide_predictions <- function(m){
+  data <- m@frame
+  data$prediction <- predict(m)
+  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  data <- make_interaction_column(data, interactionColumns, sep=":")
+  gg <- ggplot(data, aes(x = interaction , y= transformedIntensity)) + geom_point()
+  gg <- gg + geom_point(aes(x = interaction, y = prediction), color=2) + facet_wrap(~peptide_Id)
+  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0))
+  return(gg)
+}
 
 
+#' plot peptide intensities per interaction with random effects removed
+#' @export
+#'
+plot_lmer4_peptide_noRandom <- function(m){
+  data <- m@frame
+  ran <- ranef(m)[[1]]
+  randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
+  ran <- as.tibble(ran,rownames = randeffect)
+  colnames(ran) <- gsub("[()]","",colnames(ran))
+  ran <- inner_join(data, ran, by=randeffect)
 
+  ran <- ran %>% mutate(int_randcorrected  = transformedIntensity  - Intercept)
+  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  ran <- make_interaction_column(ran,interactionColumns, sep=":" )
+
+  meanx <- function(x){mean(x,na.rm=TRUE)}
+  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color=peptide_Id)) + geom_point()
+  gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
+                          shape=12, size=3,show.legend = FALSE)
+  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0))
+  return(gg)
+}
+
+
+#' get matrix of indicator coefficients for each interaction
+#' @export
+#'
+lmer4_coeff_matrix <- function(m){
+  data <- m@frame
+  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  data <- make_interaction_column(data, interactionColumns, sep=":")
+
+  coeffs <- coefficients(summary(m))[,'Estimate']
+
+  inter <- unique(data$interaction)
+  mm <- matrix(0, nrow=length(inter), ncol=length(coeffs))
+  rownames(mm) <- inter
+  colnames(mm) <- names(coeffs)
+  mm[,1]<-1
+  coefi <- coeffs[-1]
+  for(i in 1:length(coefi)){
+    positionIDX <- grep(names(coefi)[i], inter)
+    mm[positionIDX,i+1] <- 1
+  }
+  return(list(mm = mm, coeffs = coeffs))
+}
+
+#' Add predicted values for each interaction
+#' @export
+#'
+plot_predicted_interactions <- function(gg, m){
+  cm <- lmer4_coeff_matrix(m)
+  xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
+  ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
+                           yend = cm$mm %*% cm$coeffs)
+  segments <- inner_join(xstart_end, ystart_end)
+  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
+  return(gg)
+}
+
+
+#' apply glht method to linfct
+my_glht <- function(model , linfct , sep=FALSE){
+  if(sep){
+    res <- list()
+    for(i in 1:nrow(linfct)){
+      x <- glht(model, linfct=linfct[i,,drop=FALSE])
+      RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+      x <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
+      res[[i]] <- x
+    }
+    res <- bind_rows(res)
+    return(res)
+  }else{
+    x <- glht(model, linfct = linfct)
+    RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+    res <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
+    res
+  }
+}
