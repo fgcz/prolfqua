@@ -240,10 +240,12 @@ plot_lmer4_peptide_noRandom <- function(m){
   ran <- make_interaction_column(ran,interactionColumns, sep=":" )
 
   meanx <- function(x){mean(x,na.rm=TRUE)}
-  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color=peptide_Id)) + geom_point()
+  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color=peptide_Id)) +
+    geom_point(position = position_jitterdodge())
   gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
                           shape=12, size=3,show.legend = FALSE)
   gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0))
+  gg <- gg + geom_boxplot(alpha=0.1)
   return(gg)
 }
 
@@ -286,6 +288,7 @@ plot_predicted_interactions <- function(gg, m){
 
 
 #' apply glht method to linfct
+#' @export
 my_glht <- function(model , linfct , sep=FALSE){
   if(sep){
     res <- list()
