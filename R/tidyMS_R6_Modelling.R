@@ -273,6 +273,23 @@ lmer4_coeff_matrix <- function(m){
   return(list(mm = mm, coeffs = coeffs))
 }
 
+#' coeff_weights_factor_levels
+#' @export
+coeff_weights_factor_levels <- function(mm){
+  getCoeffs <- function(factor_level, mm){
+    idx <- grep(factor_level, rownames(cm$mm))
+    x<- as.list(apply(cm$mm[idx,],2,mean) )
+    x <- as.tibble(x)
+    add_column(x, "factor_level" = factor_level,.before=1)
+  }
+  factor_levels <- unique(unlist(str_split(rownames(mm), ":")))
+  xx <- map_df(factor_levels, getCoeffs, mm)
+  return(xx)
+}
+
+
+
+
 #' Add predicted values for each interaction
 #' @export
 #'
@@ -307,3 +324,4 @@ my_glht <- function(model , linfct , sep=FALSE){
     res
   }
 }
+
