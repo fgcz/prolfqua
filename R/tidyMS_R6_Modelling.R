@@ -53,8 +53,6 @@ compute_roc <- function(data, config){
   return(dumm)
 }
 
-
-
 #' Perform anova analysis
 #' @export
 #' @importFrom glue glue
@@ -273,6 +271,23 @@ lmer4_coeff_matrix <- function(m){
   return(list(mm = mm, coeffs = coeffs))
 }
 
+#' coeff_weights_factor_levels
+#' @export
+coeff_weights_factor_levels <- function(mm){
+  getCoeffs <- function(factor_level, mm){
+    idx <- grep(factor_level, rownames(cm$mm))
+    x<- as.list(apply(cm$mm[idx,],2,mean) )
+    x <- as.tibble(x)
+    add_column(x, "factor_level" = factor_level,.before=1)
+  }
+  factor_levels <- unique(unlist(str_split(rownames(mm), ":")))
+  xx <- map_df(factor_levels, getCoeffs, mm)
+  return(xx)
+}
+
+
+
+
 #' Add predicted values for each interaction
 #' @export
 #'
@@ -307,3 +322,64 @@ my_glht <- function(model , linfct , sep=FALSE){
     res
   }
 }
+
+
+
+#' Workflow function to apply modelFunction to peroteinList nestProtein
+#'
+#' apply modelling, extracts coefficients,
+#' funs anova, filters results, generates histogram of p-values, pairsplot
+#'
+#' @export
+workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, prot_stats)
+{
+  lmermodel <- paste0("lmer_", modelName)
+  exists_lmer <- paste0("exists_lmer_", modelName)
+  Coeffs_model <- paste0("Coeffs_", modelName)
+  Anova_model <- paste0("Anova_", modelName)
+
+  nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) ->
+    modelProtein
+
+  modelProtein <- modelProtein %>% mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
+  modelProteinF <- modelProtein %>% filter( !!sym(exists_lmer) == TRUE)
+  no_ModelProtein <- modelProtein %>% filter(!!sym(exists_lmer) == FALSE)
+
+  modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
+  modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map(!!sym(lmermodel),  anova_df ))
+
+  Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model)) %>% unnest()
+  Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model)) %>% unnest()
+
+  reslist <- list()
+  reslist$models <- modelProteinF
+  reslist$no_models <- no_ModelProtein
+
+  reslist$fig <- list()
+  reslist$table <- list()
+
+  reslist$fig$histogram_coeff_p.values <- ggplot(data=Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
+    geom_histogram(bins = 20) +
+    facet_wrap(~row.names.x.)
+  reslist$fig$VolcanoPlot <- Model_Coeff %>% filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
+    effect = "Estimate",
+    type = "Pr...t..",
+    condition = "row.names.x.",
+    label = "protein_Id", xintercept = c(-1, 1))
+
+  Model_Coeff %>% dplyr::select(protein_Id , row.names.x. ,  Estimate ) %>% tidyr::spread(row.names.x.,Estimate ) -> forPairs
+  reslist$fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
+
+
+  reslist$fig$histogram_anova_p.values <- ggplot(data=Model_Anova, aes(x = Pr..F., group=rownames.x.)) +
+    geom_histogram(bins = 20) +
+    facet_wrap(~rownames.x.)
+
+  reslist$table$Model_Coeff <- inner_join(prot_stats, Model_Coeff)
+  reslist$table$Model_Anova <-inner_join( prot_stats , Model_Anova )
+
+  return(reslist)
+}
+
+
+
