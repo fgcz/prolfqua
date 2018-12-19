@@ -342,7 +342,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
            pep = min(pep, na.rm=TRUE),
            peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>% ungroup()
 
-  dimcheck <- mq_modSpecPeptides %>% select(peptide.id, raw.file ) %>% distinct() %>% nrow()
+  dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>% distinct() %>% nrow()
 
   peptides <- xx %>% select( relevantColumns ) %>% distinct()
   stopifnot( dimcheck == nrow(peptides) )

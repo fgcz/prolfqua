@@ -127,7 +127,7 @@ model_full_lmer <- function(config, factor_level=2){
   ))
   print(formula)
   res <- function(x){
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+    modelTest <- tryCatch(lme4::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
   }
@@ -147,7 +147,7 @@ model_no_interaction_lmer <- function(config, factor_level=2){
     {
       return(formula)
     }
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+    modelTest <- tryCatch(lme4::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
   }
@@ -170,6 +170,14 @@ model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
   }
   return(res)
 }
+
+#' Likelihood ratio test
+#' @export
+#'
+likelihood_ratio_test <- function(modelNO, model) {
+  broom::tidy(anova(modelNO,model))[2,"p.value"]
+}
+
 
 # extracting results ----
 
@@ -271,6 +279,7 @@ lmer4_coeff_matrix <- function(m){
   return(list(mm = mm, coeffs = coeffs))
 }
 
+
 #' coeff_weights_factor_levels
 #' @export
 coeff_weights_factor_levels <- function(mm){
@@ -300,6 +309,17 @@ plot_predicted_interactions <- function(gg, m){
   gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
   return(gg)
 }
+
+#' Make model plot with title - protein Name.
+#' @export
+#'
+plot_model_and_data <- function(m, proteinID){
+  gg <- plot_lmer4_peptide_noRandom(m)
+  gg <- plot_predicted_interactions(gg, m)
+  gg <- gg + ggtitle(proteinID)
+  gg
+}
+
 
 
 #' apply glht method to linfct
