@@ -73,9 +73,9 @@ tidyMQ_Evidence <- function(Evidence){
 #' @examples
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
-#' allData <- tidyMQ_All(txt_directory)
+#' allData <- tidyMQ_merged(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
-#' res <- tidyMQ_All(zip_archive)
+#' res <- tidyMQ_merged(zip_archive)
 tidyMQ_merged <- function(txt_directory){
   if(grepl("\\.zip$",txt_directory)){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
@@ -101,7 +101,7 @@ tidyMQ_merged <- function(txt_directory){
 #' Generating mq all level file incuding evidence - modseqPeptide still missing.
 tidyMQ_All <- function(txt_directory){
   warning("Deprecated : use tidyMQ_merged.")
-  return( tidyMQ_All(txt_directory) )
+  return( tidyMQ_merged(txt_directory) )
 }
 
 #' Generating mq all level file.
@@ -110,7 +110,7 @@ tidyMQ_All <- function(txt_directory){
 #' @examples
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
-#' allData <- tidyMQ_All(txt_directory)
+#' allData <- tidyMQ_merged(txt_directory)
 #' zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
 #' #res <- tidyMQ_PeptideProtein(zip_archive)
 #'
