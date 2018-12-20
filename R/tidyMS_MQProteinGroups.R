@@ -15,12 +15,12 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
   pint <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("intensity."))
   pintLFQ <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("lfq.intensity."))
   meta <- dplyr::select(MQProteinGroups,
-                        "protein.ids" = "protein.ids",
-                        "majority.protein.ids" = "majority.protein.ids",
-                        "nr.peptides" = "peptides",
-                        "fasta.headers",
-                        "protein.group.id" = "id",
-                        "protein.score" = "score"
+    "protein.ids" = "protein.ids",
+    "majority.protein.ids" = "majority.protein.ids",
+    "nr.peptides" = "peptides",
+    "fasta.headers",
+    "protein.group.id" = "id",
+    "protein.score" = one_of("score")
   )
 
   pint <- pint %>%
@@ -163,7 +163,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     if(grepl("\\.zip$",MQPeptides)){
       print(MQPeptides)
       MQPeptides <- read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
-                               header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
     }else{
       MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
     }
@@ -181,7 +181,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "mod.peptide.score" ="score",
                         "delta.score",
                         "pep",
-                        "missed.cleavages",
+                        one_of("missed.cleavages"),
                         "unique.groups" = "unique..groups.",
                         "unique.proteins" = "unique..proteins.",
                         "reverse" = "reverse",
@@ -247,17 +247,17 @@ tidyMQ_Peptides <- function(MQPeptides){
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   sc <- sym("potential.contaminant")
   meta <- dplyr::select(MQPeptides,
-                        "peptide.id" = "id",
-                        "sequence",
-                        "proteins",
-                        "leading.razor.protein",
-                        "protein.group.id"="protein.group.ids",
-                        "peptide.score" ="score",
-                        "pep",
-                        "missed.cleavages",
-                        "unique.groups" = "unique..groups.",
-                        "potential.contaminant" = ends_with("contaminant"),
-                        "reverse" = "reverse") %>%
+    "peptide.id" = "id",
+    "sequence",
+    "proteins",
+    "leading.razor.protein",
+    "protein.group.id"="protein.group.ids",
+    "peptide.score" ="score",
+    "pep",
+    one_of("missed.cleavages"),
+    "unique.groups" = "unique..groups.",
+    "potential.contaminant" = ends_with("contaminant"),
+    "reverse" = "reverse") %>%
     mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
@@ -344,7 +344,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 
   dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>% distinct() %>% nrow()
 
-  peptides <- xx %>% select( relevantColumns ) %>% distinct()
+  peptides <- xx %>% select( one_of(relevantColumns) ) %>% distinct()
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }
