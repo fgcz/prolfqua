@@ -127,7 +127,7 @@ model_full_lmer <- function(config, factor_level=2){
   ))
   print(formula)
   res <- function(x){
-    modelTest <- tryCatch(lme4::lmer( formula , data=x ),
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
   }
@@ -147,7 +147,7 @@ model_no_interaction_lmer <- function(config, factor_level=2){
     {
       return(formula)
     }
-    modelTest <- tryCatch(lme4::lmer( formula , data=x ),
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
   }
