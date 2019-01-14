@@ -25,6 +25,7 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      factors = list(), # ordering is important - first is considered the main
                                      factorLevel=integer(),
 
+
                                      sampleName = "sampleName",
                                      # measurement levels
                                      hierarchy = list(),
