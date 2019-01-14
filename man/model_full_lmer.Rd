@@ -4,7 +4,7 @@
 \alias{model_full_lmer}
 \title{get lmer forumula for full model from config}
 \usage{
-model_full_lmer(config, factor_level = 2)
+model_full_lmer(config, factor_level = 2, random = NULL)
 }
 \description{
 get lmer forumula for full model from config

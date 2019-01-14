@@ -113,18 +113,22 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
 
 #' get lmer forumula for full model from config
 #' @export
-model_full_lmer <- function(config, factor_level=2){
+model_full_lmer <- function(config, factor_level=2, random= NULL){
   if(factor_level > 2)
   {
     error("can't automatically create model formula")
   }
-  formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
-                               "1 + ",
-                               paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
-                               " + ",
-                               paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
-                               paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
-  ))
+  formula_str <- paste0(config$table$getWorkIntensity(), " ~ ",
+                        "1 + ",
+                        paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
+                        " + ",
+                        paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
+                        paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"))
+  if(!is.null(random)){
+    formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
+  }
+  formula <- as.formula( formula_str )
+
   print(formula)
   res <- function(x){
     modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
@@ -136,11 +140,16 @@ model_full_lmer <- function(config, factor_level=2){
 
 #' get mixed model no interactions with peptide random, factor from config
 #' @export
-model_no_interaction_lmer <- function(config, factor_level=2){
-  formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
-                               paste(config$table$factorKeys()[1:factor_level], collapse="+"),
-                               paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")")
-  ))
+model_no_interaction_lmer <- function(config, factor_level=2, random = NULL){
+  formula_str <- paste0(config$table$getWorkIntensity(), " ~ ",
+                        paste(config$table$factorKeys()[1:factor_level], collapse="+"),
+                        paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"))
+  if(!is.null(random)){
+    formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
+  }
+  formula <- as.formula(
+    formula_str
+  )
   print(formula)
   res <- function(x, get_formula=FALSE){
     if(get_formula)
@@ -153,6 +162,7 @@ model_no_interaction_lmer <- function(config, factor_level=2){
   }
   return(res)
 }
+
 
 #' get mixed model no interactions with peptide and sample random factor, from config
 #' @export
@@ -176,6 +186,23 @@ model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
 #'
 likelihood_ratio_test <- function(modelNO, model) {
   broom::tidy(anova(modelNO,model))[2,"p.value"]
+}
+
+#' Create custom model
+#' @export
+#'
+make_custom_model <- function(modelstr){
+  formula <- as.formula(modelstr)
+  res <- function(x, get_formula=FALSE){
+    if(get_formula)
+    {
+      return(formula)
+    }
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+                          error=function(e){print(e) ; return=NULL})
+    return(modelTest)
+  }
+  return(res)
 }
 
 
@@ -365,11 +392,14 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   modelProteinF <- modelProtein %>% filter( !!sym(exists_lmer) == TRUE)
   no_ModelProtein <- modelProtein %>% filter(!!sym(exists_lmer) == FALSE)
 
+  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), isSingular ))
+  modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), function(x){ncol(coef(x)[[1]])} ))
+
   modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
   modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map(!!sym(lmermodel),  anova_df ))
 
-  Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model)) %>% unnest()
-  Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model)) %>% unnest()
+  Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
+  Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
 
   reslist <- list()
   reslist$models <- modelProteinF
@@ -381,11 +411,12 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   reslist$fig$histogram_coeff_p.values <- ggplot(data=Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
+
   reslist$fig$VolcanoPlot <- Model_Coeff %>% filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
     effect = "Estimate",
     type = "Pr...t..",
     condition = "row.names.x.",
-    label = "protein_Id", xintercept = c(-1, 1))
+    label = "protein_Id", xintercept = c(-1, 1),colour = "isSingular")
 
   Model_Coeff %>% dplyr::select(protein_Id , row.names.x. ,  Estimate ) %>% tidyr::spread(row.names.x.,Estimate ) -> forPairs
   reslist$fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
