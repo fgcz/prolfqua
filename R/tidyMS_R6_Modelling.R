@@ -392,11 +392,12 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   modelProteinF <- modelProtein %>% filter( !!sym(exists_lmer) == TRUE)
   no_ModelProtein <- modelProtein %>% filter(!!sym(exists_lmer) == FALSE)
 
-  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), isSingular ))
+  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), lme4::isSingular ))
   modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), function(x){ncol(coef(x)[[1]])} ))
 
   modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
   modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map(!!sym(lmermodel),  anova_df ))
+  modelPorteinF <- inner_join(modelProteinF, port_stats)
 
   Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
   Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
