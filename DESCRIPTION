@@ -20,6 +20,7 @@ Imports:
     ggbeeswarm,
     glue,
     heatmap3,
+    multcomp,
     quantable,
     purrr,
     readxl,
