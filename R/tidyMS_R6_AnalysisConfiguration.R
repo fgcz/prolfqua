@@ -40,6 +40,13 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 
                                      initialize = function(){
                                      },
+                                     getFactorLevel = function(){
+                                       if(length(self$factorLevel) == 0){
+                                         return(length(hierarchy))
+                                       }else{
+                                         return(self$factorLevel)
+                                       }
+                                     },
                                      setWorkIntensity = function(colName){
                                        self$workIntensity <- c(self$workIntensity, colName)
                                      },
