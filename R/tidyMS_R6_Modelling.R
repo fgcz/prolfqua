@@ -262,7 +262,7 @@ plot_lme4_peptide_predictions <- function(m){
 #'
 plot_lmer4_peptide_noRandom <- function(m){
   data <- m@frame
-  ran <- ranef(m)[[1]]
+  ran <- lme4::ranef(m)[[1]]
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
   ran <- as.tibble(ran,rownames = randeffect)
   colnames(ran) <- gsub("[()]","",colnames(ran))
@@ -332,7 +332,7 @@ plot_predicted_interactions <- function(gg, m){
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
   ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
                            yend = cm$mm %*% cm$coeffs)
-  segments <- inner_join(xstart_end, ystart_end)
+  segments <- inner_join(xstart_end, ystart_end, by="xend")
   gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
   return(gg)
 }
