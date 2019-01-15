@@ -415,7 +415,7 @@ hierarchyCounts <- function(x, configuration){
 #' hierarchy_counts_sample(sample_analysis, skylineconfig)
 #'
 hierarchy_counts_sample <- function(data, configuration){
-  hierarchy <- names( configuration$table$hierarchy )
+  hierarchy <- names( configuration$table$hierarchy )[1:configuration$table$getFactorLevel()]
   data %>% filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
   res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>% summarise_at( hierarchy, n_distinct )
   return(res)
