@@ -211,9 +211,9 @@ make_custom_model <- function(modelstr){
 #' get all comparisons
 #' @export
 contrast_tukey_multcomp <- function(model, factor){
-  mcpDef <- mcp(Dummy="Tukey")
+  mcpDef <- multcomp::mcp(Dummy="Tukey")
   names(mcpDef) <- factor
-  glt <- glht(model, mcpDef)
+  glt <- multcomp::glht(model, mcpDef)
   sglt <- broom::tidy(summary(glt))
   ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
   xx <- dplyr::inner_join(
@@ -397,7 +397,7 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
 
   modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
   modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map(!!sym(lmermodel),  anova_df ))
-  modelPorteinF <- inner_join(modelProteinF, port_stats)
+  modelProteinF <- inner_join(modelProteinF, prot_stats)
 
   Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
   Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
