@@ -174,16 +174,16 @@ summariseQValues <- function(data,
   fileName <- config$table$fileName
   QValue  <- config$table$ident_qValue
   qVal_minNumber_below_experiment_threshold <- config$parameter$qVal_minNumber_below_experiment_threshold
-  maxqVal_experiment_threshold <- config$parameter$maxqVal_experiment_threshold
+  qVal_experiment_threshold <- config$parameter$qVal_experiment_threshold
 
   nthbestQValue <-  function(x,qVal_minNumber_below_experiment_threshold){sort(x)[qVal_minNumber_below_experiment_threshold]}
-  npass <-  function(x,thresh = maxqVal_experiment_threshold){sum(x < thresh)}
+  npass <-  function(x,thresh = qVal_experiment_threshold){sum(x < thresh)}
 
   qValueSummaries <- data %>%
     dplyr::select(!!!syms(c(fileName, precursorIDs, config$table$ident_qValue))) %>%
     dplyr::group_by_at(precursorIDs) %>%
     dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,qVal_minNumber_below_experiment_threshold ),
-                                                    !!QValueNR  := npass(., maxqVal_experiment_threshold)
+                                                    !!QValueNR  := npass(., qVal_experiment_threshold)
     ))
   data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorIDs))
   message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
