@@ -42,7 +42,7 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      },
                                      getFactorLevel = function(){
                                        if(length(self$factorLevel) == 0){
-                                         return(length(hierarchy))
+                                         return(length(self$factors))
                                        }else{
                                          return(self$factorLevel)
                                        }
@@ -417,7 +417,8 @@ hierarchyCounts <- function(x, configuration){
 hierarchy_counts_sample <- function(data, configuration){
   hierarchy <- names( configuration$table$hierarchy )[1:configuration$table$getFactorLevel()]
   data %>% filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
-  res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>% summarise_at( hierarchy, n_distinct )
+  res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
+    summarise_at( hierarchy, n_distinct )
   return(res)
 }
 #' Light only version.

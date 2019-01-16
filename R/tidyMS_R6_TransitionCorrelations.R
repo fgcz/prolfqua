@@ -174,7 +174,7 @@ summariseQValues <- function(data,
   fileName <- config$table$fileName
   QValue  <- config$table$ident_qValue
   qVal_minNumber_below_experiment_threshold <- config$parameter$qVal_minNumber_below_experiment_threshold
-  maxqVal_experiment_threshold <- config$parameter$qVal_individual_threshold
+  maxqVal_experiment_threshold <- config$parameter$maxqVal_experiment_threshold
 
   nthbestQValue <-  function(x,qVal_minNumber_below_experiment_threshold){sort(x)[qVal_minNumber_below_experiment_threshold]}
   npass <-  function(x,thresh = maxqVal_experiment_threshold){sum(x < thresh)}
