@@ -130,7 +130,12 @@ model_full_lmer <- function(config, factor_level=2, random= NULL){
   formula <- as.formula( formula_str )
 
   print(formula)
-  res <- function(x){
+  res <- function(x, get_formula=FALSE){
+    if(get_formula)
+    {
+      return(formula)
+    }
+
     modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
                           error=function(e){print(e);return=NULL})
     return(modelTest)
