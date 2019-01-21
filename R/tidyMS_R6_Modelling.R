@@ -316,8 +316,8 @@ lmer4_coeff_matrix <- function(m){
 #' @export
 coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
-    idx <- grep(factor_level, rownames(cm$mm))
-    x<- as.list(apply(cm$mm[idx,],2,mean) )
+    idx <- grep(factor_level, rownames(mm))
+    x <- as.list(apply(mm[idx,],2,mean) )
     x <- as.tibble(x)
     add_column(x, "factor_level" = factor_level,.before=1)
   }
