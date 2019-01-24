@@ -39,6 +39,12 @@ old <- theme_set(theme_classic())
 
 # Summarize dataset
 
+```{r sampleNameRawFileMapping}
+#xx<-table_factors(pepIntensity,config)
+#xx %>% group_by_at(config$table$factorKeys()) %>% summarise(n=n())
+knitr::kable(table_factors(data,config), caption = "Sample Name to Raw file mapping")
+
+```
 
 ```{r hierarchyCounts}
 x <- hierarchyCounts( data , config )
@@ -47,12 +53,17 @@ knitr::kable(data.frame(NR = x), caption="Number of peptides and proteins")
 
 
 ```{r hierarchyCountsSample }
-knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "Number of qunatified peptides and proteins per sample.")
+knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "Number of quantified peptides and proteins per sample.")
 ```
 
-```{r sampleNameRawFileMapping}
-sampleNameRawFileMapping <- data %>% dplyr::select(config$table$sampleName, config$table$fileName) %>%distinct()
-knitr::kable(sampleNameRawFileMapping, caption = "Sample Name to Raw file mapping")
+```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
+hcs <- hierarchy_counts_sample(data, configuration = config)
+LFQService::skylineconfig$table$sampleName
+hcs <- hcs %>% gather("key", "nr",
+                      -dplyr::one_of(LFQService::skylineconfig$table$isotopeLabel, LFQService::skylineconfig$table$sampleName))
+ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 ```
 
 
@@ -86,8 +97,10 @@ gridExtra::grid.arrange(p, xx1$figure, xx2$figure, ncol=1)
 ```
 
 
-```{r missignessHistogram, fig.cap="Missigness patterns.", fig.width=7, fig.height=8}
-plot_NA_heatmap(data, config)
+```{r missignessHistogram, fig.cap="Missingness patterns.", fig.width=7, fig.height=8}
+if(FALSE){
+  plot_NA_heatmap(data, config)
+}
 ```
 
 \clearpage
@@ -156,6 +169,7 @@ Because of this, we can't report CV anymore but report standard deviations.
 
 ```{r transformIntensities}
 dataTransformed <- LFQService::applyToIntensityMatrix(data, config, vsn::justvsn)
+config$parameter$is_intensity_transformed = TRUE
 ```
 
 
@@ -214,7 +228,7 @@ if(params$plot_density){
 
 
 
-```{r correlationHeat, fig.height = 5, fig.cap="Peptide intensity correlation between samples Heatmap."}
+```{r correlationHeat, fig.height = 5, fig.cap="Heatmap of peptide intensity correlation between samples"}
 plot_heatmap_cor(dataTransformed,config)
 ```
 
@@ -233,23 +247,15 @@ We estimated the _Variance_ of the measurement using the QC samples. For each pr
 
 This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of 2 at a significance level of $1-0.05$ and power of $0.8$ for $25, 50, 75, 90$ percent of the proteins.
 
+
 ```{r sampleSize}
-sd <- na.omit(stats_res$sd)
-sd[sd < 0.05] <- sample(sd[sd >= 0.05], sum(sd < 0.05))
-getSampleSize <- function(sd){power.t.test(delta = 1, sd=sd ,power=0.8,sig.level=0.05)$n}
-N <- sapply(sd, getSampleSize)
-
-sampN <- as.matrix(quantile(N, probs= c(.25,.5,.75,.9)))
-colnames(sampN) <- c( "sampleSize")
-
-knitr::kable(sampN, caption="Sample size needed to report a fold change greater than 2 with a significance level of 0.05 and power 0.8.")
-
+sampleSize <- lfq_power_t_test(dataTransformed, config, delta=2)
+knitr::kable(sampleSize, caption="Sample size needed to report a fold change greater than 2 with a significance level of 0.05 and power 0.8 when using t-test to compare means.")
 ```
 
 
 The _power_ of a test is $1-\beta$, where $beta$ is the probability of a Type 2 error (failing to reject the null hypothesis when the alternative hypothesis is true).
 In other words, if you have a $20\%$ chance of failing to detect a real difference, then the power of your test is $.8$.
-
 
 _Significance_ is equal to $1 - \alpha$, where $\alpha$ is the probability of making a Type 1 Error. That is, alpha represents the chance of a falsely rejecting H0 and picking up a false-positive effect. Alpha is usually set at 0.05, for a $95\%$ significance.
 
