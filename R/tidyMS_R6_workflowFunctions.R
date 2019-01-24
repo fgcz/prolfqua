@@ -63,7 +63,7 @@ workflow_correlation_preprocessing <-function(data, config, minCorrelation = 0.7
   workflow_correlation_preprocessing_protein_intensities(data, config, minCorrelation)
 }
 
-#' apply correlation filtering and impuation
+#' apply correlation filtering and impute missing values
 #' @export
 #' @examples
 #' rm(list=ls())
