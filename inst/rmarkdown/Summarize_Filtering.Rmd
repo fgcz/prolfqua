@@ -1,0 +1,118 @@
+---
+title: "Analysis Run Summary"
+author: "FGCZ - Witold Wolski wew@fgcz.ethz.ch"
+date: "25 November 2018"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+params:
+  HEATMAP: TRUE
+  path: ""
+  resDataStart: NULL
+  config_resDataStart: NULL 
+  filteredPep: NULL
+  config_filteredPep: NULL
+  pepIntensityNormalized: NULL
+  config_pepIntensityNormalized: NULL
+  config: NULL
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
+
+```
+
+# Filter missigness
+
+```{r heatmapAllNAs, out.width = "85%", out.height="\\textheight", fig.cap="before NA filtering"}
+
+figpath <- file.path(params$path, "missigness_before_filtering.pdf")
+if(params$HEATMAP){
+  pdf(figpath)
+  plot_NA_heatmap(params$resDataStart, params$config_resDataStart)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+
+
+```{r}
+knitr::kable(hierarchyCounts(params$resDataStart, params$config_resDataStart),
+             caption = "Nr Proteins and peptides before missigness filtering.")
+```
+
+
+
+```{r}
+knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataStart),
+             catpion = "NR Proteins and peptides by sample.")
+```
+
+
+\newpage
+
+```{r}
+knitr::kable(hierarchyCounts(params$filteredPep, params$config_filteredPep),
+             caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
+
+```
+
+
+
+
+```{r}
+knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredPep),
+             caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample")
+
+```
+
+
+\newpage
+
+```{r NA_heatmapAfterFiltering,  out.width = "85%", out.height="\\textheight", fig.cap="Missigness heatmap after NA filtering."}
+
+figpath <- file.path(path,"missigness_after_filtering.pdf")
+if(HEATMAP){
+  pdf(figpath)
+  x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+\clearpage
+
+
+
+# Normalized intensities
+
+```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%"}
+figpath <- file.path(path, "PEPTIDE_DensityDistributionRAW.pdf")
+
+pdf(figpath, width=22, height=10)
+print(plot_intensity_distribution_density(params$filteredPep,  params$config_filteredPep))
+dev.off()
+
+knitr::include_graphics(figpath)
+
+```
+
+
+
+
+```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%"}
+figpath <- file.path(path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
+
+pdf(figpath, width=22, height=10)
+print(plot_intensity_distribution_density(params$pepIntensityNormalized, params$config_pepIntensityNormalized))
+dev.off()
+
+knitr::include_graphics(figpath)
+
+```
+
+

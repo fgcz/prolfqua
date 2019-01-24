@@ -38,9 +38,9 @@
 
 #' median polish from normalized peptide intensities
 #' @export
-workflow_MQ_protein_quants <- function(pepIntensityNormalized , results){
+workflow_MQ_protein_quants <- function(results){
   pepIntensityNormalized <- results$pepIntensityNormalized
-  pepIntensityNormalized <- results$config_pepIntensityNormalized
+  config <- results$config_pepIntensityNormalized
   configProt <- config$clone(deep = TRUE)
   xnested <- pepIntensityNormalized %>% group_by_at(names(configProt$table$hkeysLevel())) %>% nest()
   protintensity <- LFQService::applyToHierarchyBySample(pepIntensityNormalized,configProt, medpolishPly,unnest = TRUE)

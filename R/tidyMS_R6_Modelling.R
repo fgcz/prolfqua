@@ -237,7 +237,7 @@ likelihood_ratio_test <- function(modelNO, model) {
 
   for(factor in factors){
     modelProteinF <- modelProteinF %>%
-      mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~contrast_tukey_multcomp(.,factor=factor)))
+      mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
   dd <- modelProteinF %>% dplyr::select(protein_Id, starts_with("factor_"))
   contrasts <- dd %>% gather("factor", "contrasts",-!!sym( protein_Id)) %>% unnest() %>% arrange(!!sym(protein_Id)) %>% dplyr::select(-rhs)
