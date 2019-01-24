@@ -2,10 +2,10 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{workflow_MQ_protein_quants}
 \alias{workflow_MQ_protein_quants}
-\title{median polish of protein intensities}
+\title{median polish from normalized peptide intensities}
 \usage{
 workflow_MQ_protein_quants(pepIntensityNormalized, results)
 }
 \description{
-median polish of protein intensities
+median polish from normalized peptide intensities
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{workflow_MQ_figs_protoV1}
 \alias{workflow_MQ_figs_protoV1}
-\title{gnerates peptide level plots for all Proteins}
+\title{generates peptide level plots for all Proteins}
 \usage{
 workflow_MQ_figs_protoV1(RESULTS)
 }
 \description{
-gnerates peptide level plots for all Proteins
+generates peptide level plots for all Proteins
 }
