@@ -2,30 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_workflowFunctions.R
 \name{workflow_Q_NA_filtered_Hierarchy}
 \alias{workflow_Q_NA_filtered_Hierarchy}
-\title{Get Protein Intensities after QValue NA filtering and medianpolish}
+\title{Deprecated}
 \usage{
 workflow_Q_NA_filtered_Hierarchy(data, config, percent = 60,
   hierarchy_level = 1, factor_level = 1)
 }
 \description{
-Get Protein Intensities after QValue NA filtering and medianpolish
+Deprecated
 }
-\examples{
-library(LFQService)
-library(tidyverse)
-rm(list=ls())
-config <- spectronautDIAData250_config$clone(deep=TRUE)
-data <- spectronautDIAData250_analysis
-tmp <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=2)
-nrow(tmp$data)
-config <- spectronautDIAData250_config$clone(deep=TRUE)
-res <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=1)
-nrow(res$data)
-res$newconfig
-hierarchyCounts(res$data, res$newconfig)
-}
-\seealso{
-Other workflow functions: \code{\link{workflow_DIA_NA_preprocessing}},
-  \code{\link{workflow_correlation_preprocessing}}
-}
-\concept{workflow functions}

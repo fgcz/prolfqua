@@ -2,25 +2,10 @@
 % Please edit documentation in R/tidyMS_R6_workflowFunctions.R
 \name{workflow_correlation_preprocessing}
 \alias{workflow_correlation_preprocessing}
-\title{correlation preprocessing}
+\title{Deprectated}
 \usage{
 workflow_correlation_preprocessing(data, config, minCorrelation = 0.7)
 }
 \description{
-correlation preprocessing
+Deprectated
 }
-\examples{
-library(LFQService)
-rm(list=ls())
-config <- spectronautDIAData250_config$clone(deep=TRUE)
-config$parameter$min_nr_of_notNA  <- 20
-data <- spectronautDIAData250_analysis
-res <- workflow_correlation_preprocessing(data,config)
-names(res)
-
-}
-\seealso{
-Other workflow functions: \code{\link{workflow_DIA_NA_preprocessing}},
-  \code{\link{workflow_Q_NA_filtered_Hierarchy}}
-}
-\concept{workflow functions}

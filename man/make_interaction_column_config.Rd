@@ -9,3 +9,8 @@ make_interaction_column_config(data, config)
 \description{
 create interaction column from factors
 }
+\examples{
+skylineconfig$table$factorKeys()
+skylineconfig$table$factorLevel <- 1
+make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
+}

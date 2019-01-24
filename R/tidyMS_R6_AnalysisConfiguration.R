@@ -130,6 +130,9 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' create interaction column from factors
 #' @export
 #' @examples
+#' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
+#' make_interaction_column(xx, c("A","B"))
+#' make_interaction_column(xx, c("A"))
 make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
   intr <- purrr::map2_dfc(columns, intr, paste0)
@@ -142,6 +145,9 @@ make_interaction_column <- function(data, columns, sep="."){
 #' create interaction column from factors
 #' @export
 #' @examples
+#' skylineconfig$table$factorKeys()
+#' skylineconfig$table$factorLevel <- 1
+#' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
 make_interaction_column_config <- function(data, config){
   columns <- config$table$factorKeys()[1:config$table$factorLevel]
   data <- make_interaction_column(data, columns)

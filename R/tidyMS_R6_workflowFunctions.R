@@ -11,7 +11,7 @@
 #' res <- workflow_correlation_preprocessing(data,config)
 #' names(res)
 #'
-workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.7){
+workflow_correlation_preprocessing_protein_intensities <- function(data, config, minCorrelation = 0.7){
   stat_input <- hierarchyCounts(data, config)
 
   data_NA_QVal <- filter_byQValue(data, config)
@@ -56,6 +56,12 @@ workflow_correlation_preprocessing <- function(data, config, minCorrelation = 0.
 
   return(list(data = proteinIntensities$data, stats = stats, newconfig = proteinIntensities$newconfig))
 }
+#' Deprectated
+#' @export
+workflow_correlation_preprocessing <-function(data, config, minCorrelation = 0.7){
+  warning("this function name is deprecated, use workflow_correlation_preprocessing_protein_intensities instead.")
+  workflow_correlation_preprocessing_protein_intensities(data, config, minCorrelation)
+}
 
 #' apply correlation filtering and impuation
 #' @export
@@ -71,8 +77,6 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
   stat_input <- hierarchyCounts(data, config)
 
   data_NA_QVal <- filter_byQValue(data, config)
-
-
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
 
   # remove transitions with large numbers of NA's
@@ -137,9 +141,9 @@ workflow_DIA_NA_preprocessing <- function(data,
   stat_qval <- hierarchyCounts(data_NA_QVal, config)
 
   resNACondition <- filter_factor_levels_by_missing(data_NA_QVal,
-                                             config,
-                                             percent = percent,
-                                             factor_level = factor_level)
+                                                    config,
+                                                    percent = percent,
+                                                    factor_level = factor_level)
 
   stat_naFilter <- hierarchyCounts(resNACondition, config)
   protID <- summarizeHierarchy(resNACondition,config) %>%
@@ -173,23 +177,23 @@ workflow_DIA_NA_preprocessing <- function(data,
 #' rm(list=ls())
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' data <- spectronautDIAData250_analysis
-#' tmp <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=2)
+#' tmp <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=2)
 #' nrow(tmp$data)
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' res <-workflow_Q_NA_filtered_Hierarchy(data, config, hierarchy_level=1)
+#' res <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=1)
 #' nrow(res$data)
 #' res$newconfig
 #' hierarchyCounts(res$data, res$newconfig)
-workflow_Q_NA_filtered_Hierarchy <- function(data,
-                                             config,
-                                             percent = 60,
-                                             hierarchy_level=1,
-                                             factor_level=1){
+workflow_DIA_Q_NA_filtered_medpolish_protein_intensities <- function(data,
+                                                           config,
+                                                           percent = 60,
+                                                           hierarchy_level=1,
+                                                           factor_level=1){
 
   data_NA_QVal_condition <- workflow_DIA_NA_preprocessing(data, config=config,
-                                                      percent=percent,
-                                                      hierarchy_level = 2,
-                                                      factor_level = factor_level
+                                                          percent=percent,
+                                                          hierarchy_level = 2,
+                                                          factor_level = factor_level
   )$data
 
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
@@ -201,5 +205,21 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                              workIntensity = "medpolish",
                                              hierarchy = config$table$hierarchy[1:hierarchy_level])
   return(list(data = protIntensity, newconfig = newconfig))
+}
+
+#' Deprecated
+#' @export
+workflow_Q_NA_filtered_Hierarchy <- function(data,
+                                             config,
+                                             percent = 60,
+                                             hierarchy_level=1,
+                                             factor_level=1)
+{
+  warning("this function name is deprecated, use workflow_DIA_Q_NA_filtered_protein_intensities instead.")
+  workflow_DIA_Q_NA_filtered_protein_intensities(data,
+                                                 config,
+                                                 percent = 60,
+                                                 hierarchy_level=1,
+                                                 factor_level=1)
 }
 

@@ -25,7 +25,7 @@ hierarchyCounts(tmp$data, config)
 stopifnot(FALSE==(is.grouped_df(tmp$data)))
 }
 \seealso{
-Other workflow functions: \code{\link{workflow_Q_NA_filtered_Hierarchy}},
-  \code{\link{workflow_correlation_preprocessing}}
+Other workflow functions: \code{\link{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}},
+  \code{\link{workflow_correlation_preprocessing_protein_intensities}}
 }
 \concept{workflow functions}
