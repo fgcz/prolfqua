@@ -36,7 +36,7 @@
   return(list(data = pepIntensityNormalized, config = pepConfig))
 }
 
-#' median polish of protein intensities
+#' median polish from normalized peptide intensities
 #' @export
 workflow_MQ_protein_quants <- function(pepIntensityNormalized , results){
   pepIntensityNormalized <- results$pepIntensityNormalized
@@ -58,7 +58,6 @@ worklfow_MQ_protoV1 <- function(resDataStart, config, path){
   config <- config$clone(deep=TRUE)
   RESULTS$config_resDataStart <- config
   RESULTS$resDataStart <- resDataStart
-
 
   filteredPep <- .workflow_MQ_filter_peptides( resDataStart , config )
   config <- filteredPep$config
@@ -83,8 +82,9 @@ worklfow_MQ_protoV1 <- function(resDataStart, config, path){
   return(RESULTS)
 }
 
-#' gnerates peptide level plots for all Proteins
+#' generates peptide level plots for all Proteins
 #' @export
+#'
 workflow_MQ_figs_protoV1 <- function(RESULTS){
   figs_raw <- .makeFigs(RESULTS$filteredPep, RESULTS$config_filteredPep)
   figs_normalized <- .makeFigs(RESULTS$pepIntensityNormalized, RESULTS$config_pepIntensityNormalized)

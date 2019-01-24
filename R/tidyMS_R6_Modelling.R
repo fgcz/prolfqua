@@ -168,10 +168,28 @@ model_no_interaction_lmer <- function(config, factor_level=2, random = NULL){
   return(res)
 }
 
+#' Create custom model
+#' @export
+#'
+make_custom_model <- function(modelstr){
+  formula <- as.formula(modelstr)
+  res <- function(x, get_formula=FALSE){
+    if(get_formula)
+    {
+      return(formula)
+    }
+    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
+                          error=function(e){print(e) ; return=NULL})
+    return(modelTest)
+  }
+  return(res)
+}
 
-#' get mixed model no interactions with peptide and sample random factor, from config
+
+#' DEPRECATED - get mixed model no interactions with peptide and sample random factor, from config
 #' @export
 model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
+  warning("DEPRECATED")
   formula <- as.formula(paste0(config$table$getWorkIntensity(), " ~ ",
                                paste(config$table$factorKeys()[1:factor_level], collapse="+"),
                                paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"),
@@ -193,29 +211,12 @@ likelihood_ratio_test <- function(modelNO, model) {
   broom::tidy(anova(modelNO,model))[2,"p.value"]
 }
 
-#' Create custom model
-#' @export
-#'
-make_custom_model <- function(modelstr){
-  formula <- as.formula(modelstr)
-  res <- function(x, get_formula=FALSE){
-    if(get_formula)
-    {
-      return(formula)
-    }
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
-                          error=function(e){print(e) ; return=NULL})
-    return(modelTest)
-  }
-  return(res)
-}
 
 
 # extracting results ----
 
 #' get all comparisons
-#' @export
-contrast_tukey_multcomp <- function(model, factor){
+.contrast_tukey_multcomp <- function(model, factor){
   mcpDef <- multcomp::mcp(Dummy="Tukey")
   names(mcpDef) <- factor
   glt <- multcomp::glht(model, mcpDef)
@@ -227,6 +228,127 @@ contrast_tukey_multcomp <- function(model, factor){
   )
   return(xx)
 }
+
+
+# compute contrasts for all factors.
+.compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
+  factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorLevel]
+  protein_Id <- pepConfig$table$hierarchyKeys()[1]
+
+  for(factor in factors){
+    modelProteinF <- modelProteinF %>%
+      mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~contrast_tukey_multcomp(.,factor=factor)))
+  }
+  dd <- modelProteinF %>% dplyr::select(protein_Id, starts_with("factor_"))
+  contrasts <- dd %>% gather("factor", "contrasts",-!!sym( protein_Id)) %>% unnest() %>% arrange(!!sym(protein_Id)) %>% dplyr::select(-rhs)
+
+  return(contrasts)
+}
+
+
+#' compute all contrasts from non interaction model automatically.
+#' @export
+#'
+workflow_model_contrasts_no_interaction <- function(modelProteinF,
+                                                    modelName,
+                                                    pepConfig )
+{
+  result <- list()
+
+  contrasts <- .compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
+  contrasts <- inner_join(dplyr::select(modelProteinF, protein_Id, isSingular, peptide_Id_n), contrasts )
+
+  result$contrasts <- contrasts
+  result$fig <- list()
+  result$fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_",modelName,".pdf")
+  result$fig$histogram_coeff_p.values <- ggplot(data=contrasts,
+                                                aes(x = p.value, group=lhs)) + geom_histogram(bins = 20) + facet_wrap(~lhs)
+
+
+  result$fig$VolcanoPlot_name <- paste0("Contrasts_VolcanoPlot_",modelName,".pdf")
+  result$fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
+                                                         effect = "estimate",
+                                                         type = "p.value",
+                                                         condition = "lhs",
+                                                         label = "protein_Id",
+                                                         xintercept = c(-1, 1),colour = "isSingular")
+  result$contrasts <- contrasts
+  return(result)
+}
+
+#' compute all contrasts from model with interactions based on linfct matrix
+#' @export
+#'
+workflow_model_contrasts_with_interaction <- function(modelProteinF_Int, modelName, linfct ){
+  results <- list()
+
+  interaction_model_matrix <- modelProteinF_Int %>%
+    mutate(contrasts = map(!!sym(paste0("lmer_",modelName)) , LFQService::my_glht, linfct = linfct, sep=TRUE ))
+
+  interaction_model_matrix %>%
+    dplyr::select(protein_Id, contrasts ) %>% unnest() -> modelWithInteractionsContrasts
+
+  modelWithInteractionsContrasts <- inner_join(dplyr::select(modelProteinF_Int, protein_Id, isSingular), modelWithInteractionsContrasts)
+
+
+  results$contrasts <- modelWithInteractionsContrasts
+  results$fig <- list()
+  results$fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
+
+  results$fig$histogram_coeff_p.values <- ggplot(data=modelWithInteractionsContrasts, aes(x = p.value)) +
+    geom_histogram(bins = 20) +
+    facet_wrap(~lhs)
+
+  results$fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
+  results$fig$VolcanoPlot <- quantable::multigroupVolcano(modelWithInteractionsContrasts,
+                                                          effect = "estimate",
+                                                          type = "p.value",
+                                                          condition = "lhs",
+                                                          label = "protein_Id",
+                                                          xintercept = c(-1, 1), colour = "isSingular")
+
+  return(results)
+}
+
+
+#' helper function to write the result of `workflow_model_contrasts_with_interaction`
+#' @export
+#' @examples
+#' if(FALSE){
+#' contrast_interactions <- workflow_model_contrasts_with_interaction(modelProteinF_Int, modelName_Int, XX)
+#' modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
+#' modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
+#' }
+write_figures_model_contrasts <- function(contrasts_result,path){
+  pdf(file.path(path,contrasts_result$fig$histogram_coeff_p.values_name))
+  print(contrasts_result$fig$histogram_coeff_p.values)
+  dev.off()
+
+  pdf(file.path(path,contrasts_result$fig$VolcanoPlot_name))
+  print(contrasts_result$fig$VolcanoPlot)
+  dev.off()
+}
+
+
+
+#' pivot model contrasts matrix to wide format produced by `workflow_model_contrasts_with_interaction` and ...
+#' @export
+#'
+pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts){
+  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_reatio_test.pValue, lhs, estimate) %>%
+    mutate(lhs = glue::glue('estimate.{lhs}')) %>%
+    tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
+
+  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_reatio_test.pValue, lhs, p.value) %>%
+    mutate(lhs = glue::glue('p.value.{lhs}')) %>%
+    tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
+
+  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate, modelWithInteractionsContrasts)
+  return(modelWithInteractionsContrasts_Pivot)
+}
+
+
+
 
 #' get all model coefficients
 #' @export
@@ -289,9 +411,8 @@ plot_lmer4_peptide_noRandom <- function(m){
 
 
 #' get matrix of indicator coefficients for each interaction
-#' @export
 #'
-lmer4_coeff_matrix <- function(m){
+.lmer4_coeff_matrix <- function(m){
   data <- m@frame
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep=":")
@@ -313,8 +434,7 @@ lmer4_coeff_matrix <- function(m){
 
 
 #' coeff_weights_factor_levels
-#' @export
-coeff_weights_factor_levels <- function(mm){
+.coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
     idx <- grep(factor_level, rownames(mm))
     x <- as.list(apply(mm[idx,],2,mean) )
@@ -326,7 +446,27 @@ coeff_weights_factor_levels <- function(mm){
   return(xx)
 }
 
+#' get linfct from model
+#' @export
+#' @examples
+#' if(FALSE){
+#' m <- modelProteinF_Int$lmer_visittime_group_interactions[[1]]
+#' linfct <- lmer4_linfct_from_model(m)
+#' linfct$linfct_factors
+#' linfct$linfct_interactions
+#' }
+#'
+lmer4_linfct_from_model <- function(m){
+  cm <- .lmer4_coeff_matrix(m)
+  cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
+  dd <- .coeff_weights_factor_levels(cm_mm)
+  dd_m <- dd %>% dplyr::select(-factor_level) %>% data.matrix()
+  rownames(dd_m) <- dd$factor_level
+  dd_m <- dd_m[order(rownames(dd_m)),]
+
+  return(list(linfct_factors = dd_m , linfct_interactions = cm_mm))
+}
 
 
 #' Add predicted values for each interaction
@@ -438,5 +578,26 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   return(reslist)
 }
 
+#' Writes figures generated by `workflow_lme4_model_analyse`
+#' @export
+write_figures_lme4_model_analyse <- function(modelling_result, modelName, path){
+
+  pdf(file.path(path,paste0("Coef_Histogram_",modelName,".pdf")))
+  print(modelling_result$fig$histogram_coeff_p.values)
+  dev.off()
+
+  pdf(file.path(path,paste0("Coef_VolcanoPlot_",modelName,".pdf")))
+  print(modelling_result$fig$VolcanoPlot)
+  dev.off()
+
+  pdf(file.path(path, paste0("Coef_Pairsplot_",modelName,".pdf")))
+  print(modelling_result$fig$Pairsplot_Coef)
+  dev.off()
+
+  pdf(file.path(path,paste0("Anova_p.values_", modelName, ".pdf")))
+  histogram_anova_p.values <-
+    print(modelling_result$fig$histogram_anova_p.values)
+  dev.off()
+}
 
 

@@ -2,10 +2,10 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{model_no_interaction_and_sample_lmer}
 \alias{model_no_interaction_and_sample_lmer}
-\title{get mixed model no interactions with peptide and sample random factor, from config}
+\title{DEPRECATED - get mixed model no interactions with peptide and sample random factor, from config}
 \usage{
 model_no_interaction_and_sample_lmer(config, factor_level = 2)
 }
 \description{
-get mixed model no interactions with peptide and sample random factor, from config
+DEPRECATED - get mixed model no interactions with peptide and sample random factor, from config
 }
