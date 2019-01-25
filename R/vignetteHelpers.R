@@ -15,8 +15,6 @@
   return(res)
 }
 
-
-
 .run_markdown_with_params <- function(params,
                                      markdown_path,
                                      dest_path,
@@ -56,7 +54,6 @@ render_MQSummary_rmd <- function(data, config,
 #' render MQ Summary.
 #' @export
 #' @examples
-#' run_MQSummary_Rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_SummarizeFiltering_rmd <- function(results,
                                           dest_path = ".",

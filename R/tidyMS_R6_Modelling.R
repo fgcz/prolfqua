@@ -236,6 +236,7 @@ likelihood_ratio_test <- function(modelNO, model) {
   protein_Id <- pepConfig$table$hierarchyKeys()[1]
 
   for(factor in factors){
+    print(factor)
     modelProteinF <- modelProteinF %>%
       mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
@@ -260,12 +261,12 @@ workflow_model_contrasts_no_interaction <- function(modelProteinF,
 
   result$contrasts <- contrasts
   result$fig <- list()
-  result$fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_",modelName,".pdf")
+  result$fig$histogram_coeff_p.values_name <- paste0("Contrasts_Auto_histogram_",modelName,".pdf")
   result$fig$histogram_coeff_p.values <- ggplot(data=contrasts,
                                                 aes(x = p.value, group=lhs)) + geom_histogram(bins = 20) + facet_wrap(~lhs)
 
 
-  result$fig$VolcanoPlot_name <- paste0("Contrasts_VolcanoPlot_",modelName,".pdf")
+  result$fig$VolcanoPlot_name <- paste0("Contrasts_Auto_Volcano_",modelName,".pdf")
   result$fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
                                                          effect = "estimate",
                                                          type = "p.value",
@@ -346,9 +347,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts){
   modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate, modelWithInteractionsContrasts)
   return(modelWithInteractionsContrasts_Pivot)
 }
-
-
-
 
 #' get all model coefficients
 #' @export
@@ -473,7 +471,7 @@ lmer4_linfct_from_model <- function(m){
 #' @export
 #'
 plot_predicted_interactions <- function(gg, m){
-  cm <- lmer4_coeff_matrix(m)
+  cm <- .lmer4_coeff_matrix(m)
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
   ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
                            yend = cm$mm %*% cm$coeffs)

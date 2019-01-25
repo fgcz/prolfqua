@@ -11,6 +11,5 @@ render_SummarizeFiltering_rmd(results, dest_path = ".",
 render MQ Summary.
 }
 \examples{
-run_MQSummary_Rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 
 }
