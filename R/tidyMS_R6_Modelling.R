@@ -344,7 +344,8 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts){
     mutate(lhs = glue::glue('p.value.{lhs}')) %>%
     tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
 
-  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate, modelWithInteractionsContrasts)
+  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate,
+                                                     modelWithInteractions.p.value)
   return(modelWithInteractionsContrasts_Pivot)
 }
 
