@@ -151,7 +151,7 @@ knitr::kable(cv_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantile
 
 ```{r intensityDistribution, fig.cap="Not normalized intensity distribution.", fig.height=4}
 if(params$plot_density){
-  p0 <- LFQService::plot_intensity_distribution_density(data,config)
+  p0 <- LFQService::plot_intensity_distribution_density(data,config)  + theme(legend.text=element_text(size=5))
   p0
 } else{
   p1 <- LFQService::plot_intensity_distribution_violin(data,config)
@@ -216,7 +216,7 @@ knitr::kable(sd_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantile
 
 ```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation."}
 if(params$plot_density){
-  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) 
+  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) + theme(legend.text=element_text(size=5))
   p1
 } else{ 
   p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed,config) 

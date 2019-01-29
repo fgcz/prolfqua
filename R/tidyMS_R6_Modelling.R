@@ -600,3 +600,106 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path){
 }
 
 
+#' p2621 worklfow no interaction
+#' @export
+workflow_no_interaction_modelling <- function(results, modelName){
+  pepConfig <- results$config_pepIntensityNormalized
+  pepIntensity <- results$pepIntensityNormalized
+
+  factorial_model <- model_no_interaction_lmer(pepConfig, factor_level = 2)
+
+  pepIntensity %>%
+    group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
+    nest() -> nestProtein
+
+  prot_stats <- summarizeHierarchy(pepIntensity, pepConfig)
+  modelsNoInteraction <- workflow_lme4_model_analyse(nestProtein,
+                                                     factorial_model ,
+                                                     modelName = modelName ,
+                                                     prot_stats = prot_stats )
+
+  write_figures_lme4_model_analyse(modelsNoInteraction, modelName, results$path)
+  readr::write_csv(modelsNoInteraction$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+  readr::write_csv(modelsNoInteraction$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+
+  modelProteinF <- modelsNoInteraction$models
+  modelProteinF %>% dplyr::filter(nrcoef == as.numeric(tail(names(table(modelProteinF$nrcoef)),n=1))) -> modelProteinF
+
+  contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
+                                                       modelName ,
+                                                       pepConfig )
+
+
+  write_figures_model_contrasts(contrasts, results$path)
+
+  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF))
+}
+
+#' p2621 workflow interaction
+#' @export
+workflow_interaction_modelling <- function(results, modelFunction, modelName){
+
+  pepIntensity <- results$pepIntensityNormalized
+  pepConfig <- results$config_pepIntensityNormalized
+
+  pepIntensity %>%
+    group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
+    nest() -> nestProtein
+
+  prot_stats <- summarizeHierarchy(pepIntensity, pepConfig)
+
+  interactionResults <- workflow_lme4_model_analyse(nestProtein, modelFunction, modelName, prot_stats = prot_stats)
+
+  write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
+  readr::write_csv(interactionResults$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+  readr::write_csv(interactionResults$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+
+
+  modelProteinF_Int <- interactionResults$models
+  modelProteinF_Int <- modelProteinF_Int %>% filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
+  return(modelProteinF_Int)
+}
+
+#' p2621 workflow likelihood ratio test
+#' @export
+workflow_likelihood_ratio_test <- function(modelProteinF,modelProteinF_Int ){
+  # Model Comparison
+  reg <- inner_join(dplyr::select(modelProteinF, protein_Id, starts_with("lmer_")),
+                    dplyr::select(modelProteinF_Int, protein_Id, starts_with("lmer_")) , by="protein_Id")
+  reg <- reg %>% mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
+                                                                  !!sym(paste0("lmer_", modelName_Int)),
+                                                                  likelihood_ratio_test ))
+  likelihood_ratio_test_result <- reg %>%
+    dplyr::select(protein_Id, modelComparisonLikelihoodRatioTest) %>% unnest()
+  likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
+    rename(likelihood_reatio_test.pValue = p.value)
+  return(likelihood_ratio_test_result)
+}
+
+#' p2621 workflow linfunct contrasts
+#' @export
+workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test_result ,  linfct, path, lin_int)
+{
+  contrast_interactions <- workflow_model_contrasts_with_interaction(models, modelName, linfct)
+  write_figures_model_contrasts(contrast_interactions, path)
+
+  modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
+  write_csv(modelWithInteractionsContrasts, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, ".csv")))
+
+
+  modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
+  write_csv(modelWithInteractionsContrasts_Pivot, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
+
+  #computeGroupAverages
+  interaction_model_matrix <- models %>%
+    mutate(groupAverages = map(!!sym(paste0("lmer_", modelName)) , LFQService::my_glht, linfct = lin_int, sep=TRUE ))
+
+  interaction_model_matrix %>%
+    dplyr::select(protein_Id, groupAverages ) %>% unnest() -> groupAverages
+  groupAverages <- inner_join(groupAverages,  likelihood_ratio_test_result)
+
+  groupAverages <- groupAverages %>% dplyr::select(-p.value, - statistic) #%>%
+  #  separate(protein_Id, c("type", "Uniprot", "ProteinName"), sep="\\|", remove = FALSE)
+  write_csv(groupAverages, path=file.path(path, paste0("Group_Averages_", modelName, ".csv")))
+}
+
