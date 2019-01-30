@@ -4,7 +4,7 @@
 \alias{workflow_no_interaction_modelling}
 \title{p2621 worklfow no interaction}
 \usage{
-workflow_no_interaction_modelling(results, modelName)
+workflow_no_interaction_modelling(results, factorial_model, modelName)
 }
 \description{
 p2621 worklfow no interaction

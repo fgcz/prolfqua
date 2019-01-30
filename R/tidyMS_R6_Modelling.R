@@ -602,11 +602,10 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path){
 
 #' p2621 worklfow no interaction
 #' @export
-workflow_no_interaction_modelling <- function(results, modelName){
+workflow_no_interaction_modelling <- function(results, factorial_model, modelName){
   pepConfig <- results$config_pepIntensityNormalized
   pepIntensity <- results$pepIntensityNormalized
 
-  factorial_model <- model_no_interaction_lmer(pepConfig, factor_level = pepConfig$table$factorLevel )
 
   pepIntensity %>%
     group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
