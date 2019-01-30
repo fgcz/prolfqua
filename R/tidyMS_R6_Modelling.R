@@ -606,7 +606,7 @@ workflow_no_interaction_modelling <- function(results, modelName){
   pepConfig <- results$config_pepIntensityNormalized
   pepIntensity <- results$pepIntensityNormalized
 
-  factorial_model <- model_no_interaction_lmer(pepConfig, factor_level = 2)
+  factorial_model <- model_no_interaction_lmer(pepConfig, factor_level = pepConfig$table$factorLevel )
 
   pepIntensity %>%
     group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
