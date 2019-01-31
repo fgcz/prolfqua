@@ -27,8 +27,13 @@
                     output_format = rmarkdown::pdf_document(),
                     params=params, envir = new.env()
   )
+
   pdf_doc <- paste0(tools::file_path_sans_ext(res),".pdf")
-  file.copy(pdf_doc, dist_file_path, overwrite = TRUE)
+  message("XXXX--------------------------------------XXXX")
+  if(pdf_doc != dist_file_path){
+    message("from " , pdf_doc, " to ", dist_file_path)
+    file.copy(pdf_doc, dist_file_path, overwrite = TRUE)
+  }
   return(dist_file_path)
 }
 
@@ -44,7 +49,7 @@ render_MQSummary_rmd <- function(data, config,
   {
   dist_file_path <- .run_markdown_with_params(list(data = data, configuration=config$clone(deep=TRUE)),
                            markdown_path ="rmarkdown/MQSummary.Rmd",
-                           dest_path = ".",
+                           dest_path = dest_path,
                            dest_file_name = dest_file_name,
                            workdir = workdir
                            )
