@@ -436,7 +436,7 @@ plot_lmer4_peptide_noRandom <- function(m){
 .coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
     idx <- grep(factor_level, rownames(mm))
-    x <- as.list(apply(mm[idx,],2,mean) )
+    x <- as.list(apply(mm[idx,, drop=FALSE],2,mean) )
     x <- as.tibble(x)
     add_column(x, "factor_level" = factor_level,.before=1)
   }
@@ -602,7 +602,7 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path){
 
 #' p2621 worklfow no interaction
 #' @export
-workflow_no_interaction_modelling <- function(results, factorial_model, modelName){
+workflow_no_interaction_modelling <- function(results, factorial_model, modelName,writeCoefResults=FALSE){
   pepConfig <- results$config_pepIntensityNormalized
   pepIntensity <- results$pepIntensityNormalized
 
@@ -617,21 +617,20 @@ workflow_no_interaction_modelling <- function(results, factorial_model, modelNam
                                                      modelName = modelName ,
                                                      prot_stats = prot_stats )
 
-  write_figures_lme4_model_analyse(modelsNoInteraction, modelName, results$path)
-  readr::write_csv(modelsNoInteraction$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
-  readr::write_csv(modelsNoInteraction$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
-
+  if(writeCoefResults){
+    write_figures_lme4_model_analyse(modelsNoInteraction, modelName, results$path)
+    readr::write_csv(modelsNoInteraction$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+    readr::write_csv(modelsNoInteraction$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+  }
   modelProteinF <- modelsNoInteraction$models
   modelProteinF %>% dplyr::filter(nrcoef == as.numeric(tail(names(table(modelProteinF$nrcoef)),n=1))) -> modelProteinF
 
   contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
                                                        modelName ,
                                                        pepConfig )
-
-
   write_figures_model_contrasts(contrasts, results$path)
 
-  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF))
+  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
 }
 
 #' p2621 workflow interaction
@@ -661,10 +660,11 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName){
 
 #' p2621 workflow likelihood ratio test
 #' @export
-workflow_likelihood_ratio_test <- function(modelProteinF,modelProteinF_Int ){
+workflow_likelihood_ratio_test <- function(modelProteinF,modelName, modelProteinF_Int,modelName_Int ){
   # Model Comparison
   reg <- inner_join(dplyr::select(modelProteinF, protein_Id, starts_with("lmer_")),
                     dplyr::select(modelProteinF_Int, protein_Id, starts_with("lmer_")) , by="protein_Id")
+
   reg <- reg %>% mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
                                                                   !!sym(paste0("lmer_", modelName_Int)),
                                                                   likelihood_ratio_test ))
@@ -674,6 +674,32 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelProteinF_Int ){
     rename(likelihood_reatio_test.pValue = p.value)
   return(likelihood_ratio_test_result)
 }
+
+#' p2621 compute group averages
+#' @export
+workflow_group_averages <- function(models,
+                                    modelName,
+                                    path,
+                                    lin_int,
+                                    likelihood_ratio_test_result = NULL ){
+  #computeGroupAverages
+  interaction_model_matrix <- models %>%
+    mutate(groupAverages = map(!!sym(paste0("lmer_", modelName)) , LFQService::my_glht, linfct = lin_int, sep=TRUE ))
+
+  interaction_model_matrix %>%
+    dplyr::select(protein_Id, groupAverages ) %>% unnest() -> groupAverages
+
+  if(!is.null(likelihood_ratio_test_result)){
+    groupAverages <- inner_join(groupAverages,  likelihood_ratio_test_result)
+  }
+
+  groupAveragesW <- groupAverages %>% dplyr::select(-p.value, - statistic)
+
+  #  separate(protein_Id, c("type", "Uniprot", "ProteinName"), sep="\\|", remove = FALSE)
+  write_csv(groupAveragesW, path=file.path(path, paste0("Group_Averages_", modelName, ".csv")))
+  return(groupAverages)
+}
+
 
 #' p2621 workflow linfunct contrasts
 #' @export
@@ -685,20 +711,8 @@ workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test
   modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
   write_csv(modelWithInteractionsContrasts, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, ".csv")))
 
-
   modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
   write_csv(modelWithInteractionsContrasts_Pivot, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
 
-  #computeGroupAverages
-  interaction_model_matrix <- models %>%
-    mutate(groupAverages = map(!!sym(paste0("lmer_", modelName)) , LFQService::my_glht, linfct = lin_int, sep=TRUE ))
-
-  interaction_model_matrix %>%
-    dplyr::select(protein_Id, groupAverages ) %>% unnest() -> groupAverages
-  groupAverages <- inner_join(groupAverages,  likelihood_ratio_test_result)
-
-  groupAverages <- groupAverages %>% dplyr::select(-p.value, - statistic) #%>%
-  #  separate(protein_Id, c("type", "Uniprot", "ProteinName"), sep="\\|", remove = FALSE)
-  write_csv(groupAverages, path=file.path(path, paste0("Group_Averages_", modelName, ".csv")))
 }
 
