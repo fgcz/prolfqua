@@ -67,7 +67,7 @@ render_SummarizeFiltering_rmd <- function(results,
 {
   dist_file_path <- .run_markdown_with_params(results,
                                              markdown_path ="rmarkdown/Summarize_Filtering.Rmd",
-                                             dest_path = ".",
+                                             dest_path = dest_path,
                                              dest_file_name = dest_file_name,
                                              workdir = workdir
   )
