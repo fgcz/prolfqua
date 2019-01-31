@@ -4,7 +4,8 @@
 \alias{workflow_interaction_modelling}
 \title{p2621 workflow interaction}
 \usage{
-workflow_interaction_modelling(results, modelFunction, modelName)
+workflow_interaction_modelling(results, modelFunction, modelName,
+  writeCoefResults = FALSE)
 }
 \description{
 p2621 workflow interaction

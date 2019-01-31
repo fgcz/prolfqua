@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_no_interaction_modelling}
 \alias{workflow_no_interaction_modelling}
-\title{p2621 worklfow no interaction}
+\title{p2621 worklfow no interaction - adds contrast computation to `workflow_interaction_modelling` function.}
 \usage{
-workflow_no_interaction_modelling(results, factorial_model, modelName,
+workflow_no_interaction_modelling(results, modelFunction, modelName,
   writeCoefResults = FALSE)
 }
 \description{
-p2621 worklfow no interaction
+p2621 worklfow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
 }

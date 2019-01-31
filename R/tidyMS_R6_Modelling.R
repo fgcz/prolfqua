@@ -208,9 +208,10 @@ model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
 #' @export
 #'
 likelihood_ratio_test <- function(modelNO, model) {
-  broom::tidy(anova(modelNO,model))[2,"p.value"]
+  res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
+  res <- broom::tidy(res)[2,"p.value"]
+  return(res)
 }
-
 
 
 # extracting results ----
@@ -600,42 +601,9 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path){
 }
 
 
-#' p2621 worklfow no interaction
-#' @export
-workflow_no_interaction_modelling <- function(results, factorial_model, modelName,writeCoefResults=FALSE){
-  pepConfig <- results$config_pepIntensityNormalized
-  pepIntensity <- results$pepIntensityNormalized
-
-
-  pepIntensity %>%
-    group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
-    nest() -> nestProtein
-
-  prot_stats <- summarizeHierarchy(pepIntensity, pepConfig)
-  modelsNoInteraction <- workflow_lme4_model_analyse(nestProtein,
-                                                     factorial_model ,
-                                                     modelName = modelName ,
-                                                     prot_stats = prot_stats )
-
-  if(writeCoefResults){
-    write_figures_lme4_model_analyse(modelsNoInteraction, modelName, results$path)
-    readr::write_csv(modelsNoInteraction$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
-    readr::write_csv(modelsNoInteraction$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
-  }
-  modelProteinF <- modelsNoInteraction$models
-  modelProteinF %>% dplyr::filter(nrcoef == as.numeric(tail(names(table(modelProteinF$nrcoef)),n=1))) -> modelProteinF
-
-  contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
-                                                       modelName ,
-                                                       pepConfig )
-  write_figures_model_contrasts(contrasts, results$path)
-
-  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
-}
-
 #' p2621 workflow interaction
 #' @export
-workflow_interaction_modelling <- function(results, modelFunction, modelName){
+workflow_interaction_modelling <- function(results, modelFunction, modelName, writeCoefResults=FALSE){
 
   pepIntensity <- results$pepIntensityNormalized
   pepConfig <- results$config_pepIntensityNormalized
@@ -657,6 +625,20 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName){
   modelProteinF_Int <- modelProteinF_Int %>% filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
   return(modelProteinF_Int)
 }
+
+#' p2621 worklfow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
+#' @export
+workflow_no_interaction_modelling <- function(results, modelFunction, modelName,writeCoefResults=FALSE){
+  modelProteinF <- workflow_interaction_modelling(results, modelFunction, modelName, writeCoefResults=FALSE)
+
+  contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
+                                                       modelName ,
+                                                       pepConfig )
+  write_figures_model_contrasts(contrasts, results$path)
+
+  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
+}
+
 
 #' p2621 workflow likelihood ratio test
 #' @export
