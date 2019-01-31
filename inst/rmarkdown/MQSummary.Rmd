@@ -27,6 +27,8 @@ library(LFQService)
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE, fig.with = 8, fig.height = 4)
 data <- eval(params$data)
 config <- eval(params$configuration)
+
+
 if(is.null(params$plot_density)){
   params$plot_density <- TRUE
 }
@@ -60,7 +62,7 @@ knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "N
 hcs <- hierarchy_counts_sample(data, configuration = config)
 LFQService::skylineconfig$table$sampleName
 hcs <- hcs %>% gather("key", "nr",
-                      -dplyr::one_of(LFQService::skylineconfig$table$isotopeLabel, LFQService::skylineconfig$table$sampleName))
+                      -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
 ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
   facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
