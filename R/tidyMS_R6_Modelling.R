@@ -208,9 +208,11 @@ model_no_interaction_and_sample_lmer <- function(config, factor_level = 2){
 #' @export
 #'
 likelihood_ratio_test <- function(modelNO, model) {
-  res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
-  res <- broom::tidy(res)[2,"p.value"]
-  return(res)
+  res <- tryCatch(  anova(modelNO,model), error = function(x) NA)
+  if(!is.na(res)){
+    res <- broom::tidy(res)[2,"p.value"]
+  }
+  return(as.numeric(res))
 }
 
 
@@ -653,7 +655,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelName, modelProtein
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(protein_Id, modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
-    rename(likelihood_reatio_test.pValue = p.value)
+    rename(likelihood_reatio_test.pValue = modelComparisonLikelihoodRatioTest)
   return(likelihood_ratio_test_result)
 }
 
