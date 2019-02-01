@@ -4,7 +4,7 @@
 \alias{plot_model_and_data}
 \title{Make model plot with title - protein Name.}
 \usage{
-plot_model_and_data(m, proteinID)
+plot_model_and_data(m, proteinID, legend.position = "none")
 }
 \description{
 Make model plot with title - protein Name.

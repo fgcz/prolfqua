@@ -4,7 +4,7 @@
 \alias{plot_lmer4_peptide_noRandom}
 \title{plot peptide intensities per interaction with random effects removed}
 \usage{
-plot_lmer4_peptide_noRandom(m)
+plot_lmer4_peptide_noRandom(m, legend.position = "none")
 }
 \description{
 plot peptide intensities per interaction with random effects removed

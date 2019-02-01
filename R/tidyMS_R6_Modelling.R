@@ -389,7 +389,7 @@ plot_lme4_peptide_predictions <- function(m){
 #' plot peptide intensities per interaction with random effects removed
 #' @export
 #'
-plot_lmer4_peptide_noRandom <- function(m){
+plot_lmer4_peptide_noRandom <- function(m,legend.position="none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
@@ -406,11 +406,97 @@ plot_lmer4_peptide_noRandom <- function(m){
     geom_point(position = position_jitterdodge())
   gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
                           shape=12, size=3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0))
+  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position =legend.position)
   gg <- gg + geom_boxplot(alpha=0.1)
   return(gg)
 }
 
+#' plot intensities per interaction with Two independent random effects removed (1|A) + (1|B)
+#' @export
+#'
+plot_lmer4_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
+
+  updateDataWithRandom <- function(data, m, i, randeffect){
+
+    rand_i <- randeffect[i]
+    ran <- ranef(m)[[rand_i]]
+    name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
+    colnames(ran) <- name
+    ran <- as.tibble(ran,rownames = rand_i)
+    ran <- inner_join(data, ran, by=rand_i)
+    ran_res <- ran %>% mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
+    ran_res
+  }
+
+  data <- m@frame
+  if(firstlast){
+    i1 <- 1;  i2 <- 2
+  } else {
+    i1 <- 2;  i2 <- 1
+  }
+  randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
+  ran_res <- updateDataWithRandom(data, m, i1, randeffect)
+  ran_res <- updateDataWithRandom(ran_res, m, i2, randeffect)
+
+  #randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
+  #rand_i <- randeffect[i]
+  #ran <- ranef(m)[[rand_i]]
+  #name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
+  #colnames(ran) <- name
+  #ran <- as.tibble(ran,rownames = rand_i)
+  #ran_res <- inner_join(ran_res, ran, by=rand_i)
+  #ran_res <- ran_res %>% mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
+  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  ran_res <- make_interaction_column(ran_res,interactionColumns, sep=":" )
+
+  meanx <- function(x){mean(x,na.rm=TRUE)}
+  gg <- ggplot(ran_res,aes(x = interaction , y= int_randcorrected, color=!!sym(randeffect[i1]))) +
+    geom_point(position = position_jitterdodge(jitter.width = 0.2))
+  gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
+                          shape=12, size=3,show.legend = FALSE)
+  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0),legend.position=legend.position)
+  gg <- gg + geom_boxplot(alpha=0.1)
+  gg
+  return(gg)
+}
+
+
+#' Add predicted values for each interaction
+#' @export
+#'
+plot_predicted_interactions <- function(gg, m){
+  cm <- .lmer4_coeff_matrix(m)
+  xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
+  ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
+                           yend = cm$mm %*% cm$coeffs)
+  segments <- inner_join(xstart_end, ystart_end, by="xend")
+  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
+  return(gg)
+}
+
+#' Make model plot with title - protein Name.
+#' @export
+#'
+plot_model_and_data <- function(m, proteinID, legend.position = "none"){
+  gg <- plot_lmer4_peptide_noRandom(m,legend.position=legend.position)
+  gg <- plot_predicted_interactions(gg, m)
+  gg <- gg + ggtitle(proteinID)
+  gg
+}
+
+
+#' Plotting two independent random effects
+#' @export
+#'
+plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , firstlast= TRUE){
+  gg <- plot_lmer4_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
+  gg <- plot_predicted_interactions(gg, m)
+  gg <- gg + ggtitle(proteinID)
+  gg
+}
+
+
+# generate linear functions -----
 
 #' get matrix of indicator coefficients for each interaction
 #'
@@ -470,31 +556,7 @@ lmer4_linfct_from_model <- function(m){
   return(list(linfct_factors = dd_m , linfct_interactions = cm_mm))
 }
 
-
-#' Add predicted values for each interaction
-#' @export
-#'
-plot_predicted_interactions <- function(gg, m){
-  cm <- .lmer4_coeff_matrix(m)
-  xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
-  ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
-                           yend = cm$mm %*% cm$coeffs)
-  segments <- inner_join(xstart_end, ystart_end, by="xend")
-  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
-  return(gg)
-}
-
-#' Make model plot with title - protein Name.
-#' @export
-#'
-plot_model_and_data <- function(m, proteinID){
-  gg <- plot_lmer4_peptide_noRandom(m)
-  gg <- plot_predicted_interactions(gg, m)
-  gg <- gg + ggtitle(proteinID)
-  gg
-}
-
-
+# Computing contrasts helpers -----
 
 #' apply glht method to linfct
 #' @export
