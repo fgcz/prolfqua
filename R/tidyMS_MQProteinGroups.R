@@ -344,7 +344,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 
   dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>% distinct() %>% nrow()
 
-  peptides <- xx %>% select( one_of(relevantColumns) ) %>% distinct()
+  peptides <- xx %>% dplyr::select( one_of(relevantColumns) ) %>% distinct()
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }
