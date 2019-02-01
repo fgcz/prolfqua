@@ -680,10 +680,11 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
 
   interactionResults <- workflow_lme4_model_analyse(nestProtein, modelFunction, modelName, prot_stats = prot_stats)
 
-  write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
-  readr::write_csv(interactionResults$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
-  readr::write_csv(interactionResults$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
-
+  if(writeCoefResults){
+    write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
+    readr::write_csv(interactionResults$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+    readr::write_csv(interactionResults$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+  }
 
   modelProteinF_Int <- interactionResults$models
   modelProteinF_Int <- modelProteinF_Int %>% filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
