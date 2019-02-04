@@ -339,11 +339,11 @@ write_figures_model_contrasts <- function(contrasts_result,path){
 #' @export
 #'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts){
-  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_reatio_test.pValue, lhs, estimate) %>%
+  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_ratio_test.pValue, lhs, estimate) %>%
     mutate(lhs = glue::glue('estimate.{lhs}')) %>%
     tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
 
-  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_reatio_test.pValue, lhs, p.value) %>%
+  modelWithInteractionsContrasts %>% dplyr::select(protein_Id,likelihood_ratio_test.pValue, lhs, p.value) %>%
     mutate(lhs = glue::glue('p.value.{lhs}')) %>%
     tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
 
@@ -718,7 +718,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelName, modelProtein
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(protein_Id, modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
-    rename(likelihood_reatio_test.pValue = modelComparisonLikelihoodRatioTest)
+    rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
   return(likelihood_ratio_test_result)
 }
 
