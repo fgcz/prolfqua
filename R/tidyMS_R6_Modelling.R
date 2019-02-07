@@ -594,8 +594,7 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   Coeffs_model <- paste0("Coeffs_", modelName)
   Anova_model <- paste0("Anova_", modelName)
 
-  nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) ->
-    modelProtein
+  nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) -> modelProtein
 
   modelProtein <- modelProtein %>% mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
   modelProteinF <- modelProtein %>% filter( !!sym(exists_lmer) == TRUE)
