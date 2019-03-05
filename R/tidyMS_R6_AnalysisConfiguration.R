@@ -921,8 +921,11 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE){
   factors <- select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
-  res <- heatmap3::heatmap3(cres,symm=TRUE, scale="none", ColSideColors = ColSideColors,
-                            main=ifelse(R2, "R^2", "correlation"))
+  res <- heatmap3::heatmap3(cres,symm=TRUE,
+                            scale="none",
+                            ColSideColors = ColSideColors,
+                            margin = c(8,3),
+                            main = ifelse(R2, "R^2", "correlation"))
   invisible(res)
 }
 
@@ -945,9 +948,11 @@ plot_heatmap <- function(data, config){
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
-  res <- heatmap3::heatmap3(res, ColSideColors = ColSideColors,
+  res <- heatmap3::heatmap3(res,
+                            ColSideColors = ColSideColors,
                             labRow="",
-                            showRowDendro =FALSE)
+                            showRowDendro =FALSE,
+                            margin = c(8,3))
   invisible(res)
 }
 #' plot heatmap of NA values
@@ -982,6 +987,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
                               ColSideColors = ColSideColors,
                               showRowDendro = showRowDendro,
                               cexCol = cexCol,
+                              margin = c(8,3),
                               legendfun = function()
                                 showLegend(legend=c("NA"),
                                            col=c("black"),

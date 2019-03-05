@@ -115,3 +115,19 @@ knitr::include_graphics(figpath)
 ```
 
 
+\newpage
+
+```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
+figpath <- file.path(path,"heatmap_after_filtering.pdf")
+if(HEATMAP){
+  pdf(figpath)
+  x <- plot_heatmap(params$filteredPep,  params$config_filteredPep)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+
+
+
