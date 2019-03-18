@@ -948,11 +948,12 @@ plot_heatmap <- function(data, config){
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
+  res <- t(scale(t(res)))
   res <- heatmap3::heatmap3(res,
                             ColSideColors = ColSideColors,
                             labRow="",
                             showRowDendro =FALSE,
-                            margin = c(8,3))
+                            margin = c(8,3), scale="none")
   invisible(res)
 }
 #' plot heatmap of NA values

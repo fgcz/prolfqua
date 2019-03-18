@@ -121,7 +121,7 @@ knitr::include_graphics(figpath)
 figpath <- file.path(path,"heatmap_after_filtering.pdf")
 if(HEATMAP){
   pdf(figpath)
-  x <- plot_heatmap(params$filteredPep,  params$config_filteredPep)
+  x <- plot_heatmap(params$pepIntensityNormalized, params$config_pepIntensityNormalized)
   dev.off()
 }
 knitr::include_graphics(figpath)
