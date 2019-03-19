@@ -11,7 +11,7 @@
       res <- c(res,dest_script )
     }
   }
-  message(paste("your working directory now should contain ", length(runscripts) , "new files :\n",sep=" "))
+  message(paste("your working directory now should contain: ", length(res) , "new files :\n",sep=" "))
   return(res)
 }
 
@@ -24,6 +24,9 @@
   markdown_file <- basename(markdown_path)
   res <- .scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
   dist_file_path <- file.path(dest_path, dest_file_name)
+  if(is.null(res)){
+    return(NULL)
+  }
   rmarkdown::render(res,
                     output_format = rmarkdown::pdf_document(),
                     params=params, envir = new.env()
@@ -90,7 +93,7 @@ render_SummarizeFiltering_rmd <- function(results,
 {
   dist_file_path <- .run_markdown_with_params(
     results,
-    markdown_path ="rmarkdown_reports/Summarize_Filtering.Rmd",
+    markdown_path ="rmarkdown/Summarize_Filtering.Rmd",
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,

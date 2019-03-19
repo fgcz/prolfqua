@@ -5,11 +5,17 @@
 \title{render MQ Summary.}
 \usage{
 render_SummarizeFiltering_rmd(results, dest_path = ".",
-  dest_file_name = "Summarize_Filtering.pdf", workdir = tempdir())
+  dest_file_name = "GSEA.pdf", workdir = tempdir())
+
+render_SummarizeFiltering_rmd(results, dest_path = ".",
+  dest_file_name = "GSEA.pdf", workdir = tempdir())
 }
 \description{
 render MQ Summary.
+
+render MQ Summary.
 }
 \examples{
+
 
 }
