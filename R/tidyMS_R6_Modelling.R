@@ -764,5 +764,9 @@ workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test
   write_csv(modelWithInteractionsContrasts_Pivot,
             path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
 
+  return(list(contrast_interactions = contrast_interactions,
+              modelWithInteractionsContrasts = modelWithInteractionsContrasts,
+              modelWithInteractionsContrasts_Pivot= modelWithInteractionsContrasts_Pivot,
+              ))
 }
 
