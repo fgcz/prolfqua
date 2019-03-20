@@ -52,7 +52,7 @@ workflow_MQ_protein_quants <- function(results){
 #' runs data preprocessing for peptide level data based protein modelling
 #' @export
 #'
-worklfow_MQ_protoV1 <- function(resDataStart, config, path){
+workflow_MQ_protoV1 <- function(resDataStart, config, path){
   RESULTS <- list()
   RESULTS$path <- path
   config <- config$clone(deep=TRUE)

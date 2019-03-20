@@ -689,7 +689,7 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
   return(modelProteinF_Int)
 }
 
-#' p2621 worklfow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
+#' p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
 #' @export
 workflow_no_interaction_modelling <- function(results, modelFunction, modelName,writeCoefResults=FALSE){
   modelProteinF <- workflow_interaction_modelling(results, modelFunction, modelName, writeCoefResults=FALSE)
@@ -748,16 +748,21 @@ workflow_group_averages <- function(models,
 
 #' p2621 workflow linfunct contrasts
 #' @export
-workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test_result ,  linfct, path, lin_int)
+workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test_result ,  linfct, path,
+                                        fig.width=10, fig.height=10)
 {
   contrast_interactions <- workflow_model_contrasts_with_interaction(models, modelName, linfct)
-  write_figures_model_contrasts(contrast_interactions, path)
+  write_figures_model_contrasts(contrast_interactions, path,
+                                fig.width = fig.width , fig.height = fig.height)
 
-  modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
-  write_csv(modelWithInteractionsContrasts, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, ".csv")))
+  modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts,
+                                               likelihood_ratio_test_result )
+  write_csv(modelWithInteractionsContrasts,
+            path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, ".csv")))
 
   modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
-  write_csv(modelWithInteractionsContrasts_Pivot, path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
+  write_csv(modelWithInteractionsContrasts_Pivot,
+            path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
 
 }
 

@@ -5,7 +5,8 @@
 \title{p2621 workflow linfunct contrasts}
 \usage{
 workflow_linfunct_contrasts(models, modelName,
-  likelihood_ratio_test_result, linfct, path, lin_int)
+  likelihood_ratio_test_result, linfct, path, fig.width = 10,
+  fig.height = 10)
 }
 \description{
 p2621 workflow linfunct contrasts
