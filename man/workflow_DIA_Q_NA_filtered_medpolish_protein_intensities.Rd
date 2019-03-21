@@ -16,10 +16,10 @@ library(tidyverse)
 rm(list=ls())
 config <- spectronautDIAData250_config$clone(deep=TRUE)
 data <- spectronautDIAData250_analysis
-tmp <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=2)
+tmp <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=2)
 nrow(tmp$data)
 config <- spectronautDIAData250_config$clone(deep=TRUE)
-res <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=1)
+res <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=1)
 nrow(res$data)
 res$newconfig
 hierarchyCounts(res$data, res$newconfig)

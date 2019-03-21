@@ -177,10 +177,10 @@ workflow_DIA_NA_preprocessing <- function(data,
 #' rm(list=ls())
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' data <- spectronautDIAData250_analysis
-#' tmp <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=2)
+#' tmp <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=2)
 #' nrow(tmp$data)
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' res <-workflow_DIA_Q_NA_filtered_protein_intensities(data, config, hierarchy_level=1)
+#' res <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=1)
 #' nrow(res$data)
 #' res$newconfig
 #' hierarchyCounts(res$data, res$newconfig)
@@ -215,8 +215,8 @@ workflow_Q_NA_filtered_Hierarchy <- function(data,
                                              hierarchy_level=1,
                                              factor_level=1)
 {
-  warning("this function name is deprecated, use workflow_DIA_Q_NA_filtered_protein_intensities instead.")
-  workflow_DIA_Q_NA_filtered_protein_intensities(data,
+  warning("this function name is deprecated, use workflow_DIA_Q_NA_filtered_medpolish_protein_intensities instead.")
+  workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data,
                                                  config,
                                                  percent = 60,
                                                  hierarchy_level=1,

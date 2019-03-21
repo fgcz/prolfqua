@@ -25,7 +25,7 @@
 #'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' usethis::use_data( skylineconfig , overwrite = TRUE )
+#' #usethis::use_data( skylineconfig , overwrite = TRUE )
 #' tt <- R6extractValues(skylineconfig)
 #' #yaml::write_yaml(tt,file=file.path("skylineconfig.yml"))
 #' skylineconfig$table$hkeysLevel()

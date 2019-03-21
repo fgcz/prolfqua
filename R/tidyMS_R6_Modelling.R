@@ -292,7 +292,8 @@ workflow_model_contrasts_with_interaction <- function(modelProteinF_Int, modelNa
   interaction_model_matrix %>%
     dplyr::select(protein_Id, contrasts ) %>% unnest() -> modelWithInteractionsContrasts
 
-  modelWithInteractionsContrasts <- inner_join(dplyr::select(modelProteinF_Int, protein_Id, isSingular), modelWithInteractionsContrasts)
+  modelWithInteractionsContrasts <- inner_join(dplyr::select(modelProteinF_Int, protein_Id, isSingular,peptide_Id_n ),
+                                               modelWithInteractionsContrasts)
 
 
   results$contrasts <- modelWithInteractionsContrasts
@@ -556,6 +557,8 @@ lmer4_linfct_from_model <- function(m){
   return(list(linfct_factors = dd_m , linfct_interactions = cm_mm))
 }
 
+
+
 # Computing contrasts helpers -----
 
 #' apply glht method to linfct
@@ -766,7 +769,7 @@ workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test
 
   return(list(contrast_interactions = contrast_interactions,
               modelWithInteractionsContrasts = modelWithInteractionsContrasts,
-              modelWithInteractionsContrasts_Pivot= modelWithInteractionsContrasts_Pivot,
+              modelWithInteractionsContrasts_Pivot= modelWithInteractionsContrasts_Pivot
               ))
 }
 
