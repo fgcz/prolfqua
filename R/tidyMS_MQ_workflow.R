@@ -26,6 +26,26 @@
 }
 
 
+
+.workflow_MQ_filter_peptides_V2 <- function(resDataStart, config, percent = 50){
+  config <- config$clone(deep = TRUE)
+  resNACondition <- filter_factor_levels_by_missing(resDataStart,
+                                                    config,
+                                                    percent = percent,
+                                                    factor_level = config$table$factorLevel
+  )
+
+  resNACondition <- resNACondition %>% select(protein_Id) %>% distinct() %>% inner_join(resDataStart , by="protein_Id")
+  resNACondition <- completeCases(resNACondition, config)
+  filteredPep <- summarizeHierarchy(resNACondition, config)
+
+  filteredPep <- inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
+  filteredPep <- filteredPep %>% filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
+  return(list(data=filteredPep, config=config))
+}
+
+
+
 .workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(filteredPep, pepConfig, log2)
@@ -51,15 +71,18 @@ workflow_MQ_protein_quants <- function(results){
 
 #' runs data preprocessing for peptide level data based protein modelling
 #' @export
-#'
-workflow_MQ_protoV1 <- function(resDataStart, config, path){
+#' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
+workflow_MQ_protoV1 <- function(resDataStart,
+                                config,
+                                path,
+                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides){
   RESULTS <- list()
   RESULTS$path <- path
   config <- config$clone(deep=TRUE)
   RESULTS$config_resDataStart <- config
   RESULTS$resDataStart <- resDataStart
 
-  filteredPep <- .workflow_MQ_filter_peptides( resDataStart , config )
+  filteredPep <- peptideFilterFunction( resDataStart , config )
   config <- filteredPep$config
   filteredPep <- filteredPep$data
 
