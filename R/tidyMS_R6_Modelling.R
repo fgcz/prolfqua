@@ -719,7 +719,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelName, modelProtein
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(protein_Id, modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
-    rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
+    dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
   return(likelihood_ratio_test_result)
 }
 

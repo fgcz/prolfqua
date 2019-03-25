@@ -50,7 +50,7 @@
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(filteredPep, pepConfig, log2)
   pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized, pepConfig, .func = robust_scale)
-  pepIntensityNormalized <- pepIntensityNormalized %>% rename(transformedIntensity = pepConfig$table$getWorkIntensity())
+  pepIntensityNormalized <- pepIntensityNormalized %>% dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
   pepConfig$table$popWorkIntensity()
   pepConfig$table$setWorkIntensity("transformedIntensity")
   return(list(data = pepIntensityNormalized, config = pepConfig))
