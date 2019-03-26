@@ -35,7 +35,7 @@
                                                     factor_level = config$table$factorLevel
   )
 
-  resNACondition <- resNACondition %>% select(protein_Id) %>% distinct() %>% inner_join(resDataStart , by="protein_Id")
+  resNACondition <- resNACondition %>% dplyr::select(protein_Id) %>% distinct() %>% inner_join(resDataStart , by="protein_Id")
   resNACondition <- completeCases(resNACondition, config)
   filteredPep <- summarizeHierarchy(resNACondition, config)
 
@@ -72,10 +72,10 @@ workflow_MQ_protein_quants <- function(results){
 #' runs data preprocessing for peptide level data based protein modelling
 #' @export
 #' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
-workflow_MQ_protoV1 <- function(resDataStart,
+workflow_MQ_protoV1 <- function( resDataStart,
                                 config,
                                 path,
-                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides){
+                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides ){
   RESULTS <- list()
   RESULTS$path <- path
   config <- config$clone(deep=TRUE)
@@ -98,10 +98,30 @@ workflow_MQ_protoV1 <- function(resDataStart,
   RESULTS$config_pepIntensityNormalized <- config
   RESULTS$pepIntensityNormalized <- pepIntensityNormalized
 
+  # Summarize number of peptides with more than 2
+  x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
+  x3_start <- x3_start %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+                                                           peptide_Id_n > 1 ~ "two and more"))
+  RESULTS$nrPeptidesPerProtein_start <- x3_start %>% group_by(protein_with) %>% summarize(n=n())
 
+
+
+  # Summarize filtered data - number of peptides with more than 2
+  x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
+  x3_filt <- x3_filt %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+                                                         peptide_Id_n > 1 ~ "two and more"))
+  RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% group_by(protein_with) %>% summarize(n=n())
+
+#  knitr::kable(res, caption = "nr of proteins with more than on peptide.")
+
+  x3_start %>% dplyr::select( -protein_with) %>% filter(peptide_Id_n  > 1) -> x3_start
+  x3_filt %>% dplyr::select( -protein_with) %>% filter(peptide_Id_n  > 1) -> x3_filt
+
+  res <- left_join(x3_start, x3_filt , by="protein_Id", suffix=c(".start",".filt")) %>% arrange(peptide_Id_n.filt)
+  RESULTS$removed_proteins <- res %>% filter(is.na(peptide_Id_n.filt))
+
+  RESULTS$removed_peptides <- inner_join(RESULTS$removed_proteins, RESULTS$resDataStart)
   ### PLOTTING
-
-
   return(RESULTS)
 }
 

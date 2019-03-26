@@ -15,6 +15,10 @@ params:
   pepIntensityNormalized: NULL
   config_pepIntensityNormalized: NULL
   config: NULL
+  nrPeptidesPerProtein_start: NULL
+  nrPeptidesPerProtein_filtered: NULL
+  removed_proteins: NULL
+  removed_peptides: NULL
 ---
 
 
@@ -23,6 +27,9 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
 ```
 
 # Filter missigness
+
+We here briefly discuss how your data was pre-processed.
+
 
 ```{r heatmapAllNAs, out.width = "85%", out.height="\\textheight", fig.cap="before NA filtering"}
 
@@ -50,14 +57,49 @@ knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataS
              catpion = "NR Proteins and peptides by sample.")
 ```
 
+```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
+hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)
+
+hcs <- hcs %>% gather("key", "nr",
+                      -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
+ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+```{r proteinSummaries}
+knitr::kable(params$nrPeptidesPerProtein_start, caption = "nr of proteins with more than on peptide.")
+```
+
+
+```{r, fig.height=3, fig.with=4, fig.cap="Number of proteins with one or more peptides."}
+ggplot(results$nrPeptidesPerProtein_start, aes(x =protein_with , y = n)) + geom_bar(stat="identity")
+```
+
+
 
 \newpage
+
+
+# Filtered data
 
 ```{r}
 knitr::kable(hierarchyCounts(params$filteredPep, params$config_filteredPep),
              caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
-
 ```
+
+
+```{r fig.cap="Missigness patterns for peptides of proteins removed from analysis.", fig.with=7, fig.height=8}
+plot_NA_heatmap(params$removed_peptides, results$config_resDataStart)
+```
+
+\newpage
+
+```{r}
+knitr::kable(params$removed_proteins, caption="Proteins removed from analysis.")
+```
+
 
 
 
@@ -89,7 +131,12 @@ knitr::include_graphics(figpath)
 
 # Normalized intensities
 
-```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%"}
+
+Figure \@ref(fig:normalizeRob) shows the normalized peptide values. Normalization is applied to remove systematic differences in peptide abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed peptides and proteins can be detected. To do this the z-score of the $log_2$ transformed intensities is computed, which is updated by the average of the original standard deviation of the $log_2$ transformed intensities in all samples. After normalization all samples have a similar distribution.
+
+
+
+```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of raw intensities."}
 figpath <- file.path(path, "PEPTIDE_DensityDistributionRAW.pdf")
 
 pdf(figpath, width=22, height=10)
@@ -103,7 +150,7 @@ knitr::include_graphics(figpath)
 
 
 
-```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%"}
+```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of transformed and scaled intensities."}
 figpath <- file.path(path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
 
 pdf(figpath, width=22, height=10)
@@ -116,6 +163,7 @@ knitr::include_graphics(figpath)
 
 
 \newpage
+
 
 ```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
 figpath <- file.path(path,"heatmap_after_filtering.pdf")
