@@ -4,3 +4,4 @@ doc
 .Rhistory
 .RData
 .Ruserdata
+/inst/rmarkdown/*.pdf
