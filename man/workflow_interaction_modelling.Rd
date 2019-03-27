@@ -10,3 +10,10 @@ workflow_interaction_modelling(results, modelFunction, modelName,
 \description{
 p2621 workflow interaction
 }
+\examples{
+
+D <- LFQService::allData_PhonixDS_1097969
+modelName  <- "f_Condition_r_peptide"
+formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
+}

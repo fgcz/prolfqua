@@ -11,3 +11,9 @@ workflow_lme4_model_analyse(nestProtein, modelFunction, modelName,
 apply modelling, extracts coefficients,
 funs anova, filters results, generates histogram of p-values, pairsplot
 }
+\examples{
+allData_PhonixDS_1097969 <- readRDS("data/allData_PhonixDS_1097969.Rds")
+D <- allData_PhonixDS_1097969
+names(D)
+usethis::use_data(allData_PhonixDS_1097969)
+}
