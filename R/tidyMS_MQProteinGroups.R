@@ -333,7 +333,7 @@ tidyMQ_allPeptides <- function(MQPeptides){
 #' @param mq_modSpecPeptides modeSpecPeptides.txt
 #' @param mq_peptides mq_peptides
 tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
-  mq_modSpecPeptides %>% filter(unique.groups) -> mq_modSpecPeptides
+  mq_modSpecPeptides %>% dplyr::filter(unique.groups) -> mq_modSpecPeptides
   relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
 
   xx <- mq_modSpecPeptides %>%
@@ -354,7 +354,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 #' @export
 #' @param modSpecData modeSpecPeptides.txt
 tidyMQ_top_protein_name <- function(modSpecData){
-  modSpecData <- modSpecData %>% filter(!is.na(proteins))
+  modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% distinct() %>% nrow()
   groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% distinct()
   groupIDprotein %>% separate_rows(proteins, sep=";",convert =TRUE) -> groupIDprotein_Separated

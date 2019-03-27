@@ -21,7 +21,7 @@
   filteredPep <- summarizeHierarchy(resNACondition, config)
 
   filteredPep <- inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
-  filteredPep <- filteredPep %>% filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
+  filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
   return(list(data=filteredPep, config=config))
 }
 
@@ -114,11 +114,11 @@ workflow_MQ_protoV1 <- function( resDataStart,
 
 #  knitr::kable(res, caption = "nr of proteins with more than on peptide.")
 
-  x3_start %>% dplyr::select( -protein_with) %>% filter(peptide_Id_n  > 1) -> x3_start
-  x3_filt %>% dplyr::select( -protein_with) %>% filter(peptide_Id_n  > 1) -> x3_filt
+  x3_start %>% dplyr::select( -protein_with) %>% dplyr::filter(peptide_Id_n  > 1) -> x3_start
+  x3_filt %>% dplyr::select( -protein_with) %>% dplyr::filter(peptide_Id_n  > 1) -> x3_filt
 
   res <- left_join(x3_start, x3_filt , by="protein_Id", suffix=c(".start",".filt")) %>% arrange(peptide_Id_n.filt)
-  RESULTS$removed_proteins <- res %>% filter(is.na(peptide_Id_n.filt))
+  RESULTS$removed_proteins <- res %>% dplyr::filter(is.na(peptide_Id_n.filt))
 
   RESULTS$removed_peptides <- inner_join(RESULTS$removed_proteins, RESULTS$resDataStart)
   ### PLOTTING

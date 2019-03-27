@@ -204,7 +204,8 @@ summariseQValues <- function(data,
 filter_byQValue <- function(data, config){
   data_NA <- removeLarge_Q_Values(data, config)
   data_NA <- summariseQValues(data_NA, config)
-  data_NA_QVal <- data_NA %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
+  data_NA_QVal <- data_NA %>%
+    dplyr::filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 }
 
 

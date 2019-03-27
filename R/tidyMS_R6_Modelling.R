@@ -605,8 +605,8 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) -> modelProtein
 
   modelProtein <- modelProtein %>% mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
-  modelProteinF <- modelProtein %>% filter( !!sym(exists_lmer) == TRUE)
-  no_ModelProtein <- modelProtein %>% filter(!!sym(exists_lmer) == FALSE)
+  modelProteinF <- modelProtein %>% dplyr::filter( !!sym(exists_lmer) == TRUE)
+  no_ModelProtein <- modelProtein %>% dplyr::filter(!!sym(exists_lmer) == FALSE)
 
   modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), lme4::isSingular ))
   modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), function(x){ncol(coef(x)[[1]])} ))
@@ -629,7 +629,7 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
 
-  reslist$fig$VolcanoPlot <- Model_Coeff %>% filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
+  reslist$fig$VolcanoPlot <- Model_Coeff %>% dplyr::filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
     effect = "Estimate",
     type = "Pr...t..",
     condition = "row.names.x.",
