@@ -10,3 +10,10 @@ workflow_model_contrasts_no_interaction(modelProteinF, modelName,
 \description{
 compute all contrasts from non interaction model automatically.
 }
+\examples{
+D <- LFQService::resultsV12954
+formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+modelName <- "f_Condition_r_peptide"
+modelProteinF <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
+workflow_model_contrasts_no_interaction(modelProteinF,modelName,D$config_pepIntensityNormalized)
+}

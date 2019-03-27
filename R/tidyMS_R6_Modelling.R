@@ -252,7 +252,12 @@ likelihood_ratio_test <- function(modelNO, model) {
 
 #' compute all contrasts from non interaction model automatically.
 #' @export
-#'
+#' @examples
+#' D <- LFQService::resultsV12954
+#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' modelName <- "f_Condition_r_peptide"
+#' modelProteinF <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
+#' workflow_model_contrasts_no_interaction(modelProteinF,modelName,D$config_pepIntensityNormalized)
 workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                     modelName,
                                                     pepConfig )
@@ -677,7 +682,7 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, 
 #'
 #' D <- LFQService::resultsV12954
 #' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
+#' res_cond_r_pep <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
 workflow_interaction_modelling <- function(results, modelFunction, modelName, writeCoefResults=FALSE){
 
   pepIntensity <- results$pepIntensityNormalized
@@ -689,7 +694,10 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
 
   prot_stats <- summarizeHierarchy(pepIntensity, pepConfig)
 
-  interactionResults <- workflow_lme4_model_analyse(nestProtein, modelFunction, modelName, prot_stats = prot_stats)
+  interactionResults <- workflow_lme4_model_analyse(nestProtein,
+                                                    modelFunction,
+                                                    modelName,
+                                                    prot_stats = prot_stats)
 
   if(writeCoefResults){
     write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
@@ -708,14 +716,22 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
 
 #' p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
 #' @export
-workflow_no_interaction_modelling <- function(results, modelFunction, modelName,writeCoefResults=FALSE){
+#' @examples
+#' D <- LFQService::resultsV12954
+#' modelName <- "f_Condition_r_peptide"
+#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
+workflow_no_interaction_modelling <- function(results, modelFunction, modelName,
+                                              writeCoefResults=FALSE, plot=TRUE){
   modelProteinF <- workflow_interaction_modelling(results, modelFunction, modelName, writeCoefResults=FALSE)
 
+  pepConfig<- results$config_pepIntensityNormalized
   contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
                                                        modelName ,
                                                        pepConfig )
-  write_figures_model_contrasts(contrasts, results$path)
-
+  if(plot){
+    write_figures_model_contrasts(contrasts, results$path)
+  }
   return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
 }
 
