@@ -905,8 +905,8 @@ plot_stdv_vs_mean <- function(data, config){
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone( deep=TRUE )
-#' LFQService::plot_heatmap_cor( data, config )
-#' #plot_heatmap_cor( data, config, R2=TRUE )
+#' # LFQService::plot_heatmap_cor( data, config )
+#' # plot_heatmap_cor( data, config, R2=TRUE )
 #'
 plot_heatmap_cor <- function(data, config, R2 = FALSE){
   res <-  toWideConfig(data, config , as.matrix = TRUE)

@@ -675,8 +675,7 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, 
 #' @export
 #' @examples
 #'
-#' D <- LFQService::allData_PhonixDS_1097969
-#' modelName  <- "f_Condition_r_peptide"
+#' D <- LFQService::resultsV12954
 #' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
 workflow_interaction_modelling <- function(results, modelFunction, modelName, writeCoefResults=FALSE){

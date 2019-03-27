@@ -58,6 +58,11 @@
 
 #' median polish from normalized peptide intensities
 #' @export
+#' @examples
+#' resultsV12954 <- LFQService::resultsV12954
+#' res <- workflow_MQ_protein_quants(resultsV12954)
+#' dim(res$protintensity)
+#'
 workflow_MQ_protein_quants <- function(results){
   pepIntensityNormalized <- results$pepIntensityNormalized
   config <- results$config_pepIntensityNormalized
@@ -73,13 +78,14 @@ workflow_MQ_protein_quants <- function(results){
 #' @export
 #' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
 #' @examples
-#' testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
+#' #testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
 #' #usethis::use_data(testDataStart2954)
 #' testDataStart2954 <- LFQService::testDataStart2954
 #' path <- "dummy_test"
-#' results <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,
+#' resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,
 #'                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
-
+#' usethis::use_data(resultsV12954)
+#'
 workflow_MQ_protoV1 <- function( resDataStart,
                                 config,
                                 path,
