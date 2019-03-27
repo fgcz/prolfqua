@@ -588,8 +588,13 @@ my_glht <- function(model , linfct , sep=FALSE){
 #'
 #' apply modelling, extracts coefficients,
 #' funs anova, filters results, generates histogram of p-values, pairsplot
-#'
 #' @export
+#' @examples
+#' allData_PhonixDS_1097969 <- readRDS("data/allData_PhonixDS_1097969.Rds")
+#' D <- allData_PhonixDS_1097969
+#' names(D)
+#' usethis::use_data(allData_PhonixDS_1097969)
+
 workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, prot_stats)
 {
   lmermodel <- paste0("lmer_", modelName)
@@ -668,6 +673,12 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, 
 
 #' p2621 workflow interaction
 #' @export
+#' @examples
+#'
+#' D <- LFQService::allData_PhonixDS_1097969
+#' modelName  <- "f_Condition_r_peptide"
+#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
 workflow_interaction_modelling <- function(results, modelFunction, modelName, writeCoefResults=FALSE){
 
   pepIntensity <- results$pepIntensityNormalized
@@ -683,12 +694,16 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
 
   if(writeCoefResults){
     write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
-    readr::write_csv(interactionResults$table$Model_Coeff, path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
-    readr::write_csv(interactionResults$table$Model_Anova, path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+    readr::write_csv(interactionResults$table$Model_Coeff,
+                     path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+    readr::write_csv(interactionResults$table$Model_Anova,
+                     path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
   }
 
   modelProteinF_Int <- interactionResults$models
-  modelProteinF_Int <- modelProteinF_Int %>% filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
+  modelProteinF_Int <- modelProteinF_Int %>%
+    dplyr::filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
+
   return(modelProteinF_Int)
 }
 

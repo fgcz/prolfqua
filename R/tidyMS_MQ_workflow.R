@@ -40,7 +40,7 @@
   filteredPep <- summarizeHierarchy(resNACondition, config)
 
   filteredPep <- inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
-  filteredPep <- filteredPep %>% filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
+  filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
   return(list(data=filteredPep, config=config))
 }
 

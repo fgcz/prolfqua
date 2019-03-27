@@ -86,7 +86,7 @@ ggplot(x3, aes(x = protein_with)) + geom_bar(stat="count")
 ```
 
 ```{r filterOnPeptideNr}
-x3 %>% filter(peptide_Id_n > 1) -> x4
+x3 %>% dplyr::filter(peptide_Id_n > 1) -> x4
 data <- inner_join(data, x4, by="protein_Id")
 ```
 
