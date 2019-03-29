@@ -6,3 +6,8 @@ test_that("check config", {
   expect_equal(config$table$factorKeys(),"Time")
   expect_equal(config$table$hierarchyKeys(),c("protein_Id","peptide_Id","precursor_Id","fragment_Id"))
 })
+
+test_that("run test_resultsV1_2954_modelling.R",{
+  source("script_resultsV1_2954_modelling.R", echo=FALSE)
+})
+

@@ -145,6 +145,7 @@ make_interaction_column <- function(data, columns, sep="."){
 #' create interaction column from factors
 #' @export
 #' @examples
+#'
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$factorLevel <- 1
 #' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
@@ -420,8 +421,10 @@ hierarchyCounts <- function(x, configuration){
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' hierarchy_counts_sample(sample_analysis, skylineconfig)
 #'
-hierarchy_counts_sample <- function(data, configuration){
-  hierarchy <- names( configuration$table$hierarchy )[1:configuration$table$getFactorLevel()]
+hierarchy_counts_sample <- function(data,
+                                    configuration,
+                                    hierarchyLevel = configuration$table$hierarchyLevel){
+  hierarchy <- names( configuration$table$hierarchy )[1:hierarchyLevel]
   data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
   res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
     summarise_at( hierarchy, n_distinct )
@@ -482,22 +485,21 @@ summarizeHierarchy <- function(x,
                                hierarchy_level = 1,
                                factor_level=0)
 {
-  hierarchy <- configuration$table$hierarchyKeys()
+  hierarchy_all <- configuration$table$hierarchyKeys()
   factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
-  if(length(hierarchy) <= hierarchy_level){
-    warning("There is less hierarchy levels than : ", hierarchy_level)
-    return(NULL)
-  }
-
-  hierarchy <- hierarchy[hierarchy_level:length(hierarchy)]
+  hierarchy <- hierarchy_all[hierarchy_level:length(hierarchy_all)]
   precursor <- x %>% dplyr::select(hierarchy, factors) %>% distinct()
+
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  funs( n = n_distinct))
-  }else{
+      dplyr::summarize_at( hierarchy[-1],  list( n = n_distinct))
+  }else if(length(hierarchy[-1]) == 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  funs( n = n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  list( n = n_distinct))
+  }else{
+    x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
+      dplyr::summarize(  n= n())
   }
   return(x3)
 }
@@ -973,7 +975,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   stopifnot(annot$sampleName == colnames(res))
 
   factors <- select_at(annot, config$table$factorKeys())
-  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
+  ColSideColors <- as.matrix(dplyr::mutate_all(factors, list(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
 
   res[!is.na(res)] <- 0
@@ -993,6 +995,8 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
                                 showLegend(legend=c("NA"),
                                            col=c("black"),
                                            cex=1.5))
+
+    invisible(list(res = res, res_plot=res_plot))
+
   }
-  invisible(list(res = res, res_plot=res_plot))
 }

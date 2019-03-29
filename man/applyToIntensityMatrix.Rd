@@ -10,7 +10,7 @@ applyToIntensityMatrix(data, config, .func)
 apply Function To matrix
 }
 \examples{
-
+library(tidyverse)
 conf <- skylineconfig$clone(deep = TRUE)
 
 res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)

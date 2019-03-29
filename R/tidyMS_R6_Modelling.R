@@ -594,12 +594,6 @@ my_glht <- function(model , linfct , sep=FALSE){
 #' apply modelling, extracts coefficients,
 #' funs anova, filters results, generates histogram of p-values, pairsplot
 #' @export
-#' @examples
-#' allData_PhonixDS_1097969 <- readRDS("data/allData_PhonixDS_1097969.Rds")
-#' D <- allData_PhonixDS_1097969
-#' names(D)
-#' usethis::use_data(allData_PhonixDS_1097969)
-
 workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, prot_stats)
 {
   lmermodel <- paste0("lmer_", modelName)

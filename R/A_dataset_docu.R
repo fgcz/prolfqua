@@ -24,7 +24,7 @@
 #' skylineconfig <- LFQService::createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
 #'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#'
+#' #skylineconfig$table$factors
 #' #usethis::use_data( skylineconfig , overwrite = TRUE )
 #' tt <- R6extractValues(skylineconfig)
 #' #yaml::write_yaml(tt,file=file.path("skylineconfig.yml"))
