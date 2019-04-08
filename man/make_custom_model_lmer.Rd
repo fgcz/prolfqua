@@ -2,10 +2,10 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{make_custom_model_lmer}
 \alias{make_custom_model_lmer}
-\title{Create custom model}
+\title{Create custom lmer model}
 \usage{
 make_custom_model_lmer(modelstr)
 }
 \description{
-Create custom model
+Create custom lmer model
 }

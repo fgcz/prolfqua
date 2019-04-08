@@ -4,10 +4,18 @@
 \alias{workflow_lme4_model_analyse}
 \title{Workflow function to apply modelFunction to peroteinList nestProtein}
 \usage{
-workflow_lme4_model_analyse(nestProtein, modelFunction, modelName,
-  prot_stats)
+workflow_lme4_model_analyse(pepIntensity, config, modelFunction, modelName)
 }
 \description{
 apply modelling, extracts coefficients,
 funs anova, filters results, generates histogram of p-values, pairsplot
+}
+\examples{
+D <- LFQService::resultsV12954
+modelName <- "f_condtion_r_peptide"
+formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+res_cond_r_pep <- workflow_lme4_model_analyse(D$pepIntensityNormalized,
+ D$config_pepIntensityNormalized,
+  formula_randomPeptide,
+   modelName)
 }
