@@ -4,8 +4,8 @@
 \alias{workflow_no_interaction_modelling}
 \title{p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.}
 \usage{
-workflow_no_interaction_modelling(results, modelFunction, modelName,
-  writeCoefResults = FALSE, plot = TRUE)
+workflow_no_interaction_modelling(dataLF, config, modelFunction, modelName,
+  writeCoefResults = FALSE, path = NULL)
 }
 \description{
 p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
@@ -13,6 +13,7 @@ p2621 workflow no interaction - adds contrast computation to `workflow_interacti
 \examples{
 D <- LFQService::resultsV12954
 modelName <- "f_Condition_r_peptide"
-formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
+formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+res_cond_r_pep <- workflow_no_interaction_modelling(D$pepIntensityNormalized,D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
+
 }

@@ -5,7 +5,7 @@
 \title{p2621 workflow likelihood ratio test}
 \usage{
 workflow_likelihood_ratio_test(modelProteinF, modelName, modelProteinF_Int,
-  modelName_Int)
+  modelName_Int, config)
 }
 \description{
 p2621 workflow likelihood ratio test

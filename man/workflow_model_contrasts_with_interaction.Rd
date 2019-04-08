@@ -5,7 +5,7 @@
 \title{compute all contrasts from model with interactions based on linfct matrix}
 \usage{
 workflow_model_contrasts_with_interaction(modelProteinF_Int, modelName,
-  linfct)
+  linfct, contrastFunction = LFQService::my_contest)
 }
 \description{
 compute all contrasts from model with interactions based on linfct matrix

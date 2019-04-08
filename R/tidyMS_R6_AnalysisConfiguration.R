@@ -537,6 +537,7 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis %>% mutate(Area = setNa(Area)) -> sample_analysis
 #' missignessHistogram(sample_analysis,skylineconfig)
+#'
 missignessHistogram <- function(x, configuration, showempty = TRUE, nrfactors = 1){
   table <- configuration$table
   missingPrec <- getMissingStats(x, configuration,nrfactors)
@@ -910,7 +911,7 @@ plot_stdv_vs_mean <- function(data, config){
 #' # LFQService::plot_heatmap_cor( data, config )
 #' # plot_heatmap_cor( data, config, R2=TRUE )
 #'
-plot_heatmap_cor <- function(data, config, R2 = FALSE){
+plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.dist(1 - cor(t(x), use = "pa"))){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   cres <- cor(res,use = "pa")
   if(R2){

@@ -2,10 +2,24 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{my_glht}
 \alias{my_glht}
-\title{apply glht method to linfct}
+\title{apply multcomp::glht method to linfct}
 \usage{
 my_glht(model, linfct, sep = FALSE)
 }
 \description{
-apply glht method to linfct
+apply multcomp::glht method to linfct
+}
+\examples{
+
+mb <- LFQService::basicModel_p1807
+linfct <- lmer4_linfct_from_model(mb)
+names(linfct)
+my_glht(mb, linfct$linfct_factors)
+my_glht(mb, linfct$linfct_interactions)
+mi <-  LFQService::interactionModel_p1807
+linfct_int <- lmer4_linfct_from_model(mb)
+names(linfct_int)
+my_glht(mi, linfct_int$linfct_factors)
+my_glht(mi, linfct_int$linfct_interactions)
+
 }

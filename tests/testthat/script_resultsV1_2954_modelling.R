@@ -22,14 +22,14 @@ pepConfig$table$factorKeys()
 pepConfig$table$factorKeys()
 modelName  <- "f_Condition_r_peptide"
 
-formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-res_cond_r_pep <- workflow_no_interaction_modelling(results,formula_randomPeptide, modelName)
+formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+res_cond_r_pep <- workflow_no_interaction_modelling(results$pepIntensityNormalized, results$config_pepIntensityNormalized, formula_randomPeptide, modelName)
 #  saveRDS(res_cond_r_pep,file=paste0(modelName,".rda"))
 #res_cond_r_pep <- readRDS(paste0(modelName,".rda"))
 
 modelName  <- "f_Condition_r_peptid_r_patient"
-formula_randomPatient <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)")
-res_cond_r_pep_r_pat <- workflow_no_interaction_modelling(results,formula_randomPatient, modelName)
+formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)")
+res_cond_r_pep_r_pat <- workflow_no_interaction_modelling(results$pepIntensityNormalized, results$config_pepIntensityNormalized, formula_randomPatient, modelName)
 
 
 #  saveRDS(res_cond_r_pep_r_pat,file=paste0(modelName,".rda"))
@@ -37,8 +37,7 @@ res_cond_r_pep_r_pat <- workflow_no_interaction_modelling(results,formula_random
 #res_cond_r_pep_r_pat <- readRDS(paste0(modelName,".rda"))
 
 #modelName  <- "f_Condition_r_patient.peptpid"
-#formula_randomPatient <- make_custom_model("transformedIntensity  ~ Condition + (1 | patient_id/peptide_Id)")
-#rres_cond_r_pat.pep <- workflow_no_interaction_modelling(results,formula_randomPatient, modelName)
+#formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | patient_id/peptide_Id)")
 #names(rres_cond_r_pat.pep)
 #saveRDS(rres_cond_r_pat.pep,file=paste0(modelName,".rda"))
 

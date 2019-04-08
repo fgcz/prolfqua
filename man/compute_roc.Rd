@@ -10,6 +10,7 @@ compute_roc(data, config)
 Apply roc analysis on main factor on lowest level
 }
 \examples{
+
 library(tidyverse)
 library(LFQService)
 config <- spectronautDIAData250_config$clone(deep=TRUE)
@@ -23,4 +24,5 @@ i <- 2
 
 pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 unique(res$protein_Id)
+
 }

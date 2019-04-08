@@ -21,6 +21,7 @@ rocs <- function(data ,response, predictor){
 #' @export
 #' @importFrom purrr map
 #' @examples
+#'
 #' library(tidyverse)
 #' library(LFQService)
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
@@ -34,6 +35,7 @@ rocs <- function(data ,response, predictor){
 #'
 #' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 #' unique(res$protein_Id)
+#'
 compute_roc <- function(data, config){
   nested <- data %>% group_by(!!sym(config$table$hierarchyKeys()[1]) ,
                               !!sym(config$table$hierarchyKeys(TRUE)[1])) %>% nest()
@@ -52,7 +54,6 @@ compute_roc <- function(data, config){
   dumm <- dumm %>% mutate(auc = map_dbl(rocs, pROC::auc)) %>% arrange(desc(auc))
   return(dumm)
 }
-
 #' Perform anova analysis
 #' @export
 #' @importFrom glue glue
@@ -171,7 +172,7 @@ model_no_interaction_lmer <- function(config, factor_level=2, random = NULL){
 #' Create custom model
 #' @export
 #'
-make_custom_model <- function(modelstr){
+make_custom_model_lmer <- function( modelstr ) {
   formula <- as.formula(modelstr)
   res <- function(x, get_formula=FALSE){
     if(get_formula)
@@ -179,7 +180,7 @@ make_custom_model <- function(modelstr){
       return(formula)
     }
     modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
-                          error=function(e){print(e) ; return=NULL})
+                          error = function(e){print(e) ; return=NULL})
     return(modelTest)
   }
   return(res)
@@ -254,10 +255,11 @@ likelihood_ratio_test <- function(modelNO, model) {
 #' @export
 #' @examples
 #' D <- LFQService::resultsV12954
-#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"
-#' modelProteinF <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
+#' modelProteinF <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
 #' workflow_model_contrasts_no_interaction(modelProteinF,modelName,D$config_pepIntensityNormalized)
+#'
 workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                     modelName,
                                                     pepConfig )
@@ -288,11 +290,14 @@ workflow_model_contrasts_no_interaction <- function(modelProteinF,
 #' compute all contrasts from model with interactions based on linfct matrix
 #' @export
 #'
-workflow_model_contrasts_with_interaction <- function(modelProteinF_Int, modelName, linfct ){
+workflow_model_contrasts_with_interaction <- function(modelProteinF_Int,
+                                                      modelName,
+                                                      linfct,
+                                                      contrastFunction = LFQService::my_contest ){
   results <- list()
 
   interaction_model_matrix <- modelProteinF_Int %>%
-    mutate(contrasts = map(!!sym(paste0("lmer_",modelName)) , LFQService::my_glht, linfct = linfct, sep=TRUE ))
+    mutate(contrasts = map(!!sym(paste0("lmer_",modelName)) , contrastFunction, linfct = linfct, sep=TRUE ))
 
   interaction_model_matrix %>%
     dplyr::select(protein_Id, contrasts ) %>% unnest() -> modelWithInteractionsContrasts
@@ -399,7 +404,7 @@ plot_lmer4_peptide_noRandom <- function(m,legend.position="none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
-  ran <- as.tibble(ran,rownames = randeffect)
+  ran <- tibble::as_tibble(ran,rownames = randeffect)
   colnames(ran) <- gsub("[()]","",colnames(ran))
   ran <- inner_join(data, ran, by=randeffect)
 
@@ -428,7 +433,7 @@ plot_lmer4_peptide_noRandom_TWO <- function(m, legend.position = "none", firstla
     ran <- ranef(m)[[rand_i]]
     name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
     colnames(ran) <- name
-    ran <- as.tibble(ran,rownames = rand_i)
+    ran <- tibble::as_tibble(ran,rownames = rand_i)
     ran <- inner_join(data, ran, by=rand_i)
     ran_res <- ran %>% mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
     ran_res
@@ -449,7 +454,7 @@ plot_lmer4_peptide_noRandom_TWO <- function(m, legend.position = "none", firstla
   #ran <- ranef(m)[[rand_i]]
   #name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
   #colnames(ran) <- name
-  #ran <- as.tibble(ran,rownames = rand_i)
+  #ran <- as_tibble(ran,rownames = rand_i)
   #ran_res <- inner_join(ran_res, ran, by=rand_i)
   #ran_res <- ran_res %>% mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
@@ -507,7 +512,13 @@ plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , fir
 #' get matrix of indicator coefficients for each interaction
 #'
 .lmer4_coeff_matrix <- function(m){
-  data <- m@frame
+  data <- NULL
+  if(class(m)  == "lm"){
+    data <- m$model
+  }else{
+    # for "lmerModLmerTest"
+    data <- m@frame
+  }
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep=":")
 
@@ -532,25 +543,35 @@ plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , fir
   getCoeffs <- function(factor_level, mm){
     idx <- grep(factor_level, rownames(mm))
     x <- as.list(apply(mm[idx,, drop=FALSE],2,mean) )
-    x <- as.tibble(x)
+    x <- tibble::as_tibble(x)
     add_column(x, "factor_level" = factor_level,.before=1)
   }
-  factor_levels <- unique(unlist(str_split(rownames(mm), ":")))
-  xx <- map_df(factor_levels, getCoeffs, mm)
+  factor_levels <- unique(unlist(stringr::str_split(rownames(mm), ":")))
+  xx <- purrr::map_df(factor_levels, getCoeffs, mm)
   return(xx)
 }
 
 #' get linfct from model
 #' @export
 #' @examples
-#' if(FALSE){
-#' m <- modelProteinF_Int$lmer_visittime_group_interactions[[1]]
+#' #if(FALSE){
+#'
+#' m <- LFQService::basicModel_p1807
+#' m
+#' linfct <- lmer4_linfct_from_model(m)
+#'
+#' linfct$linfct_factors
+#' linfct$linfct_interactions
+#'
+#' m <- LFQService::interactionModel_p1807
 #' linfct <- lmer4_linfct_from_model(m)
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
-#' }
+#' #}
+#'
 #'
 lmer4_linfct_from_model <- function(m){
+
   cm <- .lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
@@ -566,13 +587,50 @@ lmer4_linfct_from_model <- function(m){
 
 # Computing contrasts helpers -----
 
-#' apply glht method to linfct
+#' create all possible contrasts
 #' @export
+#' @examples
+#' m <- LFQService::basicModel_p1807
+#' m
+#' linfct <- lmer4_linfct_from_model(m)
+#' xl <- linfunct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- linfunct_all_possible_contrasts(linfct$linfct_interactions)
+linfunct_all_possible_contrasts <- function( lin_int ){
+  combs <- combn(nrow(lin_int),2)
+  names <- rownames(lin_int)
+  newnames <- rep("", ncol(combs))
+  new_lin_fct <- matrix(NA,  nrow= ncol(combs), ncol =ncol(lin_int))
+  for(i in 1:ncol(combs)){
+    newnames[i] <- paste(names[combs[,i]], collapse=" - ")
+    new_lin_fct[i,] <- lin_int[combs[1,i],] - lin_int[combs[2,i],]
+  }
+  rownames(new_lin_fct) <- newnames
+  colnames(new_lin_fct) <- colnames(lin_int)
+  return(new_lin_fct)
+}
+
+
+
+#' apply multcomp::glht method to linfct
+#' @export
+#' @examples
+#'
+#' mb <- LFQService::basicModel_p1807
+#' linfct <- lmer4_linfct_from_model(mb)
+#' names(linfct)
+#' my_glht(mb, linfct$linfct_factors)
+#' my_glht(mb, linfct$linfct_interactions)
+#' mi <-  LFQService::interactionModel_p1807
+#' linfct_int <- lmer4_linfct_from_model(mb)
+#' names(linfct_int)
+#' my_glht(mi, linfct_int$linfct_factors)
+#' my_glht(mi, linfct_int$linfct_interactions)
+#'
 my_glht <- function(model , linfct , sep=FALSE){
   if(sep){
     res <- list()
     for(i in 1:nrow(linfct)){
-      x <- glht(model, linfct=linfct[i,,drop=FALSE])
+      x <- multcomp::glht(model, linfct=linfct[i,,drop=FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
       x <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
       res[[i]] <- x
@@ -580,11 +638,27 @@ my_glht <- function(model , linfct , sep=FALSE){
     res <- bind_rows(res)
     return(res)
   }else{
-    x <- glht(model, linfct = linfct)
+    x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
     res <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
     res
   }
+}
+
+#' applies contrast computation using lmerTest::contest function
+#' @export
+#' @examples
+#' mb <- LFQService::basicModel_p1807
+#' linfct <- lmer4_linfct_from_model(mb)
+#' names(linfct)
+#' lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
+#' my_contest(mb, linfct$linfct_factors)
+#' my_contest(mb, linfct$linfct_interactions)
+#' my_glht(mb, linfct$linfct_factors)
+#' my_glht(mb, linfct$linfct_interactions)
+my_contest <- function(model, linfct){
+  res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
+  return(res)
 }
 
 
@@ -607,7 +681,7 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   modelProteinF <- modelProtein %>% dplyr::filter( !!sym(exists_lmer) == TRUE)
   no_ModelProtein <- modelProtein %>% dplyr::filter(!!sym(exists_lmer) == FALSE)
 
-  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), lme4::isSingular ))
+  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), isSingular ))
   modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), function(x){ncol(coef(x)[[1]])} ))
 
   modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
@@ -648,6 +722,7 @@ workflow_lme4_model_analyse <- function(nestProtein, modelFunction, modelName, p
   return(reslist)
 }
 
+
 #' Writes figures generated by `workflow_lme4_model_analyse`
 #' @export
 write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, fig.width = 10 , fig.height = 10){
@@ -674,13 +749,21 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, 
 #' @export
 #' @examples
 #'
+#'
 #' D <- LFQService::resultsV12954
-#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
-workflow_interaction_modelling <- function(results, modelFunction, modelName, writeCoefResults=FALSE){
+#' modelName <- "f_condtion_r_peptide"
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' res_cond_r_pep <- workflow_interaction_modelling(D$pepIntensityNormalized,
+#'  D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
+#'
+workflow_interaction_modelling <- function(pepIntensity,
+                                           pepConfig,
+                                           modelFunction,
+                                           modelName,
+                                           path=NULL){
 
-  pepIntensity <- results$pepIntensityNormalized
-  pepConfig <- results$config_pepIntensityNormalized
+  #pepIntensity <- results$pepIntensityNormalized
+  #pepConfig <- results$config_pepIntensityNormalized
 
   pepIntensity %>%
     group_by(!!sym(pepConfig$table$hierarchyKeys()[1])) %>%
@@ -693,12 +776,12 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
                                                     modelName,
                                                     prot_stats = prot_stats)
 
-  if(writeCoefResults){
-    write_figures_lme4_model_analyse(interactionResults, modelName, results$path)
+  if(!is.null(path)){
+    write_figures_lme4_model_analyse(interactionResults, modelName, path)
     readr::write_csv(interactionResults$table$Model_Coeff,
-                     path = file.path( results$path, paste0("Coef_",modelName, ".txt")))
+                     path = file.path( path, paste0("Coef_",modelName, ".txt")))
     readr::write_csv(interactionResults$table$Model_Anova,
-                     path = file.path( results$path , paste0("ANOVA_",modelName,".txt" ) ))
+                     path = file.path( path , paste0("ANOVA_",modelName,".txt" ) ))
   }
 
   modelProteinF_Int <- interactionResults$models
@@ -713,18 +796,25 @@ workflow_interaction_modelling <- function(results, modelFunction, modelName, wr
 #' @examples
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_Condition_r_peptide"
-#' formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_no_interaction_modelling(D,formula_randomPeptide, modelName)
-workflow_no_interaction_modelling <- function(results, modelFunction, modelName,
-                                              writeCoefResults=FALSE, plot=TRUE){
-  modelProteinF <- workflow_interaction_modelling(results, modelFunction, modelName, writeCoefResults=FALSE)
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' res_cond_r_pep <- workflow_no_interaction_modelling(D$pepIntensityNormalized,D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
+#'
+workflow_no_interaction_modelling <- function(dataLF,
+                                              config,
+                                              modelFunction,
+                                              modelName,
+                                              writeCoefResults = FALSE,
+                                              path=NULL){
 
-  pepConfig<- results$config_pepIntensityNormalized
+  modelProteinF <- workflow_interaction_modelling(dataLF,
+                                                  config,
+                                                  modelFunction, modelName, path=path)
+
   contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
                                                        modelName ,
-                                                       pepConfig )
-  if(plot){
-    write_figures_model_contrasts(contrasts, results$path)
+                                                       config )
+  if(!if.null(path)){
+    write_figures_model_contrasts(contrasts, path)
   }
   return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
 }
@@ -732,20 +822,24 @@ workflow_no_interaction_modelling <- function(results, modelFunction, modelName,
 
 #' p2621 workflow likelihood ratio test
 #' @export
-workflow_likelihood_ratio_test <- function(modelProteinF,modelName, modelProteinF_Int,modelName_Int ){
+workflow_likelihood_ratio_test <- function(modelProteinF,modelName,
+                                           modelProteinF_Int,modelName_Int,
+                                           config ){
   # Model Comparison
-  reg <- inner_join(dplyr::select(modelProteinF, protein_Id, starts_with("lmer_")),
-                    dplyr::select(modelProteinF_Int, protein_Id, starts_with("lmer_")) , by="protein_Id")
+  subjectID <- config$table$hierarchyKeys()[1]
+  reg <- inner_join(dplyr::select(modelProteinF, !!sym(subjectID), starts_with("lmer_")),
+                    dplyr::select(modelProteinF_Int, !!sym(subjectID), starts_with("lmer_")) , by=subjectID)
 
   reg <- reg %>% mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
                                                                   !!sym(paste0("lmer_", modelName_Int)),
                                                                   likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
-    dplyr::select(protein_Id, modelComparisonLikelihoodRatioTest) %>% unnest()
+    dplyr::select(!!sym(subjectID), modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
   return(likelihood_ratio_test_result)
 }
+
 
 #' p2621 compute group averages
 #' @export

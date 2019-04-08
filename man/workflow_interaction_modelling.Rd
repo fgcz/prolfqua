@@ -4,15 +4,19 @@
 \alias{workflow_interaction_modelling}
 \title{p2621 workflow interaction}
 \usage{
-workflow_interaction_modelling(results, modelFunction, modelName,
-  writeCoefResults = FALSE)
+workflow_interaction_modelling(pepIntensity, pepConfig, modelFunction,
+  modelName, path = NULL)
 }
 \description{
 p2621 workflow interaction
 }
 \examples{
 
+
 D <- LFQService::resultsV12954
-formula_randomPeptide <- make_custom_model("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-res_cond_r_pep <- workflow_interaction_modelling(D,formula_randomPeptide, modelName)
+modelName <- "f_condtion_r_peptide"
+formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+res_cond_r_pep <- workflow_interaction_modelling(D$pepIntensityNormalized,
+ D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
+
 }

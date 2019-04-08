@@ -20,4 +20,5 @@ missignessHistogram(xx,skylineconfig)
 setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis \%>\% mutate(Area = setNa(Area)) -> sample_analysis
 missignessHistogram(sample_analysis,skylineconfig)
+
 }

@@ -20,6 +20,6 @@ testDataStart2954 <- LFQService::testDataStart2954
 path <- "dummy_test"
 resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,
                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
-usethis::use_data(resultsV12954)
+#usethis::use_data(resultsV12954)
 
 }

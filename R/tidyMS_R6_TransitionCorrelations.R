@@ -227,14 +227,14 @@ filter_byQValue <- function(data, config){
 #'  group_by_at(skylineconfig$table$hierarchyKeys()[1]) %>%
 #'  tidyr::nest()
 #' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
-#' stopifnot(dim(xx)==c(104,22))
+#' stopifnot(dim(xx)==c(103,22))
 #'
 extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
     dplyr::select( c( table$sampleName,
-               names(table$hkeysLevel(TRUE)),
-               table$getWorkIntensity()) ) %>%
+                      names(table$hkeysLevel(TRUE)),
+                      table$getWorkIntensity()) ) %>%
     spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
 }
@@ -595,9 +595,9 @@ rankPrecursorsByNAs <- function(data, config){
 #' summarizeHierarchy(res,config) %>% dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
 filter_factor_levels_by_missing <- function(data,
-                                     config,
-                                     percent = 60,
-                                     factor_level = 1 ){
+                                            config,
+                                            percent = 60,
+                                            factor_level = 1 ){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
   column <- config$table$getWorkIntensity()
