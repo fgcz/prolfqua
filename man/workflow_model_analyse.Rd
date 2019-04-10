@@ -4,7 +4,7 @@
 \alias{workflow_model_analyse}
 \title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
 \usage{
-workflow_model_analyse(nestProtein, modelFunction, modelName, prot_stats,
+workflow_model_analyse(pepIntensity, config, modelFunction, modelName,
   isSingular = isSingular_lm)
 }
 \description{
@@ -16,9 +16,11 @@ modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
-pepIntensity \%>\%
-  group_by(!!sym(config$table$hierarchyKeys()[1])) \%>\%
-  nest() -> nestProtein
-prot_stats <- summarizeHierarchy(pepIntensity, config)
-modelProteinF <- workflow_model_analyse( nestProtein, formula_randomPeptide, modelName, prot_stats, isSingular = lme4::isSingular)
+
+modellingResult <- workflow_model_analyse( pepIntensity,
+ config,
+ formula_randomPeptide,
+ modelName,
+ isSingular = lme4::isSingular)
+
 }

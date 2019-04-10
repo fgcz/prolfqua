@@ -5,7 +5,7 @@
 \title{p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.}
 \usage{
 workflow_no_interaction_modelling(dataLF, config, modelFunction, modelName,
-  writeCoefResults = FALSE, path = NULL)
+  path = NULL)
 }
 \description{
 p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.

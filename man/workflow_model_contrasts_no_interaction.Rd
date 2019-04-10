@@ -14,7 +14,13 @@ compute all contrasts from non interaction model automatically.
 D <- LFQService::resultsV12954
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 modelName <- "f_Condition_r_peptide"
-modelProteinF <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-workflow_model_contrasts_no_interaction(modelProteinF,modelName,D$config_pepIntensityNormalized)
+pepConfig <- D$config_pepIntensityNormalized
+modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
 
+results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,modelName,D$config_pepIntensityNormalized)
+
+if(FALSE){
+ results$fig$VolcanoPlot
+ results$fig$histogram_coeff_p.values
+}
 }

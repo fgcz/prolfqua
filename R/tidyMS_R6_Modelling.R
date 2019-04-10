@@ -205,11 +205,15 @@ make_custom_model_lm <- function( modelstr ) {
 
 
 .likelihood_ratio_test <- function(modelNO, model) {
-  res <- tryCatch(  anova(modelNO,model), error = function(x) NA)
-  if(!is.na(res)){
-    res <- broom::tidy(res)[2,"p.value"]
+  res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
+  if(!is.null(res)){
+    res <- suppressWarnings(broom::tidy(res))[2,"p.value"]
+    return(as.numeric(res))
+
   }
-  return(as.numeric(res))
+  else{
+    return(NA)
+  }
 }
 
 
@@ -253,18 +257,24 @@ make_custom_model_lm <- function( modelstr ) {
 #' D <- LFQService::resultsV12954
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"
-#' modelProteinF <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-#' workflow_model_contrasts_no_interaction(modelProteinF,modelName,D$config_pepIntensityNormalized)
+#' pepConfig <- D$config_pepIntensityNormalized
+#' modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
 #'
+#' results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,modelName,D$config_pepIntensityNormalized)
+#'
+#' if(FALSE){
+#'  results$fig$VolcanoPlot
+#'  results$fig$histogram_coeff_p.values
+#' }
 workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                     modelName,
                                                     pepConfig )
 {
-  warining("This function should be deprecated!")
+
   result <- list()
 
-  contrasts <- .compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
-  contrasts <- inner_join(dplyr::select(modelProteinF, protein_Id, isSingular, peptide_Id_n), contrasts )
+  contrasts <- LFQService:::.compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
+  contrasts <- inner_join(dplyr::select(modelProteinF, !!sym(pepConfig$table$hierarchyKeys()[1]), isSingular, peptide_Id_n), contrasts )
 
   result$contrasts <- contrasts
   result$fig <- list()
@@ -278,7 +288,7 @@ workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                          effect = "estimate",
                                                          type = "p.value",
                                                          condition = "lhs",
-                                                         label = "protein_Id",
+                                                         label = pepConfig$table$hierarchyKeys()[1],
                                                          xintercept = c(-1, 1),colour = "isSingular")
   result$contrasts <- contrasts
   return(result)
@@ -623,7 +633,7 @@ linfunct_all_possible_contrasts <- function( lin_int ){
 #' my_glht(mi, linfct_int$linfct_factors)
 #' my_glht(mi, linfct_int$linfct_interactions)
 #'
-my_glht <- function(model , linfct , sep=FALSE){
+my_glht <- function(model , linfct , sep=FALSE ) {
   if(sep){
     res <- list()
     for(i in 1:nrow(linfct)){
@@ -637,7 +647,8 @@ my_glht <- function(model , linfct , sep=FALSE){
   }else{
     x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
-    res <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
+    res <- inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
+      dplyr::select(-rhs)
     res
   }
 }
@@ -680,13 +691,22 @@ isSingular_lm <- function(m){
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
-#' pepIntensity %>%
-#'   group_by(!!sym(config$table$hierarchyKeys()[1])) %>%
-#'   nest() -> nestProtein
-#' prot_stats <- summarizeHierarchy(pepIntensity, config)
-#' modelProteinF <- workflow_model_analyse( nestProtein, formula_randomPeptide, modelName, prot_stats, isSingular = lme4::isSingular)
-workflow_model_analyse <- function(nestProtein, modelFunction, modelName, prot_stats , isSingular = isSingular_lm)
+#'
+#' modellingResult <- workflow_model_analyse( pepIntensity,
+#'  config,
+#'  formula_randomPeptide,
+#'  modelName,
+#'  isSingular = lme4::isSingular)
+#'
+workflow_model_analyse <- function(pepIntensity,config, modelFunction, modelName, isSingular = isSingular_lm)
 {
+
+  hierarchyKey <- config$table$hierarchyKeys()[1]
+  pepIntensity %>%
+    group_by(!!sym(config$table$hierarchyKeys()[1])) %>%
+    nest() -> nestProtein
+  prot_stats <- summarizeHierarchy(pepIntensity, config)
+
   lmermodel <- paste0("lmer_", modelName)
   exists_lmer <- paste0("exists_lmer_", modelName)
   Coeffs_model <- paste0("Coeffs_", modelName)
@@ -712,55 +732,69 @@ workflow_model_analyse <- function(nestProtein, modelFunction, modelName, prot_s
   modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  coef_df ))
   modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
   modelProteinF <- inner_join(modelProteinF, prot_stats)
-  return(list(modelProteinF = modelProteinF, no_ModelProtein = no_ModelProtein, modelName = modelName))
-}
 
-visualize_summarize_model_fit <- function(modellingResult, config, modelName){
+  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
+  Model_Coeff <- inner_join(prot_stats, Model_Coeff)
+  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
+  Model_Anova <-inner_join( prot_stats , Model_Anova )
+
+  return(list(modelProteinF = modelProteinF,
+              no_ModelProtein = no_ModelProtein,
+              modelName = modelName,
+              Model_Coeff=Model_Coeff,
+              Model_Anova= Model_Anova))
+}
+#' visualize workflow model analyse results
+#' @export
+#' @examples
+#'
+#' D <- LFQService::resultsV12954
+#' modelName <- "f_condtion_r_peptide"
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
+#' res <- visualize_model_fit(modellingResult,D$config_pepIntensityNormalized, modelName)
+#' write_model_fit_visualization(res,modelName,path = ".")
+#'
+visualize_model_fit <- function(modellingResult, config, modelName) {
+
   lmermodel <- paste0("lmer_", modelName)
   exists_lmer <- paste0("exists_lmer_", modelName)
   Coeffs_model <- paste0("Coeffs_", modelName)
   Anova_model <- paste0("Anova_", modelName)
+  Model_Coeff <- modellingResult$Model_Coeff
+  Model_Anova <- modellingResult$Model_Anova
 
-
-  modelProteinF <- modellingResult$modelProteinF
-  no_ModelProtein <- modellingResult$no_ModelProtein
   hierarchyKey <- config$table$hierarchyKeys()[1]
+  modelProteinF <- modellingResult$modelProteinF
 
-  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
-  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
+  fig <- list()
 
-  reslist <- list()
-  reslist$models <- modelProteinF
-  reslist$no_models <- no_ModelProtein
-
-  reslist$fig <- list()
-  reslist$table <- list()
-
-  reslist$fig$histogram_coeff_p.values <- ggplot(data=Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
+  fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
 
-  reslist$fig$VolcanoPlot <- Model_Coeff %>% dplyr::filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
-    effect = "Estimate",
-    type = "Pr...t..",
-    condition = "row.names.x.",
-    label = hierarchyKey , xintercept = c(-1, 1),colour = "isSingular")
+  fig$VolcanoPlot <- Model_Coeff %>%
+    dplyr::filter(row.names.x. != "(Intercept)") %>%
+    quantable::multigroupVolcano(
+      effect = "Estimate",
+      type = "Pr...t..",
+      condition = "row.names.x.",
+      label = hierarchyKey ,
+      xintercept = c(-1, 1) ,
+      colour = "isSingular" )
 
-  Model_Coeff %>%
+  forPairs <- Model_Coeff %>%
     dplyr::select(!!sym(hierarchyKey) , row.names.x. ,  Estimate ) %>%
-    tidyr::spread(row.names.x.,Estimate ) -> forPairs
+    tidyr::spread(row.names.x.,Estimate )
 
-  reslist$fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
+  fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
 
-
-  reslist$fig$histogram_anova_p.values <- ggplot(data=Model_Anova, aes(x = Pr..F., group=rownames.x.)) +
+  fig$histogram_anova_p.values <- ggplot(data=modellingResult$Model_Anova, aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~rownames.x.)
 
-  reslist$table$Model_Coeff <- inner_join(prot_stats, Model_Coeff)
-  reslist$table$Model_Anova <-inner_join( prot_stats , Model_Anova )
 
-  return(reslist)
+  return(fig)
 }
 
 #' Workflow function to apply modelFunction to peroteinList nestProtein
@@ -774,99 +808,43 @@ visualize_summarize_model_fit <- function(modellingResult, config, modelName){
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' res_cond_r_pep <- workflow_lme4_model_analyse(D$pepIntensityNormalized,
 #'  D$config_pepIntensityNormalized,
-#'   formula_randomPeptide,
-#'    modelName)
-workflow_lme4_model_analyse <- function(pepIntensity,config, modelFunction, modelName ){
+#'  formula_randomPeptide,
+#'  modelName)
+workflow_lme4_model_analyse <- function(pepIntensity,
+                                        config, modelFunction, modelName, isSingular =  lme4::isSingular ){
 
-  pepIntensity %>%
-    group_by(!!sym(config$table$hierarchyKeys()[1])) %>%
-    nest() -> nestProtein
+  warning("Deprectated - use workflow_model_analyse and \n
+          visualize_model_fit model fit instead.")
 
-  prot_stats <- summarizeHierarchy(pepIntensity, config)
+  modellingResult <- workflow_model_analyse(pepIntensity,
+                                            config,
+                                            modelFunction,
+                                            modelName,
+                                            isSingular = isSingular)
 
-  modellingResult <- workflow_model_analyse(nestProtein, modelFunction, modelName, prot_stats , isSingular = lme4::isSingular)
-  reslist <- visualize_summarize_model_fit(modellingResult, config,  modelName)
-  return(reslist)
-}
-
-#' Workflow function to apply modelFunction to peroteinList nestProtein
-#'
-#' apply modelling, extracts coefficients,
-#' funs anova, filters results, generates histogram of p-values, pairsplot
-#' @export
-workflow_lme4_model_analyse_deprec <- function(nestProtein, modelFunction, modelName, prot_stats)
-{
-  lmermodel <- paste0("lmer_", modelName)
-  exists_lmer <- paste0("exists_lmer_", modelName)
-  Coeffs_model <- paste0("Coeffs_", modelName)
-  Anova_model <- paste0("Anova_", modelName)
-
-  nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) -> modelProtein
-
-  modelProtein <- modelProtein %>% mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
-  modelProteinF <- modelProtein %>% dplyr::filter( !!sym(exists_lmer) == TRUE)
-  no_ModelProtein <- modelProtein %>% dplyr::filter(!!sym(exists_lmer) == FALSE)
-
-  modelProteinF <- modelProteinF %>% mutate(isSingular = map_lgl(!!sym(lmermodel), isSingular ))
-  modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), function(x){ncol(coef(x)[[1]])} ))
-
-  modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map(!!sym(lmermodel),  coef_df ))
-  modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map(!!sym(lmermodel),  anova_df ))
-  modelProteinF <- inner_join(modelProteinF, prot_stats)
-
-  Model_Coeff <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
-  Model_Anova <- modelProteinF %>% dplyr::select(protein_Id, !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
-
-  reslist <- list()
-  reslist$models <- modelProteinF
-  reslist$no_models <- no_ModelProtein
-
-  reslist$fig <- list()
-  reslist$table <- list()
-
-  reslist$fig$histogram_coeff_p.values <- ggplot(data=Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
-    geom_histogram(bins = 20) +
-    facet_wrap(~row.names.x.)
-
-  reslist$fig$VolcanoPlot <- Model_Coeff %>% dplyr::filter(row.names.x. != "(Intercept)") %>%  quantable::multigroupVolcano(
-    effect = "Estimate",
-    type = "Pr...t..",
-    condition = "row.names.x.",
-    label = "protein_Id", xintercept = c(-1, 1),colour = "isSingular")
-
-  Model_Coeff %>% dplyr::select(protein_Id , row.names.x. ,  Estimate ) %>% tidyr::spread(row.names.x.,Estimate ) -> forPairs
-  reslist$fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
-
-
-  reslist$fig$histogram_anova_p.values <- ggplot(data=Model_Anova, aes(x = Pr..F., group=rownames.x.)) +
-    geom_histogram(bins = 20) +
-    facet_wrap(~rownames.x.)
-
-  reslist$table$Model_Coeff <- inner_join(prot_stats, Model_Coeff)
-  reslist$table$Model_Anova <-inner_join( prot_stats , Model_Anova )
-
+  reslist <- visualize_model_fit(modellingResult, config,  modelName)
   return(reslist)
 }
 
 
-#' Writes figures generated by `workflow_lme4_model_analyse`
+#' Writes figures generated by `visualize_model_fit`
 #' @export
-write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, fig.width = 10 , fig.height = 10){
+write_model_fit_visualization <- function(modelling_result, modelName, path, fig.width = 10 , fig.height = 10){
   pdf(file.path(path,paste0("Coef_Histogram_",modelName,".pdf")), width = fig.width, height = fig.height )
-  print(modelling_result$fig$histogram_coeff_p.values)
+  print(modelling_result$histogram_coeff_p.values)
   dev.off()
 
   pdf(file.path(path,paste0("Coef_VolcanoPlot_",modelName,".pdf")), width = fig.width , height = fig.height)
-  print(modelling_result$fig$VolcanoPlot)
+  print(modelling_result$VolcanoPlot)
   dev.off()
 
   pdf(file.path(path, paste0("Coef_Pairsplot_",modelName,".pdf")), width = fig.width , height = fig.height)
-  print(modelling_result$fig$Pairsplot_Coef)
+  print(modelling_result$Pairsplot_Coef)
   dev.off()
 
   pdf(file.path(path,paste0("Anova_p.values_", modelName, ".pdf")), width = fig.width , height = fig.height)
   histogram_anova_p.values <-
-    print(modelling_result$fig$histogram_anova_p.values)
+    print(modelling_result$histogram_anova_p.values)
   dev.off()
 }
 
@@ -882,31 +860,32 @@ write_figures_lme4_model_analyse <- function(modelling_result, modelName, path, 
 #' res_cond_r_pep <- workflow_interaction_modelling(D$pepIntensityNormalized,
 #'  D$config_pepIntensityNormalized,
 #'   formula_randomPeptide,
-#'    modelName)
-#'
+#'  modelName, path=tempdir())
+#' names(res_cond_r_pep)
 workflow_interaction_modelling <- function(pepIntensity,
                                            pepConfig,
                                            modelFunction,
                                            modelName,
+                                           isSingular = lme4::isSingular,
                                            path=NULL){
+  warning("Deprecated use: workflow_model_analyse, visualize_model_fit, write_model_fit_visualization")
+  modellingResult <- workflow_model_analyse( pepIntensity,
+                                             pepConfig,
+                                             modelFunction,
+                                             modelName,
+                                             isSingular = isSingular)
 
-  interactionResults <- workflow_lme4_model_analyse(pepIntensity,
-                                                    pepConfig,
-                                                    modelFunction,
-                                                    modelName)
+  reslist <- visualize_model_fit(modellingResult, pepConfig,  modelName)
+
+
   if(!is.null(path)){
-    write_figures_lme4_model_analyse(interactionResults, modelName, path)
-    readr::write_csv(interactionResults$table$Model_Coeff,
+    write_model_fit_visualization(reslist, modelName, path)
+    readr::write_csv(modellingResult$Model_Coeff,
                      path = file.path( path, paste0("Coef_",modelName, ".txt")))
-    readr::write_csv(interactionResults$table$Model_Anova,
+    readr::write_csv(modellingResult$Model_Anova,
                      path = file.path( path , paste0("ANOVA_",modelName,".txt" ) ))
   }
-
-  modelProteinF_Int <- interactionResults$models
-  modelProteinF_Int <- modelProteinF_Int %>%
-    dplyr::filter(nrcoef==as.numeric(tail(names(table(modelProteinF_Int$nrcoef)),n=1)))
-
-  return(modelProteinF_Int)
+  return(modellingResult)
 }
 
 #' p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
@@ -921,7 +900,6 @@ workflow_no_interaction_modelling <- function(dataLF,
                                               config,
                                               modelFunction,
                                               modelName,
-                                              writeCoefResults = FALSE,
                                               path=NULL){
 
   warning("Deprecate ASAP!!!!")
@@ -943,9 +921,13 @@ workflow_no_interaction_modelling <- function(dataLF,
 
 #' p2621 workflow likelihood ratio test
 #' @export
-workflow_likelihood_ratio_test <- function(modelProteinF,modelName,
-                                           modelProteinF_Int,modelName_Int,
-                                           config ){
+workflow_likelihood_ratio_test <- function(modelProteinF,
+                                           modelName,
+                                           modelProteinF_Int,
+                                           modelName_Int,
+                                           config,
+                                           path = TRUE
+){
   # Model Comparison
   subjectID <- config$table$hierarchyKeys()[1]
   reg <- inner_join(dplyr::select(modelProteinF, !!sym(subjectID), starts_with("lmer_")),
@@ -958,6 +940,20 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelName,
     dplyr::select(!!sym(subjectID), modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
+
+
+  if(!is.null(path)){
+    fileName <- paste("hist_LRT_", modelName, "_", modelName_Int,".pdf", sep="")
+    fileName <- file.path(path, fileName)
+    message("writing figure : " , fileName , "\n")
+    pdf(fileName)
+    par(mfrow=c(2,1))
+    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue, breaks=20)
+    plot(ecdf(likelihood_ratio_test_result$likelihood_ratio_test.pValue))
+    abline(v=c(0.01,0.05), col=c(3,2))
+    dev.off()
+  }
+
   return(likelihood_ratio_test_result)
 }
 
@@ -966,15 +962,16 @@ workflow_likelihood_ratio_test <- function(modelProteinF,modelName,
 #' @export
 workflow_group_averages <- function(models,
                                     modelName,
-                                    path,
                                     lin_int,
-                                    likelihood_ratio_test_result = NULL ){
+                                    subject_Id = 'protein_Id',
+                                    likelihood_ratio_test_result = NULL,
+                                    path = NULL){
   #computeGroupAverages
   interaction_model_matrix <- models %>%
     mutate(groupAverages = map(!!sym(paste0("lmer_", modelName)) , LFQService::my_glht, linfct = lin_int, sep=TRUE ))
 
   interaction_model_matrix %>%
-    dplyr::select(protein_Id, groupAverages ) %>% unnest() -> groupAverages
+    dplyr::select(subject_Id, groupAverages ) %>% unnest() -> groupAverages
 
   if(!is.null(likelihood_ratio_test_result)){
     groupAverages <- inner_join(groupAverages,  likelihood_ratio_test_result)
@@ -983,7 +980,9 @@ workflow_group_averages <- function(models,
   groupAveragesW <- groupAverages %>% dplyr::select(-p.value, - statistic)
 
   #  separate(protein_Id, c("type", "Uniprot", "ProteinName"), sep="\\|", remove = FALSE)
-  write_csv(groupAveragesW, path=file.path(path, paste0("Group_Averages_", modelName, ".csv")))
+  if(!is.null(path)){
+    write_csv(groupAveragesW, path=file.path(path, paste0("Group_Averages_", modelName, ".csv")))
+  }
   return(groupAverages)
 }
 
@@ -1009,6 +1008,6 @@ workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test
   return(list(contrast_interactions = contrast_interactions,
               modelWithInteractionsContrasts = modelWithInteractionsContrasts,
               modelWithInteractionsContrasts_Pivot= modelWithInteractionsContrasts_Pivot
-              ))
+  ))
 }
 

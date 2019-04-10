@@ -5,7 +5,7 @@
 \title{p2621 workflow interaction}
 \usage{
 workflow_interaction_modelling(pepIntensity, pepConfig, modelFunction,
-  modelName, path = NULL)
+  modelName, isSingular = lme4::isSingular, path = NULL)
 }
 \description{
 p2621 workflow interaction
@@ -19,6 +19,6 @@ formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Conditi
 res_cond_r_pep <- workflow_interaction_modelling(D$pepIntensityNormalized,
  D$config_pepIntensityNormalized,
   formula_randomPeptide,
-   modelName)
-
+ modelName, path=tempdir())
+names(res_cond_r_pep)
 }

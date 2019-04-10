@@ -80,6 +80,7 @@ workflow_MQ_protein_quants <- function(results){
 #' @examples
 #' #testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
 #' #usethis::use_data(testDataStart2954)
+#'
 #' testDataStart2954 <- LFQService::testDataStart2954
 #' path <- "dummy_test"
 #' resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,

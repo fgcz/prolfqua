@@ -4,8 +4,9 @@
 \alias{workflow_group_averages}
 \title{p2621 compute group averages}
 \usage{
-workflow_group_averages(models, modelName, path, lin_int,
-  likelihood_ratio_test_result = NULL)
+workflow_group_averages(models, modelName, lin_int,
+  subject_Id = "protein_Id", likelihood_ratio_test_result = NULL,
+  path = NULL)
 }
 \description{
 p2621 compute group averages
