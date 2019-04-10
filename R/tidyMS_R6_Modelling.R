@@ -221,6 +221,11 @@ make_custom_model_lm <- function( modelstr ) {
 
 #' get all comparisons
 .contrast_tukey_multcomp <- function(model, factor){
+  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  {
+    model$model <- as.data.frame(unclass(model$model))
+  }
+
   mcpDef <- multcomp::mcp(Dummy="Tukey")
   names(mcpDef) <- factor
   glt <- multcomp::glht(model, mcpDef)
@@ -634,6 +639,10 @@ linfunct_all_possible_contrasts <- function( lin_int ){
 #' my_glht(mi, linfct_int$linfct_interactions)
 #'
 my_glht <- function(model , linfct , sep=FALSE ) {
+  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  {
+    model$model <- as.data.frame(unclass(model$model))
+  }
   if(sep){
     res <- list()
     for(i in 1:nrow(linfct)){
