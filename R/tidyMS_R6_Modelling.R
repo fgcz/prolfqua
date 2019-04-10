@@ -634,6 +634,10 @@ linfunct_all_possible_contrasts <- function( lin_int ){
 #' my_glht(mi, linfct_int$linfct_interactions)
 #'
 my_glht <- function(model , linfct , sep=FALSE ) {
+  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  {
+    model$model <- as.data.frame(unclass(model$model))
+  }
   if(sep){
     res <- list()
     for(i in 1:nrow(linfct)){
