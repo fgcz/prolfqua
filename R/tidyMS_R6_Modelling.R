@@ -285,6 +285,7 @@ workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                     pepConfig
 )
 {
+  warning("Softdeprecated - use explicit linear functions and workflow_model_contrasts function")
   # TODO make chack that model has no contrasts!
   result <- list()
 
@@ -313,50 +314,80 @@ workflow_model_contrasts_no_interaction <- function(modelProteinF,
 #' compute all contrasts from model with interactions based on linfct matrix
 #' @export
 #'
-workflow_model_contrasts_with_interaction <- function(modelProteinF_Int,
-                                                      modelName,
-                                                      linfct,
-                                                      contrastFunction = LFQService::my_contest ){
-  results <- list()
+workflow_contrasts_linfct_vis <- function(contrasts, modelName){
+  fig <- list()
+  fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
 
-  interaction_model_matrix <- modelProteinF_Int %>%
-    mutate(contrasts = map(!!sym(paste0("lmer_",modelName)) , contrastFunction, linfct = linfct, sep=TRUE ))
-
-  interaction_model_matrix %>%
-    dplyr::select(protein_Id, contrasts ) %>% unnest() -> modelWithInteractionsContrasts
-
-  modelWithInteractionsContrasts <- inner_join(dplyr::select(modelProteinF_Int, protein_Id, isSingular,peptide_Id_n ),
-                                               modelWithInteractionsContrasts)
-
-
-  results$contrasts <- modelWithInteractionsContrasts
-  results$fig <- list()
-  results$fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
-
-  results$fig$histogram_coeff_p.values <- ggplot(data=modelWithInteractionsContrasts, aes(x = p.value)) +
+  fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
     geom_histogram(bins = 20) +
     facet_wrap(~lhs)
 
-  results$fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
-  results$fig$VolcanoPlot <- quantable::multigroupVolcano(modelWithInteractionsContrasts,
-                                                          effect = "estimate",
-                                                          type = "p.value",
-                                                          condition = "lhs",
-                                                          label = "protein_Id",
-                                                          xintercept = c(-1, 1), colour = "isSingular")
+  fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
+  fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
+                                                  effect = "estimate",
+                                                  type = "p.value",
+                                                  condition = "lhs",
+                                                  label = "protein_Id",
+                                                  xintercept = c(-1, 1), colour = "isSingular")
 
-  return(results)
+  return(fig)
 }
 
 
-#' helper function to write the result of `workflow_model_contrasts_with_interaction`
+#' compute group averages
+#'
+#' used in p2621, p2109
+#'
+#' @export
+workflow_contrasts_linfct <- function(models,
+                                      modelName,
+                                      linfct,
+                                      subject_Id = "protein_Id"){
+  #computeGroupAverages
+  modelcol <-paste0("lmer_", modelName)
+  contrastfun <- NULL
+  whatclass <- class(models[[modelcol]][[1]])
+
+
+  if(whatclass=="lm"){
+    contrastfun = LFQService::my_glht
+  }else if(whatclass == "lmerModLmerTest"){
+    contrastfun = LFQService::my_contest
+  }
+
+  interaction_model_matrix <- models %>%
+    mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct, sep=TRUE ))
+  mclass <- function(x){
+    class(x)[1]
+  }
+  interaction_model_matrix %>%
+    mutate(classC = map_chr(contrast,mclass)) %>%
+    filter(classC != "logical") -> interaction_model_matrix
+
+  interaction_model_matrix %>%
+    dplyr::select_at( c(subject_Id, "contrast") ) %>% unnest() -> contrasts
+
+  isSing <- models %>% select_at(c(subject_Id, "isSingular")) %>% distinct()
+  contrasts <- inner_join(contrasts, isSing, by=subject_Id)
+  return(contrasts)
+}
+
+workflow_group_averages <- function(models,
+                                    modelName,
+                                    lin_int,
+                                    subject_Id = 'protein_Id'){
+  stop("DEPRECATED : use workflow_contrasts_linfct")
+}
+
+
+#' helper function to write the result of `workflow_model_contrasts`
 #'
 #' used in p2901
 #'
 #' @export
 #' @examples
 #' if(FALSE){
-#' contrast_interactions <- workflow_model_contrasts_with_interaction(modelProteinF_Int, modelName_Int, XX)
+#' contrast_interactions <- workflow_model_contrasts(modelProteinF_Int, modelName_Int, XX)
 #' modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
 #' modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
 #' }
@@ -370,17 +401,17 @@ write_figures_model_contrasts <- function(contrasts_result,path, fig.width = 10,
   dev.off()
 }
 
-#' pivot model contrasts matrix to wide format produced by `workflow_model_contrasts_with_interaction` and ...
+#' pivot model contrasts matrix to wide format produced by `workflow_model_contrasts` and ...
 #' @export
 #'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = ""){
   modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id,"likelihood_ratio_test.pValue", "lhs", "estimate")) %>%
+    dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
     mutate(lhs = glue::glue('estimate.{lhs}')) %>%
     tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
 
   modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id,"likelihood_ratio_test.pValue", "lhs", "p.value")) %>%
+    dplyr::select_at(c(subject_Id, "lhs", "p.value")) %>%
     mutate(lhs = glue::glue('p.value.{lhs}')) %>%
     tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
 
@@ -653,12 +684,11 @@ linfunct_all_possible_contrasts <- function( lin_int ){
 #' my_glht(mi, linfct_int$linfct_interactions)
 #'
 my_glht <- function(model , linfct , sep=FALSE ) {
-  print(class(model))
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
-    if(length(fixef(m)) != ncol(linfct) ){
-      return(NULL) # catch rank defficient
+    if(length(fixef(model)) != ncol(linfct) ){
+      return(NA) # catch rank defficient
     }
   }else{
     model$model <- as.data.frame(unclass(model$model))
@@ -694,10 +724,16 @@ my_glht <- function(model , linfct , sep=FALSE ) {
 #' my_glht(mb, linfct$linfct_factors)
 #' my_glht(mb, linfct$linfct_interactions)
 my_contest <- function(model, linfct , sep=TRUE){
-  if(length(fixef(m)) != ncol(linfct) ){
-    return(NULL) # catch rank defficient
+  if(length(fixef(model)) != ncol(linfct) ){
+    return(NA) # catch rank defficient
   }
   res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
+  res <- as_tibble(res, rownames="lhs")
+  res <- res %>% rename(estimate = Estimate, std.error = "Std. Error",
+                        statistic="t value",
+                        p.value = "Pr(>|t|)",
+                        conf.low = "lower",
+                        conf.high = "upper")
   return(res)
 }
 
@@ -968,34 +1004,6 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 }
 
 
-#' compute group averages
-#'
-#' used in p2621, p2109
-#'
-#' @export
-workflow_group_averages <- function(models,
-                                    modelName,
-                                    lin_int,
-                                    subject_Id = 'protein_Id'){
-  #computeGroupAverages
-  modelcol <-paste0("lmer_", modelName)
-  contrastfun <- NULL
-  whatclass <- class(models[[modelcol]][[1]])
-  if(whatclass=="lm"){
-    contrastfun = LFQService::my_glht
-  }else if(whatclass == "lmerModLmerTest"){
-    contrastfun = LFQService::my_contest
-  }
-
-  interaction_model_matrix <- models %>%
-    mutate(groupAverages = map(!!sym(modelcol) , contrastfun , linfct = lin_int, sep=TRUE ))
-
-  interaction_model_matrix %>%
-    dplyr::select(subject_Id, groupAverages ) %>% unnest() -> groupAverages
-
-  groupAveragesW <- groupAverages %>% dplyr::select(-p.value, -statistic)
-  return(list(groupAverages = groupAverages, groupAveragesW= groupAveragesW))
-}
 
 
 #' p2621 workflow linfunct contrasts
@@ -1003,22 +1011,8 @@ workflow_group_averages <- function(models,
 workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test_result ,  linfct, path,
                                         fig.width=10, fig.height=10)
 {
-  contrast_interactions <- workflow_model_contrasts_with_interaction(models, modelName, linfct)
-  write_figures_model_contrasts(contrast_interactions, path,
-                                fig.width = fig.width , fig.height = fig.height)
-
-  modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts,
-                                               likelihood_ratio_test_result )
-  write_csv(modelWithInteractionsContrasts,
-            path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, ".csv")))
-
-  modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
-  write_csv(modelWithInteractionsContrasts_Pivot,
-            path=file.path(path, paste0("Contrasts_SignificanceValues_", modelName, "_PIVOT.csv")))
-
-  return(list(contrast_interactions = contrast_interactions,
-              modelWithInteractionsContrasts = modelWithInteractionsContrasts,
-              modelWithInteractionsContrasts_Pivot= modelWithInteractionsContrasts_Pivot
-  ))
+  stop("DEPRECATED : use workflow_model_contrasts\n
+       write_figures_model_contrasts\n
+       pivot_model_contrasts_2_Wide\n")
 }
 

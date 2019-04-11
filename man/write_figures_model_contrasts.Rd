@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{write_figures_model_contrasts}
 \alias{write_figures_model_contrasts}
-\title{helper function to write the result of `workflow_model_contrasts_with_interaction`}
+\title{helper function to write the result of `workflow_model_contrasts`}
 \usage{
 write_figures_model_contrasts(contrasts_result, path, fig.width = 10,
   fig.height = 10)
@@ -12,7 +12,7 @@ used in p2901
 }
 \examples{
 if(FALSE){
-contrast_interactions <- workflow_model_contrasts_with_interaction(modelProteinF_Int, modelName_Int, XX)
+contrast_interactions <- workflow_model_contrasts(modelProteinF_Int, modelName_Int, XX)
 modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
 modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
 }
