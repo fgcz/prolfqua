@@ -17,9 +17,11 @@ modelName <- "f_Condition_r_peptide"
 pepConfig <- D$config_pepIntensityNormalized
 modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
 
-results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,modelName,D$config_pepIntensityNormalized)
+results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,
+modelName,
+D$config_pepIntensityNormalized)
 
-if(FALSE){
+if( FALSE ){
  results$fig$VolcanoPlot
  results$fig$histogram_coeff_p.values
 }

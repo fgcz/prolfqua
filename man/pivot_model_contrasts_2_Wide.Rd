@@ -4,7 +4,8 @@
 \alias{pivot_model_contrasts_2_Wide}
 \title{pivot model contrasts matrix to wide format produced by `workflow_model_contrasts_with_interaction` and ...}
 \usage{
-pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
+pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts,
+  subject_Id = "")
 }
 \description{
 pivot model contrasts matrix to wide format produced by `workflow_model_contrasts_with_interaction` and ...
