@@ -8,7 +8,7 @@ workflow_model_analyse(pepIntensity, config, modelFunction, modelName,
   isSingular = isSingular_lm)
 }
 \description{
-analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`
+used in project p2901
 }
 \examples{
 D <- LFQService::resultsV12954

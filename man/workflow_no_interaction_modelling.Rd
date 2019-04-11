@@ -2,18 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_no_interaction_modelling}
 \alias{workflow_no_interaction_modelling}
-\title{p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.}
+\title{p2621 workflow no interaction - DEPRECATED.}
 \usage{
 workflow_no_interaction_modelling(dataLF, config, modelFunction, modelName,
   path = NULL)
 }
 \description{
-p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
-}
-\examples{
-D <- LFQService::resultsV12954
-modelName <- "f_Condition_r_peptide"
-formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-res_cond_r_pep <- workflow_no_interaction_modelling(D$pepIntensityNormalized,D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-
+p2621 workflow no interaction - DEPRECATED.
 }

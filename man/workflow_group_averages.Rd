@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_group_averages}
 \alias{workflow_group_averages}
-\title{p2621 compute group averages}
+\title{compute group averages}
 \usage{
 workflow_group_averages(models, modelName, lin_int,
-  subject_Id = "protein_Id", likelihood_ratio_test_result = NULL)
+  subject_Id = "protein_Id")
 }
 \description{
-p2621 compute group averages
+used in p2621, p2109
 }

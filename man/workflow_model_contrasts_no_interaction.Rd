@@ -8,15 +8,19 @@ workflow_model_contrasts_no_interaction(modelProteinF, modelName,
   pepConfig)
 }
 \description{
-compute all contrasts from non interaction model automatically.
+used p2109
 }
 \examples{
 D <- LFQService::resultsV12954
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 modelName <- "f_Condition_r_peptide"
 pepConfig <- D$config_pepIntensityNormalized
-modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-
+#modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
+modellingResult <- workflow_model_analyse( D$pepIntensityNormalized,
+D$config_pepIntensityNormalized,
+formula_randomPeptide,
+modelName,
+isSingular = lmer::isSingular)
 results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,
 modelName,
 D$config_pepIntensityNormalized)

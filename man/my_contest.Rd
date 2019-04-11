@@ -4,7 +4,7 @@
 \alias{my_contest}
 \title{applies contrast computation using lmerTest::contest function}
 \usage{
-my_contest(model, linfct)
+my_contest(model, linfct, sep = TRUE)
 }
 \description{
 applies contrast computation using lmerTest::contest function

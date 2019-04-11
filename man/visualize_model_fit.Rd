@@ -7,7 +7,7 @@
 visualize_model_fit(modellingResult, config, modelName)
 }
 \description{
-visualize workflow model analyse results
+used in p2901
 }
 \examples{
 

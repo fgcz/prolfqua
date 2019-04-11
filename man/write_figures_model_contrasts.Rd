@@ -8,7 +8,7 @@ write_figures_model_contrasts(contrasts_result, path, fig.width = 10,
   fig.height = 10)
 }
 \description{
-helper function to write the result of `workflow_model_contrasts_with_interaction`
+used in p2901
 }
 \examples{
 if(FALSE){

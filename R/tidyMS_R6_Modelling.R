@@ -229,7 +229,8 @@ make_custom_model_lm <- function( modelstr ) {
   mcpDef <- multcomp::mcp(Dummy="Tukey")
   names(mcpDef) <- factor
   glt <- multcomp::glht(model, mcpDef)
-  sglt <- broom::tidy(summary(glt))
+  sglt <- summary(glt)
+  sglt <- broom::tidy(sglt)
   ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
   xx <- dplyr::inner_join(
     sglt,
@@ -242,29 +243,35 @@ make_custom_model_lm <- function( modelstr ) {
 # compute contrasts for all factors.
 .compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
   factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorLevel]
-  protein_Id <- pepConfig$table$hierarchyKeys()[1]
+  subject_Id <- pepConfig$table$hierarchyKeys()[1]
 
   for(factor in factors){
     print(factor)
     modelProteinF <- modelProteinF %>%
       mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
-  dd <- modelProteinF %>% dplyr::select(protein_Id, starts_with("factor_"))
-  contrasts <- dd %>% gather("factor", "contrasts",-!!sym( protein_Id)) %>% unnest() %>% arrange(!!sym(protein_Id)) %>% dplyr::select(-rhs)
+  dd <- modelProteinF %>% dplyr::select(subject_Id, starts_with("factor_"))
+  contrasts <- dd %>% gather("factor", "contrasts",-!!sym( subject_Id)) %>% unnest() %>% arrange(!!sym(subject_Id)) %>% dplyr::select(-rhs)
 
   return(contrasts)
 }
 
 
 #' compute all contrasts from non interaction model automatically.
+#'
+#' used p2109
 #' @export
 #' @examples
 #' D <- LFQService::resultsV12954
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"
 #' pepConfig <- D$config_pepIntensityNormalized
-#' modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-#'
+#' #modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
+#' modellingResult <- workflow_model_analyse( D$pepIntensityNormalized,
+#' D$config_pepIntensityNormalized,
+#' formula_randomPeptide,
+#' modelName,
+#' isSingular = lmer::isSingular)
 #' results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,
 #' modelName,
 #' D$config_pepIntensityNormalized)
@@ -276,9 +283,9 @@ make_custom_model_lm <- function( modelstr ) {
 workflow_model_contrasts_no_interaction <- function(modelProteinF,
                                                     modelName,
                                                     pepConfig
-                                                    )
+)
 {
-
+  # TODO make chack that model has no contrasts!
   result <- list()
 
   contrasts <- LFQService:::.compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
@@ -343,6 +350,9 @@ workflow_model_contrasts_with_interaction <- function(modelProteinF_Int,
 
 
 #' helper function to write the result of `workflow_model_contrasts_with_interaction`
+#'
+#' used in p2901
+#'
 #' @export
 #' @examples
 #' if(FALSE){
@@ -643,8 +653,14 @@ linfunct_all_possible_contrasts <- function( lin_int ){
 #' my_glht(mi, linfct_int$linfct_interactions)
 #'
 my_glht <- function(model , linfct , sep=FALSE ) {
-  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  print(class(model))
+  if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
+    warning("USE ONLY WITH LM models ", class(model))
+    if(length(fixef(m)) != ncol(linfct) ){
+      return(NULL) # catch rank defficient
+    }
+  }else{
     model$model <- as.data.frame(unclass(model$model))
   }
   if(sep){
@@ -677,7 +693,10 @@ my_glht <- function(model , linfct , sep=FALSE ) {
 #' my_contest(mb, linfct$linfct_interactions)
 #' my_glht(mb, linfct$linfct_factors)
 #' my_glht(mb, linfct$linfct_interactions)
-my_contest <- function(model, linfct){
+my_contest <- function(model, linfct , sep=TRUE){
+  if(length(fixef(m)) != ncol(linfct) ){
+    return(NULL) # catch rank defficient
+  }
   res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   return(res)
 }
@@ -697,6 +716,9 @@ isSingular_lm <- function(m){
 
 
 #' analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`
+#'
+#' used in project p2901
+#'
 #' @export
 #' @examples
 #' D <- LFQService::resultsV12954
@@ -757,7 +779,25 @@ workflow_model_analyse <- function(pepIntensity,config, modelFunction, modelName
               Model_Coeff=Model_Coeff,
               Model_Anova= Model_Anova))
 }
+
+#' writes results of `workflow_model_analyse`, anova table and all the coefficients with parameters.
+#' @export
+workflow_model_analyse_write <- function(modellingResult, modelName, path, subdir = "model_fit_vis"){
+  path <- file.path(path, subdir)
+  if(!dir.exists(path)){
+    dir.create(path)
+  }
+  message("writing tables into :", path)
+  readr::write_csv(modellingResult$Model_Coeff,
+                   path = file.path( path, paste0("Coef_",modelName, ".txt")))
+  readr::write_csv(modellingResult$Model_Anova,
+                   path = file.path( path , paste0("ANOVA_",modelName,".txt" ) ))
+}
+
 #' visualize workflow model analyse results
+#'
+#' used in p2901
+#'
 #' @export
 #' @examples
 #'
@@ -810,37 +850,11 @@ visualize_model_fit <- function(modellingResult, config, modelName) {
   return(fig)
 }
 
-#' Workflow function to apply modelFunction to peroteinList nestProtein
-#'
-#' apply modelling, extracts coefficients,
-#' funs anova, filters results, generates histogram of p-values, pairsplot
-#' @export
-#' @examples
-#' D <- LFQService::resultsV12954
-#' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_lme4_model_analyse(D$pepIntensityNormalized,
-#'  D$config_pepIntensityNormalized,
-#'  formula_randomPeptide,
-#'  modelName)
-workflow_lme4_model_analyse <- function(pepIntensity,
-                                        config, modelFunction, modelName, isSingular =  lme4::isSingular ){
-
-  warning("Deprectated - use workflow_model_analyse and \n
-          visualize_model_fit model fit instead.")
-
-  modellingResult <- workflow_model_analyse(pepIntensity,
-                                            config,
-                                            modelFunction,
-                                            modelName,
-                                            isSingular = isSingular)
-
-  reslist <- visualize_model_fit(modellingResult, config,  modelName)
-  return(reslist)
-}
 
 
 #' Writes figures generated by `visualize_model_fit`
+#'
+#' used in p2901
 #' @export
 write_model_fit_visualization <- function(modelling_result,
                                           modelName,
@@ -894,54 +908,24 @@ workflow_interaction_modelling <- function(pepIntensity,
                                            modelName,
                                            isSingular = lme4::isSingular,
                                            path=NULL){
-  warning("Deprecated use: workflow_model_analyse, visualize_model_fit, write_model_fit_visualization")
-  modellingResult <- workflow_model_analyse( pepIntensity,
-                                             pepConfig,
-                                             modelFunction,
-                                             modelName,
-                                             isSingular = isSingular)
-
-  reslist <- visualize_model_fit(modellingResult, pepConfig,  modelName)
-
-
-  if(!is.null(path)){
-    write_model_fit_visualization(reslist, modelName, path)
-    readr::write_csv(modellingResult$Model_Coeff,
-                     path = file.path( path, paste0("Coef_",modelName, ".txt")))
-    readr::write_csv(modellingResult$Model_Anova,
-                     path = file.path( path , paste0("ANOVA_",modelName,".txt" ) ))
-  }
-  return(modellingResult)
+  stop("Deprecated use: \n
+       workflow_model_analyse,\n
+       visualize_model_fit,\n
+       write_model_fit_visualization")
 }
 
-#' p2621 workflow no interaction - adds contrast computation to `workflow_interaction_modelling` function.
+#' p2621 workflow no interaction - DEPRECATED.
 #' @export
-#' @examples
-#' D <- LFQService::resultsV12954
-#' modelName <- "f_Condition_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_no_interaction_modelling(D$pepIntensityNormalized,D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
 #'
 workflow_no_interaction_modelling <- function(dataLF,
                                               config,
                                               modelFunction,
                                               modelName,
                                               path=NULL){
-
-  warning("Deprecate ASAP!!!!")
-  modelProteinF <- workflow_interaction_modelling(dataLF,
-                                                  config,
-                                                  modelFunction,
-                                                  modelName,
-                                                  path=path)
-
-  contrasts <- workflow_model_contrasts_no_interaction(modelProteinF,
-                                                       modelName ,
-                                                       config )
-  if(!if.null(path)){
-    write_figures_model_contrasts(contrasts, path)
-  }
-  return(list(TwoFactorModelFactor2 = contrasts$contrasts, modelProteinF = modelProteinF, modelName = modelName))
+  stop("Deprecate ASAP!!!! - run:\n
+       workflow_interaction_modelling\n
+       workflow_model_contrasts_no_interaction\n
+       write_figures_model_contrasts instead.")
 }
 
 
@@ -984,23 +968,30 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 }
 
 
-#' p2621 compute group averages
+#' compute group averages
+#'
+#' used in p2621, p2109
+#'
 #' @export
 workflow_group_averages <- function(models,
                                     modelName,
                                     lin_int,
-                                    subject_Id = 'protein_Id',
-                                    likelihood_ratio_test_result = NULL){
+                                    subject_Id = 'protein_Id'){
   #computeGroupAverages
+  modelcol <-paste0("lmer_", modelName)
+  contrastfun <- NULL
+  whatclass <- class(models[[modelcol]][[1]])
+  if(whatclass=="lm"){
+    contrastfun = LFQService::my_glht
+  }else if(whatclass == "lmerModLmerTest"){
+    contrastfun = LFQService::my_contest
+  }
+
   interaction_model_matrix <- models %>%
-    mutate(groupAverages = map(!!sym(paste0("lmer_", modelName)) , LFQService::my_glht, linfct = lin_int, sep=TRUE ))
+    mutate(groupAverages = map(!!sym(modelcol) , contrastfun , linfct = lin_int, sep=TRUE ))
 
   interaction_model_matrix %>%
     dplyr::select(subject_Id, groupAverages ) %>% unnest() -> groupAverages
-
-  if(!is.null(likelihood_ratio_test_result)){
-    groupAverages <- inner_join(groupAverages,  likelihood_ratio_test_result)
-  }
 
   groupAveragesW <- groupAverages %>% dplyr::select(-p.value, -statistic)
   return(list(groupAverages = groupAverages, groupAveragesW= groupAveragesW))
