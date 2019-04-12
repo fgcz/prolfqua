@@ -5,7 +5,7 @@
 \title{Count distinct elements for each level of hierarchy per sample}
 \usage{
 hierarchy_counts_sample(data, configuration,
-  hierarchyLevel = configuration$table$hierarchyLevel)
+  hierarchyLevel = length(configuration$table$hierarchyKeys()))
 }
 \description{
 Count distinct elements for each level of hierarchy per sample

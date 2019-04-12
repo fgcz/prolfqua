@@ -224,10 +224,12 @@ filter_byQValue <- function(data, config){
 #' @examples
 #' library(dplyr)
 #' xnested <- sample_analysis %>%
-#'  group_by_at(skylineconfig$table$hierarchyKeys()[1]) %>%
+#'  group_by_at(names(table$hkeysLevel(FALSE))) %>%
 #'  tidyr::nest()
-#' xx <- extractIntensities(xnested$data[[1]],skylineconfig)
-#' stopifnot(dim(xx)==c(103,22))
+#' x <- xnested$data[[1]]
+#' nn  <- x %>% dplyr::select( names(table$hkeysLevel(TRUE)) ) %>% distinct() %>% nrow()
+#' xx <- extractIntensities(x,skylineconfig)
+#' stopifnot(dim(xx)==c(nn,22))
 #'
 extractIntensities <- function(x, configuration ){
   table <- configuration$table

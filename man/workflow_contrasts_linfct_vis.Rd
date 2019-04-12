@@ -2,10 +2,10 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_contrasts_linfct_vis}
 \alias{workflow_contrasts_linfct_vis}
-\title{compute all contrasts from model with interactions based on linfct matrix}
+\title{visualize output of `workflow_contrasts_linfct``}
 \usage{
 workflow_contrasts_linfct_vis(contrasts, modelName)
 }
 \description{
-compute all contrasts from model with interactions based on linfct matrix
+visualize output of `workflow_contrasts_linfct``
 }

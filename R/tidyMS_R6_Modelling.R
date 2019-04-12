@@ -217,122 +217,7 @@ make_custom_model_lm <- function( modelstr ) {
 }
 
 
-# extracting results ----
-
-#' get all comparisons
-.contrast_tukey_multcomp <- function(model, factor){
-  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
-  {
-    model$model <- as.data.frame(unclass(model$model))
-  }
-
-  mcpDef <- multcomp::mcp(Dummy="Tukey")
-  names(mcpDef) <- factor
-  glt <- multcomp::glht(model, mcpDef)
-  sglt <- summary(glt)
-  sglt <- broom::tidy(sglt)
-  ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
-  xx <- dplyr::inner_join(
-    sglt,
-    ciglt, by=c("lhs","rhs")
-  )
-  return(xx)
-}
-
-
-# compute contrasts for all factors.
-.compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
-  factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorLevel]
-  subject_Id <- pepConfig$table$hierarchyKeys()[1]
-
-  for(factor in factors){
-    print(factor)
-    modelProteinF <- modelProteinF %>%
-      mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
-  }
-  dd <- modelProteinF %>% dplyr::select(subject_Id, starts_with("factor_"))
-  contrasts <- dd %>% gather("factor", "contrasts",-!!sym( subject_Id)) %>% unnest() %>% arrange(!!sym(subject_Id)) %>% dplyr::select(-rhs)
-
-  return(contrasts)
-}
-
-
-#' compute all contrasts from non interaction model automatically.
-#'
-#' used p2109
-#' @export
-#' @examples
-#' D <- LFQService::resultsV12954
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' modelName <- "f_Condition_r_peptide"
-#' pepConfig <- D$config_pepIntensityNormalized
-#' #modellingResult <- workflow_interaction_modelling(D$pepIntensityNormalized, D$config_pepIntensityNormalized,formula_randomPeptide, modelName)
-#' modellingResult <- workflow_model_analyse( D$pepIntensityNormalized,
-#' D$config_pepIntensityNormalized,
-#' formula_randomPeptide,
-#' modelName,
-#' isSingular = lmer::isSingular)
-#' results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,
-#' modelName,
-#' D$config_pepIntensityNormalized)
-#'
-#' if( FALSE ){
-#'  results$fig$VolcanoPlot
-#'  results$fig$histogram_coeff_p.values
-#' }
-workflow_model_contrasts_no_interaction <- function(modelProteinF,
-                                                    modelName,
-                                                    pepConfig
-)
-{
-  warning("Softdeprecated - use explicit linear functions and workflow_model_contrasts function")
-  # TODO make chack that model has no contrasts!
-  result <- list()
-
-  contrasts <- LFQService:::.compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
-  modelProteinF<- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hierarchyKeys()[1], "isSingular"))
-  contrasts <- inner_join(modelProteinF, contrasts )
-
-  #result$contrasts <- contrasts
-  result$fig <- list()
-  result$fig$histogram_coeff_p.values_name <- paste0("Contrasts_Auto_histogram_",modelName,".pdf")
-  result$fig$histogram_coeff_p.values <- ggplot(data=contrasts,
-                                                aes(x = p.value, group=lhs)) + geom_histogram(bins = 20) + facet_wrap(~lhs)
-
-
-  result$fig$VolcanoPlot_name <- paste0("Contrasts_Auto_Volcano_",modelName,".pdf")
-  result$fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
-                                                         effect = "estimate",
-                                                         type = "p.value",
-                                                         condition = "lhs",
-                                                         label = pepConfig$table$hierarchyKeys()[1],
-                                                         xintercept = c(-1, 1),colour = "isSingular")
-  result$contrasts <- contrasts
-  return(result)
-}
-
-#' compute all contrasts from model with interactions based on linfct matrix
-#' @export
-#'
-workflow_contrasts_linfct_vis <- function(contrasts, modelName){
-  fig <- list()
-  fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
-
-  fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
-    geom_histogram(bins = 20) +
-    facet_wrap(~lhs)
-
-  fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
-  fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
-                                                  effect = "estimate",
-                                                  type = "p.value",
-                                                  condition = "lhs",
-                                                  label = "protein_Id",
-                                                  xintercept = c(-1, 1), colour = "isSingular")
-
-  return(fig)
-}
-
+# computing contrast ----
 
 #' compute group averages
 #'
@@ -372,36 +257,59 @@ workflow_contrasts_linfct <- function(models,
   return(contrasts)
 }
 
-workflow_group_averages <- function(models,
-                                    modelName,
-                                    lin_int,
-                                    subject_Id = 'protein_Id'){
-  stop("DEPRECATED : use workflow_contrasts_linfct")
+#' write results of `workflow_contrasts_linfct`
+#' @export
+#'
+workflow_contrasts_linfct_write <- function(results, modelName, path, subject_Id = "protein_Id"){
+  fileLong <-file.path(path,paste0("Contrasts_",modelName,".csv"))
+  readr::write_csv(results, path = fileLong)
+  fileWide <-file.path(path,paste0("Contrasts_",modelName,"_PIVOT.csv"))
+  resultswide <- pivot_model_contrasts_2_Wide(res_interaction, subject_Id = subject_Id)
+  readr::write_csv(resultswide, path = fileWide)
+
 }
 
 
-#' helper function to write the result of `workflow_model_contrasts`
+
+#' visualize output of `workflow_contrasts_linfct``
+#' @export
+#'
+workflow_contrasts_linfct_vis <- function(contrasts, modelName){
+  fig <- list()
+  fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
+
+  fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
+    geom_histogram(bins = 20) +
+    facet_wrap(~lhs)
+
+  fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
+  fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
+                                                  effect = "estimate",
+                                                  type = "p.value",
+                                                  condition = "lhs",
+                                                  label = "protein_Id",
+                                                  xintercept = c(-1, 1), colour = "isSingular")
+
+  return(fig)
+}
+
+
+#' helper function to write the result of `workflow_contrasts_linfct_vis`
 #'
 #' used in p2901
 #'
 #' @export
-#' @examples
-#' if(FALSE){
-#' contrast_interactions <- workflow_model_contrasts(modelProteinF_Int, modelName_Int, XX)
-#' modelWithInteractionsContrasts <- inner_join(contrast_interactions$contrasts, likelihood_ratio_test_result )
-#' modelWithInteractionsContrasts_Pivot <- pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts)
-#' }
-write_figures_model_contrasts <- function(contrasts_result,path, fig.width = 10, fig.height = 10){
-  pdf(file.path(path,contrasts_result$fig$histogram_coeff_p.values_name), width = fig.width, height = fig.height)
-  print(contrasts_result$fig$histogram_coeff_p.values)
+workflow_contrasts_linfct_vis_print <- function(contrasts_result, path, fig.width = 10, fig.height = 10){
+  pdf(file.path(path,contrasts_result$histogram_coeff_p.values_name), width = fig.width, height = fig.height)
+  print(contrasts_result$histogram_coeff_p.values)
   dev.off()
 
-  pdf(file.path(path,contrasts_result$fig$VolcanoPlot_name), width = fig.width, height = fig.height)
-  print(contrasts_result$fig$VolcanoPlot)
+  pdf(file.path(path,contrasts_result$VolcanoPlot_name), width = fig.width, height = fig.height)
+  print(contrasts_result$VolcanoPlot)
   dev.off()
 }
 
-#' pivot model contrasts matrix to wide format produced by `workflow_model_contrasts` and ...
+#' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
 #' @export
 #'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = ""){
@@ -564,7 +472,7 @@ plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , fir
 }
 
 
-# generate linear functions -----
+# Generate linear functions -----
 
 #' get matrix of indicator coefficients for each interaction
 #'
@@ -640,10 +548,6 @@ lmer4_linfct_from_model <- function(m){
   return(list(linfct_factors = dd_m , linfct_interactions = cm_mm))
 }
 
-
-
-# Computing contrasts helpers -----
-
 #' create all possible contrasts
 #' @export
 #' @examples
@@ -665,6 +569,10 @@ linfunct_all_possible_contrasts <- function( lin_int ){
   colnames(new_lin_fct) <- colnames(lin_int)
   return(new_lin_fct)
 }
+
+
+# Computing contrasts helpers -----
+
 
 
 
@@ -736,6 +644,8 @@ my_contest <- function(model, linfct , sep=TRUE){
                         conf.high = "upper")
   return(res)
 }
+
+# Fit the models to data ----
 
 #' check if lm model is singular
 #' @export
@@ -818,11 +728,8 @@ workflow_model_analyse <- function(pepIntensity,config, modelFunction, modelName
 
 #' writes results of `workflow_model_analyse`, anova table and all the coefficients with parameters.
 #' @export
-workflow_model_analyse_write <- function(modellingResult, modelName, path, subdir = "model_fit_vis"){
-  path <- file.path(path, subdir)
-  if(!dir.exists(path)){
-    dir.create(path)
-  }
+workflow_model_analyse_write <- function(modellingResult, modelName, path){
+
   message("writing tables into :", path)
   readr::write_csv(modellingResult$Model_Coeff,
                    path = file.path( path, paste0("Coef_",modelName, ".txt")))
@@ -841,10 +748,10 @@ workflow_model_analyse_write <- function(modellingResult, modelName, path, subdi
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
-#' res <- visualize_model_fit(modellingResult,D$config_pepIntensityNormalized, modelName)
-#' write_model_fit_visualization(res,modelName,path = ".")
+#' res <- workflow_model_analyse_vis(modellingResult,D$config_pepIntensityNormalized, modelName)
+#' workflow_model_analyse_vis_write(res,modelName,path = ".")
 #'
-visualize_model_fit <- function(modellingResult, config, modelName) {
+workflow_model_analyse_vis <- function(modellingResult, config, modelName) {
 
   lmermodel <- paste0("lmer_", modelName)
   exists_lmer <- paste0("exists_lmer_", modelName)
@@ -888,20 +795,17 @@ visualize_model_fit <- function(modellingResult, config, modelName) {
 
 
 
-#' Writes figures generated by `visualize_model_fit`
+#' Writes figures generated by `workflow_model_analyse_vis`
 #'
 #' used in p2901
 #' @export
-write_model_fit_visualization <- function(modelling_result,
-                                          modelName,
-                                          path,
-                                          fig.width = 10 ,
-                                          fig.height = 10,
-                                          subdir = "model_fit_vis"){
-  path <- file.path(path, subdir)
-  if(!dir.exists(path)){
-    dir.create(path)
-  }
+workflow_model_analyse_vis_print <- function(modelling_result,
+                                             modelName,
+                                             path,
+                                             fig.width = 10 ,
+                                             fig.height = 10){
+
+
   pdf(file.path(path,paste0("Coef_Histogram_",modelName,".pdf")),
       width = fig.width, height = fig.height )
   print(modelling_result$histogram_coeff_p.values)
@@ -922,46 +826,6 @@ write_model_fit_visualization <- function(modelling_result,
   histogram_anova_p.values <-
     print(modelling_result$histogram_anova_p.values)
   dev.off()
-}
-
-
-#' p2621 workflow interaction
-#' @export
-#' @examples
-#'
-#'
-#' D <- LFQService::resultsV12954
-#' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' res_cond_r_pep <- workflow_interaction_modelling(D$pepIntensityNormalized,
-#'  D$config_pepIntensityNormalized,
-#'   formula_randomPeptide,
-#'  modelName, path=tempdir())
-#' names(res_cond_r_pep)
-workflow_interaction_modelling <- function(pepIntensity,
-                                           pepConfig,
-                                           modelFunction,
-                                           modelName,
-                                           isSingular = lme4::isSingular,
-                                           path=NULL){
-  stop("Deprecated use: \n
-       workflow_model_analyse,\n
-       visualize_model_fit,\n
-       write_model_fit_visualization")
-}
-
-#' p2621 workflow no interaction - DEPRECATED.
-#' @export
-#'
-workflow_no_interaction_modelling <- function(dataLF,
-                                              config,
-                                              modelFunction,
-                                              modelName,
-                                              path=NULL){
-  stop("Deprecate ASAP!!!! - run:\n
-       workflow_interaction_modelling\n
-       workflow_model_contrasts_no_interaction\n
-       write_figures_model_contrasts instead.")
 }
 
 
@@ -1005,14 +869,4 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 
 
 
-
-#' p2621 workflow linfunct contrasts
-#' @export
-workflow_linfunct_contrasts <- function(models, modelName, likelihood_ratio_test_result ,  linfct, path,
-                                        fig.width=10, fig.height=10)
-{
-  stop("DEPRECATED : use workflow_model_contrasts\n
-       write_figures_model_contrasts\n
-       pivot_model_contrasts_2_Wide\n")
-}
 

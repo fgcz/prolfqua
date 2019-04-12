@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{pivot_model_contrasts_2_Wide}
 \alias{pivot_model_contrasts_2_Wide}
-\title{pivot model contrasts matrix to wide format produced by `workflow_model_contrasts` and ...}
+\title{pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...}
 \usage{
 pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts,
   subject_Id = "")
 }
 \description{
-pivot model contrasts matrix to wide format produced by `workflow_model_contrasts` and ...
+pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
 }
