@@ -9,3 +9,7 @@ plot_lmer_peptide_predictions(m)
 \description{
 Plot prdictions
 }
+\examples{
+m <- LFQService::interactionModel_p1807
+plot_lmer_peptide_predictions(m)
+}

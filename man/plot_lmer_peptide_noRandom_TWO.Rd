@@ -2,11 +2,17 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{plot_lmer_peptide_noRandom_TWO}
 \alias{plot_lmer_peptide_noRandom_TWO}
-\title{plot intensities per interaction with Two independent random effects removed (1|A) + (1|B)}
+\title{plot intensities per interaction with Two
+ independent random effects removed (1|A) + (1|B)}
 \usage{
 plot_lmer_peptide_noRandom_TWO(m, legend.position = "none",
   firstlast = TRUE)
 }
 \description{
-plot intensities per interaction with Two independent random effects removed (1|A) + (1|B)
+plot intensities per interaction with Two
+ independent random effects removed (1|A) + (1|B)
+}
+\examples{
+m <- LFQService::interactionModel_p1807
+#plot_lmer_peptide_noRandom_TWO(m)
 }

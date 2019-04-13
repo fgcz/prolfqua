@@ -9,3 +9,11 @@ plot_lmer_peptide_noRandom(m, legend.position = "none")
 \description{
 plot peptide intensities per interaction with random effects removed
 }
+\examples{
+library(tidyverse)
+m <-LFQService::basicModel_p1807
+plot_lmer_peptide_noRandom(m)
+
+m <- LFQService::interactionModel_p1807
+plot_lmer_peptide_noRandom(m)
+}

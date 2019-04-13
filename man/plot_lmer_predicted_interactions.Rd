@@ -9,3 +9,7 @@ plot_lmer_predicted_interactions(gg, m)
 \description{
 Add predicted values for each interaction
 }
+\examples{
+#m <- LFQService::interactionModel_p1807
+#plot_lmer_predicted_interactions(m)
+}

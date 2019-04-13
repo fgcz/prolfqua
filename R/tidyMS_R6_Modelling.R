@@ -349,7 +349,9 @@ anova_df <- function(x){
 
 #' Plot prdictions
 #' @export
-#'
+#' @examples
+#' m <- LFQService::interactionModel_p1807
+#' plot_lmer_peptide_predictions(m)
 plot_lmer_peptide_predictions <- function(m){
   data <- m@frame
   data$prediction <- predict(m)
@@ -364,7 +366,13 @@ plot_lmer_peptide_predictions <- function(m){
 
 #' plot peptide intensities per interaction with random effects removed
 #' @export
+#' @examples
+#' library(tidyverse)
+#' m <-LFQService::basicModel_p1807
+#' plot_lmer_peptide_noRandom(m)
 #'
+#' m <- LFQService::interactionModel_p1807
+#' plot_lmer_peptide_noRandom(m)
 plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
@@ -387,15 +395,17 @@ plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   return(gg)
 }
 
-#' plot intensities per interaction with Two independent random effects removed (1|A) + (1|B)
+#' plot intensities per interaction with Two
+#'  independent random effects removed (1|A) + (1|B)
 #' @export
-#'
+#' @examples
+#' m <- LFQService::interactionModel_p1807
+#' #plot_lmer_peptide_noRandom_TWO(m)
 plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
 
   updateDataWithRandom <- function(data, m, i, randeffect){
-
     rand_i <- randeffect[i]
-    ran <- ranef(m)[[rand_i]]
+    ran <- lme4::ranef(m)[[rand_i]]
     name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
     colnames(ran) <- name
     ran <- tibble::as_tibble(ran,rownames = rand_i)
@@ -439,7 +449,9 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
 
 #' Add predicted values for each interaction
 #' @export
-#'
+#' @examples
+#' #m <- LFQService::interactionModel_p1807
+#' #plot_lmer_predicted_interactions(m)
 plot_lmer_predicted_interactions <- function(gg, m){
   cm <- .lmer4_coeff_matrix(m)
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
@@ -452,10 +464,12 @@ plot_lmer_predicted_interactions <- function(gg, m){
 
 #' Make model plot with title - protein Name.
 #' @export
-#'
+#' @examples
+#' m <- LFQService::interactionModel_p1807
+#' plot_lmer_model_and_data(m,"dumm")
 plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
-  gg <- plot_lmer4_peptide_noRandom(m,legend.position=legend.position)
-  gg <- plot_predicted_interactions(gg, m)
+  gg <- plot_lmer_peptide_noRandom(m,legend.position=legend.position)
+  gg <- plot_lmer_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
   gg
 }
@@ -465,8 +479,8 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 #' @export
 #'
 plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , firstlast= TRUE){
-  gg <- plot_lmer4_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
-  gg <- plot_predicted_interactions(gg, m)
+  gg <- plot_lmer_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
+  gg <- plot_lmer_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
   gg
 }

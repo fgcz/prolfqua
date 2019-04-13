@@ -20,8 +20,8 @@ modellingResult <- workflow_model_analyse( D$pepIntensityNormalized,
 D$config_pepIntensityNormalized,
 formula_randomPeptide,
 modelName,
-isSingular = lmer::isSingular)
-results <- workflow_model_contrasts_no_interaction(modellingResult$modelProteinF,
+isSingular = lme4::isSingular)
+results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProteinF,
 modelName,
 D$config_pepIntensityNormalized)
 
