@@ -345,12 +345,12 @@ anova_df <- function(x){
   return(x)
 }
 
-# visualize modelling results ----
+# visualize lmer modelling results ----
 
 #' Plot prdictions
 #' @export
 #'
-plot_lme4_peptide_predictions <- function(m){
+plot_lmer_peptide_predictions <- function(m){
   data <- m@frame
   data$prediction <- predict(m)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
@@ -365,7 +365,7 @@ plot_lme4_peptide_predictions <- function(m){
 #' plot peptide intensities per interaction with random effects removed
 #' @export
 #'
-plot_lmer4_peptide_noRandom <- function(m,legend.position="none"){
+plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
@@ -390,7 +390,7 @@ plot_lmer4_peptide_noRandom <- function(m,legend.position="none"){
 #' plot intensities per interaction with Two independent random effects removed (1|A) + (1|B)
 #' @export
 #'
-plot_lmer4_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
+plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
 
   updateDataWithRandom <- function(data, m, i, randeffect){
 
@@ -440,7 +440,7 @@ plot_lmer4_peptide_noRandom_TWO <- function(m, legend.position = "none", firstla
 #' Add predicted values for each interaction
 #' @export
 #'
-plot_predicted_interactions <- function(gg, m){
+plot_lmer_predicted_interactions <- function(gg, m){
   cm <- .lmer4_coeff_matrix(m)
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
   ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
@@ -453,7 +453,7 @@ plot_predicted_interactions <- function(gg, m){
 #' Make model plot with title - protein Name.
 #' @export
 #'
-plot_model_and_data <- function(m, proteinID, legend.position = "none"){
+plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
   gg <- plot_lmer4_peptide_noRandom(m,legend.position=legend.position)
   gg <- plot_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
@@ -464,7 +464,7 @@ plot_model_and_data <- function(m, proteinID, legend.position = "none"){
 #' Plotting two independent random effects
 #' @export
 #'
-plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , firstlast= TRUE){
+plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , firstlast= TRUE){
   gg <- plot_lmer4_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
   gg <- plot_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
@@ -535,7 +535,7 @@ plot_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , fir
 #' #}
 #'
 #'
-lmer4_linfct_from_model <- function(m){
+linfct_from_model <- function(m){
 
   cm <- .lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
@@ -556,7 +556,7 @@ lmer4_linfct_from_model <- function(m){
 #' linfct <- lmer4_linfct_from_model(m)
 #' xl <- linfunct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- linfunct_all_possible_contrasts(linfct$linfct_interactions)
-linfunct_all_possible_contrasts <- function( lin_int ){
+linfct_all_possible_contrasts <- function( lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))

@@ -1,4 +1,4 @@
-#' get all comparisons
+# get all comparisons
 .contrast_tukey_multcomp <- function(model, factor){
   if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
