@@ -74,7 +74,7 @@ ggplot(tmp, aes(x = p.value.x, y = p.value.y, )) + geom_point() + facet_wrap(~lh
 # add group averages -----
 
 m <- res_cond_r_pep$modelProteinF$lmer_f_Condition_r_peptide[[1]]
-linfct <- lmer4_linfct_from_model(m)
+linfct <- linfct_from_model(m)
 res_cond_r_pep_grA <- workflow_group_averages(res_cond_r_pep$modelProteinF,res_cond_r_pep$modelName,
                                               results$path, linfct$linfct_interactions, lltest )
 res_cond_r_pep_r_pat_grA <- workflow_group_averages(res_cond_r_pep_r_pat$modelProteinF,res_cond_r_pep_r_pat$modelName,

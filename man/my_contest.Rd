@@ -11,7 +11,7 @@ applies contrast computation using lmerTest::contest function
 }
 \examples{
 mb <- LFQService::basicModel_p1807
-linfct <- lmer4_linfct_from_model(mb)
+linfct <- linfct_from_model(mb)
 names(linfct)
 lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 my_contest(mb, linfct$linfct_factors)

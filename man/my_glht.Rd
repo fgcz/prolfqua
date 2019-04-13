@@ -12,12 +12,12 @@ apply multcomp::glht method to linfct
 \examples{
 
 mb <- LFQService::basicModel_p1807
-linfct <- lmer4_linfct_from_model(mb)
+linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
 my_glht(mb, linfct$linfct_interactions)
 mi <-  LFQService::interactionModel_p1807
-linfct_int <- lmer4_linfct_from_model(mb)
+linfct_int <- linfct_from_model(mb)
 names(linfct_int)
 my_glht(mi, linfct_int$linfct_factors)
 my_glht(mi, linfct_int$linfct_interactions)

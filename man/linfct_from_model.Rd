@@ -14,13 +14,13 @@ get linfct from model
 
 m <- LFQService::basicModel_p1807
 m
-linfct <- lmer4_linfct_from_model(m)
+linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
 linfct$linfct_interactions
 
 m <- LFQService::interactionModel_p1807
-linfct <- lmer4_linfct_from_model(m)
+linfct <- linfct_from_model(m)
 linfct$linfct_factors
 linfct$linfct_interactions
 #}

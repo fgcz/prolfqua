@@ -12,7 +12,7 @@ create all possible contrasts
 \examples{
 m <- LFQService::basicModel_p1807
 m
-linfct <- lmer4_linfct_from_model(m)
-xl <- linfunct_all_possible_contrasts(linfct$linfct_factors)
-xx <- linfunct_all_possible_contrasts(linfct$linfct_interactions)
+linfct <- linfct_from_model(m)
+xl <- linfct_all_possible_contrasts(linfct$linfct_factors)
+xx <- linfct_all_possible_contrasts(linfct$linfct_interactions)
 }

@@ -537,13 +537,13 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 #' m <- LFQService::basicModel_p1807
 #' m
-#' linfct <- lmer4_linfct_from_model(m)
+#' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #'
 #' m <- LFQService::interactionModel_p1807
-#' linfct <- lmer4_linfct_from_model(m)
+#' linfct <- linfct_from_model(m)
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #' #}
@@ -567,9 +567,9 @@ linfct_from_model <- function(m){
 #' @examples
 #' m <- LFQService::basicModel_p1807
 #' m
-#' linfct <- lmer4_linfct_from_model(m)
-#' xl <- linfunct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- linfunct_all_possible_contrasts(linfct$linfct_interactions)
+#' linfct <- linfct_from_model(m)
+#' xl <- linfct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- linfct_all_possible_contrasts(linfct$linfct_interactions)
 linfct_all_possible_contrasts <- function( lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
@@ -595,12 +595,12 @@ linfct_all_possible_contrasts <- function( lin_int ){
 #' @examples
 #'
 #' mb <- LFQService::basicModel_p1807
-#' linfct <- lmer4_linfct_from_model(mb)
+#' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #' my_glht(mb, linfct$linfct_interactions)
 #' mi <-  LFQService::interactionModel_p1807
-#' linfct_int <- lmer4_linfct_from_model(mb)
+#' linfct_int <- linfct_from_model(mb)
 #' names(linfct_int)
 #' my_glht(mi, linfct_int$linfct_factors)
 #' my_glht(mi, linfct_int$linfct_interactions)
@@ -638,7 +638,7 @@ my_glht <- function(model , linfct , sep=FALSE ) {
 #' @export
 #' @examples
 #' mb <- LFQService::basicModel_p1807
-#' linfct <- lmer4_linfct_from_model(mb)
+#' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 #' my_contest(mb, linfct$linfct_factors)
