@@ -763,7 +763,7 @@ workflow_model_analyse_write <- function(modellingResult, modelName, path){
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
 #' res <- workflow_model_analyse_vis(modellingResult,D$config_pepIntensityNormalized, modelName)
-#' workflow_model_analyse_vis_write(res,modelName,path = ".")
+#' #workflow_model_analyse_vis_write(res,modelName,path = ".")
 #'
 workflow_model_analyse_vis <- function(modellingResult, config, modelName) {
 
