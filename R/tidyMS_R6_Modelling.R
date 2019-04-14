@@ -813,7 +813,7 @@ workflow_model_analyse_vis <- function(modellingResult, config, modelName) {
 #'
 #' used in p2901
 #' @export
-workflow_model_analyse_vis_print <- function(modelling_result,
+workflow_model_analyse_vis_write <- function(modelling_result,
                                              modelName,
                                              path,
                                              fig.width = 10 ,
