@@ -609,7 +609,7 @@ my_glht <- function(model , linfct , sep=FALSE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
-    if(length(fixef(model)) != ncol(linfct) ){
+    if(length(lme4::fixef(model)) != ncol(linfct) ){
       return(NA) # catch rank defficient
     }
   }else{
@@ -646,7 +646,7 @@ my_glht <- function(model , linfct , sep=FALSE ) {
 #' my_glht(mb, linfct$linfct_factors)
 #' my_glht(mb, linfct$linfct_interactions)
 my_contest <- function(model, linfct , sep=TRUE){
-  if(length(fixef(model)) != ncol(linfct) ){
+  if(length(lme4::fixef(model)) != ncol(linfct) ){
     return(NA) # catch rank defficient
   }
   res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
