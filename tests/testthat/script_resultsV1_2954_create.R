@@ -9,12 +9,13 @@ library(dplyr)
 flevel <- 1
 path <- "results_FULL_Phonix_Filter"
 
-# resPepProtAnnot <- read_csv(file = "c:/Users/wewol/Dropbox/DataAnalysis/p2954_MSC_IVD_Christina/data/annotatedPeptide_PhonixDS_1097969.csv")
-# resPepProtAnnot %>% select(protein.group.id) %>% dplyr::sample_n(size=20) -> proteinSel
-# resPepProtAnnot <- resPepProtAnnot %>% inner_join(proteinSel)
-# resPepProtAnnot_p2954 <- resPepProtAnnot
-# usethis::use_data(resPepProtAnnot_p2954)
+resPepProtAnnot <- read_csv(file = "c:/Users/wewol/Dropbox/DataAnalysis/p2954_MSC_IVD_Christina/data/annotatedPeptide_PhonixDS_1097969.csv")
 
+# resPepProtAnnot %>% dplyr::select(top_protein, protein.group.id) %>%
+#   distinct() %>% dplyr::sample_n(size=20) -> proteinSel
+# resPepProtAnnot <-  inner_join(proteinSel, resPepProtAnnot)
+# resPepProtAnnot_p2954 <- resPepProtAnnot
+# usethis::use_data(resPepProtAnnot_p2954, overwrite=TRUE)
 resPepProtAnnot <- LFQService::resPepProtAnnot_p2954
 resPepProtAnnot$isotope <- "light"
 
@@ -42,21 +43,15 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 config <- createMQProteinPeptideConfiguration()
 config$table$factorLevel <- 2
 resPepProtAnnot %>% filter(reverse == FALSE) -> resPepProtAnnot
+head(resPepProtAnnot)
+config$table$hierarchy
 
 
 resDataStart <- setup_analysis(resPepProtAnnot, config)
 
 
 resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
-
-
-
 resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
-
-
-if(!dir.exists(path)){
-  dir.create(path)
-}
 
 #LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")
 #rmarkdown::render("MQSummary.Rmd", params = list(data = resDataStart, configuration=config))
@@ -68,13 +63,13 @@ x3 %>% inner_join(resDataStart, by="protein_Id") -> resDataStart
 
 # Start filtering
 config$table$factorLevel <-flevel
-head(resDataStart)
 
 
-results <- LFQService::workflow_MQ_protoV1(resDataStart, config, path ,
+results <- workflow_MQ_protoV1(resDataStart, config, path ,
                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 
 protintensity <- LFQService::workflow_MQ_protein_quants( results )
+
 #readr::write_csv(protintensity$data,
 #                 path = file.path(path,"transformed_ProteinIntensities.csv"))
 

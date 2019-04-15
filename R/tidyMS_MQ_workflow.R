@@ -47,10 +47,12 @@
 
 
 .workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
+
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(filteredPep, pepConfig, log2)
   pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized, pepConfig, .func = robust_scale)
-  pepIntensityNormalized <- pepIntensityNormalized %>% dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
+  pepIntensityNormalized <- pepIntensityNormalized %>%
+    dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
   pepConfig$table$popWorkIntensity()
   pepConfig$table$setWorkIntensity("transformedIntensity")
   return(list(data = pepIntensityNormalized, config = pepConfig))
@@ -100,7 +102,6 @@ workflow_MQ_protoV1 <- function( resDataStart,
   filteredPep <- peptideFilterFunction( resDataStart , config )
   config <- filteredPep$config
   filteredPep <- filteredPep$data
-
 
   # do Normalization
 

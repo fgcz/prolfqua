@@ -12,5 +12,5 @@ test_that("run test_resultsV1_2954_modelling.R",{
 })
 
 test_that("run script_resultsV1_2954_create.R",{
-  source("tests/testthat/script_resultsV1_2954_create.R", echo=FALSE)
+  source("script_resultsV1_2954_create.R", echo=FALSE)
 })
