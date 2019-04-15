@@ -1,0 +1,92 @@
+rm(list=ls())
+
+library(readr)
+library(tidyverse)
+library(LFQService)
+library(tidyr)
+library(dplyr)
+
+flevel <- 1
+path <- "results_FULL_Phonix_Filter"
+
+# resPepProtAnnot <- read_csv(file = "c:/Users/wewol/Dropbox/DataAnalysis/p2954_MSC_IVD_Christina/data/annotatedPeptide_PhonixDS_1097969.csv")
+# resPepProtAnnot %>% select(protein.group.id) %>% dplyr::sample_n(size=20) -> proteinSel
+# resPepProtAnnot <- resPepProtAnnot %>% inner_join(proteinSel)
+# resPepProtAnnot_p2954 <- resPepProtAnnot
+# usethis::use_data(resPepProtAnnot_p2954)
+
+resPepProtAnnot <- LFQService::resPepProtAnnot_p2954
+resPepProtAnnot$isotope <- "light"
+
+createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
+                                                intensity = "peptide.intensity",
+                                                isotopeLabel = "isotope"){
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = "raw.file"
+  # measurement levels.
+  atable$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id")
+  atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
+  #
+  atable$ident_qValue = ident_qValue
+  atable$setWorkIntensity(intensity)
+  atable$isotopeLabel = isotopeLabel
+  atable$factors[["Condition"]] = "condition"
+  atable$factors[["patient_id"]] = "patient_id"
+  atable$factors[["runId"]] = "runId"
+  anaparam <- AnalysisParameters$new()
+  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  return(configuration)
+}
+
+
+config <- createMQProteinPeptideConfiguration()
+config$table$factorLevel <- 2
+resPepProtAnnot %>% filter(reverse == FALSE) -> resPepProtAnnot
+
+
+resDataStart <- setup_analysis(resPepProtAnnot, config)
+
+
+resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
+
+
+
+resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
+
+
+if(!dir.exists(path)){
+  dir.create(path)
+}
+
+#LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")
+#rmarkdown::render("MQSummary.Rmd", params = list(data = resDataStart, configuration=config))
+#rmarkdown::render("MQSummary.Rmd", params=list(data = resDataStart, configuration=config$clone(deep=TRUE)), envir = new.env())
+
+
+x3 <- summarizeHierarchy(resDataStart, config)
+x3 %>% inner_join(resDataStart, by="protein_Id") -> resDataStart
+
+# Start filtering
+config$table$factorLevel <-flevel
+head(resDataStart)
+
+
+results <- LFQService::workflow_MQ_protoV1(resDataStart, config, path ,
+                                           peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
+
+protintensity <- LFQService::workflow_MQ_protein_quants( results )
+#readr::write_csv(protintensity$data,
+#                 path = file.path(path,"transformed_ProteinIntensities.csv"))
+
+#rmarkdown::render("Summarize_Filtering.Rmd", params=results, envir = new.env())
+#rmarkdown::render("Summarize_Filtering.Rmd", params=results)
+
+#render_SummarizeFiltering_rmd(results, dest_path=path, dest_file_name = "SummarizeFiltering.pdf",workdir = getwd())
+
+#params <- results
+#rmarkdown::render("RunAnalysis_WithParams.Rmd", params = results)
+#file.copy("RunAnalysis_WithParams.pdf", file.path(path, "RunAnalysis_WithParams.pdf"), overwrite = TRUE)
+results$HEATMAP <-TRUE
+resultsV12954 <- results
+#usethis::use_data(resultsV12954, overwrite=TRUE)
+#saveRDS(results, file = "allData_PhonixDS_1097969.Rds")

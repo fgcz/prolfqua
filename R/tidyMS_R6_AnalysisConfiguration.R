@@ -75,12 +75,13 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                          return(names(self$hierarchy))
                                        }
                                      },
-                                     hkeysLevel = function(rev= FALSE){
+                                     hkeysLevel = function(rev = FALSE, names=TRUE){
                                        if(rev){
-                                         self$hierarchy[-(1:self$hierarchyLevel)]
+                                         res <- (self$hierarchy[-(1:self$hierarchyLevel)])
                                        }else{
-                                         return(self$hierarchy[1:self$hierarchyLevel])
+                                         res <- (self$hierarchy[1:self$hierarchyLevel])
                                        }
+                                       return(if(names){ names(res)}else{res})
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
@@ -294,7 +295,7 @@ plot_hierarchies_line_default <- function(data,
 #' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' xnested <- LFQService::sample_analysis %>%
-#'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
+#'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
@@ -341,7 +342,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep=TRUE)
 #' xnested <- LFQService::sample_analysis %>%
-#'  group_by_at(conf$table$hierarchyKeys()[1]) %>% tidyr::nest()
+#'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
 #' LFQService::plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
 plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1, boxplot=TRUE){
@@ -351,7 +352,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
   ddd %>%  gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
   ddlong <- as.data.frame(unclass(ddlong))
 
-  p <- ggplot(ddlong, aes_string(x = config$table$hierarchyKeys(rev = TRUE)[1],
+  p <- ggplot(ddlong, aes_string(x = config$table$hkeysLevel(rev = TRUE)[1],
                                  y = config$table$getWorkIntensity(),
                                  fill="level"
   )) +
@@ -703,16 +704,15 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
   config$table$hierarchyLevel <- hierarchy_level
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
-  xnested <- data %>% group_by_at(names(config$table$hkeysLevel())) %>% nest()
-
+  xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
   xnested <- xnested %>% mutate(spreadMatrix = map(data, extractIntensities, config))
   xnested <- xnested %>% mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>% mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
   if(unnest){
-    unnested <- xnested %>% dplyr::select(config$table$hierarchyKeys()[1:hierarchy_level], makeName) %>% unnest()
+    unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% unnest()
     newconfig <- make_reduced_hierarchy_config(config,
                                                workIntensity = func(name=TRUE),
-                                               hierarchy = config$table$hierarchy[1:hierarchy_level])
+                                               hierarchy = config$table$hkeysLevel(names=FALSE))
     return(list(unnested = unnested, newconfig = newconfig))
   }
   return(xnested)
@@ -984,18 +984,18 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res <- res[apply(res,1, sum) > 0,]
   if(nrow(res) > 0){
     res_plot <- heatmap3::heatmap3(res,
-                              distfun = function(x){dist(x, method="binary")},
-                              scale="none",
-                              col=c("white","black"),
-                              labRow = "",
-                              ColSideColors = ColSideColors,
-                              showRowDendro = showRowDendro,
-                              cexCol = cexCol,
-                              margin = c(8,3),
-                              legendfun = function()
-                                showLegend(legend=c("NA"),
-                                           col=c("black"),
-                                           cex=1.5))
+                                   distfun = function(x){dist(x, method="binary")},
+                                   scale="none",
+                                   col=c("white","black"),
+                                   labRow = "",
+                                   ColSideColors = ColSideColors,
+                                   showRowDendro = showRowDendro,
+                                   cexCol = cexCol,
+                                   margin = c(8,3),
+                                   legendfun = function()
+                                     showLegend(legend=c("NA"),
+                                                col=c("black"),
+                                                cex=1.5))
 
     invisible(list(res = res, res_plot=res_plot))
 

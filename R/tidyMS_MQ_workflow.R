@@ -1,7 +1,7 @@
 
 .makeFigs <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
-  proteinIDsymbol <- sym(config$table$hierarchyKeys()[1])
+  proteinIDsymbol <- syms(config$table$hkeysLevel())
   xnested <- filteredPep %>% group_by(UQ(proteinIDsymbol)) %>% nest()
   figs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
   figs <- figs %>% mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
@@ -67,7 +67,7 @@ workflow_MQ_protein_quants <- function(results){
   pepIntensityNormalized <- results$pepIntensityNormalized
   config <- results$config_pepIntensityNormalized
   configProt <- config$clone(deep = TRUE)
-  xnested <- pepIntensityNormalized %>% group_by_at(names(configProt$table$hkeysLevel())) %>% nest()
+  xnested <- pepIntensityNormalized %>% group_by_at(configProt$table$hkeysLevel()) %>% nest()
   protintensity <- LFQService::applyToHierarchyBySample(pepIntensityNormalized,configProt, medpolishPly,unnest = TRUE)
   configProt <- protintensity$newconfig
   protintensity <- protintensity$unnested
@@ -123,7 +123,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
 
   # Summarize filtered data - number of peptides with more than 2
   x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
-  x3_filt <- x3_filt %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+  x3_filt <- x3_filt %>% dplyr::mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
                                                          peptide_Id_n > 1 ~ "two and more"))
   RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% group_by(protein_with) %>% summarize(n=n())
 

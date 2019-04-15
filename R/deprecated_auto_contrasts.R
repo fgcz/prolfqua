@@ -22,7 +22,7 @@
 # compute contrasts for all factors.
 .compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
   factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorLevel]
-  subject_Id <- pepConfig$table$hierarchyKeys()[1]
+  subject_Id <- pepConfig$table$hkeysLevel()
 
   for(factor in factors){
     print(factor)
@@ -30,7 +30,7 @@
       mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
   dd <- modelProteinF %>% dplyr::select(subject_Id, starts_with("factor_"))
-  contrasts <- dd %>% gather("factor", "contrasts",-!!sym( subject_Id)) %>% unnest() %>% arrange(!!sym(subject_Id)) %>% dplyr::select(-rhs)
+  contrasts <- dd %>% gather("factor", "contrasts", - c(!!!(syms( subject_Id)))) %>% unnest() %>% arrange(!!!syms(subject_Id)) %>% dplyr::select(-rhs)
 
   return(contrasts)
 }
@@ -68,8 +68,8 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
   # TODO make chack that model has no contrasts!
   result <- list()
 
-  contrasts <- LFQService:::.compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
-  modelProteinF<- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hierarchyKeys()[1], "isSingular"))
+  contrasts <- .compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
+  modelProteinF<- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hkeysLevel(), "isSingular"))
   contrasts <- inner_join(modelProteinF, contrasts )
 
   #result$contrasts <- contrasts
@@ -84,7 +84,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
                                                          effect = "estimate",
                                                          type = "p.value",
                                                          condition = "lhs",
-                                                         label = pepConfig$table$hierarchyKeys()[1],
+                                                         label = pepConfig$table$hkeysLevel(),
                                                          xintercept = c(-1, 1),colour = "isSingular")
   result$contrasts <- contrasts
   return(result)

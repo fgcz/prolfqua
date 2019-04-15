@@ -686,19 +686,20 @@ isSingular_lm <- function(m){
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
-#'
+#' config$table$hkeysLevel()
 #' modellingResult <- workflow_model_analyse( pepIntensity,
 #'  config,
 #'  formula_randomPeptide,
 #'  modelName,
 #'  isSingular = lme4::isSingular)
 #'
-workflow_model_analyse <- function(pepIntensity,config, modelFunction, modelName, isSingular = isSingular_lm)
+workflow_model_analyse <- function(pepIntensity,config,
+                                   modelFunction, modelName, isSingular = isSingular_lm)
 {
 
-  hierarchyKey <- config$table$hierarchyKeys()[1]
+  hierarchyKey <- config$table$hkeysLevel()
   pepIntensity %>%
-    group_by(!!sym(config$table$hierarchyKeys()[1])) %>%
+    group_by(!!!syms(hierarchyKey)) %>%
     nest() -> nestProtein
   prot_stats <- summarizeHierarchy(pepIntensity, config)
 

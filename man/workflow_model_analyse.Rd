@@ -16,7 +16,7 @@ modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
-
+config$table$hkeysLevel()
 modellingResult <- workflow_model_analyse( pepIntensity,
  config,
  formula_randomPeptide,

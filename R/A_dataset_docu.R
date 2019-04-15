@@ -25,7 +25,7 @@
 #'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' #skylineconfig$table$factors
-#' # usethis::use_data( skylineconfig , overwrite = TRUE )
+#'  usethis::use_data( skylineconfig , overwrite = TRUE )
 #' tt <- R6extractValues(skylineconfig)
 #' #yaml::write_yaml(tt,file=file.path("skylineconfig.yml"))
 #' skylineconfig$table$hkeysLevel()
@@ -70,7 +70,7 @@
 #' skylineconfig_HL$table$factors[["treatment_c"]] <- "Condition2"
 #' skylineconfig_HL$table$factors[["time_c"]] <- "time"
 #' skylineconfig_HL$parameter$is_intensity_transformed = FALSE
-#' #usethis::use_data( skylineconfig_HL , overwrite = TRUE )
+#' usethis::use_data( skylineconfig_HL , overwrite = TRUE )
 "skylineconfig_HL"
 
 #' A data frame wich goes along with the \link{skylineconfig_HL}.
@@ -108,7 +108,7 @@
 #' spectronautDIAData250_config$table$factors[["sex"]] = "sex"
 #' spectronautDIAData250_config$table$factors[["age"]] = "age"
 #' spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
-#' #usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
+#' usethis::use_data( spectronautDIAData250_config , overwrite = TRUE )
 #'
 "spectronautDIAData250_config"
 
@@ -123,3 +123,13 @@
 #' spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
 #' #usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
 "spectronautDIAData250_analysis"
+
+#' resultsV12954 - contains normalization results
+#' @examples
+#'
+"resultsV12954"
+
+#' resPepProtAnnot_p2954 - raw data used in script_resultsV1_2954_create
+#' @examples
+#'
+"resPepProtAnnot_p2954"

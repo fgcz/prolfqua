@@ -224,19 +224,35 @@ filter_byQValue <- function(data, config){
 #' @examples
 #' library(dplyr)
 #' xnested <- sample_analysis %>%
-#'  group_by_at(names(skylineconfig$table$hkeysLevel(FALSE))) %>%
+#'  group_by_at(skylineconfig$table$hkeysLevel(FALSE)) %>%
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( names(skylineconfig$table$hkeysLevel(TRUE)) ) %>%
+#' nn  <- x %>% dplyr::select( skylineconfig$table$hkeysLevel(TRUE) ) %>%
 #'  distinct() %>% nrow()
 #' xx <- extractIntensities(x,skylineconfig)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
+#' # change hierarchyLevel ###################
+#' conf <- skylineconfig$clone(deep=TRUE)
+#' conf$table$hierarchyLevel = 2
+#'
+#' xnested <- sample_analysis %>%
+#'  group_by_at(conf$table$hkeysLevel(FALSE)) %>%
+#'  tidyr::nest()
+#' head(xnested)
+#'
+#' x <- xnested$data[[1]]
+#' nn  <- x %>% dplyr::select( conf$table$hkeysLevel(TRUE) ) %>%
+#'  distinct() %>% nrow()
+#' xx <- extractIntensities(x,conf)
+#' stopifnot(dim(xx)==c(nn,22))
+#'
+
 extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
     dplyr::select( c( table$sampleName,
-                      names(table$hkeysLevel(TRUE)),
+                      table$hkeysLevel(TRUE),
                       table$getWorkIntensity()) ) %>%
     spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
