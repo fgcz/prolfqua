@@ -2,7 +2,7 @@
 .makeFigs <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
   proteinIDsymbol <- syms(config$table$hkeysLevel())
-  xnested <- filteredPep %>% group_by(UQ(proteinIDsymbol)) %>% nest()
+  xnested <- filteredPep %>% group_by(UQS(proteinIDsymbol)) %>% nest()
   figs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
   figs <- figs %>% mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
   return(figs)

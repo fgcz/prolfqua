@@ -5,7 +5,7 @@
 \title{pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...}
 \usage{
 pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts,
-  subject_Id = "")
+  subject_Id = "protein_Id")
 }
 \description{
 pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...

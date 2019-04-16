@@ -264,7 +264,7 @@ workflow_contrasts_linfct_write <- function(results, modelName, path, subject_Id
   fileLong <-file.path(path,paste0("Contrasts_",modelName,".csv"))
   readr::write_csv(results, path = fileLong)
   fileWide <-file.path(path,paste0("Contrasts_",modelName,"_PIVOT.csv"))
-  resultswide <- pivot_model_contrasts_2_Wide(res_interaction, subject_Id = subject_Id)
+  resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
   readr::write_csv(resultswide, path = fileWide)
 
 }
@@ -299,7 +299,7 @@ workflow_contrasts_linfct_vis <- function(contrasts, modelName){
 #' used in p2901
 #'
 #' @export
-workflow_contrasts_linfct_vis_print <- function(contrasts_result, path, fig.width = 10, fig.height = 10){
+workflow_contrasts_linfct_vis_write <- function(contrasts_result, path, fig.width = 10, fig.height = 10){
   pdf(file.path(path,contrasts_result$histogram_coeff_p.values_name), width = fig.width, height = fig.height)
   print(contrasts_result$histogram_coeff_p.values)
   dev.off()
@@ -312,7 +312,7 @@ workflow_contrasts_linfct_vis_print <- function(contrasts_result, path, fig.widt
 #' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
 #' @export
 #'
-pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = ""){
+pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = "protein_Id"){
   modelWithInteractionsContrasts %>%
     dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
     mutate(lhs = glue::glue('estimate.{lhs}')) %>%
@@ -819,7 +819,7 @@ workflow_model_analyse_vis_write <- function(modelling_result,
                                              path,
                                              fig.width = 10 ,
                                              fig.height = 10){
-
+  message("Writing figures into : ", path, "\n")
 
   pdf(file.path(path,paste0("Coef_Histogram_",modelName,".pdf")),
       width = fig.width, height = fig.height )
@@ -850,19 +850,18 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
                                            modelName,
                                            modelProteinF_Int,
                                            modelName_Int,
-                                           config,
-                                           path = TRUE
+                                           subject_Id = "protein_Id",
+                                           path = NULL
 ){
   # Model Comparison
-  subjectID <- config$table$hierarchyKeys()[1]
-  reg <- inner_join(dplyr::select(modelProteinF, !!sym(subjectID), starts_with("lmer_")),
-                    dplyr::select(modelProteinF_Int, !!sym(subjectID), starts_with("lmer_")) , by=subjectID)
+  reg <- inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
+                    dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
 
   reg <- reg %>% mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
                                                                   !!sym(paste0("lmer_", modelName_Int)),
                                                                   .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
-    dplyr::select(!!sym(subjectID), modelComparisonLikelihoodRatioTest) %>% unnest()
+    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
 
