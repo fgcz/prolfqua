@@ -12,7 +12,7 @@ path <- "results_FULL_Phonix_Filter"
 # resPepProtAnnot <- read_csv(file = "c:/Users/wewol/Dropbox/DataAnalysis/p2954_MSC_IVD_Christina/data/annotatedPeptide_PhonixDS_1097969.csv")
 # resPepProtAnnot %>% dplyr::select(top_protein, protein.group.id) %>%
 #   distinct() %>% dplyr::sample_n(size=20) -> proteinSel
-# resPepProtAnnot <-  inner_join(proteinSel, resPepProtAnnot)
+# resPepProtAnnot <-  dplyr::inner_join(proteinSel, resPepProtAnnot)
 # resPepProtAnnot_p2954 <- resPepProtAnnot
 # usethis::use_data(resPepProtAnnot_p2954, overwrite=TRUE)
 
@@ -59,7 +59,7 @@ resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 
 
 x3 <- summarizeHierarchy(resDataStart, config)
-x3 %>% inner_join(resDataStart, by="protein_Id") -> resDataStart
+x3 %>% dplyr::inner_join(resDataStart, by="protein_Id") -> resDataStart
 
 # Start filtering
 config$table$factorLevel <-flevel

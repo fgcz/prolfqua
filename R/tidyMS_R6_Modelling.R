@@ -106,7 +106,7 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
   statistic <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","statistic")))
   statistic <- statistic %>% dplyr::mutate(term = glue("{term}.statistic"))
   statistic <- statistic %>% tidyr::spread(term, statistic)
-  res <- inner_join(inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
+  res <- dplyr::inner_join(dplyr::inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
   return(res)
 }
 
@@ -255,7 +255,7 @@ workflow_contrasts_linfct <- function(models,
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest() -> contrasts
 
   isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular")) %>% distinct()
-  contrasts <- inner_join(contrasts, isSing, by=subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
   return(contrasts)
 }
 
@@ -381,7 +381,7 @@ plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
   ran <- tibble::as_tibble(ran,rownames = randeffect)
   colnames(ran) <- gsub("[()]","",colnames(ran))
-  ran <- inner_join(data, ran, by=randeffect)
+  ran <- dplyr::inner_join(data, ran, by=randeffect)
 
   ran <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - Intercept)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
@@ -411,7 +411,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
     name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
     colnames(ran) <- name
     ran <- tibble::as_tibble(ran,rownames = rand_i)
-    ran <- inner_join(data, ran, by=rand_i)
+    ran <- dplyr::inner_join(data, ran, by=rand_i)
     ran_res <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
     ran_res
   }
@@ -432,7 +432,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
   #name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
   #colnames(ran) <- name
   #ran <- as_tibble(ran,rownames = rand_i)
-  #ran_res <- inner_join(ran_res, ran, by=rand_i)
+  #ran_res <- dplyr::inner_join(ran_res, ran, by=rand_i)
   #ran_res <- ran_res %>% dplyr::mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   ran_res <- make_interaction_column(ran_res,interactionColumns, sep=":" )
@@ -459,7 +459,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
   ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
                            yend = cm$mm %*% cm$coeffs)
-  segments <- inner_join(xstart_end, ystart_end, by="xend")
+  segments <- dplyr::inner_join(xstart_end, ystart_end, by="xend")
   gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
   return(gg)
 }
@@ -646,7 +646,7 @@ my_glht <- function(model , linfct , sep=FALSE ) {
     for(i in 1:nrow(linfct)){
       x <- multcomp::glht(model, linfct=linfct[i,,drop=FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
-      x <- inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
+      x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
       res[[i]] <- x
     }
     res <- bind_rows(res)
@@ -654,7 +654,7 @@ my_glht <- function(model , linfct , sep=FALSE ) {
   }else{
     x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
-    res <- inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
+    res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
       dplyr::select(-rhs)
     res
   }
@@ -753,14 +753,14 @@ workflow_model_analyse <- function(pepIntensity,config,
   modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  coef_df ))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
-  modelProteinF <- inner_join(modelProteinF, prot_stats)
+  modelProteinF <- dplyr::inner_join(modelProteinF, prot_stats)
 
   Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>%
     tidyr::unnest()
-  Model_Coeff <- inner_join(prot_stats, Model_Coeff)
+  Model_Coeff <- dplyr::inner_join(prot_stats, Model_Coeff)
   Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>%
     tidyr::unnest()
-  Model_Anova <-inner_join( prot_stats , Model_Anova )
+  Model_Anova <-dplyr::inner_join( prot_stats , Model_Anova )
 
   return(list(modelProteinF = modelProteinF,
               no_ModelProtein = no_ModelProtein,
@@ -882,7 +882,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
                                            path = NULL
 ){
   # Model Comparison
-  reg <- inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
+  reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
                     dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
 
   reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),

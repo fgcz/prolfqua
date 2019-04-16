@@ -179,14 +179,14 @@ figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hier
                                            plot_hierarchies_line, config))
 ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest(.key = "topNIntensity")
 
-figs4 <- inner_join(figs3,ff)
+figs4 <- dplyr::inner_join(figs3,ff)
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
 proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
 
 #quantable::simpleheatmap(t(scale(t(log2(1+proteinsWide[2:ncol(proteinsWide)])))), margins = c(16,5))
 nrPep <- qvalFiltImputed %>% select(config$table$hierarchyKeys()[1], nr_peptide_Id_by_protein_Id) %>% distinct()
-xx <- inner_join(nrPep,proteinsWide)
+xx <- dplyr::inner_join(nrPep,proteinsWide)
 #readr::write_csv(xx, path="output/proteinQuantsTidy.txt")
 
 ```

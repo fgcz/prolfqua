@@ -322,7 +322,7 @@ gatherItBack <- function(x,value,config,data = NULL){
   x <- tidyr::gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
   x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~")
   if(!is.null(data)){
-    x <- inner_join(data, x)
+    x <- dplyr::inner_join(data, x)
     config$table$setWorkIntensity(value)
   }
   return(x)
@@ -397,7 +397,7 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
   unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~")
-  qvalFiltX <- inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
+  qvalFiltX <- dplyr::inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
   return(qvalFiltX)
 }
 
@@ -446,7 +446,7 @@ impute_correlationBased <- function(x , config){
   unnest_res <- nestedX %>% dplyr::select(config$table$hierarchyKeys()[1], "imputed") %>% tidyr::unnest()
   unnest_res <- unnest_res %>% separate("row",config$table$hierarchyKeys()[-1], sep="~" )
 
-  qvalFiltX <- inner_join(x, unnest_res,
+  qvalFiltX <- dplyr::inner_join(x, unnest_res,
                           by=c(config$table$hierarchyKeys(), config$table$sampleName) )
   config$table$setWorkIntensity("srm_ImputedIntensity")
   return(qvalFiltX)
@@ -505,7 +505,7 @@ rankProteinPrecursors <- function(data,
   rankedBySummary <- groupedByProtein %>%
     dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
 
-  data <- inner_join(data, rankedBySummary)
+  data <- dplyr::inner_join(data, rankedBySummary)
   return(data)
 }
 

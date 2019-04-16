@@ -20,7 +20,7 @@
   resNACondition <- completeCases(resNACondition, config)
   filteredPep <- summarizeHierarchy(resNACondition, config)
 
-  filteredPep <- inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
+  filteredPep <- dplyr::inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
   filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
   return(list(data=filteredPep, config=config))
 }
@@ -35,11 +35,12 @@
                                                     factor_level = config$table$factorLevel
   )
 
-  resNACondition <- resNACondition %>% dplyr::select(protein_Id) %>% distinct() %>% inner_join(resDataStart , by="protein_Id")
+  resNACondition <- resNACondition %>% dplyr::select(protein_Id) %>% distinct() %>%
+    dplyr::inner_join(resDataStart , by="protein_Id")
   resNACondition <- completeCases(resNACondition, config)
   filteredPep <- summarizeHierarchy(resNACondition, config)
 
-  filteredPep <- inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
+  filteredPep <- dplyr::inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
   filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
   return(list(data=filteredPep, config=config))
 }
@@ -138,7 +139,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
   res <- left_join(x3_start, x3_filt , by="protein_Id", suffix=c(".start",".filt")) %>% arrange(peptide_Id_n.filt)
   RESULTS$removed_proteins <- res %>% dplyr::filter(is.na(peptide_Id_n.filt))
 
-  RESULTS$removed_peptides <- inner_join(RESULTS$removed_proteins, RESULTS$resDataStart)
+  RESULTS$removed_peptides <- dplyr::inner_join(RESULTS$removed_proteins, RESULTS$resDataStart)
   ### PLOTTING
   return(RESULTS)
 }

@@ -75,7 +75,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 
   contrasts <- .compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
   modelProteinF<- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hkeysLevel(), "isSingular"))
-  contrasts <- inner_join(modelProteinF, contrasts )
+  contrasts <- dplyr::inner_join(modelProteinF, contrasts )
 
   #result$contrasts <- contrasts
   result$fig <- list()

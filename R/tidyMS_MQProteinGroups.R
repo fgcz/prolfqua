@@ -31,8 +31,8 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
     tidyr::gather(key="raw.file", value="mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",raw.file))
 
-  pint <- inner_join(pint, pintLFQ , by=c("protein.group.id","raw.file"))
-  res <- inner_join(meta, pint , by="protein.group.id")
+  pint <- dplyr::inner_join(pint, pintLFQ , by=c("protein.group.id","raw.file"))
+  res <- dplyr::inner_join(meta, pint , by="protein.group.id")
   return(res)
 }
 
@@ -93,8 +93,8 @@ tidyMQ_merged <- function(txt_directory){
   mq_peptides <- tidyMQ_Peptides(peptides_txt)
   mq_evidence <- tidyMQ_Evidence(evidence_txt)
 
-  resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
-  resProt_Pep_Evidence <- inner_join(resProt_Pep, mq_evidence, by = c("protein.group.id", "raw.file", "peptide.id"))
+  resProt_Pep <- dplyr::inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
+  resProt_Pep_Evidence <- dplyr::inner_join(resProt_Pep, mq_evidence, by = c("protein.group.id", "raw.file", "peptide.id"))
   return(resProt_Pep_Evidence)
 }
 
@@ -207,11 +207,11 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     PepIDType <- idtype %>%
       tidyr::gather(key="raw.file", value="mod.id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.peptide.id", "raw.file" ))
+    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by=c("mod.peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx <- inner_join(meta , PepIntensities, by="mod.peptide.id")
+  xx <- dplyr::inner_join(meta , PepIntensities, by="mod.peptide.id")
   xx$proteotypic <-!grepl(";",xx$protein.group.id)
   xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
   return(xx)
@@ -275,11 +275,11 @@ tidyMQ_Peptides <- function(MQPeptides){
     PepIDType <- idtype %>%
       tidyr::gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("peptide.id", "raw.file" ))
+    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by=c("peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx<-inner_join(meta , PepIntensities, by="peptide.id")
+  xx<-dplyr::inner_join(meta , PepIntensities, by="peptide.id")
 
   xx$proteotypic <-!grepl(";",xx$protein.group.id)
   xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
@@ -368,7 +368,7 @@ tidyMQ_top_protein_name <- function(modSpecData){
     dplyr::mutate(top_protein = map_chr(data,  extractMostFreqNamePerGroup)) %>%
     dplyr::select(protein.group.id, top_protein)
   stopifnot(nrow(topProtein) == nrProteinGroups)
-  resPepProtAnnot <- inner_join(modSpecData,topProtein )
+  resPepProtAnnot <- dplyr::inner_join(modSpecData,topProtein )
 }
 
 

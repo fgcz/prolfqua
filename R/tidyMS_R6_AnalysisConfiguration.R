@@ -217,7 +217,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
     data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
       dplyr::select(sampleName, table$fileName) %>% distinct() %>%
       dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
-      inner_join(data, by=table$fileName)
+      dplyr::inner_join(data, by=table$fileName)
   } else{
     warning(sampleName, " already exists")
   }
@@ -678,7 +678,7 @@ reestablishCondition <- function(data,
                                   table$factorKeys(),
                                   table$fileName,
                                   table$isotopeLabel)) %>% distinct()
-  res <- inner_join(xx,medpolishRes, by=table$sampleName)
+  res <- dplyr::inner_join(xx,medpolishRes, by=table$sampleName)
   res
 }
 

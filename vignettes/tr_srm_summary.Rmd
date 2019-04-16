@@ -39,7 +39,7 @@ knitr::kable(data.frame(NR = x), caption="summary")
 
 x2 <- summarizeProteins(data, configuration)
 x3 <- summarizeHierarchy(data, configuration)
-tmp <- inner_join(x3, x2)
+tmp <- dplyr::inner_join(x3, x2)
 tmp <- tmp %>% select(-c(starts_with("min"), starts_with("max")))
 knitr::kable(tmp, caption="Protein Summaries")
 

@@ -152,7 +152,7 @@ workflow_DIA_NA_preprocessing <- function(data,
 
   data_NA_QVal_condition <- protID %>%
     dplyr::select(config$table$hierarchyKeys()[1]) %>%
-    inner_join(resNACondition)
+    dplyr::inner_join(resNACondition)
 
   # Complete cases
   data_NA_QVal_condition <- completeCases( data_NA_QVal_condition , config)

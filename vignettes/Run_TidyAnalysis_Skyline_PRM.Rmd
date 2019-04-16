@@ -99,7 +99,7 @@ protIntensity <- figs3 %>% select(table$hierarchyKeys()[1], medpolishPly) %>%
 CiRT <- protIntensity %>% dplyr::filter(protein_Id == "CiRT standards")
 # Normalize py CiRT protein
 proteinIntensity <- protIntensity %>%
-  inner_join(CiRT, by= dplyr::setdiff(names(protIntensity), c("protein_Id","medpolish")), suffix = c("",".CiRT")) %>%
+  dplyr::inner_join(CiRT, by= dplyr::setdiff(names(protIntensity), c("protein_Id","medpolish")), suffix = c("",".CiRT")) %>%
   dplyr::mutate(log2Med_log2MedCiRT = medpolish - medpolish.CiRT)
 
 
