@@ -181,7 +181,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "mod.peptide.score" ="score",
                         "delta.score",
                         "pep",
-                        one_of("missed.cleavages"),
+                        dplyr::one_of("missed.cleavages"),
                         "unique.groups" = "unique..groups.",
                         "unique.proteins" = "unique..proteins.",
                         "reverse" = "reverse",
@@ -254,7 +254,7 @@ tidyMQ_Peptides <- function(MQPeptides){
     "protein.group.id"="protein.group.ids",
     "peptide.score" ="score",
     "pep",
-    one_of("missed.cleavages"),
+    dplyr::one_of("missed.cleavages"),
     "unique.groups" = "unique..groups.",
     "potential.contaminant" = ends_with("contaminant"),
     "reverse" = "reverse") %>%

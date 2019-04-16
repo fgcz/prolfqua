@@ -40,7 +40,10 @@
 #'
 #' used p2109
 #' @export
+#' @import tidyverse
+#' @import magrittr
 #' @examples
+#' library(tidyverse)
 #' D <- LFQService::resultsV12954
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"

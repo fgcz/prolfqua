@@ -182,7 +182,7 @@ ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% ne
 figs4 <- inner_join(figs3,ff)
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
-proteinsWide <- spread(proteinIntensities, sampleName,srm_mean_na_3)
+proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
 
 #quantable::simpleheatmap(t(scale(t(log2(1+proteinsWide[2:ncol(proteinsWide)])))), margins = c(16,5))
 nrPep <- qvalFiltImputed %>% select(config$table$hierarchyKeys()[1], nr_peptide_Id_by_protein_Id) %>% distinct()

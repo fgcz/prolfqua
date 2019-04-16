@@ -13,6 +13,8 @@ create all possible contrasts
 m <- LFQService::basicModel_p1807
 m
 linfct <- linfct_from_model(m)
+
 xl <- linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- linfct_all_possible_contrasts(linfct$linfct_interactions)
+
 }

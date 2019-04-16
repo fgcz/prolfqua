@@ -196,6 +196,7 @@ summariseQValues <- function(data,
 #' qVal_individual_threshold and qVal_experiment_threshold
 #' @export
 #' @examples
+#' library(tidyverse)
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
 #' summarizeHierarchy(sample_analysis, config)
@@ -214,7 +215,8 @@ filter_byQValue <- function(data, config){
 .ExtractMatrix <- function(x){
   idx <- sapply(x,is.numeric)
   xmat <- as.matrix(x[,idx])
-  rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>% unite(x, sep="~") %>% pull(x)
+  rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>%
+    tidyr::unite(x, sep="~") %>% dplyr::pull(x)
   xmat
 }
 
@@ -254,7 +256,7 @@ extractIntensities <- function(x, configuration ){
     dplyr::select( c( table$sampleName,
                       table$hkeysLevel(TRUE),
                       table$getWorkIntensity()) ) %>%
-    spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
+    tidyr::spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
 }
 
@@ -293,9 +295,9 @@ toWideConfig <- function(data, config , as.matrix = FALSE, fileName = FALSE){
                  newcolname,
                  value = config$table$getWorkIntensity() )
   if(as.matrix){
-    resMat <- as.matrix(dplyr::select(res,-one_of(config$table$hierarchyKeys())))
-    names <- res %>% select_at(config$table$hierarchyKeys()) %>%
-      unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep="~") %>% pull()
+    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
+    names <- res %>% dplyr::select_at(config$table$hierarchyKeys()) %>%
+      tidyr::unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep="~") %>% dplyr::pull()
     rownames(resMat) <- names
     res <- resMat
   }
@@ -464,7 +466,7 @@ make_name <- function(levelA, levelB, prefix="nr_"){
 #' hierarchy <- config$table$hierarchyKeys()
 #' res <- nr_B_in_A(data, hierarchy[1], hierarchy[2])
 #' res %>% dplyr::select(hierarchy[1],  nr_peptide_Id_by_protein_Id) %>%
-#' distinct() %>% pull() %>% table()
+#' distinct() %>% dplyr::pull() %>% table()
 nr_B_in_A <- function(data,
                       levelA,
                       levelB, merge=TRUE){
@@ -579,7 +581,7 @@ aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1
 #' colnames(res)
 #' x <- res %>%
 #'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(T)[1], "srm_NrNotNAs") %>%
-#'   distinct() %>% summarize(sum(srm_NrNotNAs)) %>% pull()
+#'   distinct() %>% summarize(sum(srm_NrNotNAs)) %>% dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 rankPrecursorsByNAs <- function(data, config){

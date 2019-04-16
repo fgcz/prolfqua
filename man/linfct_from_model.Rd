@@ -21,9 +21,10 @@ linfct$linfct_interactions
 
 m <- LFQService::interactionModel_p1807
 linfct <- linfct_from_model(m)
-linfct$linfct_factors
+all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] , apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 linfct$linfct_interactions
 #}
 
-
+m <- lm(Petal.Width ~ Species, data=iris)
+linfct_from_model(m)
 }

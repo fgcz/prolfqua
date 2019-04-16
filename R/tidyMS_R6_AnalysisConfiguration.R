@@ -195,14 +195,14 @@ setup_analysis <- function(data, configuration ,sep="~"){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
-    data <- unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
   }
-  data <- dplyr::select(data , -one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
+  data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
     if( length(table$factors[[i]]) > 1){
-      data <- unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
+      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
     }else{
       newname <-table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -214,7 +214,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
   if(!sampleName  %in% names(data)){
     message("creating sampleName")
 
-    data <- data %>%  unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
+    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
       dplyr::select(sampleName, table$fileName) %>% distinct() %>%
       mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
       inner_join(data, by=table$fileName)
@@ -222,7 +222,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
     warning(sampleName, " already exists")
   }
 
-  data <- data %>% dplyr::select(-one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
+  data <- data %>% dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
 
   # Make implicit NA's explicit
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
@@ -264,7 +264,7 @@ plot_hierarchies_line_default <- function(data,
       ))
     }else{
       formula <- sprintf("~%s",paste(factor, collapse=" + "))
-      data <- unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
+      data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
                                    group="fragment_label",
@@ -423,9 +423,9 @@ hierarchyCounts <- function(x, configuration){
 #' hierarchy_counts_sample(sample_analysis, skylineconfig)
 #'
 hierarchy_counts_sample <- function(data,
-                                    configuration,
-                                    hierarchyLevel = length(configuration$table$hierarchyKeys())){
-  hierarchy <- configuration$table$hierarchyKeys()[1:hierarchyLevel]
+                                    configuration)
+{
+  hierarchy <- configuration$table$hierarchyKeys()
   data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
   res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
     summarise_at( hierarchy, n_distinct )
@@ -594,7 +594,7 @@ missingPerConditionCumsum <- function(x,configuration,nrfactors = 1){
   p <- ggplot(res, aes(x= nrNAs, y = cs)) + geom_bar(stat="identity") +
     facet_grid(as.formula(formula))
 
-  res <- res %>% spread("nrNAs","cs")
+  res <- res %>% tidyr::spread("nrNAs","cs")
   return(list(data =res, figure=p))
 }
 
@@ -623,7 +623,7 @@ missingPerCondition <- function(x, configuration, nrfactors = 1){
 
   p <- ggplot(xx, aes_string(x= "nrNAs", y = hierarchyKey)) + geom_bar(stat="identity")+
     facet_grid(as.formula(formula))
-  xx <- xx %>% spread("nrNAs",hierarchyKey)
+  xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
   return(list(data = xx ,figure = p))
 }
 
@@ -646,8 +646,8 @@ spreadValueVarsIsotopeLabel <- function(resData, configuration){
   idVars <- table$idVars()
   resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
   resData2 <- resData2 %>% gather(variable, value, - idVars  )
-  resData2 <- resData2 %>%  unite(temp, table$isotopeLabel, variable )
-  HLData <- resData2 %>% spread(temp,value)
+  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
+  HLData <- resData2 %>% tidyr::spread(temp,value)
   invisible(HLData)
 }
 
@@ -917,11 +917,11 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.
   if(R2){
     cres <- cres^2
   }
-  annot <- select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
+  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
     distinct() %>% arrange(sampleName)
   stopifnot(annot$sampleName == colnames(cres))
 
-  factors <- select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
   res <- heatmap3::heatmap3(cres,symm=TRUE,
@@ -975,7 +975,7 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
     distinct() %>% arrange(sampleName)
   stopifnot(annot$sampleName == colnames(res))
 
-  factors <- select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, list(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
 
