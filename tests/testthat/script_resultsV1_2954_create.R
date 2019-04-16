@@ -86,7 +86,8 @@ resultsV12954 <- results
 #usethis::use_data(resultsV12954, overwrite=TRUE)
 #saveRDS(results, file = "allData_PhonixDS_1097969.Rds")
 names(results)
-workflow_MQ_figs_protoV1(results)
+results$path
 
-figs_raw_Raw <- LFQService:::.makeFigs(results$filteredPep, results$config_filteredPep)
-figs_raw_Norm <- LFQService:::.makeFigs(results$pepIntensityNormalized, results$config_pepIntensityNormalized)
+res <- workflow_MQ_protoV1_vis(results)
+res$figs_raw[[1]]
+res$figs_normalized[[1]]

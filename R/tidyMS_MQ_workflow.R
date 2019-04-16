@@ -144,10 +144,9 @@ workflow_MQ_protoV1 <- function( resDataStart,
 #' generates peptide level plots for all Proteins
 #' @export
 #'
-workflow_MQ_figs_protoV1 <- function(RESULTS){
+workflow_MQ_protoV1_vis <- function(RESULTS){
   figs_raw <- .makeFigs(RESULTS$filteredPep, RESULTS$config_filteredPep)
   figs_normalized <- .makeFigs(RESULTS$pepIntensityNormalized, RESULTS$config_pepIntensityNormalized)
-
-  saveRDS(figs_raw, file=file.path(RESULTS$path, "figures_allProteins_RAW.Rda"))
-  saveRDS(figs_normalized, file=file.path(RESULTS$path, "figures_allProteins_TRANS.Rda"))
+  res <- list( figs_raw = figs_raw , figs_normalized = figs_normalized )
+  return( res )
 }
