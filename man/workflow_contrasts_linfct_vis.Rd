@@ -4,7 +4,7 @@
 \alias{workflow_contrasts_linfct_vis}
 \title{visualize output of `workflow_contrasts_linfct``}
 \usage{
-workflow_contrasts_linfct_vis(contrasts, modelName)
+workflow_contrasts_linfct_vis(contrasts, modelName, prefix = "Contrasts")
 }
 \description{
 visualize output of `workflow_contrasts_linfct``

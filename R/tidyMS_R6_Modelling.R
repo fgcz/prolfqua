@@ -262,10 +262,10 @@ workflow_contrasts_linfct <- function(models,
 #' write results of `workflow_contrasts_linfct`
 #' @export
 #'
-workflow_contrasts_linfct_write <- function(results, modelName, path, subject_Id = "protein_Id"){
-  fileLong <-file.path(path,paste0("Contrasts_",modelName,".csv"))
+workflow_contrasts_linfct_write <- function(results, modelName, path, prefix = "Contrasts", subject_Id = "protein_Id"){
+  fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
   readr::write_csv(results, path = fileLong)
-  fileWide <-file.path(path,paste0("Contrasts_",modelName,"_PIVOT.csv"))
+  fileWide <-file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
   resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
   readr::write_csv(resultswide, path = fileWide)
 
@@ -276,15 +276,15 @@ workflow_contrasts_linfct_write <- function(results, modelName, path, subject_Id
 #' visualize output of `workflow_contrasts_linfct``
 #' @export
 #'
-workflow_contrasts_linfct_vis <- function(contrasts, modelName){
+workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts"){
   fig <- list()
-  fig$histogram_coeff_p.values_name <- paste0("Contrasts_histogram_p.values_", modelName ,".pdf")
+  fig$histogram_coeff_p.values_name <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
 
   fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
     geom_histogram(bins = 20) +
     facet_wrap(~lhs)
 
-  fig$VolcanoPlot_name <- paste0("Contrasts_Volcano_",modelName,".pdf")
+  fig$VolcanoPlot_name <- paste0(prefix,"_Volcano_",modelName,".pdf")
   fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
                                                   effect = "estimate",
                                                   type = "p.value",
