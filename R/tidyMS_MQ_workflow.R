@@ -3,8 +3,8 @@
   factor_level <- config$table$factorLevel
   proteinIDsymbol <- syms(config$table$hkeysLevel())
   xnested <- filteredPep %>% group_by(UQS(proteinIDsymbol)) %>% nest()
-  figs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
-  figs <- figs %>% mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
+  figs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
+  figs <- figs %>% dplyr::mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
   return(figs)
 }
 
@@ -116,19 +116,21 @@ workflow_MQ_protoV1 <- function( resDataStart,
 
   # Summarize number of peptides with more than 2
   x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
-  x3_start <- x3_start %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+  x3_start <- x3_start %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
                                                            peptide_Id_n > 1 ~ "two and more"))
-  RESULTS$nrPeptidesPerProtein_start <- x3_start %>% group_by(protein_with) %>% summarize(n=n())
+  RESULTS$nrPeptidesPerProtein_start <- x3_start %>% dplyr::group_by(protein_with) %>%
+    dplyr::summarize(n=n())
 
 
 
   # Summarize filtered data - number of peptides with more than 2
   x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
-  x3_filt <- x3_filt %>% dplyr::mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+  x3_filt <- x3_filt %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
                                                          peptide_Id_n > 1 ~ "two and more"))
-  RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% group_by(protein_with) %>% summarize(n=n())
+  RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% dplyr::group_by(protein_with) %>%
+    dplyr::summarize(n=n())
 
-#  knitr::kable(res, caption = "nr of proteins with more than on peptide.")
+  #  knitr::kable(res, caption = "nr of proteins with more than on peptide.")
 
   x3_start %>% dplyr::select( -protein_with) %>% dplyr::filter(peptide_Id_n  > 1) -> x3_start
   x3_filt %>% dplyr::select( -protein_with) %>% dplyr::filter(peptide_Id_n  > 1) -> x3_filt

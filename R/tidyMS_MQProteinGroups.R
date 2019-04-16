@@ -24,12 +24,12 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
   )
 
   pint <- pint %>%
-    gather(key="raw.file", value="mq.protein.intensity", starts_with("intensity.")) %>%
-    mutate(raw.file = gsub("intensity.","",raw.file))
+    tidyr::gather(key="raw.file", value="mq.protein.intensity", starts_with("intensity.")) %>%
+    dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   pintLFQ <- pintLFQ %>%
-    gather(key="raw.file", value="mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
-    mutate(raw.file = gsub("lfq.intensity.","",raw.file))
+    tidyr::gather(key="raw.file", value="mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
+    dplyr::mutate(raw.file = gsub("lfq.intensity.","",raw.file))
 
   pint <- inner_join(pint, pintLFQ , by=c("protein.group.id","raw.file"))
   res <- inner_join(meta, pint , by="protein.group.id")
@@ -62,7 +62,7 @@ tidyMQ_Evidence <- function(Evidence){
                        "ms.ms.count",
                        "ms.ms.scan.number",
                        "evidence.intensity" = "intensity")
-  res %>% mutate(raw.file = tolower(raw.file)) -> res
+  res %>% dplyr::mutate(raw.file = tolower(raw.file)) -> res
   res$proteotypic <-!grepl(";",res$protein.group.id)
   res <- res %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
   return(res)
@@ -188,25 +188,25 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "potential.contaminant" = ends_with("contaminant"))
 
   sc <- sym("potential.contaminant")
-  meta <- meta %>%  mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
-    mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
+  meta <- meta %>%  dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
+    dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
-    mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
+    dplyr::mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
                                              !!sym("unique.proteins") == "no" ~ FALSE)) %>%
-    mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
+    dplyr::mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                      !!sym("reverse") == "" ~ FALSE))
 
 
   pint <- dplyr::select(MQPeptides,"mod.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
-    gather(key="raw.file", value="mod.peptide.intensity", starts_with("intensity.")) %>%
-    mutate(raw.file = gsub("intensity.","",raw.file))
+    tidyr::gather(key="raw.file", value="mod.peptide.intensity", starts_with("intensity.")) %>%
+    dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   idtype <- dplyr::select(MQPeptides, "mod.peptide.id"="id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      gather(key="raw.file", value="mod.id.type", starts_with("identification.type.")) %>%
-      mutate(raw.file = gsub("identification.type.","",raw.file))
+      tidyr::gather(key="raw.file", value="mod.id.type", starts_with("identification.type.")) %>%
+      dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
     PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("mod.peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
@@ -258,23 +258,23 @@ tidyMQ_Peptides <- function(MQPeptides){
     "unique.groups" = "unique..groups.",
     "potential.contaminant" = ends_with("contaminant"),
     "reverse" = "reverse") %>%
-    mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
-    mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
+    dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
+    dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                            !!sym("unique.groups") == "no" ~ FALSE)) %>%
-    mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
+    dplyr::mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                      !!sym("reverse") == "" ~ FALSE))
 
   pint <- dplyr::select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
 
   PepIntensities <- pint %>%
-    gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
-    mutate(raw.file = gsub("intensity.","",raw.file))
+    tidyr::gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
+    dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   idtype <- dplyr::select(MQPeptides, "peptide.id"="id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
-      mutate(raw.file = gsub("identification.type.","",raw.file))
+      tidyr::gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
+      dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
     PepIntensities <-inner_join(PepIntensities,PepIDType, by=c("peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
@@ -323,7 +323,7 @@ tidyMQ_allPeptides <- function(MQPeptides){
                       "peptide.score" ="score",
                       "intensity",
                       "ms.ms.count") %>%
-    mutate(sequence = str_trim(sequence), modified.sequence = str_trim(modified.sequence))
+    dplyr::mutate(sequence = str_trim(sequence), modified.sequence = str_trim(modified.sequence))
   return(xx)
 }
 
@@ -338,7 +338,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 
   xx <- mq_modSpecPeptides %>%
     group_by(peptide.id, raw.file ) %>%
-    mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
+    dplyr::mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
            pep = min(pep, na.rm=TRUE),
            peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>% ungroup()
 
@@ -364,7 +364,9 @@ tidyMQ_top_protein_name <- function(modSpecData){
     aa <- sort(table(ff),decreasing = TRUE)
     sort(names(aa[aa == max(aa)]), decreasing = TRUE)[1]
   }
-  topProtein <- groupIDprotein_Separated %>% mutate(top_protein = map_chr(data,  extractMostFreqNamePerGroup)) %>% dplyr::select(protein.group.id, top_protein)
+  topProtein <- groupIDprotein_Separated %>%
+    dplyr::mutate(top_protein = map_chr(data,  extractMostFreqNamePerGroup)) %>%
+    dplyr::select(protein.group.id, top_protein)
   stopifnot(nrow(topProtein) == nrProteinGroups)
   resPepProtAnnot <- inner_join(modSpecData,topProtein )
 }

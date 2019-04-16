@@ -216,7 +216,7 @@ setup_analysis <- function(data, configuration ,sep="~"){
 
     data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
       dplyr::select(sampleName, table$fileName) %>% distinct() %>%
-      mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
+      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
       inner_join(data, by=table$fileName)
   } else{
     warning(sampleName, " already exists")
@@ -349,7 +349,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
 
   stopifnot(factor_level <= length(config$table$factorKeys()))
   isotopeLabel <- config$table$isotopeLabel
-  ddd %>%  gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
+  ddd %>%  tidyr::gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
   ddlong <- as.data.frame(unclass(ddlong))
 
   p <- ggplot(ddlong, aes_string(x = config$table$hkeysLevel(rev = TRUE)[1],
@@ -536,7 +536,7 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
 #' xx <- completeCases(xx, skylineconfig)
 #' missignessHistogram(xx,skylineconfig)
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' sample_analysis %>% mutate(Area = setNa(Area)) -> sample_analysis
+#' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' missignessHistogram(sample_analysis,skylineconfig)
 #'
 missignessHistogram <- function(x, configuration, showempty = TRUE, nrfactors = 1){
@@ -645,7 +645,7 @@ spreadValueVarsIsotopeLabel <- function(resData, configuration){
   table <- configuration$table
   idVars <- table$idVars()
   resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
-  resData2 <- resData2 %>% gather(variable, value, - idVars  )
+  resData2 <- resData2 %>% tidyr::gather(variable, value, - idVars  )
   resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
   HLData <- resData2 %>% tidyr::spread(temp,value)
   invisible(HLData)
@@ -705,9 +705,9 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
   xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
-  xnested <- xnested %>% mutate(spreadMatrix = map(data, extractIntensities, config))
-  xnested <- xnested %>% mutate(!!makeName := map(spreadMatrix, func))
-  xnested <- xnested %>% mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
+  xnested <- xnested %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
+  xnested <- xnested %>% dplyr::mutate(!!makeName := map(spreadMatrix, func))
+  xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
   if(unnest){
     unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% unnest()
     newconfig <- make_reduced_hierarchy_config(config,
@@ -734,16 +734,16 @@ summarize_cv <- function(data, config, all = TRUE){
     group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
     summarise(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>% ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>% mutate_at(config$table$factorKeys()[1], funs(as.character) )
+  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$factorKeys()[1], funs(as.character) )
 
   if(all){
     hierarchy <- data %>%
       group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       summarise(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
-    hierarchy <- mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
+    hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
-  hierarchyFactor %>% mutate(CV = sd/mean*100) -> res
+  hierarchyFactor %>% dplyr::mutate(CV = sd/mean*100) -> res
   return(res)
 }
 
@@ -803,7 +803,7 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd")){
 plot_stat_density_median <- function(data, config, stat = c("CV","sd")){
   stat <- match.arg(stat)
   data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
-  res <- data %>% mutate(top = ifelse(mean > median(mean, na.rm=TRUE),"top 50","bottom 50")) -> top50
+  res <- data %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm=TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = config$table$factorKeys()[1])) +
     geom_line(stat = "density") + facet_wrap("top")
   return(p)
@@ -840,7 +840,7 @@ plot_stat_violin_median <- function(data, config , stat=c("CV","sd")){
   data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
 
   res <- data %>%
-    mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
+    dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
   p <- ggplot(top50, aes_string(x = config$table$factorKeys()[1], y = stat)) +

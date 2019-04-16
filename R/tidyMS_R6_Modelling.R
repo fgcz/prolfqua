@@ -39,19 +39,21 @@ rocs <- function(data ,response, predictor){
 compute_roc <- function(data, config){
   nested <- data %>% group_by(!!sym(config$table$hierarchyKeys()[1]) ,
                               !!sym(config$table$hierarchyKeys(TRUE)[1])) %>% nest()
-  nested <- nested %>% mutate(rocs = map(data ,
+  nested <- nested %>% dplyr::mutate(rocs = map(data ,
                                          rocs, response = config$table$factorKeys()[1],
                                          predictor= config$table$getWorkIntensity() ))
 
-  nested <- nested %>% mutate(cls = map_lgl(rocs, is.null))  %>% dplyr::filter(cls == FALSE)
+  nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
+    dplyr::filter(cls == FALSE)
   #nested <- nested %>% mutate(names = map(rocs, names))
 
   dumm <- nested %>% dplyr::select(!!sym(config$table$hierarchyKeys()[1]),
                                    !!sym(config$table$hierarchyKeys(TRUE)[1]),
                                    rocs) %>%  unnest()
-  dumm <- dumm %>% mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
+  dumm <- dumm %>% dplyr::mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
   dumm <- dumm %>% separate(comparison, into = c("response1" , "response2"), sep=" ")
-  dumm <- dumm %>% mutate(auc = map_dbl(rocs, pROC::auc)) %>% arrange(desc(auc))
+  dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
+    arrange(desc(auc))
   return(dumm)
 }
 #' Perform anova analysis
@@ -85,24 +87,24 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
   message("formula :" , deparse(formula))
   groupVars <-config$table$hierarchyKeys()[1:hierarchy_level]
 
-  pepRes <- data %>% group_by(!!!syms(groupVars)) %>% nest()
-  pepRes1 <- pepRes %>% mutate(anova = map( data, aovmodelfit, formula))
+  pepRes <- data %>% dplyr::group_by(!!!syms(groupVars)) %>% nest()
+  pepRes1 <- pepRes %>% dplyr::mutate(anova = map( data, aovmodelfit, formula))
   head(pepRes1)
-  pepRes2 <- pepRes1 %>% mutate(broomres = map(anova, broom::tidy))
+  pepRes2 <- pepRes1 %>% dplyr::mutate(broomres = map(anova, broom::tidy))
   pepRes3 <- pepRes2 %>%
     dplyr::select(!!!syms(c(groupVars, "broomres"))) %>%
-    unnest() %>%
+    dplyr::unnest() %>%
     dplyr::filter(term != "Residuals")
 
   pVals <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","p.value")))
 
-  pVals <- pVals %>% mutate(term = glue("{term}.p.value"))
+  pVals <- pVals %>% dplyr::mutate(term = glue("{term}.p.value"))
   pVals <- pVals %>% tidyr::spread("term", "p.value")
   df <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","df")))
-  df <- df %>% mutate(term = glue("{term}.df"))
+  df <- df %>% dplyr::mutate(term = glue("{term}.df"))
   df <- df %>% tidyr::spread(term, df)
   statistic <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","statistic")))
-  statistic <- statistic %>% mutate(term = glue("{term}.statistic"))
+  statistic <- statistic %>% dplyr::mutate(term = glue("{term}.statistic"))
   statistic <- statistic %>% tidyr::spread(term, statistic)
   res <- inner_join(inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
   return(res)
@@ -241,12 +243,12 @@ workflow_contrasts_linfct <- function(models,
   }
 
   interaction_model_matrix <- models %>%
-    mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct, sep=TRUE ))
+    dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct, sep=TRUE ))
   mclass <- function(x){
     class(x)[1]
   }
   interaction_model_matrix %>%
-    mutate(classC = map_chr(contrast,mclass)) %>%
+    dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
     filter(classC != "logical") -> interaction_model_matrix
 
   interaction_model_matrix %>%
@@ -315,12 +317,12 @@ workflow_contrasts_linfct_vis_write <- function(contrasts_result, path, fig.widt
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = "protein_Id"){
   modelWithInteractionsContrasts %>%
     dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
-    mutate(lhs = glue::glue('estimate.{lhs}')) %>%
+    dplyr::mutate(lhs = glue::glue('estimate.{lhs}')) %>%
     tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
 
   modelWithInteractionsContrasts %>%
     dplyr::select_at(c(subject_Id, "lhs", "p.value")) %>%
-    mutate(lhs = glue::glue('p.value.{lhs}')) %>%
+    dplyr::mutate(lhs = glue::glue('p.value.{lhs}')) %>%
     tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
 
   modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate,
@@ -381,7 +383,7 @@ plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   colnames(ran) <- gsub("[()]","",colnames(ran))
   ran <- inner_join(data, ran, by=randeffect)
 
-  ran <- ran %>% mutate(int_randcorrected  = transformedIntensity  - Intercept)
+  ran <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - Intercept)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   ran <- make_interaction_column(ran,interactionColumns, sep=":" )
 
@@ -410,7 +412,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
     colnames(ran) <- name
     ran <- tibble::as_tibble(ran,rownames = rand_i)
     ran <- inner_join(data, ran, by=rand_i)
-    ran_res <- ran %>% mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
+    ran_res <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
     ran_res
   }
 
@@ -431,7 +433,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
   #colnames(ran) <- name
   #ran <- as_tibble(ran,rownames = rand_i)
   #ran_res <- inner_join(ran_res, ran, by=rand_i)
-  #ran_res <- ran_res %>% mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
+  #ran_res <- ran_res %>% dplyr::mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   ran_res <- make_interaction_column(ran_res,interactionColumns, sep=":" )
 
@@ -732,13 +734,13 @@ workflow_model_analyse <- function(pepIntensity,config,
   Coeffs_model <- paste0("Coeffs_", modelName)
   Anova_model <- paste0("Anova_", modelName)
 
-  nestProtein %>% mutate(!!lmermodel := purrr::map(data, modelFunction)) -> modelProtein
+  nestProtein %>% dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction)) -> modelProtein
 
-  modelProtein <- modelProtein %>% mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
+  modelProtein <- modelProtein %>% dplyr::mutate(!!exists_lmer := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
   modelProteinF <- modelProtein %>% dplyr::filter( !!sym(exists_lmer) == TRUE)
   no_ModelProtein <- modelProtein %>% dplyr::filter(!!sym(exists_lmer) == FALSE)
 
-  modelProteinF <- modelProteinF %>% mutate(!!"isSingular" := map_lgl(!!sym(lmermodel), isSingular ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"isSingular" := map_lgl(!!sym(lmermodel), isSingular ))
   nrcoeff <- function(x){
     cc <- coef(x)
     if(class(cc) == "numeric"){
@@ -748,9 +750,9 @@ workflow_model_analyse <- function(pepIntensity,config,
     }
   }
 
-  modelProteinF <- modelProteinF %>% mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
-  modelProteinF <- modelProteinF %>% mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  coef_df ))
-  modelProteinF <- modelProteinF %>% mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  coef_df ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
   modelProteinF <- inner_join(modelProteinF, prot_stats)
 
   Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
@@ -881,7 +883,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
   reg <- inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
                     dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
 
-  reg <- reg %>% mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
+  reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
                                                                   !!sym(paste0("lmer_", modelName_Int)),
                                                                   .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%

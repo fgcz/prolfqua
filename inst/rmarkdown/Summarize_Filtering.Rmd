@@ -60,7 +60,7 @@ knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataS
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
 hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)
 
-hcs <- hcs %>% gather("key", "nr",
+hcs <- hcs %>% tidyr::gather("key", "nr",
                       -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
 ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
   facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))

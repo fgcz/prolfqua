@@ -175,7 +175,7 @@ plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
 plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 
 # nest protein quants.
-figs3 <- xnested %>% mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])) ,
+figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])) ,
                                            plot_hierarchies_line, config))
 ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest(.key = "topNIntensity")
 

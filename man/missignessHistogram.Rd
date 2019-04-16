@@ -18,7 +18,7 @@ xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- completeCases(xx, skylineconfig)
 missignessHistogram(xx,skylineconfig)
 setNa <- function(x){ifelse(x < 100, NA, x)}
-sample_analysis \%>\% mutate(Area = setNa(Area)) -> sample_analysis
+sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 missignessHistogram(sample_analysis,skylineconfig)
 
 }

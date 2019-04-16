@@ -65,7 +65,7 @@ transform_work_intensity <- function(data,
     newcol <- intesityNewName
   }
 
-  data <- data %>% mutate_at(config$table$getWorkIntensity(), .funs = funs(!!sym(newcol) := transformation(.)))
+  data <- data %>% dplyr::mutate_at(config$table$getWorkIntensity(), .funs = funs(!!sym(newcol) := transformation(.)))
   config$table$setWorkIntensity(newcol)
   message("Column added : ", newcol)
   config$parameter$is_intensity_transformed = TRUE
@@ -438,7 +438,7 @@ impute_correlationBased <- function(x , config){
       row=rownames(x),
       tibble::as_tibble(x)
     )
-    gather(x,key= !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
+    tidyr::gather(x,key= !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
 
@@ -628,7 +628,7 @@ filter_factor_levels_by_missing <- function(data,
   summaryPerPrecursor <- data %>%
     dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factorKeys()[1:factor_level] ))) %>%
     dplyr::summarise(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
-    mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>% ungroup()
+    dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>% ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>% dplyr::select(c(table$hierarchyKeys())) %>% distinct()

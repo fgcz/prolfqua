@@ -1,7 +1,7 @@
 library(plotly)
 library(tidyr)
 library(crosstalk)
-m <- gather(mtcars, variable, value, -vs)
+m <- tidyr::gather(mtcars, variable, value, -vs)
 #View(m)
 msd <- highlight_key(m, ~variable)
 #gg <- ggplot(msd, aes(factor(vs), value))  + #geom_jitter(alpha = 0.3)

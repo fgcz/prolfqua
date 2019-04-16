@@ -15,5 +15,5 @@ data <- sample_analysis
 hierarchy <- config$table$hierarchyKeys()
 res <- nr_B_in_A(data, hierarchy[1], hierarchy[2])
 res \%>\% dplyr::select(hierarchy[1],  nr_peptide_Id_by_protein_Id) \%>\%
-distinct() \%>\% pull() \%>\% table()
+distinct() \%>\% dplyr::pull() \%>\% table()
 }

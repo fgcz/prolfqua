@@ -61,7 +61,7 @@ knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "N
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
 hcs <- hierarchy_counts_sample(data, configuration = config)
 LFQService::skylineconfig$table$sampleName
-hcs <- hcs %>% gather("key", "nr",
+hcs <- hcs %>% tidyr::gather("key", "nr",
                       -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
 ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
   facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -74,7 +74,7 @@ data <- LFQService::remove_small_intensities(data, config)
 data <- LFQService::completeCases(data,config)
 
 x3 <- summarizeHierarchy(data, config)
-x3 <- x3 %>% mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
+x3 <- x3 %>% dplyr::mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
                                              peptide_Id_n > 1 ~ "two and more"))
 
 res <- x3 %>% group_by(protein_with) %>% summarize(n=n())
@@ -137,7 +137,7 @@ toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){
 }
 
 stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
-xx %>% mutate(cv_quantiles = map(data, ~toQuantiles(.$CV) )) %>%
+xx %>% dplyr::mutate(cv_quantiles = map(data, ~toQuantiles(.$CV) )) %>%
   dplyr::select(!!sym(config$table$factorKeys()[1]), cv_quantiles) %>%
   unnest() %>%
   spread(!!sym(config$table$factorKeys()[1]),quantiles) -> cv_quantiles_res
@@ -202,7 +202,7 @@ toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){
 }
 
 stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
-xx %>% mutate(sd_quantiles = map(data, ~toQuantiles(.$sd) )) %>%
+xx %>% dplyr::mutate(sd_quantiles = map(data, ~toQuantiles(.$sd) )) %>%
   dplyr::select(!!sym(config$table$factorKeys()[1]), sd_quantiles) %>%
   unnest() %>%
   spread(!!sym(config$table$factorKeys()[1]),quantiles) -> sd_quantiles_res

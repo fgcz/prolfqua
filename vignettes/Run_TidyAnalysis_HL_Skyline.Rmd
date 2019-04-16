@@ -74,7 +74,7 @@ plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[[3]], skylineconfig,
 
 ```{r eval=FALSE}
 figs <- xnested %>%
-  mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig, separate = TRUE))
+  dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig, separate = TRUE))
 
 pdf(file.path(outdir,"allProteins.pdf"), width = 10, height = 10)
 invisible(lapply(figs$plot[1:3], print))
@@ -94,7 +94,7 @@ rmarkdown::render("tr_srm_summary_HL.Rmd",
 
 ```{r}
 HLData <- spreadValueVarsIsotopeLabel(resData, skylineconfig)
-HLData <- HLData %>% mutate(log2L_log2H = log2(light_Area)- log2(heavy_Area))
+HLData <- HLData %>% dplyr::mutate(log2L_log2H = log2(light_Area)- log2(heavy_Area))
 HLData$Isotope.Label <- "L/H"
 
 skylineconfigHL <- skylineconfig
@@ -110,7 +110,7 @@ skylineconfigHL$table$getWorkIntensity()
 
 ```{r}
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
-HLfigs <- xnested %>% mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
+HLfigs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 ```
 
@@ -136,7 +136,7 @@ p
 
 ```{r eval=FALSE}
 
-HLfigs3 <- HLfigs3 %>% mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
+HLfigs3 <- HLfigs3 %>% dplyr::mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)
 invisible(lapply(HLfigs3$figsMed[2:5], print))
