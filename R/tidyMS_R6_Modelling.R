@@ -1,8 +1,8 @@
 # function for modelling go here.
 #' rocs helper function
 rocs <- function(data ,response, predictor){
-  responseX <- data %>% pull(!!sym(response))
-  predictorX <- data %>% pull(!!sym(predictor))
+  responseX <- data %>% dplyr::pull(!!sym(response))
+  predictorX <- data %>% dplyr::pull(!!sym(predictor))
   levels = levels(as.factor(responseX))
   if(length(levels) < 2){
     return(NULL)
@@ -97,13 +97,13 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
   pVals <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","p.value")))
 
   pVals <- pVals %>% mutate(term = glue("{term}.p.value"))
-  pVals <- pVals %>% spread("term", "p.value")
+  pVals <- pVals %>% tidyr::spread("term", "p.value")
   df <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","df")))
   df <- df %>% mutate(term = glue("{term}.df"))
-  df <- df %>% spread(term, df)
+  df <- df %>% tidyr::spread(term, df)
   statistic <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","statistic")))
   statistic <- statistic %>% mutate(term = glue("{term}.statistic"))
-  statistic <- statistic %>% spread(term, statistic)
+  statistic <- statistic %>% tidyr::spread(term, statistic)
   res <- inner_join(inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
   return(res)
 }
@@ -252,7 +252,7 @@ workflow_contrasts_linfct <- function(models,
   interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% unnest() -> contrasts
 
-  isSing <- models %>% select_at(c(subject_Id, "isSingular")) %>% distinct()
+  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular")) %>% distinct()
   contrasts <- inner_join(contrasts, isSing, by=subject_Id)
   return(contrasts)
 }
@@ -523,7 +523,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
     idx <- grep(factor_level, rownames(mm))
     x <- as.list(apply(mm[idx,, drop=FALSE],2,mean) )
     x <- tibble::as_tibble(x)
-    add_column(x, "factor_level" = factor_level,.before=1)
+    tibble::add_column(x, "factor_level" = factor_level,.before=1)
   }
   factor_levels <- unique(unlist(stringr::str_split(rownames(mm), ":")))
   xx <- purrr::map_df(factor_levels, getCoeffs, mm)
@@ -544,11 +544,12 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 #' m <- LFQService::interactionModel_p1807
 #' linfct <- linfct_from_model(m)
-#' linfct$linfct_factors
+#' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] , apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 #' linfct$linfct_interactions
 #' #}
 #'
-#'
+#' m <- lm(Petal.Width ~ Species, data=iris)
+#' linfct_from_model(m)
 linfct_from_model <- function(m){
 
   cm <- .lmer4_coeff_matrix(m)
@@ -568,8 +569,10 @@ linfct_from_model <- function(m){
 #' m <- LFQService::basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
+#'
 #' xl <- linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- linfct_all_possible_contrasts(linfct$linfct_interactions)
+#'
 linfct_all_possible_contrasts <- function( lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
@@ -583,7 +586,28 @@ linfct_all_possible_contrasts <- function( lin_int ){
   colnames(new_lin_fct) <- colnames(lin_int)
   return(new_lin_fct)
 }
-
+#' create contrasts between factor levels
+#' @export
+#' @examples
+#' library(LFQService)
+#' m <- LFQService::basicModel_p1807
+#' xl <- linfct_factors_contrasts(m)
+#' xl
+#' m <- lm(Petal.Width ~ Species, data=iris)
+#' linfct_factors_contrasts(m)
+linfct_factors_contrasts <- function(m){
+  ffac <- attributes(terms(m))$term.labels
+  linfct_factors <- linfct_from_model(m)$linfct_factors
+  factorLevels <- rownames(linfct_factors)
+  res <- vector(length(ffac), mode = "list")
+  for(i in 1:length(ffac)){
+    fac <- ffac[i]
+    idx <- grep(fac, factorLevels)
+    res[[i]]<-linfct_all_possible_contrasts(linfct_factors[idx,])
+  }
+  res <- do.call(rbind, res)
+  return(res)
+}
 
 # Computing contrasts helpers -----
 
