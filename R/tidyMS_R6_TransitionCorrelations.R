@@ -319,7 +319,7 @@ gatherItBack <- function(x,value,config,data = NULL){
     tibble::tibble("row.names" := rownames(x)),
     tibble::as_tibble(x)
   )
-  x <- gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
+  x <- tidyr::gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
   x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~")
   if(!is.null(data)){
     x <- inner_join(data, x)
