@@ -395,7 +395,7 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
   HLfigs2 <- qvalFiltX %>%
     dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
-    dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% unnest()
+    dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
   unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~")
   qvalFiltX <- inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
   return(qvalFiltX)
@@ -443,7 +443,7 @@ impute_correlationBased <- function(x , config){
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
-  unnest_res <- nestedX %>% dplyr::select(config$table$hierarchyKeys()[1], "imputed") %>% unnest()
+  unnest_res <- nestedX %>% dplyr::select(config$table$hierarchyKeys()[1], "imputed") %>% tidyr::unnest()
   unnest_res <- unnest_res %>% separate("row",config$table$hierarchyKeys()[-1], sep="~" )
 
   qvalFiltX <- inner_join(x, unnest_res,

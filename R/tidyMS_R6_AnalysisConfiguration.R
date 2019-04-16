@@ -694,7 +694,7 @@ reestablishCondition <- function(data,
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)
-#' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% unnest()
+#' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% tidyr::unnest()
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
@@ -709,7 +709,7 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
   xnested <- xnested %>% dplyr::mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
   if(unnest){
-    unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% unnest()
+    unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
     newconfig <- make_reduced_hierarchy_config(config,
                                                workIntensity = func(name=TRUE),
                                                hierarchy = config$table$hkeysLevel(names=FALSE))

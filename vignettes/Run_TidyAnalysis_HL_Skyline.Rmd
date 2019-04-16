@@ -146,7 +146,8 @@ dev.off()
 # Get Protein intensities
 
 ```{r fig.cap="Plot protein intensities"}
-prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly) %>% unnest()
+prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly) %>% 
+  tidyr::unnest()
 write_tsv(prots, path = file.path(outdir,"proteins.tsv"))
 
 ggplot(prots, aes(x=time_c, y=medpolish, group=treatment_c, color=treatment_c )) +

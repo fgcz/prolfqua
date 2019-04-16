@@ -49,7 +49,7 @@ compute_roc <- function(data, config){
 
   dumm <- nested %>% dplyr::select(!!sym(config$table$hierarchyKeys()[1]),
                                    !!sym(config$table$hierarchyKeys(TRUE)[1]),
-                                   rocs) %>%  unnest()
+                                   rocs) %>%  tidyr::unnest()
   dumm <- dumm %>% dplyr::mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
   dumm <- dumm %>% separate(comparison, into = c("response1" , "response2"), sep=" ")
   dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
@@ -93,7 +93,7 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
   pepRes2 <- pepRes1 %>% dplyr::mutate(broomres = map(anova, broom::tidy))
   pepRes3 <- pepRes2 %>%
     dplyr::select(!!!syms(c(groupVars, "broomres"))) %>%
-    dplyr::unnest() %>%
+    tidyr::unnest() %>%
     dplyr::filter(term != "Residuals")
 
   pVals <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","p.value")))
@@ -252,7 +252,7 @@ workflow_contrasts_linfct <- function(models,
     filter(classC != "logical") -> interaction_model_matrix
 
   interaction_model_matrix %>%
-    dplyr::select_at( c(subject_Id, "contrast") ) %>% unnest() -> contrasts
+    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest() -> contrasts
 
   isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular")) %>% distinct()
   contrasts <- inner_join(contrasts, isSing, by=subject_Id)
@@ -755,9 +755,11 @@ workflow_model_analyse <- function(pepIntensity,config,
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
   modelProteinF <- inner_join(modelProteinF, prot_stats)
 
-  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>% unnest()
+  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>%
+    tidyr::unnest()
   Model_Coeff <- inner_join(prot_stats, Model_Coeff)
-  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>% unnest()
+  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>%
+    tidyr::unnest()
   Model_Anova <-inner_join( prot_stats , Model_Anova )
 
   return(list(modelProteinF = modelProteinF,
@@ -887,7 +889,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
                                                                   !!sym(paste0("lmer_", modelName_Int)),
                                                                   .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
-    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% unnest()
+    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% tidyr::unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
 

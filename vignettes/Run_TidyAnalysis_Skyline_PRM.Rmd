@@ -89,7 +89,8 @@ dev.off()
 
 ```{r}
 table <- skylineconfig$table
-protIntensity <- figs3 %>% select(table$hierarchyKeys()[1], medpolishPly) %>% unnest()
+protIntensity <- figs3 %>% select(table$hierarchyKeys()[1], medpolishPly) %>% 
+  tidyr::unnest()
 ```
 
 ## normalize them by CIRT

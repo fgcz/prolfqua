@@ -30,7 +30,8 @@
       dplyr::mutate(!!paste0("factor_",factor) := purrr::map(!!sym(paste0("lmer_",modelName )), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
   dd <- modelProteinF %>% dplyr::select(subject_Id, starts_with("factor_"))
-  contrasts <- dd %>% tidyr::gather("factor", "contrasts", - c(!!!(syms( subject_Id)))) %>% unnest() %>% arrange(!!!syms(subject_Id)) %>%
+  contrasts <- dd %>% tidyr::gather("factor", "contrasts", - c(!!!(syms( subject_Id)))) %>%
+    tidyr::unnest() %>% arrange(!!!syms(subject_Id)) %>%
     dplyr::select(-rhs)
 
   return(contrasts)
