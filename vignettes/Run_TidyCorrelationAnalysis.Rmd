@@ -132,7 +132,7 @@ knitr::kable(hierarchyCounts(qvalFiltV,config))
 qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
 xx <- markDecorrelated(qvalFiltV, config)
 mean(xx$srm_decorelated)
-nested <- xx %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
+nested <- xx %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
 
 dim(nested$data[[1]])
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
@@ -169,7 +169,7 @@ mean_na <- function(x){mean(x,na.rm=TRUE)}
 proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,config,func = mean_na,N=3)$data
 
 # nest transtions
-xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
+xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
 plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
 plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
 plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
@@ -177,7 +177,7 @@ plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
 figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])) ,
                                            plot_hierarchies_line, config))
-ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% nest(.key = "topNIntensity")
+ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest(.key = "topNIntensity")
 
 figs4 <- dplyr::inner_join(figs3,ff)
 

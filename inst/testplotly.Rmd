@@ -81,7 +81,7 @@ bscols(widths = c(6, 6), p, map)
 ```{r}
 sd <- SharedData$new(txhousing, ~city, group = "Choose a city")
 plot_ly(sd, x = ~date, y = ~median) %>%
-  group_by(city) %>%
+  dplyr::group_by(city) %>%
   add_lines(text = ~city, hoverinfo = "text") %>%
   highlight(on = "plotly_hover", persistent = TRUE, selectize = TRUE)
 
@@ -94,7 +94,7 @@ library(plotly)
 sd <- highlight_key(txhousing, ~city, "Select a city")
 
 base <- plot_ly(sd, color = I("black"), height = 400) %>%
-  group_by(city)
+  dplyr::group_by(city)
 
 p1 <- base %>%
   summarise(miss = sum(is.na(median))) %>%

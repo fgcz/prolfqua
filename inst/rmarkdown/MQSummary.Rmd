@@ -43,7 +43,7 @@ old <- theme_set(theme_classic())
 
 ```{r sampleNameRawFileMapping}
 #xx<-table_factors(pepIntensity,config)
-#xx %>% group_by_at(config$table$factorKeys()) %>% summarise(n=n())
+#xx %>% dplyr::group_by_at(config$table$factorKeys()) %>% summarise(n=n())
 knitr::kable(table_factors(data,config), caption = "Sample Name to Raw file mapping")
 
 ```
@@ -77,7 +77,7 @@ x3 <- summarizeHierarchy(data, config)
 x3 <- x3 %>% dplyr::mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
                                              peptide_Id_n > 1 ~ "two and more"))
 
-res <- x3 %>% group_by(protein_with) %>% summarize(n=n())
+res <- x3 %>% dplyr::group_by(protein_with) %>% summarize(n=n())
 knitr::kable(res, caption = "nr of proteins with more than on peptide.")
 ```
 
@@ -136,7 +136,7 @@ toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){
   tibble(probs = probs, quantiles = quantile(x, probs , na.rm = T)) 
 }
 
-stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
+stats_res %>% dplyr::group_by(!!sym(config$table$factorKeys()[1])) %>% tidyr::nest() -> xx 
 xx %>% dplyr::mutate(cv_quantiles = map(data, ~toQuantiles(.$CV) )) %>%
   dplyr::select(!!sym(config$table$factorKeys()[1]), cv_quantiles) %>%
   tidyr::unnest() %>%
@@ -201,7 +201,7 @@ toQuantiles <- function(x,probs=c(0.1,0.25,0.5,0.75,0.9)){
   tibble(probs = probs, quantiles = quantile(x, probs , na.rm = T)) 
 }
 
-stats_res %>% group_by(!!sym(config$table$factorKeys()[1])) %>% nest() -> xx 
+stats_res %>% dplyr::group_by(!!sym(config$table$factorKeys()[1])) %>% tidyr::nest() -> xx 
 xx %>% dplyr::mutate(sd_quantiles = map(data, ~toQuantiles(.$sd) )) %>%
   dplyr::select(!!sym(config$table$factorKeys()[1]), sd_quantiles) %>%
   tidyr::unnest() %>%

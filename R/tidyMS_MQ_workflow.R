@@ -2,7 +2,7 @@
 .makeFigs <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
   proteinIDsymbol <- syms(config$table$hkeysLevel())
-  xnested <- filteredPep %>% group_by(UQS(proteinIDsymbol)) %>% nest()
+  xnested <- filteredPep %>% dplyr::group_by(UQS(proteinIDsymbol)) %>% tidyr::nest()
   figs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
   figs <- figs %>% dplyr::mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
   return(figs)
@@ -70,7 +70,7 @@ workflow_MQ_protein_quants <- function(results){
   pepIntensityNormalized <- results$pepIntensityNormalized
   config <- results$config_pepIntensityNormalized
   configProt <- config$clone(deep = TRUE)
-  xnested <- pepIntensityNormalized %>% group_by_at(configProt$table$hkeysLevel()) %>% nest()
+  xnested <- pepIntensityNormalized %>% dplyr::group_by_at(configProt$table$hkeysLevel()) %>% tidyr::nest()
   protintensity <- LFQService::applyToHierarchyBySample(pepIntensityNormalized,configProt, medpolishPly,unnest = TRUE)
   configProt <- protintensity$newconfig
   protintensity <- protintensity$unnested

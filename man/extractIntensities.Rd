@@ -12,7 +12,7 @@ Extract intensity column in wide format using lowest hierarchy as key.
 \examples{
 library(dplyr)
 xnested <- sample_analysis \%>\%
- group_by_at(skylineconfig$table$hkeysLevel(FALSE)) \%>\%
+ dplyr::group_by_at(skylineconfig$table$hkeysLevel(FALSE)) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
 nn  <- x \%>\% dplyr::select( skylineconfig$table$hkeysLevel(TRUE) ) \%>\%
@@ -25,7 +25,7 @@ conf <- skylineconfig$clone(deep=TRUE)
 conf$table$hierarchyLevel = 2
 
 xnested <- sample_analysis \%>\%
- group_by_at(conf$table$hkeysLevel(FALSE)) \%>\%
+ dplyr::group_by_at(conf$table$hkeysLevel(FALSE)) \%>\%
  tidyr::nest()
 head(xnested)
 

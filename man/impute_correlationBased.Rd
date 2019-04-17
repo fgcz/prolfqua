@@ -11,6 +11,7 @@ imputation based on correlation assumption
 }
 \examples{
 library(LFQService)
+library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 data <- completeCases(data, config)
