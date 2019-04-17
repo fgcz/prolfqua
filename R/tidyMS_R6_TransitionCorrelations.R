@@ -389,7 +389,7 @@ decorelatedPly <- function(x, corThreshold = 0.7){
 #' dataI <- markDecorrelated(data, config)
 #' head(dataI)
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
-  qvalFiltX <- data %>%  group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
+  qvalFiltX <- data %>%  dplyr::group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
   qvalFiltX <- qvalFiltX %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
   HLfigs2 <- qvalFiltX %>%
@@ -419,8 +419,10 @@ simpleImpute <- function(data){
 #' imputation based on correlation assumption
 #' @export
 #' @importFrom purrr map
+#' @importFrom tidyr nest
 #' @examples
 #' library(LFQService)
+#' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' data <- completeCases(data, config)
@@ -430,7 +432,7 @@ simpleImpute <- function(data){
 #'
 impute_correlationBased <- function(x , config){
   x <- completeCases(x, config)
-  nestedX <- x %>%  group_by_at(config$table$hierarchyKeys()[1]) %>% nest()
+  nestedX <- x %>%  dplyr::group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
   nestedX <- nestedX %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
 
   gatherItback <- function(x,config){
@@ -444,7 +446,7 @@ impute_correlationBased <- function(x , config){
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
   unnest_res <- nestedX %>% dplyr::select(config$table$hierarchyKeys()[1], "imputed") %>% tidyr::unnest()
-  unnest_res <- unnest_res %>% separate("row",config$table$hierarchyKeys()[-1], sep="~" )
+  unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep="~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
                           by=c(config$table$hierarchyKeys(), config$table$sampleName) )

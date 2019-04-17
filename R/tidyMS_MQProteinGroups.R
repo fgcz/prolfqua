@@ -337,7 +337,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
   relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
 
   xx <- mq_modSpecPeptides %>%
-    group_by(peptide.id, raw.file ) %>%
+    dplyr::group_by(peptide.id, raw.file ) %>%
     dplyr::mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
            pep = min(pep, na.rm=TRUE),
            peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>% ungroup()
@@ -358,7 +358,7 @@ tidyMQ_top_protein_name <- function(modSpecData){
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% distinct() %>% nrow()
   groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% distinct()
   groupIDprotein %>% separate_rows(proteins, sep=";",convert =TRUE) -> groupIDprotein_Separated
-  groupIDprotein_Separated %>% group_by(protein.group.id) %>% nest() -> groupIDprotein_Separated
+  groupIDprotein_Separated %>% dplyr::group_by(protein.group.id) %>% tidyr::nest() -> groupIDprotein_Separated
 
   extractMostFreqNamePerGroup <- function(ff){
     aa <- sort(table(ff),decreasing = TRUE)

@@ -59,7 +59,7 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 ```{r fig.cap="transitions in one plot."}
 proteinIDsymbol <- sym(skylineconfig$table$hierarchyKeys()[1])
 
-xnested <- resData %>% group_by(UQ(proteinIDsymbol)) %>% nest()
+xnested <- resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfig)
 ```
 
@@ -102,7 +102,7 @@ skylineconfigHL$table$workIntensity = "log2L_log2H"
 skylineconfigHL$parameter$is_intensity_transformed = TRUE
 skylineconfigHL$table$isotopeLabel
 
-xnested <- HLData %>% group_by(UQ(proteinIDsymbol)) %>% nest()
+xnested <- HLData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
 skylineconfigHL$table$getWorkIntensity()
 ```
 

@@ -37,7 +37,7 @@ rocs <- function(data ,response, predictor){
 #' unique(res$protein_Id)
 #'
 compute_roc <- function(data, config){
-  nested <- data %>% group_by(!!sym(config$table$hierarchyKeys()[1]) ,
+  nested <- data %>% dplyr::group_by(!!sym(config$table$hierarchyKeys()[1]) ,
                               !!sym(config$table$hierarchyKeys(TRUE)[1])) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
                                          rocs, response = config$table$factorKeys()[1],
@@ -51,7 +51,7 @@ compute_roc <- function(data, config){
                                    !!sym(config$table$hierarchyKeys(TRUE)[1]),
                                    rocs) %>%  tidyr::unnest()
   dumm <- dumm %>% dplyr::mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
-  dumm <- dumm %>% separate(comparison, into = c("response1" , "response2"), sep=" ")
+  dumm <- dumm %>% tidyr::separate(comparison, into = c("response1" , "response2"), sep=" ")
   dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
     arrange(desc(auc))
   return(dumm)
@@ -87,7 +87,7 @@ compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, fac
   message("formula :" , deparse(formula))
   groupVars <-config$table$hierarchyKeys()[1:hierarchy_level]
 
-  pepRes <- data %>% dplyr::group_by(!!!syms(groupVars)) %>% nest()
+  pepRes <- data %>% dplyr::group_by(!!!syms(groupVars)) %>% tidyr::nest()
   pepRes1 <- pepRes %>% dplyr::mutate(anova = map( data, aovmodelfit, formula))
   head(pepRes1)
   pepRes2 <- pepRes1 %>% dplyr::mutate(broomres = map(anova, broom::tidy))
@@ -726,7 +726,7 @@ workflow_model_analyse <- function(pepIntensity,config,
   hierarchyKey <- config$table$hkeysLevel()
   pepIntensity %>%
     group_by(!!!syms(hierarchyKey)) %>%
-    nest() -> nestProtein
+    tidyr::nest() -> nestProtein
   prot_stats <- summarizeHierarchy(pepIntensity, config)
 
   lmermodel <- paste0("lmer_", modelName)

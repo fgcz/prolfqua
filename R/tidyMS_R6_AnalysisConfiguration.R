@@ -235,9 +235,11 @@ setup_analysis <- function(data, configuration ,sep="~"){
 #' @export
 #'
 completeCases <- function(data, config){
-  data <- complete( data ,
-                    nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
-                    nesting(!!!syms(c( config$table$fileName , config$table$sampleName, config$table$factorKeys() ))))
+  data <- tidyr::complete(
+    data ,
+    tidyr::nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
+    tidyr::nesting(!!!syms(c( config$table$fileName , config$table$sampleName, config$table$factorKeys() )))
+  )
   return(data)
 }
 
@@ -399,6 +401,7 @@ table_factors <- function(data, configuration){
 #'
 #' @export
 #' @examples
+#' library(tidyverse)
 #' library(LFQService)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
@@ -407,7 +410,8 @@ table_factors <- function(data, configuration){
 #' hierarchyCounts(sample_analysis, skylineconfig)
 hierarchyCounts <- function(x, configuration){
   hierarchy <- names( configuration$table$hierarchy )
-  res <- x %>% group_by_at(configuration$table$isotopeLabel) %>% summarise_at( hierarchy, n_distinct )
+  res <- x %>% dplyr::group_by_at(configuration$table$isotopeLabel) %>%
+    dplyr::summarise_at( hierarchy, n_distinct )
   return(res)
 }
 
@@ -427,13 +431,14 @@ hierarchy_counts_sample <- function(data,
 {
   hierarchy <- configuration$table$hierarchyKeys()
   data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
-  res <- xx %>% group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
-    summarise_at( hierarchy, n_distinct )
+  res <- xx %>% dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
+    dplyr::summarise_at( hierarchy, n_distinct )
   return(res)
 }
 #' Light only version.
 #' Summarize Protein counts
 #' @export
+#' @importFrom dplyr group_by_at
 #' @examples
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"

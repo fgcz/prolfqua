@@ -54,7 +54,7 @@ plot_ly(shared_df1, x = ~id, y = ~hp, color = ~owner) %>% add_markers() %>% high
 ### Plots with plotly
 
 ```{r}
-plot_ly(shared_df2, x = ~owner, y = ~freq, color = ~car) %>% group_by(owner) %>% add_bars()
+plot_ly(shared_df2, x = ~owner, y = ~freq, color = ~car) %>% dplyr::group_by(owner) %>% add_bars()
 ```
 
 ##

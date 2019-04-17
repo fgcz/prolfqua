@@ -54,7 +54,7 @@ resData$Area[resData$Area == 0] <- NA
 
 ```{r}
 proteinIDsymbol <- sym(names(skylineconfig$table$hierarchy)[1])
-xnested <- resData %>% group_by(UQ(proteinIDsymbol)) %>% nest()
+xnested <- resData %>% group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
 figs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 print(figs$plot[[1]])
@@ -124,7 +124,7 @@ write_tsv(proteinIntensity,path=file.path(outdir, "ProteinQuants.tsv"))
 
 
 ```{r}
-protRez3 <- proteinIntensity %>% group_by(protein_Id) %>% nest()
+protRez3 <- proteinIntensity %>% group_by(protein_Id) %>% tidyr::nest()
 tmp <- function(x){ anova(lm(log2Med_log2MedCiRT ~ Time, data=x)) }
 
 protRez3 <- protRez3 %>% dplyr::mutate(anova = map( data, tmp))
