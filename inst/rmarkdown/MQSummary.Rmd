@@ -43,7 +43,7 @@ old <- theme_set(theme_classic())
 
 ```{r sampleNameRawFileMapping}
 #xx<-table_factors(pepIntensity,config)
-#xx %>% dplyr::group_by_at(config$table$factorKeys()) %>% summarise(n=n())
+#xx %>% dplyr::group_by_at(config$table$factorKeys()) %>%  dplyr::summarize(n=n())
 knitr::kable(table_factors(data,config), caption = "Sample Name to Raw file mapping")
 
 ```
@@ -77,7 +77,7 @@ x3 <- summarizeHierarchy(data, config)
 x3 <- x3 %>% dplyr::mutate(protein_with = case_when(peptide_Id_n == 1 ~ "one",
                                              peptide_Id_n > 1 ~ "two and more"))
 
-res <- x3 %>% dplyr::group_by(protein_with) %>% summarize(n=n())
+res <- x3 %>% dplyr::group_by(protein_with) %>% dplyr::summarize(n=n())
 knitr::kable(res, caption = "nr of proteins with more than on peptide.")
 ```
 

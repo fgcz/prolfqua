@@ -276,7 +276,7 @@ workflow_contrasts_linfct_write <- function(results, modelName, path, prefix = "
 #' visualize output of `workflow_contrasts_linfct``
 #' @export
 #'
-workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts"){
+workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts", subject_Id = "portein_Id"){
   fig <- list()
   fig$histogram_coeff_p.values_name <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
 
@@ -289,7 +289,7 @@ workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contra
                                                   effect = "estimate",
                                                   type = "p.value",
                                                   condition = "lhs",
-                                                  label = "protein_Id",
+                                                  label = subject_Id,
                                                   xintercept = c(-1, 1), colour = "isSingular")
 
   return(fig)
@@ -725,7 +725,7 @@ workflow_model_analyse <- function(pepIntensity,config,
 
   hierarchyKey <- config$table$hkeysLevel()
   pepIntensity %>%
-    group_by(!!!syms(hierarchyKey)) %>%
+    dplyr::group_by(!!!syms(hierarchyKey)) %>%
     tidyr::nest() -> nestProtein
   prot_stats <- summarizeHierarchy(pepIntensity, config)
 

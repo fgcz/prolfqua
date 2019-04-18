@@ -97,7 +97,7 @@ base <- plot_ly(sd, color = I("black"), height = 400) %>%
   dplyr::group_by(city)
 
 p1 <- base %>%
-  summarise(miss = sum(is.na(median))) %>%
+   dplyr::summarize(miss = sum(is.na(median))) %>%
   filter(miss > 0) %>%
   add_markers(x = ~miss, y = ~forcats::fct_reorder(city, miss), hoverinfo = "x+y") %>%
   layout(

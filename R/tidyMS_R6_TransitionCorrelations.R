@@ -477,7 +477,7 @@ nr_B_in_A <- function(data,
     dplyr::select_at(c(levelA, levelB)) %>%
     dplyr::distinct() %>%
     dplyr::group_by_at(levelA) %>%
-    dplyr::summarise(!!c_name:=n())
+     dplyr::summarize(!!c_name:=n())
   if(!merge){
     return(tmp)
   }
@@ -499,7 +499,7 @@ rankProteinPrecursors <- function(data,
 
   summaryPerPrecursor <-data %>%
     dplyr::group_by(!!!syms(table$hierarchyKeys())) %>%
-    dplyr::summarise(!!summaryColumn := fun(!!sym(column)))
+     dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
 
   groupedByProtein <- summaryPerPrecursor %>%
     dplyr::arrange(!!sym( table$hierarchyKeys()[1])) %>%
@@ -583,7 +583,7 @@ aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1
 #' colnames(res)
 #' x <- res %>%
 #'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(T)[1], "srm_NrNotNAs") %>%
-#'   distinct() %>% summarize(sum(srm_NrNotNAs)) %>% dplyr::pull()
+#'   distinct() %>% dplyr::summarize(sum(srm_NrNotNAs)) %>% dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 rankPrecursorsByNAs <- function(data, config){
@@ -629,14 +629,14 @@ filter_factor_levels_by_missing <- function(data,
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- data %>%
     dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factorKeys()[1:factor_level] ))) %>%
-    dplyr::summarise(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
-    dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>% ungroup()
+     dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
+    dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>% dplyr::select(c(table$hierarchyKeys())) %>% distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
   res <- summaryPerPrecursorFiltered %>% left_join(data)
-  return(ungroup(res))
+  return( dplyr::ungroup(res))
 }
 
 

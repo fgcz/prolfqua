@@ -15,6 +15,6 @@ conf <- LFQService::skylineconfig$clone(deep=TRUE)
 configuration <- conf
 data <- LFQService::sample_analysis
 xx <- table_factors(data,configuration )
-xx \%>\% group_by(!!sym(configuration$table$factorKeys())) \%>\% summarize(n = n())
+xx \%>\% dplyr::group_by(!!sym(configuration$table$factorKeys())) \%>\% dplyr::summarize(n = n())
 
 }

@@ -385,7 +385,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
 #' configuration <- conf
 #' data <- LFQService::sample_analysis
 #' xx <- table_factors(data,configuration )
-#' xx %>% group_by(!!sym(configuration$table$factorKeys())) %>% summarize(n = n())
+#' xx %>% dplyr::group_by(!!sym(configuration$table$factorKeys())) %>% dplyr::summarize(n = n())
 #'
 table_factors <- function(data, configuration){
   factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
@@ -547,7 +547,7 @@ getMissingStats <- function(x, configuration, nrfactors = 1){
 missignessHistogram <- function(x, configuration, showempty = TRUE, nrfactors = 1){
   table <- configuration$table
   missingPrec <- getMissingStats(x, configuration,nrfactors)
-  missingPrec <- missingPrec %>% ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
+  missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
   if(showempty){
     if(configuration$parameter$is_intensity_transformed)
     {
@@ -736,15 +736,15 @@ applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, u
 summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
   hierarchyFactor <- data %>%
-    group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
-    summarise(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>% ungroup()
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
+     dplyr::summarize(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$factorKeys()[1], funs(as.character) )
 
   if(all){
     hierarchy <- data %>%
-      group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-      summarise(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
+      dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
+       dplyr::summarize(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
