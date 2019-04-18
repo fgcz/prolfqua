@@ -11,7 +11,4 @@ resPepProtAnnot_p2954
 \description{
 resPepProtAnnot_p2954 - raw data used in script_resultsV1_2954_create
 }
-\examples{
-
-}
 \keyword{datasets}

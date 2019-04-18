@@ -32,7 +32,8 @@ createSkylineConfiguration <- function(isotopeLabel="Isotope.Label", ident_qValu
 #' config$table$factors[["sex"]] = "sex"
 #' config$table$factors[["age"]] = "age"
 #' config$table$factors[["Sample_id"]] = "Sample.Name"
-createSpectronautPeptideConfiguration <- function(isotopeLabel="Isotope.Label", ident_qValue="EG.Qvalue"){
+createSpectronautPeptideConfiguration <- function(isotopeLabel="Isotope.Label",
+                                                  ident_qValue="EG.Qvalue"){
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "R.FileName"
 

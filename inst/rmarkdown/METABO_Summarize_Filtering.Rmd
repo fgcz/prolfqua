@@ -1,0 +1,172 @@
+---
+title: "Analysis Run Summary"
+author: "FGCZ - Witold Wolski wew@fgcz.ethz.ch"
+date: "25 November 2018"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+params:
+  HEATMAP: TRUE
+  path: ""
+  resDataStart: NULL
+  config_resDataStart: NULL 
+  filteredPep: NULL
+  config_filteredPep: NULL
+  dataTransformed : NULL
+  config_dataTransformed : NULL
+  removedFeatures : NULL
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
+```
+
+# Filter missigness
+
+We here briefly discuss how your data was pre-processed.
+
+
+```{r heatmapAllNAs, out.width = "85%", out.height="\\textheight", fig.cap="before NA filtering"}
+figpath <- file.path(params$path, "missigness_before_filtering.pdf")
+if(params$HEATMAP){
+  pdf(figpath)
+  plot_NA_heatmap(params$resDataStart, params$config_resDataStart)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+
+
+```{r}
+knitr::kable(hierarchyCounts(params$resDataStart, params$config_resDataStart),
+             caption = "Nr Proteins and peptides before missigness filtering.")
+```
+
+
+
+```{r}
+knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataStart),
+             catpion = "NR Proteins and peptides by sample.")
+```
+
+```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
+hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)
+
+hcs <- hcs %>% gather("key", "nr",
+                      -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
+ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+\newpage
+
+
+# Filtered data
+
+```{r}
+knitr::kable(hierarchyCounts(params$filteredPep, params$config_filteredPep),
+             caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
+```
+
+
+```{r fig.cap="Missigness patterns for peptides of proteins removed from analysis.", fig.with=7, fig.height=8}
+plot_NA_heatmap(params$removedFeatures, results$config_resDataStart)
+figpath <- file.path(path,"removed_features.pdf")
+if(HEATMAP){
+  pdf(figpath)
+  x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+\newpage
+
+```{r}
+removedFeatures <- results$removedFeatures %>% dplyr::select(Compound) %>% distinct()
+
+knitr::kable(removedFeatures, caption="Features removed from analysis.")
+```
+
+
+
+
+
+```{r}
+knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredPep),
+             caption = "Numbers of Compounds after filtering for 2 peptides per protein by sample")
+
+```
+
+
+\newpage
+
+```{r NA_heatmapAfterFiltering,  out.width = "85%", out.height="\\textheight", fig.cap="Missigness heatmap after NA filtering."}
+
+figpath <- file.path(path,"missigness_after_filtering.pdf")
+if(HEATMAP){
+  pdf(figpath)
+  x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+\clearpage
+
+
+
+# Normalized intensities
+
+Figure \@ref(fig:normalizeRob) shows the normalized peptide values. Normalization is applied to remove systematic differences in peptide abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed peptides and proteins can be detected. To do this the z-score of the $log_2$ transformed intensities is computed, which is updated by the average of the original standard deviation of the $log_2$ transformed intensities in all samples. After normalization all samples have a similar distribution.
+
+
+```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of raw intensities."}
+figpath <- file.path(path, "PEPTIDE_DensityDistributionRAW.pdf")
+
+pdf(figpath, width=22, height=10)
+print(plot_intensity_distribution_density(params$filteredPep,  params$config_filteredPep))
+dev.off()
+
+knitr::include_graphics(figpath)
+
+```
+
+
+
+
+```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of transformed and scaled intensities."}
+figpath <- file.path(path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
+
+pdf(figpath, width=22, height=10)
+print(plot_intensity_distribution_density(params$dataTransformed, params$config_dataTransformed))
+dev.off()
+
+knitr::include_graphics(figpath)
+
+```
+
+
+\newpage
+
+
+```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
+figpath <- file.path(path,"heatmap_after_filtering.pdf")
+if(HEATMAP){
+  pdf(figpath)
+  x <- plot_heatmap(params$dataTransformed, params$config_dataTransformed)
+  dev.off()
+}
+knitr::include_graphics(figpath)
+
+```
+
+
+
+

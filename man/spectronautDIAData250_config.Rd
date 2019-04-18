@@ -12,7 +12,8 @@ spectronautDIAData250_config
 A configuration which matches the \link{spectronautDIAData250} and \link{spectronautDIAData250} data.
 }
 \examples{
-spectronautDIAData250_config <- createSpectronautPeptideConfiguration(isotopeLabel="Isotope.Label",
+spectronautDIAData250_config <- createSpectronautPeptideConfiguration(
+isotopeLabel="Isotope.Label",
  ident_qValue="EG.Qvalue")
 spectronautDIAData250_config$table$factors[["coding"]] = "coding"
 spectronautDIAData250_config$table$factors[["sex"]] = "sex"

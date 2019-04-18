@@ -65,6 +65,28 @@ render_MQSummary_rmd <- function(data, config,
 #' render MQ Summary.
 #' @export
 #' @examples
+#' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#'
+render_METABO_Summary_rmd <- function(data, config,
+                                 dest_path =".",
+                                 dest_file_name = "Metabo_Summary.pdf",
+                                 workdir = tempdir())
+{
+  dist_file_path <- .run_markdown_with_params(
+    list(data = data, configuration=config$clone(deep=TRUE)),
+    markdown_path ="rmarkdown/METABO_Summary.Rmd",
+    dest_path = dest_path,
+    dest_file_name = dest_file_name,
+    workdir = workdir,
+    packagename = "LFQService"
+  )
+  return(dist_file_path)
+}
+
+
+#' render Filtering Summary.
+#' @export
+#' @examples
 #'
 render_SummarizeFiltering_rmd <- function(results,
                                           dest_path = ".",
@@ -81,25 +103,22 @@ render_SummarizeFiltering_rmd <- function(results,
   )
 }
 
-
-#' render MQ Summary.
+#' render Filtering Summary.
 #' @export
 #' @examples
 #'
-render_SummarizeFiltering_rmd <- function(results,
+render_METABO_SummarizeFiltering_rmd <- function(results,
                                           dest_path = ".",
-                                          dest_file_name = "GSEA.pdf",
+                                          dest_file_name = "METABO_Summarize_Filtering.pdf",
                                           workdir = tempdir())
 {
   dist_file_path <- .run_markdown_with_params(
     results,
-    markdown_path ="rmarkdown/Summarize_Filtering.Rmd",
+    markdown_path ="rmarkdown/METABO_Summarize_Filtering.Rmd",
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,
     packagename = "LFQService"
   )
 }
-
-
 

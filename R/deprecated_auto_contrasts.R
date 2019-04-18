@@ -95,3 +95,17 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
   return(result)
 }
 
+
+.setLargeQValuesToNA <- function(data,
+                                 QValueColumn,
+                                 intensityOld,
+                                 thresholdQValue = 0.05,
+                                 intensityNew = "IntensitiesWithNA"){
+
+  thresholdF <- function(x,y, threshold = 0.05){ ifelse(x < threshold, y, NA)}
+  data <- data %>%
+    dplyr::mutate(!!intensityNew := thresholdF(!!!syms(c(QValueColumn ,intensityOld )), threshold = thresholdQValue))
+  return(data)
+}
+
+

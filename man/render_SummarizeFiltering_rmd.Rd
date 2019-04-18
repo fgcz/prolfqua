@@ -2,20 +2,14 @@
 % Please edit documentation in R/vignetteHelpers.R
 \name{render_SummarizeFiltering_rmd}
 \alias{render_SummarizeFiltering_rmd}
-\title{render MQ Summary.}
+\title{render Filtering Summary.}
 \usage{
 render_SummarizeFiltering_rmd(results, dest_path = ".",
-  dest_file_name = "GSEA.pdf", workdir = tempdir())
-
-render_SummarizeFiltering_rmd(results, dest_path = ".",
-  dest_file_name = "GSEA.pdf", workdir = tempdir())
+  dest_file_name = "Summarize_Filtering.pdf", workdir = tempdir())
 }
 \description{
-render MQ Summary.
-
-render MQ Summary.
+render Filtering Summary.
 }
 \examples{
-
 
 }

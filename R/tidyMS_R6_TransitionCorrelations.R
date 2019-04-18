@@ -1,15 +1,4 @@
 # Direct intensity manipulation ----
-.setLargeQValuesToNA <- function(data,
-                                 QValueColumn,
-                                 intensityOld,
-                                 thresholdQValue = 0.05,
-                                 intensityNew = "IntensitiesWithNA"){
-
-  thresholdF <- function(x,y, threshold = 0.05){ ifelse(x < threshold, y, NA)}
-  data <- data %>%
-    dplyr::mutate(!!intensityNew := thresholdF(!!!syms(c(QValueColumn ,intensityOld )), threshold = thresholdQValue))
-  return(data)
-}
 
 #' sets intensities to NA if qVal_individual_threshold exceeded
 #' @export

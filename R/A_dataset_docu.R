@@ -102,7 +102,8 @@
 #'
 #' @format A AnalysisConfiguration R6 class
 #' @examples
-#' spectronautDIAData250_config <- createSpectronautPeptideConfiguration(isotopeLabel="Isotope.Label",
+#' spectronautDIAData250_config <- createSpectronautPeptideConfiguration(
+#' isotopeLabel="Isotope.Label",
 #'  ident_qValue="EG.Qvalue")
 #' spectronautDIAData250_config$table$factors[["coding"]] = "coding"
 #' spectronautDIAData250_config$table$factors[["sex"]] = "sex"
@@ -130,6 +131,9 @@
 "resultsV12954"
 
 #' resPepProtAnnot_p2954 - raw data used in script_resultsV1_2954_create
-#' @examples
 #'
 "resPepProtAnnot_p2954"
+
+#' raw Metabolomics data from progenesis
+#'
+"resMetaboDataProgenesis"
