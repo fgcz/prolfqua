@@ -264,11 +264,12 @@ workflow_contrasts_linfct <- function(models,
 #'
 workflow_contrasts_linfct_write <- function(results, modelName, path, prefix = "Contrasts", subject_Id = "protein_Id"){
   fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
+  message("Writing: ",fileLong,"\n")
   readr::write_csv(results, path = fileLong)
   fileWide <-file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
+  message("Writing: ",fileWide,"\n")
   resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
   readr::write_csv(resultswide, path = fileWide)
-
 }
 
 
@@ -301,12 +302,17 @@ workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contra
 #' used in p2901
 #'
 #' @export
-workflow_contrasts_linfct_vis_write <- function(contrasts_result, path, fig.width = 10, fig.height = 10){
-  pdf(file.path(path,contrasts_result$histogram_coeff_p.values_name), width = fig.width, height = fig.height)
+workflow_contrasts_linfct_vis_write <- function(contrasts_result,
+                                                path,
+                                                fig.width = 10, fig.height = 10){
+  p1 <- file.path(path,contrasts_result$histogram_coeff_p.values_name)
+  message("Writing: ",p1,"\n")
+  pdf(p1, width = fig.width, height = fig.height)
   print(contrasts_result$histogram_coeff_p.values)
   dev.off()
-
-  pdf(file.path(path,contrasts_result$VolcanoPlot_name), width = fig.width, height = fig.height)
+  p2<- file.path(path,contrasts_result$VolcanoPlot_name)
+  message("Writing: ",p2,"\n")
+  pdf(p2, width = fig.width, height = fig.height)
   print(contrasts_result$VolcanoPlot)
   dev.off()
 }
