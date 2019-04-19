@@ -1,115 +1,3 @@
-# function for modelling go here.
-#' rocs helper function
-rocs <- function(data ,response, predictor){
-  responseX <- data %>% dplyr::pull(!!sym(response))
-  predictorX <- data %>% dplyr::pull(!!sym(predictor))
-  levels = levels(as.factor(responseX))
-  if(length(levels) < 2){
-    return(NULL)
-  }
-  res <- list()
-  comparisons <- combn(levels, 2)
-  for(i in 1:ncol(comparisons)){
-    comp <- comparisons[,i]
-    res[[i]] <-  tryCatch(pROC::roc(response = responseX,
-                                    predictor = predictorX , levels=comp), error = function(x) NULL)
-  }
-  return(res)
-}
-
-#' Apply roc analysis on main factor on lowest level
-#' @export
-#' @importFrom purrr map
-#' @examples
-#'
-#' library(tidyverse)
-#' library(LFQService)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
-#' x <- sample(data$protein_Id,2)
-#' data <- data %>% dplyr::filter(protein_Id %in% x)
-#' res <- compute_roc(data, config)
-#' head(res)
-#' i <- 2
-#'
-#' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
-#' unique(res$protein_Id)
-#'
-compute_roc <- function(data, config){
-  nested <- data %>% dplyr::group_by(!!sym(config$table$hierarchyKeys()[1]) ,
-                              !!sym(config$table$hierarchyKeys(TRUE)[1])) %>% nest()
-  nested <- nested %>% dplyr::mutate(rocs = map(data ,
-                                         rocs, response = config$table$factorKeys()[1],
-                                         predictor= config$table$getWorkIntensity() ))
-
-  nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
-    dplyr::filter(cls == FALSE)
-  #nested <- nested %>% mutate(names = map(rocs, names))
-
-  dumm <- nested %>% dplyr::select(!!sym(config$table$hierarchyKeys()[1]),
-                                   !!sym(config$table$hierarchyKeys(TRUE)[1]),
-                                   rocs) %>%  tidyr::unnest()
-  dumm <- dumm %>% dplyr::mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
-  dumm <- dumm %>% tidyr::separate(comparison, into = c("response1" , "response2"), sep=" ")
-  dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
-    arrange(desc(auc))
-  return(dumm)
-}
-#' Perform anova analysis
-#' @export
-#' @importFrom glue glue
-#' @importFrom purrr map
-#' @examples
-#'
-#' library(LFQService)
-#' library(tidyverse)
-#' library(glue)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
-#' data <- transform_work_intensity(data, config, log2)
-#' compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
-#' compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
-#' compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
-compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, factor_level=1){
-  aovmodelfit <- function(x, formula){
-    tryCatch(anova(lm(formula , data=x)), error = function(e) return(NULL))
-  }
-
-  if(is.null(.formula)){
-    formulastr <- paste(config$table$getWorkIntensity(), " ~ ", paste(c(config$table$factorKeys()[1:factor_level],
-                                                                        config$table$hierarchyKeys(TRUE)[1],
-                                                                        config$table$fileName), collapse=" + "))
-    print(formulastr)
-    formula <- as.formula(formulastr)
-  }
-  message("formula :" , deparse(formula))
-  groupVars <-config$table$hierarchyKeys()[1:hierarchy_level]
-
-  pepRes <- data %>% dplyr::group_by(!!!syms(groupVars)) %>% tidyr::nest()
-  pepRes1 <- pepRes %>% dplyr::mutate(anova = map( data, aovmodelfit, formula))
-  head(pepRes1)
-  pepRes2 <- pepRes1 %>% dplyr::mutate(broomres = map(anova, broom::tidy))
-  pepRes3 <- pepRes2 %>%
-    dplyr::select(!!!syms(c(groupVars, "broomres"))) %>%
-    tidyr::unnest() %>%
-    dplyr::filter(term != "Residuals")
-
-  pVals <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","p.value")))
-
-  pVals <- pVals %>% dplyr::mutate(term = glue("{term}.p.value"))
-  pVals <- pVals %>% tidyr::spread("term", "p.value")
-  df <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","df")))
-  df <- df %>% dplyr::mutate(term = glue("{term}.df"))
-  df <- df %>% tidyr::spread(term, df)
-  statistic <- pepRes3 %>% dplyr::select(!!!syms(c(groupVars,"term","statistic")))
-  statistic <- statistic %>% dplyr::mutate(term = glue("{term}.statistic"))
-  statistic <- statistic %>% tidyr::spread(term, statistic)
-  res <- dplyr::inner_join(dplyr::inner_join(pVals, df, by=groupVars), statistic, by=groupVars)
-  return(res)
-}
-
 # mixed linear models ----
 
 # Creating models from configuration ----
@@ -262,14 +150,19 @@ workflow_contrasts_linfct <- function(models,
 #' write results of `workflow_contrasts_linfct`
 #' @export
 #'
-workflow_contrasts_linfct_write <- function(results, modelName, path, prefix = "Contrasts", subject_Id = "protein_Id"){
-  fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
-  message("Writing: ",fileLong,"\n")
-  readr::write_csv(results, path = fileLong)
-  fileWide <-file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
-  message("Writing: ",fileWide,"\n")
-  resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
-  readr::write_csv(resultswide, path = fileWide)
+workflow_contrasts_linfct_write <- function(results, modelName,
+                                            path,
+                                            prefix = "Contrasts",
+                                            subject_Id = "protein_Id"){
+  if(!is.null(path)){
+    fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
+    message("Writing: ",fileLong,"\n")
+    readr::write_csv(results, path = fileLong)
+    fileWide <-file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
+    message("Writing: ",fileWide,"\n")
+    resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
+    readr::write_csv(resultswide, path = fileWide)
+  }
 }
 
 
@@ -306,16 +199,18 @@ workflow_contrasts_linfct_vis_write <- function(contrasts_result,
                                                 path,
                                                 fig.width = 10,
                                                 fig.height = 10){
-  p1 <- file.path(path,contrasts_result$histogram_coeff_p.values_name)
-  message("Writing: ",p1,"\n")
-  pdf(p1, width = fig.width, height = fig.height)
-  print(contrasts_result$histogram_coeff_p.values)
-  dev.off()
-  p2<- file.path(path,contrasts_result$VolcanoPlot_name)
-  message("Writing: ",p2,"\n")
-  pdf(p2, width = fig.width, height = fig.height)
-  print(contrasts_result$VolcanoPlot)
-  dev.off()
+  if(!is.null(path)){
+    p1 <- file.path(path,contrasts_result$histogram_coeff_p.values_name)
+    message("Writing: ",p1,"\n")
+    pdf(p1, width = fig.width, height = fig.height)
+    print(contrasts_result$histogram_coeff_p.values)
+    dev.off()
+    p2<- file.path(path,contrasts_result$VolcanoPlot_name)
+    message("Writing: ",p2,"\n")
+    pdf(p2, width = fig.width, height = fig.height)
+    print(contrasts_result$VolcanoPlot)
+    dev.off()
+  }
 }
 
 #' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
@@ -890,11 +785,11 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 ){
   # Model Comparison
   reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
-                    dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
+                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
 
   reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
-                                                                  !!sym(paste0("lmer_", modelName_Int)),
-                                                                  .likelihood_ratio_test ))
+                                                                         !!sym(paste0("lmer_", modelName_Int)),
+                                                                         .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% tidyr::unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
