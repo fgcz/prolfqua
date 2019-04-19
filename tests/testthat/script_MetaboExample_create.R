@@ -8,8 +8,8 @@ library(dplyr)
 
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
-MQSUMMARY<- FALSE
-path <- "firstDraft"
+MQSUMMARY<- TRUE
+path <- "."
 
 #resMetaboDataProgenesis <- readRDS(file="c:/Users/wewol/prog/LFQService/inst/samples/resMetabo.rda")
 #usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
@@ -62,7 +62,7 @@ resDataStart <- LFQService::make_interaction_column_config(precursorData, config
 #saveRDS(config,file.path(path,"config.Rdata"))
 
 if(MQSUMMARY){
-  LFQService::render_METABO_Summary_rmd(resDataStart, config , dest_path = path,  workdir=".")
+  LFQService::render_METABO_Summary_rmd(resDataStart, config , dest_path = ".",  workdir=".")
 }
 
 
@@ -100,12 +100,16 @@ results$dataTransformed <- LFQService::applyToIntensityMatrix(filteredPep,
 #head(results$dataTransformed)
 
 results$HEATMAP <- TRUE
-results$path <- path
-params <- results
+results$path <- "."
 
+#results_MetaboData <- results
+#usethis::use_data(results_MetaboData)
 #saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){
-  LFQService::render_METABO_SummarizeFiltering_rmd(resDataStart, config , dest_path = path,  workdir=".")
+  #rmarkdown::render("METABO_Summarize_Filtering.Rmd",params=results,  envir = new.env())
+  #file.copy("METABO_Summarize_Filtering.pdf", file.path(path,"METABO_Summarize_Filtering.pdf" ), overwrite = TRUE)
+
+  LFQService::render_METABO_SummarizeFiltering_rmd(results , dest_path = ".",  workdir=".")
 }
 

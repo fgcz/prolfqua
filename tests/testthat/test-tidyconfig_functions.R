@@ -11,6 +11,9 @@ test_that("run script_MetaboExample_create.R",{
   source("script_MetaboExample_create.R", echo=FALSE)
 })
 
+test_that("run script_Metabo_modelling.R",{
+  source("script_Metabo_modelling.R", echo=FALSE)
+})
 
 test_that("run test_resultsV1_2954_modelling.R",{
   source("script_resultsV1_2954_modelling.R", echo=FALSE)
