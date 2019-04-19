@@ -6,3 +6,7 @@ doc
 .Ruserdata
 /inst/rmarkdown/*.pdf
 /data/*.rds
+/tests/testthat/*.pdf
+/tests/testthat/*.Rmd
+/tests/testthat/*.log
+/tests/testthat/*_files/
