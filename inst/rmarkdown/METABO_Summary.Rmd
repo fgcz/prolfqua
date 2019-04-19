@@ -161,7 +161,7 @@ We apply the `vsn::justvsn` transformation to the data. This transformation tran
 Because of this, we can't report CV anymore but report standard deviations.
 
 ```{r transformIntensities}
-dataTransformed <- LFQService::applyToIntensityMatrix(data, config, vsn::justvsn)
+dataTransformed <- LFQService::applyToIntensityMatrix(data, config, robust_scale)
 config$parameter$is_intensity_transformed = TRUE
 ```
 

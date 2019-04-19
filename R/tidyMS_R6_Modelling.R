@@ -277,7 +277,7 @@ workflow_contrasts_linfct_write <- function(results, modelName, path, prefix = "
 #' visualize output of `workflow_contrasts_linfct``
 #' @export
 #'
-workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts", subject_Id = "portein_Id"){
+workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts", subject_Id = "protein_Id"){
   fig <- list()
   fig$histogram_coeff_p.values_name <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
 
@@ -304,7 +304,8 @@ workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contra
 #' @export
 workflow_contrasts_linfct_vis_write <- function(contrasts_result,
                                                 path,
-                                                fig.width = 10, fig.height = 10){
+                                                fig.width = 10,
+                                                fig.height = 10){
   p1 <- file.path(path,contrasts_result$histogram_coeff_p.values_name)
   message("Writing: ",p1,"\n")
   pdf(p1, width = fig.width, height = fig.height)

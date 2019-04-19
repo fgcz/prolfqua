@@ -38,8 +38,13 @@ reslist <- workflow_model_analyse_vis(models_base, pepConfig,  modelName)
 modelName  <- "f_Condition_r_peptid_r_patient"
 formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)")
 
-models_interaction <- workflow_model_analyse(results$pepIntensityNormalized, pepConfig, formula_randomPatient, modelName,
+models_interaction <- workflow_model_analyse(results$pepIntensityNormalized,
+                                             pepConfig,
+                                             formula_randomPatient,
+                                             modelName,
                                              isSingular = lme4::isSingular)
+
+
 workflow_model_analyse_write(models_interaction, modelName, results$path)
 reslist <- workflow_model_analyse_vis(models_interaction, pepConfig,  modelName)
 workflow_model_analyse_vis_write(reslist, modelName, path = results$path)

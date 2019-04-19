@@ -5,7 +5,7 @@
 \title{visualize output of `workflow_contrasts_linfct``}
 \usage{
 workflow_contrasts_linfct_vis(contrasts, modelName, prefix = "Contrasts",
-  subject_Id = "portein_Id")
+  subject_Id = "protein_Id")
 }
 \description{
 visualize output of `workflow_contrasts_linfct``

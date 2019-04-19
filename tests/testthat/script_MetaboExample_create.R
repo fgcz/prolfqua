@@ -9,11 +9,14 @@ library(dplyr)
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
 MQSUMMARY<- FALSE
+path <- "firstDraft"
 
-
+#resMetaboDataProgenesis <- readRDS(file="c:/Users/wewol/prog/LFQService/inst/samples/resMetabo.rda")
+#usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
 resMetabo <- LFQService::resMetaboDataProgenesis
 resMetabo <- resMetabo  %>% mutate(NRS = gsub( "NRS","NRS_",NRS))
 resMetabo %>% rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
+
 createMetaboCompoundConfiguration <- function(isotopeLabel="isotope",
                                                   qValue="Score"){
   atable <- AnalysisTableAnnotation$new()
@@ -40,34 +43,23 @@ createMetaboCompoundConfiguration <- function(isotopeLabel="isotope",
   return(configuration)
 }
 
-config <- createSpectronautPeptideConfiguration()
+config <- createMetaboCompoundConfiguration()
 precursorData <- setup_analysis(resMetabo, config)
 precursorData <- remove_small_intensities(precursorData, config,threshold = 4)
 
 # filter qvalues and aggregate peptides -----
-#config$parameter$maxqVal_experiment_threshold
-config$parameter$qVal_experiment_threshold = 0.001
-config$parameter$qVal_individual_threshold = 0.05
 hierarchyCounts(precursorData,config)
-#data_NA_QVal <- filter_byQValue(precursorData, config)
-
-#head(data_NA_QVal)
-
-#data_NA_QVal$EG.Qvalue
-
-
-
 # This code should be the same for maxquant ----
 
 resDataStart <- LFQService::make_interaction_column_config(precursorData, config)
 
-if(!dir.exists(path)){
-  dir.create(path)
-}
+#if(!dir.exists(path)){
+#  dir.create(path)
+#}
 
 
-readr::write_csv(resDataStart, path = file.path(path, "annotatedTable_Peptide_RAW_Data.csv"))
-saveRDS(config,file.path(path,"config.Rdata"))
+#readr::write_csv(resDataStart, path = file.path(path, "annotatedTable_Peptide_RAW_Data.csv"))
+#saveRDS(config,file.path(path,"config.Rdata"))
 
 if(MQSUMMARY){
   LFQService::render_METABO_Summary_rmd(resDataStart, config , dest_path = path,  workdir=".")
@@ -111,7 +103,7 @@ results$HEATMAP <- TRUE
 results$path <- path
 params <- results
 
-saveRDS(results, file="allData.rds")
+#saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){
   LFQService::render_METABO_SummarizeFiltering_rmd(resDataStart, config , dest_path = path,  workdir=".")
