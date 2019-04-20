@@ -20,12 +20,14 @@ Imports:
     ggbeeswarm,
     glue,
     heatmap3,
+    magrittr,
     multcomp,
     quantable,
     purrr,
     readxl,
     tidyverse,
-    yaml
+    yaml,
+    tidyr
 Suggests:
     knitr,
     rmarkdown,

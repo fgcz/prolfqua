@@ -19,8 +19,8 @@ config <- spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- spectronautDIAData250_analysis
 data <- transform_work_intensity(data, config, log2)
-x1 <- compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
-x2 <- compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
-x3 <- compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
+x1 <- deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
+x2 <- deprecated_compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
+x3 <- deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
 (head(x1))
 }
