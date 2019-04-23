@@ -30,7 +30,10 @@ models_base <- workflow_model_analyse(results$pepIntensityNormalized, pepConfig,
                                       isSingular = lme4::isSingular)
 #workflow_model_analyse_write(models_base, modelName, results$path)
 reslist <- workflow_model_analyse_vis(models_base, pepConfig,  modelName)
-#workflow_model_analyse_vis_write(reslist, modelName, path = results$path)
+workflow_model_analyse_vis_write(reslist, path = results$path)
+
+
+
 
 
 

@@ -4,7 +4,7 @@
 \alias{workflow_model_analyse_write}
 \title{writes results of `workflow_model_analyse`, anova table and all the coefficients with parameters.}
 \usage{
-workflow_model_analyse_write(modellingResult, modelName, path)
+workflow_model_analyse_write(modellingResult, path)
 }
 \description{
 writes results of `workflow_model_analyse`, anova table and all the coefficients with parameters.

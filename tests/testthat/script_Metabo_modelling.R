@@ -23,7 +23,7 @@ modellingResult_A <- workflow_model_analyse(results$dataTransformed,
 
 
 visualization <- workflow_model_analyse_vis(modellingResult_A,pepConfig ,  modelName)
-workflow_model_analyse_vis_write(visualization,modelName,path = results$path)
+workflow_model_analyse_vis_write(visualization,path = results$path)
 
 
 ## Compute contrasts between main factors

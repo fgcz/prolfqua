@@ -69,7 +69,7 @@ results <- workflow_MQ_protoV1(resDataStart, config, path ,
                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 
 protintensity <- LFQService::workflow_MQ_protein_quants( results )
-
+LFQService::toWideConfig(protintensity$data, protintensity$config)
 
 
 #readr::write_csv(protintensity$data,
