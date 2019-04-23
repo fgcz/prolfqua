@@ -485,7 +485,7 @@ summarizeProteins <- function( x, configuration ){
 #' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 2, factor_level=0 )
 #' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 3 )
 #' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4 )
-#'
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4, factor_level=1 )
 summarizeHierarchy <- function(x,
                                configuration,
                                hierarchy_level = 1,

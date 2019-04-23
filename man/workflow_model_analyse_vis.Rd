@@ -4,7 +4,8 @@
 \alias{workflow_model_analyse_vis}
 \title{visualize workflow model analyse results}
 \usage{
-workflow_model_analyse_vis(modellingResult, config, modelName)
+workflow_model_analyse_vis(modellingResult, modelName,
+  subject_Id = "protein_Id")
 }
 \description{
 used in p2901
@@ -14,8 +15,14 @@ used in p2901
 D <- LFQService::resultsV12954
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
-res <- workflow_model_analyse_vis(modellingResult,D$config_pepIntensityNormalized, modelName)
+modellingResult <-  workflow_model_analyse(
+ D$pepIntensityNormalized,
+ formula_randomPeptide,
+ modelName,
+ D$config_pepIntensityNormalized$table$hkeysLevel())
+
+res <- workflow_model_analyse_vis(modellingResult,
+ modelName,D$config_pepIntensityNormalized$table$hkeysLevel())
 #workflow_model_analyse_vis_write(res,modelName,path = ".")
 
 }

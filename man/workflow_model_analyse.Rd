@@ -4,7 +4,8 @@
 \alias{workflow_model_analyse}
 \title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
 \usage{
-workflow_model_analyse(pepIntensity, config, modelFunction, modelName)
+workflow_model_analyse(pepIntensity, modelFunction, modelName,
+  subject_Id = "protein_Id")
 }
 \description{
 used in project p2901
@@ -17,9 +18,8 @@ pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
 config$table$hkeysLevel()
 modellingResult <- workflow_model_analyse( pepIntensity,
- config,
  formula_randomPeptide,
  modelName,
- isSingular = lme4::isSingular)
+ config$table$hkeysLevel())
 
 }

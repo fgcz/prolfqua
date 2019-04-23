@@ -14,7 +14,7 @@ model_full_lmer <- function(config, factor_level=2, random= NULL){
                         paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
                         " + ",
                         paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
-                        paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"))
+                        paste0(" + (1|", config$table$hkeysLevel(TRUE),")"))
   if(!is.null(random)){
     formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
   }
@@ -167,22 +167,18 @@ isSingular_lm <- function(m){
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
 #' modellingResult <- workflow_model_analyse( pepIntensity,
-#'  config,
 #'  formula_randomPeptide,
 #'  modelName,
-#'  isSingular = lme4::isSingular)
+#'  config$table$hkeysLevel())
 #'
 workflow_model_analyse <- function(pepIntensity,
-                                   config,
                                    modelFunction,
-                                   modelName)
+                                   modelName,
+                                   subject_Id = "protein_Id")
 {
-
-  hierarchyKey <- config$table$hkeysLevel()
   pepIntensity %>%
-    dplyr::group_by(!!!syms(hierarchyKey)) %>%
+    dplyr::group_by(!!!syms(subject_Id)) %>%
     tidyr::nest() -> nestProtein
-  prot_stats <- summarizeHierarchy(pepIntensity, config)
 
   lmermodel <- paste0("lmer_", modelName)
   exists_lmer <- paste0("exists_lmer_", modelName)
@@ -208,22 +204,18 @@ workflow_model_analyse <- function(pepIntensity,
   modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  .coef_df ))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  .anova_df ))
-  modelProteinF <- dplyr::inner_join(modelProteinF, prot_stats)
 
-  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>%
+  Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(subject_Id), !!sym(Coeffs_model), isSingular, nrcoef) %>%
     tidyr::unnest()
-  Model_Coeff <- dplyr::inner_join(prot_stats, Model_Coeff)
-  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Anova_model), isSingular, nrcoef) %>%
+  Model_Anova <- modelProteinF %>% dplyr::select(!!sym(subject_Id), !!sym(Anova_model), isSingular, nrcoef) %>%
     tidyr::unnest()
-  Model_Anova <-dplyr::inner_join( prot_stats , Model_Anova )
-
   return(list(modelProteinF = modelProteinF,
               no_ModelProtein = no_ModelProtein,
               modelName = modelName,
               Model_Coeff=Model_Coeff,
-              Model_Coeff_name = paste0("Coef_",modelName, ".txt"),
-              Model_Anova= Model_Anova,
-              Model_Anova_name = paste0("ANOVA_",modelName,".txt" )
+              fname_Model_Coeff = paste0("Coef_",modelName, ".csv"),
+              Model_Anova = Model_Anova,
+              fname_Model_Anova = paste0("ANOVA_",modelName,".csv" )
               ))
 }
 
@@ -232,9 +224,9 @@ workflow_model_analyse <- function(pepIntensity,
 workflow_model_analyse_write <- function(modellingResult, path){
   message("writing tables into :", path)
   readr::write_csv(modellingResult$Model_Coeff,
-                   path = file.path( path,modellingResult$Model_Coeff_name ))
+                   path = file.path( path,modellingResult$fname_Model_Coeff ))
   readr::write_csv(modellingResult$Model_Anova,
-                   path = file.path( path , modellingResult$Model_Anova_name ))
+                   path = file.path( path , modellingResult$fname_Model_Anova ))
 }
 
 #' visualize workflow model analyse results
@@ -247,11 +239,17 @@ workflow_model_analyse_write <- function(modellingResult, path){
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-#' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,D$config_pepIntensityNormalized, formula_randomPeptide, modelName)
-#' res <- workflow_model_analyse_vis(modellingResult,D$config_pepIntensityNormalized, modelName)
+#' modellingResult <-  workflow_model_analyse(
+#'  D$pepIntensityNormalized,
+#'  formula_randomPeptide,
+#'  modelName,
+#'  D$config_pepIntensityNormalized$table$hkeysLevel())
+#'
+#' res <- workflow_model_analyse_vis(modellingResult,
+#'  modelName,D$config_pepIntensityNormalized$table$hkeysLevel())
 #' #workflow_model_analyse_vis_write(res,modelName,path = ".")
 #'
-workflow_model_analyse_vis <- function(modellingResult, config, modelName) {
+workflow_model_analyse_vis <- function(modellingResult,  modelName, subject_Id ="protein_Id") {
 
   lmermodel <- paste0("lmer_", modelName)
   exists_lmer <- paste0("exists_lmer_", modelName)
@@ -260,38 +258,37 @@ workflow_model_analyse_vis <- function(modellingResult, config, modelName) {
   Model_Coeff <- modellingResult$Model_Coeff
   Model_Anova <- modellingResult$Model_Anova
 
-  hierarchyKey <- config$table$hierarchyKeys()[1]
   modelProteinF <- modellingResult$modelProteinF
 
   fig <- list()
 
   ## Coef_Histogram
-  fig$histogram_coeff_p.values_name <- paste0("Coef_Histogram_",modelName,".pdf")
+  fig$fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",modelName,".pdf")
   fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
 
   ## Coef_VolcanoPlot
-  fig$VolcanoPlot_name <- paste0("Coef_VolcanoPlot_",modelName,".pdf")
+  fig$fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",modelName,".pdf")
   fig$VolcanoPlot <- Model_Coeff %>%
     dplyr::filter(row.names.x. != "(Intercept)") %>%
     quantable::multigroupVolcano(
       effect = "Estimate",
       type = "Pr...t..",
       condition = "row.names.x.",
-      label = hierarchyKey ,
+      label = subject_Id ,
       xintercept = c(-1, 1) ,
       colour = "isSingular" )
 
   ## Coef_Pairsplot
   forPairs <- Model_Coeff %>%
-    dplyr::select(!!sym(hierarchyKey) , row.names.x. ,  Estimate ) %>%
+    dplyr::select(!!sym(subject_Id) , row.names.x. ,  Estimate ) %>%
     tidyr::spread(row.names.x.,Estimate )
-  fig$Pairsplot_Coef_name <- paste0("Coef_Pairsplot_",modelName,".pdf")
+  fig$fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_",modelName,".pdf")
   fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
 
   ## Anova_p.values
-  fig$histogram_anova_p.values_name <- paste0("Anova_p.values_", modelName, ".pdf")
+  fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
   fig$histogram_anova_p.values <- ggplot(data=modellingResult$Model_Anova, aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~rownames.x.)
@@ -308,30 +305,65 @@ workflow_model_analyse_vis_write <- function(modelling_result,
                                              path,
                                              fig.width = 10 ,
                                              fig.height = 10){
-  fpath <- file.path(path, modelling_result$histogram_coeff_p.values_name)
+  fpath <- file.path(path, modelling_result$fname_histogram_coeff_p.values)
   message("Writing figure into : ", fpath, "\n")
   pdf(fpath, width = fig.width, height = fig.height )
   print(modelling_result$histogram_coeff_p.values)
   dev.off()
 
-  fpath <- file.path(path,modelling_result$VolcanoPlot_name)
+  fpath <- file.path(path, modelling_result$fname_VolcanoPlot)
   message("Writing figure into : ", fpath, "\n")
   pdf(fpath,
       width = fig.width , height = fig.height)
   print(modelling_result$VolcanoPlot)
   dev.off()
 
-  fpath <- file.path(path, modelling_result$Pairsplot_Coef_names)
+  fpath <- file.path(path, modelling_result$fname_Pairsplot_Coef)
   message("Writing figure into : ", fpath, "\n")
   pdf(fpath, width = fig.width , height = fig.height)
   print(modelling_result$Pairsplot_Coef)
   dev.off()
 
-  fpath <- file.path(path,modelling_result$histogram_anova_p.values_names)
+  fpath <- file.path(path, modelling_result$fname_histogram_anova_p.values)
   message("Writing figure into : ", fpath, "\n")
   pdf(fpath, width = fig.width , height = fig.height)
   print(modelling_result$histogram_anova_p.values)
   dev.off()
+}
+
+#' workflow_model_analyse_ALL
+#' @export
+#' @references function with paramter path
+#' @examples
+#' D <- LFQService::resultsV12954
+#' modelName <- "f_condtion_r_peptide"
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' modellingResult <-  workflow_model_analyse_ALL(D$pepIntensityNormalized,
+#'  formula_randomPeptide,
+#'   modelName,
+#'  subject_Id = D$config_pepIntensityNormalized$table$hkeysLevel())
+#' reslist <- modellingResult()
+workflow_model_analyse_ALL <- function(data,
+                                       modelFunction,
+                                       modelName,
+                                       subject_Id = "protein_Id"){
+
+  modellingResult <- workflow_model_analyse(data,
+                                            modelFunction,
+                                            modelName,
+                                            subject_Id)
+  visualization <- workflow_model_analyse_vis(modellingResult, modelName, subject_Id)
+
+  # delay write
+  res_fun <- function(path = NULL){
+    if(!is.null(path)){
+      workflow_model_analyse_write(modellingResult, path)
+      workflow_model_analyse_vis_write(visualization, path)
+    }else{
+      return(list(modellingResult = modellingResult, modelVisualization = visualization))
+    }
+  }
+  return(res_fun)
 }
 
 
@@ -775,7 +807,8 @@ workflow_contrasts_linfct <- function(models,
 #' write results of `workflow_contrasts_linfct`
 #' @export
 #'
-workflow_contrasts_linfct_write <- function(results, modelName,
+workflow_contrasts_linfct_write <- function(results,
+                                            modelName,
                                             path,
                                             prefix = "Contrasts",
                                             subject_Id = "protein_Id"){
@@ -795,15 +828,17 @@ workflow_contrasts_linfct_write <- function(results, modelName,
 #' visualize output of `workflow_contrasts_linfct``
 #' @export
 #'
-workflow_contrasts_linfct_vis <- function(contrasts, modelName, prefix = "Contrasts", subject_Id = "protein_Id"){
+workflow_contrasts_linfct_vis <- function(contrasts,
+                                          modelName,
+                                          prefix = "Contrasts",
+                                          subject_Id = "protein_Id"){
   fig <- list()
-  fig$histogram_coeff_p.values_name <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
-
+  fig$fname_histogram_coeff_p.values <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
   fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
     geom_histogram(bins = 20) +
     facet_wrap(~lhs)
 
-  fig$VolcanoPlot_name <- paste0(prefix,"_Volcano_",modelName,".pdf")
+  fig$fname_VolcanoPlot <- paste0(prefix,"_Volcano_",modelName,".pdf")
   fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
                                                   effect = "estimate",
                                                   type = "p.value",
@@ -825,12 +860,12 @@ workflow_contrasts_linfct_vis_write <- function(contrasts_result,
                                                 fig.width = 10,
                                                 fig.height = 10){
   if(!is.null(path)){
-    p1 <- file.path(path,contrasts_result$histogram_coeff_p.values_name)
+    p1 <- file.path(path,contrasts_result$fname_histogram_coeff_p.values)
     message("Writing: ",p1,"\n")
     pdf(p1, width = fig.width, height = fig.height)
     print(contrasts_result$histogram_coeff_p.values)
     dev.off()
-    p2<- file.path(path,contrasts_result$VolcanoPlot_name)
+    p2<- file.path(path,contrasts_result$fname_VolcanoPlot)
     message("Writing: ",p2,"\n")
     pdf(p2, width = fig.width, height = fig.height)
     print(contrasts_result$VolcanoPlot)

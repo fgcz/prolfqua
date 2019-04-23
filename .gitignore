@@ -9,4 +9,6 @@ doc
 /tests/testthat/*.pdf
 /tests/testthat/*.Rmd
 /tests/testthat/*.log
+/tests/testthat/*.csv
+/tests/testthat/*.txt
 /tests/testthat/*_files/
