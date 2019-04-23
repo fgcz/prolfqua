@@ -109,6 +109,26 @@ make_custom_model_lm <- function( modelstr ) {
 
 # computing contrast ----
 
+#' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
+#' @export
+#'
+pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = "protein_Id"){
+  modelWithInteractionsContrasts %>%
+    dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
+    dplyr::mutate(lhs = glue::glue('estimate.{lhs}')) %>%
+    tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
+
+  modelWithInteractionsContrasts %>%
+    dplyr::select_at(c(subject_Id, "lhs", "p.value")) %>%
+    dplyr::mutate(lhs = glue::glue('p.value.{lhs}')) %>%
+    tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
+
+  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate,
+                                                     modelWithInteractions.p.value)
+  return(modelWithInteractionsContrasts_Pivot)
+}
+
+
 #' compute group averages
 #'
 #' used in p2621, p2109
@@ -213,41 +233,7 @@ workflow_contrasts_linfct_vis_write <- function(contrasts_result,
   }
 }
 
-#' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
-#' @export
-#'
-pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = "protein_Id"){
-  modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
-    dplyr::mutate(lhs = glue::glue('estimate.{lhs}')) %>%
-    tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
 
-  modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id, "lhs", "p.value")) %>%
-    dplyr::mutate(lhs = glue::glue('p.value.{lhs}')) %>%
-    tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
-
-  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate,
-                                                     modelWithInteractions.p.value)
-  return(modelWithInteractionsContrasts_Pivot)
-}
-
-#' get all model coefficients
-#' @export
-coef_df <-  function(x){
-  x <- coef(summary(x));
-  x<- data.frame(row.names(x), x);
-  return(x)
-}
-
-#' run analysis of variance on model and get results
-#' @export
-anova_df <- function(x){
-  x <- anova(x)
-  colnames(x) <- make.names(colnames(x))
-  x <- data.frame(rownames(x), x)
-  return(x)
-}
 
 # visualize lmer modelling results ----
 
@@ -589,6 +575,22 @@ my_contest <- function(model, linfct , sep=TRUE){
 
 # Fit the models to data ----
 
+# get all model coefficients
+.coef_df <-  function(x){
+  x <- coef(summary(x));
+  x<- data.frame(row.names(x), x);
+  return(x)
+}
+
+# run analysis of variance on model and get results
+.anova_df <- function(x){
+  x <- anova(x)
+  colnames(x) <- make.names(colnames(x))
+  x <- data.frame(rownames(x), x)
+  return(x)
+}
+
+
 #' check if lm model is singular
 #' @export
 #'
@@ -653,8 +655,8 @@ workflow_model_analyse <- function(pepIntensity,config,
   }
 
   modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  coef_df ))
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  anova_df ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Coeffs_model := purrr::map( !!sym(lmermodel),  .coef_df ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!Anova_model := purrr::map( !!sym(lmermodel),  .anova_df ))
   modelProteinF <- dplyr::inner_join(modelProteinF, prot_stats)
 
   Model_Coeff <- modelProteinF %>% dplyr::select(!!sym(hierarchyKey), !!sym(Coeffs_model), isSingular, nrcoef) %>%
@@ -755,28 +757,28 @@ workflow_model_analyse_vis_write <- function(modelling_result,
                                              path,
                                              fig.width = 10 ,
                                              fig.height = 10){
-  path <- file.path(path, modelling_result$histogram_coeff_p.values_name)
-  message("Writing figure into : ", path, "\n")
-  pdf(path, width = fig.width, height = fig.height )
+  fpath <- file.path(path, modelling_result$histogram_coeff_p.values_name)
+  message("Writing figure into : ", fpath, "\n")
+  pdf(fpath, width = fig.width, height = fig.height )
   print(modelling_result$histogram_coeff_p.values)
   dev.off()
 
-  path <- file.path(path,modelling_result$VolcanoPlot_name)
-  message("Writing figure into : ", path, "\n")
-  pdf(path,
+  fpath <- file.path(path,modelling_result$VolcanoPlot_name)
+  message("Writing figure into : ", fpath, "\n")
+  pdf(fpath,
       width = fig.width , height = fig.height)
   print(modelling_result$VolcanoPlot)
   dev.off()
 
-  path <- file.path(path, modelling_result$Pairsplot_Coef_names)
-  message("Writing figure into : ", path, "\n")
-  pdf(path, width = fig.width , height = fig.height)
+  fpath <- file.path(path, modelling_result$Pairsplot_Coef_names)
+  message("Writing figure into : ", fpath, "\n")
+  pdf(fpath, width = fig.width , height = fig.height)
   print(modelling_result$Pairsplot_Coef)
   dev.off()
 
-  path <- file.path(path,modelling_result$histogram_anova_p.values_names)
-  message("Writing figure into : ", path, "\n")
-  pdf(path, width = fig.width , height = fig.height)
+  fpath <- file.path(path,modelling_result$histogram_anova_p.values_names)
+  message("Writing figure into : ", fpath, "\n")
+  pdf(fpath, width = fig.width , height = fig.height)
   print(modelling_result$histogram_anova_p.values)
   dev.off()
 }
