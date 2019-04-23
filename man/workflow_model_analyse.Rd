@@ -4,8 +4,7 @@
 \alias{workflow_model_analyse}
 \title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
 \usage{
-workflow_model_analyse(pepIntensity, config, modelFunction, modelName,
-  isSingular = isSingular_lm)
+workflow_model_analyse(pepIntensity, config, modelFunction, modelName)
 }
 \description{
 used in project p2901

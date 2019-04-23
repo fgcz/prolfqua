@@ -9,3 +9,8 @@ make_custom_model_lm(modelstr)
 \description{
 Create custom ml model
 }
+\examples{
+tmp <- make_custom_model_lm("Intensity ~ condition")
+tmp$model_fun(get_formula=TRUE)
+tmp$isSingular
+}
