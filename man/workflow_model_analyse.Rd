@@ -2,24 +2,24 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_model_analyse}
 \alias{workflow_model_analyse}
-\title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
+\title{workflow_model_analyse}
 \usage{
-workflow_model_analyse(pepIntensity, modelFunction, modelName,
+workflow_model_analyse(data, modelFunction, modelName,
   subject_Id = "protein_Id")
 }
 \description{
-used in project p2901
+workflow_model_analyse
 }
 \examples{
 D <- LFQService::resultsV12954
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
-pepIntensity <- D$pepIntensityNormalized
-config <- D$config_pepIntensityNormalized
-config$table$hkeysLevel()
-modellingResult <- workflow_model_analyse( pepIntensity,
+modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
  formula_randomPeptide,
- modelName,
- config$table$hkeysLevel())
-
+  modelName,
+ subject_Id = D$config_pepIntensityNormalized$table$hkeysLevel())
+reslist <- modellingResult()
+}
+\references{
+function with paramter path
 }

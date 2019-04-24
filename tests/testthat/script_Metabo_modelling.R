@@ -16,15 +16,16 @@ pepConfig$table$factorKeys()
 modelName  <- "f_Mortality_Intervention_NRS"
 modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortality + Intervention  + NRS")
 
-modellingResult_A <- workflow_model_analyse(results$dataTransformed,
+modellingResult_A <- model_analyse(results$dataTransformed,
                                             modelFunction,
                                             modelName,
                                             subject_Id = pepConfig$table$hkeysLevel())
 
-visualization <- workflow_model_analyse_vis(modellingResult_A,  modelName,pepConfig$table$hkeysLevel())
 
-workflow_model_analyse_write(modellingResult_A, results$path)
-workflow_model_analyse_vis_write(visualization,path = results$path)
+
+visualization <- model_analyse_summarize_vis(modellingResult_A,  modelName,pepConfig$table$hkeysLevel())
+model_analyse_summarize_write(modellingResult_A, results$path)
+model_analyse_summarize_vis_write(visualization,path = results$path)
 
 
 
@@ -32,14 +33,6 @@ workflow_model_analyse_vis_write(visualization,path = results$path)
 m <- modellingResult_A$modelProteinF$lmer_f_Mortality_Intervention_NRS[[1]]
 head(modellingResult_A$modelProteinF)
 
-get_model_fit <- function(modelProteinF, i = 1){
-
-  lmod <-modellingResult_A$modelProteinF %>%
-    dplyr::filter(nrcoef == max(nrcoef) & isSingular == FALSE) %>%
-    dplyr::select(starts_with("lmer_")) %>% dplyr::pull()
-  m <- lmod[[1]]
-  return(m)
-}
 
 factor_contrasts <- linfct_factors_contrasts(m)
 factor_levelContrasts <- workflow_contrasts_linfct( modellingResult_A$modelProteinF,
@@ -88,12 +81,12 @@ modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale   ~ Mortal
 pepIntensity <- results$dataTransformed
 pepConfig <- results$config_dataTransformed
 
-modellingResult_B <- workflow_model_analyse(results$dataTransformed,
+modellingResult_B <- model_analyse(results$dataTransformed,
                                             results$config_dataTransformed,
                                             modelFunction,
                                             modelName)
 
-res <-workflow_model_analyse_ALL(results$dataTransformed,
+res <-workflow_model_analyse(results$dataTransformed,
                                  modelFunction,
                                  modelName,
                                  subject_Id = pepConfig$table$hkeysLevel())

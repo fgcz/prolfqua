@@ -50,11 +50,11 @@
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"
 #' pepConfig <- D$config_pepIntensityNormalized
-#' modellingResult <- workflow_model_analyse( D$pepIntensityNormalized,
+#' modellingResult <- model_analyse( D$pepIntensityNormalized,
 #' formula_randomPeptide,
 #' subject_Id = pepConfig$table$hkeysLevel(),
 #' modelName)
-#' results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProteinF,
+#' results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
 #' modelName,
 #' D$config_pepIntensityNormalized)
 #'

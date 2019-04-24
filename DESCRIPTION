@@ -1,7 +1,7 @@
 Package: LFQService
 Type: Package
 Title: Analysing complex LFQ experiments.
-Version: 0.1.1
+Version: 0.1.2
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
 Description: Analysing complex label free quantification (LFQ) experiments using linear models.
