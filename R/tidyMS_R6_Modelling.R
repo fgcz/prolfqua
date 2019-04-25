@@ -392,15 +392,18 @@ workflow_model_analyse <- function(data,
 
   # delay write
   res_fun <- function(path = NULL){
+    summaryResult <- model_analyse_summarize(modellingResult$modelProtein,
+                                             modelName,
+                                             subject_Id)
+    visualization <- model_analyse_summarize_vis(summaryResult, modelName, subject_Id)
+
     if(!is.null(path)){
-      summaryResult <- model_anlyse_summarize(modellingResult, modelName, subject_Id)
-      visualization <- model_analyse_summarize_vis(summaryResult, modelName, subject_Id)
       model_analyse_summarize_write(summaryResult, path)
       model_analyse_summarize_vis_write(visualization, path)
-      return(list(summary = summaryResult, visualization = visualization))
-    }else{
-      return(modellingResult)
     }
+    return(list(modellingResult = modellingResult,
+                summaryResult = summaryResult,
+                visualization = visualization))
   }
   return(res_fun)
 }
