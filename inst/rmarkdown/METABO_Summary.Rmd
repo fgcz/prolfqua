@@ -50,17 +50,17 @@ knitr::kable(table_factors(data,config), caption = "Sample Name to Raw file mapp
 
 ```{r hierarchyCounts}
 x <- hierarchyCounts( data , config )
-knitr::kable(data.frame(NR = x), caption="Number of peptides and proteins")
+knitr::kable(data.frame(NR = x), caption="Number of Compounds")
 ```
 
 
 ```{r hierarchyCountsSample }
-knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "Number of quantified peptides and proteins per sample.")
+knitr::kable(hierarchy_counts_sample(data, configuration = config), caption = "Number of quantified Compounds per sample.")
 
 ```
 
 
-```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
+```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified Compounds per sample."}
 hcs <- hierarchy_counts_sample(data, configuration = config)
 LFQService::skylineconfig$table$sampleName
 hcs <- hcs %>% gather("key", "nr",
@@ -80,7 +80,7 @@ x3 <- summarizeHierarchy(data, config)
 ```
 
 
-```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0,1,2 etc. mssing value."}
+```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of compounds with 0,1,2 etc. mssing value."}
 p <- missignessHistogram(data, config)
 xx1 <- missingPerCondition(data, config)
 xx2 <- missingPerConditionCumsum(data, config)
@@ -166,7 +166,7 @@ config$parameter$is_intensity_transformed = TRUE
 ```
 
 
-```{r sdviolinplots,fig.cap="Visualization of peptide standard deviations. A) all. B) - for low (bottom 50) and high intensity peptides (top 50)."}
+```{r sdviolinplots,fig.cap="Visualization of compounds standard deviations. A) all. B) - for low (bottom 50) and high intensity compounds (top 50)."}
 stats_res <- summarize_cv(dataTransformed, config)
 
 if(params$plot_density){
@@ -207,7 +207,7 @@ knitr::kable(sd_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantile
 
 
 
-```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation."}
+```{r plotTransformedIntensityDistributions, fig.cap="Compounds intensity distribution after transformation."}
 if(params$plot_density){
   p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) + theme(legend.text=element_text(size=5))
   p1
@@ -221,12 +221,12 @@ if(params$plot_density){
 
 
 
-```{r correlationHeat, fig.height = 5, fig.cap="Heatmap of peptide intensity correlation between samples"}
+```{r correlationHeat, fig.height = 5, fig.cap="Heatmap of Compounds intensity correlation between samples"}
 plot_heatmap_cor(dataTransformed,config)
 ```
 
 
-```{r overviewHeat, fig.cap="Sample and peptide/protein Heatmap."}
+```{r overviewHeat, fig.cap="Sample and compounds Heatmap."}
 if(params$plot_sd_vs_mean){
   plot_heatmap(dataTransformed,config)
 }
@@ -238,7 +238,7 @@ if(params$plot_sd_vs_mean){
 
 We estimated the _Variance_ of the measurement using the QC samples. For each protein we can compute the standard deviation based on the 4 QC samples. The distribution of the standard deviations is shown in Figure \@ref(fig:sdviolinplots).
 
-This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of 2 at a significance level of $1-0.05$ and power of $0.8$ for $25, 50, 75, 90$ percent of the proteins.
+This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of 2 at a significance level of $1-0.05$ and power of $0.8$ for $25, 50, 75, 90$ percent of the compounds.
 
 
 ```{r sampleSize}

@@ -17,13 +17,13 @@ modelName  <- "f_Mortality_Intervention_NRS"
 modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortality + Intervention  + NRS")
 
 modellingResult_A <- model_analyse(results$dataTransformed,
-                                            modelFunction,
-                                            modelName,
-                                            subject_Id = pepConfig$table$hkeysLevel())
+                                   modelFunction,
+                                   modelName,
+                                   subject_Id = pepConfig$table$hkeysLevel())
 
 
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
-visualization <- model_analyse_summarize_vis(modelSummary_A,  modelName,pepConfig$table$hkeysLevel())
+visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())
 model_analyse_summarize_write(modelSummary_A , results$path)
 model_analyse_summarize_vis_write(visualization ,path = results$path)
 
@@ -54,6 +54,7 @@ models_interaction_Averages <- workflow_contrasts_linfct( modelSummary_A$modelPr
                                                           modelSummary_A$modelName,
                                                           linfct$linfct_factors,
                                                           subject_Id = pepConfig$table$hkeysLevel() )
+
 workflow_contrasts_linfct_write(models_interaction_Averages,
                                 modellingResult_A$modelName ,
                                 prefix = "GroupAverages",
@@ -64,9 +65,11 @@ wfs <- workflow_contrasts_linfct_vis(models_interaction_Averages,
                                      modellingResult_A$modelName ,
                                      prefix = "GroupAverages",
                                      subject_Id = "Compound")
-
 workflow_contrasts_linfct_vis_write(wfs, path=results$path)
 
+contrastres_fun <- workflow_contrasts_linfct_ALL(modelSummary_A, linfct$linfct_factors , subject_Id = pepConfig$table$hkeysLevel(), prefix = "GroupAverages" )
+contrasts <- contrastres_fun()
+res <- contrastres_fun(path=results$path)
 
 
 
@@ -81,16 +84,15 @@ pepIntensity <- results$dataTransformed
 pepConfig <- results$config_dataTransformed
 
 modellingResult_B <- model_analyse(results$dataTransformed,
-                                            modelFunction,
-                                            modelName, subject_Id = "Compound")
+                                   modelFunction,
+                                   modelName, subject_Id = "Compound")
 
 res <-workflow_model_analyse(results$dataTransformed,
-                                 modelFunction,
-                                 modelName,
-                                 subject_Id = pepConfig$table$hkeysLevel())
+                             modelFunction,
+                             modelName,
+                             subject_Id = pepConfig$table$hkeysLevel())
 
 ## rund model comparison ----
-
 lltest <- workflow_likelihood_ratio_test(modelSummary_A$modelProteinF,
                                          modelSummary_A$modelName,
                                          res()$summaryResult$modelProteinF,

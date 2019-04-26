@@ -29,8 +29,7 @@ formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Conditi
 models_base <- model_analyse(results$pepIntensityNormalized, formula_randomPeptide, modelName)
 summary_base <- model_analyse_summarize(models_base$modelProtein,models_base$modelName)
 #model_analyse_write(models_base, modelName, results$path)
-reslist <- model_analyse_summarize_vis(summary_base,
-                                       summary_base$modelName)
+reslist <- model_analyse_summarize_vis(summary_base)
 model_analyse_summarize_vis_write(reslist, path = results$path)
 
 
@@ -49,7 +48,7 @@ summary_interaction <- model_analyse_summarize(models_interaction$modelProtein,
                                                models_interaction$modelName)
 
 model_analyse_summarize_write(summary_interaction,  results$path)
-reslist <- model_analyse_summarize_vis(summary_interaction,  modelName)
+reslist <- model_analyse_summarize_vis(summary_interaction)
 model_analyse_summarize_vis_write(reslist,  path = results$path)
 
 # saveRDS(models_interaction, file="models_interaction.rda")

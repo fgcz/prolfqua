@@ -151,7 +151,7 @@ knitr::kable(cv_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantile
 
 
 
-```{r intensityDistribution, fig.cap="Not normalized intensity distribution.", fig.height=4}
+```{r intensityDistribution, fig.cap="Not normalized intensity distribution.", fig.height=10, fig.width=10}
 if(params$plot_density){
   p0 <- LFQService::plot_intensity_distribution_density(data,config)  + theme(legend.text=element_text(size=5))
   p0
@@ -166,11 +166,12 @@ if(params$plot_density){
 
 ## Transformed Intensity Distribution
 
-We apply the `vsn::justvsn` transformation to the data. This transformation transfroms and scales the data to reduce the variance.
+We apply the `LFQService::robust_scale` transformation to the data. This transformation transfroms and scales the data to reduce the variance.
 Because of this, we can't report CV anymore but report standard deviations.
 
 ```{r transformIntensities}
-dataTransformed <- LFQService::applyToIntensityMatrix(data, config, vsn::justvsn)
+data <- LFQService::transform_work_intensity(data, config,  log2 )
+dataTransformed <- LFQService::applyToIntensityMatrix(data, config, robust_scale)
 config$parameter$is_intensity_transformed = TRUE
 ```
 
@@ -211,12 +212,12 @@ xx %>% dplyr::mutate(sd_quantiles = map(data, ~toQuantiles(.$sd) )) %>%
 
 
 ```{r printSDTable}
-knitr::kable(sd_quantiles_res, caption="CV at 0.1, 0.25, 0.5, 0.75, 0.9 quantiles.")
+knitr::kable(sd_quantiles_res, caption="standard deviation at 0.1, 0.25, 0.5, 0.75, 0.9 quantiles.")
 ```
 
 
 
-```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation."}
+```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation.", fig.width=10, fig.height=10}
 if(params$plot_density){
   p1 <- LFQService::plot_intensity_distribution_density(dataTransformed,config) + theme(legend.text=element_text(size=5))
   p1

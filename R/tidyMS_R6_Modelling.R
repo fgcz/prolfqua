@@ -221,7 +221,7 @@ model_analyse <- function(pepIntensity,
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
 #'
 #'
-model_analyse_summarize <- function(modelProteinF, modeName, subject_Id = "protein_Id"){
+model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "protein_Id"){
   lmermodel <- paste0("lmer_", modelName)
 
   modelProteinF <- modelProteinF %>% dplyr::filter( !!sym("exists_lmer") == TRUE)
@@ -288,16 +288,15 @@ model_analyse_summarize_write  <- function(modellingResult, path){
 #'  formula_randomPeptide,
 #'  modelName,
 #'  D$config_pepIntensityNormalized$table$hkeysLevel())
-#' tmp <- model_analyse_summarize(modellingResult$modelProtein)
+#' tmp <- model_analyse_summarize(modellingResult$modelProtein,modellingResult$modelName)
 #' res <- model_analyse_summarize_vis(tmp,
-#'  modelName,D$config_pepIntensityNormalized$table$hkeysLevel())
-#' #model_analyse_summarize_vis_write(res,modelName,path = ".")
+#'  D$config_pepIntensityNormalized$table$hkeysLevel())
 #'
-model_analyse_summarize_vis <- function(modellingResult,  modelName, subject_Id ="protein_Id") {
+model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id") {
 
   Model_Coeff <- modellingResult$Model_Coeff
   Model_Anova <- modellingResult$Model_Anova
-
+  modelName <- modellingResult$modelName
   fig <- list()
 
   ## Coef_Histogram
@@ -393,9 +392,9 @@ workflow_model_analyse <- function(data,
   # delay write
   res_fun <- function(path = NULL){
     summaryResult <- model_analyse_summarize(modellingResult$modelProtein,
-                                             modelName,
-                                             subject_Id)
-    visualization <- model_analyse_summarize_vis(summaryResult, modelName, subject_Id)
+                                             modellingResult$modelName,
+                                             subject_Id = subject_Id)
+    visualization <- model_analyse_summarize_vis(summaryResult, subject_Id)
 
     if(!is.null(path)){
       model_analyse_summarize_write(summaryResult, path)
@@ -699,13 +698,16 @@ linfct_all_possible_contrasts <- function( lin_int ){
 #' linfct_factors_contrasts(m)
 linfct_factors_contrasts <- function(m){
   ffac <- attributes(terms(m))$term.labels
+  ffac <- ffac[!grepl(":",ffac)] # remove interactions
   linfct_factors <- linfct_from_model(m)$linfct_factors
+
   factorLevels <- rownames(linfct_factors)
   res <- vector(length(ffac), mode = "list")
   for(i in 1:length(ffac)){
     fac <- ffac[i]
     idx <- grep(fac, factorLevels)
-    res[[i]]<-linfct_all_possible_contrasts(linfct_factors[idx,])
+    linfct_m <- linfct_factors[idx,]
+    res[[i]]<-linfct_all_possible_contrasts(linfct_m)
   }
   res <- do.call(rbind, res)
   return(res)
@@ -843,6 +845,7 @@ workflow_contrasts_linfct <- function(models,
 
   isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular")) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
+  contrasts <- contrasts %>% group_by(lhs) %>% mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup
   return(contrasts)
 }
 
@@ -887,6 +890,13 @@ workflow_contrasts_linfct_vis <- function(contrasts,
                                                   condition = "lhs",
                                                   label = subject_Id,
                                                   xintercept = c(-1, 1), colour = "isSingular")
+  fig$fname_VolcanoPlot_adjust <- paste0(prefix,"_Volcano_p_adjusted",modelName,".pdf")
+  fig$VolcanoPlot_adjust <- quantable::multigroupVolcano(contrasts,
+                                                  effect = "estimate",
+                                                  type = "p.value.adjusted",
+                                                  condition = "lhs",
+                                                  label = subject_Id,
+                                                  xintercept = c(-1, 1), colour = "isSingular")
 
   return(fig)
 }
@@ -907,12 +917,59 @@ workflow_contrasts_linfct_vis_write <- function(contrasts_result,
     pdf(p1, width = fig.width, height = fig.height)
     print(contrasts_result$histogram_coeff_p.values)
     dev.off()
+
+
     p2<- file.path(path,contrasts_result$fname_VolcanoPlot)
     message("Writing: ",p2,"\n")
     pdf(p2, width = fig.width, height = fig.height)
     print(contrasts_result$VolcanoPlot)
     dev.off()
+
+
+    p3<- file.path(path, contrasts_result$fname_VolcanoPlot_adjust)
+    message("Writing: ",p3,"\n")
+    pdf(p3, width = fig.width, height = fig.height)
+    print(contrasts_result$VolcanoPlot_adjust)
+    dev.off()
   }
 }
+
+
+#' Do contrast
+#' @export
+workflow_contrasts_linfct_ALL <- function(modelSummary,
+                                          linfct,
+                                          subject_Id = "protein_Id",
+                                          prefix = "Contrasts")
+{
+  contrast_result <- workflow_contrasts_linfct(modelSummary$modelProteinF,
+                                               modelSummary$modelName,
+                                               linfct,
+                                               subject_Id = pepConfig$table$hkeysLevel() )
+  subject_Id <- subject_Id
+  prefix <- prefix
+  modelName <- modelSummary$modelName
+
+  res_fun <- function(path = NULL){
+    visualization <- workflow_contrasts_linfct_vis(contrast_result,
+                                                   modelName ,
+                                                   prefix = prefix,
+                                                   subject_Id =subject_Id)
+
+
+    if(!is.null(path)){
+      workflow_contrasts_linfct_write(contrast_result,
+                                      modelName ,
+                                      prefix = prefix,
+                                      path=path,
+                                      subject_Id = subject_Id )
+      workflow_contrasts_linfct_vis_write(visualization, path=path)
+    }
+    res <- list(contrast_result = contrast_result, visualization = visualization, modelName = modelName , prefix = prefix  )
+    invisible(res)
+  }
+  return(res_fun)
+}
+
 
 

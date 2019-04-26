@@ -11,6 +11,13 @@ ALLPROTEINPLOTS <- FALSE
 MQSUMMARY<- TRUE
 path <- "."
 
+
+#if(!dir.exists(path)){
+#  dir.create(path)
+#}
+
+
+
 #resMetaboDataProgenesis <- readRDS(file="c:/Users/wewol/prog/LFQService/inst/samples/resMetabo.rda")
 #usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
 resMetabo <- LFQService::resMetaboDataProgenesis
@@ -52,11 +59,6 @@ hierarchyCounts(precursorData,config)
 # This code should be the same for maxquant ----
 
 resDataStart <- LFQService::make_interaction_column_config(precursorData, config)
-
-#if(!dir.exists(path)){
-#  dir.create(path)
-#}
-
 
 #readr::write_csv(resDataStart, path = file.path(path, "annotatedTable_Peptide_RAW_Data.csv"))
 #saveRDS(config,file.path(path,"config.Rdata"))

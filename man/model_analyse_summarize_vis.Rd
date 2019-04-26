@@ -4,8 +4,7 @@
 \alias{model_analyse_summarize_vis}
 \title{visualize workflow model analyse results}
 \usage{
-model_analyse_summarize_vis(modellingResult, modelName,
-  subject_Id = "protein_Id")
+model_analyse_summarize_vis(modellingResult, subject_Id = "protein_Id")
 }
 \description{
 used in p2901
@@ -20,9 +19,8 @@ modellingResult <-  model_analyse(
  formula_randomPeptide,
  modelName,
  D$config_pepIntensityNormalized$table$hkeysLevel())
-tmp <- model_analyse_summarize(modellingResult$modelProtein)
+tmp <- model_analyse_summarize(modellingResult$modelProtein,modellingResult$modelName)
 res <- model_analyse_summarize_vis(tmp,
- modelName,D$config_pepIntensityNormalized$table$hkeysLevel())
-#model_analyse_summarize_vis_write(res,modelName,path = ".")
+ D$config_pepIntensityNormalized$table$hkeysLevel())
 
 }
