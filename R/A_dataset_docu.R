@@ -137,3 +137,7 @@
 #' raw Metabolomics data from progenesis
 #'
 "resMetaboDataProgenesis"
+
+#' modelSummary_A - output of 'model_analyse_summarize'
+"modelSummary_A"
+
