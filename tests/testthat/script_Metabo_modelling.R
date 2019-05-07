@@ -22,7 +22,11 @@ modellingResult_A <- model_analyse(results$dataTransformed,
                                    subject_Id = pepConfig$table$hkeysLevel())
 
 
+
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
+usethis::use_data(modelSummary_A, overwrite = TRUE)
+
+
 visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())
 model_analyse_summarize_write(modelSummary_A , results$path)
 model_analyse_summarize_vis_write(visualization ,path = results$path)
@@ -36,8 +40,9 @@ factor_contrasts <- linfct_factors_contrasts(m)
 factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
                                                     modelSummary_A$modelName,
                                                     factor_contrasts,
-
                                                     subject_Id = pepConfig$table$hkeysLevel() )
+
+
 wfs <- workflow_contrasts_linfct_vis(factor_levelContrasts,
                                      modellingResult_A$modelName,
                                      subject_Id = "Compound")

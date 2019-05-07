@@ -25,6 +25,5 @@ modellingResult <- model_analyse( pepIntensity,
  config$table$hkeysLevel())
 names(modellingResult)
 tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
-
-
+names(tmp)
 }

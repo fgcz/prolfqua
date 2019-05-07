@@ -15,11 +15,9 @@ mb <- LFQService::basicModel_p1807
 linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
-my_glht(mb, linfct$linfct_interactions)
-mi <-  LFQService::interactionModel_p1807
-linfct_int <- linfct_from_model(mb)
-names(linfct_int)
-my_glht(mi, linfct_int$linfct_factors)
-my_glht(mi, linfct_int$linfct_interactions)
+
+m <- LFQService::modelSummary_A$modelProteinF$lmer_f_Mortality_Intervention_NRS[[1]]
+linfct <- linfct_from_model(m)$linfct_factors
+my_glht(m, linfct)
 
 }

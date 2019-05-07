@@ -153,6 +153,8 @@ get_complete_model_fit <- function(modelProteinF,  i = 1){
 #'
 #' @export
 #' @examples
+#' library(tidyverse)
+#' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
@@ -177,11 +179,10 @@ model_analyse <- function(pepIntensity,
 
   nestProtein %>% dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun)) -> modelProtein
 
-  modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
+  modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
 
   modelProteinF <- modelProtein %>% dplyr::filter( !!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"isSingular" := map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
-
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
   nrcoeff <- function(x){
     cc <- coef(x)
     if(class(cc) == "numeric"){
@@ -191,10 +192,10 @@ model_analyse <- function(pepIntensity,
     }
   }
 
-  modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = map_int(!!sym(lmermodel), nrcoeff))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(nrcoef = purrr::map_int(!!sym(lmermodel), nrcoeff))
   #return(list(modelProtein = modelProtein, modelProteinF = modelProteinF))
   modelProteinF <- modelProteinF %>% dplyr::select_at(c(subject_Id,"isSingular", "nrcoef") )
-  modelProtein <- right_join(modelProtein, modelProteinF)
+  modelProtein <- dplyr::right_join(modelProtein, modelProteinF)
 
   return(list(modelProtein = modelProtein,
               modelName = modelName
@@ -219,12 +220,12 @@ model_analyse <- function(pepIntensity,
 #'  config$table$hkeysLevel())
 #' names(modellingResult)
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
-#'
-#'
+#' names(tmp)
 model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "protein_Id"){
   lmermodel <- paste0("lmer_", modelName)
 
   modelProteinF <- modelProteinF %>% dplyr::filter( !!sym("exists_lmer") == TRUE)
+  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
 
   .coef_df <-  function(x){
     x <- coef(summary(x));
@@ -242,12 +243,14 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
   }
 
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"df.residual" := purrr::map_dbl( !!sym(lmermodel) , df.residual))
 
   Model_Coeff <- modelProteinF %>%
-    dplyr::select(!!sym(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
+    dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
     tidyr::unnest()
   Model_Anova <- modelProteinF %>%
-    dplyr::select(!!sym(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
+    dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
     tidyr::unnest()
 
   return(list(
@@ -715,9 +718,6 @@ linfct_factors_contrasts <- function(m){
 
 # Computing contrasts helpers -----
 
-
-
-
 #' apply multcomp::glht method to linfct
 #' @export
 #' @examples
@@ -726,12 +726,10 @@ linfct_factors_contrasts <- function(m){
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
-#' my_glht(mb, linfct$linfct_interactions)
-#' mi <-  LFQService::interactionModel_p1807
-#' linfct_int <- linfct_from_model(mb)
-#' names(linfct_int)
-#' my_glht(mi, linfct_int$linfct_factors)
-#' my_glht(mi, linfct_int$linfct_interactions)
+#'
+#' m <- LFQService::modelSummary_A$modelProteinF$lmer_f_Mortality_Intervention_NRS[[1]]
+#' linfct <- linfct_from_model(m)$linfct_factors
+#' my_glht(m, linfct)
 #'
 my_glht <- function(model , linfct , sep=FALSE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
@@ -741,6 +739,9 @@ my_glht <- function(model , linfct , sep=FALSE ) {
       return(NA) # catch rank defficient
     }
   }else{
+    if(isSingular_lm(model)){
+      return(NA)
+    }
     model$model <- as.data.frame(unclass(model$model))
   }
   if(sep){
@@ -748,6 +749,8 @@ my_glht <- function(model , linfct , sep=FALSE ) {
     for(i in 1:nrow(linfct)){
       x <- multcomp::glht(model, linfct=linfct[i,,drop=FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+      RHS$df <- x$df
+      RHS$sigma <- sigma(model)
       x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
       res[[i]] <- x
     }
@@ -756,9 +759,11 @@ my_glht <- function(model , linfct , sep=FALSE ) {
   }else{
     x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+    RHS$df <- x$df
+    RHS$df <- sigma(model)
     res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
       dplyr::select(-rhs)
-    res
+    return(res)
   }
 }
 
@@ -779,7 +784,9 @@ my_contest <- function(model, linfct , sep=TRUE){
   }
   res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   res <- as_tibble(res, rownames="lhs")
-  res <- res %>% rename(estimate = Estimate, std.error = "Std. Error",
+  res$sigma <- sigma(model)
+  res <- res %>% rename(estimate = Estimate,
+                        std.error = "Std. Error",
                         statistic="t value",
                         p.value = "Pr(>|t|)",
                         conf.low = "lower",
@@ -815,6 +822,15 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject
 #' used in p2621, p2109
 #'
 #' @export
+#' @examples
+#' modelSummary_A <- LFQService::modelSummary_A
+#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
+#' factor_contrasts <- linfct_factors_contrasts(m)
+#' factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+#'                                                    modelSummary_A$modelName,
+#'                                                    factor_contrasts,
+#'                                                    subject_Id = "Compound")
+#'
 workflow_contrasts_linfct <- function(models,
                                       modelName,
                                       linfct,
@@ -843,11 +859,32 @@ workflow_contrasts_linfct <- function(models,
   interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest() -> contrasts
 
-  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular")) %>% distinct()
+  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular", "sigma", "df.residual" )) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
   contrasts <- contrasts %>% group_by(lhs) %>% mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup
   return(contrasts)
 }
+
+#' Moderate p-values
+#' @examples
+#' modelSummary_A <- LFQService::modelSummary_A
+#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
+#' factor_contrasts <- linfct_factors_contrasts(m)
+#' factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+#'                                                    modelSummary_A$modelName,
+#'                                                    factor_contrasts,
+#'                                                    subject_Id = "Compound")
+#'
+#' mm <- factor_levelContrasts %>% filter(lhs == "MortalityM0 - MortalityM1")
+#' head(mm)
+
+moderated_p <- function(){
+  sv <- squeezeVar(sigma^2, df=df.residual)
+  moderated.t <- tstat * sigma / sqrt(sv$var.post)
+  df.total <- df.residual + sv$df.prior
+  p.value <- 2*pt( abs(moderated.t), df=df.total, lower.tail=FALSE)
+}
+
 
 #' write results of `workflow_contrasts_linfct`
 #' @export
@@ -892,11 +929,11 @@ workflow_contrasts_linfct_vis <- function(contrasts,
                                                   xintercept = c(-1, 1), colour = "isSingular")
   fig$fname_VolcanoPlot_adjust <- paste0(prefix,"_Volcano_p_adjusted",modelName,".pdf")
   fig$VolcanoPlot_adjust <- quantable::multigroupVolcano(contrasts,
-                                                  effect = "estimate",
-                                                  type = "p.value.adjusted",
-                                                  condition = "lhs",
-                                                  label = subject_Id,
-                                                  xintercept = c(-1, 1), colour = "isSingular")
+                                                         effect = "estimate",
+                                                         type = "p.value.adjusted",
+                                                         condition = "lhs",
+                                                         label = subject_Id,
+                                                         xintercept = c(-1, 1), colour = "isSingular")
 
   return(fig)
 }
@@ -945,7 +982,7 @@ workflow_contrasts_linfct_ALL <- function(modelSummary,
   contrast_result <- workflow_contrasts_linfct(modelSummary$modelProteinF,
                                                modelSummary$modelName,
                                                linfct,
-                                               subject_Id = pepConfig$table$hkeysLevel() )
+                                               subject_Id = subject_Id )
   subject_Id <- subject_Id
   prefix <- prefix
   modelName <- modelSummary$modelName
