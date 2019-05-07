@@ -3,12 +3,12 @@
 \docType{data}
 \name{modelSummary_A}
 \alias{modelSummary_A}
-\title{modelSummary_A - output of 'model_analyse_summarize'}
+\title{modelSummary_A - output of 'model_analyse_summarize' for lm model}
 \format{An object of class \code{list} of length 6.}
 \usage{
 modelSummary_A
 }
 \description{
-modelSummary_A - output of 'model_analyse_summarize'
+modelSummary_A - output of 'model_analyse_summarize' for lm model
 }
 \keyword{datasets}

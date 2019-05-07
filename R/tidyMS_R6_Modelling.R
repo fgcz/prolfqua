@@ -749,8 +749,10 @@ my_glht <- function(model , linfct , sep=FALSE ) {
     for(i in 1:nrow(linfct)){
       x <- multcomp::glht(model, linfct=linfct[i,,drop=FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+
       RHS$df <- x$df
       RHS$sigma <- sigma(model)
+
       x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
       res[[i]] <- x
     }
@@ -830,6 +832,19 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject
 #'                                                    modelSummary_A$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "Compound")
+#'factor_levelContrasts
+#'
+#' summary_interaction <- LFQService::summary_interaction
+#' m <- get_complete_model_fit(summary_interaction$modelProteinF)
+#' factor_contrasts <- linfct_factors_contrasts(m)
+#'
+#' factor_levelContrasts <- workflow_contrasts_linfct( summary_interaction$modelProteinF,
+#'                                                    summary_interaction$modelName,
+#'                                                    factor_contrasts,
+#'                                                    subject_Id = "protein_Id")
+#' head(factor_levelContrasts)
+#' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
+#' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 #'
 workflow_contrasts_linfct <- function(models,
                                       modelName,
@@ -856,17 +871,34 @@ workflow_contrasts_linfct <- function(models,
     dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
     filter(classC != "logical") -> interaction_model_matrix
 
-  interaction_model_matrix %>%
-    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest() -> contrasts
+  contrasts <- interaction_model_matrix %>%
+    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()
 
-  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular", "sigma", "df.residual" )) %>% distinct()
+  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
-  contrasts <- contrasts %>% group_by(lhs) %>% mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup
+  contrasts <- contrasts %>% group_by_at("lhs") %>% mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup
   return(contrasts)
 }
 
-#' Moderate p-values
+#' Moderate p-values - limma approach
+#' @export
+moderated_p_limma <- function(mm){
+  sv <- limma::squeezeVar(mm$sigma^2, df=mm$df)
+  sv <- as_tibble(sv)
+  sv <- sv %>% setNames(paste0('moderated.', names(.)))
+  mm <- bind_cols(mm, sv)
+  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma / moderated.var.post)
+  mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
+  mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
+  return(mm)
+}
+
+#' Moderate p-value for long table
+#' @param mm result of `workflow_contrasts_linfct``
+#' @param group_by_col
+#' @export
 #' @examples
+#' library(LFQService)
 #' modelSummary_A <- LFQService::modelSummary_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
 #' factor_contrasts <- linfct_factors_contrasts(m)
@@ -875,17 +907,30 @@ workflow_contrasts_linfct <- function(models,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "Compound")
 #'
-#' mm <- factor_levelContrasts %>% filter(lhs == "MortalityM0 - MortalityM1")
-#' head(mm)
-
-moderated_p <- function(){
-  sv <- squeezeVar(sigma^2, df=df.residual)
-  moderated.t <- tstat * sigma / sqrt(sv$var.post)
-  df.total <- df.residual + sv$df.prior
-  p.value <- 2*pt( abs(moderated.t), df=df.total, lower.tail=FALSE)
+#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
+#' abline(0,1, col=2)
+#'
+#' # updating lmer model
+#' summary_interaction_lmer <- LFQService::summary_interaction
+#'
+#' m <- get_complete_model_fit(summary_interaction_lmer$modelProteinF)
+#' factor_contrasts <- linfct_factors_contrasts(m)
+#' factor_levelContrasts <- workflow_contrasts_linfct(summary_interaction_lmer$modelProteinF,
+#'                                                    summary_interaction_lmer$modelName,
+#'                                                    factor_contrasts,
+#'                                                    subject_Id = "protein_Id")
+#'
+#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+#'
+#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
+#' abline(0,1, col=2)
+#'
+moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
+  dfg <- mm %>% group_by_at(group_by_col) %>% group_split()
+  xx <- purrr::map_df(dfg, moderated_p_limma)
+  return(xx)
 }
-
-
 #' write results of `workflow_contrasts_linfct`
 #' @export
 #'

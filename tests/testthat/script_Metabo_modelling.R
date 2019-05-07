@@ -24,7 +24,7 @@ modellingResult_A <- model_analyse(results$dataTransformed,
 
 
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
-usethis::use_data(modelSummary_A, overwrite = TRUE)
+#usethis::use_data(modelSummary_A, overwrite = TRUE)
 
 
 visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())

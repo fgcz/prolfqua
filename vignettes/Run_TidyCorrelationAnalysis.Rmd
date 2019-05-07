@@ -66,7 +66,7 @@ if(0){
   colnames(longFormat) <- make.names(colnames(longFormat))
   longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
   spectronautDIAData250 <- longFormat
-  usethis::use_data(spectronautDIAData250,overwrite = TRUE)
+  #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
 }
 ```
 

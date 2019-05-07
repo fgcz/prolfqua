@@ -28,6 +28,8 @@ modelName  <- "f_Condition_r_peptide"
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 models_base <- model_analyse(results$pepIntensityNormalized, formula_randomPeptide, modelName)
 summary_base <- model_analyse_summarize(models_base$modelProtein,models_base$modelName)
+
+
 #model_analyse_write(models_base, modelName, results$path)
 reslist <- model_analyse_summarize_vis(summary_base)
 model_analyse_summarize_vis_write(reslist, path = results$path)
@@ -46,7 +48,7 @@ models_interaction <- model_analyse(results$pepIntensityNormalized,
                                              modelName)
 summary_interaction <- model_analyse_summarize(models_interaction$modelProtein,
                                                models_interaction$modelName)
-
+#usethis::use_data(summary_interaction, overwrite = TRUE)
 model_analyse_summarize_write(summary_interaction,  results$path)
 reslist <- model_analyse_summarize_vis(summary_interaction)
 model_analyse_summarize_vis_write(reslist,  path = results$path)
