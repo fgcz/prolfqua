@@ -5,7 +5,8 @@
 \title{visualize output of `workflow_contrasts_linfct``}
 \usage{
 workflow_contrasts_linfct_vis(contrasts, modelName, prefix = "Contrasts",
-  subject_Id = "protein_Id")
+  subject_Id = "protein_Id", columns = c("p.value",
+  "p.value.adjusted"))
 }
 \description{
 visualize output of `workflow_contrasts_linfct``

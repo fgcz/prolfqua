@@ -18,7 +18,8 @@ factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF
                                                    modelSummary_A$modelName,
                                                    factor_contrasts,
                                                    subject_Id = "Compound")
-factor_levelContrasts
+
+#usethis::use_data(factor_levelContrasts)
 
 summary_interaction <- LFQService::summary_interaction
 m <- get_complete_model_fit(summary_interaction$modelProteinF)

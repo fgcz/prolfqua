@@ -5,8 +5,15 @@
 \title{pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...}
 \usage{
 pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts,
-  subject_Id = "protein_Id")
+  subject_Id = "protein_Id", columns = c("estimate", "p.value",
+  "p.value.adjusted"))
 }
 \description{
 pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
+}
+\examples{
+dd <- LFQService::factor_levelContrasts
+head(dd)
+tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
+colnames(tmp)
 }

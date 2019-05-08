@@ -801,21 +801,28 @@ my_contest <- function(model, linfct , sep=TRUE){
 
 #' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
 #' @export
-#'
-pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject_Id = "protein_Id"){
-  modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id, "lhs", "estimate")) %>%
-    dplyr::mutate(lhs = glue::glue('estimate.{lhs}')) %>%
-    tidyr::spread(lhs, estimate ) -> modelWithInteractionsEstimate
+#' @examples
+#' dd <- LFQService::factor_levelContrasts
+#' head(dd)
+#' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
+#' colnames(tmp)
+pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
+                                         subject_Id = "protein_Id",
+                                         columns = c("estimate", "p.value","p.value.adjusted")){
 
-  modelWithInteractionsContrasts %>%
-    dplyr::select_at(c(subject_Id, "lhs", "p.value")) %>%
-    dplyr::mutate(lhs = glue::glue('p.value.{lhs}')) %>%
-    tidyr::spread(lhs, p.value ) -> modelWithInteractions.p.value
-
-  modelWithInteractionsContrasts_Pivot <- inner_join(modelWithInteractionsEstimate,
-                                                     modelWithInteractions.p.value)
-  return(modelWithInteractionsContrasts_Pivot)
+  m_spread <- function(longContrasts, subject_Id, column ){
+    longContrasts %>%
+      dplyr::select_at(c(subject_Id, "lhs", column)) %>%
+      dplyr::mutate(lhs = glue::glue('{column}.{lhs}')) %>%
+      tidyr::spread(lhs, !!sym(column) ) -> res
+    return(res)
+  }
+  res <- list()
+  for(column in columns){
+    res[[column]] <- m_spread(modelWithInteractionsContrasts,subject_Id,column)
+  }
+  res <- res %>% reduce(left_join, by = subject_Id)
+  return(res)
 }
 
 
@@ -832,7 +839,8 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts, subject
 #'                                                    modelSummary_A$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "Compound")
-#'factor_levelContrasts
+#'
+#' #usethis::use_data(factor_levelContrasts)
 #'
 #' summary_interaction <- LFQService::summary_interaction
 #' m <- get_complete_model_fit(summary_interaction$modelProteinF)
@@ -874,9 +882,12 @@ workflow_contrasts_linfct <- function(models,
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()
 
-  isSing <- models %>% dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
+  isSing <- models %>%
+    dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
-  contrasts <- contrasts %>% group_by_at("lhs") %>% mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup
+  contrasts <- contrasts %>% group_by_at("lhs") %>%
+    mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
+
   return(contrasts)
 }
 
@@ -890,6 +901,7 @@ moderated_p_limma <- function(mm){
   mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma / moderated.var.post)
   mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
   mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
+  mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
   return(mm)
 }
 
@@ -922,7 +934,7 @@ moderated_p_limma <- function(mm){
 #'                                                    subject_Id = "protein_Id")
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#'
+#' head(mmm)
 #' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
 #' abline(0,1, col=2)
 #'
@@ -938,14 +950,17 @@ workflow_contrasts_linfct_write <- function(results,
                                             modelName,
                                             path,
                                             prefix = "Contrasts",
-                                            subject_Id = "protein_Id"){
+                                            subject_Id = "protein_Id",
+                                            columns = c("estimate", "p.value","p.value.adjusted")){
   if(!is.null(path)){
     fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
     message("Writing: ",fileLong,"\n")
     readr::write_csv(results, path = fileLong)
-    fileWide <-file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
+    fileWide <- file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
     message("Writing: ",fileWide,"\n")
-    resultswide <- pivot_model_contrasts_2_Wide(results, subject_Id = subject_Id)
+    resultswide <- pivot_model_contrasts_2_Wide(results,
+                                                subject_Id = subject_Id,
+                                                columns=columns)
     readr::write_csv(resultswide, path = fileWide)
   }
 }
@@ -958,85 +973,84 @@ workflow_contrasts_linfct_write <- function(results,
 workflow_contrasts_linfct_vis <- function(contrasts,
                                           modelName,
                                           prefix = "Contrasts",
-                                          subject_Id = "protein_Id"){
-  fig <- list()
-  fig$fname_histogram_coeff_p.values <- paste0(prefix,"_Histogram_p.values_", modelName ,".pdf")
-  fig$histogram_coeff_p.values <- ggplot(data=contrasts, aes(x = p.value)) +
-    geom_histogram(bins = 20) +
-    facet_wrap(~lhs)
+                                          subject_Id = "protein_Id",
+                                          columns = c("p.value","p.value.adjusted")){
+  res <- list()
 
-  fig$fname_VolcanoPlot <- paste0(prefix,"_Volcano_",modelName,".pdf")
-  fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
-                                                  effect = "estimate",
-                                                  type = "p.value",
-                                                  condition = "lhs",
-                                                  label = subject_Id,
-                                                  xintercept = c(-1, 1), colour = "isSingular")
-  fig$fname_VolcanoPlot_adjust <- paste0(prefix,"_Volcano_p_adjusted",modelName,".pdf")
-  fig$VolcanoPlot_adjust <- quantable::multigroupVolcano(contrasts,
-                                                         effect = "estimate",
-                                                         type = "p.value.adjusted",
-                                                         condition = "lhs",
-                                                         label = subject_Id,
-                                                         xintercept = c(-1, 1), colour = "isSingular")
-
-  return(fig)
+  for(column in columns){
+    fig <- list()
+    name <- paste0(prefix,"_Histogram_",column)
+    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fig <- ggplot(data=contrasts, aes(x = !!sym(column))) +
+      geom_histogram(bins = 20) +
+      facet_wrap(~lhs)
+    res[[name]] <- fig
+  }
+  for(column in columns){
+    fig <- list()
+    name <- paste0(prefix,"_Volcano_",column)
+    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fig <- quantable::multigroupVolcano(contrasts,
+                                         effect = "estimate",
+                                         type = column,
+                                         condition = "lhs",
+                                         label = subject_Id,
+                                         xintercept = c(-1, 1), colour = "isSingular")
+    res[[name]] <- fig
+  }
+  return(res)
 }
-
 
 #' helper function to write the result of `workflow_contrasts_linfct_vis`
 #'
 #' used in p2901
 #'
 #' @export
-workflow_contrasts_linfct_vis_write <- function(contrasts_result,
+workflow_contrasts_linfct_vis_write <- function(fig_list,
                                                 path,
                                                 fig.width = 10,
                                                 fig.height = 10){
   if(!is.null(path)){
-    p1 <- file.path(path,contrasts_result$fname_histogram_coeff_p.values)
-    message("Writing: ",p1,"\n")
-    pdf(p1, width = fig.width, height = fig.height)
-    print(contrasts_result$histogram_coeff_p.values)
-    dev.off()
-
-
-    p2<- file.path(path,contrasts_result$fname_VolcanoPlot)
-    message("Writing: ",p2,"\n")
-    pdf(p2, width = fig.width, height = fig.height)
-    print(contrasts_result$VolcanoPlot)
-    dev.off()
-
-
-    p3<- file.path(path, contrasts_result$fname_VolcanoPlot_adjust)
-    message("Writing: ",p3,"\n")
-    pdf(p3, width = fig.width, height = fig.height)
-    print(contrasts_result$VolcanoPlot_adjust)
-    dev.off()
+    for(fig in fig_list){
+      p1 <- file.path(path,fig$fname)
+      message("Writing: ",p1,"\n")
+      pdf(p1, width = fig.width, height = fig.height)
+      print(fig$fig)
+      dev.off()
+    }
   }
 }
 
 
 #' Do contrast
 #' @export
+#' @examples
+#'
 workflow_contrasts_linfct_ALL <- function(modelSummary,
                                           linfct,
                                           subject_Id = "protein_Id",
                                           prefix = "Contrasts")
 {
+
   contrast_result <- workflow_contrasts_linfct(modelSummary$modelProteinF,
                                                modelSummary$modelName,
                                                linfct,
                                                subject_Id = subject_Id )
+  contrast_result <- moderated_p_limma_long(contrast_result)
   subject_Id <- subject_Id
   prefix <- prefix
   modelName <- modelSummary$modelName
 
   res_fun <- function(path = NULL){
+    columns = c("p.value","p.value.adjusted",
+                "moderated.p.value",
+                "moderated.p.value.adjusted")
     visualization <- workflow_contrasts_linfct_vis(contrast_result,
                                                    modelName ,
                                                    prefix = prefix,
-                                                   subject_Id =subject_Id)
+                                                   subject_Id =subject_Id,
+                                                   columns = columns
+                                                   )
 
 
     if(!is.null(path)){
@@ -1044,10 +1058,14 @@ workflow_contrasts_linfct_ALL <- function(modelSummary,
                                       modelName ,
                                       prefix = prefix,
                                       path=path,
-                                      subject_Id = subject_Id )
+                                      subject_Id = subject_Id,
+                                      columns = columns )
       workflow_contrasts_linfct_vis_write(visualization, path=path)
     }
-    res <- list(contrast_result = contrast_result, visualization = visualization, modelName = modelName , prefix = prefix  )
+    res <- list(contrast_result = contrast_result,
+                visualization = visualization,
+                modelName = modelName,
+                prefix = prefix  )
     invisible(res)
   }
   return(res_fun)

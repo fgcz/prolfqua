@@ -5,7 +5,8 @@
 \title{write results of `workflow_contrasts_linfct`}
 \usage{
 workflow_contrasts_linfct_write(results, modelName, path,
-  prefix = "Contrasts", subject_Id = "protein_Id")
+  prefix = "Contrasts", subject_Id = "protein_Id",
+  columns = c("estimate", "p.value", "p.value.adjusted"))
 }
 \description{
 write results of `workflow_contrasts_linfct`

@@ -10,3 +10,6 @@ workflow_contrasts_linfct_ALL(modelSummary, linfct,
 \description{
 Do contrast
 }
+\examples{
+
+}
