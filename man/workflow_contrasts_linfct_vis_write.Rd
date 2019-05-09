@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_contrasts_linfct_vis_write}
 \alias{workflow_contrasts_linfct_vis_write}
-\title{helper function to write the result of `workflow_contrasts_linfct_vis`}
+\title{helper function to write the result of `contrasts_linfct_vis`}
 \usage{
 workflow_contrasts_linfct_vis_write(fig_list, path, fig.width = 10,
   fig.height = 10)

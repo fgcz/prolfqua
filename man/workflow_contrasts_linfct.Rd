@@ -2,35 +2,14 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_contrasts_linfct}
 \alias{workflow_contrasts_linfct}
-\title{compute group averages}
+\title{Do contrast}
 \usage{
-workflow_contrasts_linfct(models, modelName, linfct,
-  subject_Id = "protein_Id")
+workflow_contrasts_linfct(modelSummary, linfct,
+  subject_Id = "protein_Id", prefix = "Contrasts")
 }
 \description{
-used in p2621, p2109
+Do contrast
 }
 \examples{
-modelSummary_A <- LFQService::modelSummary_A
-m <- get_complete_model_fit(modelSummary_A$modelProteinF)
-factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
-                                                   modelSummary_A$modelName,
-                                                   factor_contrasts,
-                                                   subject_Id = "Compound")
-
-#usethis::use_data(factor_levelContrasts)
-
-summary_interaction <- LFQService::summary_interaction
-m <- get_complete_model_fit(summary_interaction$modelProteinF)
-factor_contrasts <- linfct_factors_contrasts(m)
-
-factor_levelContrasts <- workflow_contrasts_linfct( summary_interaction$modelProteinF,
-                                                   summary_interaction$modelName,
-                                                   factor_contrasts,
-                                                   subject_Id = "protein_Id")
-head(factor_levelContrasts)
-plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
-plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 
 }

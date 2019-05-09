@@ -799,7 +799,7 @@ my_contest <- function(model, linfct , sep=TRUE){
 
 # computing contrast ----
 
-#' pivot model contrasts matrix to wide format produced by `workflow_contrasts_linfct` and ...
+#' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 #' @export
 #' @examples
 #' dd <- LFQService::factor_levelContrasts
@@ -835,7 +835,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' modelSummary_A <- LFQService::modelSummary_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
 #' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
 #'                                                    modelSummary_A$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "Compound")
@@ -846,7 +846,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' m <- get_complete_model_fit(summary_interaction$modelProteinF)
 #' factor_contrasts <- linfct_factors_contrasts(m)
 #'
-#' factor_levelContrasts <- workflow_contrasts_linfct( summary_interaction$modelProteinF,
+#' factor_levelContrasts <- contrasts_linfct( summary_interaction$modelProteinF,
 #'                                                    summary_interaction$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "protein_Id")
@@ -854,7 +854,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
 #' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 #'
-workflow_contrasts_linfct <- function(models,
+contrasts_linfct <- function(models,
                                       modelName,
                                       linfct,
                                       subject_Id = "protein_Id"){
@@ -898,7 +898,7 @@ moderated_p_limma <- function(mm){
   sv <- as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
-  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma / moderated.var.post)
+  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
   mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
   mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
   mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
@@ -906,7 +906,7 @@ moderated_p_limma <- function(mm){
 }
 
 #' Moderate p-value for long table
-#' @param mm result of `workflow_contrasts_linfct``
+#' @param mm result of `contrasts_linfct``
 #' @param group_by_col
 #' @export
 #' @examples
@@ -914,7 +914,7 @@ moderated_p_limma <- function(mm){
 #' modelSummary_A <- LFQService::modelSummary_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
 #' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
 #'                                                    modelSummary_A$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "Compound")
@@ -928,7 +928,7 @@ moderated_p_limma <- function(mm){
 #'
 #' m <- get_complete_model_fit(summary_interaction_lmer$modelProteinF)
 #' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- workflow_contrasts_linfct(summary_interaction_lmer$modelProteinF,
+#' factor_levelContrasts <- contrasts_linfct(summary_interaction_lmer$modelProteinF,
 #'                                                    summary_interaction_lmer$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "protein_Id")
@@ -943,10 +943,10 @@ moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
   xx <- purrr::map_df(dfg, moderated_p_limma)
   return(xx)
 }
-#' write results of `workflow_contrasts_linfct`
+#' write results of `contrasts_linfct`
 #' @export
 #'
-workflow_contrasts_linfct_write <- function(results,
+contrasts_linfct_write <- function(results,
                                             modelName,
                                             path,
                                             prefix = "Contrasts",
@@ -967,10 +967,10 @@ workflow_contrasts_linfct_write <- function(results,
 
 
 
-#' visualize output of `workflow_contrasts_linfct``
+#' visualize output of `contrasts_linfct``
 #' @export
 #'
-workflow_contrasts_linfct_vis <- function(contrasts,
+contrasts_linfct_vis <- function(contrasts,
                                           modelName,
                                           prefix = "Contrasts",
                                           subject_Id = "protein_Id",
@@ -1001,7 +1001,7 @@ workflow_contrasts_linfct_vis <- function(contrasts,
   return(res)
 }
 
-#' helper function to write the result of `workflow_contrasts_linfct_vis`
+#' helper function to write the result of `contrasts_linfct_vis`
 #'
 #' used in p2901
 #'
@@ -1026,13 +1026,13 @@ workflow_contrasts_linfct_vis_write <- function(fig_list,
 #' @export
 #' @examples
 #'
-workflow_contrasts_linfct_ALL <- function(modelSummary,
+workflow_contrasts_linfct <- function(modelSummary,
                                           linfct,
                                           subject_Id = "protein_Id",
                                           prefix = "Contrasts")
 {
 
-  contrast_result <- workflow_contrasts_linfct(modelSummary$modelProteinF,
+  contrast_result <- contrasts_linfct(modelSummary$modelProteinF,
                                                modelSummary$modelName,
                                                linfct,
                                                subject_Id = subject_Id )
@@ -1045,7 +1045,7 @@ workflow_contrasts_linfct_ALL <- function(modelSummary,
     columns = c("p.value","p.value.adjusted",
                 "moderated.p.value",
                 "moderated.p.value.adjusted")
-    visualization <- workflow_contrasts_linfct_vis(contrast_result,
+    visualization <- contrasts_linfct_vis(contrast_result,
                                                    modelName ,
                                                    prefix = prefix,
                                                    subject_Id =subject_Id,
@@ -1054,7 +1054,7 @@ workflow_contrasts_linfct_ALL <- function(modelSummary,
 
 
     if(!is.null(path)){
-      workflow_contrasts_linfct_write(contrast_result,
+      contrasts_linfct_write(contrast_result,
                                       modelName ,
                                       prefix = prefix,
                                       path=path,

@@ -37,42 +37,42 @@ model_analyse_summarize_vis_write(visualization ,path = results$path)
 m <- get_complete_model_fit(modellingResult_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
                                                     modelSummary_A$modelName,
                                                     factor_contrasts,
                                                     subject_Id = pepConfig$table$hkeysLevel() )
 
 
-wfs <- workflow_contrasts_linfct_vis(factor_levelContrasts,
+wfs <- contrasts_linfct_vis(factor_levelContrasts,
                                      modellingResult_A$modelName,
                                      subject_Id = "Compound")
 
 workflow_contrasts_linfct_vis_write(wfs, path=results$path)
-workflow_contrasts_linfct_write(factor_levelContrasts,
+contrasts_linfct_write(factor_levelContrasts,
                                 modellingResult_A$modelName ,
                                 path=results$path,
                                 subject_Id = "Compound" )
 
 # Compute subgroup averages ----
 linfct <- linfct_from_model(m)
-models_interaction_Averages <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+models_interaction_Averages <- contrasts_linfct( modelSummary_A$modelProteinF,
                                                           modelSummary_A$modelName,
                                                           linfct$linfct_factors,
                                                           subject_Id = pepConfig$table$hkeysLevel() )
 
-workflow_contrasts_linfct_write(models_interaction_Averages,
+contrasts_linfct_write(models_interaction_Averages,
                                 modellingResult_A$modelName ,
                                 prefix = "GroupAverages",
                                 path=results$path,
                                 subject_Id = "Compound" )
 
-wfs <- workflow_contrasts_linfct_vis(models_interaction_Averages,
+wfs <- contrasts_linfct_vis(models_interaction_Averages,
                                      modellingResult_A$modelName ,
                                      prefix = "GroupAverages",
                                      subject_Id = "Compound")
 workflow_contrasts_linfct_vis_write(wfs, path=results$path)
 
-contrastres_fun <- workflow_contrasts_linfct_ALL(modelSummary_A, linfct$linfct_factors , subject_Id = pepConfig$table$hkeysLevel(), prefix = "GroupAverages" )
+contrastres_fun <- workflow_contrasts_linfct(modelSummary_A, linfct$linfct_factors , subject_Id = pepConfig$table$hkeysLevel(), prefix = "GroupAverages" )
 contrasts <- contrastres_fun()
 res <- contrastres_fun(path=results$path)
 

@@ -7,7 +7,7 @@
 moderated_p_limma_long(mm, group_by_col = "lhs")
 }
 \arguments{
-\item{mm}{result of `workflow_contrasts_linfct``}
+\item{mm}{result of `contrasts_linfct``}
 }
 \description{
 Moderate p-value for long table
@@ -17,7 +17,7 @@ library(LFQService)
 modelSummary_A <- LFQService::modelSummary_A
 m <- get_complete_model_fit(modelSummary_A$modelProteinF)
 factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- workflow_contrasts_linfct( modelSummary_A$modelProteinF,
+factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
                                                    modelSummary_A$modelName,
                                                    factor_contrasts,
                                                    subject_Id = "Compound")
@@ -31,7 +31,7 @@ summary_interaction_lmer <- LFQService::summary_interaction
 
 m <- get_complete_model_fit(summary_interaction_lmer$modelProteinF)
 factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- workflow_contrasts_linfct(summary_interaction_lmer$modelProteinF,
+factor_levelContrasts <- contrasts_linfct(summary_interaction_lmer$modelProteinF,
                                                    summary_interaction_lmer$modelName,
                                                    factor_contrasts,
                                                    subject_Id = "protein_Id")
