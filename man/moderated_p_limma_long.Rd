@@ -8,6 +8,8 @@ moderated_p_limma_long(mm, group_by_col = "lhs")
 }
 \arguments{
 \item{mm}{result of `contrasts_linfct``}
+
+\item{group_by_col}{colnames with contrast description - default 'lhs'}
 }
 \description{
 Moderate p-value for long table

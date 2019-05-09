@@ -907,7 +907,7 @@ moderated_p_limma <- function(mm){
 
 #' Moderate p-value for long table
 #' @param mm result of `contrasts_linfct``
-#' @param group_by_col
+#' @param group_by_col colnames with contrast description - default 'lhs'
 #' @export
 #' @examples
 #' library(LFQService)
