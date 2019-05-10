@@ -4,7 +4,7 @@
 \alias{workflow_MQ_protein_quants}
 \title{median polish from normalized peptide intensities}
 \usage{
-workflow_MQ_protein_quants(results)
+workflow_MQ_protein_quants(data, config)
 }
 \description{
 median polish from normalized peptide intensities

@@ -70,15 +70,12 @@
 #' res <- workflow_MQ_protein_quants(resultsV12954)
 #' dim(res$protintensity)
 #'
-workflow_MQ_protein_quants <- function(results){
-  pepIntensityNormalized <- results$pepIntensityNormalized
-  config <- results$config_pepIntensityNormalized
+workflow_MQ_protein_quants <- function(data, config){
   configProt <- config$clone(deep = TRUE)
-  xnested <- pepIntensityNormalized %>% dplyr::group_by_at(configProt$table$hkeysLevel()) %>% tidyr::nest()
-  protintensity <- LFQService::applyToHierarchyBySample(pepIntensityNormalized,configProt, medpolishPly,unnest = TRUE)
-  configProt <- protintensity$newconfig
+  protintensity <- LFQService::applyToHierarchyBySample(data , config, medpolishPly,unnest = TRUE)
+  config <- protintensity$newconfig
   protintensity <- protintensity$unnested
-  return(list(data = protintensity, config = configProt))
+  return(list(data = protintensity, config = config))
 }
 
 #' runs data preprocessing for peptide level data based protein modelling
