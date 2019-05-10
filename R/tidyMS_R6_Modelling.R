@@ -296,9 +296,8 @@ model_analyse_summarize_write  <- function(modellingResult, path){
 #'  D$config_pepIntensityNormalized$table$hkeysLevel())
 #'
 model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id") {
-
-  Model_Coeff <- modellingResult$Model_Coeff
-  Model_Anova <- modellingResult$Model_Anova
+  Model_Coeff <- tidyr::unite(modellingResult$Model_Coeff, "subject_Id", subject_Id)
+  Model_Anova <- tidyr::unite(modellingResult$Model_Anova, "subject_Id", subject_Id)
   modelName <- modellingResult$modelName
   fig <- list()
 
@@ -316,7 +315,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
       effect = "Estimate",
       type = "Pr...t..",
       condition = "row.names.x.",
-      label = subject_Id ,
+      label = "subject_Id" ,
       xintercept = c(-1, 1) ,
       colour = "isSingular" )
 
