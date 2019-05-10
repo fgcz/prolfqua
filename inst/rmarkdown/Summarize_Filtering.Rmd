@@ -116,7 +116,7 @@ knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredP
 ```{r NA_heatmapAfterFiltering,  out.width = "85%", out.height="\\textheight", fig.cap="Missigness heatmap after NA filtering."}
 
 figpath <- file.path(path,"missigness_after_filtering.pdf")
-if(HEATMAP){
+if(params$HEATMAP){
   pdf(figpath)
   x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
   dev.off()
@@ -167,7 +167,7 @@ knitr::include_graphics(figpath)
 
 ```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
 figpath <- file.path(path,"heatmap_after_filtering.pdf")
-if(HEATMAP){
+if(params$HEATMAP){
   pdf(figpath)
   x <- plot_heatmap(params$pepIntensityNormalized, params$config_pepIntensityNormalized)
   dev.off()

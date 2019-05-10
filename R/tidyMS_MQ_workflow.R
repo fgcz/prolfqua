@@ -11,6 +11,7 @@
 
 .workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
   config <- config$clone(deep = TRUE)
+  resDataStart <- summarizeHierarchy(resDataStart, config)
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent,
@@ -29,6 +30,9 @@
 
 .workflow_MQ_filter_peptides_V2 <- function(resDataStart, config, percent = 50){
   config <- config$clone(deep = TRUE)
+  summaryH <- summarizeHierarchy(resDataStart, config)
+  resDataStart <- inner_join(resDataStart,summaryH, by = config$table$hierarchyKeys()[1])
+
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent,

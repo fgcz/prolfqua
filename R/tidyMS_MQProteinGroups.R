@@ -8,7 +8,13 @@
 #' head(mq_proteins)
 tidyMQ_ProteinGroups <- function(MQProteinGroups){
   if(is.character(MQProteinGroups)){
-    MQProteinGroups <- read.csv(MQProteinGroups, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    if(grepl("\\.zip$",MQProteinGroups)){
+      message(MQProteinGroups)
+      MQProteinGroups <- read.csv(unz(MQProteinGroups,"proteinGroups.txt"),
+                           header=TRUE, sep="\t", stringsAsFactors = FALSE)
+    }else{
+      MQProteinGroups <- read.csv(MQProteinGroups, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+    }
   }
   colnames(MQProteinGroups) <- tolower(colnames(MQProteinGroups))
 
@@ -178,7 +184,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
     if(grepl("\\.zip$",MQPeptides)){
-      print(MQPeptides)
+      message(MQPeptides)
       MQPeptides <- read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
     }else{
@@ -210,9 +216,10 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   stMODcol <- grep(pattern = "unique..proteins." ,colnames(MQPeptides)) + 1
   endMODcol <- grep(pattern = "missed.cleavages" ,colnames(MQPeptides)) - 1
   if(endMODcol > stMODcol){
-    mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol) %>% head()
+    mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol)
     mod_cols <- setNames(mod_cols , paste0("modification.", colnames(mod_cols)))
-    meta <- dplyr::inner_join(meta,mod_cols, by=c("mod.peptide.id", "modification.id"))
+    #return(list(mod_cols = mod_cols, meta = meta))
+    meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
   }
 
 

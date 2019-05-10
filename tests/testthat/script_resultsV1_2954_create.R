@@ -58,8 +58,6 @@ resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 #rmarkdown::render("MQSummary.Rmd", params=list(data = resDataStart, configuration=config$clone(deep=TRUE)), envir = new.env())
 
 
-x3 <- summarizeHierarchy(resDataStart, config)
-x3 %>% dplyr::inner_join(resDataStart, by="protein_Id") -> resDataStart
 
 # Start filtering
 config$table$factorLevel <-flevel
