@@ -6,7 +6,7 @@
 #' Create custom lmer model
 #' @export
 #' @examples
-#' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)")
+#' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name="random_example)
 #' tmp$model_fun(get_formula=TRUE)
 #' tmp$isSingular
 make_custom_model_lmer <- function( modelstr, model_name ) {
@@ -95,7 +95,7 @@ isSingular_lm <- function(m){
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
@@ -147,7 +147,7 @@ model_analyse <- function(pepIntensity,
 
   #return(list(modelProtein = modelProtein, modelProteinF = modelProteinF))
   modelProteinF <- modelProteinF %>%
-    dplyr::select_at(c(subject_Id,"isSingular", "df.residual", "nrcoef", "nrcoeff_not_NA") )
+    dplyr::select_at(c(subject_Id,"isSingular", "df.residual","sigma" ,"nrcoef", "nrcoeff_not_NA") )
   modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
   return(list(modelProtein = modelProtein,
@@ -162,8 +162,8 @@ model_analyse <- function(pepIntensity,
 #'
 get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef_not_NA == max(nrcoef_not_NA))
-  modelProteinF <- modelProteinF %>% dplyr::filter(df.resudal > 0)
+  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA))
+  modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
 
@@ -176,7 +176,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name=modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
@@ -193,14 +193,20 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
   modelProteinF <- get_complete_model_fit(modelProteinF)
   # modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
 
+  # Extract coefficients
   .coef_df <-  function(x){
     x <- coef(summary(x));
     x<- data.frame(row.names(x), x);
     return(x)
   }
 
-  modelProteinSummary <- modelProteinF %>% dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
+  Model_Coeff <- modelProteinF %>% dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
 
+  Model_Coeff <- Model_Coeff %>%
+    dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
+    tidyr::unnest()
+
+  # ANOVA
   .anova_df <- function(x){
     x <- anova(x)
     colnames(x) <- make.names(colnames(x))
@@ -208,14 +214,12 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
     return(x)
   }
 
-  modelProteinSummary <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
+  Model_Anova <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
 
-  Model_Coeff <- modelProteinSummary %>%
-    dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
-    tidyr::unnest()
-  Model_Anova <- modelProteinSummary %>%
+  Model_Anova <- Model_Anova %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
     tidyr::unnest()
+
 
   return(list(
     modelName = modelName,
@@ -248,7 +252,7 @@ model_analyse_summarize_write  <- function(modellingResult, path){
 #'
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #' modellingResult <-  model_analyse(
 #'  D$pepIntensityNormalized,
 #'  formula_randomPeptide,
@@ -339,7 +343,7 @@ model_analyse_summarize_vis_write <- function(modelling_result,
 #' @examples
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
 #'  formula_randomPeptide,
 #'   modelName,
@@ -690,7 +694,7 @@ linfct_factors_contrasts <- function(m){
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- LFQService::modelSummary_A$modelProteinF$lmer_f_Mortality_Intervention_NRS[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -795,23 +799,26 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'
 #' @export
 #' @examples
-#' modelSummary_A <- LFQService::modelSummary_A
-#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
-#' m <- m$
-#' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
-#'                                                    modelSummary_A$modelName,
-#'                                                    factor_contrasts,
-#'                                                    subject_Id = "Compound")
+#'
+#' modelSummary_A <- LFQService::modellingResult_A
+#' m <- get_complete_model_fit(modelSummary_A$modelProtein)
+#'
+#'
+#' factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Mortality_Intervention_NRS[[1]])
+#' factor_contrasts
+#' factor_levelContrasts <- contrasts_linfct( m,
+#'         modelSummary_A$modelName,
+#'         factor_contrasts,
+#'         subject_Id = "Compound")
 #'
 #' #usethis::use_data(factor_levelContrasts)
 #'
-#' summary_interaction <- LFQService::summary_interaction
-#' m <- get_complete_model_fit(summary_interaction$modelProteinF)
-#' factor_contrasts <- linfct_factors_contrasts(m)
+#' models_interaction <- LFQService::models_interaction
+#' m <- get_complete_model_fit(models_interaction$modelProtein)
+#' factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Condition_r_peptid_r_patient[[1]])
 #'
-#' factor_levelContrasts <- contrasts_linfct( summary_interaction$modelProteinF,
-#'                                                    summary_interaction$modelName,
+#' factor_levelContrasts <- contrasts_linfct( m,
+#'                                                    models_interaction$modelName,
 #'                                                    factor_contrasts,
 #'                                                    subject_Id = "protein_Id")
 #' head(factor_levelContrasts)
@@ -819,7 +826,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 #'
 contrasts_linfct <- function(models,
-                             modelFunction,
+                             modelName,
                              linfct,
                              subject_Id = "protein_Id"){
   #computeGroupAverages
@@ -853,80 +860,6 @@ contrasts_linfct <- function(models,
     mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
 
   return(contrasts)
-}
-
-#' Moderate p-values - limma approach
-#' @export
-moderated_p_limma <- function(mm){
-  sv <- limma::squeezeVar(mm$sigma^2, df=mm$df)
-  sv <- as_tibble(sv)
-  sv <- sv %>% setNames(paste0('moderated.', names(.)))
-  mm <- bind_cols(mm, sv)
-  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
-  mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
-  mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
-  mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
-  return(mm)
-}
-
-#' Moderate p-value for long table
-#' @param mm result of `contrasts_linfct``
-#' @param group_by_col colnames with contrast description - default 'lhs'
-#' @export
-#' @examples
-#' library(LFQService)
-#' modelSummary_A <- LFQService::modelSummary_A
-#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
-#' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
-#'                                                    modelSummary_A$modelName,
-#'                                                    factor_contrasts,
-#'                                                    subject_Id = "Compound")
-#'
-#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-#' abline(0,1, col=2)
-#'
-#' # updating lmer model
-#' summary_interaction_lmer <- LFQService::summary_interaction
-#'
-#' m <- get_complete_model_fit(summary_interaction_lmer$modelProteinF)
-#' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- contrasts_linfct(summary_interaction_lmer$modelProteinF,
-#'                                                    summary_interaction_lmer$modelName,
-#'                                                    factor_contrasts,
-#'                                                    subject_Id = "protein_Id")
-#'
-#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#' head(mmm)
-#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-#' abline(0,1, col=2)
-#'
-moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
-  dfg <- mm %>% group_by_at(group_by_col) %>% group_split()
-  xx <- purrr::map_df(dfg, moderated_p_limma)
-  return(xx)
-}
-#' write results of `contrasts_linfct`
-#' @export
-#'
-contrasts_linfct_write <- function(results,
-                                   modelName,
-                                   path,
-                                   prefix = "Contrasts",
-                                   subject_Id = "protein_Id",
-                                   columns = c("estimate", "p.value","p.value.adjusted")){
-  if(!is.null(path)){
-    fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
-    message("Writing: ",fileLong,"\n")
-    readr::write_csv(results, path = fileLong)
-    fileWide <- file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
-    message("Writing: ",fileWide,"\n")
-    resultswide <- pivot_model_contrasts_2_Wide(results,
-                                                subject_Id = subject_Id,
-                                                columns=columns)
-    readr::write_csv(resultswide, path = fileWide)
-  }
 }
 
 
@@ -1035,5 +968,79 @@ workflow_contrasts_linfct <- function(modelSummary,
   return(res_fun)
 }
 
+# LIMMA ----
 
+#' Moderate p-values - limma approach
+#' @export
+moderated_p_limma <- function(mm){
+  sv <- limma::squeezeVar(mm$sigma^2, df=mm$df)
+  sv <- as_tibble(sv)
+  sv <- sv %>% setNames(paste0('moderated.', names(.)))
+  mm <- bind_cols(mm, sv)
+  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
+  mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
+  mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
+  mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
+  return(mm)
+}
+
+#' Moderate p-value for long table
+#' @param mm result of `contrasts_linfct``
+#' @param group_by_col colnames with contrast description - default 'lhs'
+#' @export
+#' @examples
+#' library(LFQService)
+#' modelSummary_A <- LFQService::modelSummary_A
+#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
+#' factor_contrasts <- linfct_factors_contrasts(m)
+#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
+#'                                                    modelSummary_A$modelName,
+#'                                                    factor_contrasts,
+#'                                                    subject_Id = "Compound")
+#'
+#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
+#' abline(0,1, col=2)
+#'
+#' # updating lmer model
+#' models_interaction <- LFQService::models_interaction
+#'
+#' m <- get_complete_model_fit(models_interaction$modelProtein)
+#' factor_contrasts <- linfct_factors_contrasts(m$lmer_f_Condition_r_peptid_r_patient[[1]])
+#' factor_levelContrasts <- contrasts_linfct(m,
+#'                                          models_interaction$modelName,
+#'                                          factor_contrasts,
+#'                                          subject_Id = "protein_Id")
+#'
+#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+#' head(mmm)
+#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
+#' abline(0,1, col=2)
+#'
+moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
+  dfg <- mm %>% group_by_at(group_by_col) %>% group_split()
+  xx <- purrr::map_df(dfg, moderated_p_limma)
+  return(xx)
+}
+#' write results of `contrasts_linfct`
+#' @export
+#'
+contrasts_linfct_write <- function(results,
+                                   modelName,
+                                   path,
+                                   prefix = "Contrasts",
+                                   subject_Id = "protein_Id",
+                                   columns = c("estimate", "p.value","p.value.adjusted")){
+  if(!is.null(path)){
+    fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
+    message("Writing: ",fileLong,"\n")
+    readr::write_csv(results, path = fileLong)
+    fileWide <- file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
+    message("Writing: ",fileWide,"\n")
+    resultswide <- pivot_model_contrasts_2_Wide(results,
+                                                subject_Id = subject_Id,
+                                                columns=columns)
+    readr::write_csv(resultswide, path = fileWide)
+  }
+}
 

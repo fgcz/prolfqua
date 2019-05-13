@@ -4,7 +4,7 @@
 \alias{get_complete_model_fit}
 \title{retrieve complete model.}
 \usage{
-get_complete_model_fit(modelProteinF, i = 1)
+get_complete_model_fit(modelProteinF)
 }
 \description{
 retrieve complete model.

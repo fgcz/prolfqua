@@ -47,8 +47,9 @@
 #' @examples
 #' library(tidyverse)
 #' D <- LFQService::resultsV12954
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
 #' modelName <- "f_Condition_r_peptide"
+#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
+#'
 #' pepConfig <- D$config_pepIntensityNormalized
 #' modellingResult <- model_analyse( D$pepIntensityNormalized,
 #' formula_randomPeptide,

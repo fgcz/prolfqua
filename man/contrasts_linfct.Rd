@@ -10,22 +10,26 @@ contrasts_linfct(models, modelName, linfct, subject_Id = "protein_Id")
 used in p2621, p2109
 }
 \examples{
-modelSummary_A <- LFQService::modelSummary_A
-m <- get_complete_model_fit(modelSummary_A$modelProteinF)
-factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
-                                                   modelSummary_A$modelName,
-                                                   factor_contrasts,
-                                                   subject_Id = "Compound")
+
+modelSummary_A <- LFQService::modellingResult_A
+m <- get_complete_model_fit(modelSummary_A$modelProtein)
+
+
+factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Mortality_Intervention_NRS[[1]])
+factor_contrasts
+factor_levelContrasts <- contrasts_linfct( m,
+        modelSummary_A$modelName,
+        factor_contrasts,
+        subject_Id = "Compound")
 
 #usethis::use_data(factor_levelContrasts)
 
-summary_interaction <- LFQService::summary_interaction
-m <- get_complete_model_fit(summary_interaction$modelProteinF)
-factor_contrasts <- linfct_factors_contrasts(m)
+models_interaction <- LFQService::models_interaction
+m <- get_complete_model_fit(models_interaction$modelProtein)
+factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Condition_r_peptid_r_patient[[1]])
 
-factor_levelContrasts <- contrasts_linfct( summary_interaction$modelProteinF,
-                                                   summary_interaction$modelName,
+factor_levelContrasts <- contrasts_linfct( m,
+                                                   models_interaction$modelName,
                                                    factor_contrasts,
                                                    subject_Id = "protein_Id")
 head(factor_levelContrasts)
