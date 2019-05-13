@@ -4,7 +4,7 @@
 \alias{make_custom_model_lmer}
 \title{Create custom lmer model}
 \usage{
-make_custom_model_lmer(modelstr)
+make_custom_model_lmer(modelstr, model_name)
 }
 \description{
 Create custom lmer model

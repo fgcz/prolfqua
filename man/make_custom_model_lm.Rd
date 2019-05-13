@@ -4,7 +4,7 @@
 \alias{make_custom_model_lm}
 \title{Create custom ml model}
 \usage{
-make_custom_model_lm(modelstr)
+make_custom_model_lm(modelstr, model_name)
 }
 \description{
 Create custom ml model
