@@ -121,7 +121,7 @@ model_analyse <- function(pepIntensity,
 
   modelProteinF <- modelProtein %>% dplyr::filter( !!sym("exists_lmer") == TRUE)
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"df.residual" := purrr::map_dpl(!!sym(lmermodel), df.residual ))
+  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
 
   nrcoeff <- function(x){
