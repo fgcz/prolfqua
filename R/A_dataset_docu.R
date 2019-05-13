@@ -138,8 +138,8 @@
 #'
 "resMetaboDataProgenesis"
 
-#' modelSummary_A - output of 'model_analyse_summarize' for lm model
-"modelSummary_A"
+#' modellingResult_A - output of 'model_analyse_summarize' for lm model
+"modellingResult_A"
 
-#' summary_interaction - output of 'model_analyse_summarize' for lmer model
-"summary_interaction"
+#' models_interaction - output of 'model_analyse_summarize' for lmer model
+"models_interaction"

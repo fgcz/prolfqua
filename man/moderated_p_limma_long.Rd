@@ -29,14 +29,14 @@ plot(mmm$p.value, mmm$moderated.p.value, log="xy")
 abline(0,1, col=2)
 
 # updating lmer model
-summary_interaction_lmer <- LFQService::summary_interaction
+models_interaction <- LFQService::models_interaction
 
-m <- get_complete_model_fit(summary_interaction_lmer$modelProteinF)
-factor_contrasts <- linfct_factors_contrasts(m)
-factor_levelContrasts <- contrasts_linfct(summary_interaction_lmer$modelProteinF,
-                                                   summary_interaction_lmer$modelName,
-                                                   factor_contrasts,
-                                                   subject_Id = "protein_Id")
+m <- get_complete_model_fit(models_interaction$modelProtein)
+factor_contrasts <- linfct_factors_contrasts(m$lmer_f_Condition_r_peptid_r_patient[[1]])
+factor_levelContrasts <- contrasts_linfct(m,
+                                         models_interaction$modelName,
+                                         factor_contrasts,
+                                         subject_Id = "protein_Id")
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 head(mmm)

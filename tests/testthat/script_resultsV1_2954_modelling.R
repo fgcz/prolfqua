@@ -25,8 +25,10 @@ pepConfig$table$factorKeys()
 
 # Model 1
 modelName  <- "f_Condition_r_peptide"
-formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)")
+
+formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 models_base <- model_analyse(results$pepIntensityNormalized, formula_randomPeptide, modelName)
+
 summary_base <- model_analyse_summarize(models_base$modelProtein,models_base$modelName)
 
 
@@ -41,14 +43,17 @@ model_analyse_summarize_vis_write(reslist, path = results$path)
 
 # Model2
 modelName  <- "f_Condition_r_peptid_r_patient"
-formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)")
+formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)", model_name=modelName)
 
 models_interaction <- model_analyse(results$pepIntensityNormalized,
                                              formula_randomPatient,
                                              modelName)
+
+# usethis::use_data(models_interaction, overwrite = TRUE)
+
 summary_interaction <- model_analyse_summarize(models_interaction$modelProtein,
                                                models_interaction$modelName)
-#usethis::use_data(summary_interaction, overwrite = TRUE)
+
 model_analyse_summarize_write(summary_interaction,  results$path)
 reslist <- model_analyse_summarize_vis(summary_interaction)
 model_analyse_summarize_vis_write(reslist,  path = results$path)
@@ -58,7 +63,7 @@ model_analyse_summarize_vis_write(reslist,  path = results$path)
 # res_cond_r_pep_r_pat <- readRDS(paste0(modelName,".rda"))
 
 # modelName  <- "f_Condition_r_patient.peptpid"
-# formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | patient_id/peptide_Id)")
+# formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | patient_id/peptide_Id)", model_name = modelName)
 # names(rres_cond_r_pat.pep)
 # saveRDS(rres_cond_r_pat.pep,file=paste0(modelName,".rda"))
 

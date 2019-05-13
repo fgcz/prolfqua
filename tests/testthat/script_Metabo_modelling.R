@@ -14,17 +14,16 @@ pepConfig$table$factorKeys()
 # first model ----
 
 modelName  <- "f_Mortality_Intervention_NRS"
-modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortality + Intervention  + NRS")
+modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortality + Intervention  + NRS", model_name =  modelName)
 
 modellingResult_A <- model_analyse(results$dataTransformed,
                                    modelFunction,
                                    modelName,
                                    subject_Id = pepConfig$table$hkeysLevel())
-
-
+usethis::use_data(modellingResult_A, overwrite = TRUE)
 
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
-#usethis::use_data(modelSummary_A, overwrite = TRUE)
+
 
 
 visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())
