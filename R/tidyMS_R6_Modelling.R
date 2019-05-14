@@ -923,7 +923,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         modelSummary_A$modelName,
 #'         factor_contrasts,
-#'         subject_Id = "Compound")
+#'         subject_Id = "Compound",contrastfun = LFQService::my_contrast_V2)
 #'
 #' #usethis::use_data(factor_levelContrasts)
 #'
