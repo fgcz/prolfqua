@@ -749,35 +749,105 @@ my_glht <- function(model, linfct , sep=FALSE ) {
 #' my_contrast(m, linfct, confint = 0.99)
 #'
 my_contrast <- function(m,
-                       linfct,
-                       coef = coefficients(m),
-                       Sigma.hat = vcov(m), confint = 0.95){
+                        linfct,
+                        coef = coefficients(m),
+                        Sigma.hat = vcov(m), confint = 0.95){
 
   df <- df.residual(m)
   sigma <- sigma(m)
 
-  std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
-
   estimate <- linfct %*% t(t(coef))
-  statistic <- estimate / std.error
 
-  #p.value <- pt(-abs(statistic), df = df) * 2
+  if(df > 0){
+    std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
+    statistic <- estimate / std.error
 
-  p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
-  conf.low <- estimate + qt((1-confint)/2, df=df) * std.error
-  conf.high <- estimate - qt((1-confint)/2, df=df) * std.error
+    #p.value <- pt(-abs(statistic), df = df) * 2
+
+    p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
+    prqt <- -qt((1-confint)/2, df=df)
+    conf.low <- estimate  - prqt * std.error
+    conf.high <- estimate + prqt * std.error
+
+  }else{
+    std.error <- NA
+    statistic <- NA
+    p.value <- NA
+    conf.low <- NA
+    conf.high <- NA
+  }
 
   res <- data.frame(lhs = rownames(linfct),
-                sigma = sigma,
-                df = df,
-                estimate = estimate,
-                std.error = std.error,
-                statistic = statistic ,
-                p.value = p.value,
-                conf.low= conf.low,
-                conf.high =conf.high)
+                    sigma = sigma,
+                    df = df,
+                    estimate = estimate,
+                    std.error = std.error,
+                    statistic = statistic ,
+                    p.value = p.value,
+                    conf.low= conf.low,
+                    conf.high =conf.high, stringsAsFactors = FALSE)
   return(res)
 }
+
+#' handles incomplete models by setting coefficients to 0
+#' @export
+#' @examples
+#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' linfct <- linfct_from_model(m)$linfct_factors
+#' my_glht(m, linfct)
+#' my_contrast_V1(m, linfct, confint = 0.95)
+#' my_contrast_V1(m, linfct, confint = 0.99)
+my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
+  Sigma.hat <- vcov(incomplete)
+  Sigma.hat[is.na(Sigma.hat)] <- 0
+  coef <- coefficients(incomplete)
+  coef[is.na(coef)] <- 0
+  res <- my_contrast(incomplete, linfct, coef = coef, Sigma.hat = Sigma.hat, confint = confint)
+  return(res)
+}
+
+#' handles incomplete models by setting coefficients to 0
+#' @export
+#' @examples
+#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' linfct <- linfct_from_model(m)$linfct_factors
+#' my_glht(m, linfct)
+#' my_contrast_V1(m, linfct, confint = 0.95)
+#' my_contrast_V1(m, linfct, confint = 0.99)
+#'
+my_contrast_V2 <- function(m, linfct){
+  Sigma.hat <- vcov(m)
+  coef <- coefficients(m)
+  res <- vector(nrow(linfct), mode="list")
+  for(i in 1:nrow(linfct)){
+    linfct_v <- linfct[i,,drop=FALSE]
+    idx <- which(linfct_v != 0)
+    nam <- colnames(linfct_v)[idx]
+
+    if(all(nam %in% names(coef))){
+      linfct_v_red <- linfct_v[, nam, drop=FALSE]
+      Sigma.hat_red <- Sigma.hat[nam,nam,drop=FALSE]
+      coef_red <- coef[nam]
+      stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
+      stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
+      res[[i]] <- my_contrast(m,linfct_v_red, coef=coef_red, Sigma.hat = Sigma.hat_red)
+    }else{
+      res[[i]] <-  data.frame(lhs = rownames(linfct_v),
+                              sigma = sigma(m),
+                              df = df.residual(m),
+                              estimate = NA,
+                              std.error = NA,
+                              statistic = NA ,
+                              p.value = NA,
+                              conf.low= NA,
+                              conf.high =NA,
+                              stringsAsFactors = FALSE)
+    }
+  }
+  res <- bind_rows(res)
+  return(res)
+}
+
 
 
 #' applies contrast computation using lmerTest::contest function
@@ -948,9 +1018,9 @@ contrasts_linfct_vis <- function(contrasts,
 #'
 #' @export
 contrasts_linfct_vis_write <- function(fig_list,
-                                                path,
-                                                fig.width = 10,
-                                                fig.height = 10){
+                                       path,
+                                       fig.width = 10,
+                                       fig.height = 10){
   if(!is.null(path)){
     for(fig in fig_list){
       p1 <- file.path(path,fig$fname)

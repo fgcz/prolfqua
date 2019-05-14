@@ -22,3 +22,19 @@ test_that("run test_resultsV1_2954_modelling.R",{
 test_that("run script_resultsV1_2954_create.R",{
   source("script_resultsV1_2954_create.R", echo=FALSE)
 })
+
+test_that("my_contrast_V2 works",{
+  lm_models_to_test <- LFQService::lm_models_to_test
+  linfct_lm <- linfct_from_model(lm_models_to_test$lm_complete)
+  linfct_interaction <- linfct_lm$linfct_interactions
+
+  for(model in lm_models_to_test){
+    print(my_contrast_V2(model, linfct_interaction))
+  }
+  linfct_contrasts <- linfct_factors_contrasts(lm_models_to_test$lm_complete)
+
+  for(model in lm_models_to_test){
+    print(my_contrast_V2(model, linfct_contrasts))
+  }
+
+})

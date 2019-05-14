@@ -143,3 +143,6 @@
 
 #' models_interaction - output of 'model_analyse_summarize' for lmer model
 "models_interaction"
+#' lm_models_to_test - linear models which can be used for testing
+"lm_models_to_test"
+
