@@ -942,18 +942,9 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 contrasts_linfct <- function(models,
                              modelName,
                              linfct,
-                             subject_Id = "protein_Id"){
+                             subject_Id = "protein_Id" , contrastfun = LFQService::my_contest){
   #computeGroupAverages
-  modelcol <-paste0("lmer_", modelName)
-  contrastfun <- NULL
-  whatclass <- class(models[[modelcol]][[1]])
-
-
-  if(whatclass=="lm"){
-    contrastfun = LFQService::my_glht
-  }else if(whatclass == "lmerModLmerTest"){
-    contrastfun = LFQService::my_contest
-  }
+  modelcol <- paste0("lmer_", modelName)
 
   interaction_model_matrix <- models %>%
     dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct, sep=TRUE ))
@@ -1041,13 +1032,14 @@ workflow_contrasts_linfct <- function(models,
                                       modelName,
                                       linfct,
                                       subject_Id = "protein_Id",
-                                      prefix = "Contrasts")
+                                      prefix = "Contrasts",
+                                      contrastfun = LFQService::my_contest )
 {
 
   contrast_result <- contrasts_linfct(models,
                                       modelName,
                                       linfct,
-                                      subject_Id = subject_Id )
+                                      subject_Id = subject_Id,contrastfun=contrastfun )
   contrast_result <- moderated_p_limma_long(contrast_result)
   subject_Id <- subject_Id
   prefix <- prefix

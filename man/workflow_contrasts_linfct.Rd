@@ -5,7 +5,8 @@
 \title{Do contrast}
 \usage{
 workflow_contrasts_linfct(models, modelName, linfct,
-  subject_Id = "protein_Id", prefix = "Contrasts")
+  subject_Id = "protein_Id", prefix = "Contrasts",
+  contrastfun = LFQService::my_contest)
 }
 \description{
 Do contrast
