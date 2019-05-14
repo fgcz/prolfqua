@@ -60,13 +60,14 @@ resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 
 
 # Start filtering
-config$table$factorLevel <-flevel
+config$table$factorLevel <- flevel
 
+results <- workflow_MQ_protoV1(resDataStart,
+                               config,
+                               path,
+                               peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 
-results <- workflow_MQ_protoV1(resDataStart, config, path ,
-                                           peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
-
-protintensity <- LFQService::workflow_MQ_protein_quants( results )
+protintensity <- LFQService::workflow_MQ_protein_quants( results$pepIntensityNormalized, results$config_pepIntensityNormalized )
 LFQService::toWideConfig(protintensity$data, protintensity$config)
 
 

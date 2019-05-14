@@ -46,8 +46,8 @@ modelName  <- "f_Condition_r_peptid_r_patient"
 formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)", model_name=modelName)
 
 models_interaction <- model_analyse(results$pepIntensityNormalized,
-                                             formula_randomPatient,
-                                             modelName)
+                                    formula_randomPatient,
+                                    modelName)
 
 # usethis::use_data(models_interaction, overwrite = TRUE)
 
@@ -68,33 +68,36 @@ model_analyse_summarize_vis_write(reslist,  path = results$path)
 # saveRDS(rres_cond_r_pat.pep,file=paste0(modelName,".rda"))
 
 
-lltest <- workflow_likelihood_ratio_test(summary_base$modelProteinF,
-                                         summary_base$modelName,
-                                         summary_interaction$modelProteinF,
-                                         summary_interaction$modelName,
+lltest <- workflow_likelihood_ratio_test(models_base$modelProtein,
+                                         models_base$modelName,
+                                         models_interaction$modelProtein,
+                                         models_interaction$modelName,
                                          subject_Id = pepConfig$table$hkeysLevel(),
                                          path = results$path)
 
 
-m <- linfct_from_model(get_complete_model_fit(summary_interaction$modelProteinF))
+models <- get_complete_model_fit(models_interaction$modelProtein)
+m <- linfct_from_model(models$lmer_f_Condition_r_peptid_r_patient[[1]])
 m$linfct_interactions
 # Group averages for one of the models
-models_interaction_Averages <- contrasts_linfct( summary_interaction$modelProteinF,
-                                                          summary_interaction$modelName,
-                                                          m$linfct_interactions,
-                                                          subject_Id = pepConfig$table$hkeysLevel() )
+models_interaction_Averages <- contrasts_linfct(models,
+                                                 summary_interaction$modelName,
+                                                 m$linfct_interactions,
+                                                 subject_Id = pepConfig$table$hkeysLevel() )
 
 contrasts_linfct_write(models_interaction_Averages, models_base$modelName , path=results$path )
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
-workflow_contrasts_linfct_vis_write(wfs, path=results$path)
+contrasts_linfct_vis_write(wfs, path=results$path)
 
 
 all_linfct <- linfct_all_possible_contrasts(m$linfct_interactions)
-models_allContrasts <- contrasts_linfct( summary_interaction$modelProteinF,
-                                                  summary_interaction$modelName,
-                                                  all_linfct,
-                                                  subject_Id = pepConfig$table$hkeysLevel() )
+
+models_allContrasts <- contrasts_linfct( models,
+                                         summary_interaction$modelName,
+                                         all_linfct,
+                                         subject_Id = pepConfig$table$hkeysLevel() )
+
 wfs <- contrasts_linfct_vis(models_allContrasts,models_interaction$modelName )
-workflow_contrasts_linfct_vis_write(wfs, path=results$path)
+contrasts_linfct_vis_write(wfs, path=results$path)
 pivot_model_contrasts_2_Wide(models_allContrasts)
 

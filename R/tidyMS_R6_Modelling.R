@@ -903,7 +903,7 @@ contrasts_linfct_vis <- function(contrasts,
 #' used in p2901
 #'
 #' @export
-workflow_contrasts_linfct_vis_write <- function(fig_list,
+contrasts_linfct_vis_write <- function(fig_list,
                                                 path,
                                                 fig.width = 10,
                                                 fig.height = 10){
@@ -923,20 +923,21 @@ workflow_contrasts_linfct_vis_write <- function(fig_list,
 #' @export
 #' @examples
 #'
-workflow_contrasts_linfct <- function(modelSummary,
+workflow_contrasts_linfct <- function(models,
+                                      modelName,
                                       linfct,
                                       subject_Id = "protein_Id",
                                       prefix = "Contrasts")
 {
 
-  contrast_result <- contrasts_linfct(modelSummary$modelProteinF,
-                                      modelSummary$modelName,
+  contrast_result <- contrasts_linfct(models,
+                                      modelName,
                                       linfct,
                                       subject_Id = subject_Id )
   contrast_result <- moderated_p_limma_long(contrast_result)
   subject_Id <- subject_Id
   prefix <- prefix
-  modelName <- modelSummary$modelName
+  modelName <- modelName
 
   res_fun <- function(path = NULL){
     columns = c("p.value","p.value.adjusted",
@@ -957,7 +958,7 @@ workflow_contrasts_linfct <- function(modelSummary,
                              path=path,
                              subject_Id = subject_Id,
                              columns = columns )
-      workflow_contrasts_linfct_vis_write(visualization, path=path)
+      contrasts_linfct_vis_write(visualization, path=path)
     }
     res <- list(contrast_result = contrast_result,
                 visualization = visualization,

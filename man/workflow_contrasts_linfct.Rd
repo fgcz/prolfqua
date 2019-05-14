@@ -4,7 +4,7 @@
 \alias{workflow_contrasts_linfct}
 \title{Do contrast}
 \usage{
-workflow_contrasts_linfct(modelSummary, linfct,
+workflow_contrasts_linfct(models, modelName, linfct,
   subject_Id = "protein_Id", prefix = "Contrasts")
 }
 \description{
