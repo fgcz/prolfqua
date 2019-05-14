@@ -686,6 +686,7 @@ linfct_factors_contrasts <- function(m){
 # Computing contrasts helpers -----
 
 #' apply multcomp::glht method to linfct
+#'
 #' @export
 #' @examples
 #'
@@ -698,7 +699,7 @@ linfct_factors_contrasts <- function(m){
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
-my_glht <- function(model , linfct , sep=FALSE ) {
+my_glht <- function(model, linfct , sep=FALSE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
@@ -729,12 +730,55 @@ my_glht <- function(model , linfct , sep=FALSE ) {
     x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
     RHS$df <- x$df
-    RHS$df <- sigma(model)
+    RHS$sigma <- sigma(model)
     res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
       dplyr::select(-rhs)
     return(res)
   }
 }
+
+#' compute contrasts for full models
+#'
+#' @export
+#' @examples
+#'
+#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' linfct <- linfct_from_model(m)$linfct_factors
+#' my_glht(m, linfct)
+#' my_contrast(m, linfct, confint = 0.95)
+#' my_contrast(m, linfct, confint = 0.99)
+#'
+my_contrast <- function(m,
+                       linfct,
+                       coef = coefficients(m),
+                       Sigma.hat = vcov(m), confint = 0.95){
+
+  df <- df.residual(m)
+  sigma <- sigma(m)
+
+  std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
+
+  estimate <- linfct %*% t(t(coef))
+  statistic <- estimate / std.error
+
+  #p.value <- pt(-abs(statistic), df = df) * 2
+
+  p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
+  conf.low <- estimate + qt((1-confint)/2, df=df) * std.error
+  conf.high <- estimate - qt((1-confint)/2, df=df) * std.error
+
+  res <- data.frame(lhs = rownames(linfct),
+                sigma = sigma,
+                df = df,
+                estimate = estimate,
+                std.error = std.error,
+                statistic = statistic ,
+                p.value = p.value,
+                conf.low= conf.low,
+                conf.high =conf.high)
+  return(res)
+}
+
 
 #' applies contrast computation using lmerTest::contest function
 #' @export
