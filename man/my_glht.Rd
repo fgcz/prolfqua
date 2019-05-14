@@ -4,7 +4,7 @@
 \alias{my_glht}
 \title{apply multcomp::glht method to linfct}
 \usage{
-my_glht(model, linfct, sep = FALSE)
+my_glht(model, linfct, sep = TRUE)
 }
 \description{
 apply multcomp::glht method to linfct

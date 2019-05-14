@@ -39,7 +39,8 @@ factor_contrasts <- linfct_factors_contrasts(m$lmer_f_Mortality_Intervention_NRS
 factor_levelContrasts <- contrasts_linfct( m,
                                            modellingResult_A$modelName,
                                            factor_contrasts,
-                                           subject_Id = pepConfig$table$hkeysLevel() )
+                                           subject_Id = pepConfig$table$hkeysLevel(),
+                                           contrastfun = LFQService::my_contrast_V2)
 
 
 wfs <- contrasts_linfct_vis(factor_levelContrasts,
@@ -57,7 +58,9 @@ linfct <- linfct_from_model(m$lmer_f_Mortality_Intervention_NRS[[1]])
 models_interaction_Averages <- contrasts_linfct( m,
                                                  modelSummary_A$modelName,
                                                  linfct$linfct_factors,
-                                                 subject_Id = pepConfig$table$hkeysLevel() )
+                                                 subject_Id = pepConfig$table$hkeysLevel(),
+                                                contrastfun = LFQService::my_contrast_V2,
+                                                )
 
 contrasts_linfct_write(models_interaction_Averages,
                        modellingResult_A$modelName ,
@@ -75,7 +78,8 @@ contrastres_fun <- workflow_contrasts_linfct(m,
                                              modellingResult_A$modelName,
                                              linfct$linfct_factors ,
                                              subject_Id = pepConfig$table$hkeysLevel(),
-                                             prefix = "GroupAverages" )
+                                             prefix = "GroupAverages",
+                                             contrastfun = LFQService::my_contrast_V2)
 
 contrasts <- contrastres_fun()
 res <- contrastres_fun(path=results$path)

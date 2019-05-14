@@ -699,7 +699,7 @@ linfct_factors_contrasts <- function(m){
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
-my_glht <- function(model, linfct , sep=FALSE ) {
+my_glht <- function(model, linfct , sep=TRUE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
@@ -861,7 +861,7 @@ my_contrast_V2 <- function(m, linfct){
 #' my_contest(mb, linfct$linfct_interactions)
 #' my_glht(mb, linfct$linfct_factors)
 #' my_glht(mb, linfct$linfct_interactions)
-my_contest <- function(model, linfct , sep=TRUE){
+my_contest <- function(model, linfct){
   if(length(lme4::fixef(model)) != ncol(linfct) ){
     return(NA) # catch rank defficient
   }
@@ -947,7 +947,7 @@ contrasts_linfct <- function(models,
   modelcol <- paste0("lmer_", modelName)
 
   interaction_model_matrix <- models %>%
-    dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct, sep=TRUE ))
+    dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
   mclass <- function(x){
     class(x)[1]
   }
