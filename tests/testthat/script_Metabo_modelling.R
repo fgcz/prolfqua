@@ -59,7 +59,7 @@ models_interaction_Averages <- contrasts_linfct( m,
                                                  modelSummary_A$modelName,
                                                  linfct$linfct_factors,
                                                  subject_Id = pepConfig$table$hkeysLevel(),
-                                                contrastfun = LFQService::my_contrast_V2,
+                                                contrastfun = LFQService::my_contrast_V2
                                                 )
 
 contrasts_linfct_write(models_interaction_Averages,
