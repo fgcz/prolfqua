@@ -944,15 +944,19 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 contrasts_linfct <- function(models,
                              modelName,
                              linfct,
-                             subject_Id = "protein_Id" , contrastfun = LFQService::my_contest){
+                             subject_Id = "protein_Id" ,
+                             contrastfun = LFQService::my_contest){
   #computeGroupAverages
   modelcol <- "linear_model"
 
   interaction_model_matrix <- models %>%
     dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+
+
   mclass <- function(x){
     class(x)[1]
   }
+
   interaction_model_matrix %>%
     dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
     filter(classC != "logical") -> interaction_model_matrix
@@ -960,9 +964,11 @@ contrasts_linfct <- function(models,
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()
 
-  isSing <- models %>%
+  modelInfos <- models %>%
     dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
-  contrasts <- dplyr::inner_join(contrasts, isSing, by=subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
+
+  # adjust p-values
   contrasts <- contrasts %>% group_by_at("lhs") %>%
     mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
 
