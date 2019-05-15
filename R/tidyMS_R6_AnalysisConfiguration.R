@@ -25,7 +25,6 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      factors = list(), # ordering is important - first is considered the main
                                      factorLevel=integer(),
 
-
                                      sampleName = "sampleName",
                                      # measurement levels
                                      hierarchy = list(),
@@ -85,6 +84,10 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
+                                     },
+                                     fkeysLevel = function(){
+                                       res <- (self$factors[1:self$factorLevel])
+                                       return(names(res))
                                      },
                                      idVars = function(){
                                        "Id Columns which must be in the output data frame"
