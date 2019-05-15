@@ -27,12 +27,21 @@
 }
 
 
-
+#'
+#' @examples
+#' testDataStart2954 <- LFQService::testDataStart2954
+#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
+#' path <- "dummy_test"
+#' dd <-.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' #names(dd)
+#' #dd[[1]]
+#' #dd[[2]]
 .workflow_MQ_filter_peptides_V2 <- function(resDataStart, config, percent = 50){
   config <- config$clone(deep = TRUE)
   summaryH <- summarizeHierarchy(resDataStart, config)
   resDataStart <- inner_join(resDataStart,summaryH, by = config$table$hierarchyKeys()[1])
 
+  print(colnames(resDataStart))
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent,
@@ -43,7 +52,7 @@
     dplyr::inner_join(resDataStart , by="protein_Id")
   resNACondition <- completeCases(resNACondition, config)
   filteredPep <- summarizeHierarchy(resNACondition, config)
-
+  #return(list(filteredPep,resNACondition))
   filteredPep <- dplyr::inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
   filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
   return(list(data=filteredPep, config=config))
@@ -67,7 +76,7 @@
 #' @export
 #' @examples
 #' resultsV12954 <- LFQService::resultsV12954
-#' res <- workflow_MQ_protein_quants(resultsV12954)
+#' res <- workflow_MQ_protein_quants(resultsV12954$pepIntensityNormalized,resultsV12954$config_pepIntensityNormalized )
 #' dim(res$protintensity)
 #'
 workflow_MQ_protein_quants <- function(data, config){
@@ -86,11 +95,13 @@ workflow_MQ_protein_quants <- function(data, config){
 #' #usethis::use_data(testDataStart2954)
 #'
 #' testDataStart2954 <- LFQService::testDataStart2954
+#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
 #' path <- "dummy_test"
-#' resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,
+#' resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config,
+#'  path ,
 #'                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 #' #usethis::use_data(resultsV12954)
-#'
+#' LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
 workflow_MQ_protoV1 <- function( resDataStart,
                                 config,
                                 path,

@@ -16,18 +16,20 @@ modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 
 
-factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Mortality_Intervention_NRS[[1]])
+factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 factor_contrasts
 factor_levelContrasts <- contrasts_linfct( m,
         modelSummary_A$modelName,
         factor_contrasts,
         subject_Id = "Compound",contrastfun = LFQService::my_contrast_V2)
 
-#usethis::use_data(factor_levelContrasts)
+#usethis::use_data(factor_levelContrasts, overwrite=TRUE)
 
 models_interaction <- LFQService::models_interaction
+#models_interaction$modelProtein <- dplyr::rename(models_interaction$modelProtein, linear_model = lmer_f_Condition_r_peptid_r_patient)
+#usethis::use_data(models_interaction,overwrite = TRUE)
 m <- get_complete_model_fit(models_interaction$modelProtein)
-factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Condition_r_peptid_r_patient[[1]])
+factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 
 factor_levelContrasts <- contrasts_linfct( m,
                                                    models_interaction$modelName,

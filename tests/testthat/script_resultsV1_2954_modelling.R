@@ -77,7 +77,7 @@ lltest <- workflow_likelihood_ratio_test(models_base$modelProtein,
 
 
 models <- get_complete_model_fit(models_interaction$modelProtein)
-m <- linfct_from_model(models$lmer_f_Condition_r_peptid_r_patient[[1]])
+m <- linfct_from_model(models$linear_model[[1]])
 m$linfct_interactions
 # Group averages for one of the models
 models_interaction_Averages <- contrasts_linfct(models,

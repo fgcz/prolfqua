@@ -11,7 +11,7 @@ median polish from normalized peptide intensities
 }
 \examples{
 resultsV12954 <- LFQService::resultsV12954
-res <- workflow_MQ_protein_quants(resultsV12954)
+res <- workflow_MQ_protein_quants(resultsV12954$pepIntensityNormalized,resultsV12954$config_pepIntensityNormalized )
 dim(res$protintensity)
 
 }

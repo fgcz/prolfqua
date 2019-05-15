@@ -30,7 +30,7 @@ make_custom_model_lmer <- function( modelstr, model_name ) {
 #' Create custom ml model
 #' @export
 #' @examples
-#' tmp <- make_custom_model_lm("Intensity ~ condition")
+#' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula=TRUE)
 #' tmp$isSingular
 make_custom_model_lm <- function( modelstr, model_name) {
@@ -113,7 +113,7 @@ model_analyse <- function(pepIntensity,
     dplyr::group_by(!!!syms(subject_Id)) %>%
     tidyr::nest() -> nestProtein
 
-  lmermodel <- paste0("lmer_", modelName)
+  lmermodel <- "linear_model"
 
   nestProtein %>% dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun)) -> modelProtein
 
@@ -188,7 +188,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
 #' names(tmp)
 model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "protein_Id"){
-  lmermodel <- paste0("lmer_", modelName)
+  lmermodel <- "linear_model"
 
   modelProteinF <- get_complete_model_fit(modelProteinF)
   # modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
@@ -388,11 +388,11 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
                                            path = NULL
 ){
   # Model Comparison
-  reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), starts_with("lmer_")),
-                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), starts_with("lmer_")) , by=subject_Id)
+  reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
+                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by=subject_Id)
 
-  reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym(paste0("lmer_", modelName)),
-                                                                         !!sym(paste0("lmer_", modelName_Int)),
+  reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
+                                                                         !!sym("linear_model.y"),
                                                                          .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% tidyr::unnest()
@@ -695,7 +695,7 @@ linfct_factors_contrasts <- function(m){
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -742,7 +742,7 @@ my_glht <- function(model, linfct , sep=TRUE ) {
 #' @export
 #' @examples
 #'
-#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -792,7 +792,7 @@ my_contrast <- function(m,
 #' handles incomplete models by setting coefficients to 0
 #' @export
 #' @examples
-#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast_V1(m, linfct, confint = 0.95)
@@ -809,7 +809,7 @@ my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
 #' handles incomplete models by setting coefficients to 0
 #' @export
 #' @examples
-#' m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast_V1(m, linfct, confint = 0.95)
@@ -918,18 +918,20 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
 #'
-#' factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Mortality_Intervention_NRS[[1]])
+#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #' factor_contrasts
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         modelSummary_A$modelName,
 #'         factor_contrasts,
 #'         subject_Id = "Compound",contrastfun = LFQService::my_contrast_V2)
 #'
-#' #usethis::use_data(factor_levelContrasts)
+#' #usethis::use_data(factor_levelContrasts, overwrite=TRUE)
 #'
 #' models_interaction <- LFQService::models_interaction
+#' #models_interaction$modelProtein <- dplyr::rename(models_interaction$modelProtein, linear_model = lmer_f_Condition_r_peptid_r_patient)
+#' #usethis::use_data(models_interaction,overwrite = TRUE)
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
-#' factor_contrasts <- linfct_factors_contrasts( m$lmer_f_Condition_r_peptid_r_patient[[1]])
+#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #'
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'                                                    models_interaction$modelName,
@@ -944,7 +946,7 @@ contrasts_linfct <- function(models,
                              linfct,
                              subject_Id = "protein_Id" , contrastfun = LFQService::my_contest){
   #computeGroupAverages
-  modelcol <- paste0("lmer_", modelName)
+  modelcol <- "linear_model"
 
   interaction_model_matrix <- models %>%
     dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
@@ -1097,13 +1099,14 @@ moderated_p_limma <- function(mm){
 #' @export
 #' @examples
 #' library(LFQService)
-#' modelSummary_A <- LFQService::modelSummary_A
-#' m <- get_complete_model_fit(modelSummary_A$modelProteinF)
-#' factor_contrasts <- linfct_factors_contrasts(m)
-#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProteinF,
+#' modelSummary_A <- LFQService::modellingResult_A
+#' m <- get_complete_model_fit(modelSummary_A$modelProtein)
+#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
+#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
 #'                                                    modelSummary_A$modelName,
 #'                                                    factor_contrasts,
-#'                                                    subject_Id = "Compound")
+#'                                                    subject_Id = "Compound",
+#'                                                    contrastfun = my_contrast_V2)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
@@ -1113,7 +1116,8 @@ moderated_p_limma <- function(mm){
 #' models_interaction <- LFQService::models_interaction
 #'
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
-#' factor_contrasts <- linfct_factors_contrasts(m$lmer_f_Condition_r_peptid_r_patient[[1]])
+#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
+#'
 #' factor_levelContrasts <- contrasts_linfct(m,
 #'                                          models_interaction$modelName,
 #'                                          factor_contrasts,

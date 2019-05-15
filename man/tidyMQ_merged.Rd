@@ -13,6 +13,6 @@ Generating mq all level file incuding evidence - modseqPeptide still missing.
 
 txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 allData <- tidyMQ_merged(txt_directory)
-zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
+zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
 res <- tidyMQ_merged(zip_archive)
 }

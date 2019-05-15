@@ -18,9 +18,11 @@ runs data preprocessing for peptide level data based protein modelling
 #usethis::use_data(testDataStart2954)
 
 testDataStart2954 <- LFQService::testDataStart2954
+testDataStart2954$resDataStart <- testDataStart2954$resDataStart \%>\% dplyr::select(-peptide_Id_n)
 path <- "dummy_test"
-resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config, path ,
+resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config,
+ path ,
                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 #usethis::use_data(resultsV12954)
-
+LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
 }

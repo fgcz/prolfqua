@@ -13,7 +13,7 @@ Generating mq all level file.
 
 txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 allData <- tidyMQ_merged(txt_directory)
-zip_archive <- "inst/samples/maxquant_txt/twoGroup3Reps.zip"
-#res <- tidyMQ_PeptideProtein(zip_archive)
+zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
+# res <- tidyMQ_PeptideProtein(zip_archive)
 
 }

@@ -20,7 +20,7 @@ modellingResult_A <- model_analyse(results$dataTransformed,
                                    modelFunction,
                                    modelName,
                                    subject_Id = pepConfig$table$hkeysLevel())
-#usethis::use_data(modellingResult_A, overwrite = TRUE)
+usethis::use_data(modellingResult_A, overwrite = TRUE)
 
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
 
@@ -35,7 +35,7 @@ model_analyse_summarize_vis_write(visualization ,path = results$path)
 # Compute contrasts between main factors -----
 m <- get_complete_model_fit(modellingResult_A$modelProtein)
 
-factor_contrasts <- linfct_factors_contrasts(m$lmer_f_Mortality_Intervention_NRS[[1]])
+factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct( m,
                                            modellingResult_A$modelName,
                                            factor_contrasts,
@@ -54,7 +54,7 @@ contrasts_linfct_write(factor_levelContrasts,
                        subject_Id = "Compound" )
 
 # Compute subgroup averages ----
-linfct <- linfct_from_model(m$lmer_f_Mortality_Intervention_NRS[[1]])
+linfct <- linfct_from_model(m$linear_model[[1]])
 models_interaction_Averages <- contrasts_linfct( m,
                                                  modelSummary_A$modelName,
                                                  linfct$linfct_factors,
@@ -109,7 +109,7 @@ res <-workflow_model_analyse(results$dataTransformed,
 dim(m)
 dim(modellingResult_B$modelProtein)
 
-anova(m$lmer_f_Mortality_Intervention_NRS[[1]],modellingResult_B$modelProtein$lmer_f_Mortality_Intervention[[1]] )
+anova(m$linear_model[[1]],modellingResult_B$modelProtein$linear_model[[1]] )
 lltest <- workflow_likelihood_ratio_test(m,
                                          modelSummary_A$modelName,
                                          modellingResult_B$modelProtein,

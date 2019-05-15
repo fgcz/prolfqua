@@ -12,7 +12,7 @@ compute contrasts for full models
 }
 \examples{
 
-m <- LFQService::modellingResult_A$modelProtein$lmer_f_Mortality_Intervention_NRS[[1]]
+m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 my_contrast(m, linfct, confint = 0.95)

@@ -10,7 +10,7 @@ make_custom_model_lm(modelstr, model_name)
 Create custom ml model
 }
 \examples{
-tmp <- make_custom_model_lm("Intensity ~ condition")
+tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula=TRUE)
 tmp$isSingular
 }
