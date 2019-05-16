@@ -240,7 +240,6 @@ filter_byQValue <- function(data, config){
 #' xx <- extractIntensities(x,conf)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
-
 extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
