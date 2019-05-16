@@ -968,7 +968,7 @@ contrasts_linfct <- function(models,
     dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
 
-  # adjust p-values
+  # adjust
   contrasts <- contrasts %>% group_by_at("lhs") %>%
     mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
 
@@ -1159,5 +1159,36 @@ contrasts_linfct_write <- function(results,
                                                 columns=columns)
     readr::write_csv(resultswide, path = fileWide)
   }
+}
+
+# HELPER ----
+
+get_model_coefficients <- function(modeldata, config){
+  l_coeff <- function(m){
+    if(!is.null(m)){
+      res <- as.numeric(coefficients(m))
+      return(res)
+    }
+    return(numeric())
+  }
+
+  n_coeff <- function(m){
+    if(!is.null(m)){
+      res <- names(coefficients(m))
+      return(res)
+    }
+    return(character())
+  }
+
+  xx <- modeldata %>%
+    mutate(coefficients_values = purrr::map(linear_model, l_coeff)) %>%
+    mutate(coefficients_names = purrr::map(linear_model, n_coeff))
+
+  xxs <- xx %>% dplyr::select( config$table$hkeysLevel(),
+                               coefficients_values,
+                               coefficients_names)
+  xxxn<-xxs %>% unnest()
+  xxcoef <- xxxn %>% spread(coefficients_names,coefficients_values)
+  return(xxcoef)
 }
 
