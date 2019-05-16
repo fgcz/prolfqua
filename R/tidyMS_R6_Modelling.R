@@ -1163,6 +1163,9 @@ contrasts_linfct_write <- function(results,
 
 # HELPER ----
 
+#' get coefficients from all models
+#' @export
+#'
 get_model_coefficients <- function(modeldata, config){
   l_coeff <- function(m){
     if(!is.null(m)){
@@ -1191,4 +1194,63 @@ get_model_coefficients <- function(modeldata, config){
   xxcoef <- xxxn %>% spread(coefficients_names,coefficients_values)
   return(xxcoef)
 }
+
+
+# ROPECA ----
+
+#' p-value of protein from p.value of the median fold change peptide.
+#' @examples
+#' plot(get_p_values(0.1,1:10))
+#' abline(h=.05,col=2)
+#' plot(get_p_values(0.3,1:30))
+#' abline(h=.05,col=2)
+#' get_p_values(rep(0.1,30),rep(3,30))
+#'
+get_p_values_ropeca <- function(gene.p, gene.n){
+   gene.p2 <- pbeta(gene.p, shape1 = gene.n/2 + 0.5, shape2 = gene.n - (gene.n/2 + 0.5) + 1)
+   return(gene.p2)
+}
+
+
+.getMedianIDX <- function(nrows){
+  if(nrows%%2 == 0){
+    idx <- c(nrows/2 , nrows/2 +1)
+  }else{
+    idx <- ceiling(nrows/2)
+  }
+  return(idx)
+}
+
+.summarize_y_by_x_median <- function(x,y){
+  not.na.idx <- which(!is.na(x))
+  x <- x[not.na.idx]
+  y <- y[not.na.idx]
+  ord <- order(x)
+  y <- y[ord]
+  idx <- .getMedianIDX(length(y))
+  res <- mean(y[idx])
+  return(res)
+}
+
+.getROPECA_p <- function(estimate,pvalue){
+  pvalue <- summarize_y_by_x_median(estimate, pvalue)
+  n <- sum(!is.na(estimate))
+  res <- get_p_values_ropeca(pvalue, n)
+  return(res)
+}
+
+#' compute protein level fold changes and p.values using beta distribution
+#' @export
+#'
+summary_ROPECA <- function(contrasts_data,
+                           subject_Id = "protein_Id",
+                           estimate = "estimate",
+                           p.value="moderated.p.value"){
+  dd <- contrasts_data %>% group_by_at(subject_Id) %>%
+  summarize(n=n(),estimate_median = median(!!sym(estimate), na.rm=TRUE),
+            p.value.median = summarize_y_by_x_median(!!sym(estimate),!!sym(moderated.p.value)))
+  res <- dd %>% mutate(ropeca.p = get_p_values_ropeca(p.value.median , n))
+}
+
+
 
