@@ -1199,16 +1199,26 @@ get_model_coefficients <- function(modeldata, config){
 # ROPECA ----
 
 #' p-value of protein from p.value of the median fold change peptide.
+#' @param max.n limit number of peptides per protein.
+#' @export
 #' @examples
-#' plot(get_p_values(0.1,1:10))
+#' plot(get_p_values_pbeta(0.1,1:10))
 #' abline(h=.05,col=2)
-#' plot(get_p_values(0.3,1:30))
+#' plot(get_p_values_pbeta(0.3,1:30))
 #' abline(h=.05,col=2)
-#' get_p_values(rep(0.1,30),rep(3,30))
+#' plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 #'
-get_p_values_ropeca <- function(gene.p, gene.n){
-   gene.p2 <- pbeta(gene.p, shape1 = gene.n/2 + 0.5, shape2 = gene.n - (gene.n/2 + 0.5) + 1)
-   return(gene.p2)
+get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
+  n.obs <- pmin(n.obs, max.n)
+
+  shape1 <- (n.obs/2 + 0.5)
+  shape2 <- (n.obs - (n.obs/2 + 0.5) + 1)
+
+  stopifnot(shape1 == shape2)
+  res.p.value <- pbeta(median.p.value,
+                   shape1 = shape1,
+                   shape2 = shape2)
+  return(res.p.value)
 }
 
 
@@ -1239,17 +1249,52 @@ get_p_values_ropeca <- function(gene.p, gene.n){
   return(res)
 }
 
-#' compute protein level fold changes and p.values using beta distribution
+#' compute protein level fold changes and p.values (using beta distribution)
+#' takes p-value of the median fold change.
 #' @export
 #'
-summary_ROPECA <- function(contrasts_data,
-                           subject_Id = "protein_Id",
-                           estimate = "estimate",
-                           p.value="moderated.p.value"){
-  dd <- contrasts_data %>% group_by_at(subject_Id) %>%
-  summarize(n=n(),estimate_median = median(!!sym(estimate), na.rm=TRUE),
-            p.value.median = summarize_y_by_x_median(!!sym(estimate),!!sym(moderated.p.value)))
-  res <- dd %>% mutate(ropeca.p = get_p_values_ropeca(p.value.median , n))
+#' @examples
+#' library(LFQService)
+#' nrPep <- 10000
+#' nrProtein <- 800
+#' p.value <- runif(nrPep)
+#' estimate <- sample(c(-1,1),nrPep, replace = TRUE)
+#' protein_Id <- sample(1:800, size = nrPep,replace=TRUE, prob = dexp(seq(0,5,length=800)))
+#'
+#' plot(table(table(protein_Id)))
+#'
+#' testdata <- data.frame(protein_Id = protein_Id, estimate = estimate, p.value = p.value )
+#' xx <- summary_ROPECA_median_p.scaled(testdata,
+#'                                     subject_Id = "protein_Id",
+#'                                     estimate = "estimate",
+#'                                     p.value="p.value",
+#'                                     max.n = 10)
+#' hist(testdata$p.value)
+#' hist(xx$median.p.scaled, breaks=20)
+#' hist(xx$median.p, breaks=20)
+#' hist(xx$p.beta, breaks = 20)
+summary_ROPECA_median_p.scaled <- function(contrasts_data,
+                                           subject_Id = "protein_Id",
+                                           estimate = "estimate",
+                                           p.value="moderated.p.value",
+                                           max.n = 10){
+  addscaled.p <- contrasts_data %>%
+    mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
+
+  summarized.protein <- addscaled.p %>% group_by(protein_Id) %>%
+    summarize(
+      n=n(),
+      n_not_na = sum(!is.na(!!sym(estimate))),
+      median.estimate = median(!!sym(estimate), na.rm=TRUE),
+      sd.estimate = sd(!!sym(estimate), na.rm=TRUE),
+      median.p.scaled = median(scaled.p, na.rm=TRUE))
+
+  # scale it back here.
+  summarized.protein <- summarized.protein %>%
+    mutate(median.p = 1- abs(median.p.scaled))
+  summarized.protein <- summarized.protein %>% mutate(p.beta = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+  summarized.protein <- summarized.protein %>% mutate(n.beta = pmin(n_not_na, max.n))
+  return(summarized.protein)
 }
 
 
