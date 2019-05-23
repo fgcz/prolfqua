@@ -9,55 +9,61 @@
 }
 
 
-.workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
-  config <- config$clone(deep = TRUE)
-  resDataStart <- summarizeHierarchy(resDataStart, config)
-  resNACondition <- filter_factor_levels_by_missing(resDataStart,
-                                                    config,
-                                                    percent = percent,
-                                                    factor_level = config$table$factorLevel
-  )
-
-  resNACondition <- completeCases(resNACondition, config)
-  filteredPep <- summarizeHierarchy(resNACondition, config)
-
-  filteredPep <- dplyr::inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
-  filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
-  return(list(data=filteredPep, config=config))
-}
-
-
-#'
+#' Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides
+#' @export
 #' @examples
+#' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
 #' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
 #' path <- "dummy_test"
-#' dd <-.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
-#' #names(dd)
-#' #dd[[1]]
-#' #dd[[2]]
-.workflow_MQ_filter_peptides_V2 <- function(resDataStart, config, percent = 50){
+#' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' hierarchyCounts(dd$data, dd$config)
+.workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
   config <- config$clone(deep = TRUE)
-  summaryH <- summarizeHierarchy(resDataStart, config)
-  resDataStart <- inner_join(resDataStart,summaryH, by = config$table$hierarchyKeys()[1])
-
-  print(colnames(resDataStart))
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent,
                                                     factor_level = config$table$factorLevel
   )
 
-  resNACondition <- resNACondition %>% dplyr::select(protein_Id) %>% distinct() %>%
-    dplyr::inner_join(resDataStart , by="protein_Id")
-  resNACondition <- completeCases(resNACondition, config)
-  filteredPep <- summarizeHierarchy(resNACondition, config)
-  #return(list(filteredPep,resNACondition))
-  filteredPep <- dplyr::inner_join(filteredPep, resNACondition, by="protein_Id", suffix = c(".NA_filt", ""))
-  filteredPep <- filteredPep %>% dplyr::filter( peptide_Id_n.NA_filt >= config$parameter$min_peptides_protein)
+  proteinsWith2Peptides <- summarizeHierarchy(resNACondition, config)
+  proteinsWith2Peptides <- proteinsWith2Peptides %>% dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
   return(list(data=filteredPep, config=config))
 }
 
+
+#' Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides
+#' @export
+#' @examples
+#' library(tidyverse)
+#' testDataStart2954 <- LFQService::testDataStart2954
+#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
+#' path <- "dummy_test"
+#' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' hierarchyCounts(dd$data, dd$config)
+.workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
+                                             config,
+                                             percent = 50,
+                                             nr_peptide_id = 2){
+
+
+  config <- config$clone(deep = TRUE)
+
+  # get proteins with more than 1 peptide before NA filtering.
+  summaryH <- summarizeHierarchy(resDataStart, config)
+  proteinsWith2Peptides <- summaryH %>% filter(nr_peptide_id >= 2)
+  # fitler for missingness
+  resNACondition <- filter_factor_levels_by_missing(resDataStart,
+                                                    config,
+                                                    percent = percent,
+                                                    factor_level = config$table$factorLevel
+  )
+
+
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by="protein_Id")
+  return(list(data=filteredPep, config=config))
+}
 
 
 .workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
