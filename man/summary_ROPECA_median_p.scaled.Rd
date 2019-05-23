@@ -3,14 +3,14 @@
 \name{summary_ROPECA_median_p.scaled}
 \alias{summary_ROPECA_median_p.scaled}
 \title{compute protein level fold changes and p.values (using beta distribution)
-takes p-value of the median fold change.}
+takes p-value of the scaled p-value}
 \usage{
 summary_ROPECA_median_p.scaled(contrasts_data, subject_Id = "protein_Id",
   estimate = "estimate", p.value = "moderated.p.value", max.n = 10)
 }
 \description{
 compute protein level fold changes and p.values (using beta distribution)
-takes p-value of the median fold change.
+takes p-value of the scaled p-value
 }
 \examples{
 library(LFQService)
@@ -32,4 +32,5 @@ hist(testdata$p.value)
 hist(xx$median.p.scaled, breaks=20)
 hist(xx$median.p, breaks=20)
 hist(xx$p.beta, breaks = 20)
+
 }

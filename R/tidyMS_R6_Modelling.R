@@ -280,7 +280,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
     dplyr::filter(row.names.x. != "(Intercept)") %>%
     quantable::multigroupVolcano(
       effect = "Estimate",
-      type = "Pr...t..",
+      p.value = "Pr...t..",
       condition = "row.names.x.",
       label = "subject_Id" ,
       xintercept = c(-1, 1) ,
@@ -1002,7 +1002,7 @@ contrasts_linfct_vis <- function(contrasts,
     fig$fname <- paste0(name, "_", modelName ,".pdf")
     fig$fig <- quantable::multigroupVolcano(contrasts,
                                             effect = "estimate",
-                                            type = column,
+                                            p.value = column,
                                             condition = "lhs",
                                             label = subject_Id,
                                             xintercept = c(-1, 1), colour = "isSingular")
@@ -1242,15 +1242,10 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
   return(res)
 }
 
-.getROPECA_p <- function(estimate,pvalue){
-  pvalue <- summarize_y_by_x_median(estimate, pvalue)
-  n <- sum(!is.na(estimate))
-  res <- get_p_values_ropeca(pvalue, n)
-  return(res)
-}
 
 #' compute protein level fold changes and p.values (using beta distribution)
-#' takes p-value of the median fold change.
+#' takes p-value of the scaled p-value
+#'
 #' @export
 #'
 #' @examples
@@ -1273,6 +1268,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' hist(xx$median.p.scaled, breaks=20)
 #' hist(xx$median.p, breaks=20)
 #' hist(xx$p.beta, breaks = 20)
+#'
 summary_ROPECA_median_p.scaled <- function(contrasts_data,
                                            subject_Id = "protein_Id",
                                            estimate = "estimate",
@@ -1292,7 +1288,8 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
   # scale it back here.
   summarized.protein <- summarized.protein %>%
     mutate(median.p = 1- abs(median.p.scaled))
-  summarized.protein <- summarized.protein %>% mutate(p.beta = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+  summarized.protein <- summarized.protein %>%
+    mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>% mutate(n.beta = pmin(n_not_na, max.n))
   return(summarized.protein)
 }
