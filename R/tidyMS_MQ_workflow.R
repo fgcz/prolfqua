@@ -52,19 +52,35 @@
 
   # get proteins with more than 1 peptide before NA filtering.
   summaryH <- summarizeHierarchy(resDataStart, config)
-  proteinsWith2Peptides <- summaryH %>% filter(nr_peptide_id >= 2)
+  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
   # fitler for missingness
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent,
                                                     factor_level = config$table$factorLevel
   )
-
-
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by="protein_Id")
   return(list(data=filteredPep, config=config))
 }
 
+#' Keep only those proteins with 2 IDENTIFIED peptides
+#' @export
+.workflow_MQ_filter_peptides_V3 <-  function(resDataStart,
+                                             config,
+                                             percent = 50,
+                                             nr_peptide_id = 2){
+
+
+  config <- config$clone(deep = TRUE)
+
+  # get proteins with more than 1 peptide before NA filtering.
+  summaryH <- summarizeHierarchy(resDataStart, config)
+  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
+
+
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by="protein_Id")
+  return(list(data=filteredPep, config=config))
+}
 
 .workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
 

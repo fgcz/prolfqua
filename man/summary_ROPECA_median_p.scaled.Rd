@@ -5,8 +5,9 @@
 \title{compute protein level fold changes and p.values (using beta distribution)
 takes p-value of the scaled p-value}
 \usage{
-summary_ROPECA_median_p.scaled(contrasts_data, subject_Id = "protein_Id",
-  estimate = "estimate", p.value = "moderated.p.value", max.n = 10)
+summary_ROPECA_median_p.scaled(contrasts_data, contrast = "lhs",
+  subject_Id = "protein_Id", estimate = "estimate",
+  p.value = "moderated.p.value", max.n = 10)
 }
 \description{
 compute protein level fold changes and p.values (using beta distribution)

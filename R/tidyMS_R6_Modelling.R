@@ -948,6 +948,8 @@ contrasts_linfct <- function(models,
                              contrastfun = LFQService::my_contest){
   #computeGroupAverages
   modelcol <- "linear_model"
+  models <- models %>% dplyr::filter(exists_lmer == TRUE)
+
 
   interaction_model_matrix <- models %>%
     dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
@@ -1221,7 +1223,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
   return(res.p.value)
 }
 
-
+# TODO delete
 .getMedianIDX <- function(nrows){
   if(nrows%%2 == 0){
     idx <- c(nrows/2 , nrows/2 +1)
@@ -1230,7 +1232,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
   }
   return(idx)
 }
-
+# TODO delete
 .summarize_y_by_x_median <- function(x,y){
   not.na.idx <- which(!is.na(x))
   x <- x[not.na.idx]
@@ -1270,6 +1272,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' hist(xx$p.beta, breaks = 20)
 #'
 summary_ROPECA_median_p.scaled <- function(contrasts_data,
+                                           contrast = "lhs",
                                            subject_Id = "protein_Id",
                                            estimate = "estimate",
                                            p.value="moderated.p.value",
@@ -1277,7 +1280,7 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
   addscaled.p <- contrasts_data %>%
     mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
 
-  summarized.protein <- addscaled.p %>% group_by(protein_Id) %>%
+  summarized.protein <- addscaled.p %>% group_by_at(subject_Id, contrast) %>%
     summarize(
       n=n(),
       n_not_na = sum(!is.na(!!sym(estimate))),
@@ -1293,6 +1296,4 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
   summarized.protein <- summarized.protein %>% mutate(n.beta = pmin(n_not_na, max.n))
   return(summarized.protein)
 }
-
-
 

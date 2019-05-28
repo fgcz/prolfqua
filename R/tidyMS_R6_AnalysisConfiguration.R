@@ -502,10 +502,12 @@ summarizeHierarchy <- function(x,
 
   if(length(hierarchy[-1]) > 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],  list( n = n_distinct))
+      dplyr::summarize_at( hierarchy[-1],
+                           list( n = n_distinct))
   }else if(length(hierarchy[-1]) == 1){
     x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),  list( n = n_distinct))
+      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),
+                           list( n = n_distinct))
   }else{
     x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
       dplyr::summarize(  n= n())
@@ -517,21 +519,83 @@ summarizeHierarchy <- function(x,
 #' @export
 #' @examples
 #'
-getMissingStats <- function(x, configuration, nrfactors = 1){
+interaction_missing_stats <- function(x,
+                                      configuration,
+                                      factors = configuration$table$fkeysLevel(),
+                                      workIntensity = configuration$table$getWorkIntensity())
+  {
+
   x <- completeCases(x, configuration)
   table <- configuration$table
-  factors <- head(table$factorKeys(), nrfactors)
   missingPrec <- x %>% group_by_at(c(factors,
                                      table$hierarchyKeys(),
                                      table$isotopeLabel
   ))
-
   missingPrec <- missingPrec %>%
-    dplyr::summarize(nrReplicates = n(), nrNAs = sum(is.na(!!sym(table$getWorkIntensity()))) ,
-                     meanArea = mean(!!sym(table$getWorkIntensity()), na.rm=TRUE)) %>%
+    dplyr::summarize(nrReplicates = n(),
+                     nrNAs = sum(is.na(!!sym(workIntensity))),
+                     meanArea = mean(!!sym(workIntensity), na.rm=TRUE)) %>%
     arrange(desc(nrNAs))
   missingPrec
 }
+
+#' @export
+#'
+getMissingStats <- function(x,
+                            configuration,
+                            factors = configuration$table$fkeysLevel(),
+                            workIntensity = configuration$table$getWorkIntensity()){
+  message("DEPRECATED, use missing_stats")
+  missing_stats(x, configuration, factors = factors, workIntensity = workIntensity)
+}
+
+
+#' Compute interaction averages and impute data using mean of lowest 10%
+#' @export
+#'
+summarize_missigness_impute <- function(mdataTrans, pepConfig){
+  xx <- interaction_missing_stats(mdataTrans, pepConfig)
+  xx <- xx%>% tidyr::unite(interaction,pepConfig$table$fkeysLevel())
+
+  #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
+  xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
+
+
+  lowerMean <- function(meanArea, probs = 0.1){
+    meanAreaNotNA <- na.omit(meanArea)
+    small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs= probs)]
+    meanArea[is.na(meanArea)] <- mean(small10)
+    return(meanArea)
+  }
+
+  xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
+  xx %>% dplyr::select(-nrNAs) -> xx
+
+
+  nrReplicates <- xx%>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
+    tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
+    arrange(protein_Id) %>% ungroup()
+
+  nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
+    tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
+    arrange(protein_Id) %>% ungroup()
+
+  meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
+    tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
+    arrange(protein_Id) %>% ungroup()
+
+  meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
+    tidyr::spread(interaction, imputed, sep=".imputed.") %>%
+    arrange(protein_Id) %>% ungroup()
+
+  allTables <- list(meanArea= meanArea, nrMeasured = nrMeasured,  nrReplicates = nrReplicates, meanAreaImputed = meanAreaImputed)
+  res <- purrr::reduce(allTables,inner_join)
+
+  #  nrMeasured %>% dplyr::select(starts_with("interaction")) -> nrMeasuredM
+  #  nrReplicates %>% dplyr::select(starts_with("interaction")) -> nrReplicatesM
+  return(list(long = xx, wide=res))
+}
+
 
 #' Histogram summarizing missigness
 #' @export
@@ -740,14 +804,14 @@ summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
   hierarchyFactor <- data %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
-     dplyr::summarize(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
+    dplyr::summarize(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$factorKeys()[1], funs(as.character) )
 
   if(all){
     hierarchy <- data %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-       dplyr::summarize(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
+      dplyr::summarize(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
