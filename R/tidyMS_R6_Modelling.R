@@ -1251,6 +1251,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' @export
 #'
 #' @examples
+#'
 #' library(LFQService)
 #' nrPep <- 10000
 #' nrProtein <- 800
@@ -1260,16 +1261,18 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #'
 #' plot(table(table(protein_Id)))
 #'
-#' testdata <- data.frame(protein_Id = protein_Id, estimate = estimate, p.value = p.value )
+#' testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id, estimate = estimate, p.value = p.value )
 #' xx <- summary_ROPECA_median_p.scaled(testdata,
+#'
 #'                                     subject_Id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value="p.value",
 #'                                     max.n = 10)
+#' colnames(xx)
 #' hist(testdata$p.value)
 #' hist(xx$median.p.scaled, breaks=20)
 #' hist(xx$median.p, breaks=20)
-#' hist(xx$p.beta, breaks = 20)
+#' hist(xx$beta.based.significance, breaks = 20)
 #'
 summary_ROPECA_median_p.scaled <- function(contrasts_data,
                                            contrast = "lhs",
@@ -1280,7 +1283,9 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
   addscaled.p <- contrasts_data %>%
     mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
 
-  summarized.protein <- addscaled.p %>% group_by_at(subject_Id, contrast) %>%
+  summarized.protein <- addscaled.p %>% group_by_at(c(subject_Id, contrast))
+
+  summarized.protein <- summarized.protein %>%
     summarize(
       n=n(),
       n_not_na = sum(!is.na(!!sym(estimate))),

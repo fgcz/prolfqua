@@ -14,6 +14,7 @@ compute protein level fold changes and p.values (using beta distribution)
 takes p-value of the scaled p-value
 }
 \examples{
+
 library(LFQService)
 nrPep <- 10000
 nrProtein <- 800
@@ -23,15 +24,17 @@ protein_Id <- sample(1:800, size = nrPep,replace=TRUE, prob = dexp(seq(0,5,lengt
 
 plot(table(table(protein_Id)))
 
-testdata <- data.frame(protein_Id = protein_Id, estimate = estimate, p.value = p.value )
+testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id, estimate = estimate, p.value = p.value )
 xx <- summary_ROPECA_median_p.scaled(testdata,
+
                                     subject_Id = "protein_Id",
                                     estimate = "estimate",
                                     p.value="p.value",
                                     max.n = 10)
+colnames(xx)
 hist(testdata$p.value)
 hist(xx$median.p.scaled, breaks=20)
 hist(xx$median.p, breaks=20)
-hist(xx$p.beta, breaks = 20)
+hist(xx$beta.based.significance, breaks = 20)
 
 }

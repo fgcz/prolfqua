@@ -23,7 +23,7 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 
                                      fileName = NULL,
                                      factors = list(), # ordering is important - first is considered the main
-                                     factorLevel=integer(),
+                                     factorLevel=1,
 
                                      sampleName = "sampleName",
                                      # measurement levels
@@ -518,7 +518,16 @@ summarizeHierarchy <- function(x,
 #' compute missing statistics
 #' @export
 #' @examples
+#' library(tidyverse)
+#' library(LFQService)
+#' xx <- completeCases(sample_analysis,skylineconfig)
+#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+#' xx <- completeCases(xx, skylineconfig)
+#' interaction_missing_stats(xx, skylineconfig)
 #'
+#' configuration <- skylineconfig
+#' configuration$table$fkeysLevel()
 interaction_missing_stats <- function(x,
                                       configuration,
                                       factors = configuration$table$fkeysLevel(),
@@ -546,7 +555,7 @@ getMissingStats <- function(x,
                             factors = configuration$table$fkeysLevel(),
                             workIntensity = configuration$table$getWorkIntensity()){
   message("DEPRECATED, use missing_stats")
-  missing_stats(x, configuration, factors = factors, workIntensity = workIntensity)
+  interaction_missing_stats(x, configuration, factors = factors, workIntensity = workIntensity)
 }
 
 
@@ -606,15 +615,19 @@ summarize_missigness_impute <- function(mdataTrans, pepConfig){
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- completeCases(xx, skylineconfig)
-#' missignessHistogram(xx,skylineconfig)
+#' missignessHistogram(xx, skylineconfig)
+#'
+#' missingPrec <- interaction_missing_stats(xx, skylineconfig)
+#'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' missignessHistogram(sample_analysis,skylineconfig)
+#' missignessHistogram(sample_analysis, skylineconfig)
 #'
-missignessHistogram <- function(x, configuration, showempty = TRUE, nrfactors = 1){
+missignessHistogram <- function(x, configuration, showempty = TRUE, factors = configuration$table$fkeysLevel()){
   table <- configuration$table
-  missingPrec <- getMissingStats(x, configuration,nrfactors)
+  missingPrec <- getMissingStats(x, configuration , factors)
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
+
   if(showempty){
     if(configuration$parameter$is_intensity_transformed)
     {
@@ -625,7 +638,7 @@ missignessHistogram <- function(x, configuration, showempty = TRUE, nrfactors = 
 
   }
 
-  factors <- head(table$factorKeys(), nrfactors)
+  factors <- table$fkeysLevel()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
@@ -677,14 +690,15 @@ missingPerConditionCumsum <- function(x,configuration,nrfactors = 1){
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' res <- missingPerCondition(sample_analysis,skylineconfig)
 #' names(res)
+#' res$data
+#' res$figure
 #' print(res$figure)
 #' configuration <- skylineconfig$clone(deep=TRUE)
 #' x <- sample_analysis
-#' nrfactors <- 1
-missingPerCondition <- function(x, configuration, nrfactors = 1){
+#'
+missingPerCondition <- function(x, configuration, factors =configuration$table$fkeysLevel()){
   table <- configuration$table
-  missingPrec <- getMissingStats(x, configuration, nrfactors)
-  factors <- head(table$factorKeys(), nrfactors)
+  missingPrec <- getMissingStats(x, configuration, factors)
   hierarchyKey <- tail(configuration$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel,

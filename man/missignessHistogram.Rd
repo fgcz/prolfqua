@@ -4,7 +4,8 @@
 \alias{missignessHistogram}
 \title{Histogram summarizing missigness}
 \usage{
-missignessHistogram(x, configuration, showempty = TRUE, nrfactors = 1)
+missignessHistogram(x, configuration, showempty = TRUE,
+  factors = configuration$table$fkeysLevel())
 }
 \description{
 Histogram summarizing missigness
@@ -16,9 +17,12 @@ xx <- completeCases(sample_analysis,skylineconfig)
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- completeCases(xx, skylineconfig)
-missignessHistogram(xx,skylineconfig)
+missignessHistogram(xx, skylineconfig)
+
+missingPrec <- interaction_missing_stats(xx, skylineconfig)
+
 setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-missignessHistogram(sample_analysis,skylineconfig)
+missignessHistogram(sample_analysis, skylineconfig)
 
 }

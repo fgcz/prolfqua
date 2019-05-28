@@ -4,7 +4,8 @@
 \alias{missingPerCondition}
 \title{Summarize missing in condtion as barplot}
 \usage{
-missingPerCondition(x, configuration, nrfactors = 1)
+missingPerCondition(x, configuration,
+  factors = configuration$table$fkeysLevel())
 }
 \description{
 Summarize missing in condtion as barplot
@@ -14,8 +15,10 @@ setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 res <- missingPerCondition(sample_analysis,skylineconfig)
 names(res)
+res$data
+res$figure
 print(res$figure)
 configuration <- skylineconfig$clone(deep=TRUE)
 x <- sample_analysis
-nrfactors <- 1
+
 }
