@@ -1055,10 +1055,11 @@ workflow_contrasts_linfct <- function(models,
   prefix <- prefix
   modelName <- modelName
 
-  res_fun <- function(path = NULL){
-    columns = c("p.value","p.value.adjusted",
-                "moderated.p.value",
-                "moderated.p.value.adjusted")
+  res_fun <- function(path = NULL, columns = c("p.value",
+                                               "p.value.adjusted",
+                                               "moderated.p.value",
+                                               "moderated.p.value.adjusted")){
+
     visualization <- contrasts_linfct_vis(contrast_result,
                                           modelName ,
                                           prefix = prefix,
