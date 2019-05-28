@@ -544,7 +544,7 @@ interaction_missing_stats <- function(x,
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanArea = mean(!!sym(workIntensity), na.rm=TRUE)) %>%
-    arrange(desc(nrNAs))
+    arrange(desc(nrNAs)) %>% dplyr::ungroup()
   missingPrec
 }
 
@@ -564,7 +564,7 @@ getMissingStats <- function(x,
 #'
 summarize_missigness_impute <- function(mdataTrans, pepConfig){
   xx <- interaction_missing_stats(mdataTrans, pepConfig)
-  xx <- xx%>% tidyr::unite(interaction,pepConfig$table$fkeysLevel())
+  xx <-  make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
 
   #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
   xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
@@ -578,7 +578,7 @@ summarize_missigness_impute <- function(mdataTrans, pepConfig){
   }
 
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
-  xx %>% dplyr::select(-nrNAs) -> xx
+  xx %>% dplyr::select(-one_of(c("nrNAs", pepConfig$table$fkeysLevel()))) -> xx
 
 
   nrReplicates <- xx%>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
