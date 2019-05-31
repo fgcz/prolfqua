@@ -1055,7 +1055,8 @@ workflow_contrasts_linfct <- function(models,
   prefix <- prefix
   modelName <- modelName
 
-  res_fun <- function(path = NULL, columns = c("p.value",
+  res_fun <- function(path = NULL, columns = c("estimate",
+                                               "p.value",
                                                "p.value.adjusted",
                                                "moderated.p.value",
                                                "moderated.p.value.adjusted")){
