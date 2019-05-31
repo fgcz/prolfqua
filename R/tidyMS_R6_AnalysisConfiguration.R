@@ -625,7 +625,7 @@ summarize_missigness_impute <- function(mdataTrans, pepConfig){
 #'
 missignessHistogram <- function(x, configuration, showempty = TRUE, factors = configuration$table$fkeysLevel()){
   table <- configuration$table
-  missingPrec <- getMissingStats(x, configuration , factors)
+  missingPrec <- interaction_missing_stats(x, configuration , factors)
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
 
   if(showempty){
@@ -662,10 +662,9 @@ missignessHistogram <- function(x, configuration, showempty = TRUE, factors = co
 #' res <- missingPerConditionCumsum(sample_analysis,skylineconfig)
 #' names(res)
 #' print(res$figure)
-missingPerConditionCumsum <- function(x,configuration,nrfactors = 1){
+missingPerConditionCumsum <- function(x,configuration,factors = configuration$table$fkeysLevel()){
   table <- configuration$table
-  missingPrec <- getMissingStats(x, configuration,nrfactors)
-  factors <- head(table$factorKeys(), nrfactors)
+  missingPrec <- interaction_missing_stats(x, configuration,factors)
 
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize(nrTransitions =n())
@@ -698,7 +697,7 @@ missingPerConditionCumsum <- function(x,configuration,nrfactors = 1){
 #'
 missingPerCondition <- function(x, configuration, factors =configuration$table$fkeysLevel()){
   table <- configuration$table
-  missingPrec <- getMissingStats(x, configuration, factors)
+  missingPrec <- interaction_missing_stats(x, configuration, factors)
   hierarchyKey <- tail(configuration$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel,

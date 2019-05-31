@@ -87,7 +87,7 @@ longNoDecoy <- setup_analysis(longFormat, config)
 data <- longNoDecoy
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
 longQSummaries <- summariseQValues(longNoDecoy, config)
-knitr::kable(head(LFQService::getMissingStats(longQSummaries, config)))
+knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)))
 
 ```
 
