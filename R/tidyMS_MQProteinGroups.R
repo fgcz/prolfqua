@@ -221,7 +221,11 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     #return(list(mod_cols = mod_cols, meta = meta))
     meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
   }
-
+  if(sum(grepl("site.ids",colnames(MQPeptides)))){
+    mod_cols2 <- dplyr::select(MQPeptides, "id", dplyr::ends_with("site.ids"))
+    mod_cols <- setNames(mod_cols , paste0("site.ids.", colnames(mod_cols)))
+    meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
+  }
 
 
   sc <- sym("potential.contaminant")
@@ -408,5 +412,10 @@ tidyMQ_top_protein_name <- function(modSpecData){
   resPepProtAnnot <- dplyr::inner_join(modSpecData,topProtein )
 }
 
+
+## Columns for site specific files
+#Proteins	Positions within proteins	Leading proteins	Protein	Fasta headers	Localization prob	Score diff
+# Sequence window
+# intensity but not ___1 ___2 ___3 id	Protein group IDs	Positions	Position	Peptide IDs	Mod. peptide IDs	Evidence IDs	Acetyl (K) Probabilities	Acetyl (K) Score diffs	Position in peptide	Charge
 
 
