@@ -6,7 +6,7 @@ The R package contains vignettes and functions for analyzing mass spec device ba
 
 ## 1. System Requirements  
 
-a Windows/Linux/MacOSX x64 platform R 3.5. No dependencies on BIOC!
+a Windows/Linux/MacOSX x64 platform R 3.5.
 
 
 ## 2. Install
