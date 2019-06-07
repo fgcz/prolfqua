@@ -74,9 +74,9 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                          return(names(self$hierarchy))
                                        }
                                      },
-                                     hkeysLevel = function(){
+                                     hkeysLevel = function(names = TRUE){
                                        res <- (self$hierarchy[1:self$hierarchyLevel])
-                                       return(names(res))
+                                       return(ifelse(names, names(res), res))
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
@@ -225,12 +225,18 @@ setup_analysis <- function(data, configuration ,sep="~"){
 
 #' Complete cases
 #' @export
+#' @examples
 #'
+#'  config <- skylineconfig
+#'  config$table$isotopeLabel <- "Isotope.Label.Type"
+#'  data <- LFQService::sample_analysis
+#'  data
+#'  xx <- completeCases(sample_analysis,skylineconfig)
 completeCases <- function(data, config){
   data <- tidyr::complete(
     data ,
     tidyr::nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
-    tidyr::nesting(!!!syms(c( config$table$fileName , config$table$sampleName, config$table$factorKeys() )))
+    tidyr::nesting(!!!syms(c(config$table$fileName , config$table$sampleName, config$table$factorKeys() )))
   )
   return(data)
 }
@@ -499,7 +505,7 @@ summarizeHierarchy <- function(x,
   precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
   x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
     dplyr::summarize_at( all_hierarchy,
-                         list( n = n_distinct))
+                         list( n = dplyr::n_distinct))
   return(x3)
 }
 # Functions - Missigness ----
@@ -508,7 +514,9 @@ summarizeHierarchy <- function(x,
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
+#'
 #' xx <- completeCases(sample_analysis,skylineconfig)
+#'
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- completeCases(xx, skylineconfig)
@@ -767,6 +775,7 @@ reestablishCondition <- function(data,
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)
+#'
 #' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% tidyr::unnest()
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)

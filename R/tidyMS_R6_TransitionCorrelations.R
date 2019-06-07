@@ -112,7 +112,7 @@ plot_intensity_distribution_density <- function(data, config){
 #' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
 #' plot_sample_correlation(analysis, config)
 plot_sample_correlation <- function(data, config){
-  matrix <- toWideConfig(data, config, as.matrix = TRUE)
+  matrix <- toWideConfig(data, config, as.matrix = TRUE)$data
   M <- cor(matrix, use="pairwise.complete.obs")
   if(nrow(M)>12){
     corrplot::corrplot.mixed(M,upper="ellipse",
@@ -219,7 +219,7 @@ filter_byQValue <- function(data, config){
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
 #' x
-#' nn  <- x %>% dplyr::select( skylineconfig$table$hkeysLevel(TRUE) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysLevel()) ) %>%
 #'  distinct() %>% nrow()
 #'
 #' xx <- extractIntensities(x,skylineconfig)
@@ -227,16 +227,17 @@ filter_byQValue <- function(data, config){
 #'
 #' # change hierarchyLevel ###################
 #' conf <- skylineconfig$clone(deep=TRUE)
-#' conf$table$hierarchyLevel = 2
+#' conf$table$hierarchyLevel = 1
 #'
 #' xnested <- sample_analysis %>%
-#'  group_by_at(conf$table$hkeysLevel(FALSE)) %>%
+#'  group_by_at(conf$table$hkeysLevel()) %>%
 #'  tidyr::nest()
 #' head(xnested)
 #'
 #' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( conf$table$hkeysLevel(TRUE) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysLevel()) ) %>%
 #'  distinct() %>% nrow()
+#'
 #' xx <- extractIntensities(x,conf)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
@@ -244,7 +245,7 @@ extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
     dplyr::select( c( table$sampleName,
-                      table$hkeysLevel(TRUE),
+                      setdiff(table$hierarchyKeys(),table$hkeysLevel()),
                       table$getWorkIntensity()) ) %>%
     tidyr::spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
@@ -304,7 +305,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
 #' @examples
 #' conf <- skylineconfig$clone(deep = TRUE)
 #' res <- toWideConfig(sample_analysis, conf, as.matrix = TRUE)
-#' res <- scale(res)
+#' res <- scale(res$data)
 #'
 #' xx <- gatherItBack(res,"srm_intensityScaled",conf)
 #' xx <- gatherItBack(res,"srm_intensityScaled",conf,sample_analysis)

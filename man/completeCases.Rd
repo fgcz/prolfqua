@@ -9,3 +9,11 @@ completeCases(data, config)
 \description{
 Complete cases
 }
+\examples{
+
+ config <- skylineconfig
+ config$table$isotopeLabel <- "Isotope.Label.Type"
+ data <- LFQService::sample_analysis
+ data
+ xx <- completeCases(sample_analysis,skylineconfig)
+}

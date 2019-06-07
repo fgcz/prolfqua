@@ -174,7 +174,7 @@ deprecated_model_full_lmer <- function(config, factor_level=2, random= NULL){
                         paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
                         " + ",
                         paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
-                        paste0(" + (1|", config$table$hkeysLevel(TRUE),")"))
+                        paste0(" + (1|", setdiff(config$table$hierarchyKeys() , config$table$hkeysLevel()),")"))
   if(!is.null(random)){
     formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
   }

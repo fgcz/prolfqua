@@ -125,10 +125,11 @@ dev.off()
 # Compute a protein level summary
 
 ```{r}
+skylineconfigHL$table$hkeysLevel()
 
 HLfigs3 <- LFQService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
-HLfigs3 <- dplyr::inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
 
+HLfigs3 <- dplyr::inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
   plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
 p

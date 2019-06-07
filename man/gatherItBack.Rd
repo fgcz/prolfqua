@@ -12,7 +12,7 @@ make it long
 \examples{
 conf <- skylineconfig$clone(deep = TRUE)
 res <- toWideConfig(sample_analysis, conf, as.matrix = TRUE)
-res <- scale(res)
+res <- scale(res$data)
 
 xx <- gatherItBack(res,"srm_intensityScaled",conf)
 xx <- gatherItBack(res,"srm_intensityScaled",conf,sample_analysis)

@@ -16,7 +16,7 @@ xnested <- sample_analysis \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
 x
-nn  <- x \%>\% dplyr::select( skylineconfig$table$hkeysLevel(TRUE) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysLevel()) ) \%>\%
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,skylineconfig)
@@ -24,16 +24,17 @@ stopifnot(dim(xx)==c(nn,22))
 
 # change hierarchyLevel ###################
 conf <- skylineconfig$clone(deep=TRUE)
-conf$table$hierarchyLevel = 2
+conf$table$hierarchyLevel = 1
 
 xnested <- sample_analysis \%>\%
- group_by_at(conf$table$hkeysLevel(FALSE)) \%>\%
+ group_by_at(conf$table$hkeysLevel()) \%>\%
  tidyr::nest()
 head(xnested)
 
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( conf$table$hkeysLevel(TRUE) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysLevel()) ) \%>\%
  distinct() \%>\% nrow()
+
 xx <- extractIntensities(x,conf)
 stopifnot(dim(xx)==c(nn,22))
 
