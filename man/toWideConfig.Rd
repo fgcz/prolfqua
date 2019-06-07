@@ -12,9 +12,10 @@ transform long to wide
 \examples{
 config <- skylineconfig$clone(deep=TRUE)
 res <- toWideConfig(sample_analysis, skylineconfig)
-res
+res$data
+res$annotation
 res <- toWideConfig(sample_analysis, config, as.matrix = TRUE)
-head(res)
-res <- scale(res)
+head(res$data)
+res <- scale(res$data)
 
 }

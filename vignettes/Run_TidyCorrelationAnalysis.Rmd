@@ -108,7 +108,7 @@ knitr::kable(LFQService::hierarchyCounts(longQNASummaries, config))
 
 
 ```{r}
-tmp <- toWideConfig(longQNASummaries, config, as.matrix = TRUE)
+tmp <- toWideConfig(longQNASummaries, config, as.matrix = TRUE)$data
 plot_heatmap_cor(longQNASummaries, config)
 
 ```

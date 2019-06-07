@@ -14,7 +14,6 @@
 #' @examples
 #' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
-#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
 #' path <- "dummy_test"
 #' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
 #' hierarchyCounts(dd$data, dd$config)
@@ -38,8 +37,6 @@
 #' @examples
 #' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
-#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
-#' path <- "dummy_test"
 #' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
 #' hierarchyCounts(dd$data, dd$config)
 .workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
@@ -82,6 +79,13 @@
   return(list(data=filteredPep, config=config))
 }
 
+#'
+#'
+#' @examples
+#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' config <-  LFQService::testDataStart2954$config
+#' filterPep <- LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
+#' .workflow_MQ_normalize_log2_robscale(filterPep$data, filterPep$config)
 .workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
 
   pepConfig <- config$clone(deep = TRUE)
@@ -98,7 +102,8 @@
 #' @export
 #' @examples
 #' resultsV12954 <- LFQService::resultsV12954
-#' res <- workflow_MQ_protein_quants(resultsV12954$pepIntensityNormalized,resultsV12954$config_pepIntensityNormalized )
+#' res <- workflow_MQ_protein_quants(resultsV12954$pepIntensityNormalized,
+#' resultsV12954$config_pepIntensityNormalized )
 #' dim(res$protintensity)
 #'
 workflow_MQ_protein_quants <- function(data, config){
@@ -113,17 +118,19 @@ workflow_MQ_protein_quants <- function(data, config){
 #' @export
 #' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
 #' @examples
-#' #testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
-#' #usethis::use_data(testDataStart2954)
-#'
-#' testDataStart2954 <- LFQService::testDataStart2954
-#' testDataStart2954$resDataStart <- testDataStart2954$resDataStart %>% dplyr::select(-peptide_Id_n)
+#' # testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
+#' # testDataStart2954$config$table$hierarchyLevel <- 1
+#' # usethis::use_data(testDataStart2954, overwrite=TRUE)
+#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' config <-  LFQService::testDataStart2954$config
+#' summarizeHierarchy(resDataStart, config)
 #' path <- "dummy_test"
-#' resultsV12954 <- LFQService::workflow_MQ_protoV1(testDataStart2954$resDataStart, testDataStart2954$config,
+#' resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
+#'  config,
 #'  path ,
-#'                                            peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
+#'  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
 #' #usethis::use_data(resultsV12954)
-#' LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
 workflow_MQ_protoV1 <- function( resDataStart,
                                 config,
                                 path,

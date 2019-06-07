@@ -12,7 +12,6 @@ Filter peptides for NA's within factors and keep only those proteins with 2 QUAN
 \examples{
 library(tidyverse)
 testDataStart2954 <- LFQService::testDataStart2954
-testDataStart2954$resDataStart <- testDataStart2954$resDataStart \%>\% dplyr::select(-peptide_Id_n)
 path <- "dummy_test"
 dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
 hierarchyCounts(dd$data, dd$config)

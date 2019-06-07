@@ -23,6 +23,7 @@ hierarchyCounts(data, config)
 res <- filter_factor_levels_by_missing(data, config,percent = 60)
 data1 <-completeCases(data, config)
 hierarchyCounts(res, config)
-summarizeHierarchy(res,config) \%>\% dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
+summarizeHierarchy(res,config) \%>\%
+ dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 
 }

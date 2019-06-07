@@ -269,17 +269,22 @@ toWide <- function(data,
 #' @examples
 #' config <- skylineconfig$clone(deep=TRUE)
 #' res <- toWideConfig(sample_analysis, skylineconfig)
-#' res
+#' res$data
+#' res$annotation
 #' res <- toWideConfig(sample_analysis, config, as.matrix = TRUE)
-#' head(res)
-#' res <- scale(res)
+#' head(res$data)
+#' res <- scale(res$data)
 #'
-toWideConfig <- function(data, config , as.matrix = FALSE, fileName = FALSE){
+toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
   if(fileName){
     newcolname <- config$table$fileName
   }else{
     newcolname <- config$table$sampleName
   }
+
+  ids <- dplyr::select_at(data,
+                       c(newcolname, config$table$factorKeys())) %>%
+    distinct() %>% dplyr::arrange_at(newcolname)
 
   res <- toWide( data, c(config$table$hierarchyKeys()) ,
                  newcolname,
@@ -291,7 +296,7 @@ toWideConfig <- function(data, config , as.matrix = FALSE, fileName = FALSE){
     rownames(resMat) <- names
     res <- resMat
   }
-  return(res)
+  return(list(data = res, annotation = ids))
 }
 
 #' make it long
@@ -340,7 +345,7 @@ robust_scale <- function(data){
 applyToIntensityMatrix <- function(data, config, .func){
   x <- as.list( match.call() )
   colname <- make.names(paste(config$table$getWorkIntensity(), deparse(x$.func), sep="_"))
-  mat <- toWideConfig(data, config, as.matrix = TRUE)
+  mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
   data <- gatherItBack(mat, colname, config, data)
   return(data)
@@ -605,7 +610,8 @@ rankPrecursorsByNAs <- function(data, config){
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
 #' data1 <-completeCases(data, config)
 #' hierarchyCounts(res, config)
-#' summarizeHierarchy(res,config) %>% dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
+#' summarizeHierarchy(res,config) %>%
+#'  dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
 filter_factor_levels_by_missing <- function(data,
                                             config,

@@ -74,13 +74,9 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                          return(names(self$hierarchy))
                                        }
                                      },
-                                     hkeysLevel = function(rev = FALSE, names=TRUE){
-                                       if(rev){
-                                         res <- (self$hierarchy[-(1:self$hierarchyLevel)])
-                                       }else{
-                                         res <- (self$hierarchy[1:self$hierarchyLevel])
-                                       }
-                                       return(if(names){ names(res)}else{res})
+                                     hkeysLevel = function(){
+                                       res <- (self$hierarchy[1:self$hierarchyLevel])
+                                       return(names(res))
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
@@ -174,13 +170,6 @@ R6extractValues <- function(r6class){
       res[[i]] <- r6class[[i]]
     }
   }
-  return(res)
-}
-#' Deprecated
-#' @export
-setupDataFrame <- function(data, configuration ,sep="~"){
-  warning("DEPRECATED replace with setup_analysis")
-  res <- setup_analysis(data, configuration, sep)
   return(res)
 }
 
@@ -481,37 +470,36 @@ summarizeProteins <- function( x, configuration ){
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
-#'
+#' configuration <- skylineconfig
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' res <- summarizeHierarchy(sample_analysis, skylineconfig)
-#' res2 <- summarizeHierarchy(sample_analysis, skylineconfig, factor_level=1)
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 2, factor_level=0 )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 3 )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4 )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4, factor_level=1 )
+#'
+#'
+#' summarizeHierarchy(sample_analysis, skylineconfig)
+#' summarizeHierarchy(sample_analysis, skylineconfig, factors=character())
+#'
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = skylineconfig$table$hkeysLevel() )
+#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
+#' skylineconfig$table$hierarchyLevel=1
+#' summarizeHierarchy(sample_analysis, skylineconfig, factors = skylineconfig$table$fkeysLevel())
+#' skylineconfig$table$hierarchyLevel=2
+#' summarizeHierarchy(sample_analysis, skylineconfig)
+#' skylineconfig$table$hierarchyLevel=3
+#' summarizeHierarchy(sample_analysis, skylineconfig )
+#' skylineconfig$table$hierarchyLevel=4
+#' summarizeHierarchy(sample_analysis, skylineconfig )
+#' summarizeHierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 summarizeHierarchy <- function(x,
                                configuration,
-                               hierarchy_level = 1,
-                               factor_level=0)
+                               hierarchy = configuration$table$hkeysLevel(),
+                               factors=character())
 {
-  hierarchy_all <- configuration$table$hierarchyKeys()
-  factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
+  all_hierarchy <- configuration$table$hierarchyKeys()
+  #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
-  hierarchy <- hierarchy_all[hierarchy_level:length(hierarchy_all)]
-  precursor <- x %>% dplyr::select(hierarchy, factors) %>% distinct()
-
-  if(length(hierarchy[-1]) > 1){
-    x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( hierarchy[-1],
-                           list( n = n_distinct))
-  }else if(length(hierarchy[-1]) == 1){
-    x3 <- precursor %>% group_by_at(c(factors,hierarchy[1])) %>%
-      dplyr::summarize_at( vars(!!(hierarchy[-1]) := hierarchy[-1]),
-                           list( n = n_distinct))
-  }else{
-    x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
-      dplyr::summarize(  n= n())
-  }
+  precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
+  x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
+    dplyr::summarize_at( all_hierarchy,
+                         list( n = n_distinct))
   return(x3)
 }
 # Functions - Missigness ----
@@ -532,7 +520,7 @@ interaction_missing_stats <- function(x,
                                       configuration,
                                       factors = configuration$table$fkeysLevel(),
                                       workIntensity = configuration$table$getWorkIntensity())
-  {
+{
 
   x <- completeCases(x, configuration)
   table <- configuration$table
@@ -998,13 +986,14 @@ plot_stdv_vs_mean <- function(data, config){
 #'
 plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.dist(1 - cor(t(x), use = "pa"))){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
-  cres <- cor(res,use = "pa")
+  annot <- res$annotation
+  res <- res$data
+
+
+  cres <- cor(res, use = "pa")
   if(R2){
     cres <- cres^2
   }
-  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
-    distinct() %>% arrange(sampleName)
-  stopifnot(annot$sampleName == colnames(cres))
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
@@ -1028,9 +1017,8 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.
 #' #plot_heatmap(data, config)
 plot_heatmap <- function(data, config){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
-    distinct() %>% arrange(sampleName)
-  stopifnot(annot$sampleName == colnames(res))
+  annot <- res$annotation
+  res <- res$data
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
@@ -1056,8 +1044,8 @@ plot_heatmap <- function(data, config){
 #' plot_NA_heatmap(data, config, cexCol=1)
 plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- dplyr::select_at(data, c(config$table$sampleName, config$table$factorKeys())) %>%
-    distinct() %>% arrange(sampleName)
+  annot <- res$annotation
+  res <- res$data
   stopifnot(annot$sampleName == colnames(res))
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())

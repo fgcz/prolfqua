@@ -4,8 +4,8 @@
 \alias{summarizeHierarchy}
 \title{Summarize peptide Counts}
 \usage{
-summarizeHierarchy(x, configuration, hierarchy_level = 1,
-  factor_level = 0)
+summarizeHierarchy(x, configuration,
+  hierarchy = configuration$table$hkeysLevel(), factors = character())
 }
 \description{
 Summarize peptide Counts
@@ -16,12 +16,22 @@ library(tidyverse)
 skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 data(skylinePRMSampleData)
-
+configuration <- skylineconfig
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-res <- summarizeHierarchy(sample_analysis, skylineconfig)
-res2 <- summarizeHierarchy(sample_analysis, skylineconfig, factor_level=1)
-summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 2, factor_level=0 )
-summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 3 )
-summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4 )
-summarizeHierarchy(sample_analysis, skylineconfig, hierarchy_level = 4, factor_level=1 )
+
+
+summarizeHierarchy(sample_analysis, skylineconfig)
+summarizeHierarchy(sample_analysis, skylineconfig, factors=character())
+
+summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = skylineconfig$table$hkeysLevel() )
+summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
+skylineconfig$table$hierarchyLevel=1
+summarizeHierarchy(sample_analysis, skylineconfig, factors = skylineconfig$table$fkeysLevel())
+skylineconfig$table$hierarchyLevel=2
+summarizeHierarchy(sample_analysis, skylineconfig)
+skylineconfig$table$hierarchyLevel=3
+summarizeHierarchy(sample_analysis, skylineconfig )
+skylineconfig$table$hierarchyLevel=4
+summarizeHierarchy(sample_analysis, skylineconfig )
+summarizeHierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 }
