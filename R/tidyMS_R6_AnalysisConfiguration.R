@@ -76,11 +76,12 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      },
                                      hkeysLevel = function(names = TRUE){
                                        res <- head( self$hierarchy,n=self$hierarchyLevel)
-                                       if(names){
-                                         res
-                                       }else{
+                                       res <- if(names){
                                          names(res)
+                                       }else{
+                                         res
                                        }
+                                       return(res)
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
