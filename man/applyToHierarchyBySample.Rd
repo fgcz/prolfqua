@@ -21,6 +21,8 @@ x <- applyToHierarchyBySample(data, config, medpolishPly)
 x \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) \%>\% tidyr::unnest()
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
+x
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
+x
 }

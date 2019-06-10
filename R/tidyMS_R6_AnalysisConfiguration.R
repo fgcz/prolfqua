@@ -75,14 +75,18 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                        }
                                      },
                                      hkeysLevel = function(names = TRUE){
-                                       res <- (self$hierarchy[1:self$hierarchyLevel])
-                                       return(ifelse(names, names(res), res))
+                                       res <- head( self$hierarchy,n=self$hierarchyLevel)
+                                       if(names){
+                                         res
+                                       }else{
+                                         names(res)
+                                       }
                                      },
                                      factorKeys = function(){
                                        return(names(self$factors))
                                      },
                                      fkeysLevel = function(){
-                                       res <- (self$factors[1:self$factorLevel])
+                                       res <- head(self$factors, n= self$factorLevel)
                                        return(names(res))
                                      },
                                      idVars = function(){
@@ -779,13 +783,16 @@ reestablishCondition <- function(data,
 #' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% tidyr::unnest()
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
+#' x
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
+#' x
 applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, unnest = FALSE)
 {
   config$table$hierarchyLevel <- hierarchy_level
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
+
   xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
   xnested <- xnested %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
   xnested <- xnested %>% dplyr::mutate(!!makeName := map(spreadMatrix, func))

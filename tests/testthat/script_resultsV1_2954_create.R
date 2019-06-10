@@ -43,8 +43,6 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 config <- createMQProteinPeptideConfiguration()
 config$table$factorLevel <- 2
 resPepProtAnnot %>% filter(reverse == FALSE) -> resPepProtAnnot
-head(resPepProtAnnot)
-config$table$hierarchy
 
 
 resDataStart <- setup_analysis(resPepProtAnnot, config)
@@ -67,8 +65,34 @@ results <- workflow_MQ_protoV1(resDataStart,
                                path,
                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 
-protintensity <- LFQService::workflow_MQ_protein_quants( results$pepIntensityNormalized, results$config_pepIntensityNormalized )
-LFQService::toWideConfig(protintensity$data, protintensity$config)
+protintensity <- LFQService::workflow_MQ_protein_quants( results$pepIntensityNormalized,
+                                                         results$config_pepIntensityNormalized )
+
+config <- results$config_pepIntensityNormalized
+data <- results$pepIntensityNormalized
+
+protintensity <- LFQService::applyToHierarchyBySample(data , config, medpolishPly,unnest = TRUE)
+
+
+test <- function(config, names = TRUE){
+  res <- head( config$table$hierarchy,n=config$table$hierarchyLevel)
+  return(ifelse(names, names(res), res))
+}
+
+test(config, names=FALSE)
+
+head(protintensity)
+
+head(config$table$hierarchy,n=1)
+config2 <- protintensity$newconfig
+config2$table$hkeysLevel(names=FALSE)
+
+config$table$hierarchy
+
+protintensity <- protintensity$unnested
+return(list(data = protintensity, config = config))
+
+LFQService::toWideConfig(protintensity$unnested, protintensity$newconfig)
 
 
 #readr::write_csv(protintensity$data,
