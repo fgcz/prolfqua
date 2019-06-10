@@ -17,7 +17,7 @@ skylineconfig <- LFQService::createSkylineConfiguration(isotopeLabel="Isotope.La
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #skylineconfig$table$factors
 skylineconfig$table$factorLevel <- 1
-# usethis::use_data( skylineconfig , overwrite = TRUE )
+#usethis::use_data( skylineconfig , overwrite = TRUE )
 tt <- R6extractValues(skylineconfig)
 #yaml::write_yaml(tt,file=file.path("skylineconfig.yml"))
 skylineconfig$table$hkeysLevel()

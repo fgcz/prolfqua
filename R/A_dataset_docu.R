@@ -26,7 +26,7 @@
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' #skylineconfig$table$factors
 #' skylineconfig$table$factorLevel <- 1
-#' # usethis::use_data( skylineconfig , overwrite = TRUE )
+#' #usethis::use_data( skylineconfig , overwrite = TRUE )
 #' tt <- R6extractValues(skylineconfig)
 #' #yaml::write_yaml(tt,file=file.path("skylineconfig.yml"))
 #' skylineconfig$table$hkeysLevel()
@@ -71,7 +71,7 @@
 #' skylineconfig_HL$table$factors[["treatment_c"]] <- "Condition2"
 #' skylineconfig_HL$table$factors[["time_c"]] <- "time"
 #' skylineconfig_HL$parameter$is_intensity_transformed = FALSE
-#' usethis::use_data( skylineconfig_HL , overwrite = TRUE )
+#' #usethis::use_data( skylineconfig_HL , overwrite = TRUE )
 "skylineconfig_HL"
 
 #' A data frame wich goes along with the \link{skylineconfig_HL}.
