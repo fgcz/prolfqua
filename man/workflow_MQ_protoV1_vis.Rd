@@ -4,7 +4,7 @@
 \alias{workflow_MQ_protoV1_vis}
 \title{generates peptide level plots for all Proteins}
 \usage{
-workflow_MQ_protoV1_vis(RESULTS)
+workflow_MQ_protoV1_vis(filteredPep, config)
 }
 \description{
 generates peptide level plots for all Proteins

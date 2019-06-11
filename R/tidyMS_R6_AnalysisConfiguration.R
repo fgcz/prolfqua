@@ -793,24 +793,33 @@ reestablishCondition <- function(data,
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
 #' x
-applyToHierarchyBySample <- function( data, config, func, hierarchy_level = 1, unnest = FALSE)
+applyToHierarchyBySample <- function( data, config, func, unnest = FALSE)
 {
-  config$table$hierarchyLevel <- hierarchy_level
+
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
+  config <- config
 
   xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
   xnested <- xnested %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
   xnested <- xnested %>% dplyr::mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
-  if(unnest){
-    unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
-    newconfig <- make_reduced_hierarchy_config(config,
-                                               workIntensity = func(name=TRUE),
-                                               hierarchy = config$table$hkeysLevel(names=FALSE))
-    return(list(unnested = unnested, newconfig = newconfig))
+
+  res <- function(value = c("nested","unnest","config")){
+    value <- match.arg(value)
+    if(value == "nested"){
+      return(xnested)
+    }else if(value = "unnest"){
+      unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
+      newconfig <- make_reduced_hierarchy_config(config,
+                                                 workIntensity = func(name=TRUE),
+                                                 hierarchy = config$table$hkeysLevel(names=FALSE))
+      return(list(unnested = unnested, config = newconfig))
+    }else if(value = "config"){
+      return(config)
+    }
   }
-  return(xnested)
+  return(res)
 }
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples

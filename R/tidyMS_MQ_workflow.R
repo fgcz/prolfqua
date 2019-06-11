@@ -1,12 +1,22 @@
-
-.makeFigs <- function(filteredPep, config){
+#' generates peptide level plots for all Proteins
+#' @export
+#'
+workflow_MQ_protoV1_vis <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
   proteinIDsymbol <- syms(config$table$hkeysLevel())
-  xnested <- filteredPep %>% dplyr::group_by(UQS(proteinIDsymbol)) %>% tidyr::nest()
-  figs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, factor_level = factor_level, config ))
-  figs <- figs %>% dplyr::mutate(plotboxplot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_boxplot, config , factor_level = factor_level))
+  xnested <- filteredPep %>% dplyr::group_by(!!!proteinIDsymbol) %>% tidyr::nest()
+  figs <- xnested %>%
+    dplyr::mutate(plot = map2(data, !!!(proteinIDsymbol) ,
+                              plot_hierarchies_line,
+                              factor_level = factor_level, config ))
+  figs <- figs %>%
+    dplyr::mutate(plotboxplot = map2(data, !!!(proteinIDsymbol),
+                                     plot_hierarchies_boxplot,
+                                     config ,
+                                     factor_level = factor_level))
   return(figs)
 }
+
 
 
 #' Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides
@@ -108,7 +118,21 @@
 #'
 workflow_MQ_protein_quants <- function(data, config){
   configProt <- config$clone(deep = TRUE)
-  protintensity <- LFQService::applyToHierarchyBySample(data , config, medpolishPly,unnest = TRUE)
+
+
+  protintensity <- LFQService::applyToHierarchyBySample(data ,
+                                                        config,
+                                                        medpolishPly,
+                                                        unnest = TRUE)
+
+
+  HLfigs3 <- LFQService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
+
+  HLfigs3 <- dplyr::inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
+  p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
+    plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
+  p
+
   config <- protintensity$newconfig
   protintensity <- protintensity$unnested
   return(list(data = protintensity, config = config))
@@ -132,9 +156,9 @@ workflow_MQ_protein_quants <- function(data, config){
 #' #usethis::use_data(resultsV12954)
 #' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
 workflow_MQ_protoV1 <- function( resDataStart,
-                                config,
-                                path,
-                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides ){
+                                 config,
+                                 path,
+                                 peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides ){
   RESULTS <- list()
   RESULTS$path <- path
   config <- config$clone(deep=TRUE)
@@ -159,7 +183,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
   # Summarize number of peptides with more than 2
   x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
   x3_start <- x3_start %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
-                                                           peptide_Id_n > 1 ~ "two and more"))
+                                                                         peptide_Id_n > 1 ~ "two and more"))
   RESULTS$nrPeptidesPerProtein_start <- x3_start %>% dplyr::group_by(protein_with) %>%
     dplyr::summarize(n=n())
 
@@ -168,7 +192,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
   # Summarize filtered data - number of peptides with more than 2
   x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
   x3_filt <- x3_filt %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
-                                                         peptide_Id_n > 1 ~ "two and more"))
+                                                                       peptide_Id_n > 1 ~ "two and more"))
   RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% dplyr::group_by(protein_with) %>%
     dplyr::summarize(n=n())
 
@@ -185,12 +209,3 @@ workflow_MQ_protoV1 <- function( resDataStart,
   return(RESULTS)
 }
 
-#' generates peptide level plots for all Proteins
-#' @export
-#'
-workflow_MQ_protoV1_vis <- function(RESULTS){
-  figs_raw <- .makeFigs(RESULTS$filteredPep, RESULTS$config_filteredPep)
-  figs_normalized <- .makeFigs(RESULTS$pepIntensityNormalized, RESULTS$config_pepIntensityNormalized)
-  res <- list( figs_raw = figs_raw , figs_normalized = figs_normalized )
-  return( res )
-}

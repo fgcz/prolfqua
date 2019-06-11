@@ -51,11 +51,9 @@ resDataStart <- setup_analysis(resPepProtAnnot, config)
 resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
 resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 
-#LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")
-#rmarkdown::render("MQSummary.Rmd", params = list(data = resDataStart, configuration=config))
-#rmarkdown::render("MQSummary.Rmd", params=list(data = resDataStart, configuration=config$clone(deep=TRUE)), envir = new.env())
-
-
+# LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")
+# rmarkdown::render("MQSummary.Rmd", params = list(data = resDataStart, configuration=config))
+# rmarkdown::render("MQSummary.Rmd", params=list(data = resDataStart, configuration=config$clone(deep=TRUE)), envir = new.env())
 
 # Start filtering
 config$table$factorLevel <- flevel
