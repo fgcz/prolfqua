@@ -4,8 +4,7 @@
 \alias{applyToHierarchyBySample}
 \title{applys func - a function working on matrix for each protein.}
 \usage{
-applyToHierarchyBySample(data, config, func, hierarchy_level = 1,
-  unnest = FALSE)
+applyToHierarchyBySample(data, config, func, unnest = FALSE)
 }
 \description{
 Returning a vector of the same length as the number of samples.
@@ -17,12 +16,13 @@ library(tidyverse)
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 data <- LFQService::sample_analysis
 x <- applyToHierarchyBySample(data, config, medpolishPly)
-
-x \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) \%>\% tidyr::unnest()
+res <- x("unnest")
+x("unnest") \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] , medpolishPly) \%>\% tidyr::unnest()
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
 x
 config <- LFQService::skylineconfig$clone(deep=TRUE)
 x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
-x
+x("nested")
+x("unnest")
 }

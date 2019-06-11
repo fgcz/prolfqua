@@ -1,16 +1,32 @@
 #' generates peptide level plots for all Proteins
 #' @export
 #'
+#' @examples
+#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' config <-  LFQService::testDataStart2954$config
+#' res <- workflow_MQ_protoV1_vis(resDataStart, config)
+#' res
+#' res$plot[[1]]
+#' res$plotboxplot[[1]]
+#' config <- config$clone(deep=TRUE)
+#' TODO make it work for other hiearachy levels.
+#' config$table$hierarchyLevel=2
+#' #res <- workflow_MQ_protoV1_vis(resDataStart, config)
+#filteredPep <- resDataStart
 workflow_MQ_protoV1_vis <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
-  proteinIDsymbol <- syms(config$table$hkeysLevel())
-  xnested <- filteredPep %>% dplyr::group_by(!!!proteinIDsymbol) %>% tidyr::nest()
+
+  hierarchy_ID <- "hierarchy_ID"
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+
+  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
+
   figs <- xnested %>%
-    dplyr::mutate(plot = map2(data, !!!(proteinIDsymbol) ,
+    dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
                               plot_hierarchies_line,
                               factor_level = factor_level, config ))
   figs <- figs %>%
-    dplyr::mutate(plotboxplot = map2(data, !!!(proteinIDsymbol),
+    dplyr::mutate(plotboxplot = map2(data, !!sym(hierarchy_ID),
                                      plot_hierarchies_boxplot,
                                      config ,
                                      factor_level = factor_level))

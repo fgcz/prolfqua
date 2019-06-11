@@ -304,7 +304,11 @@ plot_hierarchies_line_default <- function(data,
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
-plot_hierarchies_line <- function(res, proteinName, configuration, factor_level=1, separate=FALSE){
+plot_hierarchies_line <- function(res, proteinName,
+                                  configuration,
+                                  factor_level=1,
+                                  separate=FALSE){
+
   rev_hnames <- configuration$table$hierarchyKeys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
@@ -312,7 +316,8 @@ plot_hierarchies_line <- function(res, proteinName, configuration, factor_level=
   if(length(rev_hnames) > 2){
     peptide <- rev_hnames[2]
   }
-  res <- LFQService:::plot_hierarchies_line_default(res, proteinName = proteinName,
+  res <- LFQService:::plot_hierarchies_line_default(res,
+                                                    proteinName = proteinName,
                                                     sample = configuration$table$sampleName,
                                                     intensity = configuration$table$getWorkIntensity(),
                                                     peptide = peptide,
@@ -749,6 +754,8 @@ spreadValueVarsIsotopeLabel <- function(resData, configuration){
 #' @family matrix manipulation
 #' @param name if TRUE returns the name of the summary column
 #' @export
+#' @examples
+#' medpolishPly(name=T)
 medpolishPly <- function(x, name=FALSE){
   if(name){
     return("medpolish")
@@ -785,38 +792,56 @@ reestablishCondition <- function(data,
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- applyToHierarchyBySample(data, config, medpolishPly)
+#' res <- x("unnest")
+#' x("unnest")$data %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
+#' config <- LFQService::skylineconfig$clone(deep=TRUE)
+#' config$table$hierarchyLevel <- 1
+#' x <- applyToHierarchyBySample(data, config, medpolishPly,  unnest=TRUE)
 #'
-#' x %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] ,  medpolishPly) %>% tidyr::unnest()
-#' config <- LFQService::skylineconfig$clone(deep=TRUE)
-#' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
-#' x
-#' config <- LFQService::skylineconfig$clone(deep=TRUE)
-#' x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
-#' x
+#' x("unnest")$data
+#' xnested<-x()
+#' dd <- x("plot")
+#' dd$medpolishPly[[1]]
+#' dd$plot[[2]]
+#'
 applyToHierarchyBySample <- function( data, config, func, unnest = FALSE)
 {
-
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
   config <- config
 
   xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
-  xnested <- xnested %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
-  xnested <- xnested %>% dplyr::mutate(!!makeName := map(spreadMatrix, func))
-  xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
 
-  res <- function(value = c("nested","unnest","config")){
+  xnested <- xnested %>%
+    dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
+  xnested <- xnested %>%
+    dplyr::mutate(!!makeName := map(spreadMatrix, func))
+  xnested <- xnested %>%
+    dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
+
+  res <- function(value = c("nested","unnest","plot")){
     value <- match.arg(value)
     if(value == "nested"){
       return(xnested)
-    }else if(value = "unnest"){
+    }else if(value == "unnest"){
       unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
       newconfig <- make_reduced_hierarchy_config(config,
                                                  workIntensity = func(name=TRUE),
                                                  hierarchy = config$table$hkeysLevel(names=FALSE))
-      return(list(unnested = unnested, config = newconfig))
-    }else if(value = "config"){
-      return(config)
+      return(list(data = unnested, config = newconfig))
+    }else if(value == "plot"){
+      hierarchy_ID <- "hierarchy_ID"
+      xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+      xnested
+      figs <- xnested %>%
+        dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
+                                  plot_hierarchies_line,
+                                  factor_level = factor_level, config ))
+      #plot_hierarchies_add_quantline(figs$plot[[1]], figs$medpolishPly[[1]], "medpolish", config)
+      figs <- figs %>%
+        dplyr::mutate(plot = map2(plot, !!sym(makeName) ,
+                                  plot_hierarchies_add_quantline, func(name=TRUE), config ))
+      return(figs)
     }
   }
   return(res)
