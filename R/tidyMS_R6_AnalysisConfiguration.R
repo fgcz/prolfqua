@@ -349,21 +349,26 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
-#' LFQService::plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
+#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
+#' #ddd <- xnested$data[[3]]
+#' #proteinName <- xnested$protein_Id[[3]]
+#' #config <- conf
+#' #boxplot=TRUE
+#' #factor_level = 1
+#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot=FALSE )
 plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1, boxplot=TRUE){
 
   stopifnot(factor_level <= length(config$table$factorKeys()))
   isotopeLabel <- config$table$isotopeLabel
   ddd %>%  tidyr::gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
   ddlong <- as.data.frame(unclass(ddlong))
-
-  p <- ggplot(ddlong, aes_string(x = config$table$hkeysLevel(rev = TRUE)[1],
+  p <- ggplot(ddlong, aes_string(x = tail(config$table$hierarchyKeys(),1),
                                  y = config$table$getWorkIntensity(),
                                  fill="level"
   )) +
     facet_wrap(~factor, ncol=1) +
     theme_classic() +
-    theme(axis.text.x = element_text(angle =45, hjust = 0.5, vjust=0.5)) +
+    theme(axis.text.x = element_text(angle =45, hjust = 1, vjust=1)) +
     ggtitle(proteinName)
   if(!config$parameter$is_intensity_transformed){
     p <- p + scale_y_continuous(trans="log10")
