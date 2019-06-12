@@ -15,7 +15,7 @@ config <-  LFQService::testDataStart2954$config
 res <- plot_hierarchies_line_df(resDataStart, config)
 res[[1]]
 config <- config$clone(deep=TRUE)
-TODO make it work for other hiearachy levels.
+#TODO make it work for other hiearachy levels.
 #config$table$hierarchyLevel=2
 #res <- plot_hierarchies_line_df(resDataStart, config)
 }

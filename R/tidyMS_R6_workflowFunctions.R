@@ -195,17 +195,11 @@ workflow_DIA_Q_NA_filtered_medpolish_protein_intensities <- function(data,
                                                           hierarchy_level = 2,
                                                           factor_level = factor_level
   )$data
-
   resDataLog <- LFQService::transform_work_intensity(data_NA_QVal_condition , config, log2)
   resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
-  figs3 <- applyToHierarchyBySample(resDataLog, config, medpolishPly, hierarchy_level = hierarchy_level)
-  protIntensity <- figs3 %>% dplyr::select(config$table$hierarchyKeys()[1:hierarchy_level], medpolishPly) %>%
-    tidyr::unnest()
-
-  newconfig <- make_reduced_hierarchy_config(config,
-                                             workIntensity = "medpolish",
-                                             hierarchy = config$table$hierarchy[1:hierarchy_level])
-  return(list(data = protIntensity, newconfig = newconfig))
+  figs3 <- intensity_summary_by_hkeys(resDataLog, config, medpolishPly)
+  figs3 <- figs3("unnest") # retrieve default result
+  return(figs3)
 }
 
 #' Deprecated

@@ -91,30 +91,15 @@
 #' @export
 #' @examples
 #' resultsV12954 <- LFQService::resultsV12954
-#' res <- workflow_MQ_protein_quants(resultsV12954$pepIntensityNormalized,
+#' res <- medpolish_protein_quants(resultsV12954$pepIntensityNormalized,
 #' resultsV12954$config_pepIntensityNormalized )
 #' dim(res$protintensity)
 #'
-workflow_MQ_protein_quants <- function(data, config){
-  configProt <- config$clone(deep = TRUE)
-
-
-  protintensity <- LFQService::applyToHierarchyBySample(data ,
+medpolish_protein_quants <- function(data, config){
+  protintensity <- LFQService::intensity_summary_by_hkeys(data ,
                                                         config,
-                                                        medpolishPly,
-                                                        unnest = TRUE)
-
-
-  HLfigs3 <- LFQService::applyToHierarchyBySample(HLData, skylineconfigHL, medpolishPly)
-
-  HLfigs3 <- dplyr::inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
-  p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
-    plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
-  p
-
-  config <- protintensity$newconfig
-  protintensity <- protintensity$unnested
-  return(list(data = protintensity, config = config))
+                                                        medpolishPly)
+  return(protintensity)
 }
 
 #' runs data preprocessing for peptide level data based protein modelling

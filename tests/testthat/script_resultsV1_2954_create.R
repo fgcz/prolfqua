@@ -63,9 +63,9 @@ results <- workflow_MQ_protoV1(resDataStart,
                                path,
                                peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
 
-protintensity <- LFQService::workflow_MQ_protein_quants( results$pepIntensityNormalized,
+protintensity <- LFQService::medpolish_protein_quants( results$pepIntensityNormalized,
                                                          results$config_pepIntensityNormalized )
-
+protintensity <- protintensity()
 LFQService::toWideConfig(protintensity$data, protintensity$config)
 
 

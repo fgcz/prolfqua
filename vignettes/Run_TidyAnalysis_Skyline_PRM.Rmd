@@ -71,7 +71,9 @@ if(1){
 ```{r}
 resDataLog <- LFQService::transform_work_intensity(resData , skylineconfig, log2)
 
-figs3 <- applyToHierarchyBySample(resDataLog, skylineconfig, medpolishPly)
+figs3 <- intensity_summary_by_hkeys(resDataLog, skylineconfig, medpolishPly)
+figs3 <- figs3()
+
 figs3 <- figs3 %>% dplyr::mutate(plotlog = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 plot_hierarchies_add_quantline(figs3$plotlog[[1]], figs3$medpolishPly[[1]], "medpolish", skylineconfig)
 
