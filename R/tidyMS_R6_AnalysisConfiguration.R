@@ -910,7 +910,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
 #' applys func - a function working on matrix for each protein.
 #' @export
 applyToHierarchyBySample <- function(data, config, func = medpolishPly, unnest = FALSE){
-  error("DEPRECATED! use intensity_summary_by_hkeys")
+  stop("DEPRECATED! use intensity_summary_by_hkeys")
 
 }
 

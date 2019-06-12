@@ -13,6 +13,7 @@ median polish from normalized peptide intensities
 resultsV12954 <- LFQService::resultsV12954
 res <- medpolish_protein_quants(resultsV12954$pepIntensityNormalized,
 resultsV12954$config_pepIntensityNormalized )
-dim(res$protintensity)
+
+dim(res("unnest")$data)
 
 }
