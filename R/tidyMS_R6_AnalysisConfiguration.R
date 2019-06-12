@@ -340,7 +340,7 @@ plot_hierarchies_line <- function(res, proteinName,
 #' res <- plot_hierarchies_line_df(resDataStart, config)
 #' res[[1]]
 #' config <- config$clone(deep=TRUE)
-#' TODO make it work for other hiearachy levels.
+#' #TODO make it work for other hiearachy levels.
 #' #config$table$hierarchyLevel=2
 #' #res <- plot_hierarchies_line_df(resDataStart, config)
 #filteredPep <- resDataStart
@@ -426,7 +426,7 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 #' res[[1]]
 #' config <- config$clone(deep=TRUE)
-#' TODO make it work for other hiearachy levels.
+#' #TODO make it work for other hiearachy levels.
 #' config$table$hierarchyLevel=2
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 plot_hierarchies_boxplot_df <- function(filteredPep, config){
@@ -839,23 +839,25 @@ reestablishCondition <- function(data,
   res
 }
 
-#' applys func - a function working on matrix for each protein.
+#' Summarizes the intensities within hierarchy
+#' @param func - a function working on a matrix of intensities for each protein.
+#' @return retuns function object
 #'
-#' Returning a vector of the same length as the number of samples.
-#' Can be used to compute column summaries per protein
 #' @export
 #' @importFrom purrr map
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' data <- LFQService::sample_analysis
-#' x <- applyToHierarchyBySample(data, config, medpolishPly)
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#'
 #' res <- x("unnest")
-#' x("unnest")$data %>% dplyr::select(skylineconfig$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
+#' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
 #' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #' config$table$hierarchyLevel <- 1
-#' x <- applyToHierarchyBySample(data, config, medpolishPly,  unnest=TRUE)
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly, unnest=TRUE)
 #'
 #' x("unnest")$data
 #' xnested<-x()
@@ -863,7 +865,8 @@ reestablishCondition <- function(data,
 #' dd$medpolishPly[[1]]
 #' dd$plot[[2]]
 #'
-applyToHierarchyBySample <- function( data, config, func, unnest = FALSE)
+#' workflow_MQ_protein_quants
+intensity_summary_by_hkeys <- function( data, config, func, unnest = FALSE)
 {
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
@@ -902,6 +905,14 @@ applyToHierarchyBySample <- function( data, config, func, unnest = FALSE)
       return(figs)
     }
   }
+  return(res)
+}
+
+#' applys func - a function working on matrix for each protein.
+#' @export
+applyToHierarchyBySample <- function(data, config, func = medpolishPly, unnest = FALSE){
+  message("DEPRECATED! use intensity_summary_by_hkeys")
+  res <- intensity_summary_by_hkeys(data, config, func, unnest)
   return(res)
 }
 

@@ -97,8 +97,6 @@
 #'
 workflow_MQ_protein_quants <- function(data, config){
   configProt <- config$clone(deep = TRUE)
-
-
   protintensity <- LFQService::applyToHierarchyBySample(data ,
                                                         config,
                                                         medpolishPly,
