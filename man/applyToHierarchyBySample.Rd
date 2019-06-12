@@ -17,12 +17,15 @@ config <- LFQService::skylineconfig$clone(deep=TRUE)
 data <- LFQService::sample_analysis
 x <- applyToHierarchyBySample(data, config, medpolishPly)
 res <- x("unnest")
-x("unnest") \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] , medpolishPly) \%>\% tidyr::unnest()
+x("unnest")$data \%>\% dplyr::select(skylineconfig$table$hierarchyKeys()[1] , "medpolish") \%>\% tidyr::unnest()
 config <- LFQService::skylineconfig$clone(deep=TRUE)
-x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2, unnest=TRUE)
-x
-config <- LFQService::skylineconfig$clone(deep=TRUE)
-x <- applyToHierarchyBySample(data, config, medpolishPly, hierarchy_level = 2)
-x("nested")
-x("unnest")
+config$table$hierarchyLevel <- 1
+x <- applyToHierarchyBySample(data, config, medpolishPly,  unnest=TRUE)
+
+x("unnest")$data
+xnested<-x()
+dd <- x("plot")
+dd$medpolishPly[[1]]
+dd$plot[[2]]
+
 }

@@ -9,3 +9,6 @@ plot_hierarchies_add_quantline(p, data, aes_y, configuration)
 \description{
 add quantline to plot
 }
+\examples{
+
+}

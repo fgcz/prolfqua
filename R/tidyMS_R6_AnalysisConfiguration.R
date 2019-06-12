@@ -331,8 +331,40 @@ plot_hierarchies_line <- function(res, proteinName,
 }
 
 
+#' generates peptide level plots for all Proteins
+#' @export
+#'
+#' @examples
+#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' config <-  LFQService::testDataStart2954$config
+#' res <- plot_hierarchies_line_df(resDataStart, config)
+#' res[[1]]
+#' config <- config$clone(deep=TRUE)
+#' TODO make it work for other hiearachy levels.
+#' #config$table$hierarchyLevel=2
+#' #res <- plot_hierarchies_line_df(resDataStart, config)
+#filteredPep <- resDataStart
+plot_hierarchies_line_df <- function(filteredPep, config){
+  factor_level <- config$table$factorLevel
+
+  hierarchy_ID <- "hierarchy_ID"
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+
+  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
+
+  figs <- xnested %>%
+    dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
+                              plot_hierarchies_line,
+                              factor_level = factor_level, config ))
+  return(figs$plot)
+}
+
+
+
 #' add quantline to plot
 #' @export
+#' @examples
+#'
 plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
   table <- configuration$table
   p + geom_line(data=data,
@@ -384,6 +416,33 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
     p <- p + ggbeeswarm::geom_quasirandom(dodge.width=0.7)
   }
   return(p)
+}
+#' generates peptide level plots for all Proteins
+#' @export
+#'
+#' @examples
+#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' config <-  LFQService::testDataStart2954$config
+#' res <- plot_hierarchies_boxplot_df(resDataStart, config)
+#' res[[1]]
+#' config <- config$clone(deep=TRUE)
+#' TODO make it work for other hiearachy levels.
+#' config$table$hierarchyLevel=2
+#' res <- plot_hierarchies_boxplot_df(resDataStart, config)
+plot_hierarchies_boxplot_df <- function(filteredPep, config){
+  factor_level <- config$table$factorLevel
+
+  hierarchy_ID <- "hierarchy_ID"
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+
+  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
+
+  figs <- xnested %>%
+    dplyr::mutate(boxplot = map2(data, !!sym(hierarchy_ID),
+                                     plot_hierarchies_boxplot,
+                                     config ,
+                                     factor_level = factor_level))
+  return(figs$boxplot)
 }
 
 # Functions - summary ----
@@ -832,11 +891,10 @@ applyToHierarchyBySample <- function( data, config, func, unnest = FALSE)
     }else if(value == "plot"){
       hierarchy_ID <- "hierarchy_ID"
       xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
-      xnested
       figs <- xnested %>%
         dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
                                   plot_hierarchies_line,
-                                  factor_level = factor_level, config ))
+                                  factor_level = config$table$factorLevel, config ))
       #plot_hierarchies_add_quantline(figs$plot[[1]], figs$medpolishPly[[1]], "medpolish", config)
       figs <- figs %>%
         dplyr::mutate(plot = map2(plot, !!sym(makeName) ,
