@@ -182,8 +182,7 @@ workflow_DIA_NA_preprocessing <- function(data,
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=1)
 #' nrow(res$data)
-#' res$newconfig
-#' hierarchyCounts(res$data, res$newconfig)
+#' hierarchyCounts(res$data, res$config)
 workflow_DIA_Q_NA_filtered_medpolish_protein_intensities <- function(data,
                                                            config,
                                                            percent = 60,

@@ -1,4 +1,7 @@
+# Helper functions -----
+
 #' Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides
+#'
 #' @export
 #' @examples
 #' library(tidyverse)
@@ -87,21 +90,7 @@
   return(list(data = pepIntensityNormalized, config = pepConfig))
 }
 
-#' median polish from normalized peptide intensities
-#' @export
-#' @examples
-#' resultsV12954 <- LFQService::resultsV12954
-#' res <- medpolish_protein_quants(resultsV12954$pepIntensityNormalized,
-#' resultsV12954$config_pepIntensityNormalized )
-#'
-#' dim(res("unnest")$data)
-#'
-medpolish_protein_quants <- function(data, config){
-  protintensity <- LFQService::intensity_summary_by_hkeys(data ,
-                                                        config,
-                                                        medpolishPly)
-  return(protintensity)
-}
+# Workflow function ----
 
 #' runs data preprocessing for peptide level data based protein modelling
 #' @export
