@@ -65,7 +65,7 @@ results <- workflow_MQ_protoV1(resDataStart,
 
 protintensity <- LFQService::medpolish_protein_quants( results$pepIntensityNormalized,
                                                          results$config_pepIntensityNormalized )
-protintensity <- protintensity()
+protintensity <- protintensity("unnest")
 LFQService::toWideConfig(protintensity$data, protintensity$config)
 
 
@@ -87,7 +87,7 @@ resultsV12954 <- results
 names(results)
 results$path
 
-res <- workflow_MQ_protoV1_vis(results)
-res$figs_raw$plotboxplot[[1]]
-res$figs_raw$plot[[1]]
-
+res <- plot_hierarchies_line_df(results$pepIntensityNormalized, results$config_pepIntensityNormalized)
+res[[1]]
+res <- plot_hierarchies_boxplot_df(results$pepIntensityNormalized, results$config_pepIntensityNormalized)
+res[[1]]
