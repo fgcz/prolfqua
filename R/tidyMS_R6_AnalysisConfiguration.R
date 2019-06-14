@@ -634,7 +634,7 @@ getMissingStats <- function(x,
 #'
 summarize_missigness_impute <- function(mdataTrans, pepConfig){
   xx <- interaction_missing_stats(mdataTrans, pepConfig)
-  xx <-  make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
+  xx <- make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
 
   #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
   xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx

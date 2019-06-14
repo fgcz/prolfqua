@@ -210,7 +210,8 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "unique.groups" = "unique..groups.",
                         "unique.proteins" = "unique..proteins.",
                         "reverse" = "reverse",
-                        "potential.contaminant" = ends_with("contaminant"))
+                        "potential.contaminant" = ends_with("contaminant")
+                        )
 
   # add columns with modification to data.
   stMODcol <- grep(pattern = "unique..proteins." ,colnames(MQPeptides)) + 1
@@ -223,11 +224,9 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   }
   if(sum(grepl("site.ids",colnames(MQPeptides)))){
     mod_cols2 <- dplyr::select(MQPeptides, "id", dplyr::ends_with("site.ids"))
-    mod_cols <- setNames(mod_cols , paste0("site.ids.", colnames(mod_cols)))
-    meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
+    mod_cols2 <- setNames(mod_cols2 , paste0("site.ids.", colnames(mod_cols2)))
+    meta <- dplyr::inner_join(meta, mod_cols2, by=c("mod.peptide.id"="site.ids.id"))
   }
-
-
   sc <- sym("potential.contaminant")
   meta <- meta %>%  dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,

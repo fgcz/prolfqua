@@ -204,8 +204,11 @@ filter_byQValue <- function(data, config){
 .ExtractMatrix <- function(x){
   idx <- sapply(x,is.numeric)
   xmat <- as.matrix(x[,idx])
-  rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>%
-    tidyr::unite(x, sep="~") %>% dplyr::pull(x)
+  idcols <- x %>% dplyr::select(which(!idx==TRUE))
+  if(ncol(idcols) > 0){
+    rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>%
+      tidyr::unite(x, sep="~") %>% dplyr::pull(x)
+  }
   xmat
 }
 
@@ -620,7 +623,7 @@ filter_factor_levels_by_missing <- function(data,
                                             factor_level = 1 ){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
-  column <- config$table$getWorkIntensity()
+  column <- table$getWorkIntensity()
 
   data <- completeCases( data , config)
   nrNA = function(x){sum(!is.na(x))}
