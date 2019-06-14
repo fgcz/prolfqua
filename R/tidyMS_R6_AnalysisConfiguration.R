@@ -880,16 +880,23 @@ intensity_summary_by_hkeys <- function( data, config, func)
   xnested <- xnested %>%
     dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
 
-  res <- function(value = c("nested","unnest","plot")){
+  res <- function(value = c("nested","unnest","wide","plot")){
     value <- match.arg(value)
     if(value == "nested"){
       return(xnested)
-    }else if(value == "unnest"){
+    }else if(value == "unnest" || value =="wide"){
       unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
       newconfig <- make_reduced_hierarchy_config(config,
                                                  workIntensity = func(name=TRUE),
                                                  hierarchy = config$table$hkeysLevel(names=FALSE))
+
+      if(value == "wide"){
+        return(LFQService::toWideConfig(unnested, newconfig))
+      }
+
       return(list(data = unnested, config = newconfig))
+
+
     }else if(value == "plot"){
       hierarchy_ID <- "hierarchy_ID"
       xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
@@ -903,6 +910,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
                                   plot_hierarchies_add_quantline, func(name=TRUE), config ))
       return(figs)
     }
+
   }
   return(res)
 }
