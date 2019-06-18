@@ -573,7 +573,7 @@ summarizeHierarchy <- function(x,
                                hierarchy = configuration$table$hkeysLevel(),
                                factors=character())
 {
-  all_hierarchy <- configuration$table$hierarchyKeys()
+  all_hierarchy <- c(configuration$table$hierarchyKeys(), configuration$table$isotopeLabel)
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
   precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
