@@ -975,31 +975,46 @@ summarize_cv <- function(data, config, all = TRUE){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
-#' res <- lfq_power_t_test(data, config)
-lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.level=0.05){
+#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#'
+#' res <- lfq_power_t_test(data2, config)
+#' res
+#' res <- lfq_power_t_test(data2, config, delta=2)
+#' res
+#' res <- lfq_power_t_test(data2, config, delta=c(0.5,1,2))
+#' res
+#'
+lfq_power_t_test <- function(data,
+                             config,
+                             delta = 1,
+                             power = 0.8,
+                             sig.level = 0.05,
+                             probs = seq(0.5,0.9, by = 0.1)){
+
   if(!config$parameter$is_intensity_transformed){
     warning("Intensities are not transformed yet.")
   }
-  stats_res <- summarize_cv(dataTransformed, config, all=FALSE)
+
+  stats_res <- summarize_cv(data, config, all=FALSE)
   sd <- na.omit(stats_res$sd)
   if(length(sd) > 0){
-    quantilesSD <- quantile(sd,seq(0.2,1,length=9))
-    getSampleSize <- function(sd){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
-    N <- sapply(quantilesSD, getSampleSize)
-    sampleSizes <- data.frame( quantile = names(N) ,
-                               sd = round(quantilesSD, digits=3),
-                               N_exact = round(N, digits=3),
-                               N = ceiling(N))
-    rownames(sampleSizes) <- NULL
-  }else{
-    sampleSizes <- data.frame(quantile = NA ,
-                              sd =NA,
-                              N_exact = NA,
-                              N = NA)
-  }
-  return(sampleSizes)
-}
+    quantilesSD <- quantile(sd,probs)
 
+    sampleSizes <- expand.grid(sd = round(quantilesSD, 3), delta = delta)
+    sampleSizes <- add_column( sampleSizes, quantile = names(sampleSizes$sd), .before=1 )
+
+    getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
+    getSampleSize(sampleSizes$sd[1], sampleSizes$delta[1])
+
+    sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+    sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
+    sampleSizes <- sampleSizes %>% mutate(FC = 2^delta)
+
+    summary <- sampleSizes %>% dplyr::select(-N_exact,-delta) %>% spread(FC,N, sep="=")
+    return(list(long = sampleSizes, summary = summary))
+  }
+  return(NULL)
+}
 
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
@@ -1013,23 +1028,24 @@ lfq_power_t_test <- function(dataTransformed, config, delta = 1, power=0.8,sig.l
 #' plot_stat_density(res, config, stat="mean")
 #' plot_stat_density(res, config, stat="sd")
 #' plot_stat_density(res, config, stat="CV")
-plot_stat_density <- function(data, config, stat = c("CV","mean","sd")){
+plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
+  ggstat <- match.arg(ggstat)
   p <- ggplot(data, aes_string(x = stat, colour = config$table$factorKeys()[1] )) +
-    geom_line(stat="density")
+    geom_line(stat = ggstat)
   return(p)
 }
 #'plot_stat_density_median
 #'@export
-plot_stat_density_median <- function(data, config, stat = c("CV","sd")){
+plot_stat_density_median <- function(data, config, stat = c("CV","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
+  ggstat <- match.arg(ggstat)
   data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
   res <- data %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm=TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = config$table$factorKeys()[1])) +
-    geom_line(stat = "density") + facet_wrap("top")
+    geom_line(stat = ggstat) + facet_wrap("top")
   return(p)
 }
-
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
@@ -1132,7 +1148,11 @@ plot_stdv_vs_mean <- function(data, config){
 #' # LFQService::plot_heatmap_cor( data, config )
 #' # plot_heatmap_cor( data, config, R2=TRUE )
 #'
-plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.dist(1 - cor(t(x), use = "pa"))){
+plot_heatmap_cor <- function(data,
+                             config,
+                             R2 = FALSE,
+                             distfun = function(x) as.dist(1 - cor(t(x), use = "pa")),
+                             ...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1150,7 +1170,8 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, distfun = function(x) as.
                             scale="none",
                             ColSideColors = ColSideColors,
                             margin = c(8,3),
-                            main = ifelse(R2, "R^2", "correlation"))
+                            main = ifelse(R2, "R^2", "correlation"),
+                            ...=...)
   invisible(res)
 }
 
