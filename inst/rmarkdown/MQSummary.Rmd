@@ -86,9 +86,10 @@ ggplot(x3, aes(x = protein_with)) + geom_bar(stat="count")
 ```
 
 ```{r filterOnPeptideNr}
-x3 %>% dplyr::filter(peptide_Id_n > 1) -> x4
-data <- inner_join(data, x4, by="protein_Id")
+x3 %>% dplyr::filter(peptide_Id_n >= config$parameter$min_peptides_protein) -> x4
+data <- inner_join(data, x4, by=config$table$hkeysLevel())
 ```
+
 
 ```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0,1,2 etc. mssing value."}
 p <- missignessHistogram(data, config)
