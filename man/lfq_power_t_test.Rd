@@ -4,8 +4,8 @@
 \alias{lfq_power_t_test}
 \title{Compute theoretical sample sizes from factor level standard deviations}
 \usage{
-lfq_power_t_test(dataTransformed, config, delta = 1, power = 0.8,
-  sig.level = 0.05)
+lfq_power_t_test(data, config, delta = 1, power = 0.8,
+  sig.level = 0.05, probs = seq(0.5, 0.9, by = 0.1))
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations
@@ -15,5 +15,13 @@ Compute theoretical sample sizes from factor level standard deviations
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 
-res <- lfq_power_t_test(data, config)
+data2 <- transform_work_intensity(data, config, transformation = log2)
+
+res <- lfq_power_t_test(data2, config)
+res
+res <- lfq_power_t_test(data2, config, delta=2)
+res
+res <- lfq_power_t_test(data2, config, delta=c(0.5,1,2))
+res
+
 }

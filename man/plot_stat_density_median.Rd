@@ -4,7 +4,8 @@
 \alias{plot_stat_density_median}
 \title{plot_stat_density_median}
 \usage{
-plot_stat_density_median(data, config, stat = c("CV", "sd"))
+plot_stat_density_median(data, config, stat = c("CV", "sd"),
+  ggstat = c("density", "ecdf"))
 }
 \description{
 plot_stat_density_median

@@ -4,7 +4,8 @@
 \alias{plot_stat_density}
 \title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
 \usage{
-plot_stat_density(data, config, stat = c("CV", "mean", "sd"))
+plot_stat_density(data, config, stat = c("CV", "mean", "sd"),
+  ggstat = c("density", "ecdf"))
 }
 \description{
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples

@@ -5,7 +5,7 @@
 \title{plot correlation heatmap with annations}
 \usage{
 plot_heatmap_cor(data, config, R2 = FALSE, distfun = function(x)
-  as.dist(1 - cor(t(x), use = "pa")))
+  as.dist(1 - cor(t(x), use = "pa")), ...)
 }
 \description{
 plot correlation heatmap with annations
