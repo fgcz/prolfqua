@@ -28,8 +28,9 @@
     return(NULL)
   }
   rmarkdown::render(res,
-                    output_format = rmarkdown::pdf_document(),
-                    params=params, envir = new.env()
+                    output_format = bookdown::pdf_document2(),
+                    params=params,
+                    envir = new.env()
   )
 
   pdf_doc <- paste0(tools::file_path_sans_ext(res),".pdf")
