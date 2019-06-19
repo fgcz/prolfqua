@@ -439,9 +439,9 @@ plot_hierarchies_boxplot_df <- function(filteredPep, config){
 
   figs <- xnested %>%
     dplyr::mutate(boxplot = map2(data, !!sym(hierarchy_ID),
-                                     plot_hierarchies_boxplot,
-                                     config ,
-                                     factor_level = factor_level))
+                                 plot_hierarchies_boxplot,
+                                 config ,
+                                 factor_level = factor_level))
   return(figs$boxplot)
 }
 
@@ -496,17 +496,44 @@ hierarchyCounts <- function(x, configuration){
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' hierarchy_counts_sample(sample_analysis, skylineconfig)
-#'
+#' res <- hierarchy_counts_sample(sample_analysis, skylineconfig)
+#' res()
+#' res("long")
+#' res("plot")
 hierarchy_counts_sample <- function(data,
                                     configuration)
 {
   hierarchy <- configuration$table$hierarchyKeys()
-  data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) -> xx
-  res <- xx %>% dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
+  summary <-data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
+    dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
     dplyr::summarise_at( hierarchy, n_distinct )
+
+  res <- function(value = c("wide", "long", "plot")){
+    value <- match.arg(value)
+    if(value == "wide"){
+      return(summary)
+    }else{
+      long <- summary %>% tidyr::gather("key",
+                                     "nr",-dplyr::one_of(config$table$isotopeLabel,
+                                                         config$table$sampleName))
+      if(value == "long"){
+        return(long)
+      }else if(value == "plot"){
+        nudgeval <- max(long$nr) * 0.05
+        ggplot(long, aes(x = sampleName, y = nr)) +
+          geom_bar(stat = "identity", position = "dodge", colour="black", fill="white") +
+          facet_wrap( ~ key, scales = "free_y", ncol = 1) +
+          geom_text(aes(label = nr), nudge_y = nudgeval) +
+          theme(axis.text.x = element_text(angle = 90, hjust = 1))
+      }
+    }
+  }
   return(res)
 }
+
+
+
+
 #' Light only version.
 #' Summarize Protein counts
 #' @export
@@ -745,7 +772,11 @@ missingPerConditionCumsum <- function(x,configuration,factors = configuration$ta
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
-  p <- ggplot(res, aes(x= nrNAs, y = cs)) + geom_bar(stat="identity") +
+
+  nudgeval = max(res$cs) * 0.05
+  p <- ggplot(res, aes(x= nrNAs, y = cs)) +
+    geom_bar(stat="identity") +
+    eom_text(aes(label = cs), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
 
   res <- res %>% tidyr::spread("nrNAs","cs")
@@ -765,7 +796,7 @@ missingPerConditionCumsum <- function(x,configuration,factors = configuration$ta
 #' configuration <- skylineconfig$clone(deep=TRUE)
 #' x <- sample_analysis
 #'
-missingPerCondition <- function(x, configuration, factors =configuration$table$fkeysLevel()){
+missingPerCondition <- function(x, configuration, factors = configuration$table$fkeysLevel()){
   table <- configuration$table
   missingPrec <- interaction_missing_stats(x, configuration, factors)
   hierarchyKey <- tail(configuration$table$hierarchyKeys(),1)
@@ -776,9 +807,13 @@ missingPerCondition <- function(x, configuration, factors =configuration$table$f
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  p <- ggplot(xx, aes_string(x= "nrNAs", y = hierarchyKey)) + geom_bar(stat="identity")+
+  nudgeval = max(xx$hierarchyKey) * 0.05
+  p <- ggplot(xx, aes_string(x= "nrNAs", y = hierarchyKey)) +
+    geom_bar(stat="identity", color="black", fill="white") +
+    geom_text(aes(label = hierarchyKey), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
   xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
+
   return(list(data = xx ,figure = p))
 }
 
@@ -964,7 +999,7 @@ summarize_cv <- function(data, config, all = TRUE){
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
-  hierarchyFactor %>% dplyr::mutate(CV = sd/mean*100) -> res
+  hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> res
   return(res)
 }
 
@@ -1000,11 +1035,12 @@ lfq_power_t_test <- function(data,
   if(length(sd) > 0){
     quantilesSD <- quantile(sd,probs)
 
-    sampleSizes <- expand.grid(sd = round(quantilesSD, 3), delta = delta)
-    sampleSizes <- add_column( sampleSizes, quantile = names(sampleSizes$sd), .before=1 )
+    sampleSizes <- expand.grid(probs = probs, delta = delta)
+    quantilesSD <- quantile(sd,sampleSizes$probs)
+    sampleSizes <- add_column( sampleSizes, sd = quantilesSD,digits=3, .before=2 )
+    sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before=1 )
 
     getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
-    getSampleSize(sampleSizes$sd[1], sampleSizes$delta[1])
 
     sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
     sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))

@@ -16,6 +16,8 @@ skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", i
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 data(skylinePRMSampleData)
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-hierarchy_counts_sample(sample_analysis, skylineconfig)
-
+res <- hierarchy_counts_sample(sample_analysis, skylineconfig)
+res()
+res("long")
+res("plot")
 }
