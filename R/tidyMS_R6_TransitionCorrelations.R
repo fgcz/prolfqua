@@ -287,7 +287,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
   }
 
   ids <- dplyr::select_at(data,
-                       c(newcolname, config$table$factorKeys())) %>%
+                       c( config$table$sampleName, config$table$fileName, config$table$factorKeys())) %>%
     distinct() %>% dplyr::arrange_at(newcolname)
 
   res <- toWide( data, c(config$table$hierarchyKeys()) ,
