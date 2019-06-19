@@ -895,7 +895,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 
   m_spread <- function(longContrasts, subject_Id, column ){
     longContrasts %>%
-      dplyr::select_at(c(subject_Id, "lhs", column)) %>%
+      dplyr::select_at(c(subject_Id, "isSingular", "lhs",  column)) %>%
       dplyr::mutate(lhs = glue::glue('{column}.{lhs}')) %>%
       tidyr::spread(lhs, !!sym(column) ) -> res
     return(res)
@@ -907,8 +907,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
   res <- res %>% reduce(left_join, by = subject_Id)
   return(res)
 }
-
-
 #' compute group averages
 #'
 #' used in p2621, p2109
@@ -1035,7 +1033,6 @@ contrasts_linfct_vis_write <- function(fig_list,
   }
 }
 
-
 #' Do contrast
 #' @export
 #' @examples
@@ -1047,18 +1044,18 @@ workflow_contrasts_linfct <- function(models,
                                       prefix = "Contrasts",
                                       contrastfun = LFQService::my_contest )
 {
-
   contrast_result <- contrasts_linfct(models,
                                       modelName,
                                       linfct,
-                                      subject_Id = subject_Id,contrastfun=contrastfun )
+                                      subject_Id = subject_Id,
+                                      contrastfun = contrastfun )
+
   contrast_result <- moderated_p_limma_long(contrast_result)
   subject_Id <- subject_Id
   prefix <- prefix
   modelName <- modelName
 
-  res_fun <- function(path = NULL, columns = c("estimate",
-                                               "p.value",
+  res_fun <- function(path = NULL, columns = c("p.value",
                                                "p.value.adjusted",
                                                "moderated.p.value",
                                                "moderated.p.value.adjusted")){
@@ -1070,23 +1067,34 @@ workflow_contrasts_linfct <- function(models,
                                           columns = columns
     )
 
+    relevant_columns <- c("lhs", "sigma", "df", "isSingular", "estimate", "conf.low", "conf.high") # other relevant columns.
+    contrast_minimal <- contrast_result %>% dplyr::select(subject_Id, relevant_columns, columns )
+
+    contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                subject_Id = subject_Id,
+                                                columns=c("estimate", columns))
 
     if(!is.null(path)){
-      contrasts_linfct_write(contrast_result,
-                             modelName ,
+      contrasts_linfct_write(contrast_minimal,
+                             modelName,
                              prefix = prefix,
                              path=path,
                              subject_Id = subject_Id,
-                             columns = columns )
+                             columns = c("estimate", columns))
+
       contrasts_linfct_vis_write(visualization, path=path)
     }
+
     res <- list(contrast_result = contrast_result,
+                contrast_minimal = contrast_minimal,
+                contrasts_wide = contrasts_wide,
                 visualization = visualization,
                 modelName = modelName,
-                prefix = prefix  )
+                prefix = prefix)
+
     invisible(res)
   }
-  return(res_fun)
+  return( res_fun )
 }
 
 # LIMMA ----
