@@ -11,6 +11,7 @@ missingPerConditionCumsum(x, configuration,
 cumulative sums of missing
 }
 \examples{
+
 setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 res <- missingPerConditionCumsum(sample_analysis,skylineconfig)

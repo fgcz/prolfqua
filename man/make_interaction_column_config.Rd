@@ -4,7 +4,7 @@
 \alias{make_interaction_column_config}
 \title{create interaction column from factors}
 \usage{
-make_interaction_column_config(data, config)
+make_interaction_column_config(data, config, sep = ".")
 }
 \description{
 create interaction column from factors

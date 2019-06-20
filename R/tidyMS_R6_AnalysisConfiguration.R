@@ -142,7 +142,8 @@ make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
   intr <- purrr::map2_dfc(columns, intr, paste0)
   colnames(intr) <- paste0("interaction_",columns)
-  data$interaction <- interaction(intr, sep=sep)
+  colname <- "interaction"
+  data <- data %>% mutate(!!colname :=interaction(intr, sep=sep))
   return(data)
 }
 
@@ -154,9 +155,9 @@ make_interaction_column <- function(data, columns, sep="."){
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$factorLevel <- 1
 #' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
-make_interaction_column_config <- function(data, config){
-  columns <- config$table$factorKeys()[1:config$table$factorLevel]
-  data <- make_interaction_column(data, columns)
+make_interaction_column_config <- function(data, config, sep="."){
+  columns <- config$table$fkeysLevel()
+  data <- make_interaction_column(data, columns, sep=sep)
   return(data)
 }
 
@@ -514,8 +515,8 @@ hierarchy_counts_sample <- function(data,
       return(summary)
     }else{
       long <- summary %>% tidyr::gather("key",
-                                     "nr",-dplyr::one_of(config$table$isotopeLabel,
-                                                         config$table$sampleName))
+                                     "nr",-dplyr::one_of(configuration$table$isotopeLabel,
+                                                         configuration$table$sampleName))
       if(value == "long"){
         return(long)
       }else if(value == "plot"){
@@ -754,6 +755,7 @@ missignessHistogram <- function(x, configuration, showempty = TRUE, factors = co
 #' cumulative sums of missing
 #' @export
 #' @examples
+#'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' res <- missingPerConditionCumsum(sample_analysis,skylineconfig)
@@ -775,8 +777,8 @@ missingPerConditionCumsum <- function(x,configuration,factors = configuration$ta
 
   nudgeval = max(res$cs) * 0.05
   p <- ggplot(res, aes(x= nrNAs, y = cs)) +
-    geom_bar(stat="identity") +
-    eom_text(aes(label = cs), nudge_y = nudgeval) +
+    geom_bar(stat="identity", color="black", fill="white") +
+    geom_text(aes(label = cs), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
 
   res <- res %>% tidyr::spread("nrNAs","cs")
@@ -804,13 +806,15 @@ missingPerCondition <- function(x, configuration, factors = configuration$table$
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel,
                                      factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize( !!sym(hierarchyKey) := n())
-  formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
-  message(formula)
 
-  nudgeval = max(xx$hierarchyKey) * 0.05
+  formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
+  #message(formula)
+
+  nudgeval = max(xx[[hierarchyKey]]) * 0.05
+
   p <- ggplot(xx, aes_string(x= "nrNAs", y = hierarchyKey)) +
     geom_bar(stat="identity", color="black", fill="white") +
-    geom_text(aes(label = hierarchyKey), nudge_y = nudgeval) +
+    geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
   xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
 
@@ -986,22 +990,58 @@ medpolish_protein_quants <- function(data, config){
 #' res$CV <- res$sd/res$mean
 summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
+
+
   hierarchyFactor <- data %>%
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factorKeys()[1]) )) %>%
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysLevel()) )) %>%
     dplyr::summarize(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$factorKeys()[1], funs(as.character) )
+  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysLevel(), funs(as.character) )
 
   if(all){
     hierarchy <- data %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       dplyr::summarize(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
+
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
   }
-  hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> res
-  return(res)
+  if(config$parameter$is_intensity_transformed == FALSE){
+    hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+  }
+  return(hierarchyFactor)
 }
+
+#' summarize stats output
+#' @export
+#' @examples
+#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- sample_analysis
+#' stats_res <- summarize_cv(data, config)
+#' head(stats_res)
+#' summarize_cv_quantiles(stats_res, config)
+#' summarize_cv_quantiles(stats_res, config, stats="CV")
+summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+  stats <- match.arg(stats)
+  toQuantiles <- function(x, probs_i = probs) {
+    tibble(probs = probs, quantiles = quantile(x, probs_i , na.rm = T))
+  }
+  q_column <- paste0(stats,"_quantiles")
+
+  xx2 <- stats_res %>%
+    dplyr::group_by(!!sym(config$table$fkeysLevel())) %>%
+    tidyr::nest()
+
+
+  sd_quantile_res2 <- xx2 %>%
+    dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  %>%
+    dplyr::select(!!sym(config$table$fkeysLevel()), !!sym(q_column)) %>%
+    tidyr::unnest() %>%
+    spread(!!sym(config$table$fkeysLevel()), quantiles)
+
+  return(sd_quantile_res2)
+}
+
 
 #' Compute theoretical sample sizes from factor level standard deviations
 #' @export
@@ -1014,6 +1054,7 @@ summarize_cv <- function(data, config, all = TRUE){
 #'
 #' res <- lfq_power_t_test(data2, config)
 #' res
+#' stats_res <- summarize_cv(data2, config, all=FALSE)
 #' res <- lfq_power_t_test(data2, config, delta=2)
 #' res
 #' res <- lfq_power_t_test(data2, config, delta=c(0.5,1,2))

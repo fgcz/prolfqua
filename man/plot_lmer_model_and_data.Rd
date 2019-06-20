@@ -12,4 +12,5 @@ Make model plot with title - protein Name.
 \examples{
 m <- LFQService::interactionModel_p1807
 plot_lmer_model_and_data(m,"dumm")
+
 }

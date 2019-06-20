@@ -19,6 +19,7 @@ data2 <- transform_work_intensity(data, config, transformation = log2)
 
 res <- lfq_power_t_test(data2, config)
 res
+stats_res <- summarize_cv(data2, config, all=FALSE)
 res <- lfq_power_t_test(data2, config, delta=2)
 res
 res <- lfq_power_t_test(data2, config, delta=c(0.5,1,2))
