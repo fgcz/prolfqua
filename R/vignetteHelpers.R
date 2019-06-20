@@ -49,12 +49,12 @@
 #'
 render_MQSummary_rmd <- function(data, config,
                                  dest_path =".",
-                                 dest_file_name = "MQSummary.pdf",
+                                 dest_file_name = "MQSummary2.pdf",
                                  workdir = tempdir())
 {
   dist_file_path <- .run_markdown_with_params(
     list(data = data, configuration=config$clone(deep=TRUE)),
-    markdown_path ="rmarkdown/MQSummary.Rmd",
+    markdown_path ="rmarkdown/MQSummary2.Rmd",
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,

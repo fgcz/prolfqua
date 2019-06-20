@@ -5,7 +5,7 @@
 \title{render MQ Summary.}
 \usage{
 render_MQSummary_rmd(data, config, dest_path = ".",
-  dest_file_name = "MQSummary.pdf", workdir = tempdir())
+  dest_file_name = "MQSummary2.pdf", workdir = tempdir())
 }
 \description{
 render MQ Summary.
