@@ -1078,14 +1078,14 @@ lfq_power_t_test <- function(data,
 
     sampleSizes <- expand.grid(probs = probs, delta = delta)
     quantilesSD <- quantile(sd,sampleSizes$probs)
-    sampleSizes <- add_column( sampleSizes, sd = quantilesSD,digits=3, .before=2 )
+    sampleSizes <- add_column( sampleSizes, sd = quantilesSD, .before=2 )
     sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before=1 )
 
     getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
 
     sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
     sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
-    sampleSizes <- sampleSizes %>% mutate(FC = 2^delta)
+    sampleSizes <- sampleSizes %>% mutate(FC = round(2^delta,digits=2))
 
     summary <- sampleSizes %>% dplyr::select(-N_exact,-delta) %>% spread(FC,N, sep="=")
     return(list(long = sampleSizes, summary = summary))
