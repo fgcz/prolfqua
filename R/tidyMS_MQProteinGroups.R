@@ -412,9 +412,29 @@ tidyMQ_top_protein_name <- function(modSpecData){
 }
 
 
-## Columns for site specific files
-#Proteins	Positions within proteins	Leading proteins	Protein	Fasta headers	Localization prob	Score diff
-# Sequence window
-# intensity but not ___1 ___2 ___3 id	Protein group IDs	Positions	Position	Peptide IDs	Mod. peptide IDs	Evidence IDs	Acetyl (K) Probabilities	Acetyl (K) Score diffs	Position in peptide	Charge
+#' Read Sites.txt and convert into longish format
+#' @export
+tidyMQ_from_Sites <- function(pDat){
+  colnames(pDat) <- tolower(colnames(pDat) )
+  # Cut PhosphoSTY down to useful columns
+  includeList <- c("localization.prob", "protein", "leading.proteins", "positions.within.proteins",
+                   "protein.group.ids", "pep", "score", "delta.score", "position.in.peptide",
+                   "charge","amino.acid",
+                   "peptide.window.coverage","sequence.window", "modification.window", "reverse", "potential.contaminant","mod..peptide.ids","id")
+
+  perseusLikeMat <-   dplyr::select(pDat,includeList, starts_with("number.of."),
+                                    peptide.sequence.prob = ends_with("..probabilities"),
+                                    peptide.sequence.scorediff = ends_with(".score.diffs"),
+                                    contains("___"))
+  #perseusLikeMat$nakedSequence <- ExtractNakedPepSequenceFromTwoWindowColumnsFromMQ(seqWindowColumn = NonQMat$Sequence.window, PepWindowColumn = NonQMat$Peptide.window.coverage)
+  longish <- perseusLikeMat %>% gather(key = "raw.file", value = "intensity", contains("___"))
+  longish <- separate(longish, raw.file, into=c("raw.file", "multiplicity"), sep="___")
+  longish <- mutate(longish, raw.file = gsub("intensity\\.", "", raw.file))
+  longish <- mutate(longish, potential.contaminant = case_when(potential.contaminant == "+" ~ TRUE, TRUE ~ FALSE))
+  longish <- mutate(longish, reverse = case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
+  longish <- mutate(longish, stripped.sequence = gsub("\\(.+\\)","", peptide.sequence.prob))
+  return(longish)
+}
+
 
 
