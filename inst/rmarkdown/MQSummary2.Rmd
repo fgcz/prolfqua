@@ -117,7 +117,7 @@ if(tmpc$table$hierarchyLevel < length(tmpc$table$hierarchyKeys()))
 
 ```{r filterOnPeptideNr}
 data_small_rm <- LFQService::remove_small_intensities(data, config)
-data_cc <- LFQService::completeCases(data_small_rm, config)
+data_cc <- data_small_rm #LFQService::completeCases(data_small_rm, config)
 
 ```
 
@@ -138,8 +138,9 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 ```
 
+(ref:missingnessHeatmap) Heatmap of missing peptide quantifications clustered by sample. (The number of shown peptides is limited to $10000$).
 
-```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Heatmap of missing peptide quantifications clustered by sample."}
+```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
 plot_NA_heatmap(data = data_cc, config = config)
 ```
 

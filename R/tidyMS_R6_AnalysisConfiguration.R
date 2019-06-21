@@ -1358,7 +1358,7 @@ plot_heatmap <- function(data, config){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' plot_NA_heatmap(data, config, cexCol=1)
-plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
+plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1, limitrows=10000 ){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1370,9 +1370,18 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1 ){
 
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
+  allrows <- nrow(res)
   res <- res[apply(res,1, sum) > 0,]
+
+  message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
   if(nrow(res) > 0){
-    res_plot <- heatmap3::heatmap3(res,
+    if(nrow(res) > limitrows ){
+      message("limiting nr of rows to:", limitrows,"\n")
+      resPlot <- res[sample( 1:nrow(res),limitrows),]
+    }else{
+      resPlot <- res
+    }
+    res_plot <- heatmap3::heatmap3(resPlot,
                                    distfun = function(x){dist(x, method="binary")},
                                    scale="none",
                                    col=c("white","black"),

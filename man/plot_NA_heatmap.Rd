@@ -4,7 +4,8 @@
 \alias{plot_NA_heatmap}
 \title{plot heatmap of NA values}
 \usage{
-plot_NA_heatmap(data, config, showRowDendro = FALSE, cexCol = 1)
+plot_NA_heatmap(data, config, showRowDendro = FALSE, cexCol = 1,
+  limitrows = 10000)
 }
 \description{
 plot heatmap of NA values
