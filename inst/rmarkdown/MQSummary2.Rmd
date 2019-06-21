@@ -94,21 +94,25 @@ hcs("plot")
 
 ```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
 
-x3 <- summarizeHierarchy(data, config)
-if(ncol(x3)>=3)
+tmpc <- config$clone(deep = TRUE)
+tmpc$table$hierarchyLevel <-1
+x3 <- summarizeHierarchy(data, tmpc)
+
+if(tmpc$table$hierarchyLevel < length(tmpc$table$hierarchyKeys()))
 {
-  cnames_x3 <- colnames(x3)[3]
-  
+  cnames_x3 <- config$table$hierarchyKeys()[tmpc$table$hierarchyLevel +1]
+  cnames_x3 <- paste0(cnames_x3,"_n")
   x3 <- x3 %>% dplyr::mutate(protein_with = case_when(!!sym(cnames_x3) == 1 ~ "one",
                                                       !!sym(cnames_x3) > 1 ~ "two and more"))
   
-  pltdt <- x3 %>% 
-    count(protein_with)
+  pltdt <- x3 %>% count(protein_with)
+  
   nudgeval <- max(pltdt$n) * 0.05
   ggplot(pltdt, aes(x = protein_with, y = n)) + 
     geom_col(color="black", fill="white") +
     geom_text(aes(label = n), nudge_y = nudgeval)
 }
+
 ```
 
 
@@ -116,8 +120,6 @@ if(ncol(x3)>=3)
 data_small_rm <- LFQService::remove_small_intensities(data, config)
 data_cc <- LFQService::completeCases(data_small_rm, config)
 
-#x3 %>% dplyr::filter(peptide_Id_n > 1) -> x4
-#data <- inner_join(data_cc, x4, by="protein_Id")
 ```
 
 
@@ -176,7 +178,7 @@ if(params$plot_sd_vs_mean){
 
 
 ```{r computeCVQuantiles, include=FALSE}
-cv_quantiles_res <- summarize_cv_quantiles(stats_res, config, stats="CV")
+cv_quantiles_res <- summarize_cv_quantiles(stats_res, config, stats="CV")$wide
 
 ```
 
@@ -267,7 +269,7 @@ if(params$plot_sd_vs_mean){
 
 
 ```{r computeSDQuantiles, include=FALSE}
-sd_quantile_res2 <- summarize_cv_quantiles(stats_res, config, stats="sd")
+sd_quantile_res2 <- summarize_cv_quantiles(stats_res, config, stats="sd")$wide
 ```
 
 ```{r printSDTable}
