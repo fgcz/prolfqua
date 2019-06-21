@@ -732,7 +732,7 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
   return(res)
 }
 
-.missigness_impute_factor <- function(summary ,
+.missigness_impute_factors <- function(summary ,
                                       config,
                                       value = "meanArea",
                                       func = function(x){mean(x,na.rm=TRUE)})
@@ -761,13 +761,13 @@ missigness_impute_factors  <- function(data, config){
   res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" )){
     value <- match.arg(value)
     if(value == "nrReplicates"){
-      return(.summarize_missigness_impute_factor(prelim, config, value  = value, func = msum))
+      return(.missigness_impute_factors(prelim, config, value  = value, func = msum))
     }else if(value == "nrMeasured"){
-      return(.summarize_missigness_impute_factor(prelim, config, value  = value, func = msum))
+      return(.missigness_impute_factors(prelim, config, value  = value, func = msum))
     }else if(value == "imputed"){
-      return(.summarize_missigness_impute_factor(prelim, config, value= value))
+      return(.missigness_impute_factors(prelim, config, value= value))
     }else if(value == "meanArea"){
-      return(.summarize_missigness_impute_factor(prelim, config))
+      return(.missigness_impute_factors(prelim, config))
     }
   }
   return(res)
