@@ -601,7 +601,7 @@ summarizeHierarchy <- function(x,
                                hierarchy = configuration$table$hkeysLevel(),
                                factors=character())
 {
-  all_hierarchy <- c(configuration$table$hierarchyKeys(), configuration$table$isotopeLabel)
+  all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
   precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
@@ -658,9 +658,12 @@ getMissingStats <- function(x,
 
 
 #' Compute interaction averages and impute data using mean of lowest 10%
-#' @export
 #'
-summarize_missigness_impute <- function(mdataTrans, pepConfig){
+#' used in Acetylation project p2916
+#' @export
+#' @return function
+#'
+missigness_impute_interactions <- function(mdataTrans, pepConfig){
   xx <- interaction_missing_stats(mdataTrans, pepConfig)
   xx <- make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
 
@@ -676,33 +679,99 @@ summarize_missigness_impute <- function(mdataTrans, pepConfig){
   }
 
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
-  xx %>% dplyr::select(-one_of(c("nrNAs", pepConfig$table$fkeysLevel()))) -> xx
+
+  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" )){
+    value <- match.arg(value)
+    if(value == "long"){
+      return(xx)
+    }else{
+      xx %>% dplyr::select(-one_of(c("nrNAs", pepConfig$table$fkeysLevel()))) -> xx
 
 
-  nrReplicates <- xx%>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
-    tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
-    arrange(protein_Id) %>% ungroup()
+      nrReplicates <- xx %>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
+        tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
+        arrange(protein_Id) %>% ungroup()
 
-  nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
-    tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
-    arrange(protein_Id) %>% ungroup()
+      nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
+        tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
+        arrange(protein_Id) %>% ungroup()
 
-  meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
-    tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
-    arrange(protein_Id) %>% ungroup()
+      meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
+        tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
+        arrange(protein_Id) %>% ungroup()
 
-  meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
-    tidyr::spread(interaction, imputed, sep=".imputed.") %>%
-    arrange(protein_Id) %>% ungroup()
+      meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
+        tidyr::spread(interaction, imputed, sep=".imputed.") %>%
+        arrange(protein_Id) %>% ungroup()
 
-  allTables <- list(meanArea= meanArea, nrMeasured = nrMeasured,  nrReplicates = nrReplicates, meanAreaImputed = meanAreaImputed)
-  res <- purrr::reduce(allTables,inner_join)
+
+      allTables <- list(meanArea= meanArea, nrMeasured = nrMeasured,  nrReplicates = nrReplicates, meanAreaImputed = meanAreaImputed)
+      if(value == "all"){
+        allTables[["long"]] <- xx
+        return(allTables)
+      }else if(value == "allWide"){
+        return(purrr::reduce(allTables,inner_join))
+      }else if(value == "nrReplicates"){
+        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", "",colnames(nrReplicates))
+        return(nrReplicates)
+      }else if(value == "nrMeasured"){
+        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", "",colnames(nrMeasured))
+        return(nrMeasured)
+      }else if(value == "meanArea"){
+        colnames(meanArea) <- gsub("interaction.meanArea.", "",colnames(meanArea))
+        return(meanArea)
+      }else if(value == "imputed"){
+        colnames(meanAreaImputed) <- gsub("interaction.imputed.", "",colnames(meanAreaImputed))
+        return(meanAreaImputed)
+      }
+    }
+  }
 
   #  nrMeasured %>% dplyr::select(starts_with("interaction")) -> nrMeasuredM
   #  nrReplicates %>% dplyr::select(starts_with("interaction")) -> nrReplicatesM
-  return(list(long = xx, wide=res))
+  return(res)
 }
 
+.missigness_impute_factor <- function(summary ,
+                                      config,
+                                      value = "meanArea",
+                                      func = function(x){mean(x,na.rm=TRUE)})
+{
+  res <- setNames(vector(mode = "list", length(config$table$fkeysLevel())), config$table$fkeysLevel())
+  for(factor  in config$table$fkeysLevel()){
+
+    summary %>% group_by_at(c(factor, config$table$hkeysLevel())) %>%
+      summarize(!!sym(value) := func(!!sym(value))) -> f1
+
+    f1 <- f1 %>% tidyr::spread(key=factor, value=value, sep="")
+    res[[factor]]<- f1
+  }
+  return(purrr::reduce(res,inner_join))
+}
+
+#' Summarize data on factor levels
+#' @export
+#' @return function
+#'
+missigness_impute_factors  <- function(data, config){
+  prelim  <- missigness_impute_interactions(data, config)
+  prelim <- prelim()
+  msum <- function(x){sum(x, na.rm = TRUE)}
+
+  res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" )){
+    value <- match.arg(value)
+    if(value == "nrReplicates"){
+      return(.summarize_missigness_impute_factor(prelim, config, value  = value, func = msum))
+    }else if(value == "nrMeasured"){
+      return(.summarize_missigness_impute_factor(prelim, config, value  = value, func = msum))
+    }else if(value == "imputed"){
+      return(.summarize_missigness_impute_factor(prelim, config, value= value))
+    }else if(value == "meanArea"){
+      return(.summarize_missigness_impute_factor(prelim, config))
+    }
+  }
+  return(res)
+}
 
 #' Histogram summarizing missigness
 #' @export
@@ -1029,17 +1098,18 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
   q_column <- paste0(stats,"_quantiles")
 
   xx2 <- stats_res %>%
-    dplyr::group_by(!!sym(config$table$fkeysLevel())) %>%
+    dplyr::group_by(!!!syms(config$table$fkeysLevel())) %>%
     tidyr::nest()
 
 
   sd_quantile_res2 <- xx2 %>%
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  %>%
-    dplyr::select(!!sym(config$table$fkeysLevel()), !!sym(q_column)) %>%
-    tidyr::unnest() %>%
-    spread(!!sym(config$table$fkeysLevel()), quantiles)
+    dplyr::select(!!!syms(c(config$table$fkeysLevel(),q_column))) %>%
+    tidyr::unnest()
 
-  return(sd_quantile_res2)
+  xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysLevel())
+  wide <- xx %>%  spread("interaction", quantiles)
+  return(list(long=sd_quantile_res2, wide= wide))
 }
 
 
