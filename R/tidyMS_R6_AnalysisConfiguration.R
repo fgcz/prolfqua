@@ -515,8 +515,8 @@ hierarchy_counts_sample <- function(data,
       return(summary)
     }else{
       long <- summary %>% tidyr::gather("key",
-                                     "nr",-dplyr::one_of(configuration$table$isotopeLabel,
-                                                         configuration$table$sampleName))
+                                        "nr",-dplyr::one_of(configuration$table$isotopeLabel,
+                                                            configuration$table$sampleName))
       if(value == "long"){
         return(long)
       }else if(value == "plot"){
@@ -733,9 +733,9 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
 }
 
 .missigness_impute_factors <- function(summary ,
-                                      config,
-                                      value = "meanArea",
-                                      func = function(x){mean(x,na.rm=TRUE)})
+                                       config,
+                                       value = "meanArea",
+                                       func = function(x){mean(x,na.rm=TRUE)})
 {
   res <- setNames(vector(mode = "list", length(config$table$fkeysLevel())), config$table$fkeysLevel())
   for(factor  in config$table$fkeysLevel()){
@@ -1046,6 +1046,37 @@ medpolish_protein_quants <- function(data, config){
   return(protintensity)
 }
 
+#' write intensites into folder - for the moment protein
+#' @export
+#'
+protein_quants_write <- function(protintensity,
+                                 path_qc,
+                                 suffix=""){
+
+  suffix <- paste0("_",suffix)
+  message("writing protein intensity data into: ", path_qc)
+  readr::write_csv(protintensity("unnest")$data,
+                   path = file.path(path_qc,paste0("proteinIntensities",suffix,".csv")))
+  readr::write_csv(protintensity("wide")$data,
+                   path = file.path(path_qc,paste0("proteinIntensities_WIDE",suffix,".csv")))
+  readr::write_csv(protintensity("wide")$annotation,
+                   path = file.path(path_qc,paste0("proteinIntensities_annotation",suffix,".csv")))
+
+
+  pdf(file.path(path_qc,paste0("proteinIntensities_heatmap_cor",suffix,".pdf")), width = 10, height = 10)
+  plot_heatmap_cor(protintensity("unnest")$data, protintensity("unnest")$config)
+  dev.off()
+
+  pdf(file.path(path_qc,paste0("proteinIntensities_heatmap",suffix,".pdf")), width = 10, height = 10)
+  LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config)
+  dev.off()
+
+  pdf(file.path(path_qc,paste0("proteinIntensities_PCA",suffix,".pdf")), width=6, height=6)
+  plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
+  dev.off()
+}
+
+
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
@@ -1348,6 +1379,28 @@ plot_heatmap <- function(data, config){
                             margin = c(8,3), scale="none")
   invisible(res)
 }
+
+#' plot PCA
+#' @export
+#' @import ggfortify
+#' @examples
+#'
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#' plot_pca(data, config)
+plot_pca <- function(data , config){
+  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  ff <- na.omit(wide$data)
+  ff <- t(ff)
+  ids <- wide$annotation
+  autoplot(prcomp(ff), data=ids, colour=config$table$fkeysLevel()[1],
+           shape=if(!is.na(config$table$fkeysLevel()[2])){
+             config$table$fkeysLevel()[2]
+           })
+}
+
 #' plot heatmap of NA values
 #' @export
 #' @importFrom heatmap3 heatmap3 showLegend
