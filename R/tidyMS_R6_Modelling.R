@@ -1046,10 +1046,11 @@ contrasts_linfct_vis_write <- function(fig_list,
 workflow_contrasts_linfct <- function(models,
                                       modelName,
                                       linfct,
-                                      subject_Id = "protein_Id",
+                                      config,
                                       prefix = "Contrasts",
                                       contrastfun = LFQService::my_contest )
 {
+  subject_Id <- config$table$hkeysLevel()
   contrast_result <- contrasts_linfct(models,
                                       modelName,
                                       linfct,
@@ -1069,7 +1070,7 @@ workflow_contrasts_linfct <- function(models,
     visualization <- contrasts_linfct_vis(contrast_result,
                                           modelName ,
                                           prefix = prefix,
-                                          subject_Id =subject_Id,
+                                          subject_Id = subject_Id,
                                           columns = columns
     )
 
@@ -1083,9 +1084,9 @@ workflow_contrasts_linfct <- function(models,
     if(!is.null(path)){
       contrasts_linfct_write(contrast_minimal,
                              modelName,
+                             config,
                              prefix = prefix,
                              path=path,
-                             subject_Id = subject_Id,
                              columns = c("estimate", columns))
 
       contrasts_linfct_vis_write(visualization, path=path)
@@ -1159,25 +1160,29 @@ moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
   xx <- purrr::map_df(dfg, moderated_p_limma)
   return(xx)
 }
+
 #' write results of `contrasts_linfct`
 #' @export
 #'
 contrasts_linfct_write <- function(results,
                                    modelName,
+                                   config,
                                    path,
                                    prefix = "Contrasts",
-                                   subject_Id = "protein_Id",
-                                   columns = c("estimate", "p.value","p.value.adjusted")){
+                                   columns = c("estimate", "p.value", "p.value.adjusted")){
+
+  subject_Id <- config$table$hkeysLevel()
+
   if(!is.null(path)){
-    fileLong <-file.path(path,paste0(prefix,"_",modelName,".csv"))
-    message("Writing: ",fileLong,"\n")
-    readr::write_csv(results, path = fileLong)
-    fileWide <- file.path(path,paste0(prefix,"_",modelName,"_PIVOT.csv"))
-    message("Writing: ",fileWide,"\n")
+    fileLong <- file.path(path,paste0(prefix, "_", modelName, ".csv"))
+    message("Writing: ", fileLong, "\n")
+    readr::write_csv(separate_hierarchy(results, config) , path = fileLong)
+    fileWide <- file.path(path,paste0(prefix, "_", modelName, "_PIVOT.csv"))
+    message("Writing: ", fileWide, "\n")
     resultswide <- pivot_model_contrasts_2_Wide(results,
                                                 subject_Id = subject_Id,
                                                 columns=columns)
-    readr::write_csv(resultswide, path = fileWide)
+    readr::write_csv(separate_hierarchy(resultswide, config), path = fileWide)
   }
 }
 
