@@ -417,12 +417,27 @@ tidyMQ_top_protein_name <- function(modSpecData){
 tidyMQ_from_Sites <- function(pDat){
   colnames(pDat) <- tolower(colnames(pDat) )
   # Cut PhosphoSTY down to useful columns
-  includeList <- c("localization.prob", "protein", "leading.proteins", "positions.within.proteins",
-                   "protein.group.ids", "pep", "score", "delta.score", "position.in.peptide",
-                   "charge","amino.acid",
-                   "peptide.window.coverage","sequence.window", "modification.window", "reverse", "potential.contaminant","mod..peptide.ids","id")
 
-  perseusLikeMat <-   dplyr::select(pDat, includeList, starts_with("number.of."),
+  perseusLikeMat <-   dplyr::select(pDat,
+                                    "localization.prob",
+                                    "protein",
+                                    "leading.proteins",
+                                    "positions.within.proteins",
+                                    "protein.group.ids" = "protein.group.ids",
+                                    "pep",
+                                    "score",
+                                    "delta.score",
+                                    "position.in.peptide",
+                                    "charge",
+                                    "amino.acid",
+                                    "peptide.window.coverage",
+                                    "sequence.window",
+                                    "modification.window",
+                                    "reverse",
+                                    "potential.contaminant",
+                                    "mod.peptide.ids" = "mod..peptide.ids",
+                                    "site.id" = "id",
+                                    starts_with("number.of."),
                                     peptide.sequence.prob = ends_with("..probabilities"),
                                     peptide.sequence.scorediff = ends_with(".score.diffs"),
                                     contains("___"))
