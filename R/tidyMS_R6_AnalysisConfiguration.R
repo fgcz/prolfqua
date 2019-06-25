@@ -37,6 +37,11 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      ident_Score = character(), # larger better
                                      workIntensity = NULL, # could be list with names and functions
 
+                                     opt_rt  = NULL,
+                                     opt_mz = NULL,
+
+
+
                                      initialize = function(){
                                      },
                                      getFactorLevel = function(){
@@ -102,7 +107,8 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      },
                                      valueVars = function(){
                                        "Columns containing values"
-                                       c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score)
+                                       valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+                                       return(valueVars)
                                      }
                                    )
 )
@@ -110,7 +116,9 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 #' Analysis Configuration
 #' @export
 AnalysisConfiguration <- R6Class("AnalysisConfiguration",
+
                                  public = list(
+                                   sep = "~",
                                    table = NULL,
                                    parameter = NULL,
                                    initialize = function(analysisTableAnnotation, analysisParameter){
@@ -189,18 +197,18 @@ R6extractValues <- function(r6class){
 #'
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #'
-setup_analysis <- function(data, configuration ,sep="~"){
+setup_analysis <- function(data, configuration ){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep=configuration$sep)
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
     if( length(table$factors[[i]]) > 1){
-      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE)
+      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE, sep=configuration$sep)
     }else{
       newname <-table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -212,9 +220,9 @@ setup_analysis <- function(data, configuration ,sep="~"){
   if(!sampleName  %in% names(data)){
     message("creating sampleName")
 
-    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE ) %>%
+    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep=configuration$sep) %>%
       dplyr::select(sampleName, table$fileName) %>% distinct() %>%
-      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=sep )}) %>%
+      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=configuration$sep )}) %>%
       dplyr::inner_join(data, by=table$fileName)
   } else{
     warning(sampleName, " already exists")
@@ -228,6 +236,26 @@ setup_analysis <- function(data, configuration ,sep="~"){
 
   return( data )
 }
+
+#' separates hierarchies into starting columns
+#' @export
+separate_hierarchy <- function(data, config){
+  for(hkey in config$table$hkeysLevel()){
+    data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep=config$sep, remove=FALSE)
+  }
+  return(data)
+}
+
+#' separates hierarchies into starting columns
+#' @export
+separate_factors <- function(data, config){
+  for(fkey in config$table$fkeysLevel()){
+    data<- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep=config$sep, remove=FALSE)
+  }
+  return(data)
+}
+
+
 
 #' Complete cases
 #' @export
@@ -670,7 +698,6 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
   #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
   xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
 
-
   lowerMean <- function(meanArea, probs = 0.1){
     meanAreaNotNA <- na.omit(meanArea)
     small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs= probs)]
@@ -712,16 +739,16 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
       }else if(value == "allWide"){
         return(purrr::reduce(allTables,inner_join))
       }else if(value == "nrReplicates"){
-        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", "",colnames(nrReplicates))
+        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", "nrRep.",colnames(nrReplicates))
         return(nrReplicates)
       }else if(value == "nrMeasured"){
-        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", "",colnames(nrMeasured))
+        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", "nrMeas.",colnames(nrMeasured))
         return(nrMeasured)
       }else if(value == "meanArea"){
-        colnames(meanArea) <- gsub("interaction.meanArea.", "",colnames(meanArea))
+        colnames(meanArea) <- gsub("interaction.meanArea.", "mean.",colnames(meanArea))
         return(meanArea)
       }else if(value == "imputed"){
-        colnames(meanAreaImputed) <- gsub("interaction.imputed.", "",colnames(meanAreaImputed))
+        colnames(meanAreaImputed) <- gsub("interaction.imputed.", "mean.imp.",colnames(meanAreaImputed))
         return(meanAreaImputed)
       }
     }
@@ -761,13 +788,22 @@ missigness_impute_factors  <- function(data, config){
   res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" )){
     value <- match.arg(value)
     if(value == "nrReplicates"){
-      return(.missigness_impute_factors(prelim, config, value  = value, func = msum))
+      res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
+      res <- res %>% rename_if(is.numeric , function(x){paste0("nrRep.",x)})
+      return(res)
     }else if(value == "nrMeasured"){
-      return(.missigness_impute_factors(prelim, config, value  = value, func = msum))
+      res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
+      res <- res %>% rename_if(is.numeric , function(x){paste0("nrMeas.",x)})
+      return(res)
     }else if(value == "imputed"){
-      return(.missigness_impute_factors(prelim, config, value= value))
+      res <- .missigness_impute_factors(prelim, config, value= value)
+      res <- res %>% rename_if(is.numeric , function(x){paste0("mean.imp.",x)})
+      return(res)
+
     }else if(value == "meanArea"){
-      return(.missigness_impute_factors(prelim, config))
+      res <- .missigness_impute_factors(prelim, config)
+      res <- res %>% rename_if(is.numeric , function(x){paste0("mean.",x)})
+      return(res)
     }
   }
   return(res)
@@ -999,7 +1035,9 @@ intensity_summary_by_hkeys <- function( data, config, func)
                                                  hierarchy = config$table$hkeysLevel(names=FALSE))
 
       if(value == "wide"){
-        return(LFQService::toWideConfig(unnested, newconfig))
+        wide <- LFQService::toWideConfig(unnested, newconfig)
+        wide$config <- newconfig
+        return(wide)
       }
 
       return(list(data = unnested, config = newconfig))
@@ -1055,9 +1093,13 @@ protein_quants_write <- function(protintensity,
 
   suffix <- paste0("_",suffix)
   message("writing protein intensity data into: ", path_qc)
-  readr::write_csv(protintensity("unnest")$data,
+
+  unnest <- protintensity("unnest")
+  readr::write_csv(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
                    path = file.path(path_qc,paste0("proteinIntensities",suffix,".csv")))
-  readr::write_csv(protintensity("wide")$data,
+
+
+  readr::write_csv(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
                    path = file.path(path_qc,paste0("proteinIntensities_WIDE",suffix,".csv")))
   readr::write_csv(protintensity("wide")$annotation,
                    path = file.path(path_qc,paste0("proteinIntensities_annotation",suffix,".csv")))
@@ -1071,8 +1113,9 @@ protein_quants_write <- function(protintensity,
   LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config)
   dev.off()
 
+  res <- plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
   pdf(file.path(path_qc,paste0("proteinIntensities_PCA",suffix,".pdf")), width=6, height=6)
-  plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
+  print(res)
   dev.off()
 }
 
@@ -1395,10 +1438,11 @@ plot_pca <- function(data , config){
   ff <- na.omit(wide$data)
   ff <- t(ff)
   ids <- wide$annotation
-  autoplot(prcomp(ff), data=ids, colour=config$table$fkeysLevel()[1],
-           shape=if(!is.na(config$table$fkeysLevel()[2])){
-             config$table$fkeysLevel()[2]
-           })
+  res <- autoplot(prcomp(ff), data=ids, colour=config$table$fkeysLevel()[1],
+                  shape=if(!is.na(config$table$fkeysLevel()[2])){
+                    config$table$fkeysLevel()[2]
+                  })
+  return(res)
 }
 
 #' plot heatmap of NA values
