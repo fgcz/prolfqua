@@ -4,8 +4,8 @@
 \alias{contrasts_linfct_write}
 \title{write results of `contrasts_linfct`}
 \usage{
-contrasts_linfct_write(results, modelName, path, prefix = "Contrasts",
-  subject_Id = "protein_Id", columns = c("estimate", "p.value",
+contrasts_linfct_write(results, modelName, config, path,
+  prefix = "Contrasts", columns = c("estimate", "p.value",
   "p.value.adjusted"))
 }
 \description{

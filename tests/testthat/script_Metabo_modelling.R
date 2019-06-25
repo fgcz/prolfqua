@@ -50,8 +50,8 @@ wfs <- contrasts_linfct_vis(factor_levelContrasts,
 contrasts_linfct_vis_write(wfs, path=results$path)
 contrasts_linfct_write(factor_levelContrasts,
                        modellingResult_A$modelName ,
-                       path=results$path,
-                       subject_Id = "Compound" )
+                       config,
+                       path=results$path)
 
 # Compute subgroup averages ----
 linfct <- linfct_from_model(m$linear_model[[1]])
@@ -64,9 +64,9 @@ models_interaction_Averages <- contrasts_linfct( m,
 
 contrasts_linfct_write(models_interaction_Averages,
                        modellingResult_A$modelName ,
+                       config,
                        prefix = "GroupAverages",
-                       path=results$path,
-                       subject_Id = "Compound" )
+                       path=results$path )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,
                             modellingResult_A$modelName ,

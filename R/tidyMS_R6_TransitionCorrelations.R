@@ -279,7 +279,7 @@ toWide <- function(data,
 #' head(res$data)
 #' res <- scale(res$data)
 #'
-toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
+toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
   if(fileName){
     newcolname <- config$table$fileName
   }else{
@@ -296,7 +296,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
   if(as.matrix){
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
     names <- res %>% dplyr::select_at(config$table$hierarchyKeys()) %>%
-      tidyr::unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep="~") %>% dplyr::pull()
+      tidyr::unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep=sep) %>% dplyr::pull()
     rownames(resMat) <- names
     res <- resMat
   }
@@ -313,13 +313,13 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE){
 #' xx <- gatherItBack(res,"srm_intensityScaled",conf)
 #' xx <- gatherItBack(res,"srm_intensityScaled",conf,sample_analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
-gatherItBack <- function(x,value,config,data = NULL){
+gatherItBack <- function(x,value,config,data = NULL, sep="~lfq~"){
   x <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(x)),
     tibble::as_tibble(x)
   )
   x <- tidyr::gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
-  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~")
+  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~lfq~")
   if(!is.null(data)){
     x <- dplyr::inner_join(data, x)
     config$table$setWorkIntensity(value)
