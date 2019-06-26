@@ -21,13 +21,12 @@
                                       dest_file_name,
                                       workdir = tempdir(),
                                       packagename = "LFQService"){
-  markdown_file <- basename(markdown_path)
   res <- .scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
   dist_file_path <- file.path(dest_path, dest_file_name)
   if(is.null(res)){
     return(NULL)
   }
-  rmarkdown::render(res,
+  rmarkdown::render(res[1],
                     output_format = bookdown::pdf_document2(),
                     params=params,
                     envir = new.env()
@@ -54,7 +53,7 @@ render_MQSummary_rmd <- function(data, config,
 {
   dist_file_path <- .run_markdown_with_params(
     list(data = data, configuration=config$clone(deep=TRUE)),
-    markdown_path ="rmarkdown/MQSummary2.Rmd",
+    markdown_path =c("rmarkdown/MQSummary2.Rmd", "rmarkdown/CVReport.Rmd"),
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,
