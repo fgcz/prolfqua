@@ -21,19 +21,18 @@
                                       dest_file_name,
                                       workdir = tempdir(),
                                       packagename = "LFQService"){
-  markdown_file <- basename(markdown_path)
   res <- .scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
   dist_file_path <- file.path(dest_path, dest_file_name)
   if(is.null(res)){
     return(NULL)
   }
-  rmarkdown::render(res,
+  rmarkdown::render(res[1],
                     output_format = bookdown::pdf_document2(),
                     params=params,
                     envir = new.env()
   )
 
-  pdf_doc <- paste0(tools::file_path_sans_ext(res),".pdf")
+  pdf_doc <- paste0(tools::file_path_sans_ext(res[1]),".pdf")
   message("XXXX--------------------------------------XXXX")
   if(pdf_doc != dist_file_path){
     message("from " , pdf_doc, " to ", dist_file_path)
@@ -48,13 +47,20 @@
 #' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <- function(data, config,
+                                 workunit_id = "w1",
+                                 project_id = "p1000",
+                                 pep_prot = "peptide",
                                  dest_path =".",
                                  dest_file_name = "MQSummary2.pdf",
                                  workdir = tempdir())
 {
   dist_file_path <- .run_markdown_with_params(
-    list(data = data, configuration=config$clone(deep=TRUE)),
-    markdown_path ="rmarkdown/MQSummary2.Rmd",
+    list(data = data,
+         configuration=config,
+         project_id = project_id,
+         workunit_id = workunit_id,
+         pep_prot=pep_prot),
+    markdown_path =c("rmarkdown/MQSummary2.Rmd", "rmarkdown/CVReport.Rmd"),
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,
