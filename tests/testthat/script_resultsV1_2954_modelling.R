@@ -86,6 +86,7 @@ models_interaction_Averages <- contrasts_linfct(models,
                                                  subject_Id = pepConfig$table$hkeysLevel() )
 
 contrasts_linfct_write(models_interaction_Averages, models_base$modelName , path=results$path )
+
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
 contrasts_linfct_vis_write(wfs, path=results$path)
 
