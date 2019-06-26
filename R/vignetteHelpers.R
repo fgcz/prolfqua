@@ -75,9 +75,9 @@ render_MQSummary_rmd <- function(data, config,
 #' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_METABO_Summary_rmd <- function(data, config,
-                                 dest_path =".",
-                                 dest_file_name = "Metabo_Summary.pdf",
-                                 workdir = tempdir())
+                                      dest_path =".",
+                                      dest_file_name = "Metabo_Summary.pdf",
+                                      workdir = tempdir())
 {
   dist_file_path <- .run_markdown_with_params(
     list(data = data, configuration=config$clone(deep=TRUE)),
@@ -115,9 +115,9 @@ render_SummarizeFiltering_rmd <- function(results,
 #' @examples
 #'
 render_METABO_SummarizeFiltering_rmd <- function(results,
-                                          dest_path = ".",
-                                          dest_file_name = "METABO_Summarize_Filtering.pdf",
-                                          workdir = tempdir())
+                                                 dest_path = ".",
+                                                 dest_file_name = "METABO_Summarize_Filtering.pdf",
+                                                 workdir = tempdir())
 {
   dist_file_path <- .run_markdown_with_params(
     results,
