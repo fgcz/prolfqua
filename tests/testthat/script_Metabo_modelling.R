@@ -20,7 +20,7 @@ modellingResult_A <- model_analyse(results$dataTransformed,
                                    modelFunction,
                                    modelName,
                                    subject_Id = pepConfig$table$hkeysLevel())
-usethis::use_data(modellingResult_A, overwrite = TRUE)
+#usethis::use_data(modellingResult_A, overwrite = TRUE)
 
 modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
 
@@ -48,9 +48,11 @@ wfs <- contrasts_linfct_vis(factor_levelContrasts,
                             subject_Id = "Compound")
 
 contrasts_linfct_vis_write(wfs, path=results$path)
+
+
 contrasts_linfct_write(factor_levelContrasts,
                        modellingResult_A$modelName ,
-                       config,
+                       pepConfig,
                        path=results$path)
 
 # Compute subgroup averages ----
@@ -64,7 +66,7 @@ models_interaction_Averages <- contrasts_linfct( m,
 
 contrasts_linfct_write(models_interaction_Averages,
                        modellingResult_A$modelName ,
-                       config,
+                       pepConfig,
                        prefix = "GroupAverages",
                        path=results$path )
 
@@ -77,7 +79,7 @@ contrasts_linfct_vis_write(wfs, path=results$path)
 contrastres_fun <- workflow_contrasts_linfct(m,
                                              modellingResult_A$modelName,
                                              linfct$linfct_factors ,
-                                             subject_Id = pepConfig$table$hkeysLevel(),
+                                             pepConfig,
                                              prefix = "GroupAverages",
                                              contrastfun = LFQService::my_contrast_V2)
 

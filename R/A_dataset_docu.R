@@ -135,6 +135,10 @@
 #'
 "resPepProtAnnot_p2954"
 
+#'
+#' resPepProtAnnot <- read_csv(file = "data/annotatedPeptide_PhonixDS_1097969.csv")
+
+
 #' raw Metabolomics data from progenesis
 #'
 "resMetaboDataProgenesis"
@@ -146,4 +150,6 @@
 "models_interaction"
 #' lm_models_to_test - linear models which can be used for testing
 "lm_models_to_test"
+
+
 

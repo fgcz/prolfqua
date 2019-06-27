@@ -8,7 +8,7 @@ library(dplyr)
 
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
-MQSUMMARY<- TRUE
+MQSUMMARY<- FALSE
 path <- "."
 
 
@@ -104,8 +104,8 @@ results$dataTransformed <- LFQService::applyToIntensityMatrix(filteredPep,
 results$HEATMAP <- TRUE
 results$path <- "."
 
-#results_MetaboData <- results
-#usethis::use_data(results_MetaboData)
+results_MetaboData <- results
+usethis::use_data(results_MetaboData, overwrite = TRUE)
 #saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){

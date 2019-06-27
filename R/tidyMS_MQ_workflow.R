@@ -96,10 +96,7 @@
 #' @export
 #' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
 #' @examples
-#' # testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
-#' # testDataStart2954$config$table$hierarchyLevel <- 1
-#' # usethis::use_data(testDataStart2954, overwrite=TRUE)
-#' resDataStart <- LFQService::testDataStart2954$resDataStart
+#' resDataStart <- LFQService::testData2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
 #' summarizeHierarchy(resDataStart, config)
 #' path <- "dummy_test"
@@ -107,7 +104,8 @@
 #'  config,
 #'  path ,
 #'  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
-#' usethis::use_data(resultsV12954, overwrite=TRUE)
+#'
+#'
 #' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
 #'
 workflow_MQ_protoV1 <- function( resDataStart,
@@ -132,6 +130,8 @@ workflow_MQ_protoV1 <- function( resDataStart,
   pepIntensityNormalized <- .workflow_MQ_normalize_log2_robscale(filteredPep, config)
   config <- pepIntensityNormalized$config
   pepIntensityNormalized <- pepIntensityNormalized$data
+
+
   RESULTS$config_pepIntensityNormalized <- config
   RESULTS$pepIntensityNormalized <- pepIntensityNormalized
 
