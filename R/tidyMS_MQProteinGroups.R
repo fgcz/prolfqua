@@ -418,38 +418,43 @@ tidyMQ_from_Sites <- function(pDat){
   colnames(pDat) <- tolower(colnames(pDat) )
   # Cut PhosphoSTY down to useful columns
 
-  perseusLikeMat <-   dplyr::select(pDat,
-                                    "localization.prob",
-                                    "protein",
-                                    "leading.proteins",
-                                    "positions.within.proteins",
-                                    "protein.group.ids" = "protein.group.ids",
-                                    "pep",
-                                    "score",
-                                    "delta.score",
-                                    "position.in.peptide",
-                                    "charge",
-                                    "amino.acid",
-                                    "peptide.window.coverage",
-                                    "sequence.window",
-                                    "modification.window",
-                                    "reverse",
-                                    "potential.contaminant",
-                                    "mod.peptide.ids" = "mod..peptide.ids",
-                                    "site.id" = "id",
-                                    starts_with("number.of."),
-                                    peptide.sequence.prob = ends_with("..probabilities"),
-                                    peptide.sequence.scorediff = ends_with(".score.diffs"),
-                                    contains("___"))
-  #perseusLikeMat$nakedSequence <- ExtractNakedPepSequenceFromTwoWindowColumnsFromMQ(seqWindowColumn = NonQMat$Sequence.window, PepWindowColumn = NonQMat$Peptide.window.coverage)
-  longish <- perseusLikeMat %>% gather(key = "raw.file", value = "intensity", contains("___"))
-  longish <- separate(longish, raw.file, into=c("raw.file", "multiplicity"), sep="___")
-  longish <- mutate(longish, raw.file = gsub("intensity\\.", "", raw.file))
-  longish <- mutate(longish, potential.contaminant = case_when(potential.contaminant == "+" ~ TRUE, TRUE ~ FALSE))
-  longish <- mutate(longish, reverse = case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
-  longish <- mutate(longish, stripped.sequence = gsub("\\(.+\\)","", peptide.sequence.prob))
-  return(longish)
+  annotation <-  pDat %>% dplyr::select("localization.prob",
+                                        "protein",
+                                        "leading.proteins",
+                                        "positions.within.proteins",
+                                        "protein.group.ids" = "protein.group.ids",
+                                        "pep",
+                                        "score",
+                                        "delta.score",
+                                        "position.in.peptide",
+                                        "charge",
+                                        "amino.acid",
+                                        "peptide.window.coverage",
+                                        "sequence.window",
+                                        "modification.window",
+                                        "reverse",
+                                        "potential.contaminant",
+                                        "mod.peptide.ids" = "mod..peptide.ids",
+                                        "site.id" = "id",
+                                        number.of.sites = starts_with("number.of."),
+                                        peptide.sequence.prob = ends_with("..probabilities"),
+                                        peptide.sequence.scorediff = ends_with(".score.diffs"))
+  #contains("___"))
+
+  annotation <- mutate(annotation, potential.contaminant = case_when(potential.contaminant == "+" ~ TRUE, TRUE ~ FALSE))
+  annotation <- mutate(annotation, reverse = case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
+  annotation <- mutate(annotation, stripped.sequence = gsub("\\(.+\\)","", peptide.sequence.prob))
+
+  intensities <- pDat %>% dplyr::select("site.id" = "id", contains("___") )
+  longish <- intensities %>% gather(key = "raw.file", value = "intensity", contains("___"))
+  longish <- longish %>% separate(raw.file, into=c("raw.file", "multiplicity"), sep="___")
+  longish <- longish %>% mutate(raw.file = gsub("intensity\\.", "", raw.file))
+
+  res <- inner_join(longish, annotation, by="site.id")
+  return(list(data = res, annotation = annotation))
 }
+
+
 
 
 
