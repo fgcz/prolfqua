@@ -16,7 +16,7 @@ by applying the \link{skylineconfig} using the function \link{setup_analysis}.
 \examples{
 data(skylineconfig)
 data(skylinePRMSampleData)
-x<-setup_analysis(skylinePRMSampleData,skylineconfig)
+x <- setup_analysis(skylinePRMSampleData,skylineconfig)
 all.equal(x,sample_analysis)
 
 }
