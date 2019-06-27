@@ -23,6 +23,11 @@ test_that("run script_resultsV1_2954_create.R",{
   source("script_resultsV1_2954_create.R", echo=FALSE)
 })
 
+test_that("run test_imputation.R",{
+  source("test_imputation.R", echo=FALSE)
+})
+
+
 test_that("my_contrast_V2 works",{
   lm_models_to_test <- LFQService::lm_models_to_test
   linfct_lm <- linfct_from_model(lm_models_to_test$lm_complete)
