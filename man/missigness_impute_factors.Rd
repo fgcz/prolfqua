@@ -4,7 +4,7 @@
 \alias{missigness_impute_factors}
 \title{Summarize data on factor levels}
 \usage{
-missigness_impute_factors(data, config)
+missigness_impute_factors(data, config, probs = 0.1)
 }
 \value{
 function

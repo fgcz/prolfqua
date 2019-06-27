@@ -835,14 +835,27 @@ missigness_impute_factors_interactions <- function(filterPep, config, probs=0.1)
   factsummary <- missigness_impute_factors(filteredPep, config, probs = probs)
   fact.mean <- factsummary("meanArea", prefix=FALSE)
   fact.impute <- factsummary("imputed", prefix = FALSE)
-  fact <- bind_rows(fact.mean, fact.imp)
+  fact <- bind_rows(fact.mean, fact.impute)
 
 
   intsummary <- missigness_impute_interactions(filteredPep, config, probs = probs)
   int.mean <- intsummary(value="meanArea", prefix=FALSE)
   int.impute <- intsummary(value="imputed", prefix=FALSE)
-  intfact <- bind_rows(int.mean, int.impute)
+  int <- bind_rows(int.mean, int.impute)
+  intfact <- inner_join(int, fact)
+
   return(intfact)
+}
+
+#' Compute fold changes given Contrasts
+#' @export
+missigness_impute_contrasts <- function(filteredPep, config, Contrasts){
+  tmp <- missigness_impute_factors_interactions(filteredPep, config)
+  for(i in 1:length(Contrasts)){
+    cat(names(Contrasts)[i], "=", Contrasts[i],"\n")
+    tmp <- dplyr::mutate(tmp, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
+  }
+  return(tmp)
 }
 
 
