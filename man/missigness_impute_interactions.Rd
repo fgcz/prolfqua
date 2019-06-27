@@ -4,7 +4,7 @@
 \alias{missigness_impute_interactions}
 \title{Compute interaction averages and impute data using mean of lowest 10%}
 \usage{
-missigness_impute_interactions(mdataTrans, pepConfig)
+missigness_impute_interactions(mdataTrans, pepConfig, probs = 0.1)
 }
 \value{
 function

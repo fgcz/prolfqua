@@ -691,14 +691,14 @@ getMissingStats <- function(x,
 #' @export
 #' @return function
 #'
-missigness_impute_interactions <- function(mdataTrans, pepConfig){
+missigness_impute_interactions <- function(mdataTrans, pepConfig, probs = 0.1){
   xx <- interaction_missing_stats(mdataTrans, pepConfig)
   xx <- make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
 
   #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
   xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
 
-  lowerMean <- function(meanArea, probs = 0.1){
+  lowerMean <- function(meanArea, probs = probs){
     meanAreaNotNA <- na.omit(meanArea)
     small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs= probs)]
     meanArea[is.na(meanArea)] <- mean(small10)
@@ -707,7 +707,7 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
 
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
 
-  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" )){
+  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" ), prefix = TRUE){
     value <- match.arg(value)
     if(value == "long"){
       return(xx)
@@ -739,16 +739,25 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
       }else if(value == "allWide"){
         return(purrr::reduce(allTables,inner_join))
       }else if(value == "nrReplicates"){
-        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", "nrRep.",colnames(nrReplicates))
+        srepl <- if(prefix){"nrRep."}else{""}
+        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
+        nrReplicates <- tibble::add_column( nrReplicates, "value" = value, .before = 1)
+
         return(nrReplicates)
       }else if(value == "nrMeasured"){
-        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", "nrMeas.",colnames(nrMeasured))
+        srepl <- if(prefix){"nrMeas."}else{""}
+        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl ,colnames(nrMeasured))
+        nrMeasured <- tibble::add_column( nrMeasured, "value" = value, .before = 1)
         return(nrMeasured)
       }else if(value == "meanArea"){
-        colnames(meanArea) <- gsub("interaction.meanArea.", "mean.",colnames(meanArea))
+        srepl <- if(prefix){"mean."}else{""}
+        colnames(meanArea) <- gsub("interaction.meanArea.", srepl ,colnames(meanArea))
+        meanArea <- tibble::add_column( meanArea, "value" = value, .before = 1)
         return(meanArea)
       }else if(value == "imputed"){
-        colnames(meanAreaImputed) <- gsub("interaction.imputed.", "mean.imp.",colnames(meanAreaImputed))
+        srepl <- if(prefix){"mean.imp."}else{""}
+        colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAreaImputed))
+        meanAreaImputed<- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
         return(meanAreaImputed)
       }
     }
@@ -767,47 +776,75 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig){
   res <- setNames(vector(mode = "list", length(config$table$fkeysLevel())), config$table$fkeysLevel())
   for(factor  in config$table$fkeysLevel()){
 
-    summary %>% group_by_at(c(factor, config$table$hkeysLevel())) %>%
+    summary %>% group_by_at(c(factor, config$table$hkeysLevel(), config$table$isotopeLabel)) %>%
       summarize(!!sym(value) := func(!!sym(value))) -> f1
 
     f1 <- f1 %>% tidyr::spread(key=factor, value=value, sep="")
     res[[factor]]<- f1
   }
-  return(purrr::reduce(res,inner_join))
+  res <- purrr::reduce(res,inner_join)
+  res <- res %>% tibble::add_column("value" = value,.before=1)
+  return(res)
 }
 
 #' Summarize data on factor levels
 #' @export
 #' @return function
 #'
-missigness_impute_factors  <- function(data, config){
-  prelim  <- missigness_impute_interactions(data, config)
+missigness_impute_factors  <- function(data, config, probs = 0.1){
+  prelim  <- missigness_impute_interactions(data, config, probs = probs)
   prelim <- prelim()
   msum <- function(x){sum(x, na.rm = TRUE)}
 
-  res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" )){
+  res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" ), prefix = TRUE){
     value <- match.arg(value)
     if(value == "nrReplicates"){
       res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
-      res <- res %>% rename_if(is.numeric , function(x){paste0("nrRep.",x)})
+
+      if(prefix){
+        res <- res %>% rename_if(is.numeric , function(x){paste0("nrRep.",x)})
+      }
       return(res)
     }else if(value == "nrMeasured"){
       res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
-      res <- res %>% rename_if(is.numeric , function(x){paste0("nrMeas.",x)})
+      if(prefix){
+        res <- res %>% rename_if(is.numeric , function(x){paste0("nrMeas.",x)})
+      }
       return(res)
     }else if(value == "imputed"){
       res <- .missigness_impute_factors(prelim, config, value= value)
-      res <- res %>% rename_if(is.numeric , function(x){paste0("mean.imp.",x)})
+      if(prefix){
+        res <- res %>% rename_if(is.numeric , function(x){paste0("mean.imp.",x)})
+      }
       return(res)
 
     }else if(value == "meanArea"){
       res <- .missigness_impute_factors(prelim, config)
-      res <- res %>% rename_if(is.numeric , function(x){paste0("mean.",x)})
+      if(prefix){
+        res <- res %>% rename_if(is.numeric , function(x){paste0("mean.",x)})
+      }
       return(res)
     }
   }
   return(res)
 }
+
+#' compute per group averages and impute values
+#' @export
+missigness_impute_factors_interactions <- function(filterPep, config, probs=0.1){
+  factsummary <- missigness_impute_factors(filteredPep, config, probs = probs)
+  fact.mean <- factsummary("meanArea", prefix=FALSE)
+  fact.impute <- factsummary("imputed", prefix = FALSE)
+  fact <- bind_rows(fact.mean, fact.imp)
+
+
+  intsummary <- missigness_impute_interactions(filteredPep, config, probs = probs)
+  int.mean <- intsummary(value="meanArea", prefix=FALSE)
+  int.impute <- intsummary(value="imputed", prefix=FALSE)
+  intfact <- bind_rows(int.mean, int.impute)
+  return(intfact)
+}
+
 
 #' Histogram summarizing missigness
 #' @export
