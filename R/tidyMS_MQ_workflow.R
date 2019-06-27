@@ -107,8 +107,9 @@
 #'  config,
 #'  path ,
 #'  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
-#' #usethis::use_data(resultsV12954)
+#' usethis::use_data(resultsV12954, overwrite=TRUE)
 #' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
+#'
 workflow_MQ_protoV1 <- function( resDataStart,
                                  config,
                                  path,
