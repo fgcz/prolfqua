@@ -14,10 +14,7 @@ workflow_MQ_protoV1(resDataStart, config, path,
 runs data preprocessing for peptide level data based protein modelling
 }
 \examples{
-# testDataStart2954 <- readRDS("c:/Users/wolski/prog/LFQService/data/testDataStart2954.rds")
-# testDataStart2954$config$table$hierarchyLevel <- 1
-# usethis::use_data(testDataStart2954, overwrite=TRUE)
-resDataStart <- LFQService::testDataStart2954$resDataStart
+resDataStart <- LFQService::testData2954$resDataStart
 config <-  LFQService::testDataStart2954$config
 summarizeHierarchy(resDataStart, config)
 path <- "dummy_test"
@@ -25,6 +22,8 @@ resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
  config,
  path ,
  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
-#usethis::use_data(resultsV12954)
+
+
 LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
+
 }

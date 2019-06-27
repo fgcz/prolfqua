@@ -105,7 +105,7 @@ results$HEATMAP <- TRUE
 results$path <- "."
 
 #results_MetaboData <- results
-#usethis::use_data(results_MetaboData)
+usethis::use_data(results_MetaboData)
 #saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){

@@ -8,6 +8,7 @@ VIS_PROT <- FALSE
 Phoenix <- TRUE
 
 results <- LFQService::resultsV12954
+
 results$path <- file.path(tempdir(), results$path)
 
 if(!dir.exists(results$path)){
@@ -21,6 +22,7 @@ length(unique(results$filteredPep$protein_Id))
 
 results$config_pepIntensityNormalized$table$factorLevel <- 1
 pepConfig<- results$config_pepIntensityNormalized
+
 pepConfig$table$factorKeys()
 
 # Model 1
@@ -85,7 +87,7 @@ models_interaction_Averages <- contrasts_linfct(models,
                                                  m$linfct_interactions,
                                                  subject_Id = pepConfig$table$hkeysLevel() )
 
-contrasts_linfct_write(models_interaction_Averages, models_base$modelName , path=results$path )
+contrasts_linfct_write(models_interaction_Averages, models_base$modelName , pepConfig,  path=results$path )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
 contrasts_linfct_vis_write(wfs, path=results$path)
