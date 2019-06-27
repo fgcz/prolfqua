@@ -4,7 +4,8 @@
 \alias{render_MQSummary_rmd}
 \title{render MQ Summary.}
 \usage{
-render_MQSummary_rmd(data, config, dest_path = ".",
+render_MQSummary_rmd(data, config, workunit_id = "w1",
+  project_id = "p1000", pep_prot = "peptide", dest_path = ".",
   dest_file_name = "MQSummary2.pdf", workdir = tempdir())
 }
 \description{
