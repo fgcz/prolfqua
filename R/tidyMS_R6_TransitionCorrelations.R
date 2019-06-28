@@ -207,7 +207,7 @@ filter_byQValue <- function(data, config){
   idcols <- x %>% dplyr::select(which(!idx==TRUE))
   if(ncol(idcols) > 0){
     rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>%
-      tidyr::unite(x, sep="~") %>% dplyr::pull(x)
+      tidyr::unite(x, sep="~lfq~") %>% dplyr::pull(x)
   }
   xmat
 }
@@ -395,7 +395,7 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
     dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
-  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~")
+  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~lfq~")
   qvalFiltX <- dplyr::inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
   return(qvalFiltX)
 }
@@ -427,7 +427,8 @@ simpleImpute <- function(data){
 #' data <- completeCases(data, config)
 #' mean(is.na(data$Area))
 #' dataI <- impute_correlationBased(data, config)
-#' mean(is.na(dataI$srm_ImputedIntensity))
+#' stopifnot(dim(dataI) == c(20416,11))
+#' mean(is.na(dataI$srm_ImputedIntensity)) == 0
 #'
 impute_correlationBased <- function(x , config){
   x <- completeCases(x, config)
@@ -445,7 +446,7 @@ impute_correlationBased <- function(x , config){
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
   unnest_res <- nestedX %>% dplyr::select(config$table$hierarchyKeys()[1], "imputed") %>% tidyr::unnest()
-  unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep="~" )
+  unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep="~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
                           by=c(config$table$hierarchyKeys(), config$table$sampleName) )
@@ -549,6 +550,8 @@ rankPrecursorsByIntensity <- function(data, config){
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
 #' mean_na <- function(x){mean(x, na.rm=TRUE)}
 #' res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
+#'
+#' stopifnot(dim(res$data) == c(10423, 10))
 #' stopifnot(names(res) %in% c("data", "newconfig"))
 #'
 aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1){

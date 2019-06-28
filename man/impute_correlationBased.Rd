@@ -17,6 +17,7 @@ config <- skylineconfig$clone(deep=TRUE)
 data <- completeCases(data, config)
 mean(is.na(data$Area))
 dataI <- impute_correlationBased(data, config)
-mean(is.na(dataI$srm_ImputedIntensity))
+stopifnot(dim(dataI) == c(20416,11))
+mean(is.na(dataI$srm_ImputedIntensity)) == 0
 
 }

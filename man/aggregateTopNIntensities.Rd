@@ -19,6 +19,8 @@ res <- rankPrecursorsByIntensity(res,config)
 res \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\% distinct() \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
 mean_na <- function(x){mean(x, na.rm=TRUE)}
 res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
+
+stopifnot(dim(res$data) == c(10423, 10))
 stopifnot(names(res) \%in\% c("data", "newconfig"))
 
 }

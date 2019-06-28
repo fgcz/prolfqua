@@ -131,12 +131,18 @@ knitr::kable(hierarchyCounts(qvalFiltV,config))
 #config$table$popWorkIntensity()
 qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
 xx <- markDecorrelated(qvalFiltV, config)
-mean(xx$srm_decorelated)
-nested <- xx %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
+minCorrelation = 0.7 
 
-dim(nested$data[[1]])
+
+mean(xx$srm_decorelated)
+nested <- xx %>% group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
+
+config$table$workIntensity
+
+
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
+
 plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"))
 
@@ -156,6 +162,7 @@ plot_heatmap_cor(qvalFiltCorr, config)
 ```{r}
 qvalFiltCorr %>% select(protein_Id,precursor_Id, srm_NrNotNAs) %>% distinct()
 qvalFiltCorrSI <- rankPrecursorsByIntensity(qvalFiltCorr, config)
+
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorrSI, config)
 
 ```
@@ -166,7 +173,7 @@ qvalFiltImputed <- impute_correlationBased(qvalFiltCorrSI, config)
 ```{r}
 
 mean_na <- function(x){mean(x,na.rm=TRUE)}
-proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,config,func = mean_na,N=3)$data
+proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, func = mean_na, N=3)$data
 
 # nest transtions
 xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
