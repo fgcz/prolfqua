@@ -21,9 +21,9 @@ modellingResult <- model_analyse( D$pepIntensityNormalized,
 formula_randomPeptide,
 subject_Id = pepConfig$table$hkeysLevel(),
 modelName)
-results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
-modelName,
-D$config_pepIntensityNormalized)
+#results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
+#modelName,
+#D$config_pepIntensityNormalized)
 
 if( FALSE ){
  results$fig$VolcanoPlot
