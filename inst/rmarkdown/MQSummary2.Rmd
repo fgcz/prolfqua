@@ -19,7 +19,7 @@ params:
   project_id: "XXX"
   pep_prot: "peptide"
 vignette: >
-  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

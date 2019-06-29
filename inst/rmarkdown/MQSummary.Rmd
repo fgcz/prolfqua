@@ -1,5 +1,5 @@
 ---
-title: "Summarize Peptide Level Measurements"
+title: "Summarize Peptide Level Measurements - V1"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
@@ -11,7 +11,7 @@ params:
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
 vignette: >
-  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteIndexEntry{Summarize Peptide Level Measurements - V1}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
