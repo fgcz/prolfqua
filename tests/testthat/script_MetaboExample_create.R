@@ -5,6 +5,8 @@ library(tidyverse)
 library(LFQService)
 library(tidyr)
 library(dplyr)
+library(conflicted)
+
 
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
@@ -105,7 +107,7 @@ results$HEATMAP <- TRUE
 results$path <- "."
 
 results_MetaboData <- results
-usethis::use_data(results_MetaboData, overwrite = TRUE)
+#usethis::use_data(results_MetaboData, overwrite = TRUE)
 #saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){

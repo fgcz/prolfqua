@@ -3,6 +3,8 @@ library(tidyverse)
 library(LFQService)
 library(multcomp)
 library(lme4)
+library(conflicted)
+
 
 VIS_PROT <- FALSE
 Phoenix <- TRUE

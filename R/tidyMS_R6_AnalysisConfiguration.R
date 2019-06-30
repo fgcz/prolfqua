@@ -852,7 +852,7 @@ missigness_impute_factors_interactions <- function(filterPep, config, probs=0.1)
 missigness_impute_contrasts <- function(filteredPep, config, Contrasts){
   tmp <- missigness_impute_factors_interactions(filteredPep, config)
   for(i in 1:length(Contrasts)){
-    cat(names(Contrasts)[i], "=", Contrasts[i],"\n")
+    message(names(Contrasts)[i], "=", Contrasts[i],"\n")
     tmp <- dplyr::mutate(tmp, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
   }
   return(tmp)

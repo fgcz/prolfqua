@@ -298,7 +298,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
 
   ## Anova_p.values
   fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
-  fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% filter(rownames.x. != "Residuals") %>%
+  fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
     ggplot( aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~rownames.x.)
@@ -967,7 +967,7 @@ contrasts_linfct <- function(models,
 
   interaction_model_matrix %>%
     dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
-    filter(classC != "logical") -> interaction_model_matrix
+    dplyr::filter(classC != "logical") -> interaction_model_matrix
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()

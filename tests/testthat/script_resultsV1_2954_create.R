@@ -42,7 +42,7 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 
 config <- createMQProteinPeptideConfiguration()
 config$table$factorLevel <- 2
-resPepProtAnnot %>% filter(reverse == FALSE) -> resPepProtAnnot
+resPepProtAnnot %>% dplyr::filter(reverse == FALSE) -> resPepProtAnnot
 
 
 resDataStart <- setup_analysis(resPepProtAnnot, config)
