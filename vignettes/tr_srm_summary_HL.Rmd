@@ -1,5 +1,5 @@
 ---
-title: "Summarize Peptide Level Measurements"
+title: "Summarize Peptide Level Measurements heave light"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
@@ -9,7 +9,7 @@ params:
   configuration:  !r quote(LFQService::skylineconfig_HL)
   data: !r quote(LFQService::sample_analysis_HL)
 vignette: >
-  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteIndexEntry{Summarize Peptide Level Measurements heavy light}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

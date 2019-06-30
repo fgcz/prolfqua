@@ -1,7 +1,6 @@
 rm(list=ls())
 library(tidyverse)
 library(LFQService)
-library(multcomp)
 library(conflicted)
 
 
