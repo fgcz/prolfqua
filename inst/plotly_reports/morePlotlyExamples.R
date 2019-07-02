@@ -22,13 +22,13 @@ library(plotly)
 
 d <- highlight_key(mpg)
 dots <- plot_ly(d, colors = "Set1", color = ~class, x = ~displ, y = ~cyl) %>%
-  layout(
+  plotly::layout(
     xaxis = list(title = "Engine displacement"),
     yaxis = list(title = "Number of cylinders")
   )
 boxs <- plot_ly(d, colors = "Set1", color = ~class, x = ~class, y = ~cty) %>%
   add_boxplot() %>%
-  layout(
+  plotly::layout(
     xaxis = list(title = ""),
     yaxis = list(title = "Miles per gallon (city)")
   )
@@ -36,7 +36,7 @@ bars <- plot_ly(d, colors = "Set1", x = ~class, color = ~class)
 
 subplot(dots, boxs, titleX = TRUE, titleY = TRUE) %>%
   subplot(bars, nrows = 2, titleX = TRUE, titleY = TRUE) %>%
-  layout(
+  plotly::layout(
     title = "Dynamic 2-way ANOVA (click & drag on scatterplot)",
     barmode = "overlay",
     showlegend = FALSE
@@ -61,7 +61,7 @@ violin <- plot_ly(d, y = ~disp, color = I("black")) %>%
 
 subplot(sp, box, violin, shareY = TRUE, titleX = TRUE, titleY = TRUE) %>%
   subplot(hist, widths = c(.75, .25), titleX = TRUE, titleY = TRUE) %>%
-  layout(
+  plotly::layout(
     barmode = "overlay",
     title = "Click and drag scatterplot",
     showlegend = FALSE
@@ -79,5 +79,5 @@ p2 <- plot_ly(tx, x = ~median, color = I("black")) %>%
   add_histogram(histnorm = "probability density")
 
 subplot(gg1, p2, titleX = TRUE, titleY = TRUE) %>%
-  layout(barmode = "overlay") %>%
+  plotly::layout(barmode = "overlay") %>%
   highlight(dynamic = TRUE, selected = attrs_selected(opacity = 0.3))

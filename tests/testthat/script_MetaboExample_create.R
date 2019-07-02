@@ -5,6 +5,8 @@ library(tidyverse)
 library(LFQService)
 library(tidyr)
 library(dplyr)
+library(conflicted)
+
 
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
@@ -81,9 +83,7 @@ results$config_resDataStart <- config$clone(deep=TRUE)
 
 filteredPep <- filter_factor_levels_by_missing(resDataStart,
                                                config,
-                                               percent =50,
-                                               factor_level = 1
-)
+                                               percent =50)
 
 results$filteredPep <- filteredPep
 results$config_filteredPep <- config
@@ -105,7 +105,7 @@ results$HEATMAP <- TRUE
 results$path <- "."
 
 results_MetaboData <- results
-usethis::use_data(results_MetaboData, overwrite = TRUE)
+#usethis::use_data(results_MetaboData, overwrite = TRUE)
 #saveRDS(results, file="allData.rds")
 
 if(MQSUMMARY){

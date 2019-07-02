@@ -45,9 +45,7 @@
   # fitler for missingness
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
-                                                    percent = percent,
-                                                    factor_level = config$table$factorLevel
-  )
+                                                    percent = percent)
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by="protein_Id")
   return(list(data=filteredPep, config=config))
 }
@@ -128,12 +126,9 @@ workflow_MQ_protoV1 <- function( resDataStart,
   RESULTS$filteredPep <- filteredPep
 
   pepIntensityNormalized <- .workflow_MQ_normalize_log2_robscale(filteredPep, config)
-  config <- pepIntensityNormalized$config
-  pepIntensityNormalized <- pepIntensityNormalized$data
 
-
-  RESULTS$config_pepIntensityNormalized <- config
-  RESULTS$pepIntensityNormalized <- pepIntensityNormalized
+  RESULTS$config_pepIntensityNormalized <- pepIntensityNormalized$config
+  RESULTS$pepIntensityNormalized <- pepIntensityNormalized$data
 
   # Summarize number of peptides with more than 2
   x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)

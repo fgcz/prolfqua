@@ -298,7 +298,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
 
   ## Anova_p.values
   fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
-  fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% filter(rownames.x. != "Residuals") %>%
+  fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
     ggplot( aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~rownames.x.)
@@ -629,7 +629,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 #' m <- lm(Petal.Width ~ Species, data=iris)
 #' linfct_from_model(m)
-linfct_from_model <- function(m){
+linfct_from_model <- function(m, as_list = TRUE){
 
   cm <- .lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
@@ -638,21 +638,60 @@ linfct_from_model <- function(m){
   dd_m <- dd %>% dplyr::select(-factor_level) %>% data.matrix()
   rownames(dd_m) <- dd$factor_level
   dd_m <- dd_m[order(rownames(dd_m)),]
+  res <- list(linfct_factors = dd_m , linfct_interactions = cm_mm)
 
-  return(list(linfct_factors = dd_m , linfct_interactions = cm_mm))
+  if(as_list){
+    return(res)
+  }else{
+    do.call( rbind, res)
+  }
 }
 
-#' create all possible contrasts
+#' linfct_matrix_contrasts
 #' @export
+#' @examples
+#' m <- LFQService::basicModel_p1807
+#' linfct <- linfct_from_model(m,as_list=FALSE)
+#' linfct
+#'
+#' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
+#' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
+#' linfct_matrix_contrasts(m,Contrasts )
+linfct_matrix_contrasts<- function(m,Contrasts){
+  linfct <- LFQService::linfct_from_model(m, as_list=FALSE)
+
+  linfct <- t(linfct)
+  df <- as.tibble(linfct, rownames = "interaction")
+  contrasts <- function(data,
+                        Contrasts)
+  {
+    cnams <- setdiff(colnames(data),"interaction")
+    for(i in 1:length(Contrasts)){
+      message(names(Contrasts)[i], "=", Contrasts[i],"\n")
+      data <- dplyr::mutate(data, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
+    }
+
+    res <- data %>% select(-one_of(cnams))
+    return(res)
+  }
+
+  res <- contrasts(df, Contrasts )
+  res <- column_to_rownames(res,"interaction")
+  res <- t(res)
+  return(res)
+}
+
+
+#' create all possible contrasts
 #' @examples
 #' m <- LFQService::basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
 #'
-#' xl <- linfct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' xl <- .linfct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- .linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
-linfct_all_possible_contrasts <- function( lin_int ){
+.linfct_all_possible_contrasts <- function( lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))
@@ -685,7 +724,7 @@ linfct_factors_contrasts <- function(m){
     fac <- ffac[i]
     idx <- grep(fac, factorLevels)
     linfct_m <- linfct_factors[idx,]
-    res[[i]]<-linfct_all_possible_contrasts(linfct_m)
+    res[[i]] <- .linfct_all_possible_contrasts(linfct_m)
   }
   res <- do.call(rbind, res)
   return(res)
@@ -967,7 +1006,7 @@ contrasts_linfct <- function(models,
 
   interaction_model_matrix %>%
     dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
-    filter(classC != "logical") -> interaction_model_matrix
+    dplyr::filter(classC != "logical") -> interaction_model_matrix
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()

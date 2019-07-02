@@ -622,8 +622,7 @@ rankPrecursorsByNAs <- function(data, config){
 #'
 filter_factor_levels_by_missing <- function(data,
                                             config,
-                                            percent = 60,
-                                            factor_level = 1 ){
+                                            percent = 60){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
   column <- table$getWorkIntensity()
@@ -631,7 +630,7 @@ filter_factor_levels_by_missing <- function(data,
   data <- completeCases( data , config)
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- data %>%
-    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factorKeys()[1:factor_level] ))) %>%
+    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysLevel() ))) %>%
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 

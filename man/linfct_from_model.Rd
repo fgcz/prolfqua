@@ -4,7 +4,7 @@
 \alias{linfct_from_model}
 \title{get linfct from model}
 \usage{
-linfct_from_model(m)
+linfct_from_model(m, as_list = TRUE)
 }
 \description{
 get linfct from model
