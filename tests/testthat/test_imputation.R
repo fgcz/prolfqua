@@ -58,7 +58,8 @@ config$table$workIntensity
 filteredPep <- LFQService::transform_work_intensity(resDataStart, config, log2)
 
 #
-tmp <- missigness_impute_factors_interactions(filteredPep, config)
+impfac_int <- missigness_impute_factors_interactions(filteredPep, config,"imputed")
+
 
 
 Contrasts <- c("NASH_nafld-NASH_nash" = "NASH_nafld - NASH_nash",
@@ -69,7 +70,5 @@ Contrasts <- c("NASH_nafld-NASH_nash" = "NASH_nafld - NASH_nash",
                "NASH_nash: Steatosis_s1 - Steatosis_s2" = "`NASH_nash:Steatosis_s1` - `NASH_nash:Steatosis_s2`",
                "Interaction NASH:Steatosis 1 - 2" = "`NASH_nafld: Steatosis_s1 - Steatosis_s2` - `NASH_nash: Steatosis_s1 - Steatosis_s2`")
 
-tmp <- missigness_impute_contrasts(filteredPep, config, Contrasts)
-colnames(tmp)
-unique(tmp$value)
+tmp <- missigness_impute_contrasts(impfac_int, config, Contrasts)
 
