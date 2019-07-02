@@ -701,11 +701,11 @@ linfct_factors_contrasts <- function(m){
 #' mb <- LFQService::basicModel_p1807
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
-#' my_glht(mb, linfct$linfct_factors)
+#' #my_glht(mb, linfct$linfct_factors)
 #'
 #' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' my_glht(m, linfct)
+#' #my_glht(m, linfct)
 #'
 my_glht <- function(model, linfct , sep=TRUE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
@@ -867,8 +867,8 @@ my_contrast_V2 <- function(m, linfct){
 #' lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 #' my_contest(mb, linfct$linfct_factors)
 #' my_contest(mb, linfct$linfct_interactions)
-#' my_glht(mb, linfct$linfct_factors)
-#' my_glht(mb, linfct$linfct_interactions)
+#' #my_glht(mb, linfct$linfct_factors)
+#' #my_glht(mb, linfct$linfct_interactions)
 my_contest <- function(model, linfct){
   if(length(lme4::fixef(model)) != ncol(linfct) ){
     return(NA) # catch rank defficient

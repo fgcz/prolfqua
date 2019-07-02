@@ -16,6 +16,6 @@ names(linfct)
 lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 my_contest(mb, linfct$linfct_factors)
 my_contest(mb, linfct$linfct_interactions)
-my_glht(mb, linfct$linfct_factors)
-my_glht(mb, linfct$linfct_interactions)
+#my_glht(mb, linfct$linfct_factors)
+#my_glht(mb, linfct$linfct_interactions)
 }
