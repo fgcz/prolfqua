@@ -645,15 +645,11 @@ summarizeHierarchy <- function(x,
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' xx <- completeCases(sample_analysis,skylineconfig)
 #'
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- completeCases(xx, skylineconfig)
 #' interaction_missing_stats(xx, skylineconfig)
-#'
-#' configuration <- skylineconfig
-#' configuration$table$fkeysLevel()
 interaction_missing_stats <- function(x,
                                       configuration,
                                       factors = configuration$table$fkeysLevel(),
@@ -673,7 +669,6 @@ interaction_missing_stats <- function(x,
     arrange(desc(nrNAs)) %>% dplyr::ungroup()
   missingPrec
 }
-
 #' @export
 #'
 getMissingStats <- function(x,
@@ -691,9 +686,12 @@ getMissingStats <- function(x,
 #' @export
 #' @return function
 #'
-missigness_impute_interactions <- function(mdataTrans, pepConfig, probs = 0.1){
-  xx <- interaction_missing_stats(mdataTrans, pepConfig)
-  xx <- make_interaction_column(xx, pepConfig$table$fkeysLevel(), sep=":")
+missigness_impute_interactions <- function(mdataTrans,
+                                           pepConfig,
+                                           factors = pepConfig$table$fkeysLevel(),
+                                           probs = 0.1){
+  xx <- interaction_missing_stats(mdataTrans, pepConfig, factors=factors)
+  xx <- make_interaction_column(xx, factors, sep=":")
 
   #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
   xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
@@ -712,7 +710,7 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig, probs = 0.1){
     if(value == "long"){
       return(xx)
     }else{
-      xx %>% dplyr::select(-one_of(c("nrNAs", pepConfig$table$fkeysLevel()))) -> xx
+      xx %>% dplyr::select(-one_of(c("nrNAs", factors))) -> xx
 
 
       nrReplicates <- xx %>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
@@ -732,7 +730,10 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig, probs = 0.1){
         arrange(protein_Id) %>% ungroup()
 
 
-      allTables <- list(meanArea= meanArea, nrMeasured = nrMeasured,  nrReplicates = nrReplicates, meanAreaImputed = meanAreaImputed)
+      allTables <- list(meanArea= meanArea,
+                        nrMeasured = nrMeasured,
+                        nrReplicates = nrReplicates,
+                        meanAreaImputed = meanAreaImputed)
       if(value == "all"){
         allTables[["long"]] <- xx
         return(allTables)
@@ -768,94 +769,47 @@ missigness_impute_interactions <- function(mdataTrans, pepConfig, probs = 0.1){
   return(res)
 }
 
-.missigness_impute_factors <- function(summary ,
-                                       config,
-                                       value = "meanArea",
-                                       func = function(x){mean(x,na.rm=TRUE)})
-{
-  res <- setNames(vector(mode = "list", length(config$table$fkeysLevel())), config$table$fkeysLevel())
-  for(factor  in config$table$fkeysLevel()){
-
-    summary %>% group_by_at(c(factor, config$table$hkeysLevel(), config$table$isotopeLabel)) %>%
-      summarize(!!sym(value) := func(!!sym(value))) -> f1
-
-    f1 <- f1 %>% tidyr::spread(key=factor, value=value, sep="")
-    res[[factor]]<- f1
-  }
-  res <- purrr::reduce(res,inner_join)
-  res <- res %>% tibble::add_column("value" = value,.before=1)
-  return(res)
-}
-
-#' Summarize data on factor levels
-#' @export
-#' @return function
-#'
-missigness_impute_factors  <- function(data, config, probs = 0.1){
-  prelim  <- missigness_impute_interactions(data, config, probs = probs)
-  prelim <- prelim()
-  msum <- function(x){sum(x, na.rm = TRUE)}
-
-  res <- function(value = c("nrReplicates", "nrMeasured", "meanArea", "imputed" ), prefix = TRUE){
-    value <- match.arg(value)
-    if(value == "nrReplicates"){
-      res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
-
-      if(prefix){
-        res <- res %>% rename_if(is.numeric , function(x){paste0("nrRep.",x)})
-      }
-      return(res)
-    }else if(value == "nrMeasured"){
-      res <- .missigness_impute_factors(prelim, config, value  = value, func = msum)
-      if(prefix){
-        res <- res %>% rename_if(is.numeric , function(x){paste0("nrMeas.",x)})
-      }
-      return(res)
-    }else if(value == "imputed"){
-      res <- .missigness_impute_factors(prelim, config, value= value)
-      if(prefix){
-        res <- res %>% rename_if(is.numeric , function(x){paste0("mean.imp.",x)})
-      }
-      return(res)
-
-    }else if(value == "meanArea"){
-      res <- .missigness_impute_factors(prelim, config)
-      if(prefix){
-        res <- res %>% rename_if(is.numeric , function(x){paste0("mean.",x)})
-      }
-      return(res)
-    }
-  }
-  return(res)
-}
 
 #' compute per group averages and impute values
+#' should generalize at some stage
 #' @export
-missigness_impute_factors_interactions <- function(filterPep, config, probs=0.1){
-  factsummary <- missigness_impute_factors(filteredPep, config, probs = probs)
-  fact.mean <- factsummary("meanArea", prefix=FALSE)
-  fact.impute <- factsummary("imputed", prefix = FALSE)
-  fact <- bind_rows(fact.mean, fact.impute)
-
-
-  intsummary <- missigness_impute_interactions(filteredPep, config, probs = probs)
-  int.mean <- intsummary(value="meanArea", prefix=FALSE)
-  int.impute <- intsummary(value="imputed", prefix=FALSE)
-  int <- bind_rows(int.mean, int.impute)
-  intfact <- inner_join(int, fact)
-
+missigness_impute_factors_interactions <- function(filterPep,
+                                                   config,
+                                                   value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
+                                                   probs=0.1,
+                                                   prefix=FALSE){
+  value <- match.arg(value)
+  fac_fun <- list()
+  fac_fun[["interaction"]] <- missigness_impute_interactions(filteredPep, config,probs = probs)
+  for(factor in config$table$fkeysLevel()){
+    fac_fun[[factor]] <- missigness_impute_interactions(filteredPep, config,factors = factor,probs = probs)
+  }
+  fac_res <- list()
+  for(fun_name in names(fac_fun)){
+    fac_res[[fun_name]] <- fac_fun[[fun_name]](value, prefix=prefix)
+  }
+  intfact <- purrr::reduce(fac_res,dplyr::inner_join)
   return(intfact)
 }
 
 #' Compute fold changes given Contrasts
+#'
 #' @export
-missigness_impute_contrasts <- function(filteredPep, config, Contrasts){
-  tmp <- missigness_impute_factors_interactions(filteredPep, config)
+missigness_impute_contrasts <- function(data,
+                                        config,
+                                        Contrasts,
+                                        agg_fun=function(x){median(x, na.rm = TRUE)} )
+{
   for(i in 1:length(Contrasts)){
     message(names(Contrasts)[i], "=", Contrasts[i],"\n")
-    tmp <- dplyr::mutate(tmp, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
+    data <- dplyr::mutate(data, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
   }
-  return(tmp)
+
+  if(!is.null(agg_fun)){
+    data <- data %>% group_by_at(c("value" , config$table$hkeysLevel())) %>%
+      summarise_if(is.numeric, agg_fun)
+  }
+  return(data)
 }
 
 

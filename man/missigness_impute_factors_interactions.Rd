@@ -2,10 +2,14 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{missigness_impute_factors_interactions}
 \alias{missigness_impute_factors_interactions}
-\title{compute per group averages and impute values}
+\title{compute per group averages and impute values
+should generalize at some stage}
 \usage{
-missigness_impute_factors_interactions(filterPep, config, probs = 0.1)
+missigness_impute_factors_interactions(filterPep, config,
+  value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
+  probs = 0.1, prefix = FALSE)
 }
 \description{
 compute per group averages and impute values
+should generalize at some stage
 }
