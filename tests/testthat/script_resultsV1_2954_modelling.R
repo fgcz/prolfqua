@@ -94,7 +94,7 @@ wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
 contrasts_linfct_vis_write(wfs, path=results$path)
 
 
-all_linfct <- linfct_all_possible_contrasts(m$linfct_interactions)
+all_linfct <- LFQService:::.linfct_all_possible_contrasts(m$linfct_interactions)
 
 models_allContrasts <- contrasts_linfct( models,
                                          summary_interaction$modelName,
