@@ -1093,7 +1093,8 @@ medpolish_protein_quants <- function(data, config){
 #'
 protein_quants_write <- function(protintensity,
                                  path_qc,
-                                 suffix=""){
+                                 suffix="",
+                                 na_fraction = 0.3){
 
   suffix <- paste0("_",suffix)
   message("writing protein intensity data into: ", path_qc)
@@ -1114,7 +1115,7 @@ protein_quants_write <- function(protintensity,
   dev.off()
 
   pdf(file.path(path_qc,paste0("proteinIntensities_heatmap",suffix,".pdf")), width = 10, height = 10)
-  LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config)
+  LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config, na_fraction = na_fraction)
   dev.off()
 
   res <- plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
@@ -1409,7 +1410,7 @@ plot_heatmap_cor <- function(data,
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' #plot_heatmap(data, config)
-plot_heatmap <- function(data, config){
+plot_heatmap <- function(data, config, na_fraction = 0.4){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1417,7 +1418,7 @@ plot_heatmap <- function(data, config){
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
-  res <- quantable::removeNArows(res, round(ncol(res)*0.4,digits = 0))
+  res <- quantable::removeNArows(res, round(ncol(res)*na_fraction,digits = 0))
   res <- t(scale(t(res)))
   res <- heatmap3::heatmap3(res,
                             ColSideColors = ColSideColors,

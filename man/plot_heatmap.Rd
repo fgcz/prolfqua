@@ -4,7 +4,7 @@
 \alias{plot_heatmap}
 \title{plot heatmap with annotations}
 \usage{
-plot_heatmap(data, config)
+plot_heatmap(data, config, na_fraction = 0.4)
 }
 \description{
 plot heatmap with annotations
