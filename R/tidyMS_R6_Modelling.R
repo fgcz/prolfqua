@@ -669,7 +669,7 @@ linfct_matrix_contrasts<- function(linfct , Contrasts){
       data <- dplyr::mutate(data, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
     }
 
-    res <- data %>% select(-one_of(cnams))
+    res <- data %>% dplyr::select(-one_of(cnams))
     return(res)
   }
 
