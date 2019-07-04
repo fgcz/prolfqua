@@ -812,7 +812,35 @@ missigness_impute_contrasts <- function(data,
   return(data)
 }
 
+#' Compute fold changes given Contrasts 2
+#'
+#' @export
+missigness_impute_contrasts_2 <- function(filterPep, config, Contrasts){
+  xx <- missigness_impute_factors_interactions(filterPep, config, "imputed")
+  imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+  xx <- missigness_impute_factors_interactions(filteredPep,config,"meanArea")
+  mean <- missigness_impute_contrasts(xx, config, Contrasts)
+  dd <- bind_rows(imputed, mean)
+  dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
 
+
+  res <- function(value = c("long", "wide"), contrasts = TRUE){
+    value <- match.arg(value)
+    if(contrasts){
+      dd_long <- dplyr::filter(dd_long,contrast %in% names(Contrasts))
+    }
+
+    if(value == "long"){
+      long_xxxx <- dd_long %>% spread(value, int_val)
+
+      return(long_xxxx)
+    }else if(value == "wide"){
+      dd <- dd_long %>% unite(contrast.v , value, contrast, sep="~") %>% spread(contrast.v, int_val)
+      xxx_imputed <- inner_join(LFQService::summarizeHierarchy(filteredPep,config),dd)
+      return(xxx_imputed)
+    }
+  }
+}
 #' Histogram summarizing missigness
 #' @export
 #' @examples
