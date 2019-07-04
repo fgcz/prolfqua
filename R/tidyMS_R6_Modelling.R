@@ -657,9 +657,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 #' linfct_matrix_contrasts(m,Contrasts )
-linfct_matrix_contrasts<- function(m,Contrasts){
-  linfct <- LFQService::linfct_from_model(m, as_list=FALSE)
-
+linfct_matrix_contrasts<- function(linfct , Contrasts){
   linfct <- t(linfct)
   df <- as.tibble(linfct, rownames = "interaction")
   contrasts <- function(data,
