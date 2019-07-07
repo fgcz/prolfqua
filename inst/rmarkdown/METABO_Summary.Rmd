@@ -238,7 +238,7 @@ if(params$plot_sd_vs_mean){
 
 We estimated the _Variance_ of the measurement using the QC samples. For each protein we can compute the standard deviation based on the 4 QC samples. The distribution of the standard deviations is shown in Figure \@ref(fig:sdviolinplots).
 
-This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of 2 at a significance level of $1-0.05$ and power of $0.8$ for $25, 50, 75, 90$ percent of the compounds.
+This allows us to calculate the required sample size n. The table \@ref(sampleSize) summarizes how many samples are needed to detect a fold change of $1.5,2,4$ at a significance level of $0.05$ and power of $0.8$ for $50,60,70,80, 90$ percent of the compounds.
 
 
 ```{r sampleSize}

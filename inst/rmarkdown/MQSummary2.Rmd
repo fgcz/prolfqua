@@ -71,7 +71,9 @@ You were asked to hand in 4 QC samples, to asses the biological, biochemical, an
 This document summarizes the `r params$pep_prot` variability to asses the reproducibility of the biological samples and estimates the sample sizes needed for the main experiment. 
 
 For this analysis, we used the quantitative values measured on the `r params$pep_prot` level. 
-For some proteins, we observe many peptides, which might decrease the variance of the protein estimates. However, since we measure most of the proteins with only two peptides, the peptide intensities and variances are a reasonable estimate of the protein variances. 
+
+
+<!--For some proteins, we observe many peptides, which might decrease the variance of the protein estimates. However, since we measure most of the proteins with only two peptides, the peptide intensities and variances are a reasonable estimate of the protein variances. -->
 
 
 # Quality Control: Identifications
@@ -79,7 +81,6 @@ For some proteins, we observe many peptides, which might decrease the variance o
 
 Here we summarize the number of peptides and proteins measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins, and between a few hundred to up to some few tens of thousands of peptides.
 While the overall number of proteins and peptides can highly vary, it is crucial that the number of peptides and proteins between your biological replicates is similar (reproducibility).
-
 
 
 ```{r hierarchyCounts}
@@ -95,7 +96,6 @@ hcs("plot")
 ```
 
 ```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
-
 x3 <- summarizeHierarchy(data, config)
 if(ncol(x3)>=4)
 {
@@ -112,16 +112,11 @@ if(ncol(x3)>=4)
 }
 ```
 
-
-
 # Quality Control: Quantification
-
 
 ## Summary of missing data
 
-Ideally, we identify each peptide in all of the samples. However, because of the limit of detection (LOD), unusually low-intensity peptides might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the samples and identify other sources of missingness.
-
-
+Ideally, we identify each peptide in all of the samples. However, because of the limit of detection (LOD), unusually low-intensity peptides might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data. 
 
 ```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0, 1, 2 etc. mssing value."}
 data_cc <- data
@@ -144,9 +139,7 @@ show_text <- !config$parameter$is_intensity_transformed
 
 ## Variability of transformed intensities
 
-
 We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the peptide standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
-
 
 
 ```{r transformIntensities}
@@ -158,6 +151,35 @@ if(!config$parameter$is_intensity_transformed){
   dataTransformed <- data_cc 
 }
 ```
+
+
+
+
+```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation.", fig.height = 5}
+if (params$plot_density) {
+  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, config) + 
+    theme(legend.text=element_text(size=5))
+  p1
+} else {
+  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed, config) 
+  p2
+}
+```
+
+
+```{r correlationHeat, fig.height = 5, fig.cap="Heatmap of peptide intensity correlation between samples", fig.height = 5}
+plot_heatmap_cor(dataTransformed, config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
+```
+
+
+```{r parisplotSmooth, fig.cap = "Pairsplot of correlations.", fig.height=7, fig.width=7}
+quantable::mypairsSmooth( toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+```
+
+
+
+
+
 
 ```{r sdviolinplots,fig.cap="Visualization of peptide standard deviations. A) all. B) - for low (bottom 50) and high intensity peptides (top 50).", fig.height=6, fig.width=8}
 stats_res <- summarize_cv(dataTransformed, config)
@@ -212,29 +234,13 @@ if(params$plot_sd_vs_mean){
 
 
 ```{r computeSDQuantiles, include=FALSE}
-sd_quantile_res2 <- summarize_cv_quantiles(stats_res, config, stats="sd")$wide
+sd_quantile_res2 <- summarize_cv_quantiles(stats_res, config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 ```{r printSDTable}
 knitr::kable(sd_quantile_res2, format = "latex", booktabs = TRUE, digits = 3,
-             caption = "Summary of the distribution of standard deviations at the 10th, 25th, 50th, 75th and 90th percentile.") %>% 
+             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.") %>% 
   kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
-```
-
-```{r plotTransformedIntensityDistributions, fig.cap="Peptide intensity distribution after transformation."}
-if (params$plot_density) {
-  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, config) + 
-    theme(legend.text=element_text(size=5))
-  p1
-} else {
-  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed, config) 
-  p2
-}
-```
-
-
-```{r correlationHeat, fig.height = 5, fig.cap="Heatmap of peptide intensity correlation between samples"}
-plot_heatmap_cor(dataTransformed, config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
 ```
 
 ```{r overviewHeat, fig.cap="Sample and peptide/protein Heatmap."}
@@ -251,8 +257,7 @@ if(params$plot_sd_vs_mean){
 In the previous section, we estimated the peptide variance using the QC samples. Figure \@ref(fig:sdviolinplots) shows the distribution of the standard deviations. 
 We are using this information, as well as some typical values for the size and the power of the test to estimate the required sample sizes for your main experiment. 
 
-An important factor in estimating the sample sizes is the smallest effect size (protein/peptide fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result.
-Typical $log_2$ fold change thresholds are $0.5, 1, 2$ which correspond to a fold change of $1.4,2,4$.
+An important factor in estimating the sample sizes is the smallest effect size (`r params$pep_prot` fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result. Typical $log_2$ fold change thresholds are $0.59, 1, 2$ which correspond to a fold change of $1.5, 2, 4$.
 
 
 Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how many samples are needed to detect a fold change of $0.5, 1, 2$ at a confidence level of $95\%$ and power of $80\%$, for $50, 60, 70, 80$ and $90\%$ percent of the measured peptides.
@@ -261,7 +266,7 @@ Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how m
 
 ```{r figSampleSize, fig.cap="(ref:figSampleSize)", fig.width=8}
 
-sampleSize <- lfq_power_t_test(dataTransformed, config, delta=c(0.5,1,2))
+sampleSize <- lfq_power_t_test(dataTransformed, config, delta=c(0.59,1,2))
 
 nudgeval <- max(sampleSize$long$N) * 0.05
 ggplot(sampleSize$long, aes(x = quantile, y = N)) +

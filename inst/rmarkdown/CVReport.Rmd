@@ -32,7 +32,7 @@ if(!config$parameter$is_intensity_transformed){
 
 
 ```{r computeCVQuantiles, include=FALSE}
-cv_quantiles_res <- summarize_cv_quantiles(stats_res, config, stats="CV")$wide
+cv_quantiles_res <- summarize_cv_quantiles(stats_res, config, stats="CV",probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 
