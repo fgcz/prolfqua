@@ -2,13 +2,13 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{plot_heatmap_cor}
 \alias{plot_heatmap_cor}
-\title{plot correlation heatmap with annations}
+\title{plot correlation heatmap with annotations}
 \usage{
 plot_heatmap_cor(data, config, R2 = FALSE, distfun = function(x)
   as.dist(1 - cor(t(x), use = "pa")), ...)
 }
 \description{
-plot correlation heatmap with annations
+plot correlation heatmap with annotations
 }
 \examples{
 library(tidyverse)
