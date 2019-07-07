@@ -847,7 +847,10 @@ my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
   Sigma.hat[is.na(Sigma.hat)] <- 0
   coef <- coefficients(incomplete)
   coef[is.na(coef)] <- 0
-  res <- my_contrast(incomplete, linfct, coef = coef, Sigma.hat = Sigma.hat, confint = confint)
+  res <- my_contrast(incomplete, linfct,
+                     coef = coef,
+                     Sigma.hat = Sigma.hat,
+                     confint = confint)
   return(res)
 }
 
@@ -856,11 +859,10 @@ my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
 #' @examples
 #' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' my_glht(m, linfct)
-#' my_contrast_V1(m, linfct, confint = 0.95)
-#' my_contrast_V1(m, linfct, confint = 0.99)
+#' my_contrast_V2(m, linfct, confint = 0.95)
+#' my_contrast_V2(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct){
+my_contrast_V2 <- function(m, linfct,confint = 0.95){
   Sigma.hat <- vcov(m)
   coef <- coefficients(m)
   res <- vector(nrow(linfct), mode="list")
@@ -875,7 +877,9 @@ my_contrast_V2 <- function(m, linfct){
       coef_red <- coef[nam]
       stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
-      res[[i]] <- my_contrast(m,linfct_v_red, coef=coef_red, Sigma.hat = Sigma.hat_red)
+      res[[i]] <- my_contrast(m,linfct_v_red,
+                              coef=coef_red,
+                              Sigma.hat = Sigma.hat_red,confint = confint)
     }else{
       res[[i]] <-  data.frame(lhs = rownames(linfct_v),
                               sigma = sigma(m),
@@ -975,11 +979,11 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' #usethis::use_data(models_interaction,overwrite = TRUE)
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-#'
+#' m
 #' factor_levelContrasts <- contrasts_linfct( m,
-#'                                                    models_interaction$modelName,
-#'                                                    factor_contrasts,
-#'                                                    subject_Id = "protein_Id")
+#'                          models_interaction$modelName,
+#'                            factor_contrasts,
+#'                        subject_Id = "protein_Id")
 #' head(factor_levelContrasts)
 #' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
 #' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
@@ -1145,13 +1149,13 @@ workflow_contrasts_linfct <- function(models,
 
 #' Moderate p-values - limma approach
 #' @export
-moderated_p_limma <- function(mm){
-  sv <- limma::squeezeVar(mm$sigma^2, df=mm$df)
+moderated_p_limma <- function(mm, df = "df"){
+  sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]])
   sv <- as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
   mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
-  mm <- mm %>% mutate(moderated.df.total = df + moderated.df.prior)
+  mm <- mm %>% mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
   mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
   mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
   return(mm)

@@ -4,7 +4,7 @@
 \alias{my_contrast_V2}
 \title{handles incomplete models by setting coefficients to 0}
 \usage{
-my_contrast_V2(m, linfct)
+my_contrast_V2(m, linfct, confint = 0.95)
 }
 \description{
 handles incomplete models by setting coefficients to 0
@@ -12,8 +12,7 @@ handles incomplete models by setting coefficients to 0
 \examples{
 m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
-my_glht(m, linfct)
-my_contrast_V1(m, linfct, confint = 0.95)
-my_contrast_V1(m, linfct, confint = 0.99)
+my_contrast_V2(m, linfct, confint = 0.95)
+my_contrast_V2(m, linfct, confint = 0.99)
 
 }
