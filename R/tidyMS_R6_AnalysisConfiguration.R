@@ -824,10 +824,16 @@ missigness_impute_contrasts_2 <- function(filterPep, config, Contrasts){
   dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
 
 
-  res <- function(value = c("long", "wide"), contrasts = TRUE){
-    value <- match.arg(value)
-    if(contrasts){
-      dd_long <- dplyr::filter(dd_long,contrast %in% names(Contrasts))
+  res <- function(value = c("long", "wide"), what = c("contrasts", "factors", "all")){
+    value <- match.arg( value )
+    what  <- match.arg( what  )
+
+    if(what == "contrasts"){
+      dd_long <- dplyr::filter(dd_long, contrast %in% names(Contrasts))
+    }else if(what == "factors"){
+      dd_long <- dplyr::filter(dd_long, ! contrast %in% names(Contrasts))
+    }else if(what == "all"){
+
     }
 
     if(value == "long"){
@@ -1392,7 +1398,8 @@ plot_stdv_vs_mean <- function(data, config){
 }
 
 
-#' plot correlation heatmap with annations
+#' plot correlation heatmap with annotations
+#'
 #' @export
 #' @importFrom heatmap3 heatmap3
 #' @examples
