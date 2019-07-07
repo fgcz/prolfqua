@@ -30,11 +30,11 @@ models_interaction <- LFQService::models_interaction
 #usethis::use_data(models_interaction,overwrite = TRUE)
 m <- get_complete_model_fit(models_interaction$modelProtein)
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-
+m
 factor_levelContrasts <- contrasts_linfct( m,
-                                                   models_interaction$modelName,
-                                                   factor_contrasts,
-                                                   subject_Id = "protein_Id")
+                         models_interaction$modelName,
+                           factor_contrasts,
+                       subject_Id = "protein_Id")
 head(factor_levelContrasts)
 plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
 plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
