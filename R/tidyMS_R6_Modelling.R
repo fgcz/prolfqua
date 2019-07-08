@@ -238,9 +238,9 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
 #' @export
 model_analyse_summarize_write  <- function(modellingResult, path){
   message("writing tables into :", path)
-  readr::write_csv(modellingResult$Model_Coeff,
+  lfq_write_table(modellingResult$Model_Coeff,
                    path = file.path( path,modellingResult$fname_Model_Coeff ))
-  readr::write_csv(modellingResult$Model_Anova,
+  lfq_write_table(modellingResult$Model_Anova,
                    path = file.path( path , modellingResult$fname_Model_Anova ))
 }
 
@@ -1217,13 +1217,13 @@ contrasts_linfct_write <- function(results,
   if(!is.null(path)){
     fileLong <- file.path(path,paste0(prefix, "_", modelName, ".csv"))
     message("Writing: ", fileLong, "\n")
-    readr::write_csv(separate_hierarchy(results, config) , path = fileLong)
+    lfq_write_table(separate_hierarchy(results, config) , path = fileLong)
     fileWide <- file.path(path,paste0(prefix, "_", modelName, "_PIVOT.csv"))
     message("Writing: ", fileWide, "\n")
     resultswide <- pivot_model_contrasts_2_Wide(results,
                                                 subject_Id = subject_Id,
                                                 columns=columns)
-    readr::write_csv(separate_hierarchy(resultswide, config), path = fileWide)
+    lfq_write_table(separate_hierarchy(resultswide, config), path = fileWide)
   }
 }
 

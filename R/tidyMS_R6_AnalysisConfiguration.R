@@ -1134,13 +1134,15 @@ protein_quants_write <- function(protintensity,
   message("writing protein intensity data into: ", path_qc)
 
   unnest <- protintensity("unnest")
-  readr::write_csv(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
+
+  lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
                    path = file.path(path_qc,paste0("proteinIntensities",suffix,".csv")))
 
 
-  readr::write_csv(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
+  lfq_write_table(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
                    path = file.path(path_qc,paste0("proteinIntensities_WIDE",suffix,".csv")))
-  readr::write_csv(protintensity("wide")$annotation,
+
+  lfq_write_table(protintensity("wide")$annotation,
                    path = file.path(path_qc,paste0("proteinIntensities_annotation",suffix,".csv")))
 
 

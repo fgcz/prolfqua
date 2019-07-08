@@ -23,6 +23,7 @@ Imports:
     glue,
     GGally,
     heatmap3,
+    kableExtra,
     lme4,
     lmerTest,
     magrittr,
@@ -31,7 +32,8 @@ Imports:
     readxl,
     tidyverse,
     yaml,
-    tidyr
+    tidyr,
+    writexl
 Suggests:
     knitr,
     rmarkdown,
