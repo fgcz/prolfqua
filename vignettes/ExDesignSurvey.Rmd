@@ -111,8 +111,8 @@ Typically in factorial designs, you test only for differences among main effects
 
 - Time Series, e.g., growth curves - require at least 4-5 different well-designed timepoints. When less than 4-time points are measured than the time points are treated as factors and can be analyzed using our standard pipeline for factorial designs.
 
-
 We might be able to support you with some other hypothesis tests, depending on time availability.
+
 
 
 - Dose-response curves 
