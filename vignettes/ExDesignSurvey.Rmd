@@ -1,0 +1,120 @@
+---
+title: "Bioinformatics Project Meeting Outline - Draft."
+author: "Witold Wolski"
+date: "07/07/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In LFQ experiments, we measure relative protein changes among groups of subjects. 
+
+The meeting should allow us to perform for you a scientifically sound data analysis on time. The meeting aims to obtain from you all the information relevant for the data analysis. The outcome of the meeting should be a protocol specifying:
+   -  the design of the experiment of your main experiment
+   - all the names of the grouping variables and groups  
+   - which samples to use for the QC
+   - all the parameters for the sample size estimation
+   - specify the hypothesis to be tested.
+
+You will annotate the samples with the names agreed upon in the protocol in b-fabric and the names will be used in the analysis.
+
+
+# Effect size
+
+What is the smallest effect size, i.e., fold change in protein abundance, you are interested in detecting?
+
+The number of samples you need to use highly depends on the effect size you want to detect. Detecting small effect sizes requires you to measure more samples.
+
+On the other hand, the statistical significance of a fold change does not imply biological relevance. Consequently, do not measure more samples than is required.
+
+
+# Variance
+
+## Within groups protein variances
+
+Do you expect the variance within the groups to be the same or to differ? E.g., do you expect bigger differences between the samples in the treatment than in the control group? If the variance in one group is substantially larger, you should allocate to this group more samples. Also, it might be a good idea to use samples from this group for QC. 
+
+## Difference in Protein variances
+
+Different proteins exhibit different variances. Hence, if you want to detect fold changes for proteins with big within-group changes, you will need to increase the group sizes.
+
+
+# Designs
+
+This section covers the most frequently used designs.
+
+## Repeated measurements.
+
+Are you samples are paired/ repeated between groups? - Yes/No?
+
+Yes - specify a computer-friendly grouping variable (factor) using camel case: e.g., PatientID.
+
+_camel case_ - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.
+
+
+## Parallel Group Design
+
+- Two groups?
+- More than two groups?
+    
+- In any case, specify a computer-friendly name of the grouping variable and the groups in _camel case_. 
+e.g., Grouping variable CelluliteTreatment
+group names: Control, Massage, Creme
+    
+### If more than 2 groups -
+
+Specify hypothesis to be tested (comparison) e.g.:
+
+- Massage - Control
+- Creme - Control
+
+
+
+Comment: __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-value adjustment. For instance, using the Bonferroni correction, the obtained p-values are multiplied by the number of the hypothesis tested. Given two comparisons a p-Value of 0.03 after Bonferroni adjustment is 0.06, i.e., not significant.
+
+Therefore, you must not test all possible hypothesis! For instance, If you, also, include the test _Massage - Creme_, it is required to multiply the p-values with the factor 3. i.e., a p-value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
+
+Comment 2: The hypothesis you test will influences the number of samples you allocate to each group.
+For instance: if you use the Control group in two tests, it will benefit the sensitivity of the analysis (power of test) to allocate more samples to the control than to each of the treatment groups.
+
+
+## Factorial Desgin
+
+- How many factors? 
+- How many groups per factor?
+
+- Provide computer-friendly names of the factors (grouping variables) in _camel case_. i.e., Treatment, AgeGroup
+- Provide names of groups for each grouping variable:
+     - Treatment: Control, Massage; 
+     - AgeGroup: young, old.
+
+### Specify comparisons
+
+- Treatment_Control - Treatment_Massage
+- Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old
+
+Comment: Factorial designs generate many interactions (combinations of factors (e.g., Treatment_Control:AgeGroup_young), which makes it possible to test many hypotheses. Avoid, formulating many hypotheses. You should limit the number of hypotheses you test ideally to a very few (one or two) per experiment. Remember, that it is required to adjust the p-Values based on the number of hypotheses you test.
+
+Typically in factorial designs, you test only for differences among main effects (differences between groups within a single grouping variable) and second order interactions of the factors, e.g.:
+
+- _main effects_ Treatment_Control - Treatment_Massage
+- _Test for interaction_ (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Massage:AgeGroup_young - Treatment_Massage:AgeGroup_old)
+
+
+
+
+## More designs.
+
+- Time Series, e.g., growth curves - require at least 4-5 different well-designed timepoints. When less than 4-time points are measured than the time points are treated as factors and can be analyzed using our standard pipeline for factorial designs.
+
+
+We might be able to support you with some other hypothesis tests, depending on time availability.
+
+
+- Dose-response curves 
+- Survival analysis 
+
