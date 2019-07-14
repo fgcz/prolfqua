@@ -30,10 +30,17 @@ header-includes:
   - \usepackage{float}
 ---
 
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(LFQService)
 
+#options(tinytex.verbose = TRUE)
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,

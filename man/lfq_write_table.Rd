@@ -17,4 +17,7 @@ lfq_write_format
 lfq_write_table(x, "test.csv")
 assign("lfq_write_format", "csv", envir = .GlobalEnv
 lfq_write_table(x, "test.csv")
+
+assign("lfq_write_format", "both", envir = .GlobalEnv
+lfq_write_table(x, "test.csv")
 }
