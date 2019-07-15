@@ -656,7 +656,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #'
 #' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-#' linfct_matrix_contrasts(m,Contrasts )
+#' linfct_matrix_contrasts(linfct, Contrasts )
 linfct_matrix_contrasts<- function(linfct , Contrasts){
   linfct <- t(linfct)
   df <- as.tibble(linfct, rownames = "interaction")
@@ -686,8 +686,8 @@ linfct_matrix_contrasts<- function(linfct , Contrasts){
 #' m
 #' linfct <- linfct_from_model(m)
 #'
-#' xl <- .linfct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- .linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' xl <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
 .linfct_all_possible_contrasts <- function( lin_int ){
   combs <- combn(nrow(lin_int),2)
@@ -738,11 +738,11 @@ linfct_factors_contrasts <- function(m){
 #' mb <- LFQService::basicModel_p1807
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
-#' #my_glht(mb, linfct$linfct_factors)
+#' my_glht(mb, linfct$linfct_factors)
 #'
 #' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' #my_glht(m, linfct)
+#' my_glht(m, linfct)
 #'
 my_glht <- function(model, linfct , sep=TRUE ) {
   if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character

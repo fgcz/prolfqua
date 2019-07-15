@@ -609,6 +609,9 @@ summarizeProteins <- function( x, configuration ){
 #' configuration <- skylineconfig
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #'
+#' #x <- sample_analysis
+#' #configuration <- skylineconfig
+#' #hierarchy = configuration$table$hkeysLevel()
 #'
 #' summarizeHierarchy(sample_analysis, skylineconfig)
 #' summarizeHierarchy(sample_analysis, skylineconfig, factors=character())
@@ -633,8 +636,8 @@ summarizeHierarchy <- function(x,
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
   precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
-  x3 <- precursor %>% group_by_at(c(factors,hierarchy)) %>%
-    dplyr::summarize_at( all_hierarchy,
+  x3 <- precursor %>% dplyr::group_by_at(c(factors,hierarchy)) %>%
+    dplyr::summarize_at( setdiff(all_hierarchy,hierarchy),
                          list( n = dplyr::n_distinct))
   return(x3)
 }

@@ -142,8 +142,7 @@ workflow_DIA_NA_preprocessing <- function(data,
 
   resNACondition <- filter_factor_levels_by_missing(data_NA_QVal,
                                                     config,
-                                                    percent = percent,
-                                                    factor_level = factor_level)
+                                                    percent = percent)
 
   stat_naFilter <- hierarchyCounts(resNACondition, config)
   protID <- summarizeHierarchy(resNACondition,config) %>%

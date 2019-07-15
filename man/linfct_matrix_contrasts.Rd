@@ -16,5 +16,5 @@ linfct
 
 Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-linfct_matrix_contrasts(m,Contrasts )
+linfct_matrix_contrasts(linfct, Contrasts )
 }

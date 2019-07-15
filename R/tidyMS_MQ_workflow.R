@@ -13,8 +13,7 @@
   config <- config$clone(deep = TRUE)
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
-                                                    percent = percent,
-                                                    factor_level = config$table$factorLevel
+                                                    percent = percent
   )
 
   proteinsWith2Peptides <- summarizeHierarchy(resNACondition, config)

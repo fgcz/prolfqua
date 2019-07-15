@@ -19,6 +19,9 @@ data(skylinePRMSampleData)
 configuration <- skylineconfig
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 
+#x <- sample_analysis
+#configuration <- skylineconfig
+#hierarchy = configuration$table$hkeysLevel()
 
 summarizeHierarchy(sample_analysis, skylineconfig)
 summarizeHierarchy(sample_analysis, skylineconfig, factors=character())

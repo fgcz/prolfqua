@@ -16,6 +16,7 @@ Imports:
     broom,
     bookdown,
     conflicted,
+    corrplot,
     dplyr,
     ggplot2,
     ggbeeswarm,
@@ -24,9 +25,11 @@ Imports:
     GGally,
     heatmap3,
     kableExtra,
+    limma,
     lme4,
     lmerTest,
     magrittr,
+    multcomp,
     quantable,
     purrr,
     readxl,
@@ -40,5 +43,6 @@ Suggests:
     testthat
 Remotes:
     protViz/quantable,
-    statOmics/MSqRob
+    statOmics/MSqRob,
+    bioc::3.9/limma
 RoxygenNote: 6.1.1
