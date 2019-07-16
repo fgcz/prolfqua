@@ -1,28 +1,34 @@
 # This R script can be used to create sample Size reports from MaxQuant txt folder results.
-
 rm(list=ls())
-args = commandArgs(trailingOnly=TRUE)
-
-if(length(args) !=2 ){
-  stop("two args needed, input zip and ouptut directory")
-}
-
-message(args)
-ithzip <- args[1]
-outputDir <- args[2]
-if(!dir.exists(outputDir)){
-  dir.create(outputDir)
-}
-
-assign("lfq_write_format", "both", envir = .GlobalEnv)
-
-
 
 library(readr)
 library(tidyverse)
 library(LFQService)
 library(tidyr)
 library(dplyr)
+
+
+#Trivial opt parsing
+args = commandArgs(trailingOnly=TRUE)
+if(length(args) !=2 ){
+  stop("\n two args needed, input zip and ouptut directory\n")
+}
+
+message(args)
+
+
+ithzip <- args[1]
+outputDir <- args[2]
+if(!dir.exists(outputDir)){
+  if(!dir.create(outputDir)){
+    stop("\n could not create : ", outputDir, "\n")
+  }
+}
+
+assign("lfq_write_format", "both", envir = .GlobalEnv)
+
+
+
 
 
 summarize_cv_raw_transformed <- function(resDataStart, config){
