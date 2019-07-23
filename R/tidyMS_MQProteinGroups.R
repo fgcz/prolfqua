@@ -173,8 +173,9 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' @examples
 #' library(tidyverse)
 #' if(FALSE){
-#' peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
+#' peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+#' head(peptides_txt)
 #' MQPeptides <- peptides_txt
 #' View(MQPeptides)
 #' mq_peptides <- tidyMQ_modificationSpecificPeptides(peptides_txt)
@@ -263,7 +264,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @examples
 #' library(tidyverse)
 #'
-#' peptide_txt <- "D:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
+#' #peptide_txt <- "D:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
 #' peptide_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
 #' peptides_txt <- read.csv(peptide_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
