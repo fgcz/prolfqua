@@ -11,6 +11,6 @@ create interaction column from factors
 }
 \examples{
 xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
-make_interaction_column(xx, c("A","B"))
+make_interaction_column(xx, c("B","A"))
 make_interaction_column(xx, c("A"))
 }
