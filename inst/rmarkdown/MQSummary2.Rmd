@@ -179,7 +179,7 @@ plot_heatmap_cor(dataTransformed, config, R2 = TRUE, col = colorRampPalette(c("w
 ```
 
 
-```{r parisplotSmooth, fig.cap = "Pairsplot of correlations.", fig.height=7, fig.width=7}
+```{r pairsplotSmooth, fig.cap = "Pairsplot - scatterplot of samples.", fig.height=12, fig.width=12}
 quantable::mypairsSmooth( toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
 ```
 
