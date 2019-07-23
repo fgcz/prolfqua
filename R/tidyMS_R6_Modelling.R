@@ -49,7 +49,7 @@ make_custom_model_lm <- function( modelstr, model_name) {
   }
   res <- list(model_fun = model_fun,
               isSingular = isSingular_lm,
-              contrast_fun = my_glht,
+              contrast_fun = my_contrast_V2,
               model_name = model_name)
   return(res)
 }
@@ -951,7 +951,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
   for(column in columns){
     res[[column]] <- m_spread(modelWithInteractionsContrasts,subject_Id,column)
   }
-  res <- res %>% reduce(left_join, by = subject_Id)
+  res <- res %>% reduce(left_join, by = c(subject_Id,"isSingular"))
   return(res)
 }
 #' compute group averages
