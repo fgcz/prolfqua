@@ -144,7 +144,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' @export
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
-#' make_interaction_column(xx, c("A","B"))
+#' make_interaction_column(xx, c("B","A"))
 #' make_interaction_column(xx, c("A"))
 make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
@@ -708,7 +708,7 @@ missigness_impute_interactions <- function(mdataTrans,
 
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
 
-  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" ), prefix = TRUE){
+  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" ), add.prefix = TRUE){
     value <- match.arg(value)
     if(value == "long"){
       return(xx)
@@ -743,23 +743,23 @@ missigness_impute_interactions <- function(mdataTrans,
       }else if(value == "allWide"){
         return(purrr::reduce(allTables,inner_join))
       }else if(value == "nrReplicates"){
-        srepl <- if(prefix){"nrRep."}else{""}
+        srepl <- if(add.prefix){"nrRep."}else{""}
         colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
         nrReplicates <- tibble::add_column( nrReplicates, "value" = value, .before = 1)
 
         return(nrReplicates)
       }else if(value == "nrMeasured"){
-        srepl <- if(prefix){"nrMeas."}else{""}
+        srepl <- if(add.prefix){"nrMeas."}else{""}
         colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl ,colnames(nrMeasured))
         nrMeasured <- tibble::add_column( nrMeasured, "value" = value, .before = 1)
         return(nrMeasured)
       }else if(value == "meanArea"){
-        srepl <- if(prefix){"mean."}else{""}
+        srepl <- if(add.prefix){"mean."}else{""}
         colnames(meanArea) <- gsub("interaction.meanArea.", srepl ,colnames(meanArea))
         meanArea <- tibble::add_column( meanArea, "value" = value, .before = 1)
         return(meanArea)
       }else if(value == "imputed"){
-        srepl <- if(prefix){"mean.imp."}else{""}
+        srepl <- if(add.prefix){"mean.imp."}else{""}
         colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAreaImputed))
         meanAreaImputed<- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
         return(meanAreaImputed)
@@ -776,22 +776,24 @@ missigness_impute_interactions <- function(mdataTrans,
 #' compute per group averages and impute values
 #' should generalize at some stage
 #' @export
-missigness_impute_factors_interactions <- function(filterPep,
+missigness_impute_factors_interactions <- function(data,
                                                    config,
                                                    value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
                                                    probs=0.1,
-                                                   prefix=FALSE){
+                                                   add.prefix=FALSE){
   value <- match.arg(value)
   fac_fun <- list()
-  fac_fun[["interaction"]] <- missigness_impute_interactions(filteredPep, config,probs = probs)
-  for(factor in config$table$fkeysLevel()){
-    fac_fun[[factor]] <- missigness_impute_interactions(filteredPep, config,factors = factor,probs = probs)
+  fac_fun[["interaction"]] <- missigness_impute_interactions(data, config,probs = probs)
+  if(config$table$factorLevel > 1 ){ # if 1 only then done
+    for(factor in config$table$fkeysLevel()){
+      fac_fun[[factor]] <- missigness_impute_interactions(data, config,factors = factor,probs = probs)
+    }
   }
   fac_res <- list()
   for(fun_name in names(fac_fun)){
-    fac_res[[fun_name]] <- fac_fun[[fun_name]](value, prefix=prefix)
+    fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix=add.prefix)
   }
-  intfact <- purrr::reduce(fac_res,dplyr::inner_join)
+  intfact <- purrr::reduce(fac_res,dplyr::inner_join, by = c(config$table$hkeysLevel(), config$table$isotopeLabel, "value"))
   return(intfact)
 }
 
@@ -801,7 +803,7 @@ missigness_impute_factors_interactions <- function(filterPep,
 missigness_impute_contrasts <- function(data,
                                         config,
                                         Contrasts,
-                                        agg_fun=function(x){median(x, na.rm = TRUE)} )
+                                        agg_fun=function(x){median(x, na.rm = TRUE)})
 {
   for(i in 1:length(Contrasts)){
     message(names(Contrasts)[i], "=", Contrasts[i],"\n")
@@ -818,16 +820,19 @@ missigness_impute_contrasts <- function(data,
 #' Compute fold changes given Contrasts 2
 #'
 #' @export
-missigness_impute_contrasts_2 <- function(filterPep, config, Contrasts){
-  xx <- missigness_impute_factors_interactions(filterPep, config, "imputed")
+workflow_missigness_impute_contrasts <- function(data,
+                                                 config,
+                                                 Contrasts){
+
+  xx <- missigness_impute_factors_interactions(data, config, "imputed" )
   imputed <- missigness_impute_contrasts(xx, config, Contrasts)
-  xx <- missigness_impute_factors_interactions(filteredPep,config,"meanArea")
+  xx <- missigness_impute_factors_interactions(data,config,"meanArea" )
   mean <- missigness_impute_contrasts(xx, config, Contrasts)
   dd <- bind_rows(imputed, mean)
   dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
 
 
-  res <- function(value = c("long", "wide"), what = c("contrasts", "factors", "all")){
+  res <- function(value = c("long", "wide","raw"), what = c("contrasts", "factors", "all")){
     value <- match.arg( value )
     what  <- match.arg( what  )
 
@@ -841,12 +846,13 @@ missigness_impute_contrasts_2 <- function(filterPep, config, Contrasts){
 
     if(value == "long"){
       long_xxxx <- dd_long %>% spread(value, int_val)
-
       return(long_xxxx)
     }else if(value == "wide"){
       dd <- dd_long %>% unite(contrast.v , value, contrast, sep="~") %>% spread(contrast.v, int_val)
-      xxx_imputed <- inner_join(LFQService::summarizeHierarchy(filteredPep,config),dd)
+      xxx_imputed <- inner_join(LFQService::summarizeHierarchy(data,config),dd)
       return(xxx_imputed)
+    }else if(value == "raw"){
+      return(dd_long)
     }
   }
 }
@@ -1139,26 +1145,26 @@ protein_quants_write <- function(protintensity,
   unnest <- protintensity("unnest")
 
   lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
-                   path = file.path(path_qc,paste0("proteinIntensities",suffix,".csv")))
+                   path = file.path(path_qc,paste0("protein_intensities_long",suffix,".csv")))
 
 
   lfq_write_table(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
-                   path = file.path(path_qc,paste0("proteinIntensities_WIDE",suffix,".csv")))
+                   path = file.path(path_qc,paste0("protein_intensities_long",suffix,".csv")))
 
   lfq_write_table(protintensity("wide")$annotation,
-                   path = file.path(path_qc,paste0("proteinIntensities_annotation",suffix,".csv")))
+                   path = file.path(path_qc,paste0("protein_intensities_file_annotation",suffix,".csv")))
 
 
-  pdf(file.path(path_qc,paste0("proteinIntensities_heatmap_cor",suffix,".pdf")), width = 10, height = 10)
+  pdf(file.path(path_qc,paste0("protein_intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
   plot_heatmap_cor(protintensity("unnest")$data, protintensity("unnest")$config)
   dev.off()
 
-  pdf(file.path(path_qc,paste0("proteinIntensities_heatmap",suffix,".pdf")), width = 10, height = 10)
+  pdf(file.path(path_qc,paste0("protein_intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
   LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config, na_fraction = na_fraction)
   dev.off()
 
   res <- plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
-  pdf(file.path(path_qc,paste0("proteinIntensities_PCA",suffix,".pdf")), width=6, height=6)
+  pdf(file.path(path_qc,paste0("protein_intensities_PCA",suffix,".pdf")), width=6, height=6)
   print(res)
   dev.off()
 }
