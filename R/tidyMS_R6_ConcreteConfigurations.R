@@ -50,3 +50,26 @@ createSpectronautPeptideConfiguration <- function(isotopeLabel="Isotope.Label",
   anaparam <- AnalysisParameters$new()
   configuration <- AnalysisConfiguration$new(atable, anaparam)
 }
+
+#' MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
+#' @export
+create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
+                                  intensity = "peptide.intensity",
+                                  isotopeLabel = "isotope"){
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = "raw.file"
+  # measurement levels.
+  atable$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id")
+  atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
+  atable$hierarchyLevel <- 1
+  #
+  atable$ident_qValue = ident_qValue
+  atable$setWorkIntensity(intensity)
+  atable$isotopeLabel = isotopeLabel
+
+  anaparam <- AnalysisParameters$new()
+  anaparam$min_peptides_protein <- 2
+  configuration <- AnalysisConfiguration$new(atable, anaparam)
+
+  return(configuration)
+}
