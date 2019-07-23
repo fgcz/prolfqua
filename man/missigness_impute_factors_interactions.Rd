@@ -5,9 +5,9 @@
 \title{compute per group averages and impute values
 should generalize at some stage}
 \usage{
-missigness_impute_factors_interactions(filterPep, config,
+missigness_impute_factors_interactions(data, config,
   value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
-  probs = 0.1, prefix = FALSE)
+  probs = 0.1, add.prefix = FALSE)
 }
 \description{
 compute per group averages and impute values
