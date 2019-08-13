@@ -83,7 +83,7 @@ resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases
 
 LFQService::render_MQSummary_rmd(resDataStart,
                                  config$clone(deep=TRUE),
-                                 pep_prot = "peptide",
+                                 pep = TRUE,
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",ithzip,"_Peptide.pdf"),workdir = "." )
 

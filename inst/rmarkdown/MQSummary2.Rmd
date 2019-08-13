@@ -17,7 +17,7 @@ params:
   plot_sd_vs_mean: FALSE
   workunit_id: "XXX"
   project_id: "XXX"
-  pep_prot: "peptide"
+  pep: "peptide"
 vignette: >
   %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
   %\VignetteEncoding{UTF-8}
@@ -75,19 +75,14 @@ old <- theme_set(theme_classic())
 <!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.-->
 
 You were asked to hand in 4 QC samples, to asses the biological, biochemical, and technical variability of your experiments. We did run your samples through the same analysis pipeline, which will be applied in the main experiment.
-This document summarizes the `r params$pep_prot` variability to asses the reproducibility of the biological samples and estimates the sample sizes needed for the main experiment. 
-
-For this analysis, we used the quantitative values measured on the `r params$pep_prot` level. 
-
-
-<!--For some proteins, we observe many peptides, which might decrease the variance of the protein estimates. However, since we measure most of the proteins with only two peptides, the peptide intensities and variances are a reasonable estimate of the protein variances. -->
+This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variability to asses the reproducibility of the biological samples and estimates the sample sizes needed for the main experiment. 
 
 
 # Quality Control: Identifications
 
 
-Here we summarize the number of peptides and proteins measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins, and between a few hundred to up to some few tens of thousands of peptides.
-While the overall number of proteins and peptides can highly vary, it is crucial that the number of peptides and proteins between your biological replicates is similar (reproducibility).
+Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins, and between a few hundred to up to some few tens of thousands of peptides.
+While the overall number of proteins and peptides can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
 
 ```{r hierarchyCounts}
@@ -96,11 +91,14 @@ knitr::kable(data.frame(NR = x), format = "latex", booktabs = TRUE) %>%
   kableExtra::kable_styling(position = "center")
 ```
 
-```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample.", fig.width=8, fig.height=6}
+(ref:hierarchyCountsSampleBarplot) Number of quantified `r if(params$pep){"peptides"}else{"proteins"}` per sample.
+
+```{r hierarchyCountsSampleBarplot, fig.cap="(ref:hierarchyCountsSampleBarplot)", fig.width=8, fig.height=6}
 hcs <- hierarchy_counts_sample(data, configuration = config)
 hcs("plot")
 
 ```
+
 
 ```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
 x3 <- summarizeHierarchy(data, config)
@@ -123,9 +121,11 @@ if(ncol(x3)>=4)
 
 ## Summary of missing data
 
-Ideally, we identify each peptide in all of the samples. However, because of the limit of detection (LOD), unusually low-intensity peptides might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data. 
+Ideally, we identify each `r if(params$pep){"peptide"}else{"protein"}` in all of the samples. However, because of the limit of detection (LOD), unusually low-intensity `r if(params$pep){"peptides"}else{"proteins"}` might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data. 
 
-```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0, 1, 2 etc. mssing value."}
+(ref:missingFigIntensityHistorgram) Top - intensity distribution of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1 etc. missing values. B - number of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1, 2 etc. missing value.
+
+```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="(ref:missingFigIntensityHistorgram)"}
 data_cc <- data
 p <- missignessHistogram(data_cc, config)
 xx3 <- missingPerCondition(data_cc, config)
@@ -134,8 +134,8 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 ```
 
-
-```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Heatmap of missing peptide quantifications clustered by sample."}
+(ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
+```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
 plot_NA_heatmap(data = data_cc, config = config)
 show_text <- !config$parameter$is_intensity_transformed
 ```
@@ -264,12 +264,12 @@ if(params$plot_sd_vs_mean){
 In the previous section, we estimated the peptide variance using the QC samples. Figure \@ref(fig:sdviolinplots) shows the distribution of the standard deviations. 
 We are using this information, as well as some typical values for the size and the power of the test to estimate the required sample sizes for your main experiment. 
 
-An important factor in estimating the sample sizes is the smallest effect size (`r params$pep_prot` fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result. Typical $log_2$ fold change thresholds are $0.59, 1, 2$ which correspond to a fold change of $1.5, 2, 4$.
+An important factor in estimating the sample sizes is the smallest effect size (`r  if(params$pep){"peptide"}else{"protein"}` fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result. Typical $log_2$ fold change thresholds are $0.59, 1, 2$ which correspond to a fold change of $1.5, 2, 4$.
 
 
-Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how many samples are needed to detect a fold change of $0.5, 1, 2$ at a confidence level of $95\%$ and power of $80\%$, for $50, 60, 70, 80$ and $90\%$ percent of the measured peptides.
+Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how many samples are needed to detect a fold change of $0.5, 1, 2$ at a confidence level of $95\%$ and power of $80\%$, for $50, 60, 70, 80$ and $90\%$ percent of the measured `r if(params$pep){"peptides"}else{"proteins"}`.
 
-(ref:figSampleSize) Graphical representation of the sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means, in $X\%$ of peptides (x - axis).
+(ref:figSampleSize) Graphical representation of the sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means, in $X\%$ of `r  if(params$pep){"peptides"}else{"proteins"}` (x - axis).
 
 ```{r figSampleSize, fig.cap="(ref:figSampleSize)", fig.width=8}
 

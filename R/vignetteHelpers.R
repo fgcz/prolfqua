@@ -49,7 +49,7 @@
 render_MQSummary_rmd <- function(data, config,
                                  workunit_id = "w1",
                                  project_id = "p1000",
-                                 pep_prot = "peptide",
+                                 pep = TRUE,
                                  dest_path =".",
                                  dest_file_name = "MQSummary2.pdf",
                                  workdir = tempdir())
@@ -59,7 +59,7 @@ render_MQSummary_rmd <- function(data, config,
          configuration=config,
          project_id = project_id,
          workunit_id = workunit_id,
-         pep_prot=pep_prot),
+         pep=pep),
     markdown_path =c("rmarkdown/MQSummary2.Rmd", "rmarkdown/CVReport.Rmd"),
     dest_path = dest_path,
     dest_file_name = dest_file_name,
@@ -72,7 +72,7 @@ render_MQSummary_rmd <- function(data, config,
 #' render MQ Summary.
 #' @export
 #' @examples
-#' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#' #render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_METABO_Summary_rmd <- function(data, config,
                                       dest_path =".",
