@@ -11,6 +11,6 @@ render_METABO_Summary_rmd(data, config, dest_path = ".",
 render MQ Summary.
 }
 \examples{
-render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 
 }

@@ -1123,12 +1123,14 @@ workflow_contrasts_linfct <- function(models,
                                                 columns=c("estimate", columns))
 
     if(!is.null(path)){
-      contrasts_linfct_write(contrast_minimal,
-                             modelName,
-                             config,
-                             prefix = prefix,
-                             path=path,
-                             columns = c("estimate", columns))
+      if(FALSE){
+        contrasts_linfct_write(contrast_minimal,
+                               modelName,
+                               config,
+                               prefix = prefix,
+                               path=path,
+                               columns = c("estimate", columns))
+      }
 
       contrasts_linfct_vis_write(visualization, path=path)
     }

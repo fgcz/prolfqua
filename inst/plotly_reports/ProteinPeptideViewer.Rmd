@@ -20,7 +20,7 @@ dataX <- params$dataX
 
 ```
 
-```{r}
+```{r eval=TRUE}
 protTable <- params$par$prot
 peptideTable <- params$par$pep
 ```
