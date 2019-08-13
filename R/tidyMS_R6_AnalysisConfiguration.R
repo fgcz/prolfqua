@@ -1071,6 +1071,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
   xnested <- xnested %>%
     dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
 
+
   res <- function(value = c("nested","unnest","wide","plot")){
     value <- match.arg(value)
     if(value == "nested"){
@@ -1149,7 +1150,7 @@ protein_quants_write <- function(protintensity,
 
 
   lfq_write_table(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
-                   path = file.path(path_qc,paste0("protein_intensities_long",suffix,".csv")))
+                   path = file.path(path_qc,paste0("protein_intensities_wide",suffix,".csv")))
 
   lfq_write_table(protintensity("wide")$annotation,
                    path = file.path(path_qc,paste0("protein_intensities_file_annotation",suffix,".csv")))
