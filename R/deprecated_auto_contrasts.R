@@ -13,7 +13,8 @@
   ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
   xx <- dplyr::inner_join(
     sglt,
-    ciglt, by=c("lhs","rhs")
+    ciglt,
+    by=c("lhs","rhs")
   )
   return(xx)
 }
