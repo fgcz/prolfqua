@@ -253,6 +253,11 @@ We might be able to support you with some other hypothesis tests, depending on o
 - Survival analysis 
 
 
+# Data normalization
+
+
+
+
 # Other topics
 
 $~$
