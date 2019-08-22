@@ -17,12 +17,12 @@ params:
   plot_sd_vs_mean: FALSE
   workunit_id: "XXX"
   project_id: "XXX"
-  pep: "peptide"
+  pep: TRUE
 vignette: >
   %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options:
+  editor_options:
   chunk_output_type: console
 header-includes:
   - \usepackage[english]{babel}
@@ -180,7 +180,15 @@ plot_heatmap_cor(dataTransformed, config, R2 = TRUE, col = colorRampPalette(c("w
 
 
 ```{r pairsplotSmooth, fig.cap = "Pairsplot - scatterplot of samples.", fig.height=12, fig.width=12}
-quantable::mypairsSmooth( toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+samples <- dplyr::select(resDataStart, config$table$sampleName) %>% distinct() %>%  pull()
+if(length(samples) > 10){
+  limit <- dplyr::select(dataTransformed, config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
+  ldata <- dataTransformed %>% dplyr::filter(!!sym(config$table$sampleName) %in% limit)
+  quantable::mypairsSmooth( toWideConfig(ldata, config, as.matrix = TRUE)$data )
+}else{
+  
+  quantable::mypairsSmooth( toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+}
 ```
 
 
