@@ -1,41 +1,55 @@
 ---
 title: "Bioinformatics Project Meeting"
 author: "FGCZ - Draft - wew@fgcz.ethz.ch"
-date: "15/08/2019"
+date: "22/08/2019"
 output:
-  html_document: default
+  html_document: 
+    toc: true
+    toc_depth: 2
+    #toc_float: true
+    #number_sections: true
   word_document: default
   pdf_document: default
+    
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Overview of the analysis
+
+
 In label-free quantification (LFQ) experiments, we measure relative protein changes among groups of subjects. 
-The meeting aims to obtain from you all the information relevant to perform a statistically sound LFQ data analysis. 
+Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the within-group variance and to determine the number of sample in each group needed in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups.
+
+
+# Aim of the meeting
+
+The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
 
 
 The outcome of the meeting should be a protocol specifying:
-   - which and how many samples to use for the QC
-   - all the parameters for the sample size estimation
-   - the design of your main experiment
-   - all the names of the factors and factor levels
-   - specify the hypothesis to be tested.
+
+- which and how many samples to use for the QC
+- all the parameters for the sample size estimation
+- the design of your main experiment
+- all the names of the factors and factor levels
+- specify the hypothesis to be tested.
 
 The samples should be annotated with the names specified in the protocol in the b-fabric system, and the names will also appear in the result tables and visualizations.
 
-We perform the data analysis according to this protocol. Changing the analysis protocol after the analysis was delivered might incur significant time delays and financial costs.
+We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered might incur time delays or additional costs.
 
 
-# Summary of the analysis
+# Effect size and size of test
 
-Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the within-group variance. These estimates are then used to determine the number of sample in each group. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups.
-
+The parameters discussed here are already crucial for the QC experiment and will be addressed again when protein variance estimates from the QC experiment are available.
 
 ## Effect size
 
-What is the smallest effect size, i.e., fold change in protein abundance, you are interested in detecting? 
+What is the smallest effect size, i.e., fold change in protein abundance, is of biological relevance, and you are interested in detecting? 
 Typically fold changes are $1.5$, $2$, or $4$. This information is needed to determine the sample size as well as to biologically interpret the data.
 
 The number of samples you need to use highly depends on the effect size you want to detect. Detecting small effect sizes requires you to measure more samples.
@@ -51,56 +65,65 @@ On the other hand, the statistical significance of a fold change does not imply 
 
 [^6]: In statistics, the size of a test is the probability of falsely rejecting the null hypothesis.
 
-Typically a difference between two conditions is considered to be significant if the p-Values is less than $0.05$. For some applications a less significant p-value can be used (e.g., $0.1$) for others a smaller p-value might be required.
+Typically a difference between two conditions is considered to be significant if the p-Values is less than $0.05$. For some applications a less significant p-Value can be used (e.g., $0.1$) for others a smaller p-Value might be required.
 
 - [ ] 0.01
 - [ ] 0.05
 - [ ] 0.1
 - other :
 
-## Difference in protein variances
+## Power of test
 
-Each protein is measured with a different within group variance.
-Please specify the percentage of proteins you want to examine with the effect and test size specified. 
-If you want to detect fold changes for proteins with big within-group variances, specify i.e. $70%$. 
+The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true [wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
+
+- [ ] 0.8
+- other : 
 
 
-- [ ] $50\%$
-- [ ] $70\%$
-- other :
-
-Are there proteins of special interest?
-
-Provide protein IDs: ____ 
 
 ## Does the variance within groups differ?
 
-Is the variance within the groups the same or different? (E.g., do you expect some groups to have samples - subjects which differ more? 
-)
+Is the variance within the groups the same or different? E.g., do you expect some groups with larger within group differences?
 
 - [ ] yes
 - [ ] no
 
-If yes, which group has the highest within-group variance?
+If yes, which of the group's might have the highest within-group variance? For instance, some treatment might have heterogeneous outcomes. 
 
 
 
 ____
 
 
-If possible, use samples from this group for the QC experiment. If the variance in one group is substantially larger, the power of the tests can be improved by allocating more samples to this group.
+If possible, use samples from this group for the QC experiment, which will enable you to get a conservative estimate of the required samples sizes. If the variance in one group is substantially higher, the power of the tests can be improved by allocating more samples to this group.
 
+
+## Difference in protein variances
+
+From the QC experiment, we can estimate for each protein a  within-group variance. For some proteins, we observe more variation within a group compared to other proteins.
+
+Are there proteins or protein groups of particular interest?
+
+Provide protein IDs: ____ 
+
+
+Do you want to obtain significant p-Values for proteins with big within-group variances, or would you be satisfied with getting significances for the $X\%$ of low variance proteins? 
+
+
+- [ ] $50\%$
+- [ ] $70\%$
+- other :
 
 
 # Designs
 
 This section covers the most frequently used designs.
 
+- [ ] Parallel Group Design - Evaluates a single factor
 
-## Parallel Group Design [^2]
+- [ ] Factorial Design - Evaluates multiple factors simultaneously
 
-- [ ] Yes 
-- [ ] No
+## Parallel Group Design
 
 [^2]: A parallel design, also called a parallel group study, compares two or more treatments. Participants are randomly assigned to either group, treatments are administered, and then the results are compared (statistics how to).
 
@@ -109,67 +132,22 @@ How many groups?
 - [ ] 2
 - [ ] more. How many?  _____ 
 
-Factor name (_camel case_[^1]) : _______________________________________________________________ 
+Factor name (_camel case_[^1] e.g., Treatment) : _______________________________________________________________ 
 
-_(e.g., CelluliteTreatment)_
 
-Level names (_camel case_): _______________________________________________________________
 
-_(e.g. Control, Massage, Creme)_
+Level names (_camel case_ e.g. Control, Massage, Creme): _______________________________________________________________
+
 
 [^1]: _camel case_ - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.
 
 
-If there are more than two groups, specify hypothesis to be tested (comparison) using the factor_level names. 
+## Factorial Design
 
-e.g.:
-
-- CelluliteTreatment_Massage - CelluliteTreatment_Control
-- CelluliteTreatment_Creme - CelluliteTreatment_Control
-
-**_specify contrasts here:_** 
-
-$~$
-
-$~$
-
-$~$
-
-$~$
-
-$~$
-
-$~$
-
-$~$
-
-$~$
-
-### Comments: 
-
-- __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-value adjustment. For instance, using the Bonferroni correction, the obtained p-values are multiplied by the number of the hypothesis tested. Given two comparisons, a p-Value of 0.03 after Bonferroni adjustment is $0.06$, i.e., not significant given a test size of $0.05$. Therefore, do not test all possible hypothesis! For instance, if including the contrast  _Massage - Creme_, it is required to multiply the p-values with the factor $3$. i.e., a p-value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
+Applies when studying how two or more factors influence protein expression, e.g., $Knockout$ and $Treatment$.
 
 
-- If one group is used in more comparisons than all other groups, it will benefit the power of the test to allocate more samples to this group, since increasing the number of degrees of freedom in this group will benefit many comparisons.
-
-## Repeated measurements[^3].
-
-[^3]: Repeated measures design is a research design that involves multiple measures of the same variable taken on the same or matched subjects either under different conditions or over two or more time periods. For instance, repeated measurements are collected in a longitudinal study in which change over time is assessed (wikipedia).
-
-- [ ] Yes 
-- [ ] No
-
-If _yes_ please specify a computer-friendly factor name using _camel case_: e.g., PatientId.
-
-Name of the factor : ____
-
-The subject identifiers can contain upper and lower case letters and numbers but do avoid special characters and white spaces. 
-Neither the factor names or the levels of the blocking factors will be shown in the results or figures generated.
-
-
-## Factorial Desgin [^3]
-
-[^3]:In statistics, a full factorial experiment is an experiment whose design consists of two or more factors, each with discrete possible values or "levels", and whose experimental units take on all possible combinations of these levels across all such factors. Such an experiment allows the investigator to study the effect of each factor on the response variable, as well as the effects of interactions between factors on the response variable.
+[^8]:In statistics, a full factorial experiment is an experiment whose design consists of two or more factors, each with discrete possible values or "levels", and whose experimental units take on all possible combinations of these levels across all such factors. Such an experiment allows the investigator to study the effect of each factor on the response variable, as well as the effects of interactions between factors on the response variable.
 
 - How many factors? Typically 2 rarely 3.
 - How many levels per factor? typically 2 or 3 per factor.
@@ -192,45 +170,35 @@ Example:
 | Treatment |2 | Control, Massage| 
 | AgeGroup | 2 | young, old |
 
-### Specify comparisons
-
-- Treatment_Control - Treatment_Massage
-- Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old
-
-### Comments: 
 
 
-- Factorial designs generate many interactions (e.g., Treatment_Control:AgeGroup_young). A $3\times 2$ factorial design generates $6$ groups (unique combinations of factors) which makes it possible to specify many contrasts. Avoid, formulating many hypotheses. Limit the number of hypotheses ideally to few (one or two) per experiment. It is required to adjust the p-Values based on the number of hypotheses examined.
-
-- Typically in factorial designs, test for differences among main effects (differences between levels within a single factor) and second-order interactions of the factors. 
-
-    - _main effects_ : Treatment_Control - Treatment_Massage 
-    - _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Massage:AgeGroup_young - Treatment_Massage:AgeGroup_old)
+## Repeated measurements
 
 
-**_specify contrasts here:_** 
+Applies when measurements where are repeated on the same subject, e.g. over time [^3].
 
-$~$
+[^3]: Repeated measures design is a research design that involves multiple measures of the same variable taken on the same or matched subjects either under different conditions or over two or more time periods. For instance, repeated measurements are collected in a longitudinal study in which change over time is assessed (Wikipedia).
 
-$~$
+- [ ] Yes 
+- [ ] No
 
-$~$
+If _yes_ please specify a computer-friendly factor name using _camel case_: e.g., PatientId.
 
-$~$
+Name of the factor : ____
 
-$~$
-
-$~$
-
-$~$
-
-$~$
+The subject identifiers can contain upper and lower case letters and numbers but do avoid special characters and white spaces. 
+Neither the factor names or the levels of the blocking factors will be shown in the results or figures generated.
 
 
 ## Blocking factors
 
-A blocking factor is a factor used to create blocks. It is some variable that has an effect on an experimental outcome, but is itself of no interest. Blocking factors vary wildly depending on the experiment. For example: in human studies age or gender are often used as blocking factors. Blocking factors can be included into the model to describe the variance of the data [data science central](https://www.statisticshowto.datasciencecentral.com/blocking-factor/. 
-Neither the factor names or the levels of the blocking factors will be shown in the results or figures generated.
+A blocking factor is some variable that affects an experimental outcome but is itself of no interest, e.g., sample batch [^7]. Including blocking-factors can improve the statistical model. 
+
+
+
+[^7]: A blocking factor is a factor used to create blocks. It is some variable that has an effect on an experimental outcome, but is itself of no interest. Blocking factors vary wildly depending on the experiment. For example: in human studies age or gender are often used as blocking factors. Blocking factors can be included into the model to describe the variance of the data [data science central](https://www.statisticshowto.datasciencecentral.com/blocking-factor/). 
+
+
 
 | Factor Name  | Number levels  |
 |:-----|----|
@@ -241,26 +209,77 @@ Neither the factor names or the levels of the blocking factors will be shown in 
 
 
 
-## More designs.
+# Contrasts - Hypothesis to be tested
 
-- Time Series, e.g., growth curves - require at least 4-5 different well-designed timepoints.
+If there are more than two groups, specify hypothesis to be tested (comparison) using the factor and factor level names.
+
+
+**_Contrasts to be computed:_** 
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+$~$
+
+Examples for parallel Group design (only one factor):
+
+- Massage - Control
+- Creme - Control
+
+
+Example for factorial designs:
+
+- Treatment_Control - Treatment_Massage
+- AgeGroup_young - AgeGroup_old
+- Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old
+
+
+
+### Comments:
+
+- If one group is used in more comparisons than all other groups, it will benefit the power of the test [^6] to allocate more samples to this group, since increasing the number of degrees of freedom in this group will benefit many comparisons.
+
+- __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-Value adjustment. For instance, using the Bonferroni correction, the obtained p-Values are multiplied by the number of the hypothesis tested. Given two comparisons, a p-Value of 0.03 after Bonferroni adjustment is $0.06$, i.e., not significant given a test size of $0.05$. Therefore, do not test all possible hypothesis! For instance, if including the contrast  _Massage - Creme_, it is required to multiply the p-Values with the factor $3$. i.e., a p-Value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
+
+
+[^6]:  The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. [wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
+
+- Factorial designs generate many interactions (e.g., Treatment_Control:AgeGroup_young). A $3\times 2$ factorial design generates $6$ groups (unique combinations of factors) which makes it possible to specify many contrasts. Limit the number of hypotheses ideally to few (one or two) per experiment. It is required to adjust the p-Values based on the number of hypotheses examined.
+
+- Typically in factorial designs, tests for differences among main effects (differences between levels within a single factor) and second-order interactions of the factors. 
+
+    - _main effects_ : Treatment_Control - Treatment_Massage 
+    - _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Massage:AgeGroup_young - Treatment_Massage:AgeGroup_old)
+
+
+
+## More designs
+
+- Time Series, e.g., growth curves - require at least 4-5 different well-designed time-points.
 When less than 4-time points are measured than the time points are typically treated as factors and can be analyzed using our standard pipeline for factorial designs.
 
 We might be able to support you with some other hypothesis tests, depending on our availability.
-
 
 - Dose-response curves 
 - Survival analysis 
 
 
-# Data normalization
-
-
-
-
 # Other topics
 
-$~$
+Example: Data normalization. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. 
 
 $~$
 
@@ -276,17 +295,27 @@ $~$
 
 $~$
 
-
-
-
+$~$
 
 
 Date: 
 
+$~$
+
+$~$
+
 
 Investigator:
 
-Project Bioinformatian:
+$~$
+
+$~$
+
+Project Bioinformatician:
+
+$~$
+
+$~$
 
 Project Coach:
 
