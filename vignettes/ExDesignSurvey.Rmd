@@ -18,6 +18,14 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Project Nr :   ____________________
+
+Order Id :     ___________________
+
+Participants : ________________________
+
+
+
 # Overview of the analysis
 
 
@@ -30,7 +38,7 @@ Before the main experiment, a QC experiment is performed. We use the data from t
 The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
 
 
-The outcome of the meeting should be a protocol specifying:
+The outcome of the meeting is this protocol specifying:
 
 - which and how many samples to use for the QC
 - all the parameters for the sample size estimation
@@ -38,14 +46,16 @@ The outcome of the meeting should be a protocol specifying:
 - all the names of the factors and factor levels
 - specify the hypothesis to be tested.
 
-The samples should be annotated with the names specified in the protocol in the b-fabric system, and the names will also appear in the result tables and visualizations.
+The samples should be annotated with the names specified in the protocol in the b-fabric system. These names will also appear in the result tables and visualizations.
 
 We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered might incur time delays or additional costs.
 
 
 # Effect size and size of test
 
-The parameters discussed here are already crucial for the QC experiment and will be addressed again when protein variance estimates from the QC experiment are available.
+These parameters are crucial for the QC experiment and will be assessed again when protein variance estimates from the QC experiment are available.
+They also will be used when visualizing the results in the final report (e.g., Volcano plots) or when running overrepresentation analysis (ORA).
+
 
 ## Effect size
 
@@ -74,7 +84,7 @@ Typically a difference between two conditions is considered to be significant if
 
 ## Power of test
 
-The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true [wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
+The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true [Wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
 
 - [ ] 0.8
 - other : 
@@ -255,7 +265,7 @@ Example for factorial designs:
 - __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-Value adjustment. For instance, using the Bonferroni correction, the obtained p-Values are multiplied by the number of the hypothesis tested. Given two comparisons, a p-Value of 0.03 after Bonferroni adjustment is $0.06$, i.e., not significant given a test size of $0.05$. Therefore, do not test all possible hypothesis! For instance, if including the contrast  _Massage - Creme_, it is required to multiply the p-Values with the factor $3$. i.e., a p-Value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
 
 
-[^6]:  The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. [wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
+[^6]:  The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. [Wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
 
 - Factorial designs generate many interactions (e.g., Treatment_Control:AgeGroup_young). A $3\times 2$ factorial design generates $6$ groups (unique combinations of factors) which makes it possible to specify many contrasts. Limit the number of hypotheses ideally to few (one or two) per experiment. It is required to adjust the p-Values based on the number of hypotheses examined.
 
