@@ -19,6 +19,8 @@ message(args)
 
 ithzip <- args[1]
 outputDir <- args[2]
+
+
 if(!dir.exists(outputDir)){
   if(!dir.create(outputDir)){
     stop("\n could not create : ", outputDir, "\n")
@@ -26,8 +28,6 @@ if(!dir.exists(outputDir)){
 }
 
 assign("lfq_write_format", "both", envir = .GlobalEnv)
-
-
 
 
 
@@ -49,8 +49,6 @@ summarize_cv_raw_transformed <- function(resDataStart, config){
 
 
 
-#for(ithzip in zip){
-#print(ithzip)
 resPepProt <- tidyMQ_PeptideProtein(ithzip,.all = TRUE)
 resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProt$mq_modSpecPeptides, resPepProt$mq_peptides)
 resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
@@ -81,15 +79,16 @@ resDataStart <- setup_analysis(resPepProtAnnot, config)
 resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
 
 
+filename <- basename(tools::file_path_sans_ext(ithzip))
 LFQService::render_MQSummary_rmd(resDataStart,
                                  config$clone(deep=TRUE),
                                  pep = TRUE,
                                  dest_path = outputDir,
-                                 dest_file_name = paste0("r_",ithzip,"_Peptide.pdf"),workdir = "." )
+                                 dest_file_name = paste0("r_",filename,"_Peptide.pdf"),workdir = "." )
 
 
 peptideStats <- summarize_cv_raw_transformed(resDataStart, config)
-lfq_write_table(peptideStats, path=file.path(outputDir,paste0("r_",ithzip,"_PeptideStats.csv")))
+lfq_write_table(peptideStats, path=file.path(outputDir,paste0("r_",filename,"_PeptideStats.csv")))
 
 
 # Perform filtering and Protein Aggregation...
@@ -109,8 +108,8 @@ stats_res <- summarize_cv(data, xx$config, all=FALSE)
 data_wide <- inner_join(stats_res,toWideConfig(data, xx$config)$data, by = xx$config$table$hkeysLevel(), suffix =c(".factor",""))
 
 
-lfq_write_table(data_wide, path=file.path(outputDir,paste0("r_",ithzip,"_Protein.csv")))
-lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputDir,paste0("r_",ithzip,"_annotation.csv")))
+lfq_write_table(data_wide, path=file.path(outputDir,paste0("r_",filename,"_Protein.csv")))
+lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputDir,paste0("r_",filename,"_annotation.csv")))
 
 ##```{r corrplot, fig.cap="Correlation plot."}
 ##LFQService::plot_sample_correlation(dataTransformed, config)
@@ -119,8 +118,9 @@ lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputD
 LFQService::render_MQSummary_rmd(data, xx$config$clone(deep=TRUE),
                                  project_id = "MaxQuant_p3175_o5772_QC",
                                  workunit_id = "200367",
-                                 pep_prot = "protein", dest_path = outputDir,
-                                 dest_file_name = paste0("r_",ithzip,"_Protein.pdf"), workdir = ".")
+                                 pep = FALSE,
+                                 dest_path = outputDir,
+                                 dest_file_name = paste0("r_",filename,"_Protein.pdf"), workdir = ".")
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(data =xx$data, configuration = xx$config), output_file = paste0("Protein_",ithzip,".pdf"))#,envir =new.env())
 #break()
