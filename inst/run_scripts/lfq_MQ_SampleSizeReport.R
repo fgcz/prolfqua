@@ -1,24 +1,32 @@
-# This R script can be used to create sample Size reports from MaxQuant txt folder results.
+#!/usr/bin/Rscript
 rm(list=ls())
 
-library(readr)
-library(tidyverse)
-library(LFQService)
-library(tidyr)
-library(dplyr)
+suppressMessages(library(readr))
+suppressMessages(library(tidyverse))
+suppressMessages(library(LFQService))
+suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))
 
 
-#Trivial opt parsing
-args = commandArgs(trailingOnly=TRUE)
-if(length(args) !=2 ){
-  stop("\n two args needed, input zip and ouptut directory\n")
-}
+"Sample Size Report from MQ file
 
-message(args)
+Usage:
+  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>]
+
+Options:
+  -o --outdir=<outdir> output directory [default: samplesize_qc_report]
+
+Arguments:
+  mqzip input file
+" -> doc
+
+library(docopt)
+opt <- docopt(doc)
 
 
-ithzip <- args[1]
-outputDir <- args[2]
+cat("\nParameters used:\n\t",
+    "     mqzip:", mqzip <- opt$mqzip, "\n\t",
+    "result_dir:", outputDir <- opt[["--outdir"]], "\n\n\n")
 
 
 if(!dir.exists(outputDir)){
@@ -27,8 +35,7 @@ if(!dir.exists(outputDir)){
   }
 }
 
-assign("lfq_write_format", "both", envir = .GlobalEnv)
-
+assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
 summarize_cv_raw_transformed <- function(resDataStart, config){
