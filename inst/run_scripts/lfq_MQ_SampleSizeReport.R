@@ -1,24 +1,32 @@
-# This R script can be used to create sample Size reports from MaxQuant txt folder results.
+#!/usr/bin/Rscript
 rm(list=ls())
 
-library(readr)
-library(tidyverse)
-library(LFQService)
-library(tidyr)
-library(dplyr)
+suppressMessages(library(readr))
+suppressMessages(library(tidyverse))
+suppressMessages(library(LFQService))
+suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))
 
 
-#Trivial opt parsing
-args = commandArgs(trailingOnly=TRUE)
-if(length(args) !=2 ){
-  stop("\n two args needed, input zip and ouptut directory\n")
-}
+"Sample Size Report from MQ file
 
-message(args)
+Usage:
+  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>]
+
+Options:
+  -o --outdir=<outdir> output directory [default: samplesize_qc_report]
+
+Arguments:
+  mqzip input file
+" -> doc
+
+library(docopt)
+opt <- docopt(doc)
 
 
-ithzip <- args[1]
-outputDir <- args[2]
+cat("\nParameters used:\n\t",
+    "     mqzip:", mqzip <- opt$mqzip, "\n\t",
+    "result_dir:", outputDir <- opt[["--outdir"]], "\n\n\n")
 
 
 if(!dir.exists(outputDir)){
@@ -27,8 +35,7 @@ if(!dir.exists(outputDir)){
   }
 }
 
-assign("lfq_write_format", "both", envir = .GlobalEnv)
-
+assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
 summarize_cv_raw_transformed <- function(resDataStart, config){
@@ -49,7 +56,7 @@ summarize_cv_raw_transformed <- function(resDataStart, config){
 
 
 
-resPepProt <- tidyMQ_PeptideProtein(ithzip,.all = TRUE)
+resPepProt <- tidyMQ_PeptideProtein(mqzip,.all = TRUE)
 resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProt$mq_modSpecPeptides, resPepProt$mq_peptides)
 resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
 
@@ -79,7 +86,7 @@ resDataStart <- setup_analysis(resPepProtAnnot, config)
 resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
 
 
-filename <- basename(tools::file_path_sans_ext(ithzip))
+filename <- basename(tools::file_path_sans_ext(mqzip))
 LFQService::render_MQSummary_rmd(resDataStart,
                                  config$clone(deep=TRUE),
                                  pep = TRUE,
@@ -122,7 +129,7 @@ LFQService::render_MQSummary_rmd(data, xx$config$clone(deep=TRUE),
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",filename,"_Protein.pdf"), workdir = ".")
 
-#rmarkdown::render("MQSummary2.Rmd", params=list(data =xx$data, configuration = xx$config), output_file = paste0("Protein_",ithzip,".pdf"))#,envir =new.env())
+#rmarkdown::render("MQSummary2.Rmd", params=list(data =xx$data, configuration = xx$config), output_file = paste0("Protein_",mqzip,".pdf"))#,envir =new.env())
 #break()
 #}
 
