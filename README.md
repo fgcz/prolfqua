@@ -9,5 +9,12 @@ The R package contains vignettes and functions for analyzing mass spec device ba
 a Windows/Linux/MacOSX x64 platform R 3.5.
 
 
-## 2. Install
+## 2. Running R-scripts
 
+Generate QC report from bat file.
+First add `<LFQService_path>/win` to your path variable. Then you can generate a QC report from a maxquant QC by running.
+
+
+```
+lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
+```
