@@ -1,12 +1,10 @@
 #!/usr/bin/Rscript
-rm(list=ls())
 
 suppressMessages(library(readr))
 suppressMessages(library(tidyverse))
 suppressMessages(library(LFQService))
 suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
-
 
 "Sample Size Report from MQ file
 
@@ -22,7 +20,6 @@ Arguments:
 
 library(docopt)
 opt <- docopt(doc)
-
 
 cat("\nParameters used:\n\t",
     "     mqzip:", mqzip <- opt$mqzip, "\n\t",
