@@ -1188,14 +1188,20 @@ summarize_cv <- function(data, config, all = TRUE){
 
   hierarchyFactor <- data %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysLevel()) )) %>%
-    dplyr::summarize(n = n(), sd = sd(!!intsym, na.rm = T), mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
+    dplyr::summarize(n = n(),
+                     not_na = sum(!is.na(!!intsym)),
+                     sd = sd(!!intsym, na.rm = T),
+                     mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysLevel(), funs(as.character) )
 
   if(all){
     hierarchy <- data %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-      dplyr::summarize(n = n(), sd = sd(!!intsym,na.rm = T), mean=mean(!!intsym,na.rm = T))
+      dplyr::summarize(n = n(),
+                       not_na = sum(!is.na(!!intsym)),
+                       sd = sd(!!intsym,na.rm = T),
+                       mean=mean(!!intsym,na.rm = T))
 
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
