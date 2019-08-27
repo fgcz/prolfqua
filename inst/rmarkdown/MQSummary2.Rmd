@@ -80,6 +80,8 @@ This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variab
 # Quality Control: Identifications
 
 
+
+
 Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins `r if(params$pep){", and between a few hundred to up to some few tens of thousands of peptides"}else{""}`.
 While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
@@ -284,6 +286,7 @@ Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how m
 sampleSize <- lfq_power_t_test(dataTransformed, config, delta=c(0.59,1,2))
 
 nudgeval <- max(sampleSize$long$N) * 0.05
+
 ggplot(sampleSize$long, aes(x = quantile, y = N)) +
   geom_bar(stat="identity", color="black", fill="white") +
   geom_text(aes(label = N), nudge_y = nudgeval) + 
@@ -294,9 +297,10 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 
 
 ```{r sampleSize}
-knitr::kable(sampleSize$summary, caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.", digits = 2, format = "latex")
+knitr::kable( dplyr::select( sampleSize$summary, -probs), caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.", digits = 2, format = "latex")
 
 ```
+
 
 The _power_ of a test is $1-\beta$, where $\beta$ is the probability of a Type 2 error (failing to reject the null hypothesis when the alternative hypothesis is true).
 In other words, if you have a $20\%$ chance of failing to detect a real difference, then the power of your test is $80\%$.
@@ -318,9 +322,10 @@ knitr::kable(table_factors(data, config), format = "latex",
 ```
 
 ```{r hierarchyCountsSample}
+paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
 knitr::kable(hierarchy_counts_sample(dataTransformed, configuration = config)("wide"),
              format = "latex",
              booktabs = TRUE,
-             caption = "Number of quantified peptides and proteins per sample.") %>% 
+             caption = ) %>% 
   kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
 ```

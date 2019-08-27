@@ -921,19 +921,19 @@ missingPerConditionCumsum <- function(x,configuration,factors = configuration$ta
     dplyr::summarize(nrTransitions =n())
 
   xxcs <-xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
-    dplyr::mutate(cs = cumsum(nrTransitions))
+    dplyr::mutate(cumulative_sum = cumsum(nrTransitions))
   res <- xxcs  %>% dplyr::select(-nrTransitions)
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  nudgeval = max(res$cs) * 0.05
-  p <- ggplot(res, aes(x= nrNAs, y = cs)) +
+  nudgeval = max(res$cumulative_sum) * 0.05
+  p <- ggplot(res, aes(x= nrNAs, y = cumulative_sum)) +
     geom_bar(stat="identity", color="black", fill="white") +
-    geom_text(aes(label = cs), nudge_y = nudgeval) +
+    geom_text(aes(label = cumulative_sum), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
 
-  res <- res %>% tidyr::spread("nrNAs","cs")
+  res <- res %>% tidyr::spread("nrNAs","cumulative_sum")
   return(list(data =res, figure=p))
 }
 
@@ -1278,7 +1278,7 @@ lfq_power_t_test <- function(data,
     quantilesSD <- quantile(sd,probs)
 
     sampleSizes <- expand.grid(probs = probs, delta = delta)
-    quantilesSD <- quantile(sd,sampleSizes$probs)
+    quantilesSD <- quantile( sd, sampleSizes$probs )
     sampleSizes <- add_column( sampleSizes, sd = quantilesSD, .before=2 )
     sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before=1 )
 
@@ -1286,9 +1286,9 @@ lfq_power_t_test <- function(data,
 
     sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
     sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
-    sampleSizes <- sampleSizes %>% mutate(FC = round(2^delta,digits=2))
+    sampleSizes <- sampleSizes %>% mutate( FC = round(2^delta, digits=2))
 
-    summary <- sampleSizes %>% dplyr::select(-N_exact,-delta) %>% spread(FC,N, sep="=")
+    summary <- sampleSizes %>% dplyr::select( -N_exact, -delta) %>% spread(FC, N, sep="=")
     return(list(long = sampleSizes, summary = summary))
   }
   return(NULL)
