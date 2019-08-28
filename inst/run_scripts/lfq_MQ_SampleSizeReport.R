@@ -9,10 +9,13 @@ suppressMessages(library(dplyr))
 "Sample Size Report from MQ file
 
 Usage:
-  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>]
+  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>] [--project_id=<project_id>] [--order_id=<order_id>] [--workunit=<workunit>]
 
 Options:
   -o --outdir=<outdir> output directory [default: samplesize_qc_report]
+  -p --project_id=<project_id> project identifier [default: NULL]
+  -q --order_id=<order_id> order identifier [default: NULL]
+  -w --workunit=<workunit> parent workunit [default: NULL]
 
 Arguments:
   mqzip input file
@@ -23,7 +26,10 @@ opt <- docopt(doc)
 
 cat("\nParameters used:\n\t",
     "     mqzip:", mqzip <- opt$mqzip, "\n\t",
-    "result_dir:", outputDir <- opt[["--outdir"]], "\n\n\n")
+    "result_dir:", outputDir <- opt[["--outdir"]], "\n\t",
+    "project_id:", project_id <- opt[["--project_id"]], "\n\t",
+    "order_id:", order_id <- opt[["--order_id"]], "\n\t",
+    "workunit:", workunit <- opt[["--workunit"]], "\n\n\n")
 
 
 if(!dir.exists(outputDir)){
@@ -86,13 +92,15 @@ resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases
 filename <- basename(tools::file_path_sans_ext(mqzip))
 LFQService::render_MQSummary_rmd(resDataStart,
                                  config$clone(deep=TRUE),
+                                 workunit_id = workunit,
+                                 project_id = project_id,
                                  pep = TRUE,
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",filename,"_Peptide.pdf"),workdir = "." )
 
 
 peptideStats <- summarize_cv_raw_transformed(resDataStart, config)
-lfq_write_table(peptideStats, path=file.path(outputDir,paste0("r_",filename,"_PeptideStats.csv")))
+lfq_write_table(separate_hierarchy(peptideStats, config), path=file.path(outputDir,paste0("r_",filename,"_PeptideStats.csv")))
 
 
 # Perform filtering and Protein Aggregation...
@@ -112,16 +120,16 @@ stats_res <- summarize_cv(data, xx$config, all=FALSE)
 data_wide <- inner_join(stats_res,toWideConfig(data, xx$config)$data, by = xx$config$table$hkeysLevel(), suffix =c(".factor",""))
 
 
-lfq_write_table(data_wide, path=file.path(outputDir,paste0("r_",filename,"_Protein.csv")))
-lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputDir,paste0("r_",filename,"_annotation.csv")))
+lfq_write_table(separate_hierarchy(data_wide, config), path=file.path(outputDir, paste0("r_",filename,"_Protein.csv")))
+lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputDir, paste0("r_",filename,"_annotation.csv")))
 
 ##```{r corrplot, fig.cap="Correlation plot."}
 ##LFQService::plot_sample_correlation(dataTransformed, config)
 ##```
 
 LFQService::render_MQSummary_rmd(data, xx$config$clone(deep=TRUE),
-                                 project_id = "MaxQuant_p3175_o5772_QC",
-                                 workunit_id = "200367",
+                                 workunit_id = workunit,
+                                 project_id = project_id,
                                  pep = FALSE,
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",filename,"_Protein.pdf"), workdir = ".")

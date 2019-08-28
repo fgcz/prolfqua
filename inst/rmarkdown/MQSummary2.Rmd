@@ -14,8 +14,9 @@ params:
   data: !r quote(LFQService::sample_analysis)
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
-  workunit_id: "XXX"
-  project_id: "XXX"
+  workunit_id: "parent_workunit_id"
+  project_id: "project_id"
+  order_id: "order_id"
   pep: TRUE
 vignette: >
   %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
@@ -68,8 +69,9 @@ old <- theme_set(theme_classic())
 
 # Introduction
 
-* Workunit: `r params$workunit_id`
-* Project: `r params$project_id`
+- Workunit: `r params$workunit_id`
+- Project: `r params$project_id`
+- Order : `r params$order_id`
 
 <!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.-->
 
