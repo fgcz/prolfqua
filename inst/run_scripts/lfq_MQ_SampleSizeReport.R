@@ -28,8 +28,8 @@ cat("\nParameters used:\n\t",
     "     mqzip:", mqzip <- opt$mqzip, "\n\t",
     "result_dir:", outputDir <- opt[["--outdir"]], "\n\t",
     "project_id:", project_id <- opt[["--project_id"]], "\n\t",
-    "order_id:", order_id <- opt[["--order_id"]], "\n\t",
-    "workunit:", workunit <- opt[["--workunit"]], "\n\n\n")
+    "  order_id:", order_id <- opt[["--order_id"]], "\n\t",
+    "  workunit:", workunit <- opt[["--workunit"]], "\n\n\n")
 
 
 if(!dir.exists(outputDir)){
