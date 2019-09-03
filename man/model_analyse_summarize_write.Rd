@@ -4,7 +4,7 @@
 \alias{model_analyse_summarize_write}
 \title{writes results of `model_analyse`, anova table and all the coefficients with parameters.}
 \usage{
-model_analyse_summarize_write(modellingResult, path)
+model_analyse_summarize_write(modellingResult, path, all = FALSE)
 }
 \description{
 writes results of `model_analyse`, anova table and all the coefficients with parameters.

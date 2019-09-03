@@ -3,12 +3,12 @@ title: "Bioinformatics Project Meeting"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document: default
   html_document: 
     toc: true
     toc_depth: 2
     #toc_float: true
     #number_sections: true
+  word_document: default
   pdf_document: default
     
 ---
@@ -49,7 +49,12 @@ $~$
 
 
 In label-free quantification (LFQ) experiments, we measure relative protein changes among groups of subjects. 
-Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the within-group variance and to determine the number of sample in each group needed in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups.
+Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the _within-group_ variance and to determine the number of samples in each group needed in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups.
+
+These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora.
+
+
+
 
 
 # Aim of the meeting
@@ -59,6 +64,7 @@ The meeting aims to obtain and document all the information relevant to perform 
 
 The outcome of the meeting is this protocol specifying:
 
+- which protein database to use
 - which and how many samples to use for the QC
 - all the parameters for the sample size estimation
 - the design of your main experiment
@@ -68,6 +74,41 @@ The outcome of the meeting is this protocol specifying:
 The samples should be annotated with the names specified in the protocol in the b-fabric system. These names will also appear in the result tables and visualizations.
 
 We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered might incur time delays or additional costs.
+
+
+# Protein Sequence database and downstream analysis tools
+
+
+Which organism
+
+- [ ] homo sapiens
+- [ ] mus musculus
+- [ ] yeast
+- [ ] zebrafish
+- other :
+
+Which sequence database should be used for protein identification?
+
+$~$
+
+$~$
+
+
+Which downstream analysis tools will be used?
+
+- [ ] [WebGestalt](http://www.webgestalt.org/) (WEB-based GEne SeT AnaLysis Toolkit)
+- [ ] [string-db](https://string-db.org/) (Known and predicted protein-protein interactions)
+- other : 
+
+$~$
+$~$
+$~$
+
+
+
+Comment:
+
+- The identifiers in the protein database should be compatible with the downstream analysis tool you intend to use. For instance _WebGestaltR_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
 
 
 # Effect size and size of test
@@ -327,7 +368,7 @@ We might be able to support you with some other hypothesis tests, depending on o
 
 # Other topics
 
-Example: Data normalization. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. 
+Example: Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected.
 
 $~$
 
