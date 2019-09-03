@@ -249,7 +249,7 @@ separate_hierarchy <- function(data, config){
 #' separates hierarchies into starting columns
 #' @export
 separate_factors <- function(data, config){
-  for(fkey in config$table$fkeysLevel()){
+  for(fkey in config$table$factorKeys()){
     data<- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep=config$sep, remove=FALSE)
   }
   return(data)
@@ -1290,8 +1290,10 @@ lfq_power_t_test <- function(data,
 
     summary <- sampleSizes %>% dplyr::select( -N_exact, -delta) %>% spread(FC, N, sep="=")
     return(list(long = sampleSizes, summary = summary))
+  }else{
+    message("no standard deviation is available, check if model is saturated (factor level variable).")
+    return(NULL)
   }
-  return(NULL)
 }
 
 
