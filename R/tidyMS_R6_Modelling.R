@@ -236,12 +236,14 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
 
 #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
 #' @export
-model_analyse_summarize_write  <- function(modellingResult, path){
+model_analyse_summarize_write  <- function(modellingResult, path, all=FALSE){
   message("writing tables into :", path)
-  lfq_write_table(modellingResult$Model_Coeff,
-                   path = file.path( path,modellingResult$fname_Model_Coeff ))
+  if(all){
+    lfq_write_table(modellingResult$Model_Coeff,
+                    path = file.path( path,modellingResult$fname_Model_Coeff ))
+  }
   lfq_write_table(modellingResult$Model_Anova,
-                   path = file.path( path , modellingResult$fname_Model_Anova ))
+                  path = file.path( path , modellingResult$fname_Model_Anova ))
 }
 
 
@@ -313,26 +315,28 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
 model_analyse_summarize_vis_write <- function(modelling_result,
                                               path,
                                               fig.width = 10 ,
-                                              fig.height = 10){
-  fpath <- file.path(path, modelling_result$fname_histogram_coeff_p.values)
-  message("Writing figure into : ", fpath, "\n")
-  pdf(fpath, width = fig.width, height = fig.height )
-  print(modelling_result$histogram_coeff_p.values)
-  dev.off()
+                                              fig.height = 10,
+                                              all = FALSE){
+  if(all){
+    fpath <- file.path(path, modelling_result$fname_histogram_coeff_p.values)
+    message("Writing figure into : ", fpath, "\n")
+    pdf(fpath, width = fig.width, height = fig.height )
+    print(modelling_result$histogram_coeff_p.values)
+    dev.off()
 
-  fpath <- file.path(path, modelling_result$fname_VolcanoPlot)
-  message("Writing figure into : ", fpath, "\n")
-  pdf(fpath,
-      width = fig.width , height = fig.height)
-  print(modelling_result$VolcanoPlot)
-  dev.off()
+    fpath <- file.path(path, modelling_result$fname_VolcanoPlot)
+    message("Writing figure into : ", fpath, "\n")
+    pdf(fpath,
+        width = fig.width , height = fig.height)
+    print(modelling_result$VolcanoPlot)
+    dev.off()
 
-  fpath <- file.path(path, modelling_result$fname_Pairsplot_Coef)
-  message("Writing figure into : ", fpath, "\n")
-  pdf(fpath, width = fig.width , height = fig.height)
-  print(modelling_result$Pairsplot_Coef)
-  dev.off()
-
+    fpath <- file.path(path, modelling_result$fname_Pairsplot_Coef)
+    message("Writing figure into : ", fpath, "\n")
+    pdf(fpath, width = fig.width , height = fig.height)
+    print(modelling_result$Pairsplot_Coef)
+    dev.off()
+  }
   fpath <- file.path(path, modelling_result$fname_histogram_anova_p.values)
   message("Writing figure into : ", fpath, "\n")
   pdf(fpath, width = fig.width , height = fig.height)
@@ -363,15 +367,15 @@ workflow_model_analyse <- function(data,
                                    subject_Id)
 
   # delay write
-  res_fun <- function(path = NULL){
+  res_fun <- function(path = NULL, all=FALSE){
     summaryResult <- model_analyse_summarize(modellingResult$modelProtein,
                                              modellingResult$modelName,
                                              subject_Id = subject_Id)
     visualization <- model_analyse_summarize_vis(summaryResult, subject_Id)
 
     if(!is.null(path)){
-      model_analyse_summarize_write(summaryResult, path)
-      model_analyse_summarize_vis_write(visualization, path)
+      model_analyse_summarize_write(summaryResult, path, all=all)
+      model_analyse_summarize_vis_write(visualization, path,all=all)
     }
     return(list(modellingResult = modellingResult,
                 summaryResult = summaryResult,
@@ -1119,8 +1123,8 @@ workflow_contrasts_linfct <- function(models,
     contrast_minimal <- contrast_result %>% dplyr::select(subject_Id, relevant_columns, columns )
 
     contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                subject_Id = subject_Id,
-                                                columns=c("estimate", columns))
+                                                   subject_Id = subject_Id,
+                                                   columns=c("estimate", columns))
 
     if(!is.null(path)){
       if(FALSE){
@@ -1284,8 +1288,8 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 
   stopifnot(shape1 == shape2)
   res.p.value <- pbeta(median.p.value,
-                   shape1 = shape1,
-                   shape2 = shape2)
+                       shape1 = shape1,
+                       shape2 = shape2)
   return(res.p.value)
 }
 
