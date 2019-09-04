@@ -190,7 +190,9 @@ get_complete_model_fit <- function(modelProteinF){
 #' names(modellingResult)
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
 #' names(tmp)
-model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "protein_Id"){
+model_analyse_summarize <- function(modelProteinF,
+                                    modelName,
+                                    subject_Id = "protein_Id"){
   lmermodel <- "linear_model"
 
   modelProteinF <- get_complete_model_fit(modelProteinF)
@@ -203,7 +205,8 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
     return(x)
   }
 
-  Model_Coeff <- modelProteinF %>% dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
+  Model_Coeff <- modelProteinF %>%
+    dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
 
   Model_Coeff <- Model_Coeff %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
@@ -227,9 +230,9 @@ model_analyse_summarize <- function(modelProteinF, modelName, subject_Id = "prot
   return(list(
     modelName = modelName,
     Model_Coeff = Model_Coeff,
-    fname_Model_Coeff = paste0("Coef_",modelName, ".csv"),
+    fname_Model_Coeff = "Coef_Model.csv", # paste0("Coef_",modelName, ".csv"),
     Model_Anova = Model_Anova,
-    fname_Model_Anova = paste0("ANOVA_",modelName,".csv" )
+    fname_Model_Anova = "ANOVA_Model.csv" # paste0("ANOVA_",modelName,".csv" )
   ))
 }
 
@@ -274,13 +277,13 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   fig <- list()
 
   ## Coef_Histogram
-  fig$fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",modelName,".pdf")
+  fig$fname_histogram_coeff_p.values <- "Coef_Histogram_Model.pdf" ##paste0("Coef_Histogram_",modelName,".pdf")
   fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
 
   ## Coef_VolcanoPlot
-  fig$fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",modelName,".pdf")
+  fig$fname_VolcanoPlot <- "Coef_VolcanoPlot_Model.pdf" #paste0("Coef_VolcanoPlot_",modelName,".pdf")
   fig$VolcanoPlot <- Model_Coeff %>%
     dplyr::filter(row.names.x. != "(Intercept)") %>%
     quantable::multigroupVolcano(
@@ -295,11 +298,11 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   forPairs <- Model_Coeff %>%
     dplyr::select(!!sym("subject_Id") , row.names.x. ,  Estimate ) %>%
     tidyr::spread(row.names.x.,Estimate )
-  fig$fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_",modelName,".pdf")
+  fig$fname_Pairsplot_Coef <- "Coef_Pairsplot_Model.pdf" # paste0("Coef_Pairsplot_",modelName,".pdf")
   fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
 
   ## Anova_p.values
-  fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
+  fig$fname_histogram_anova_p.values <- "Anova_p.values_Model.pdf" # paste0("Anova_p.values_", modelName, ".pdf")
   fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
     ggplot( aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
@@ -1018,7 +1021,9 @@ contrasts_linfct <- function(models,
     dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()
 
   modelInfos <- models %>%
-    dplyr::select_at(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual" )) %>% distinct()
+    dplyr::select_at(c(subject_Id, "isSingular",
+                       "sigma.model" = "sigma",
+                       "df.residual.model" = "df.residual" )) %>% distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
 
   # adjust
