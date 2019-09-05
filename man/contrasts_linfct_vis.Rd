@@ -4,9 +4,9 @@
 \alias{contrasts_linfct_vis}
 \title{visualize output of `contrasts_linfct``}
 \usage{
-contrasts_linfct_vis(contrasts, modelName, prefix = "Contrasts",
-  subject_Id = "protein_Id", columns = c("p.value",
-  "p.value.adjusted"))
+contrasts_linfct_vis(contrasts, modelName = "Model",
+  prefix = "Contrasts", subject_Id = "protein_Id",
+  columns = c("p.value", "p.value.adjusted"))
 }
 \description{
 visualize output of `contrasts_linfct``

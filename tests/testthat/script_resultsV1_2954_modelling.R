@@ -41,9 +41,6 @@ model_analyse_summarize_vis_write(reslist, path = results$path)
 
 
 
-
-
-
 # Model2
 modelName  <- "f_Condition_r_peptid_r_patient"
 formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)", model_name=modelName)
@@ -84,11 +81,10 @@ m <- linfct_from_model(models$linear_model[[1]])
 m$linfct_interactions
 # Group averages for one of the models
 models_interaction_Averages <- contrasts_linfct(models,
-                                                 summary_interaction$modelName,
                                                  m$linfct_interactions,
                                                  subject_Id = pepConfig$table$hkeysLevel() )
 
-contrasts_linfct_write(models_interaction_Averages, models_base$modelName , pepConfig,  path=results$path )
+contrasts_linfct_write(models_interaction_Averages, pepConfig, models_base$modelName ,  path=results$path )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
 contrasts_linfct_vis_write(wfs, path=results$path)
@@ -97,7 +93,6 @@ contrasts_linfct_vis_write(wfs, path=results$path)
 all_linfct <- LFQService:::.linfct_all_possible_contrasts(m$linfct_interactions)
 
 models_allContrasts <- contrasts_linfct( models,
-                                         summary_interaction$modelName,
                                          all_linfct,
                                          subject_Id = pepConfig$table$hkeysLevel() )
 

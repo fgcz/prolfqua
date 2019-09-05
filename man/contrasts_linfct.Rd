@@ -4,7 +4,7 @@
 \alias{contrasts_linfct}
 \title{compute group averages}
 \usage{
-contrasts_linfct(models, modelName, linfct, subject_Id = "protein_Id",
+contrasts_linfct(models, linfct, subject_Id = "protein_Id",
   contrastfun = LFQService::my_contest)
 }
 \description{
@@ -18,10 +18,11 @@ m <- get_complete_model_fit(modelSummary_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 factor_contrasts
+
 factor_levelContrasts <- contrasts_linfct( m,
-        modelSummary_A$modelName,
         factor_contrasts,
-        subject_Id = "Compound",contrastfun = LFQService::my_contrast_V2)
+        subject_Id = "Compound",
+        contrastfun = LFQService::my_contrast_V2)
 
 #usethis::use_data(factor_levelContrasts, overwrite=TRUE)
 
@@ -32,7 +33,6 @@ m <- get_complete_model_fit(models_interaction$modelProtein)
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 m
 factor_levelContrasts <- contrasts_linfct( m,
-                         models_interaction$modelName,
                            factor_contrasts,
                        subject_Id = "protein_Id")
 head(factor_levelContrasts)

@@ -38,8 +38,8 @@ model_analyse_summarize_vis_write(visualization ,path = results$path)
 m <- get_complete_model_fit(modellingResult_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
+
 factor_levelContrasts <- contrasts_linfct( m,
-                                           modellingResult_A$modelName,
                                            factor_contrasts,
                                            subject_Id = pepConfig$table$hkeysLevel(),
                                            contrastfun = LFQService::my_contrast_V2)
@@ -53,35 +53,34 @@ contrasts_linfct_vis_write(wfs, path=results$path)
 
 
 contrasts_linfct_write(factor_levelContrasts,
-                       modellingResult_A$modelName ,
                        pepConfig,
-                       path=results$path)
+                       path=results$path,
+                       modelName = modellingResult_A$modelName )
 
 # Compute subgroup averages ----
 linfct <- linfct_from_model(m$linear_model[[1]])
 models_interaction_Averages <- contrasts_linfct( m,
-                                                 modelSummary_A$modelName,
                                                  linfct$linfct_factors,
                                                  subject_Id = pepConfig$table$hkeysLevel(),
                                                 contrastfun = LFQService::my_contrast_V2
                                                 )
 
 contrasts_linfct_write(models_interaction_Averages,
-                       modellingResult_A$modelName ,
                        pepConfig,
+                       modelName = modellingResult_A$modelName,
                        prefix = "GroupAverages",
                        path=results$path )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,
-                            modellingResult_A$modelName ,
+                            modelName = modellingResult_A$modelName ,
                             prefix = "GroupAverages",
                             subject_Id = "Compound")
 contrasts_linfct_vis_write(wfs, path=results$path)
 
 contrastres_fun <- workflow_contrasts_linfct(m,
-                                             modellingResult_A$modelName,
-                                             linfct$linfct_factors ,
-                                             pepConfig,
+                                             linfct = linfct$linfct_factors ,
+                                             config = pepConfig,
+                                             modelName = modellingResult_A$modelName,
                                              prefix = "GroupAverages",
                                              contrastfun = LFQService::my_contrast_V2)
 

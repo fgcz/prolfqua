@@ -20,7 +20,6 @@ modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
-                                                   modelSummary_A$modelName,
                                                    factor_contrasts,
                                                    subject_Id = "Compound",
                                                    contrastfun = my_contrast_V2)
@@ -36,7 +35,6 @@ m <- get_complete_model_fit(models_interaction$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 
 factor_levelContrasts <- contrasts_linfct(m,
-                                         models_interaction$modelName,
                                          factor_contrasts,
                                          subject_Id = "protein_Id")
 
