@@ -1,0 +1,70 @@
+---
+title: "LFQ modelling results"
+author: "FGCZ"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    includes:
+      in_header: fgcz_header.html
+      after_body: fgcz_footer.html
+params:
+  pars: NULL
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+pars <- params$pars
+```
+
+
+- project ID : `r pars$project_id`
+- order ID : `r pars$order_id`
+- parent work-unit name : `r pars$workunit_name`
+- input file : `r pars$inputMQfile`
+- modelling implemented by : `r pars$author`
+
+The raw files are annotated with the following factors and factor levels:
+
+```{r annotation}
+knitr::kable(pars$annotation, caption="Annotation")
+```
+
+The following model was fitted: 
+
+```{r echo TRUE}
+pars$model
+```
+
+Using this model the following contrasts were computed.
+
+
+```{r contrasts}
+Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = pars$Contrasts)
+knitr::kable(Contrasts, caption = "Contrasts (vs - versus, gv - given)")
+```
+
+
+- ANOVA results in [excel xlsx format](modelling_results/Anova_Model.xlsx) and [histogram of p-Values](modelling_results/Anova_p.values_Model.pdf) which shows which factors are most significant.
+- For all contrasts and proteins:
+    - A table with all fold change estimates and p-Values [excel xlsx format](modelling_results/foldchange_estimates.xlsx) with p-values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
+    - [Histogram of p-Values](modelling_results/Contrasts_Histogram_p.value_Model.pdf) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
+    - [Histogram of adjusted p-Values](modelling_results/Contrasts_Histogram_p.value.adjusted_Model.pdf) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
+    - [Volcano plot of p-Values vs fold change estimate](modelling_results/Contrasts_Volcano_p.value_Model.pdf) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis. 
+    - [Volcano plot of adjusted p-Values vs fold change estimate](modelling_results/Contrasts_Volcano_p.value_Model.pdf)  which on the vertical axis shows the adjusted protein p-Values versus the the log2 fold changes on the horizontal axis.
+
+
+
+In addition you can find descriptive statistics visualizations
+
+
+- [PCA plot](qc_results/protein_intensities_PCA_.pdf) showing the samples according to the first and second principal component.
+- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf).
+- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf).
+- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx).
+- A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html).
+
+
+
+

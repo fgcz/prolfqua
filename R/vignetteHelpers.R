@@ -22,10 +22,10 @@
 #'
 copy_mixed_model_analysis_script <- function(workdir = getwd()){
   runscripts <- c("run_scripts/mixed_model_analysis_script.R",
-                  "formatting/fgcz_header.html",
-                  "formatting/fgcz_footer.html",
-                  "formatting/fgcz.css",
-                  "formatting/fgcz_banner.png",
+                  "fgcz_formatting/fgcz_header.html",
+                  "fgcz_formatting/fgcz_footer.html",
+                  "fgcz_formatting/fgcz.css",
+                  "fgcz_formatting/fgcz_banner.png",
                   "rmarkdown/mixed_model_analysis_script_Report.Rmd")
   .scriptCopyHelperVec(runscripts, workdir = workdir)
 }
