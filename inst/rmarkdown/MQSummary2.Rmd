@@ -258,8 +258,8 @@ sd_quantile_res2 <- summarize_cv_quantiles(stats_res, config, stats="sd", probs 
 
 ```{r printSDTable}
 knitr::kable(sd_quantile_res2, format = "latex", booktabs = TRUE, digits = 3,
-             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.") %>% 
-  kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.") #%>% 
+  #kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
 ```
 
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
@@ -319,8 +319,8 @@ Fold change: Suppose you are comparing a treatment group to a placebo group, and
 
 ```{r sampleNameRawFileMapping}
 knitr::kable(table_factors(data, config), format = "latex",
-             booktabs = TRUE, caption = "Mapping of raw file names to sample names used throughout this report.") %>% 
-  kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+             booktabs = TRUE, caption = "Mapping of raw file names to sample names used throughout this report.") #%>% 
+  # kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
 ```
 
 ```{r hierarchyCountsSample}
@@ -328,6 +328,6 @@ paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"pept
 knitr::kable(hierarchy_counts_sample(dataTransformed, configuration = config)("wide"),
              format = "latex",
              booktabs = TRUE,
-             caption = ) %>% 
-  kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+             caption = ) # %>% 
+  #kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
 ```
