@@ -8,31 +8,49 @@
     if(!file.copy(src_script , dest_script, overwrite = TRUE)){
       warning(paste("could not copy script file.", dest_script, sep=" "))
     }else{
-      res <- c(res,dest_script )
+      res <- c(res, dest_script )
     }
   }
   message(paste("your working directory now should contain: ", length(res) , "new files :\n",sep=" "))
   return(res)
 }
 
+
+#' copy all files need to run mixed model analysis.
+#' @param workdir directory where to copy file - default is current working directory.
+#' @export
+#'
+copy_mixed_model_analysis_script <- function(workdir = getwd()){
+  runscripts <- c("run_scripts/mixed_model_analysis_script.R",
+                  "formatting/fgcz_header.html",
+                  "formatting/fgcz_footer.html",
+                  "formatting/fgcz.css",
+                  "formatting/fgcz_banner.png",
+                  "rmarkdown/mixed_model_analysis_script_Report.Rmd")
+  .scriptCopyHelperVec(runscripts, workdir = workdir)
+}
+
+
+
 .run_markdown_with_params <- function(params,
                                       markdown_path,
                                       dest_path,
                                       dest_file_name,
                                       workdir = tempdir(),
-                                      packagename = "LFQService"){
+                                      packagename = "LFQService",
+                                      format = "pdf"){
   res <- .scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
-  dist_file_path <- file.path(dest_path, dest_file_name)
+  dist_file_path <- file.path(dest_path, paste0(dest_file_name,".",format))
   if(is.null(res)){
     return(NULL)
   }
   rmarkdown::render(res[1],
-                    output_format = bookdown::pdf_document2(),
+                    output_format = if(format == "pdf"){bookdown::pdf_document2()}else{bookdown::html_document2()},
                     params=params,
                     envir = new.env()
   )
 
-  pdf_doc <- paste0(tools::file_path_sans_ext(res[1]),".pdf")
+  pdf_doc <- paste0(tools::file_path_sans_ext(res[1]),".",format)
   message("XXXX--------------------------------------XXXX")
   if(pdf_doc != dist_file_path){
     message("from " , pdf_doc, " to ", dist_file_path)
@@ -46,14 +64,16 @@
 #' @examples
 #' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
-render_MQSummary_rmd <- function(data, config,
+render_MQSummary_rmd <- function(data,
+                                 config,
                                  workunit_id = "w1",
                                  project_id = "p1000",
                                  order_id = "o2000",
                                  pep = TRUE,
                                  dest_path =".",
-                                 dest_file_name = "MQSummary2.pdf",
-                                 workdir = tempdir())
+                                 dest_file_name = "MQSummary2",
+                                 workdir = tempdir(),
+                                 format = c("pdf","html"))
 {
   dist_file_path <- .run_markdown_with_params(
     list(data = data,
@@ -66,7 +86,8 @@ render_MQSummary_rmd <- function(data, config,
     dest_path = dest_path,
     dest_file_name = dest_file_name,
     workdir = workdir,
-    packagename = "LFQService"
+    packagename = "LFQService",
+    format = match.arg(format)
   )
   return(dist_file_path)
 }
