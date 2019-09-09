@@ -182,7 +182,7 @@ plot_heatmap_cor(dataTransformed, config, R2 = TRUE, col = colorRampPalette(c("w
 
 
 ```{r pairsplotSmooth, fig.cap = "Pairsplot - scatterplot of samples.", fig.height=12, fig.width=12}
-samples <- dplyr::select(resDataStart, config$table$sampleName) %>% distinct() %>%  pull()
+samples <- dplyr::select(dataTransformed, config$table$sampleName) %>% distinct() %>%  pull()
 if(length(samples) > 10){
   limit <- dplyr::select(dataTransformed, config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
   ldata <- dataTransformed %>% dplyr::filter(!!sym(config$table$sampleName) %in% limit)
