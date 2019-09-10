@@ -26,7 +26,8 @@ make_custom_model_lmer <- function( modelstr, model_name = "Model") {
   res <- list(model_fun = model_fun,
               isSingular = lme4::isSingular,
               contrast_fun = my_contest,
-              model_name = model_name)
+              model_name = model_name,
+              report_columns = c("p.value", "p.value.adjusted") )
   return(res)
 }
 
@@ -50,7 +51,8 @@ make_custom_model_lm <- function( modelstr, model_name) {
   res <- list(model_fun = model_fun,
               isSingular = isSingular_lm,
               contrast_fun = my_contrast_V2,
-              model_name = model_name)
+              model_name = model_name,
+              report_columns = c("moderated.p.value", "moderated.p.value.adjusted") )
   return(res)
 }
 
@@ -66,8 +68,6 @@ make_custom_model_lm <- function( modelstr, model_name) {
     return(NA)
   }
 }
-
-
 
 
 # Fit the models to data ----
