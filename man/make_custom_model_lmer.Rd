@@ -9,3 +9,10 @@ make_custom_model_lmer(modelstr, model_name = "Model")
 \description{
 Create custom lmer model
 }
+\examples{
+
+tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name="random_example")
+tmp$model_fun(get_formula=TRUE)
+tmp$isSingular
+
+}
