@@ -79,6 +79,8 @@ We perform the data analysis according to this protocol. Changing the analysis p
 # Protein Sequence database and downstream analysis tools
 
 
+
+
 Which organism
 
 - [ ] homo sapiens
@@ -86,12 +88,6 @@ Which organism
 - [ ] yeast
 - [ ] zebrafish
 - other :
-
-Which sequence database should be used for protein identification?
-
-$~$
-
-$~$
 
 
 Which downstream analysis tools will be used?
@@ -104,11 +100,25 @@ $~$
 $~$
 $~$
 
-
-
 Comment:
 
 - The identifiers in the protein database should be compatible with the downstream analysis tool you intend to use. For instance _WebGestaltR_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
+
+
+
+Which sequence database should be used for protein identification? (A list of available FGCZ databases)[http://fgcz-r-021.uzh.ch/FASTA/]
+
+$~$
+
+$~$
+
+Should additional protein sequences be added to the database?
+
+
+Contaminant list?
+
+- [ ] Complete
+- [ ] Without human contaminants
 
 
 # Effect size and size of test
