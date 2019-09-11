@@ -32,10 +32,10 @@ application_run_modelling <- function(outpath,
   modellingResult_fun <- workflow_model_analyse(protIntensityNormalized,
                                                 modelFunction,
                                                 modelName,
-                                                reportColumns,
                                                 subject_Id = pepConfig$table$hkeysLevel())
 
   modellingResult <- modellingResult_fun()
+  modellingResult_fun(modelling_path)
 
   #names(modellingResult)
 
@@ -60,7 +60,7 @@ application_run_modelling <- function(outpath,
                                              prefix =  "Contrasts",
                                              contrastfun = modelFunction$contrast_fun)
 
-  xx <- res_contrasts(modelling_path,columns = modelFunction$report_columns)
+  xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
   xx_imputed <- res_contrasts_imputed("long",what = "contrasts")
 
   merge_contrasts_results <- function(contrast_minimal,
@@ -110,7 +110,7 @@ application_set_up_MQ_run <- function(outpath,
   resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
 
   pdf(file.path(qc_path, "retention_time_plot.pdf"), height = 15)
-  resPepProtVis <- resPepProtAnnot %>% filter(mod.peptide.intensity > 4)
+  resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
   ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) + geom_point(alpha=1/20, size=0.3) + facet_wrap(~raw.file, ncol=2 )
   dev.off()
 
