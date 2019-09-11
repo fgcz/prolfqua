@@ -46,14 +46,13 @@ knitr::kable(Contrasts, caption = "Contrasts (vs - versus, gv - given)")
 ```
 
 
-- ANOVA results in [excel xlsx format](modelling_results/Anova_Model.xlsx) and [histogram of p-Values](modelling_results/Anova_p.values_Model.pdf) which shows which factors are most significant.
+- ANOVA results in [excel xlsx format](`r file.path(pars$modelling_dir,"Anova_Model.xlsx")`) and [histogram of p-Values](`r file.path(pars$modelling_dir,"Anova_p.values_Model.pdf")`) which shows which factors are most significant.
 - For all contrasts and proteins:
-    - A table with all fold change estimates and p-Values [excel xlsx format](modelling_results/foldchange_estimates.xlsx) with p-values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
-    - [Histogram of p-Values](modelling_results/Contrasts_Histogram_p.value_Model.pdf) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
-    - [Histogram of adjusted p-Values](modelling_results/Contrasts_Histogram_p.value.adjusted_Model.pdf) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
-    - [Volcano plot of p-Values vs fold change estimate](modelling_results/Contrasts_Volcano_p.value_Model.pdf) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis. 
-    - [Volcano plot of adjusted p-Values vs fold change estimate](modelling_results/Contrasts_Volcano_p.value_Model.pdf)  which on the vertical axis shows the adjusted protein p-Values versus the the log2 fold changes on the horizontal axis.
-
+    - A table with all fold change estimates and p-Values [excel xlsx format](`r file.path(pars$modelling_dir,"foldchange_estimates.xlsx")`) with p-values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
+    - [Histogram of p-Values](`r file.path(pars$modelling_dir,"Contrasts_Histogram_p.value_Model.pdf")`) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
+    - [Histogram of adjusted p-Values](`r file.path(pars$modelling_dir,"Contrasts_Histogram_p.value.adjusted_Model.pdf")`) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
+    - [Volcano plot of p-Values vs fold change estimate](`r file.path(pars$modelling_dir,"Contrasts_Volcano_p.value_Model.pdf")`) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis. 
+    - [Volcano plot of adjusted p-Values vs fold change estimate](`r file.path(pars$modelling_dir,"Contrasts_Volcano_p.value_Model.pdf")`)  which on the vertical axis shows the adjusted protein p-Values versus the the log2 fold changes on the horizontal axis.
 
 
 In addition you can find descriptive statistics visualizations
