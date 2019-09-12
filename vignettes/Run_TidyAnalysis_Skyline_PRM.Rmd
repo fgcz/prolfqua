@@ -28,6 +28,7 @@ library(conflicted)
 library(tidyverse)
 library(readxl)
 library(yaml)
+library(LFQService)
 ```
 
 ```{r}
