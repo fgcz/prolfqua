@@ -4,8 +4,8 @@
 \alias{application_run_modelling}
 \title{run the modelling using lmer and lm models}
 \usage{
-application_run_modelling(outpath, protIntensityNormalized, pepConfig,
-  modelFunction, Contrasts, modelling_dir = "modelling_results_protein")
+application_run_modelling(outpath, data, pepConfig, modelFunction,
+  Contrasts, modelling_dir = "modelling_results_protein")
 }
 \description{
 run the modelling using lmer and lm models

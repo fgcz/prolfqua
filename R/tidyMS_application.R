@@ -3,7 +3,7 @@
 #' @export
 #'
 application_run_modelling <- function(outpath,
-                                      protIntensityNormalized,
+                                      data,
                                       pepConfig,
                                       modelFunction,
                                       Contrasts,
@@ -21,7 +21,7 @@ application_run_modelling <- function(outpath,
   #################################################
   ### Do missing value imputation
 
-  res_contrasts_imputed <- workflow_missigness_impute_contrasts(protIntensityNormalized,
+  res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
                                                                 Contrasts)
 
@@ -29,7 +29,7 @@ application_run_modelling <- function(outpath,
 
   ### make contrasts -----
 
-  modellingResult_fun <- workflow_model_analyse(protIntensityNormalized,
+  modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
                                                 modelName,
                                                 subject_Id = pepConfig$table$hkeysLevel())
@@ -88,9 +88,9 @@ application_run_modelling <- function(outpath,
 #' @export
 #'
 application_set_up_MQ_run <- function(outpath,
-                          inputMQfile,
-                          inputAnntation,
-                          qcdir = "qc_results"){
+                                      inputMQfile,
+                                      inputAnntation,
+                                      qcdir = "qc_results"){
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -108,12 +108,13 @@ application_set_up_MQ_run <- function(outpath,
   ## read the data
 
   resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
-
-  pdf(file.path(qc_path, "retention_time_plot.pdf"), height = 15)
-  resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
-  ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) + geom_point(alpha=1/20, size=0.3) + facet_wrap(~raw.file, ncol=2 )
-  dev.off()
-
+  {
+    pdf(file.path(qc_path, "retention_time_plot.pdf"), height = 15)
+    resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
+    tmp <- ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) + geom_point(alpha=1/20, size=0.3) + facet_wrap(~raw.file, ncol=2 )
+    print(tmp)
+    dev.off()
+  }
 
   peptidestxt <- tidyMQ_Peptides(inputMQfile)
   resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
