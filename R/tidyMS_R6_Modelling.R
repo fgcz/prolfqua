@@ -98,7 +98,9 @@ isSingular_lm <- function(m){
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
+#' formula_randomPeptide <-
+#'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+#'   model_name = modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
@@ -179,7 +181,9 @@ get_complete_model_fit <- function(modelProteinF){
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name=modelName)
+#' formula_randomPeptide <-
+#'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+#'    model_name=modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
@@ -260,7 +264,9 @@ model_analyse_summarize_write  <- function(modellingResult, path, all=FALSE){
 #'
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
+#' formula_randomPeptide <-
+#'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+#'    model_name = modelName)
 #' modellingResult <-  model_analyse(
 #'  D$pepIntensityNormalized,
 #'  formula_randomPeptide,
@@ -353,7 +359,9 @@ model_analyse_summarize_vis_write <- function(modelling_result,
 #' @examples
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
+#' formula_randomPeptide <-
+#'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+#'   model_name = modelName)
 #' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
 #'  formula_randomPeptide,
 #'   modelName,
@@ -1027,7 +1035,7 @@ contrasts_linfct <- function(models,
 
   # adjust
   contrasts <- contrasts %>% group_by_at("lhs") %>%
-    mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
+    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
 
   return(contrasts)
 }
@@ -1044,6 +1052,7 @@ contrasts_linfct_vis <- function(contrasts,
                                  columns = c("p.value","p.value.adjusted")){
   res <- list()
 
+  # add histogram of p-values
   for(column in columns){
     fig <- list()
     name <- paste0(prefix,"_Histogram_",column)
@@ -1053,6 +1062,7 @@ contrasts_linfct_vis <- function(contrasts,
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
+  # add volcano plots
   for(column in columns){
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
@@ -1063,6 +1073,17 @@ contrasts_linfct_vis <- function(contrasts,
                                             condition = "lhs",
                                             label = subject_Id,
                                             xintercept = c(-1, 1), colour = "isSingular")
+    res[[name]] <- fig
+  }
+
+  # add histogram of fold changes
+  {
+    fig <- list()
+    name <- paste0(prefix,"_Histogram_FC_esimate")
+    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fig <- ggplot(data=contrasts, aes(x = !!sym("esitmate"))) +
+      geom_histogram(bins = 20) +
+      facet_wrap(~lhs)
     res[[name]] <- fig
   }
   return(res)
@@ -1163,10 +1184,10 @@ moderated_p_limma <- function(mm, df = "df"){
   sv <- as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
-  mm <- mm %>% mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
-  mm <- mm %>% mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
-  mm <- mm %>% mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
-  mm <- mm %>% mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
+  mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
+  mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
+  mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
+  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
   return(mm)
 }
 
@@ -1257,8 +1278,8 @@ get_model_coefficients <- function(modeldata, config){
   }
 
   xx <- modeldata %>%
-    mutate(coefficients_values = purrr::map(linear_model, l_coeff)) %>%
-    mutate(coefficients_names = purrr::map(linear_model, n_coeff))
+    dplyr::mutate(coefficients_values = purrr::map(linear_model, l_coeff)) %>%
+    dplyr::mutate(coefficients_names = purrr::map(linear_model, n_coeff))
 
   xxs <- xx %>% dplyr::select( config$table$hkeysLevel(),
                                coefficients_values,
@@ -1328,11 +1349,13 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)
 #' estimate <- sample(c(-1,1),nrPep, replace = TRUE)
-#' protein_Id <- sample(1:800, size = nrPep,replace=TRUE, prob = dexp(seq(0,5,length=800)))
+#' protein_Id <- sample(1:800, size = nrPep,
+#'   replace=TRUE, prob = dexp(seq(0,5,length=800)))
 #'
 #' plot(table(table(protein_Id)))
 #'
-#' testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id, estimate = estimate, p.value = p.value )
+#' testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id,
+#'   estimate = estimate, p.value = p.value )
 #' xx <- summary_ROPECA_median_p.scaled(testdata,
 #'
 #'                                     subject_Id = "protein_Id",
@@ -1352,7 +1375,7 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
                                            p.value="moderated.p.value",
                                            max.n = 10){
   addscaled.p <- contrasts_data %>%
-    mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
+    dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
 
   summarized.protein <- addscaled.p %>% group_by_at(c(subject_Id, contrast))
 
@@ -1366,10 +1389,11 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
 
   # scale it back here.
   summarized.protein <- summarized.protein %>%
-    mutate(median.p = 1- abs(median.p.scaled))
+    dplyr::mutate(median.p = 1- abs(median.p.scaled))
   summarized.protein <- summarized.protein %>%
-    mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
-  summarized.protein <- summarized.protein %>% mutate(n.beta = pmin(n_not_na, max.n))
+    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+  summarized.protein <- summarized.protein %>%
+    dplyr::mutate(n.beta = pmin(n_not_na, max.n))
   return(summarized.protein)
 }
 

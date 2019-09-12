@@ -13,7 +13,9 @@ workflow_model_analyse
 \examples{
 D <- LFQService::resultsV12954
 modelName <- "f_condtion_r_peptide"
-formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
+formula_randomPeptide <-
+  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+  model_name = modelName)
 modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
  formula_randomPeptide,
   modelName,

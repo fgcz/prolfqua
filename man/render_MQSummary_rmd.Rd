@@ -13,6 +13,7 @@ render_MQSummary_rmd(data, config, workunit_id = "w1",
 render MQ Summary.
 }
 \examples{
-render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+render_MQSummary_rmd(LFQService::sample_analysis,
+  LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 
 }

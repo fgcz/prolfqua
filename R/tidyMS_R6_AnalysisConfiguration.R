@@ -191,7 +191,8 @@ R6extractValues <- function(r6class){
 #' @export
 #' @examples
 #'
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #'
@@ -568,7 +569,8 @@ hierarchy_counts_sample <- function(data,
 #' @export
 #' @importFrom dplyr group_by_at
 #' @examples
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#'   ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
@@ -603,7 +605,8 @@ summarizeProteins <- function( x, configuration ){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#'  ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' configuration <- skylineconfig
@@ -616,10 +619,13 @@ summarizeProteins <- function( x, configuration ){
 #' summarizeHierarchy(sample_analysis, skylineconfig)
 #' summarizeHierarchy(sample_analysis, skylineconfig, factors=character())
 #'
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = skylineconfig$table$hkeysLevel() )
-#' summarizeHierarchy(sample_analysis, skylineconfig, hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
+#' summarizeHierarchy(sample_analysis, skylineconfig,
+#'  hierarchy = skylineconfig$table$hkeysLevel() )
+#' summarizeHierarchy(sample_analysis, skylineconfig,
+#'  hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
 #' skylineconfig$table$hierarchyLevel=1
-#' summarizeHierarchy(sample_analysis, skylineconfig, factors = skylineconfig$table$fkeysLevel())
+#' summarizeHierarchy(sample_analysis, skylineconfig,
+#'  factors = skylineconfig$table$fkeysLevel())
 #' skylineconfig$table$hierarchyLevel=2
 #' summarizeHierarchy(sample_analysis, skylineconfig)
 #' skylineconfig$table$hierarchyLevel=3

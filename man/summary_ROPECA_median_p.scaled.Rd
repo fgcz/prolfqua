@@ -20,11 +20,13 @@ nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)
 estimate <- sample(c(-1,1),nrPep, replace = TRUE)
-protein_Id <- sample(1:800, size = nrPep,replace=TRUE, prob = dexp(seq(0,5,length=800)))
+protein_Id <- sample(1:800, size = nrPep,
+  replace=TRUE, prob = dexp(seq(0,5,length=800)))
 
 plot(table(table(protein_Id)))
 
-testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id, estimate = estimate, p.value = p.value )
+testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id,
+  estimate = estimate, p.value = p.value )
 xx <- summary_ROPECA_median_p.scaled(testdata,
 
                                     subject_Id = "protein_Id",

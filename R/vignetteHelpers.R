@@ -21,8 +21,7 @@
 #' @export
 #'
 copy_mixed_model_analysis_script <- function(workdir = getwd()){
-  runscripts <- c("run_scripts/mixed_model_analysis_script.R",
-                  "fgcz_formatting/fgcz_header.html",
+  runscripts <- c("fgcz_formatting/fgcz_header.html",
                   "fgcz_formatting/fgcz_footer.html",
                   "fgcz_formatting/fgcz.css",
                   "fgcz_formatting/fgcz_banner.png",
@@ -62,7 +61,8 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' render MQ Summary.
 #' @export
 #' @examples
-#' render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#' render_MQSummary_rmd(LFQService::sample_analysis,
+#'   LFQService::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <- function(data,
                                  config,
