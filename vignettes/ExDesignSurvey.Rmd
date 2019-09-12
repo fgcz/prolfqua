@@ -10,6 +10,10 @@ output:
     #number_sections: true
   word_document: default
   pdf_document: default
+vignette: >
+  %\VignetteIndexEntry{Bioinformatics Project Meeting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
     
 ---
 
@@ -23,8 +27,11 @@ Project Nr :
 
 Order Id :     
 
-Participants : 
+Participants
 
+- User :
+- Bioinformatitian :
+- Coach :
 
 
 When?
