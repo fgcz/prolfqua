@@ -15,6 +15,7 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(flextable)
 pars <- params$pars
 ```
 
@@ -25,24 +26,42 @@ pars <- params$pars
 - input file : `r pars$inputMQfile`
 - modelling implemented by : `r pars$author`
 
+
+# Sample QC
+
 The raw files are annotated with the following factors and factor levels:
 
 ```{r annotation}
-knitr::kable(pars$annotation, caption="Annotation")
+ftab <- flextable(pars$annotation) %>%
+  autofit() %>% set_caption("Sample annotations.")
+ftab
+
 ```
 
-The following model was fitted: 
+- [Peptpide intensity vs RT plot](qc_results/retention_time_plot.png) 
+- [PCA plot](qc_results/protein_intensities_PCA_.pdf) showing the samples according to the first and second principal component.
+- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf).
+- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf).
+- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx).
+- A [pdf file](qc_results/protein_intensities_inference_figures.pdf) containing all the peptide and protein intensities. 
+- A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html).
 
-```{r echo TRUE}
-pars$model
-```
+
+# Mixed Effects Model
+
+The following mixed effects model was fitted: 
+
+__`r format(formula(pars$model))`__
 
 Using this model the following contrasts were computed.
 
 
 ```{r contrasts}
 Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = pars$Contrasts)
-knitr::kable(Contrasts, caption = "Contrasts (vs - versus, gv - given)")
+ft_contrast <- flextable(Contrasts)
+ft_contrast <- ft_contrast %>% set_caption("Contrasts (vs - versus, gv - given).")
+ft_contrast
+
 ```
 
 
@@ -56,14 +75,6 @@ knitr::kable(Contrasts, caption = "Contrasts (vs - versus, gv - given)")
 
 
 In addition you can find descriptive statistics visualizations
-
-
-- [PCA plot](qc_results/protein_intensities_PCA_.pdf) showing the samples according to the first and second principal component.
-- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf).
-- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf).
-- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx).
-- A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html).
-
 
 
 
