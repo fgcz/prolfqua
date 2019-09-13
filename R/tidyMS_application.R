@@ -25,8 +25,6 @@ application_run_modelling <- function(outpath,
                                                                 pepConfig,
                                                                 Contrasts)
 
-
-
   ### make contrasts -----
 
   modellingResult_fun <- workflow_model_analyse(data,
@@ -53,8 +51,10 @@ application_run_modelling <- function(outpath,
     dev.off()
   }
 
-  modelProteinF <- modellingResult$modellingResult$modelProtein %>% dplyr::filter(exists_lmer == TRUE)
-  res_contrasts <- workflow_contrasts_linfct(modelProteinF ,
+  modelProteinF <- modellingResult$modellingResult$modelProtein %>%
+    dplyr::filter(exists_lmer == TRUE)
+
+  res_contrasts <- workflow_contrasts_linfct(modelProteinF,
                                              linfct_A,
                                              pepConfig,
                                              prefix =  "Contrasts",
@@ -64,7 +64,9 @@ application_run_modelling <- function(outpath,
   xx_imputed <- res_contrasts_imputed("long",what = "contrasts")
 
   merge_contrasts_results <- function(contrast_minimal,
-                                      xx_imputed, subject_Id){
+                                      xx_imputed,
+                                      subject_Id,
+                                      modelFunction){
     res <- right_join(contrast_minimal, xx_imputed, by=c(subject_Id,"lhs" = "contrast"))
     res <- res %>% rename(contrast = lhs)
     res <- res %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
@@ -78,7 +80,7 @@ application_run_modelling <- function(outpath,
   }
 
   contrast_results <- merge_contrasts_results(xx$contrast_minimal, xx_imputed,
-                                              subject_Id = pepConfig$table$hkeysLevel())
+                                              subject_Id = pepConfig$table$hkeysLevel(), modelFunction = modelFunction)
   separate_hierarchy(contrast_results, config) -> contrast_results
   filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
