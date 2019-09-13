@@ -151,7 +151,7 @@ make_interaction_column <- function(data, columns, sep="."){
   intr <- purrr::map2_dfc(columns, intr, paste0)
   colnames(intr) <- paste0("interaction_",columns)
   colname <- "interaction"
-  data <- data %>% mutate(!!colname :=interaction(intr, sep=sep))
+  data <- data %>% dplyr::mutate(!!colname := interaction(intr, sep=sep))
   return(data)
 }
 
