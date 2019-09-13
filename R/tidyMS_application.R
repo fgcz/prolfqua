@@ -110,8 +110,8 @@ application_set_up_MQ_run <- function(outpath,
   resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
 
   {
-    height <- length(unique(resPepProtAnnot$raw.file))/2 * 200
-    png(file.path(qc_path, "retention_time_plot.pdf"), height = height, width=400)
+    height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
+    png(file.path(qc_path, "retention_time_plot.png"), height = height, width=1200)
     resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
     tmp <- ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) + geom_point(alpha=1/20, size=0.3) + facet_wrap(~raw.file, ncol=2 )
     print(tmp)
