@@ -638,7 +638,8 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 #' m <- LFQService::interactionModel_p1807
 #' linfct <- linfct_from_model(m)
-#' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] , apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
+#' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
+#'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 #' linfct$linfct_interactions
 #' #}
 #'
@@ -718,6 +719,7 @@ linfct_matrix_contrasts<- function(linfct , Contrasts){
   return(new_lin_fct)
 }
 #' create contrasts between factor levels
+#'
 #' @export
 #' @examples
 #' library(LFQService)
@@ -1081,7 +1083,7 @@ contrasts_linfct_vis <- function(contrasts,
     fig <- list()
     name <- paste0(prefix,"_Histogram_FC_esimate")
     fig$fname <- paste0(name, "_", modelName ,".pdf")
-    fig$fig <- ggplot(data=contrasts, aes(x = !!sym("esitmate"))) +
+    fig$fig <- ggplot(data=contrasts, aes(x = !!sym("estimate"))) +
       geom_histogram(bins = 20) +
       facet_wrap(~lhs)
     res[[name]] <- fig
