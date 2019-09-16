@@ -2,6 +2,80 @@
 #'
 #' @export
 #'
+application_run_modelling_V2 <- function(outpath,
+                                      data,
+                                      pepConfig,
+                                      modelFunction,
+                                      Contrasts,
+                                      modelling_dir="modelling_results_protein" ){
+  # create result structure
+  modelling_path <- file.path(outpath, modelling_dir)
+  if(!dir.exists(outpath)){
+    dir.create(outpath)
+  }
+  if(!dir.exists(modelling_path)){
+    dir.create(modelling_path)
+  }
+
+
+  #################################################
+  ### Do missing value imputation
+
+  res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
+                                                                pepConfig,
+                                                                Contrasts)
+  xx_imputed <- res_contrasts_imputed("long",what = "contrasts")
+
+  ### make contrasts -----
+
+  modellingResult_fun <- workflow_model_analyse(data,
+                                                modelFunction,
+                                                subject_Id = pepConfig$table$hkeysLevel())
+
+  modellingResult <- modellingResult_fun()
+  modellingResult_fun(modelling_path)
+
+  #names(modellingResult)
+  modelProteinF <- modellingResult$modellingResult$modelProtein
+  res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
+                                             Contrasts,
+                                             pepConfig,
+                                             prefix =  "Contrasts",
+                                             contrastfun = modelFunction$contrast_fun)
+
+  xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
+
+
+  merge_contrasts_results <- function(contrast_minimal,
+                                      contrasts_imputed,
+                                      subject_Id,
+                                      modelFunction){
+    res <- right_join(contrast_minimal, contrasts_imputed, by=c(subject_Id,"lhs" = "contrast"))
+    res <- res %>% rename(contrast = lhs)
+    res <- res %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
+    res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+
+    for(column in modelFunction$report_columns){
+      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ 0, TRUE ~ !!sym(column)))
+    }
+    res <- res %>% dplyr::select(-imputed, -meanArea)
+    return(res)
+  }
+
+  contrast_results <- merge_contrasts_results(xx$contrast_minimal,
+                                              xx_imputed,
+                                              subject_Id = pepConfig$table$hkeysLevel(),
+                                              modelFunction = modelFunction)
+  separate_hierarchy(contrast_results, config) -> contrast_results
+  filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
+  lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
+}
+
+
+#' run the modelling using lmer and lm models
+#'
+#' @export
+#'
 application_run_modelling <- function(outpath,
                                       data,
                                       pepConfig,
