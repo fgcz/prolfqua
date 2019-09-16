@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{my_contrast_V2}
 \alias{my_contrast_V2}
-\title{handles incomplete models by setting coefficients to 0}
+\title{handles incomplete models}
 \usage{
 my_contrast_V2(m, linfct, confint = 0.95)
 }
 \description{
-handles incomplete models by setting coefficients to 0
+only keeps non NA coefficients.
 }
 \examples{
 m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
