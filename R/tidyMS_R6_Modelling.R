@@ -1047,6 +1047,34 @@ contrasts_linfct <- function(models,
 
 
 
+.multigroupVolcano <- function (data,
+                                effect = "fc",
+                                p.value = "p.adjust",
+                                condition = "condition",
+                                colour = "colour",
+                                xintercept = c(-2,2),
+                                pvalue = 0.05,
+                                text = NULL,
+                                ablines = data.frame(fc = c(0, 0), p = c(0.01, 0.05), Area = c("p=0.01", "p=0.05")),
+                                scales = "fixed",
+                                maxNrOfSignificantText = 20)
+{
+  data <- tidyr::unite(data, "label", text)
+  colname = paste("-log10(", p.value, ")", sep = "")
+  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = "label")) +
+    geom_point(alpha = 0.5)
+  p <- p + scale_colour_manual(values = c("black", "green",
+                                          "blue", "red"))
+  p <- p + facet_wrap(as.formula(paste("~", condition)),
+                      scales = scales) + labs(y = colname)
+  ablines$neg_log10p <- -log10(ablines$p)
+  p <- p + geom_abline(data = ablines, aes_string(slope = "fc",
+                                                  intercept = "neg_log10p", colour = "Area")) +
+    geom_vline(xintercept = xintercept, linetype = "dashed",
+               colour = "red")
+  return(p)
+}
+
 #' visualize output of `contrasts_linfct``
 #' @export
 #'
@@ -1072,12 +1100,14 @@ contrasts_linfct_vis <- function(contrasts,
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
     fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- quantable::multigroupVolcano(contrasts,
-                                            effect = "estimate",
-                                            p.value = column,
-                                            condition = "lhs",
-                                            label = subject_Id,
-                                            xintercept = c(-1, 1), colour = "isSingular")
+    fig$fig <- .multigroupVolcano(contrasts,
+                                  effect = "estimate",
+                                  p.value = column,
+                                  condition = "lhs",
+                                  text = subject_Id,
+                                  xintercept = c(-1, 1),
+                                  colour = "isSingular",
+                                  scales="free_y")
     res[[name]] <- fig
   }
 
@@ -1093,13 +1123,15 @@ contrasts_linfct_vis <- function(contrasts,
   }
 
   {
-    fig <- list()
-    name <- paste0(prefix,"_MA_FC_esimate")
-    fig$fname <- paste0(name, "_", modelName )
-    fig$fig  <- ggplot(data=contrasts, aes(x = (c1+c2)/2, y = estimate, text = subject_Id)) +
-      geom_point(alpha = 0.2) +
-      facet_wrap(~lhs)
-    res[[name]] <- fig
+    if(!is.null(contrasts$c1) && !is.null(contrasts$c2)){
+      fig <- list()
+      name <- paste0(prefix,"_MA_FC_esimate")
+      fig$fname <- paste0(name, "_", modelName )
+      fig$fig  <- ggplot(data=contrasts, aes(x = (c1+c2)/2, y = estimate, text = !!sym(subject_Id))) +
+        geom_point(alpha = 0.2) +
+        facet_wrap(~lhs)
+      res[[name]] <- fig
+    }
   }
   return(res)
 }
