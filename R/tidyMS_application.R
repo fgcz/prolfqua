@@ -29,7 +29,6 @@ application_run_modelling <- function(outpath,
 
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
-                                                modelName,
                                                 subject_Id = pepConfig$table$hkeysLevel())
 
   modellingResult <- modellingResult_fun()
@@ -193,7 +192,6 @@ application_summarize_data <-function(resDataStart ,config, qc_path, DEBUG= TRUE
 
 
   ### PROTEIN QUANTIFICATION ####
-  config$table$hierarchyLevel <- 1
   protintensity <- medpolish_protein_quants( results$pepIntensityNormalized,
                                              results$config_pepIntensityNormalized )
 
