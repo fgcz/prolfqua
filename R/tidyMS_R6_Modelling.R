@@ -675,7 +675,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' linfct_matrix_contrasts(linfct, Contrasts )
 linfct_matrix_contrasts<- function(linfct , Contrasts){
   linfct <- t(linfct)
-  df <- as.tibble(linfct, rownames = "interaction")
+  df <- as_tibble(linfct, rownames = "interaction")
   contrasts <- function(data,
                         Contrasts)
   {
@@ -871,7 +871,10 @@ my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
   return(res)
 }
 
-#' handles incomplete models by setting coefficients to 0
+#' handles incomplete models
+#'
+#' only keeps non NA coefficients.
+#'
 #' @export
 #' @examples
 #' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
@@ -1058,7 +1061,7 @@ contrasts_linfct_vis <- function(contrasts,
   for(column in columns){
     fig <- list()
     name <- paste0(prefix,"_Histogram_",column)
-    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym(column))) +
       geom_histogram(bins = 20) +
       facet_wrap(~lhs)
@@ -1068,7 +1071,7 @@ contrasts_linfct_vis <- function(contrasts,
   for(column in columns){
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
-    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fname <- paste0(name, "_", modelName )
     fig$fig <- quantable::multigroupVolcano(contrasts,
                                             effect = "estimate",
                                             p.value = column,
@@ -1082,9 +1085,19 @@ contrasts_linfct_vis <- function(contrasts,
   {
     fig <- list()
     name <- paste0(prefix,"_Histogram_FC_esimate")
-    fig$fname <- paste0(name, "_", modelName ,".pdf")
+    fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym("estimate"))) +
-      geom_histogram(bins = 20) +
+      geom_histogram(breaks = seq(floor(min(contrasts$estimate)),ceiling(max(contrasts$estimate)), by=0.5)) +
+      facet_wrap(~lhs)
+    res[[name]] <- fig
+  }
+
+  {
+    fig <- list()
+    name <- paste0(prefix,"_MA_FC_esimate")
+    fig$fname <- paste0(name, "_", modelName )
+    fig$fig  <- ggplot(data=contrasts, aes(x = (c1+c2)/2, y = estimate, text = subject_Id)) +
+      geom_point(alpha = 0.2) +
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
@@ -1099,14 +1112,23 @@ contrasts_linfct_vis <- function(contrasts,
 contrasts_linfct_vis_write <- function(fig_list,
                                        path,
                                        fig.width = 10,
-                                       fig.height = 10){
+                                       fig.height = 10,
+                                       format = c("pdf","html")){
+  format <- match.arg(format)
   if(!is.null(path)){
     for(fig in fig_list){
-      p1 <- file.path(path,fig$fname)
+
+      fpath <- file.path(path,paste0(fig$fname,".", format))
       message("Writing: ",p1,"\n")
-      pdf(p1, width = fig.width, height = fig.height)
-      print(fig$fig)
-      dev.off()
+
+      if(format == "pdf"){
+        pdf(fpath, width = fig.width, height = fig.height)
+        print(fig$fig)
+        dev.off()
+      }else if(format == "html"){
+        fig_pltly <- plotly::ggplotly(fig$fig)
+        htmlwidgets::saveWidget(widget=fig_pltly, fpath, selfcontained = TRUE)
+      }
     }
   }
 }
@@ -1116,7 +1138,7 @@ contrasts_linfct_vis_write <- function(fig_list,
 #' @examples
 #'
 workflow_contrasts_linfct <- function(models,
-                                      linfct,
+                                      contrasts,
                                       config,
                                       modelName = "Model",
                                       prefix = "Contrasts",
@@ -1163,6 +1185,107 @@ workflow_contrasts_linfct <- function(models,
       }
 
       contrasts_linfct_vis_write(visualization, path=path)
+    }
+
+    res <- list(contrast_result = contrast_result,
+                contrast_minimal = contrast_minimal,
+                contrasts_wide = contrasts_wide,
+                visualization = visualization,
+                modelName = modelName,
+                prefix = prefix)
+
+    invisible(res)
+  }
+  return( res_fun )
+}
+
+
+#' Do contrast
+#' @export
+#' @examples
+#'
+workflow_contrasts_linfct_V2 <- function(models,
+                                         contrasts,
+                                         config,
+                                         modelName = "Model",
+                                         prefix = "Contrasts",
+                                         contrastfun = LFQService::my_contest )
+{
+
+  # extract contrast sides
+  tt <- contrasts[grep("-",contrasts)]
+  tt <- tibble(lhs = names(tt) , contrast= tt)
+  tt <- tt %>% mutate(contrast = gsub("[` ]","",contrast)) %>%
+    tidyr::separate(contrast, c("c1", "c2"), sep="-")
+
+
+
+  models <- models %>% dplyr::filter(exists_lmer == TRUE)
+  m <- get_complete_model_fit(models)
+  linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+  linfct_A <- linfct_matrix_contrasts(linfct, Contrasts)
+
+
+  subject_Id <- config$table$hkeysLevel()
+  contrast_result <- contrasts_linfct(models,
+                                      rbind(linfct, linfct_A),
+                                      subject_Id = subject_Id,
+                                      contrastfun = contrastfun )
+
+  xx <- contrast_result %>% dplyr::select(subject_Id, "lhs", "estimate")
+  xx <- xx %>% pivot_wider(names_from = "lhs", values_from = "estimate")
+
+  contrast_result <- contrast_result %>% dplyr::filter(lhs %in% names(contrasts))
+
+
+  get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
+    data.frame(lhs = contrast_table[i, "lhs"],
+               dplyr::select_at(contrast_results, c( subject_ID ,unlist(contrast_table[i,c("c1","c2")]))),
+               c1_name = contrast_table[i,"c1", drop=T],
+               c2_name = contrast_table[i,"c2", drop=T], stringsAsFactors = FALSE)
+  }
+
+  contrast_sides <- purrr::map_df(1:nrow(tt), get_contrast_cols, xx, tt, subject_Id)
+
+  contrast_result <- inner_join(contrast_sides,contrast_result)
+
+
+  contrast_result <- moderated_p_limma_long(contrast_result)
+  subject_Id <- subject_Id
+  prefix <- prefix
+  modelName <- modelName
+
+  res_fun <- function(path = NULL, columns = c("p.value",
+                                               "p.value.adjusted",
+                                               "moderated.p.value",
+                                               "moderated.p.value.adjusted")){
+
+    visualization <- contrasts_linfct_vis(contrast_result,
+                                          modelName ,
+                                          prefix = prefix,
+                                          subject_Id = subject_Id,
+                                          columns = columns
+    )
+
+    relevant_columns <- c("lhs", "c1_name", "c1", "c2_name", "c2", "sigma", "df", "isSingular", "estimate", "conf.low", "conf.high") # other relevant columns.
+    contrast_minimal <- contrast_result %>% dplyr::select(subject_Id, relevant_columns, columns )
+
+    contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                   subject_Id = subject_Id,
+                                                   columns=c("estimate", columns))
+
+    if(!is.null(path)){
+      if(FALSE){
+        contrasts_linfct_write(contrast_minimal,
+                               config,
+                               path=path,
+                               modelName = modelName,
+                               prefix = prefix,
+                               columns = c("estimate", columns))
+      }
+
+      contrasts_linfct_vis_write(visualization, path=path, format = "pdf")
+      contrasts_linfct_vis_write(visualization, path=path, format = "html")
     }
 
     res <- list(contrast_result = contrast_result,
