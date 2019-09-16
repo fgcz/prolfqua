@@ -1083,7 +1083,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
     if(value == "nested"){
       return(xnested)
     }else if(value == "unnest" || value =="wide"){
-      unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest()
+      unnested <- xnested %>% dplyr::select(config$table$hkeysLevel(), makeName) %>% tidyr::unnest() %>% dplyr::ungroup()
       newconfig <- make_reduced_hierarchy_config(config,
                                                  workIntensity = func(name=TRUE),
                                                  hierarchy = config$table$hkeysLevel(names=FALSE))
