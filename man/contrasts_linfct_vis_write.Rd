@@ -5,7 +5,7 @@
 \title{helper function to write the result of `contrasts_linfct_vis`}
 \usage{
 contrasts_linfct_vis_write(fig_list, path, fig.width = 10,
-  fig.height = 10)
+  fig.height = 10, format = c("pdf", "html"))
 }
 \description{
 used in p2901
