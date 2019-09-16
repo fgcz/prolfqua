@@ -3,7 +3,7 @@ library(tidyverse)
 library(readr)
 library(LFQService)
 
-resPepProtAnnot <- read_csv(file = file.path( find.package("LFQService") ,  "samples/testdata/annotatedData.csv"))
+resPepProtAnnot <- read_csv(file = file.path( find.package("LFQService") ,  "inst/samples/testdata/annotatedData.csv"))
 
 createMQSTYConfiguration <- function(ident_qValue = "pep",
                                      intensity = "intensity",
@@ -29,9 +29,8 @@ createMQSTYConfiguration <- function(ident_qValue = "pep",
   return(configuration)
 }
 
-
-
 config <- createMQSTYConfiguration()
+
 config$parameter$min_peptides_protein <- 1
 resDataStart <- setup_analysis(resPepProtAnnot, config)
 head(resDataStart)
@@ -71,4 +70,5 @@ Contrasts <- c("NASH_nafld-NASH_nash" = "NASH_nafld - NASH_nash",
                "Interaction NASH:Steatosis 1 - 2" = "`NASH_nafld: Steatosis_s1 - Steatosis_s2` - `NASH_nash: Steatosis_s1 - Steatosis_s2`")
 
 tmp <- missigness_impute_contrasts(impfac_int, config, Contrasts)
+
 
