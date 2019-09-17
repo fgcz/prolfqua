@@ -35,10 +35,6 @@ lfq_write_table <- function(x, path){
       DT::saveWidget(dt, 'foo.html',selfcontained = TRUE)
       file.rename("foo.html", path_html)
     }
-
   }
-
-
-
 }
 
