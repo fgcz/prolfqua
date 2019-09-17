@@ -43,6 +43,9 @@ application_run_modelling_V2 <- function(outpath,
                                              prefix =  "Contrasts",
                                              contrastfun = modelFunction$contrast_fun)
 
+
+  # return(list(res_contrasts = res_contrasts, modellingResult_fun = modellingResult_fun))
+
   xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
 
 
@@ -69,6 +72,7 @@ application_run_modelling_V2 <- function(outpath,
   separate_hierarchy(contrast_results, config) -> contrast_results
   filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
+  return(list(res_contrasts  = res_contrasts, modellingResult_fun = modellingResult_fun))
 }
 
 
