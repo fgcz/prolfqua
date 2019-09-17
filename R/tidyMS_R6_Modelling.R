@@ -283,13 +283,13 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   fig <- list()
 
   ## Coef_Histogram
-  fig$fname_histogram_coeff_p.values <- "Coef_Histogram_Model.pdf" ##paste0("Coef_Histogram_",modelName,".pdf")
+  fig$fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",modelName,".pdf")
   fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
     geom_histogram(bins = 20) +
     facet_wrap(~row.names.x.)
 
   ## Coef_VolcanoPlot
-  fig$fname_VolcanoPlot <- "Coef_VolcanoPlot_Model.pdf" #paste0("Coef_VolcanoPlot_",modelName,".pdf")
+  fig$fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",modelName,".pdf")
   fig$VolcanoPlot <- Model_Coeff %>%
     dplyr::filter(row.names.x. != "(Intercept)") %>%
     quantable::multigroupVolcano(
@@ -304,11 +304,11 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   forPairs <- Model_Coeff %>%
     dplyr::select(!!sym("subject_Id") , row.names.x. ,  Estimate ) %>%
     tidyr::spread(row.names.x.,Estimate )
-  fig$fname_Pairsplot_Coef <- "Coef_Pairsplot_Model.pdf" # paste0("Coef_Pairsplot_",modelName,".pdf")
+  fig$fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_",modelName,".pdf")
   fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
 
   ## Anova_p.values
-  fig$fname_histogram_anova_p.values <- "Anova_p.values_Model.pdf" # paste0("Anova_p.values_", modelName, ".pdf")
+  fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
   fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
     ggplot( aes(x = Pr..F., group=rownames.x.)) +
     geom_histogram(bins = 20) +
@@ -1059,7 +1059,6 @@ contrasts_linfct <- function(models,
                                 scales = "fixed",
                                 maxNrOfSignificantText = 20)
 {
-  data <- tidyr::unite(data, "label", text)
   colname = paste("-log10(", p.value, ")", sep = "")
   p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = "label")) +
     geom_point(alpha = 0.5)
@@ -1075,6 +1074,8 @@ contrasts_linfct <- function(models,
   return(p)
 }
 
+
+
 #' visualize output of `contrasts_linfct``
 #' @export
 #'
@@ -1084,7 +1085,7 @@ contrasts_linfct_vis <- function(contrasts,
                                  subject_Id = "protein_Id",
                                  columns = c("p.value","p.value.adjusted")){
   res <- list()
-
+  contrasts %>% tidyr::unite("label", subject_Id, sep="~", remove=FALSE) -> contrasts
   # add histogram of p-values
   for(column in columns){
     fig <- list()
@@ -1100,14 +1101,28 @@ contrasts_linfct_vis <- function(contrasts,
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
     fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- .multigroupVolcano(contrasts,
+
+
+    fig$fig <- LFQService:::.multigroupVolcano(contrasts,
                                   effect = "estimate",
                                   p.value = column,
                                   condition = "lhs",
-                                  text = subject_Id,
+                                  text = "label",
                                   xintercept = c(-1, 1),
                                   colour = "isSingular",
                                   scales="free_y")
+
+    fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
+      LFQService:::.multigroupVolcano(.,
+                         effect = "estimate",
+                         p.value = "p.value",
+                         condition = "lhs",
+                         text = "label",
+                         xintercept = c(-1, 1),
+                         colour = "isSingular",
+                         scales="free_y") %>%
+      plotly::ggplotly(tooltip = "label")
+
     res[[name]] <- fig
   }
 
@@ -1121,15 +1136,28 @@ contrasts_linfct_vis <- function(contrasts,
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
-
+  # MA plot
   {
+    ma_plot <- function(x){
+      x <- ggplot(x , aes(x = (c1+c2)/2, y = estimate, text = !!sym("label"), colour = !!sym("isSingular"))) +
+        geom_point(alpha = 0.5) + scale_colour_manual(values = c("black", "red")) +
+        facet_wrap(~lhs)
+      return(x)
+    }
+
     if(!is.null(contrasts$c1) && !is.null(contrasts$c2)){
       fig <- list()
-      name <- paste0(prefix,"_MA_FC_esimate")
+      name <- paste0(prefix,"_MA_FC_estimate")
       fig$fname <- paste0(name, "_", modelName )
-      fig$fig  <- ggplot(data=contrasts, aes(x = (c1+c2)/2, y = estimate, text = !!sym(subject_Id))) +
-        geom_point(alpha = 0.2) +
-        facet_wrap(~lhs)
+      # pdf version
+      fig$fig <- contrasts %>% ma_plot()
+
+      # html version
+      fig$plotly  <- contrasts %>%
+        plotly::highlight_key(~label) %>%
+        ma_plot() %>%
+        plotly::ggplotly(tooltip = "label")
+
       res[[name]] <- fig
     }
   }
@@ -1151,15 +1179,19 @@ contrasts_linfct_vis_write <- function(fig_list,
     for(fig in fig_list){
 
       fpath <- file.path(path,paste0(fig$fname,".", format))
-      message("Writing: ",p1,"\n")
+
 
       if(format == "pdf"){
+        message("Writing: ",fpath,"\n")
         pdf(fpath, width = fig.width, height = fig.height)
         print(fig$fig)
         dev.off()
       }else if(format == "html"){
-        fig_pltly <- plotly::ggplotly(fig$fig)
-        htmlwidgets::saveWidget(widget=fig_pltly, fpath, selfcontained = TRUE)
+        if(!is.null(fig$plotly)){
+          message("Writing: ",fpath,"\n")
+          htmlwidgets::saveWidget(widget=fig$plotly, fig$fname, selfcontained = TRUE)
+          file.rename(fig$fname, fpath)
+        }
       }
     }
   }
