@@ -19,14 +19,26 @@ lfq_write_table <- function(x, path){
   message("lfq_write_format", lfq_write_format)
   if(lfq_write_format == "csv" | lfq_write_format == "both"){
     message("writing csv")
-    path <- paste0(tools::file_path_sans_ext(path),".csv")
-    readr::write_csv(x, path = path)
+    path_csv <- paste0(tools::file_path_sans_ext(path),".csv")
+    readr::write_csv(x, path = path_csv)
   }
 
   if(lfq_write_format == "xlsx" | lfq_write_format == "both"){
     message("writing xlsx")
-    path <- paste0(tools::file_path_sans_ext(path),".xlsx")
-    writexl::write_xlsx(x, path = path)
+    path_xlsx <- paste0(tools::file_path_sans_ext(path),".xlsx")
+    writexl::write_xlsx(x, path = path_xlsx)
+
+    {
+      message("write html")
+      path_html <- paste0(tools::file_path_sans_ext(path),".html")
+      dt <- DT::datatable(x, filter = 'top', options  = list(pageLength = 50))
+      DT::saveWidget(dt, 'foo.html',selfcontained = TRUE)
+      file.rename("foo.html", path_html)
+    }
+
   }
+
+
+
 }
 
