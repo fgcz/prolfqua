@@ -1,0 +1,93 @@
+---
+title: "LFQ bioinfo survey"
+author: "WEW"
+date: "17/09/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Introduction
+
+## Goal
+
+- Save time 
+- Improve quality of services
+- Ensure reproducibility
+
+## How?
+
+- A 15-30 min meeting where the client and bioinformatician exchange information to fill out a predefined form (survey).
+
+# Motivation
+
+Hooray!! Data is measured! Can you analyse the data?
+
+- Where is the sample annotation? File names?
+- How to name factors? Could you rerun the analysis. It should be `mutation` not `background`! 
+- What hypothesis should be tested? Oh, actually I need `cl - tr` and not `tr - cl`!
+- Can you do this because your colleague said it is OK?
+- Was it a repeated measurement? Yes indeed! Sorry could you remake the analysis?
+- Could you please add this sequence to the database and rerun everything?
+
+# Motivation
+
+Information extracted in little bits. For service projects you will likely find most of it in the b-fabric comments.
+
+- but was it project or order comment?
+- how much more often do I have to click the _more_ button until I find it?
+
+# Aim of meeting
+
+- Keep it short (15-30 minutes)!
+- Give guidance
+- Get only the information you need to perform an __Analysis per protocol__
+- Minimize changes and updates
+
+
+# Aim of meeting
+
+## Document
+
+- which protein database to use
+- which and how many samples to use for the QC
+- collect all the parameters for sample size estimation
+- understand the design of the main experiment
+- document all the names of the factors and factor levels
+- specify the hypothesis to be tested
+
+
+# Conclusion
+
+- Tested it with Paolo and with 2 clients
+- Helps not to forget important points
+- Survey still evolving
+
+
+# TPF update
+
+- QC and sample size estimation
+- Hypothesis testing using linear models
+- GSEA and ORA analysis
+
+
+# 
+
+
+A work by :
+
+Witek Wolski, Lukas Kook, Christian Panse and Paolo Nanni
+
+$~$
+$~$
+$~$
+$~$
+
+_Thank you for listening_
+
+
+
+
