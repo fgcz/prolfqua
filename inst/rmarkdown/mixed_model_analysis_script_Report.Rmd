@@ -38,13 +38,13 @@ ftab
 
 ```
 
-- [Peptpide intensity vs RT plot](qc_results/retention_time_plot.png) 
-- [PCA plot](qc_results/protein_intensities_PCA_.pdf) showing the samples according to the first and second principal component.
-- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf).
-- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf).
-- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx).
-- A [pdf file](qc_results/protein_intensities_inference_figures.pdf) containing all the peptide and protein intensities. 
-- A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html).
+- [Peptpide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"} 
+- [PCA plot](qc_results/protein_intensities_PCA_.pdf){target="_blank"} showing the samples according to the first and second principal component.
+- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf){target="_blank"}.
+- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf){target="_blank"}.
+- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx){target="_blank"}.
+- A [pdf file](qc_results/protein_intensities_inference_figures.pdf){target="_blank"} containing all the peptide and protein intensities. 
+- A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html){target="_blank"}.
 
 
 # Mixed Effects Model
@@ -64,17 +64,26 @@ ft_contrast
 
 ```
 
+```{r filepaths, include=FALSE}
+anovaXLSX <- file.path(pars$modelling_dir, "Anova_Model")
+anovaPDF <- file.path(pars$modelling_dir, "Anova_p.values_Model.pdf")
+contrastXLSX <- file.path(pars$modelling_dir, "foldchange_estimates")
+histogramPVal <-   file.path(pars$modelling_dir, "Contrasts_Histogram_p.value_Model")
+histogramPValAdj <- file.path(pars$modelling_dir, "Contrasts_Histogram_p.value.adjusted_Model")
+volcanoPVal <- file.path(pars$modelling_dir, "Contrasts_Volcano_p.value_Model")
+volcanoPValAdj <- file.path(pars$modelling_dir, "Contrasts_Volcano_p.value.adjusted_Model")
+maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
+```
 
-- ANOVA results in [excel xlsx format](`r file.path(pars$modelling_dir,"Anova_Model.xlsx")`) and [histogram of p-Values](`r file.path(pars$modelling_dir,"Anova_p.values_Model.pdf")`) which shows which factors are most significant.
+
+- ANOVA results ([excel xlsx format](`r paste0(anovaXLSX,".xlsx")`);[html](`r paste0(anovaXLSX,".html")`) and histogram of p-Values [pdf](`r anovaPDF`){target="_blank"} which shows which factors are most significant.
+
 - For all contrasts and proteins:
-    - A table with all fold change estimates and p-Values [excel xlsx format](`r file.path(pars$modelling_dir,"foldchange_estimates.xlsx")`) with p-values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
-    - [Histogram of p-Values](`r file.path(pars$modelling_dir,"Contrasts_Histogram_p.value_Model.pdf")`) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
-    - [Histogram of adjusted p-Values](`r file.path(pars$modelling_dir,"Contrasts_Histogram_p.value.adjusted_Model.pdf")`) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
-    - [Volcano plot of p-Values vs fold change estimate](`r file.path(pars$modelling_dir,"Contrasts_Volcano_p.value_Model.pdf")`) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis. 
-    - [Volcano plot of adjusted p-Values vs fold change estimate](`r file.path(pars$modelling_dir,"Contrasts_Volcano_p.value_Model.pdf")`)  which on the vertical axis shows the adjusted protein p-Values versus the the log2 fold changes on the horizontal axis.
-
-
-In addition you can find descriptive statistics visualizations
-
+    - A __table__ with all fold change estimates and p-Values ([excel xlsx format](`r paste0(contrastXLSX,".xlsx")`); [html](`r paste0(contrastXLSX,".html")`)) with p-Values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
+    - __Histogram of p-Values__ ([pdf](`r paste0(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
+    - __Histogram of adjusted p-Values__ ([pdf](`r paste0(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
+    - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste0(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis.
+    - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste0(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the adjusted protein _p-Values_ versus the the _log2_ fold changes on the horizontal axis.
+    - __MA plot__ ([pdf](`r paste0(maPlot,".pdf")`){target="_blank"}; [html](`r paste0(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean.
 
 
