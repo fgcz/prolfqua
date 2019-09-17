@@ -32,6 +32,7 @@ Imports:
     magrittr,
     multcomp,
     quantable,
+    plotly,
     purrr,
     readxl,
     tidyverse,
