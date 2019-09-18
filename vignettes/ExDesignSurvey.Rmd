@@ -4,7 +4,7 @@ author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: 
-    toc: true
+    toc: false
     toc_depth: 2
     #toc_float: true
     #number_sections: true
@@ -27,10 +27,10 @@ Project Nr :
 
 Order Id :     
 
-Participants
+Participants:
 
 - User :
-- Bioinformatitian :
+- Bioinformatician :
 - Coach :
 
 
