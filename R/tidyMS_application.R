@@ -8,6 +8,8 @@ application_run_modelling_V2 <- function(outpath,
                                       modelFunction,
                                       Contrasts,
                                       modelling_dir="modelling_results_protein" ){
+  assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
+
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)
   if(!dir.exists(outpath)){
@@ -86,6 +88,8 @@ application_run_modelling <- function(outpath,
                                       modelFunction,
                                       Contrasts,
                                       modelling_dir="modelling_results_protein" ){
+  assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
+
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)
   if(!dir.exists(outpath)){
@@ -160,6 +164,7 @@ application_run_modelling <- function(outpath,
                                               subject_Id = pepConfig$table$hkeysLevel(), modelFunction = modelFunction)
   separate_hierarchy(contrast_results, config) -> contrast_results
   filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
+
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
 }
 
@@ -170,6 +175,8 @@ application_set_up_MQ_run <- function(outpath,
                                       inputMQfile,
                                       inputAnntation,
                                       qcdir = "qc_results"){
+  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
+
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -242,6 +249,7 @@ application_set_up_MQ_run <- function(outpath,
 #' @export
 #'
 application_summarize_data <-function(data, config, qc_path, DEBUG= TRUE, write=TRUE){
+  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService::workflow_MQ_protoV1(
     data,
