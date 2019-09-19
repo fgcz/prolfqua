@@ -3,15 +3,15 @@ title: "Bioinformatics Project Meeting Agenda"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document: 
-    toc: false
-    toc_depth: 2
+  word_document:
+    toc: no
+    toc_depth: '2'
   pdf_document: default
-vignette: >
-  %\VignetteIndexEntry{Bioinformatics Project Meeting}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-    
+  html_document:
+    toc: no
+    toc_depth: 2
+vignette: "%\\VignetteIndexEntry{Bioinformatics Project Meeting} %\\VignetteEncoding{UTF-8}
+  %\\VignetteEngine{knitr::rmarkdown}\n  \n"
 ---
 
 
@@ -101,7 +101,7 @@ Which organism
 - [ ] homo sapiens
 - [ ] mus musculus
 - [ ] yeast
-- [ ] zebrafish
+- [ ] zebra-fish
 - other :
 
 
@@ -115,7 +115,7 @@ Which downstream analysis tools will be used?
 $~$
 
 Comment:
-- The identifiers in the protein database should be compatible with the downstream analysis tool you intend to use. For instance _WebGestaltR_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
+- Ideally the identifiers in the protein database are compatible with the downstream analysis tool you intend to use. For instance _WebGestalt_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
 
 
 
@@ -262,7 +262,7 @@ Example:
 
 | Factor Name  | Number levels  |   level names $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$|
 |:-----|----|:----:|
-| Treatment |2 | Control, Massage| 
+| Treatment |3 | Control, Massage, Creme| 
 | AgeGroup | 2 | young, old |
 
 
@@ -355,7 +355,7 @@ Examples for parallel Group design (only one factor):
 
 Example for factorial designs:
 
-- Treatment_Control - Treatment_Massage
+- Treatment_Control - Treatment_Creme
 - AgeGroup_young - AgeGroup_old
 - Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old
 
