@@ -4,8 +4,8 @@
 \alias{application_summarize_data}
 \title{preprocess peptide data, compute protein data, store results in qc_path folder}
 \usage{
-application_summarize_data(data, config, qc_path, DEBUG = TRUE,
-  write = TRUE)
+application_summarize_data(data, config, qc_path, DEBUG = FALSE,
+  WRITE_PROTS = TRUE)
 }
 \description{
 preprocess peptide data, compute protein data, store results in qc_path folder
