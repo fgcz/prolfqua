@@ -1202,7 +1202,7 @@ contrasts_linfct_vis_write <- function(fig_list,
 #' @examples
 #'
 workflow_contrasts_linfct <- function(models,
-                                      contrasts,
+                                      linfct,
                                       config,
                                       modelName = "Model",
                                       prefix = "Contrasts",
