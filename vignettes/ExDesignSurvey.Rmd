@@ -3,12 +3,9 @@ title: "Bioinformatics Project Meeting Agenda"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document: default
   html_document: 
     toc: false
     toc_depth: 2
-    #toc_float: true
-    #number_sections: true
   pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Bioinformatics Project Meeting}
@@ -61,9 +58,6 @@ Before the main experiment, a QC experiment is performed. We use the data from t
 These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora.
 
 
-
-
-
 # Aim of the meeting
 
 The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
@@ -82,8 +76,25 @@ The samples should be annotated with the names specified in the protocol in the 
 
 We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered might incur time delays or additional costs.
 
+# Genomics Analysis
 
-# Protein Sequence database and downstream analysis tools
+Did you perform a genomics experiment on the same samples?
+
+- [ ] no
+- [ ] yes
+  - What type of experiment?
+  - Was it at the FGCZ?
+  - Who is the bioinformatician responsible for your project?
+
+Comment:
+
+$~$
+
+$~$
+
+
+
+# Protein sequence database and downstream analysis tools
 
 Which organism
 
@@ -92,6 +103,7 @@ Which organism
 - [ ] yeast
 - [ ] zebrafish
 - other :
+
 
 
 Which downstream analysis tools will be used?
@@ -103,12 +115,6 @@ Which downstream analysis tools will be used?
 $~$
 
 Comment:
-
-$~$
-
-$~$
-
-
 - The identifiers in the protein database should be compatible with the downstream analysis tool you intend to use. For instance _WebGestaltR_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
 
 
@@ -208,7 +214,7 @@ Do you want to obtain significant p-Values for proteins with big within-group va
 
 This section covers the most frequently used designs.
 
-- [ ] Parallel Group Design - Evaluates a single factor
+- [ ] Parallel Group Design - Evaluates a single factor[^2]
 
 - [ ] Factorial Design - Evaluates multiple factors simultaneously
 
@@ -231,7 +237,7 @@ Level names (_camel case_ e.g. Control, Massage, Creme):
 [^1]: _camel case_ - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.
 
 
-## Factorial Design
+## Factorial Design[^8]
 
 Applies when studying how two or more factors influence protein expression, e.g., $Knockout$ and $Treatment$.
 
