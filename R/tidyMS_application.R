@@ -248,7 +248,11 @@ application_set_up_MQ_run <- function(outpath,
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #' @export
 #'
-application_summarize_data <-function(data, config, qc_path, DEBUG= TRUE, write=TRUE){
+application_summarize_data <-function(data,
+                                      config,
+                                      qc_path,
+                                      DEBUG= FALSE,
+                                      WRITE_PROTS=TRUE){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService::workflow_MQ_protoV1(
@@ -286,7 +290,7 @@ application_summarize_data <-function(data, config, qc_path, DEBUG= TRUE, write=
 
   figs <- protintensity("plot")
 
-  if(!DEBUG){
+  if(WRITE_PROTS){
     pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
     lapply(figs$plot, print)
     dev.off()
