@@ -1,3 +1,5 @@
+*.csv
+*.xlsx
 *.html
 *.R
 *.pdf
