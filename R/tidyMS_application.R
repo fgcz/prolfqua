@@ -241,10 +241,10 @@ application_set_up_MQ_run <- function(outpath,
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #' @export
 #'
-application_summarize_data <-function(resDataStart ,config, qc_path, DEBUG= TRUE, write=TRUE){
+application_summarize_data <-function(data, config, qc_path, DEBUG= TRUE, write=TRUE){
 
   results <- LFQService::workflow_MQ_protoV1(
-    resDataStart,
+    data,
     config,
     outpath,
     peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
@@ -259,7 +259,7 @@ application_summarize_data <-function(resDataStart ,config, qc_path, DEBUG= TRUE
 
 
   if(!DEBUG){
-    LFQService::render_MQSummary_rmd(resDataStart,
+    LFQService::render_MQSummary_rmd(data,
                                      config$clone(deep=TRUE),
                                      pep=TRUE,
                                      workdir = ".",
