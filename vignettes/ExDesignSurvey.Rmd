@@ -1,19 +1,19 @@
 ---
-title: "Bioinformatics Project Meeting"
+title: "Bioinformatics Project Meeting Agenda"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
+  word_document: default
   html_document: 
     toc: false
     toc_depth: 2
     #toc_float: true
     #number_sections: true
-  word_document: default
   pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Bioinformatics Project Meeting}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
     
 ---
 
@@ -85,9 +85,6 @@ We perform the data analysis according to this protocol. Changing the analysis p
 
 # Protein Sequence database and downstream analysis tools
 
-
-
-
 Which organism
 
 - [ ] homo sapiens
@@ -99,21 +96,24 @@ Which organism
 
 Which downstream analysis tools will be used?
 
-- [ ] [WebGestalt](http://www.webgestalt.org/) (WEB-based GEne SeT AnaLysis Toolkit)
-- [ ] [string-db](https://string-db.org/) (Known and predicted protein-protein interactions)
+- [ ] [WebGestalt](http://www.webgestalt.org/){target="_blank"}  (WEB-based GEne SeT AnaLysis Toolkit)
+- [ ] [string-db](https://string-db.org/){target="_blank"} (Known and predicted protein-protein interactions)
 - other : 
 
 $~$
-$~$
-$~$
 
 Comment:
+
+$~$
+
+$~$
+
 
 - The identifiers in the protein database should be compatible with the downstream analysis tool you intend to use. For instance _WebGestaltR_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
 
 
 
-Which sequence database should be used for protein identification? (A list of available FGCZ databases)[http://fgcz-r-021.uzh.ch/FASTA/]
+Which sequence database should be used for protein identification? [A list of available FGCZ databases](http://fgcz-ms.uzh.ch/FASTA/){target="_blank"}
 
 $~$
 
@@ -126,6 +126,7 @@ Contaminant list?
 
 - [ ] Complete
 - [ ] Without human contaminants
+- other : 
 
 
 # Effect size and size of test
