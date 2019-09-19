@@ -87,7 +87,7 @@ Since random effect was highly significant for most proteins, we decided to use 
 
 # Data Interpretation
 
-For interpreting the results, the protein IDs can be either sorted by the fold change estimates or `p.value`. Large positive or negative fold changes typically result in small p-values therefore we suggest sorting by foldchange.
+For interpreting the results, the protein Id's can be either sorted by the fold change estimates or `p.value`. Large positive or negative fold changes typically result in small p-values therefore we suggest sorting by foldchange.
 
 The IDs sorted by fold change can then be subjected to gene set enrichment analysis (GSEA). Alternatively, a subset filtered by q-value can be analysed using over-representation analysis (ORA). The web application WebGestalt (WEB-based GEne SeT AnaLysis Toolkit) <http://www.webgestalt.org> implements both of these methods (and even more) for the most popular organisms.
 
