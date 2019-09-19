@@ -20,9 +20,9 @@ pars <- params$pars
 ```
 
 
-- project ID : `r pars$project_id`
-- order ID : `r pars$order_id`
-- parent work-unit name : `r pars$workunit_name`
+- project Id : `r pars$project_Id`
+- order Id : `r pars$order_Id`
+- parent work-unit Id : `r pars$workunit_Id`
 - input file : `r pars$inputMQfile`
 - modelling implemented by : `r pars$author`
 
@@ -76,10 +76,10 @@ maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
 ```
 
 
-- ANOVA results ([excel xlsx format](`r paste0(anovaXLSX,".xlsx")`);[html](`r paste0(anovaXLSX,".html")`) and histogram of p-Values [pdf](`r anovaPDF`){target="_blank"} which shows which factors are most significant.
+- ANOVA results ([excel xlsx format](`r paste0(anovaXLSX,".xlsx")`);[html](`r paste0(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r anovaPDF`){target="_blank"} which shows which factors are most significant.
 
 - For all contrasts and proteins:
-    - A __table__ with all fold change estimates and p-Values ([excel xlsx format](`r paste0(contrastXLSX,".xlsx")`); [html](`r paste0(contrastXLSX,".html")`)) with p-Values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
+    - A __table__ with all fold change estimates and p-Values ([excel xlsx format](`r paste0(contrastXLSX,".xlsx")`); [html](`r paste0(contrastXLSX,".html")`){target="_blank"}) with p-Values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
     - __Histogram of p-Values__ ([pdf](`r paste0(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
     - __Histogram of adjusted p-Values__ ([pdf](`r paste0(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
     - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste0(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis.
