@@ -1070,7 +1070,9 @@ contrasts_linfct <- function(models,
   p <- p + geom_abline(data = ablines, aes_string(slope = "fc",
                                                   intercept = "neg_log10p", colour = "Area")) +
     geom_vline(xintercept = xintercept, linetype = "dashed",
-               colour = "red")
+               colour = "red") +
+    theme_light()
+
   return(p)
 }
 
@@ -1083,7 +1085,8 @@ contrasts_linfct_vis <- function(contrasts,
                                  modelName = "Model",
                                  prefix = "Contrasts",
                                  subject_Id = "protein_Id",
-                                 columns = c("p.value","p.value.adjusted")){
+                                 columns = c("p.value","p.value.adjusted"),
+                                 fc = 1){
   res <- list()
   contrasts %>% tidyr::unite("label", subject_Id, sep="~", remove=FALSE) -> contrasts
   # add histogram of p-values
@@ -1108,7 +1111,7 @@ contrasts_linfct_vis <- function(contrasts,
                                   p.value = column,
                                   condition = "lhs",
                                   text = "label",
-                                  xintercept = c(-1, 1),
+                                  xintercept = c(-fc, fc),
                                   colour = "isSingular",
                                   scales="free_y")
 
@@ -1118,7 +1121,7 @@ contrasts_linfct_vis <- function(contrasts,
                          p.value = "p.value",
                          condition = "lhs",
                          text = "label",
-                         xintercept = c(-1, 1),
+                         xintercept = c(-fc, fc),
                          colour = "isSingular",
                          scales="free_y") %>%
       plotly::ggplotly(tooltip = "label")
@@ -1138,10 +1141,11 @@ contrasts_linfct_vis <- function(contrasts,
   }
   # MA plot
   {
-    ma_plot <- function(x){
+    ma_plot <- function(x, fc = 1){
       x <- ggplot(x , aes(x = (c1+c2)/2, y = estimate, text = !!sym("label"), colour = !!sym("isSingular"))) +
         geom_point(alpha = 0.5) + scale_colour_manual(values = c("black", "red")) +
-        facet_wrap(~lhs)
+        facet_wrap(~lhs) + theme_light() +
+        geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
       return(x)
     }
 
@@ -1150,7 +1154,7 @@ contrasts_linfct_vis <- function(contrasts,
       name <- paste0(prefix,"_MA_FC_estimate")
       fig$fname <- paste0(name, "_", modelName )
       # pdf version
-      fig$fig <- contrasts %>% ma_plot()
+      fig$fig <- contrasts %>% ma_plot(fc = fc)
 
       # html version
       fig$plotly  <- contrasts %>%
