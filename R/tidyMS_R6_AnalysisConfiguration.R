@@ -116,8 +116,10 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 #' Analysis Configuration
 #' @export
 AnalysisConfiguration <- R6Class("AnalysisConfiguration",
-
                                  public = list(
+                                   project_Id="",
+                                   order_Id="",
+                                   workunit_Id="",
                                    sep = "~",
                                    table = NULL,
                                    parameter = NULL,
