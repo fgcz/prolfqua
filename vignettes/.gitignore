@@ -8,3 +8,5 @@
 .build.timestamp
 *.bib.bak
 *.bib.sav
+*.docx
+ExDesignSurvey/*

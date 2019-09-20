@@ -3,15 +3,17 @@ title: "Bioinformatics Project Meeting Agenda"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document:
-    toc: no
-    toc_depth: '2'
   pdf_document: default
   html_document:
     toc: no
     toc_depth: 2
-vignette: "%\\VignetteIndexEntry{Bioinformatics Project Meeting} %\\VignetteEncoding{UTF-8}
-  %\\VignetteEngine{knitr::rmarkdown}\n  \n"
+papersize: a4
+fontsize: 9pt
+vignette: >
+  %\VignetteIndexEntry{Bioinformatics Project Meeting} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+  
 ---
 
 
@@ -53,15 +55,11 @@ $~$
 
 
 In label-free quantification (LFQ) experiments, we measure relative protein changes among groups of subjects. 
-Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the _within-group_ variance and to determine the number of samples in each group needed in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups.
+Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the _within-group_ variance and to determine the number of samples in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups. These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora. The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
 
-These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora.
 
 
 # Aim of the meeting
-
-The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
-
 
 The outcome of the meeting is this protocol specifying:
 
@@ -70,7 +68,8 @@ The outcome of the meeting is this protocol specifying:
 - all the parameters for the sample size estimation
 - the design of your main experiment
 - all the names of the factors and factor levels
-- specify the hypothesis to be tested.
+- specify the hypothesis to be tested
+
 
 The samples should be annotated with the names specified in the protocol in the b-fabric system. These names will also appear in the result tables and visualizations.
 
@@ -80,21 +79,38 @@ We perform the data analysis according to this protocol. Changing the analysis p
 
 Did you perform a genomics experiment on the same samples?
 
-- [ ] no
+- [ ] no 
 - [ ] yes
-  - What type of experiment?
-  - Was it at the FGCZ?
-  - Who is the bioinformatician responsible for your project?
+
+
+What type of experiment?
+
+$~$
+
+$~$
+
+- Was it run at the FGCZ?
+  - project Id:
+  - order Id:
+  - Bioinformatician :
+- Are you interested in Proteomics Genomics data integration?
+
+$~$
+
+$~$
+
 
 Comment:
 
-$~$
+- NGS data can be used to create improved protein identification databases. 
+- If NGS - proteomics data integration is planned, compatible statistical analysis should be applied to the NGS and Proteomics data.
 
-$~$
 
 
 
 # Protein sequence database and downstream analysis tools
+
+Which sequence database should be used for protein identification?
 
 Which organism
 
@@ -104,6 +120,19 @@ Which organism
 - [ ] zebra-fish
 - other :
 
+
+Should additional protein sequences be added to the database?
+
+$~$
+
+$~$
+
+
+Contaminant list?
+
+- [ ] Complete
+- [ ] Without human contaminants
+- other : 
 
 
 Which downstream analysis tools will be used?
@@ -115,24 +144,8 @@ Which downstream analysis tools will be used?
 $~$
 
 Comment:
-- Ideally the identifiers in the protein database are compatible with the downstream analysis tool you intend to use. For instance _WebGestalt_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene it does not work with Uniprot Treml identifiers.
 
-
-
-Which sequence database should be used for protein identification? [A list of available FGCZ databases](http://fgcz-ms.uzh.ch/FASTA/){target="_blank"}
-
-$~$
-
-$~$
-
-Should additional protein sequences be added to the database?
-
-
-Contaminant list?
-
-- [ ] Complete
-- [ ] Without human contaminants
-- other : 
+- Ideally the identifiers in the protein database are compatible with the downstream analysis tool you intend to use. For instance _WebGestalt_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene, it does not work with Uniprot Treml identifiers.
 
 
 # Effect size and size of test
@@ -231,7 +244,7 @@ Factor name (_camel case_[^1] e.g., Treatment) :
 
 
 
-Level names (_camel case_ e.g. Control, Massage, Creme): 
+Level names (_camel case_ e.g. Control, Diet, Creme): 
 
 
 [^1]: _camel case_ - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.
@@ -262,7 +275,7 @@ Example:
 
 | Factor Name  | Number levels  |   level names $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$|
 |:-----|----|:----:|
-| Treatment |3 | Control, Massage, Creme| 
+| Treatment |3 | Control, Diet, Creme| 
 | AgeGroup | 2 | young, old |
 
 
@@ -349,7 +362,7 @@ $~$
 
 Examples for parallel Group design (only one factor):
 
-- Massage - Control
+- Diet - Control
 - Creme - Control
 
 
@@ -365,7 +378,7 @@ Example for factorial designs:
 
 - If one group is used in more comparisons than all other groups, it will benefit the power of the test [^6] to allocate more samples to this group, since increasing the number of degrees of freedom in this group will benefit many comparisons.
 
-- __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-Value adjustment. For instance, using the Bonferroni correction, the obtained p-Values are multiplied by the number of the hypothesis tested. Given two comparisons, a p-Value of 0.03 after Bonferroni adjustment is $0.06$, i.e., not significant given a test size of $0.05$. Therefore, do not test all possible hypothesis! For instance, if including the contrast  _Massage - Creme_, it is required to multiply the p-Values with the factor $3$. i.e., a p-Value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
+- __Limit the number of hypotheses you test__. Multiplicity - each comparison is a test of hypothesis. Therefore, it is required to perform a p-Value adjustment. For instance, using the Bonferroni correction, the obtained p-Values are multiplied by the number of the hypothesis tested. Given two comparisons, a p-Value of 0.03 after Bonferroni adjustment is $0.06$, i.e., not significant given a test size of $0.05$. Therefore, do not test all possible hypothesis! For instance, if including the contrast  _Diet - Creme_, it is required to multiply the p-Values with the factor $3$. i.e., a p-Value of $0.2$ after Bonferroni adjustment is $0.6$ - i.e., not significant.
 
 
 [^6]:  The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. [Wikipedia](https://en.wikipedia.org/wiki/Power_(statistics))
@@ -374,8 +387,8 @@ Example for factorial designs:
 
 - Typically in factorial designs, tests for differences among main effects (differences between levels within a single factor) and second-order interactions of the factors. 
 
-    - _main effects_ : Treatment_Control - Treatment_Massage 
-    - _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Massage:AgeGroup_young - Treatment_Massage:AgeGroup_old)
+    - _main effects_ : Treatment_Control - Treatment_Diet 
+    - _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Diet:AgeGroup_young - Treatment_Diet:AgeGroup_old)
 
 
 

@@ -6,7 +6,7 @@ application_run_modelling_V2 <- function(outpath,
                                       data,
                                       pepConfig,
                                       modelFunction,
-                                      Contrasts,
+                                      contrasts,
                                       modelling_dir="modelling_results_protein" ){
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
@@ -25,7 +25,7 @@ application_run_modelling_V2 <- function(outpath,
 
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
-                                                                Contrasts)
+                                                                contrasts)
   xx_imputed <- res_contrasts_imputed("long",what = "contrasts")
 
   ### make contrasts -----
@@ -40,9 +40,9 @@ application_run_modelling_V2 <- function(outpath,
   #names(modellingResult)
   modelProteinF <- modellingResult$modellingResult$modelProtein
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
-                                             Contrasts,
+                                             contrasts,
                                              pepConfig,
-                                             prefix =  "Contrasts",
+                                             prefix =  "contrasts",
                                              contrastfun = modelFunction$contrast_fun)
 
 
@@ -86,7 +86,7 @@ application_run_modelling <- function(outpath,
                                       data,
                                       pepConfig,
                                       modelFunction,
-                                      Contrasts,
+                                      contrasts,
                                       modelling_dir="modelling_results_protein" ){
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
@@ -105,7 +105,7 @@ application_run_modelling <- function(outpath,
 
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
-                                                                Contrasts)
+                                                                contrasts)
 
   ### make contrasts -----
 
@@ -122,7 +122,7 @@ application_run_modelling <- function(outpath,
 
   #factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
   linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-  linfct_A <- linfct_matrix_contrasts(linfct, Contrasts)
+  linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
 
   if(DEBUG){
     pdf(file.path(modelling_path,"Linear_functions.pdf"), width=18, height=10)
@@ -138,7 +138,7 @@ application_run_modelling <- function(outpath,
   res_contrasts <- workflow_contrasts_linfct(modelProteinF,
                                              linfct_A,
                                              pepConfig,
-                                             prefix =  "Contrasts",
+                                             prefix =  "contrasts",
                                              contrastfun = modelFunction$contrast_fun)
 
   xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
