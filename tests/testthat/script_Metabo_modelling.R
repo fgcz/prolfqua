@@ -78,7 +78,7 @@ wfs <- contrasts_linfct_vis(models_interaction_Averages,
 contrasts_linfct_vis_write(wfs, path=results$path)
 
 contrastres_fun <- workflow_contrasts_linfct(m,
-                                             linfct = linfct$linfct_factors ,
+                                             contrasts = linfct$linfct_factors ,
                                              config = pepConfig,
                                              modelName = modellingResult_A$modelName,
                                              prefix = "GroupAverages",
