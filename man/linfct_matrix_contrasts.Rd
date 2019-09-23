@@ -4,7 +4,7 @@
 \alias{linfct_matrix_contrasts}
 \title{linfct_matrix_contrasts}
 \usage{
-linfct_matrix_contrasts(linfct, Contrasts)
+linfct_matrix_contrasts(linfct, contrasts)
 }
 \description{
 linfct_matrix_contrasts

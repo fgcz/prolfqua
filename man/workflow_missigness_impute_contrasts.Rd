@@ -4,7 +4,7 @@
 \alias{workflow_missigness_impute_contrasts}
 \title{Compute fold changes given Contrasts 2}
 \usage{
-workflow_missigness_impute_contrasts(data, config, Contrasts)
+workflow_missigness_impute_contrasts(data, config, contrasts)
 }
 \description{
 Compute fold changes given Contrasts 2
