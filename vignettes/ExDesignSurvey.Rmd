@@ -2,13 +2,9 @@
 title: "Bioinformatics Project Meeting Agenda"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  pdf_document: default
-  html_document:
-    toc: no
-    toc_depth: 2
+output: pdf_document
 papersize: a4
-fontsize: 9pt
+geometry: margin=.5in
 vignette: >
   %\VignetteIndexEntry{Bioinformatics Project Meeting} 
   %\VignetteEncoding{UTF-8}
@@ -16,6 +12,8 @@ vignette: >
   
 ---
 
+\fontsize{10}{10}
+\selectfont
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -55,17 +53,17 @@ $~$
 
 
 In label-free quantification (LFQ) experiments, we measure relative protein changes among groups of subjects. 
-Before the main experiment, a QC experiment is performed. We use the data from the QC experiment to estimate the _within-group_ variance and to determine the number of samples in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups. These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora. The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
+Before the main experiment, a quality control (QC) experiment is performed. We use the data from the QC to estimate the _within-group_ variance and to determine the number of samples in the main experiment. The measurements of the main experiment are modeled using linear models, mixed-effects linear models, which can be thought of as an extension of the t-test to more than two groups. These estimates are used to perform Gene Set Enrichment Analysis and Overrepresentation analysis using WebGestaltR and sigora. The meeting aims to obtain and document all the information relevant to perform a statistically sound LFQ data analysis. 
 
 
 
 # Aim of the meeting
 
-The outcome of the meeting is this protocol specifying:
+The goal of the meeting is this protocol specifying:
 
 - which protein database to use
 - which and how many samples to use for the QC
-- all the parameters for the sample size estimation
+- determine all the parameters for the sample size estimation
 - the design of your main experiment
 - all the names of the factors and factor levels
 - specify the hypothesis to be tested
@@ -73,7 +71,7 @@ The outcome of the meeting is this protocol specifying:
 
 The samples should be annotated with the names specified in the protocol in the b-fabric system. These names will also appear in the result tables and visualizations.
 
-We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered might incur time delays or additional costs.
+We perform the data analysis according to this protocol. Changing the analysis protocol (e.g. adding contrasts or blocking factors) after the analysis was delivered will incur time delays and additional costs.
 
 # Genomics Analysis
 
@@ -90,9 +88,9 @@ $~$
 $~$
 
 - Was it run at the FGCZ?
-  - project Id:
-  - order Id:
-  - Bioinformatician :
+- project Id:
+- order Id:
+- Bioinformatician :
 - Are you interested in Proteomics Genomics data integration?
 
 $~$
@@ -100,7 +98,7 @@ $~$
 $~$
 
 
-Comment:
+Note:
 
 - NGS data can be used to create improved protein identification databases. 
 - If NGS - proteomics data integration is planned, compatible statistical analysis should be applied to the NGS and Proteomics data.
@@ -112,7 +110,7 @@ Comment:
 
 Which sequence database should be used for protein identification?
 
-Which organism
+Which organism?
 
 - [ ] homo sapiens
 - [ ] mus musculus
@@ -143,7 +141,9 @@ Which downstream analysis tools will be used?
 
 $~$
 
-Comment:
+Note:
+
+- Typically we are using protein databases from uniprot.org
 
 - Ideally the identifiers in the protein database are compatible with the downstream analysis tool you intend to use. For instance _WebGestalt_, although it recognizes many types of identifiers: e.g., Uniprot Swiss-Prot, Gene Symbols, NCBI Entrez gene, it does not work with Uniprot Treml identifiers.
 
@@ -156,7 +156,7 @@ They also will be used when visualizing the results in the final report (e.g., V
 
 ## Effect size
 
-What is the smallest effect size, i.e., fold change in protein abundance, is of biological relevance, and you are interested in detecting? 
+What is the smallest effect size (i.e., fold change in protein abundance) of biological relevance, you are interested in detecting? 
 Typically fold changes are $1.5$, $2$, or $4$. This information is needed to determine the sample size as well as to biologically interpret the data.
 
 The number of samples you need to use highly depends on the effect size you want to detect. Detecting small effect sizes requires you to measure more samples.
@@ -172,7 +172,7 @@ On the other hand, the statistical significance of a fold change does not imply 
 
 [^5]: In statistics, the size of a test is the probability of falsely rejecting the null hypothesis.
 
-Typically a difference between two conditions is considered to be significant if the p-Values is less than $0.05$. For some applications a less significant p-Value can be used (e.g., $0.1$) for others a smaller p-Value might be required.
+Typically a difference between two conditions is considered to be significant if the p-Value is less than $0.05$. For some applications a less significant p-Value can be used (e.g., $0.1$) for others a smaller p-Value might be required.
 
 - [ ] 0.01
 - [ ] 0.05
@@ -215,13 +215,17 @@ Are there proteins or protein groups of particular interest?
 Provide protein IDs:  
 
 
-Do you want to obtain significant p-Values for proteins with big within-group variances, or would you be satisfied with getting significances for the $X\%$ of low variance proteins? 
+Do you want to obtain significant p-Values for proteins with large within-group variances, or would you be satisfied with getting significances for the $X\%$ of low variance proteins? 
 
 
 - [ ] $50\%$
 - [ ] $70\%$
 - other :
 
+
+Note:
+
+- High abundant proteins will exhibit smaller technical variability compared with low abundant proteins.
 
 # Designs
 
@@ -258,7 +262,8 @@ Applies when studying how two or more factors influence protein expression, e.g.
 [^8]:In statistics, a full factorial experiment is an experiment whose design consists of two or more factors, each with discrete possible values or "levels", and whose experimental units take on all possible combinations of these levels across all such factors. Such an experiment allows the investigator to study the effect of each factor on the response variable, as well as the effects of interactions between factors on the response variable.
 
 - How many factors? Typically 2 rarely 3.
-- How many levels per factor? typically 2 or 3 per factor.
+- How many levels per factor? Typically 2 or 3 per factor.
+
 
 | Factor Name  | Number levels  |   level names $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$|
 |:-----|----|:----:|
@@ -294,7 +299,7 @@ If _yes_ please specify a computer-friendly factor name using _camel case_: e.g.
 
 Name of the factor : 
 
-The subject identifiers can contain upper and lower case letters and numbers but do avoid special characters and white spaces. 
+The subject identifiers can contain upper and lower case letters and numbers but avoid special characters and white spaces. 
 Neither the factor names or the levels of the blocking factors will be shown in the results or figures generated.
 
 
@@ -332,12 +337,9 @@ $~$
 $~$
 
 
-
-\pagebreak
-
 # Contrasts - Hypothesis to be tested
 
-If there are more than two groups, specify hypothesis to be tested (comparison) using the factor and factor level names.
+If there are more than two groups, specify the hypothesis to be tested (comparison) using the factor and factor level names.
 
 
 **_Contrasts to be computed:_** 
@@ -374,7 +376,7 @@ Example for factorial designs:
 
 
 
-### Comments:
+Note:
 
 - If one group is used in more comparisons than all other groups, it will benefit the power of the test [^6] to allocate more samples to this group, since increasing the number of degrees of freedom in this group will benefit many comparisons.
 
@@ -387,8 +389,8 @@ Example for factorial designs:
 
 - Typically in factorial designs, tests for differences among main effects (differences between levels within a single factor) and second-order interactions of the factors. 
 
-    - _main effects_ : Treatment_Control - Treatment_Diet 
-    - _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Diet:AgeGroup_young - Treatment_Diet:AgeGroup_old)
+- _main effects_ : Treatment_Control - Treatment_Diet 
+- _Test for interaction_ : (Treatment_Control:AgeGroup_young - Treatment_Control:AgeGroup_old) - (Treatment_Diet:AgeGroup_young - Treatment_Diet:AgeGroup_old)
 
 
 
