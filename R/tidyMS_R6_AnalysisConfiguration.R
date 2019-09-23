@@ -810,12 +810,12 @@ missigness_impute_factors_interactions <- function(data,
 #' @export
 missigness_impute_contrasts <- function(data,
                                         config,
-                                        Contrasts,
+                                        contrasts,
                                         agg_fun=function(x){median(x, na.rm = TRUE)})
 {
-  for(i in 1:length(Contrasts)){
-    message(names(Contrasts)[i], "=", Contrasts[i],"\n")
-    data <- dplyr::mutate(data, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
+  for(i in 1:length(contrasts)){
+    message(names(contrasts)[i], "=", contrasts[i],"\n")
+    data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
 
   if(!is.null(agg_fun)){
@@ -830,12 +830,12 @@ missigness_impute_contrasts <- function(data,
 #' @export
 workflow_missigness_impute_contrasts <- function(data,
                                                  config,
-                                                 Contrasts){
+                                                 contrasts){
 
   xx <- missigness_impute_factors_interactions(data, config, "imputed" )
-  imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+  imputed <- missigness_impute_contrasts(xx, config, contrasts)
   xx <- missigness_impute_factors_interactions(data,config,"meanArea" )
-  mean <- missigness_impute_contrasts(xx, config, Contrasts)
+  mean <- missigness_impute_contrasts(xx, config, contrasts)
   dd <- bind_rows(imputed, mean)
   dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
 
@@ -845,9 +845,9 @@ workflow_missigness_impute_contrasts <- function(data,
     what  <- match.arg( what  )
 
     if(what == "contrasts"){
-      dd_long <- dplyr::filter(dd_long, contrast %in% names(Contrasts))
+      dd_long <- dplyr::filter(dd_long, contrast %in% names(contrasts))
     }else if(what == "factors"){
-      dd_long <- dplyr::filter(dd_long, ! contrast %in% names(Contrasts))
+      dd_long <- dplyr::filter(dd_long, ! contrast %in% names(contrasts))
     }else if(what == "all"){
 
     }

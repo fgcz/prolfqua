@@ -167,7 +167,7 @@ model_analyse <- function(pepIntensity,
 #'
 get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA))
+  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>% dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
   modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
@@ -673,23 +673,23 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 #' linfct_matrix_contrasts(linfct, Contrasts )
-linfct_matrix_contrasts<- function(linfct , Contrasts){
+linfct_matrix_contrasts<- function(linfct , contrasts){
   linfct <- t(linfct)
   df <- as_tibble(linfct, rownames = "interaction")
   contrasts <- function(data,
-                        Contrasts)
+                        contrasts)
   {
     cnams <- setdiff(colnames(data),"interaction")
-    for(i in 1:length(Contrasts)){
-      message(names(Contrasts)[i], "=", Contrasts[i],"\n")
-      data <- dplyr::mutate(data, !!names(Contrasts)[i] := !!rlang::parse_expr(Contrasts[i]))
+    for(i in 1:length(contrasts)){
+      message(names(contrasts)[i], "=", contrasts[i],"\n")
+      data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
 
     res <- data %>% dplyr::select(-one_of(cnams))
     return(res)
   }
 
-  res <- contrasts(df, Contrasts )
+  res <- contrasts(df, contrasts )
   res <- column_to_rownames(res,"interaction")
   res <- t(res)
   return(res)
@@ -932,6 +932,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' #my_glht(mb, linfct$linfct_interactions)
 my_contest <- function(model, linfct){
   if(length(lme4::fixef(model)) != ncol(linfct) ){
+    warning("Model is rank deficient!")
     return(NA) # catch rank defficient
   }
   res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
@@ -1206,15 +1207,25 @@ contrasts_linfct_vis_write <- function(fig_list,
 #' @examples
 #'
 workflow_contrasts_linfct <- function(models,
-                                      linfct,
+                                      contrasts,
                                       config,
                                       modelName = "Model",
                                       prefix = "Contrasts",
                                       contrastfun = LFQService::my_contest )
 {
+  if(class(contrasts) == "matrix"){
+    linfct_A <- contrasts
+  }else{
+    models <- models %>% dplyr::filter(exists_lmer == TRUE)
+    m <- get_complete_model_fit(models)
+    linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+    linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
+  }
+
   subject_Id <- config$table$hkeysLevel()
+  return(list(models=models,linfct_A=linfct_A, subject_Id = subject_Id,contrastfun= contrastfun ))
   contrast_result <- contrasts_linfct(models,
-                                      linfct,
+                                      linfct_A,
                                       subject_Id = subject_Id,
                                       contrastfun = contrastfun )
 
@@ -1291,7 +1302,7 @@ workflow_contrasts_linfct_V2 <- function(models,
   models <- models %>% dplyr::filter(exists_lmer == TRUE)
   m <- get_complete_model_fit(models)
   linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-  linfct_A <- linfct_matrix_contrasts(linfct, Contrasts)
+  linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
 
 
   subject_Id <- config$table$hkeysLevel()
