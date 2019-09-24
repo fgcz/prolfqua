@@ -676,7 +676,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 linfct_matrix_contrasts<- function(linfct , contrasts){
   linfct <- t(linfct)
   df <- as_tibble(linfct, rownames = "interaction")
-  contrasts <- function(data,
+  make_contrasts <- function(data,
                         contrasts)
   {
     cnams <- setdiff(colnames(data),"interaction")
@@ -689,7 +689,7 @@ linfct_matrix_contrasts<- function(linfct , contrasts){
     return(res)
   }
 
-  res <- contrasts(df, contrasts )
+  res <- make_contrasts(df, contrasts )
   res <- column_to_rownames(res,"interaction")
   res <- t(res)
   return(res)
@@ -1223,7 +1223,6 @@ workflow_contrasts_linfct <- function(models,
   }
 
   subject_Id <- config$table$hkeysLevel()
-  return(list(models=models,linfct_A=linfct_A, subject_Id = subject_Id,contrastfun= contrastfun ))
   contrast_result <- contrasts_linfct(models,
                                       linfct_A,
                                       subject_Id = subject_Id,
