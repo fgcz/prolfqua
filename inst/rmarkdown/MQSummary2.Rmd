@@ -296,7 +296,10 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 
 
 ```{r sampleSize}
-knitr::kable( dplyr::select( sampleSize$summary, -probs), caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.", digits = 2, format = "latex")
+knitr::kable( dplyr::select( sampleSize$summary, -probs),
+              caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.",
+              digits = 2,
+              format = "latex")
 
 ```
 
@@ -321,11 +324,11 @@ knitr::kable(table_factors(data, config), format = "latex",
 ```
 
 ```{r hierarchyCountsSample}
-paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
+caption <- paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
 knitr::kable(hierarchy_counts_sample(dataTransformed, configuration = config)("wide"),
              format = "latex",
              booktabs = TRUE,
-             caption = ) # %>% 
+             caption = caption ) # %>% 
   #kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
 ```
 
