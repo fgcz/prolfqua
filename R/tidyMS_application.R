@@ -248,7 +248,7 @@ application_set_up_MQ_run <- function(outpath,
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #' @export
 #'
-application_summarize_data <-function(data,
+application_summarize_data <- function(data,
                                       config,
                                       qc_path,
                                       DEBUG= FALSE,

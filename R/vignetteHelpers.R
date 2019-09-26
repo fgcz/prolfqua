@@ -38,6 +38,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
                                       workdir = tempdir(),
                                       packagename = "LFQService",
                                       format = "pdf"){
+
   res <- .scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
   dist_file_path <- file.path(dest_path, paste0(dest_file_name,".",format))
   if(is.null(res)){
