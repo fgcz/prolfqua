@@ -1119,7 +1119,7 @@ contrasts_linfct_vis <- function(contrasts,
     fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
       LFQService:::.multigroupVolcano(.,
                          effect = "estimate",
-                         p.value = "p.value",
+                         p.value = column,
                          condition = "lhs",
                          text = "label",
                          xintercept = c(-fc, fc),
@@ -1213,6 +1213,7 @@ workflow_contrasts_linfct <- function(models,
                                       prefix = "Contrasts",
                                       contrastfun = LFQService::my_contest )
 {
+  warning("DEPRECATE workflow_contrasts_linfct!!!")
   if(class(contrasts) == "matrix"){
     linfct_A <- contrasts
   }else{
@@ -1261,8 +1262,8 @@ workflow_contrasts_linfct <- function(models,
                                prefix = prefix,
                                columns = c("estimate", columns))
       }
-
-      contrasts_linfct_vis_write(visualization, path=path)
+      contrasts_linfct_vis_write(visualization, path=path, format = "pdf")
+      contrasts_linfct_vis_write(visualization, path=path, format = "html")
     }
 
     res <- list(contrast_result = contrast_result,
@@ -1301,8 +1302,8 @@ workflow_contrasts_linfct_V2 <- function(models,
   models <- models %>% dplyr::filter(exists_lmer == TRUE)
   m <- get_complete_model_fit(models)
   linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+  linfct <- unique(linfct) # needed for single factor models
   linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
-
 
   subject_Id <- config$table$hkeysLevel()
   contrast_result <- contrasts_linfct(models,

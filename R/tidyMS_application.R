@@ -3,11 +3,11 @@
 #' @export
 #'
 application_run_modelling_V2 <- function(outpath,
-                                      data,
-                                      pepConfig,
-                                      modelFunction,
-                                      contrasts,
-                                      modelling_dir="modelling_results_protein" ){
+                                         data,
+                                         pepConfig,
+                                         modelFunction,
+                                         contrasts,
+                                         modelling_dir="modelling_results_protein" ){
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
@@ -40,10 +40,10 @@ application_run_modelling_V2 <- function(outpath,
   #names(modellingResult)
   modelProteinF <- modellingResult$modellingResult$modelProtein
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
-                                             contrasts,
-                                             pepConfig,
-                                             prefix =  "contrasts",
-                                             contrastfun = modelFunction$contrast_fun)
+                                                contrasts,
+                                                pepConfig,
+                                                prefix =  "contrasts",
+                                                contrastfun = modelFunction$contrast_fun)
 
 
   # return(list(res_contrasts = res_contrasts, modellingResult_fun = modellingResult_fun))
@@ -71,14 +71,14 @@ application_run_modelling_V2 <- function(outpath,
                                               xx_imputed,
                                               subject_Id = pepConfig$table$hkeysLevel(),
                                               modelFunction = modelFunction)
-  separate_hierarchy(contrast_results, config) -> contrast_results
-  filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
+  separate_hierarchy(contrast_results, config) -> filtered_dd
+
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
   return(list(res_contrasts  = res_contrasts, modellingResult_fun = modellingResult_fun))
 }
 
 
-#' run the modelling using lmer and lm models
+#' run the modelling using lmer and lm models - DEPRECATED use version V2
 #'
 #' @export
 #'
@@ -87,7 +87,9 @@ application_run_modelling <- function(outpath,
                                       pepConfig,
                                       modelFunction,
                                       contrasts,
-                                      modelling_dir="modelling_results_protein" ){
+                                      modelling_dir="modelling_results_protein",
+                                      DEBUG = FALSE){
+  warning("DEPRECATED application_run_modelling! use application_run_modelling_V2 instead!")
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
@@ -162,8 +164,7 @@ application_run_modelling <- function(outpath,
 
   contrast_results <- merge_contrasts_results(xx$contrast_minimal, xx_imputed,
                                               subject_Id = pepConfig$table$hkeysLevel(), modelFunction = modelFunction)
-  separate_hierarchy(contrast_results, config) -> contrast_results
-  filtered_dd <- fgczgseaora::getUniprotFromFastaHeader(contrast_results, idcolumn = "top_protein")
+  separate_hierarchy(contrast_results, config) -> filtered_dd
 
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
 }
@@ -245,14 +246,15 @@ application_set_up_MQ_run <- function(outpath,
 
 
 
+
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #' @export
 #'
-application_summarize_data <- function(data,
-                                      config,
-                                      qc_path,
-                                      DEBUG= FALSE,
-                                      WRITE_PROTS=TRUE){
+application_summarize_data_pep_to_prot <- function(data,
+                                                   config,
+                                                   qc_path,
+                                                   DEBUG= FALSE,
+                                                   WRITE_PROTS=TRUE){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService::workflow_MQ_protoV1(
@@ -285,7 +287,8 @@ application_summarize_data <- function(data,
   protintensity <- medpolish_protein_quants( results$pepIntensityNormalized,
                                              results$config_pepIntensityNormalized )
 
-  protein_quants_write(protintensity, qc_path)
+  unnest <- protintensity("unnest")
+  quants_write(unnest$data, unnest$config, qc_path)
 
 
   figs <- protintensity("plot")
@@ -309,6 +312,72 @@ application_summarize_data <- function(data,
     )
   }
   return(list(results  = results, prot_results = protintensity))
+}
+
+
+#' DEPRECATED
+#' @export
+application_summarize_data <- function(data,
+                                       config,
+                                       qc_path,
+                                       DEBUG= FALSE,
+                                       WRITE_PROTS=TRUE){
+  message("application_summarize_data is deprecated\n")
+  stop("use application_summarize_data_pep_to_prot\n")
+}
+
+
+
+#' preprocess peptide data, compute protein data, store results in qc_path folder
+#' @export
+#'
+application_summarize_compound <- function(data,
+                                           config,
+                                           qc_path,
+                                           DEBUG= FALSE,
+                                           WRITE_PROTS=TRUE,
+                                           prefix = c("peptide", "compound")){
+  prefix <- match.arg(prefix)
+  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
+
+
+  results <- LFQService:::.workflow_MQ_normalize_log2_robscale(data, config)
+
+  wideFRAME <- LFQService::toWideConfig(results$data,
+                                        results$config)
+
+
+  #return(wideFRAME)
+
+  lfq_write_table(separate_hierarchy(wideFRAME$data,
+                                     results$config),
+                  path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
+
+
+  if(!DEBUG){
+    LFQService::render_MQSummary_rmd(results$data,
+                                     results$config$clone(deep=TRUE),
+                                     pep=TRUE,
+                                     workdir = ".",
+                                     dest_path = qc_path,
+                                     dest_file_name = paste0(prefix, "_intensities_qc"),
+                                     format = "html")
+  }
+
+
+  quants_write(results$data, results$config, qc_path)
+
+
+
+  if(WRITE_PROTS){
+    figs <- plot_hierarchies_line_df(results$data, results$config )
+    pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
+    lapply(figs, print)
+    dev.off()
+  }
+
+
+  return(list(data  = results$data, config = results$config))
 }
 #################################################
 ### Do missing value imputation

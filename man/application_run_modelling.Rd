@@ -2,11 +2,12 @@
 % Please edit documentation in R/tidyMS_application.R
 \name{application_run_modelling}
 \alias{application_run_modelling}
-\title{run the modelling using lmer and lm models}
+\title{run the modelling using lmer and lm models - DEPRECATED use version V2}
 \usage{
 application_run_modelling(outpath, data, pepConfig, modelFunction,
-  contrasts, modelling_dir = "modelling_results_protein")
+  contrasts, modelling_dir = "modelling_results_protein",
+  DEBUG = FALSE)
 }
 \description{
-run the modelling using lmer and lm models
+run the modelling using lmer and lm models - DEPRECATED use version V2
 }

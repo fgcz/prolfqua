@@ -380,7 +380,7 @@ plot_hierarchies_line_df <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
 
   hierarchy_ID <- "hierarchy_ID"
-  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()), remove=FALSE)
 
   xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
 
@@ -723,22 +723,22 @@ missigness_impute_interactions <- function(mdataTrans,
     }else{
       xx %>% dplyr::select(-one_of(c("nrNAs", factors))) -> xx
 
-
+      pid <- pepConfig$table$hkeysLevel()
       nrReplicates <- xx %>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
-        arrange(protein_Id) %>% ungroup()
+        arrange(!!sym(pid)) %>% ungroup()
 
       nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
-        arrange(protein_Id) %>% ungroup()
+        arrange(!!sym(pid)) %>% ungroup()
 
       meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
         tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
-        arrange(protein_Id) %>% ungroup()
+        arrange(!!sym(pid)) %>% ungroup()
 
       meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
         tidyr::spread(interaction, imputed, sep=".imputed.") %>%
-        arrange(protein_Id) %>% ungroup()
+        arrange(!!sym(pid)) %>% ungroup()
 
 
       allTables <- list(meanArea= meanArea,
@@ -1106,7 +1106,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
         dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
                                   plot_hierarchies_line,
                                   factor_level = config$table$factorLevel, config ))
-      #plot_hierarchies_add_quantline(figs$plot[[1]], figs$medpolishPly[[1]], "medpolish", config)
+
       figs <- figs %>%
         dplyr::mutate(plot = map2(plot, !!sym(makeName) ,
                                   plot_hierarchies_add_quantline, func(name=TRUE), config ))
@@ -1140,43 +1140,56 @@ medpolish_protein_quants <- function(data, config){
   return(protintensity)
 }
 
+
+
 #' write intensites into folder - for the moment protein
 #' @export
 #'
-protein_quants_write <- function(protintensity,
-                                 path_qc,
-                                 suffix="",
-                                 na_fraction = 0.3){
-
+#'
+#'
+quants_write <- function(data,
+                         config,
+                         path_qc,
+                         suffix="",
+                         prefix = "protein",
+                         na_fraction = 0.3){
   suffix <- paste0("_",suffix)
+  prefix <- paste0(prefix,"_")
   message("writing protein intensity data into: ", path_qc)
 
-  unnest <- protintensity("unnest")
+
+  unnest <- list(data = data ,config =config)
+  wide <- LFQService::toWideConfig(data, config)
+
+  lfq_write_table(separate_hierarchy(wide$data, unnest$config),
+                  path = file.path(path_qc,paste0(prefix,"intensities_wide",suffix,".csv")))
+
+  lfq_write_table(wide$annotation,
+                  path = file.path(path_qc,paste0(prefix,"intensities_file_annotation",suffix,".csv")))
+
+
+
+
 
   lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
-                   path = file.path(path_qc,paste0("protein_intensities_long",suffix,".csv")))
+                  path = file.path(path_qc,paste0(prefix,"intensities_long",suffix,".csv")))
 
 
-  lfq_write_table(separate_hierarchy(protintensity("wide")$data, protintensity("wide")$config),
-                   path = file.path(path_qc,paste0("protein_intensities_wide",suffix,".csv")))
-
-  lfq_write_table(protintensity("wide")$annotation,
-                   path = file.path(path_qc,paste0("protein_intensities_file_annotation",suffix,".csv")))
-
-
-  pdf(file.path(path_qc,paste0("protein_intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
-  plot_heatmap_cor(protintensity("unnest")$data, protintensity("unnest")$config)
+  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
+  plot_heatmap_cor(unnest$data,unnest$config)
   dev.off()
 
-  pdf(file.path(path_qc,paste0("protein_intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
-  LFQService::plot_heatmap(protintensity("unnest")$data, protintensity("unnest")$config, na_fraction = na_fraction)
+  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
+  LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction)
   dev.off()
 
-  res <- plot_pca(protintensity("unnest")$data,protintensity("unnest")$config)
-  pdf(file.path(path_qc,paste0("protein_intensities_PCA",suffix,".pdf")), width=6, height=6)
+  res <- plot_pca(unnest$data,unnest$config)
+  pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")), width=6, height=6)
   print(res)
   dev.off()
+
 }
+
 
 
 

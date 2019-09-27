@@ -9,12 +9,12 @@ suppressMessages(library(dplyr))
 "Sample Size Report from MQ file
 
 Usage:
-  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>] [--project_id=<project_id>] [--order_id=<order_id>] [--workunit=<workunit>]
+  lfq_MQ_SampleSizeReport.R <mqzip> [--outdir=<outdir>] [--project_Id=<project_Id>] [--order_Id=<order_Id>] [--workunit=<workunit>]
 
 Options:
   -o --outdir=<outdir> output directory [default: samplesize_qc_report]
-  -p --project_id=<project_id> project identifier [default: NULL]
-  -q --order_id=<order_id> order identifier [default: NULL]
+  -p --project_Id=<project_Id> project identifier [default: NULL]
+  -q --order_Id=<order_Id> order identifier [default: NULL]
   -w --workunit=<workunit> parent workunit [default: NULL]
 
 Arguments:
@@ -27,8 +27,8 @@ opt <- docopt(doc)
 cat("\nParameters used:\n\t",
     "     mqzip:", mqzip <- opt$mqzip, "\n\t",
     "result_dir:", outputDir <- opt[["--outdir"]], "\n\t",
-    "project_id:", project_id <- opt[["--project_id"]], "\n\t",
-    "  order_id:", order_id <- opt[["--order_id"]], "\n\t",
+    "project_Id:", project_Id <- opt[["--project_Id"]], "\n\t",
+    "  order_Id:", order_Id <- opt[["--order_Id"]], "\n\t",
     "  workunit:", workunit <- opt[["--workunit"]], "\n\n\n")
 
 
@@ -85,6 +85,11 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 }
 
 config <- createMQProteinPeptideConfiguration()
+config$project_Id <- project_Id
+config$order_Id <- order_Id
+config$workunit_Id <- workunit
+
+
 resDataStart <- setup_analysis(resPepProtAnnot, config)
 resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
 
@@ -92,11 +97,10 @@ resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases
 filename <- basename(tools::file_path_sans_ext(mqzip))
 LFQService::render_MQSummary_rmd(resDataStart,
                                  config$clone(deep=TRUE),
-                                 workunit_id = workunit,
-                                 project_id = project_id,
                                  pep = TRUE,
                                  dest_path = outputDir,
-                                 dest_file_name = paste0("r_",filename,"_Peptide.pdf"),workdir = "." )
+                                 dest_file_name = paste0("r_",filename,"_Peptide"),
+                                 workdir = "." )
 
 
 peptideStats <- summarize_cv_raw_transformed(resDataStart, config)
@@ -127,12 +131,12 @@ lfq_write_table(toWideConfig(data, xx$config)$annotation, path=file.path(outputD
 ##LFQService::plot_sample_correlation(dataTransformed, config)
 ##```
 
-LFQService::render_MQSummary_rmd(data, xx$config$clone(deep=TRUE),
-                                 workunit_id = workunit,
-                                 project_id = project_id,
+LFQService::render_MQSummary_rmd(data,
+                                 xx$config$clone(deep=TRUE),
                                  pep = FALSE,
                                  dest_path = outputDir,
-                                 dest_file_name = paste0("r_",filename,"_Protein.pdf"), workdir = ".")
+                                 dest_file_name = paste0("r_",filename,"_Protein"),
+                                 workdir = ".")
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(data =xx$data, configuration = xx$config), output_file = paste0("Protein_",mqzip,".pdf"))#,envir =new.env())
 #break()
