@@ -109,6 +109,10 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                        "Columns containing values"
                                        valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
                                        return(valueVars)
+                                     },
+                                     annotationVars = function(){
+                                       annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
+                                       return(annotationVars)
                                      }
                                    )
 )
@@ -189,6 +193,8 @@ R6extractValues <- function(r6class){
   return(res)
 }
 
+
+
 #' Extracts columns relevant for a configuration from a data frame
 #' @export
 #' @examples
@@ -224,7 +230,7 @@ setup_analysis <- function(data, configuration ){
     message("creating sampleName")
 
     data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep=configuration$sep) %>%
-      dplyr::select(sampleName, table$fileName) %>% distinct() %>%
+      dplyr::select(sampleName, table$fileName) %>% dplyr::distinct() %>%
       dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=configuration$sep )}) %>%
       dplyr::inner_join(data, by=table$fileName)
   } else{
@@ -493,7 +499,7 @@ plot_hierarchies_boxplot_df <- function(filteredPep, config){
 #'
 table_factors <- function(data, configuration){
   factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
-    distinct() %>%
+    dplyr::distinct() %>%
     arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
 }
@@ -581,7 +587,7 @@ hierarchy_counts_sample <- function(data,
 summarizeProteins <- function( x, configuration ){
   rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
 
-  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% distinct() %>%
+  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
     group_by_at(rev_hierarchy[-1]) %>%
     dplyr::summarize(nrFragments = n())
 
@@ -1033,7 +1039,7 @@ reestablishCondition <- function(data,
   xx <- data %>%  dplyr::select(c(table$sampleName,
                                   table$factorKeys(),
                                   table$fileName,
-                                  table$isotopeLabel)) %>% distinct()
+                                  table$isotopeLabel)) %>% dplyr::distinct()
   res <- dplyr::inner_join(xx,medpolishRes, by=table$sampleName)
   res
 }
@@ -1161,32 +1167,27 @@ quants_write <- function(data,
   unnest <- list(data = data ,config =config)
   wide <- LFQService::toWideConfig(data, config)
 
-  lfq_write_table(separate_hierarchy(wide$data, unnest$config),
-                  path = file.path(path_qc,paste0(prefix,"intensities_wide",suffix,".csv")))
-
-  lfq_write_table(wide$annotation,
-                  path = file.path(path_qc,paste0(prefix,"intensities_file_annotation",suffix,".csv")))
-
-
-
-
-
-  lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
-                  path = file.path(path_qc,paste0(prefix,"intensities_long",suffix,".csv")))
-
+#troubelmaker goes fist
+  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
+  LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction)
+  dev.off()
 
   pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
   plot_heatmap_cor(unnest$data,unnest$config)
-  dev.off()
-
-  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
-  LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction)
   dev.off()
 
   res <- plot_pca(unnest$data,unnest$config)
   pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")), width=6, height=6)
   print(res)
   dev.off()
+
+  lfq_write_table(separate_hierarchy(wide$data, unnest$config),
+                  path = file.path(path_qc,paste0(prefix,"intensities_wide",suffix,".csv")))
+  lfq_write_table(wide$annotation,
+                  path = file.path(path_qc,paste0(prefix,"intensities_file_annotation",suffix,".csv")))
+  lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
+                  path = file.path(path_qc,paste0(prefix,"intensities_long",suffix,".csv")))
+
 
 }
 
@@ -1494,7 +1495,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4){
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
-  res <- quantable::removeNArows(res, round(ncol(res)*na_fraction,digits = 0))
+  res <- quantable::removeNArows(res,floor(ncol(res)*na_fraction))
   res <- t(scale(t(res)))
   res <- heatmap3::heatmap3(res,
                             ColSideColors = ColSideColors,
