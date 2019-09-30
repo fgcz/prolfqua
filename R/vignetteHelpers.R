@@ -31,6 +31,20 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 
 
 
+#' copy all files need to run mixed model analysis.
+#' @param workdir directory where to copy file - default is current working directory.
+#' @export
+#'
+copy_linear_model_analysis_script <- function(workdir = getwd()){
+  runscripts <- c("fgcz_formatting/fgcz_header.html",
+                  "fgcz_formatting/fgcz_footer.html",
+                  "fgcz_formatting/fgcz.css",
+                  "fgcz_formatting/fgcz_banner.png",
+                  "rmarkdown/linear_model_analysis_script_Report.Rmd")
+  .scriptCopyHelperVec(runscripts, workdir = workdir)
+}
+
+
 .run_markdown_with_params <- function(params,
                                       markdown_path,
                                       dest_path,
