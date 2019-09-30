@@ -4,8 +4,10 @@
 \alias{application_set_up_MQ_run}
 \title{add Annotation to an MQ output}
 \usage{
-application_set_up_MQ_run(outpath, inputMQfile, inputAnntation,
-  qcdir = "qc_results")
+application_set_up_MQ_run(outpath, inputMQfile, inputAnntation, config,
+  id_extractor = function(df) {    
+  fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn =
+  "top_protein") }, qcdir = "qc_results")
 }
 \description{
 add Annotation to an MQ output

@@ -175,9 +175,11 @@ application_run_modelling <- function(outpath,
 application_set_up_MQ_run <- function(outpath,
                                       inputMQfile,
                                       inputAnntation,
+                                      config,
+                                      id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results"){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-
+  config$table$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id", "UniprotID")
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -233,10 +235,12 @@ application_set_up_MQ_run <- function(outpath,
   ####
 
   ###  Setup analysis ####
-  #resPepProtAnnot <- resPepProtAnnot %>% filter(raw.file !=  "intensity")
-  resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
-  resPepProtAnnot$isotope = "light"
 
+
+  resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
+
+  resPepProtAnnot$isotope = "light"
+  resPepProtAnnot <- id_extractor(resPepProtAnnot)
   resDataStart <- setup_analysis(resPepProtAnnot, config)
 
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
@@ -288,7 +292,7 @@ application_summarize_data_pep_to_prot <- function(data,
                                              results$config_pepIntensityNormalized )
 
   unnest <- protintensity("unnest")
-  quants_write(unnest$data, unnest$config, qc_path)
+  quants_write(unnest$data, unnest$config, qc_path, na_fraction = 0.5)
 
 
   figs <- protintensity("plot")
@@ -365,13 +369,13 @@ application_summarize_compound <- function(data,
   }
 
 
-  quants_write(results$data, results$config, qc_path)
+  quants_write(results$data, results$config, qc_path, prefix = prefix)
 
 
 
   if(WRITE_PROTS){
     figs <- plot_hierarchies_line_df(results$data, results$config )
-    pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
+    pdf(file.path(qc_path, paste0(prefix, "_intensities_.pdf")))
     lapply(figs, print)
     dev.off()
   }
