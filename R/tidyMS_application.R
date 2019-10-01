@@ -292,7 +292,7 @@ application_summarize_data_pep_to_prot <- function(data,
                                              results$config_pepIntensityNormalized )
 
   unnest <- protintensity("unnest")
-  quants_write(unnest$data, unnest$config, qc_path, na_fraction = 0.5)
+  quants_write(unnest$data, unnest$config, qc_path, na_fraction = 0.3)
 
 
   figs <- protintensity("plot")
