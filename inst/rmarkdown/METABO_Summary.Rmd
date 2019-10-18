@@ -242,7 +242,7 @@ This allows us to calculate the required sample size n. The table \@ref(sampleSi
 
 
 ```{r sampleSize}
-sampleSize <- lfq_power_t_test(dataTransformed, config, delta=2)
+sampleSize <- lfq_power_t_test_quantiles(dataTransformed, config, delta=2)
 knitr::kable(sampleSize, caption="Sample size needed to report a fold change greater than 2 with a significance level of 0.05 and power 0.8 when using t-test to compare means.")
 ```
 

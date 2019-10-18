@@ -692,8 +692,7 @@ getMissingStats <- function(x,
                             configuration,
                             factors = configuration$table$fkeysLevel(),
                             workIntensity = configuration$table$getWorkIntensity()){
-  message("DEPRECATED, use missing_stats")
-  interaction_missing_stats(x, configuration, factors = factors, workIntensity = workIntensity)
+  stop("DEPRECATED, use interaction_missing_stats")
 }
 
 
@@ -797,7 +796,7 @@ missigness_impute_factors_interactions <- function(data,
                                                    add.prefix=FALSE){
   value <- match.arg(value)
   fac_fun <- list()
-  fac_fun[["interaction"]] <- missigness_impute_interactions(data, config,probs = probs)
+  fac_fun[["interaction"]] <- missigness_impute_interactions(data, config, probs = probs)
   if(config$table$factorLevel > 1 ){ # if 1 only then done
     for(factor in config$table$fkeysLevel()){
       fac_fun[[factor]] <- missigness_impute_interactions(data, config,factors = factor,probs = probs)
@@ -840,7 +839,7 @@ workflow_missigness_impute_contrasts <- function(data,
 
   xx <- missigness_impute_factors_interactions(data, config, "imputed" )
   imputed <- missigness_impute_contrasts(xx, config, contrasts)
-  xx <- missigness_impute_factors_interactions(data,config,"meanArea" )
+  xx <- missigness_impute_factors_interactions(data, config, "meanArea" )
   mean <- missigness_impute_contrasts(xx, config, contrasts)
   dd <- bind_rows(imputed, mean)
   dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
@@ -1275,15 +1274,15 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #'
-#' res <- lfq_power_t_test(data2, config)
+#' res <- lfq_power_t_test_quantiles(data2, config)
 #' res
 #' stats_res <- summarize_cv(data2, config, all=FALSE)
-#' res <- lfq_power_t_test(data2, config, delta=2)
+#' res <- lfq_power_t_test_quantiles(data2, config, delta=2)
 #' res
-#' res <- lfq_power_t_test(data2, config, delta=c(0.5,1,2))
+#' res <- lfq_power_t_test_quantiles(data2, config, delta=c(0.5,1,2))
 #' res
 #'
-lfq_power_t_test <- function(data,
+lfq_power_t_test_quantiles <- function(data,
                              config,
                              delta = 1,
                              power = 0.8,
@@ -1318,6 +1317,39 @@ lfq_power_t_test <- function(data,
   }
 }
 
+#' Compute theoretical sample sizes from factor level standard deviations
+#' @export
+#' @examples
+#'
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#'
+#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' #lfq_power_t_test_proteins(data2, config)
+#' #data <- data2
+
+lfq_power_t_test_proteins <- function(data,
+                             config,
+                             delta = c(1.5,2,4),
+                             power = 0.8,
+                             sig.level = 0.05){
+  delta <- log2(delta)
+  stats_res <- summarize_cv(data, config, all=FALSE)
+  stats_res <- na.omit(stats_res)
+  head(stats_res)
+  sd_delta <- map_df(delta, function(x){mutate(stats_res, delta = x)} )
+
+  getSampleSize <- function(sd, delta){
+    cat("delta",delta," sd ",sd,"\n")
+
+    power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n
+    }
+
+
+  sampleSizes <- sd_delta %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+  sampleSizes <- sd %>% mutate( N = ceiling(N_exact))
+  return(sampleSize)
+}
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
