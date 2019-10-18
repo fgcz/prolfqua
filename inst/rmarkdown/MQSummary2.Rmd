@@ -28,16 +28,12 @@ header-includes:
 ---
 
 
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
-```
 
 
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(LFQService)
 
-#options(tinytex.verbose = TRUE)
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -78,17 +74,13 @@ This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variab
 
 # Quality Control: Identifications
 
-
-
-
 Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins `r if(params$pep){", and between a few hundred to up to some few tens of thousands of peptides"}else{""}`.
 While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
 
 ```{r hierarchyCounts}
 x <- hierarchyCounts(data, local_config)
-knitr::kable(data.frame(NR = x), format = "latex", booktabs = TRUE) %>% 
-  kableExtra::kable_styling(position = "center")
+knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples.")) 
 ```
 
 (ref:hierarchyCountsSampleBarplot) Number of quantified `r if(params$pep){"peptides"}else{"proteins"}` per sample.
@@ -254,9 +246,8 @@ sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", 
 ```
 
 ```{r printSDTable}
-knitr::kable(sd_quantile_res2, format = "latex", booktabs = TRUE, digits = 3,
-             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.") #%>% 
-  #kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+knitr::kable(sd_quantile_res2,  digits = 3,
+             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.") 
 ```
 
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
@@ -282,7 +273,7 @@ Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how m
 
 ```{r figSampleSize, fig.cap="(ref:figSampleSize)", fig.width=8}
 
-sampleSize <- lfq_power_t_test(dataTransformed, local_config, delta=c(0.59,1,2))
+sampleSize <- lfq_power_t_test_quantiles(dataTransformed, local_config, delta=c(0.59,1,2))
 
 nudgeval <- max(sampleSize$long$N) * 0.05
 
@@ -298,8 +289,7 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 ```{r sampleSize}
 knitr::kable( dplyr::select( sampleSize$summary, -probs),
               caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.",
-              digits = 2,
-              format = "latex")
+              digits = 2)
 
 ```
 
@@ -312,24 +302,17 @@ The _confidence level_ is equal to $1 - \alpha$, where $\alpha$ is the probabili
 Fold change: Suppose you are comparing a treatment group to a placebo group, and you will be measuring some continuous response variable which, you hypothesize, will be affected by the treatment. We can consider the mean response in the treatment group, $\mu_1$, and the mean response in the placebo group, $\mu_2$. We can then define $\Delta = \mu_1 - \mu_2$ as the mean difference. The smaller the difference you want to detect, the larger the required sample size.
 
 
-\clearpage
-
-\appendix
-\section*{Appendix}
+# Appendix
 
 ```{r sampleNameRawFileMapping}
-knitr::kable(table_factors(data, local_config), format = "latex",
-             booktabs = TRUE, caption = "Mapping of raw file names to sample names used throughout this report.") #%>% 
-  # kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+knitr::kable(table_factors(data, local_config), 
+             caption = "Mapping of raw file names to sample names used throughout this report.") 
 ```
 
 ```{r hierarchyCountsSample}
 caption <- paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
 knitr::kable(hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide"),
-             format = "latex",
-             booktabs = TRUE,
-             caption = caption ) # %>% 
-  #kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+             caption = caption ) 
 ```
 
 
