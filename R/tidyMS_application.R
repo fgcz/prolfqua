@@ -7,7 +7,8 @@ application_run_modelling_V2 <- function(outpath,
                                          pepConfig,
                                          modelFunction,
                                          contrasts,
-                                         modelling_dir="modelling_results_protein" ){
+                                         modelling_dir="modelling_results_protein" ,
+                                         remove_imputed = TRUE){
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
@@ -54,23 +55,30 @@ application_run_modelling_V2 <- function(outpath,
   merge_contrasts_results <- function(contrast_minimal,
                                       contrasts_imputed,
                                       subject_Id,
-                                      modelFunction){
+                                      modelFunction,
+                                      remove_imputed=TRUE){
     res <- right_join(contrast_minimal, contrasts_imputed, by=c(subject_Id,"lhs" = "contrast"))
     res <- res %>% rename(contrast = lhs)
     res <- res %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
     res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
 
     for(column in modelFunction$report_columns){
-      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ 0, TRUE ~ !!sym(column)))
+      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ NA, TRUE ~ !!sym(column)))
     }
-    res <- res %>% dplyr::select(-imputed, -meanArea)
+    if(remove_imputed){
+      res <- res %>% dplyr::select(-imputed, -meanArea)
+    }
     return(res)
   }
+
+  return(list(xx = xx, xx_imputed = xx_imputed,subject_Id = subject_Id,modelFunction = modelFunction,remove_imputed = remove_imputed   ))
 
   contrast_results <- merge_contrasts_results(xx$contrast_minimal,
                                               xx_imputed,
                                               subject_Id = pepConfig$table$hkeysLevel(),
-                                              modelFunction = modelFunction)
+                                              modelFunction = modelFunction,
+                                              remove_imputed = remove_imputed)
+
   separate_hierarchy(contrast_results, config) -> filtered_dd
 
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
@@ -156,7 +164,7 @@ application_run_modelling <- function(outpath,
     res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
 
     for(column in modelFunction$report_columns){
-      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ 0, TRUE ~ !!sym(column)))
+      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate, TRUE ~ !!sym(column)))
     }
     res <- res %>% dplyr::select(-imputed, -meanArea)
     return(res)

@@ -5,7 +5,8 @@
 \title{run the modelling using lmer and lm models}
 \usage{
 application_run_modelling_V2(outpath, data, pepConfig, modelFunction,
-  contrasts, modelling_dir = "modelling_results_protein")
+  contrasts, modelling_dir = "modelling_results_protein",
+  remove_imputed = TRUE)
 }
 \description{
 run the modelling using lmer and lm models
