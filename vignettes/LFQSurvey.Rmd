@@ -27,20 +27,17 @@ Agenda for project kickoff meeting - bioinformatics part.
 
 ## How?
 
-- Keep it short (15-30 minutes)!
-- Follow an agenda
+- Keep it short (15-30 minutes) by follow an agenda
 - Give _statistical_ guidance
-- Get the information you need to perform an __Analysis per protocol__
+- Get all the information you need to perform an analysis
 
 
 # Motivation
 
-Incomplete information causes that analysis is delayed or has to be redone.
-
-Information extracted in little bits. For service projects you likely find most in the b-fabric comments.
-
-- but was it project or order comment?
-- how often do I have to click the _more_ button until I find the comment?
+- Incomplete information causes that analysis is delayed or has to be redone.
+- Information extracted in little bits - some of it in e-mails, b-fabric comments. 
+  - but was it project or order comment?
+- how to find it?
 
 
 # Aim of meeting
@@ -48,19 +45,18 @@ Information extracted in little bits. For service projects you likely find most 
 ## Document
 
 - which protein database to use
-- which and how many samples to use for the QC
+- which condition and how many samples to use for the QC
 - collect all the parameters for sample size estimation
-- understand the design of the main experiment
-- document all the names of the factors and factor levels
 - specify the hypothesis to be tested
-
+- specify the design of the main experiment
+- document all the names of the factors and factor levels
 
 # Conclusion
 
 - Helps to prepare for meeting
 - Focuses and streamlines discussion
 - Tested on a few projects
-- Agenda still evolving
+- Agenda is still evolving
 
 # TPF update
 
@@ -68,19 +64,21 @@ TPF - technology platform fund (50k)
 
 To improve LFQ data analysis and reporting.
 
-
-$\approx 8k$ spend on Lucas Kook, $\approx 12k$ on JG, $\approx 30k$ still available.
+$\approx 8k$ spend on Lucas Kook, $\approx 12k$ on Jonas Grossman, $\approx 30k$ still available.
 
 # TPF update
 
 - QC and sample size estimation
 - Hypothesis testing using linear models
-- GSEA and ORA analysis
+  - using linear models and moderated p-values
+  - using mixed effects linear models
+  - using ROPECA
+- GSEA and ORA analysis with Webgestalt and sigora
 
 # Outlook
 
-- b-fabric integration.
 - Improve sample size estimation report (make it interactive).
+- b-fabric integration.
 - Alternative normalization, aggregations, models etc.
 - More model diagnostics.
 - Improving table formatting and data visualization.
@@ -92,7 +90,6 @@ $\approx 8k$ spend on Lucas Kook, $\approx 12k$ on JG, $\approx 30k$ still avail
 A work by :
 
 Witek Wolski, Lukas Kook, Paolo Nanni and Christian Panse
-
 
 $~$
 
