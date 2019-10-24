@@ -63,7 +63,8 @@ application_run_modelling_V2 <- function(outpath,
     res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
 
     for(column in modelFunction$report_columns){
-      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ NA, TRUE ~ !!sym(column)))
+      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate,
+                                                                         TRUE ~ !!sym(column)))
     }
     if(remove_imputed){
       res <- res %>% dplyr::select(-imputed, -meanArea)
@@ -71,7 +72,6 @@ application_run_modelling_V2 <- function(outpath,
     return(res)
   }
 
-  return(list(xx = xx, xx_imputed = xx_imputed,subject_Id = subject_Id,modelFunction = modelFunction,remove_imputed = remove_imputed   ))
 
   contrast_results <- merge_contrasts_results(xx$contrast_minimal,
                                               xx_imputed,
@@ -187,7 +187,7 @@ application_set_up_MQ_run <- function(outpath,
                                       id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results"){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  config$table$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id", "UniprotID")
+  config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -240,8 +240,7 @@ application_set_up_MQ_run <- function(outpath,
   }
 
   resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by= "raw.file")
-  ####
-
+  ###
   ###  Setup analysis ####
 
 
