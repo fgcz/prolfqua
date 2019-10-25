@@ -100,7 +100,7 @@ LFQService::render_MQSummary_rmd(resDataStart,
                                  pep = TRUE,
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",filename,"_Peptide"),
-                                 workdir = ".",format = "pdf" )
+                                 workdir = ".",format = "html" )
 
 
 peptideStats <- summarize_cv_raw_transformed(resDataStart, config)
@@ -136,7 +136,7 @@ LFQService::render_MQSummary_rmd(data,
                                  pep = FALSE,
                                  dest_path = outputDir,
                                  dest_file_name = paste0("r_",filename,"_Protein"),
-                                 workdir = ".", format="pdf")
+                                 workdir = ".", format="html")
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(data =xx$data, configuration = xx$config), output_file = paste0("Protein_",mqzip,".pdf"))#,envir =new.env())
 #break()
