@@ -36,10 +36,9 @@ cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",p
 ```
 
 
-```{r printTable}
-knitr::kable(cv_quantiles_res, format = "latex", booktabs = TRUE, digits = 3,
-             caption = "Summary of the coefficient of variation (CV) at the 10th, 25th, 50th, 7th and 90th percentile.") %>% 
-  kableExtra::kable_styling(position = "center", latex_options = c("hold_position"))
+```{r printTable, results="asis"}
+knitr::kable(cv_quantiles_res, digits = 3,
+             caption = "Summary of the coefficient of variation (CV) at the 10th, 25th, 50th, 7th and 90th percentile.", format="html") 
 ```
 
 ```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities."}
