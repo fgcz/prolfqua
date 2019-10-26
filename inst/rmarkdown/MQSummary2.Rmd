@@ -78,9 +78,15 @@ Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` m
 While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
 
-```{r hierarchyCounts, results="asis"}
+```{r hierarchyCounts}
 x <- hierarchyCounts(data, local_config)
-knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
+#knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
+
+ftab <- flextable::flextable(data.frame(NR = x)) %>%
+  flextable::autofit() %>%
+  flextable::set_caption(caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."))
+ftab
+
 ```
 
 (ref:hierarchyCountsSampleBarplot) Number of quantified `r if(params$pep){"peptides"}else{"proteins"}` per sample.
@@ -245,9 +251,14 @@ if(params$plot_sd_vs_mean){
 sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
-```{r printSDTable, results="asis"}
-knitr::kable(sd_quantile_res2,  digits = 3,
-             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
+```{r printSDTable}
+#knitr::kable(sd_quantile_res2,  digits = 3,
+#             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
+ftab <- flextable::flextable(sd_quantile_res2) %>%
+  flextable::autofit() %>%
+  flextable::set_caption("Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
+ftab
+
 ```
 
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
@@ -286,10 +297,15 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 ```
 
 
-```{r sampleSize, results="asis"}
-knitr::kable( dplyr::select( sampleSize$summary, -probs),
-              caption="Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.",
-              digits = 2, format="html")
+```{r sampleSize}
+ftab <- flextable::flextable(dplyr::select( sampleSize$summary, -probs)) %>%
+  flextable::autofit() %>%
+  flextable::set_caption("Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
+ftab
+
+#knitr::kable( dplyr::select( sampleSize$summary, -probs),
+#              caption="Sample size needed to detect a log fold change greater than delta with a significance #level of 0.05 and power 0.8 when using a t-test to compare means.",
+#              digits = 2, format="html")
 
 ```
 
@@ -304,15 +320,21 @@ Fold change: Suppose you are comparing a treatment group to a placebo group, and
 
 # Appendix
 
-```{r sampleNameRawFileMapping, results="asis"}
-knitr::kable(table_factors(data, local_config), 
-             caption = "Mapping of raw file names to sample names used throughout this report.", format="html") 
+```{r sampleNameRawFileMapping}
+ftab <- flextable::flextable(table_factors(data, local_config)) %>%
+  flextable::autofit() %>%
+  flextable::set_caption("Mapping of raw file names to sample names used throughout this report.")
+ftab
+
 ```
 
 ```{r hierarchyCountsSample}
 caption <- paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
-knitr::kable(hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide"),
-             caption = caption ) 
+ftab <- flextable::flextable(hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")) %>%
+  flextable::autofit() %>%
+  flextable::set_caption(caption)
+ftab
+
 ```
 
 
