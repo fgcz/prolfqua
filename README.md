@@ -42,5 +42,6 @@ lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
 ## 3. Best of code snippets
 
 ```
+Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
 ```
