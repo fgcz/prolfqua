@@ -1,7 +1,7 @@
 .columnsImputed <- function(all, contrasts){
   get_sides <- function(contrast){
     bb <- str_split(contrast,"[-+]")
-    bb <- gsub(" ", "", bb[[1]])
+    bb <- gsub("[ `]", "", bb[[1]])
     return(bb)
   }
 
@@ -82,10 +82,15 @@ application_run_modelling_V2 <- function(outpath,
 
   contrast_results <- right_join( xx$contrast_minimal,
                                   xx_imputed,
-                                  by= c(subject_Id, "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+                                  by= c(pepConfig$table$hkeysLevel(),
+                                        "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+  contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
+
   contrast_results <- contrast_results %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
   if(remove_imputed){
+    contrast_results <- contrast_results %>% mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
+    contrast_results <- contrast_results %>% mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
     contrast_results <- contrast_results %>% dplyr::select(-contains("_imputed"))
   }
 
@@ -93,13 +98,17 @@ application_run_modelling_V2 <- function(outpath,
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
 
   if(DEBUG){
-    return(list(contrasts = xx$contrast_minimal,
+    return(list(extract = list(contrasts = xx$contrast_minimal,
                 imputed = xx_imputed,
                 subject_Id = pepConfig$table$hkeysLevel(),
                 modelFunction = modelFunction,
-                remove_imputed = remove_imputed))}
+                remove_imputed = remove_imputed)),
+           res_modelling = modellingResult_fun(),
+           res_contrasts = res_contrasts)}
   else{
-    return(filtered_dd)
+    return(list( result_table  = filtered_dd,
+                 res_modelling = modellingResult_fun(),
+                 res_contrasts = res_contrasts))
   }
 }
 
