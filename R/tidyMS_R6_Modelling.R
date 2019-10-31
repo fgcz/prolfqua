@@ -933,9 +933,11 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 my_contest <- function(model, linfct){
   if(length(lme4::fixef(model)) != ncol(linfct) ){
     warning("Model is rank deficient!")
-    return(NA) # catch rank defficient
+    #return(NA) # catch rank defficient
+    res <- my_contest(model, linfct[,names(fixef(model))])
+  }else{
+    res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   }
-  res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   res <- as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
   res <- res %>% rename(estimate = Estimate,
@@ -1136,7 +1138,8 @@ contrasts_linfct_vis <- function(contrasts,
     name <- paste0(prefix,"_Histogram_FC_esimate")
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym("estimate"))) +
-      geom_histogram(breaks = seq(floor(min(contrasts$estimate)),ceiling(max(contrasts$estimate)), by=0.5)) +
+      geom_histogram(breaks = seq(floor(min(contrasts$estimate, na.rm=TRUE)),
+                                  ceiling(max(contrasts$estimate, na.rm=TRUE)), by=0.5)) +
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
