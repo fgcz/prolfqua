@@ -1,3 +1,28 @@
+.columnsImputed <- function(all, contrasts){
+  get_sides <- function(contrast){
+    bb <- str_split(contrast,"[-+]")
+    bb <- gsub("[ `]", "", bb[[1]])
+    return(bb)
+  }
+
+  res <- NULL
+
+  for(i in 1:length(contrasts)){
+    cname <- names(contrasts)[i]
+    cc <- get_sides(contrasts[i])
+
+    tmp <- all %>% dplyr::filter(contrast %in% c(cname,cc))
+    tmp <- tmp %>% dplyr::select(-meanArea) %>% tidyr::spread(contrast , imputed)
+
+    tmp <- tmp %>% add_column(lhs = cname,.after = 1)
+    tmp <- tmp %>% add_column(c1_name = cc[1],.after = 2)
+    tmp <- tmp %>% add_column(c2_name = cc[2],.after = 3)
+    tmp <- tmp %>% rename(c1 = !!sym(cc[1]), c2 = !!sym(cc[2]), estimate = !!sym(cname))
+    res <- bind_rows(res,tmp)
+  }
+  return(res)
+}
+
 #' run the modelling using lmer and lm models
 #'
 #' @export
@@ -8,7 +33,11 @@ application_run_modelling_V2 <- function(outpath,
                                          modelFunction,
                                          contrasts,
                                          modelling_dir="modelling_results_protein" ,
-                                         remove_imputed = TRUE){
+                                         remove_imputed = TRUE,
+                                         do_not_report = "",
+                                         DEBUG= FALSE
+
+){
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
@@ -20,17 +49,17 @@ application_run_modelling_V2 <- function(outpath,
     dir.create(modelling_path)
   }
 
-
   #################################################
   ### Do missing value imputation
 
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
                                                                 contrasts)
-  xx_imputed <- res_contrasts_imputed("long",what = "contrasts")
+  xx_imputed <- res_contrasts_imputed("long",what = "all")
+  xx_imputed <- .columnsImputed(xx_imputed,
+                                contrasts = Contrasts[setdiff(names(Contrasts) , do_not_report)])
 
   ### make contrasts -----
-
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
                                                 subject_Id = pepConfig$table$hkeysLevel())
@@ -51,40 +80,37 @@ application_run_modelling_V2 <- function(outpath,
 
   xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
 
+  contrast_results <- right_join( xx$contrast_minimal,
+                                  xx_imputed,
+                                  by= c(pepConfig$table$hkeysLevel(),
+                                        "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+  contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
+  contrast_results <- contrast_results %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
 
-  merge_contrasts_results <- function(contrast_minimal,
-                                      contrasts_imputed,
-                                      subject_Id,
-                                      modelFunction,
-                                      remove_imputed=TRUE){
-    res <- right_join(contrast_minimal, contrasts_imputed, by=c(subject_Id,"lhs" = "contrast"))
-    res <- res %>% rename(contrast = lhs)
-    res <- res %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
-    res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
-
-    for(column in modelFunction$report_columns){
-      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate,
-                                                                         TRUE ~ !!sym(column)))
-    }
-    if(remove_imputed){
-      res <- res %>% dplyr::select(-imputed, -meanArea)
-    }
-    return(res)
+  contrast_results <- contrast_results %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+  if(remove_imputed){
+    contrast_results <- contrast_results %>% mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
+    contrast_results <- contrast_results %>% mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
+    contrast_results <- contrast_results %>% dplyr::select(-contains("_imputed"))
   }
 
-
-  contrast_results <- merge_contrasts_results(xx$contrast_minimal,
-                                              xx_imputed,
-                                              subject_Id = pepConfig$table$hkeysLevel(),
-                                              modelFunction = modelFunction,
-                                              remove_imputed = remove_imputed)
-
   separate_hierarchy(contrast_results, config) -> filtered_dd
-
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
-  return(list(res_contrasts  = res_contrasts, modellingResult_fun = modellingResult_fun))
-}
 
+  if(DEBUG){
+    return(list(extract = list(contrasts = xx$contrast_minimal,
+                imputed = xx_imputed,
+                subject_Id = pepConfig$table$hkeysLevel(),
+                modelFunction = modelFunction,
+                remove_imputed = remove_imputed)),
+           res_modelling = modellingResult_fun(),
+           res_contrasts = res_contrasts)}
+  else{
+    return(list( result_table  = filtered_dd,
+                 res_modelling = modellingResult_fun(),
+                 res_contrasts = res_contrasts))
+  }
+}
 
 #' run the modelling using lmer and lm models - DEPRECATED use version V2
 #'

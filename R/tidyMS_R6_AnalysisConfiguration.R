@@ -796,7 +796,8 @@ missigness_impute_factors_interactions <- function(data,
                                                    add.prefix=FALSE){
   value <- match.arg(value)
   fac_fun <- list()
-  fac_fun[["interaction"]] <- missigness_impute_interactions(data, config, probs = probs)
+  fac_fun[["interaction"]] <- missigness_impute_interactions(data,
+                                                             config, probs = probs)
   if(config$table$factorLevel > 1 ){ # if 1 only then done
     for(factor in config$table$fkeysLevel()){
       fac_fun[[factor]] <- missigness_impute_interactions(data, config,factors = factor,probs = probs)
@@ -806,7 +807,9 @@ missigness_impute_factors_interactions <- function(data,
   for(fun_name in names(fac_fun)){
     fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix=add.prefix)
   }
-  intfact <- purrr::reduce(fac_res,dplyr::inner_join, by = c(config$table$hkeysLevel(), config$table$isotopeLabel, "value"))
+  intfact <- purrr::reduce(fac_res,dplyr::inner_join,
+                           by = c(config$table$hierarchyKeys(),
+                                  config$table$isotopeLabel, "value"))
   return(intfact)
 }
 
@@ -838,12 +841,15 @@ workflow_missigness_impute_contrasts <- function(data,
                                                  contrasts){
 
   xx <- missigness_impute_factors_interactions(data, config, "imputed" )
+  message("missigness_impute_factors_interactions : imputed")
   imputed <- missigness_impute_contrasts(xx, config, contrasts)
   xx <- missigness_impute_factors_interactions(data, config, "meanArea" )
+  message("missigness_impute_factors_interactions : meanArea")
   mean <- missigness_impute_contrasts(xx, config, contrasts)
-  dd <- bind_rows(imputed, mean)
-  dd_long <- dd %>% gather("contrast","int_val",colnames(dd)[sapply(dd, is.numeric)])
 
+  dd <- bind_rows(imputed, mean)
+  dd_long <- dd %>% gather("contrast","int_val",
+                           colnames(dd)[sapply(dd, is.numeric)])
 
   res <- function(value = c("long", "wide","raw"), what = c("contrasts", "factors", "all")){
     value <- match.arg( value )
@@ -854,7 +860,6 @@ workflow_missigness_impute_contrasts <- function(data,
     }else if(what == "factors"){
       dd_long <- dplyr::filter(dd_long, ! contrast %in% names(contrasts))
     }else if(what == "all"){
-
     }
 
     if(value == "long"){
