@@ -218,13 +218,15 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         )
 
   # add columns with modification to data.
-  stMODcol <- grep(pattern = "unique..proteins." ,colnames(MQPeptides)) + 1
-  endMODcol <- grep(pattern = "missed.cleavages" ,colnames(MQPeptides)) - 1
-  if(endMODcol > stMODcol){
-    mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol)
-    mod_cols <- setNames(mod_cols , paste0("modification.", colnames(mod_cols)))
-    #return(list(mod_cols = mod_cols, meta = meta))
-    meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
+  if("missed.cleavages" %in% colnames(meta)){
+    stMODcol <- grep(pattern = "unique..proteins." ,colnames(MQPeptides)) + 1
+    endMODcol <- grep(pattern = "missed.cleavages" ,colnames(MQPeptides)) - 1
+    if(endMODcol > stMODcol){
+      mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol)
+      mod_cols <- setNames(mod_cols , paste0("modification.", colnames(mod_cols)))
+      #return(list(mod_cols = mod_cols, meta = meta))
+      meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
+    }
   }
   if(sum(grepl("site.ids",colnames(MQPeptides)))){
     mod_cols2 <- dplyr::select(MQPeptides, "id", dplyr::ends_with("site.ids"))
