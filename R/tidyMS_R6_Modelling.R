@@ -935,7 +935,7 @@ my_contest <- function(model, linfct){
     warning("Model is rank deficient!")
     #return(NA) # catch rank defficient
     res <- lmerTest::contest(model,
-                             linfct[,names(fixef(model))],
+                             linfct[,names(lme4::fixef(model))],
                              joint = FALSE,
                              confint = TRUE)
   }else{
@@ -1101,7 +1101,7 @@ contrasts_linfct_vis <- function(contrasts,
     name <- paste0(prefix,"_Histogram_",column)
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym(column))) +
-      geom_histogram(bins = 20) +
+      geom_histogram(breaks = seq(0, 1, by=0.05)) +
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
@@ -1142,7 +1142,7 @@ contrasts_linfct_vis <- function(contrasts,
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym("estimate"))) +
       geom_histogram(breaks = seq(floor(min(contrasts$estimate, na.rm=TRUE)),
-                                  ceiling(max(contrasts$estimate, na.rm=TRUE)), by=0.5)) +
+                                  ceiling(max(contrasts$estimate, na.rm=TRUE)), by=0.1)) +
       facet_wrap(~lhs)
     res[[name]] <- fig
   }
