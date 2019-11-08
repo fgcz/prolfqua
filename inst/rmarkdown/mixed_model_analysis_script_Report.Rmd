@@ -84,6 +84,7 @@ maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
     - __Histogram of adjusted p-Values__ ([pdf](`r paste0(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
     - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste0(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis.
     - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste0(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the adjusted protein _p-Values_ versus the the _log2_ fold changes on the horizontal axis.
-    - __MA plot__ ([pdf](`r paste0(maPlot,".pdf")`){target="_blank"}; [html](`r paste0(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean.
+    - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r paste0(maPlot,".pdf")`){target="_blank"}; [html](`r paste0(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments.
+    
 
 
