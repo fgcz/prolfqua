@@ -18,6 +18,7 @@ Imports:
     conflicted,
     corrplot,
     dplyr,
+    flextable,
     ggplot2,
     ggbeeswarm,
     ggfortify,
