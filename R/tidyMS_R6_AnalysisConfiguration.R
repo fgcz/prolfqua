@@ -1480,7 +1480,7 @@ plot_stdv_vs_mean <- function(data, config){
 #' plot correlation heatmap with annotations
 #'
 #' @export
-#' @importFrom heatmap3 heatmap3
+#' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
 #' data <- sample_analysis
@@ -1493,6 +1493,9 @@ plot_heatmap_cor <- function(data,
                              R2 = FALSE,
                              distfun = function(x) as.dist(1 - cor(t(x), use = "pa")),
                              ...){
+
+
+
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1504,41 +1507,45 @@ plot_heatmap_cor <- function(data,
   }
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
-  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
-  rownames(ColSideColors) <- annot$sampleName
-  res <- heatmap3::heatmap3(cres,symm=TRUE,
-                            scale="none",
-                            ColSideColors = ColSideColors,
-                            margin = c(8,3),
-                            main = ifelse(R2, "R^2", "correlation"),
-                            ...=...)
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+  res <- pheatmap::pheatmap(cres,
+                           scale="none",
+                           annotation_col = factors,
+                           show_rownames = F,
+                           border_color=NA,
+                           main = ifelse(R2, "R^2", "correlation"),
+                           ...=...)
   invisible(res)
+
 }
 
 #' plot heatmap with annotations
 #' @export
-#' @importFrom heatmap3 heatmap3
+#' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' #plot_heatmap(data, config)
-plot_heatmap <- function(data, config, na_fraction = 0.4){
+#' plot_heatmap(data, config)
+plot_heatmap <- function(data, config, na_fraction = 0.4,...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
-  ColSideColors <- as.matrix(dplyr::mutate_all(factors, funs(.string.to.colors)))
-  rownames(ColSideColors) <- annot$sampleName
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
   res <- quantable::removeNArows(res,floor(ncol(res)*na_fraction))
-  res <- t(scale(t(res)))
-  res <- heatmap3::heatmap3(res,
-                            ColSideColors = ColSideColors,
-                            labRow="",
-                            showRowDendro =FALSE,
-                            margin = c(8,3), scale="none")
+  res <- pheatmap::pheatmap(res,
+                            scale = "row",
+                            #scale="none",
+                            annotation_col = factors,
+                            show_rownames = F,
+                            border_color=NA,
+                            ...=...)
   invisible(res)
 }
 
@@ -1566,22 +1573,28 @@ plot_pca <- function(data , config){
 
 #' plot heatmap of NA values
 #' @export
-#' @importFrom heatmap3 heatmap3 showLegend
+#' @importFrom pheatmap pheatmap showLegend
 #' @examples
 #'
 #' library(tidyverse)
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' plot_NA_heatmap(data, config, cexCol=1)
-plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1, limitrows=10000 ){
+#' tmp <- plot_NA_heatmap(data, config, cexCol=1)
+#' tmp$res_plot
+plot_NA_heatmap <- function(data,
+                            config,
+                            showRowDendro=FALSE,
+                            cexCol=1,
+                            limitrows=10000,
+                            pheatmap =FALSE){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
   stopifnot(annot$sampleName == colnames(res))
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
-  ColSideColors <- as.matrix(dplyr::mutate_all(factors, list(.string.to.colors)))
+  ColSideColors <- as.matrix(dplyr::mutate_all(factors, list(LFQService:::.string.to.colors)))
   rownames(ColSideColors) <- annot$sampleName
 
   res[!is.na(res)] <- 0
@@ -1597,19 +1610,30 @@ plot_NA_heatmap <- function(data, config, showRowDendro=FALSE, cexCol=1, limitro
     }else{
       resPlot <- res
     }
-    res_plot <- heatmap3::heatmap3(resPlot,
-                                   distfun = function(x){dist(x, method="binary")},
-                                   scale="none",
-                                   col=c("white","black"),
-                                   labRow = "",
-                                   ColSideColors = ColSideColors,
-                                   showRowDendro = showRowDendro,
-                                   cexCol = cexCol,
-                                   margin = c(8,3),
-                                   legendfun = function()
-                                     showLegend(legend=c("NA"),
-                                                col=c("black"),
-                                                cex=1.5))
+    if(pheatmap){
+      callback = function(hc, mat){
+        hclust(dist(mat, method = "binary"))
+      }
+      res_plot <- pheatmap::pheatmap(resPlot,
+                                     clustering_callback  = callback,
+                                     scale="none",
+                                     color=c("white","black")
+      )
+    }else{
+      res_plot <- heatmap3::heatmap3(resPlot,
+                                     distfun = function(x){dist(x, method="binary")},
+                                     scale="none",
+                                     col=c("white","black"),
+                                     labRow = "",
+                                     ColSideColors = ColSideColors,
+                                     showRowDendro = showRowDendro,
+                                     cexCol = cexCol,
+                                     margin = c(8,3),
+                                     legendfun = function()
+                                       heatmap3::showLegend(legend=c("NA"),
+                                                  col=c("black"),
+                                                  cex=1.5))
+    }
 
     invisible(list(res = res, res_plot=res_plot))
 

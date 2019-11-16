@@ -108,9 +108,8 @@ knitr::kable(LFQService::hierarchyCounts(longQNASummaries, config))
 
 
 ```{r}
-tmp <- toWideConfig(longQNASummaries, config, as.matrix = TRUE)$data
-plot_heatmap_cor(longQNASummaries, config)
-
+res <- plot_heatmap_cor(longQNASummaries, config)
+print(res)
 ```
 
 
@@ -192,6 +191,7 @@ plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "sr
 proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
 
 #quantable::simpleheatmap(t(scale(t(log2(1+proteinsWide[2:ncol(proteinsWide)])))), margins = c(16,5))
+
 nrPep <- qvalFiltImputed %>% select(config$table$hierarchyKeys()[1], nr_peptide_Id_by_protein_Id) %>% distinct()
 xx <- dplyr::inner_join(nrPep,proteinsWide)
 #readr::write_csv(xx, path="output/proteinQuantsTidy.txt")

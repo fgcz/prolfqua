@@ -172,7 +172,8 @@ if (params$plot_density) {
 
 (ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples
 ```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}
-plot_heatmap_cor(dataTransformed, local_config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
+hm <- plot_heatmap_cor(dataTransformed, local_config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
+print(hm)
 ```
 
 
@@ -264,7 +265,8 @@ ftab
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
 ```{r overviewHeat, fig.cap="(ref:overviewHeat)"}
 if(params$plot_sd_vs_mean){
-  plot_heatmap(dataTransformed, local_config)
+  hm <- plot_heatmap(dataTransformed, local_config)
+  print(hm)
 }
 ```
 
