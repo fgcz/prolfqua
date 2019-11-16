@@ -100,12 +100,13 @@ application_run_modelling_V2 <- function(outpath,
 
   if(DEBUG){
     return(list(extract = list(contrasts = xx$contrast_minimal,
-                imputed = xx_imputed,
-                subject_Id = pepConfig$table$hkeysLevel(),
-                modelFunction = modelFunction,
-                remove_imputed = remove_imputed)),
-           res_modelling = modellingResult_fun(),
-           res_contrasts = res_contrasts)}
+                               imputed = xx_imputed,
+                               subject_Id = pepConfig$table$hkeysLevel(),
+                               modelFunction = modelFunction,
+                               remove_imputed = remove_imputed),
+                res_modelling = modellingResult_fun(),
+                res_contrasts = res_contrasts))
+  }
   else{
     return(list( result_table  = filtered_dd,
                  res_modelling = modellingResult_fun(),
