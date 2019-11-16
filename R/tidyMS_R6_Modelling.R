@@ -917,8 +917,6 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
   return(res)
 }
 
-
-
 #' applies contrast computation using lmerTest::contest function
 #' @export
 #' @examples
@@ -933,11 +931,11 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 my_contest <- function(model, linfct){
   if(length(lme4::fixef(model)) != ncol(linfct) ){
     warning("Model is rank deficient!")
-    #return(NA) # catch rank defficient
-    res <- lmerTest::contest(model,
-                             linfct[,names(lme4::fixef(model))],
-                             joint = FALSE,
-                             confint = TRUE)
+    return(NA) # catch rank defficient
+    #res <- lmerTest::contest(model,
+    #                         linfct[,names(lme4::fixef(model))],
+    #                         joint = FALSE,
+    #                         confint = TRUE)
   }else{
     res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   }
@@ -952,9 +950,7 @@ my_contest <- function(model, linfct){
   return(res)
 }
 
-
 # computing contrast ----
-
 #' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 #' @export
 #' @examples
@@ -1339,6 +1335,7 @@ workflow_contrasts_linfct_V2 <- function(models,
   subject_Id <- subject_Id
   prefix <- prefix
   modelName <- modelName
+  linfct_A <- linfct_A
 
   res_fun <- function(path = NULL, columns = c("p.value",
                                                "p.value.adjusted",
@@ -1378,6 +1375,7 @@ workflow_contrasts_linfct_V2 <- function(models,
                 contrasts_wide = contrasts_wide,
                 visualization = visualization,
                 modelName = modelName,
+                linfct_A = linfct_A,
                 prefix = prefix)
 
     invisible(res)
