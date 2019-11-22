@@ -696,7 +696,8 @@ getMissingStats <- function(x,
 }
 
 
-#' Compute interaction averages and impute data using mean of lowest 10%
+#' Compute interaction averages and
+#' impute data using mean of lowest 0.1 (default)
 #'
 #' used in Acetylation project p2916
 #' @export
