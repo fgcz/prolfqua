@@ -5,7 +5,7 @@
 \title{plot heatmap of NA values}
 \usage{
 plot_NA_heatmap(data, config, showRowDendro = FALSE, cexCol = 1,
-  limitrows = 10000)
+  limitrows = 10000, pheatmap = FALSE)
 }
 \description{
 plot heatmap of NA values
@@ -16,5 +16,7 @@ library(tidyverse)
 library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
+tmp <- plot_NA_heatmap(data, config, cexCol=1)
+tmp$res_plot
 plot_NA_heatmap(data, config, cexCol=1)
 }

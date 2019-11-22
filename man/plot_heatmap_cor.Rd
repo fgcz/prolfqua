@@ -14,7 +14,7 @@ plot correlation heatmap with annotations
 library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone( deep=TRUE )
-# LFQService::plot_heatmap_cor( data, config )
-# plot_heatmap_cor( data, config, R2=TRUE )
+LFQService::plot_heatmap_cor( data, config )
+plot_heatmap_cor( data, config, R2=TRUE )
 
 }

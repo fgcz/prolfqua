@@ -4,7 +4,7 @@
 \alias{plot_heatmap}
 \title{plot heatmap with annotations}
 \usage{
-plot_heatmap(data, config, na_fraction = 0.4)
+plot_heatmap(data, config, na_fraction = 0.4, ...)
 }
 \description{
 plot heatmap with annotations
@@ -14,5 +14,5 @@ library(tidyverse)
 library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-#plot_heatmap(data, config)
+plot_heatmap(data, config)
 }

@@ -1485,8 +1485,8 @@ plot_stdv_vs_mean <- function(data, config){
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone( deep=TRUE )
-#' # LFQService::plot_heatmap_cor( data, config )
-#' # plot_heatmap_cor( data, config, R2=TRUE )
+#' LFQService::plot_heatmap_cor( data, config )
+#' plot_heatmap_cor( data, config, R2=TRUE )
 #'
 plot_heatmap_cor <- function(data,
                              config,
@@ -1509,8 +1509,13 @@ plot_heatmap_cor <- function(data,
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
+
   res <- pheatmap::pheatmap(cres,
+                            scale = "none")
+
+  res <- pheatmap::pheatmap(cres[res$tree_row$order,],
                            scale="none",
+                           cluster_rows  = FALSE,
                            annotation_col = factors,
                            show_rownames = F,
                            border_color=NA,
@@ -1532,20 +1537,27 @@ plot_heatmap_cor <- function(data,
 plot_heatmap <- function(data, config, na_fraction = 0.4,...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
-  res <- res$data
+  resdata <- res$data
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
-  res <- quantable::removeNArows(res,floor(ncol(res)*na_fraction))
-  res <- pheatmap::pheatmap(res,
+  resdata <- quantable::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+
+
+  # not showing row dendrogram trick
+  res <- pheatmap::pheatmap(resdata,
+                            scale = "row")
+
+  res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
+                            cluster_rows  = FALSE,
                             scale = "row",
-                            #scale="none",
                             annotation_col = factors,
                             show_rownames = F,
                             border_color=NA,
                             ...=...)
+
   invisible(res)
 }
 
@@ -1573,7 +1585,8 @@ plot_pca <- function(data , config){
 
 #' plot heatmap of NA values
 #' @export
-#' @importFrom pheatmap pheatmap showLegend
+#' @importFrom pheatmap pheatmap
+#' @importFrom heatmap3 heatmap3 showLegend
 #' @examples
 #'
 #' library(tidyverse)
@@ -1582,6 +1595,7 @@ plot_pca <- function(data , config){
 #' config <- skylineconfig$clone(deep=TRUE)
 #' tmp <- plot_NA_heatmap(data, config, cexCol=1)
 #' tmp$res_plot
+#' plot_NA_heatmap(data, config, cexCol=1)
 plot_NA_heatmap <- function(data,
                             config,
                             showRowDendro=FALSE,
