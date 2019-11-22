@@ -1171,7 +1171,7 @@ quants_write <- function(data,
   unnest <- list(data = data ,config =config)
   wide <- LFQService::toWideConfig(data, config)
 
-#troubelmaker goes fist
+  #troubelmaker goes fist
   pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
   LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction)
   dev.off()
@@ -1288,11 +1288,11 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' res
 #'
 lfq_power_t_test_quantiles <- function(data,
-                             config,
-                             delta = 1,
-                             power = 0.8,
-                             sig.level = 0.05,
-                             probs = seq(0.5,0.9, by = 0.1)){
+                                       config,
+                                       delta = 1,
+                                       power = 0.8,
+                                       sig.level = 0.05,
+                                       probs = seq(0.5,0.9, by = 0.1)){
 
   if(!config$parameter$is_intensity_transformed){
     warning("Intensities are not transformed yet.")
@@ -1334,10 +1334,10 @@ lfq_power_t_test_quantiles <- function(data,
 #' #data <- data2
 
 lfq_power_t_test_proteins <- function(data,
-                             config,
-                             delta = c(1.5,2,4),
-                             power = 0.8,
-                             sig.level = 0.05){
+                                      config,
+                                      delta = c(1.5,2,4),
+                                      power = 0.8,
+                                      sig.level = 0.05){
   delta <- log2(delta)
   stats_res <- summarize_cv(data, config, all=FALSE)
   stats_res <- na.omit(stats_res)
@@ -1348,7 +1348,7 @@ lfq_power_t_test_proteins <- function(data,
     cat("delta",delta," sd ",sd,"\n")
 
     power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n
-    }
+  }
 
 
   sampleSizes <- sd_delta %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
@@ -1514,13 +1514,13 @@ plot_heatmap_cor <- function(data,
                             scale = "none")
 
   res <- pheatmap::pheatmap(cres[res$tree_row$order,],
-                           scale="none",
-                           cluster_rows  = FALSE,
-                           annotation_col = factors,
-                           show_rownames = F,
-                           border_color=NA,
-                           main = ifelse(R2, "R^2", "correlation"),
-                           ...=...)
+                            scale="none",
+                            cluster_rows  = FALSE,
+                            annotation_col = factors,
+                            show_rownames = F,
+                            border_color=NA,
+                            main = ifelse(R2, "R^2", "correlation"),
+                            ...=...)
   invisible(res)
 
 }
@@ -1594,14 +1594,57 @@ plot_pca <- function(data , config){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' tmp <- plot_NA_heatmap(data, config, cexCol=1)
-#' tmp$res_plot
-#' plot_NA_heatmap(data, config, cexCol=1)
+#' xx <- plot_NA_heatmap_V2(data, config)
+#' names(xx)
+#'
 plot_NA_heatmap <- function(data,
+                               config,
+                               limitrows=10000,
+                               distance = "binary"){
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- res$annotation
+  res <- res$data
+  stopifnot(annot$sampleName == colnames(res))
+
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
+
+  res[!is.na(res)] <- 0
+  res[is.na(res)] <- 1
+  allrows <- nrow(res)
+  res <- res[apply(res,1, sum) > 0,]
+
+  message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
+  if(nrow(res) > 0){
+    if(nrow(res) > limitrows ){
+      message("limiting nr of rows to:", limitrows,"\n")
+      resPlot <- res[sample( 1:nrow(res),limitrows),]
+    }else{
+      resPlot <- res
+    }
+    res_plot <- pheatmap::pheatmap(resPlot,
+                                   clustering_distance_cols = distance,
+                                   clustering_distance_rows = distance,
+                                   scale="none",
+                                   annotation_col = factors,
+                                   color=c("white","black"),
+                                   show_rownames=FALSE,
+                                   border_color=NA,
+                                   legend=FALSE
+    )
+    invisible(list(res = res, res_plot=res_plot))
+  }
+}
+
+
+#'
+plot_NA_heatmap_deprec <- function(data,
                             config,
                             showRowDendro=FALSE,
                             cexCol=1,
-                            limitrows=10000,
-                            pheatmap =FALSE){
+                            limitrows=10000){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1624,30 +1667,19 @@ plot_NA_heatmap <- function(data,
     }else{
       resPlot <- res
     }
-    if(pheatmap){
-      callback = function(hc, mat){
-        hclust(dist(mat, method = "binary"))
-      }
-      res_plot <- pheatmap::pheatmap(resPlot,
-                                     clustering_callback  = callback,
-                                     scale="none",
-                                     color=c("white","black")
-      )
-    }else{
-      res_plot <- heatmap3::heatmap3(resPlot,
-                                     distfun = function(x){dist(x, method="binary")},
-                                     scale="none",
-                                     col=c("white","black"),
-                                     labRow = "",
-                                     ColSideColors = ColSideColors,
-                                     showRowDendro = showRowDendro,
-                                     cexCol = cexCol,
-                                     margin = c(8,3),
-                                     legendfun = function()
-                                       heatmap3::showLegend(legend=c("NA"),
-                                                  col=c("black"),
-                                                  cex=1.5))
-    }
+    res_plot <- heatmap3::heatmap3(resPlot,
+                                   distfun = function(x){dist(x, method="binary")},
+                                   scale="none",
+                                   col=c("white","black"),
+                                   labRow = "",
+                                   ColSideColors = ColSideColors,
+                                   showRowDendro = showRowDendro,
+                                   cexCol = cexCol,
+                                   margin = c(8,3),
+                                   legendfun = function()
+                                     heatmap3::showLegend(legend=c("NA"),
+                                                          col=c("black"),
+                                                          cex=1.5))
 
     invisible(list(res = res, res_plot=res_plot))
 

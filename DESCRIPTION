@@ -23,13 +23,13 @@ Imports:
     ggfortify,
     glue,
     GGally,
-    heatmap3,
     kableExtra,
     limma,
     lme4,
     lmerTest,
     magrittr,
     multcomp,
+    pheatmap,
     quantable,
     plotly,
     purrr,
@@ -42,7 +42,8 @@ Suggests:
     knitr,
     fgczgseaora,
     rmarkdown,
-    testthat
+    testthat,
+    heatmap3
 Remotes:
     protViz/quantable,
     statOmics/MSqRob,
