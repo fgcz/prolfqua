@@ -24,7 +24,7 @@ path <- "."
 #usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
 resMetabo <- LFQService::resMetaboDataProgenesis
 resMetabo <- resMetabo  %>% mutate(NRS = gsub( "NRS","NRS_",NRS))
-resMetabo %>% rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
+resMetabo %>% dplyr::rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
 
 createMetaboCompoundConfiguration <- function(isotopeLabel="isotope",
                                                   qValue="Score"){

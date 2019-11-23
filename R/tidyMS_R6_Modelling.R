@@ -683,7 +683,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' linfct_matrix_contrasts(linfct, Contrasts )
 linfct_matrix_contrasts<- function(linfct , contrasts){
   linfct <- t(linfct)
-  df <- as_tibble(linfct, rownames = "interaction")
+  df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data,
                              contrasts)
   {
@@ -947,9 +947,9 @@ my_contest <- function(model, linfct){
   }else{
     res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   }
-  res <- as_tibble(res, rownames="lhs")
+  res <- tibble::as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
-  res <- res %>% rename(estimate = Estimate,
+  res <- res %>% dplyr::rename(estimate = Estimate,
                         std.error = "Std. Error",
                         statistic="t value",
                         p.value = "Pr(>|t|)",
@@ -1419,7 +1419,7 @@ workflow_contrasts_linfct_V2 <- function(models,
 #' @export
 moderated_p_limma <- function(mm, df = "df"){
   sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]])
-  sv <- as_tibble(sv)
+  sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
   mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))

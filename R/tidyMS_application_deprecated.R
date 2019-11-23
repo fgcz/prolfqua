@@ -71,12 +71,12 @@ application_run_modelling <- function(outpath,
                                       subject_Id,
                                       modelFunction){
     res <- right_join(contrast_minimal, xx_imputed, by=c(subject_Id,"lhs" = "contrast"))
-    res <- res %>% rename(contrast = lhs)
-    res <- res %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
-    res <- res %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+    res <- res %>% dplyr::rename(contrast = lhs)
+    res <- res %>% dplyr::mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
+    res <- res %>% dplyr::mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
 
     for(column in modelFunction$report_columns){
-      res <- res %>% mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate, TRUE ~ !!sym(column)))
+      res <- res %>% dplyr::mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate, TRUE ~ !!sym(column)))
     }
     res <- res %>% dplyr::select(-imputed, -meanArea)
     return(res)
