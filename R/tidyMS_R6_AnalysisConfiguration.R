@@ -722,7 +722,16 @@ missigness_impute_interactions <- function(mdataTrans,
 
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
 
-  res <- function(value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all" ), add.prefix = TRUE){
+
+  res <- function(value = c("long",
+                            "nrReplicates",
+                            "nrMeasured",
+                            "meanArea",
+                            "imputed",
+                            "allWide",
+                            "all" ),
+                  add.prefix = TRUE){
+
     value <- match.arg(value)
     if(value == "long"){
       return(xx)
@@ -730,21 +739,23 @@ missigness_impute_interactions <- function(mdataTrans,
       xx %>% dplyr::select(-one_of(c("nrNAs", factors))) -> xx
 
       pid <- pepConfig$table$hkeysLevel()
-      nrReplicates <- xx %>% dplyr::select( -meanArea, -nrMeasured, -imputed) %>%
+      nrReplicates <- xx %>%
+        dplyr::select( -one_of(c("meanArea", "nrMeasured", "imputed"))) %>%
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
-        arrange(!!sym(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>%
+          ungroup()
 
       nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
-        arrange(!!sym(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% ungroup()
 
       meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
         tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
-        arrange(!!sym(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% ungroup()
 
       meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
         tidyr::spread(interaction, imputed, sep=".imputed.") %>%
-        arrange(!!sym(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% ungroup()
 
 
       allTables <- list(meanArea= meanArea,
@@ -755,7 +766,7 @@ missigness_impute_interactions <- function(mdataTrans,
         allTables[["long"]] <- xx
         return(allTables)
       }else if(value == "allWide"){
-        return(purrr::reduce(allTables,inner_join))
+        return(purrr::reduce(allTables, inner_join))
       }else if(value == "nrReplicates"){
         srepl <- if(add.prefix){"nrRep."}else{""}
         colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
@@ -801,7 +812,10 @@ missigness_impute_factors_interactions <- function(data,
                                                              config, probs = probs)
   if(config$table$factorLevel > 1 ){ # if 1 only then done
     for(factor in config$table$fkeysLevel()){
-      fac_fun[[factor]] <- missigness_impute_interactions(data, config,factors = factor,probs = probs)
+      fac_fun[[factor]] <- missigness_impute_interactions(data,
+                                                          config,
+                                                          factors = factor,
+                                                          probs = probs)
     }
   }
   fac_res <- list()

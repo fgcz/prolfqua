@@ -24,6 +24,7 @@ Imports:
     ggfortify,
     glue,
     GGally,
+    heatmap3,
     kableExtra,
     limma,
     lme4,
@@ -43,8 +44,7 @@ Suggests:
     knitr,
     fgczgseaora,
     rmarkdown,
-    testthat,
-    heatmap3
+    testthat
 Remotes:
     protViz/quantable,
     statOmics/MSqRob,
