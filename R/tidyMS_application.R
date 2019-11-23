@@ -18,7 +18,7 @@
     tmp <- tmp %>% add_column(c1_name = cc[1],.after = 2)
     tmp <- tmp %>% add_column(c2_name = cc[2],.after = 3)
     tmp <- tmp %>% rename(c1 = !!sym(cc[1]), c2 = !!sym(cc[2]), estimate = !!sym(cname))
-    res <- bind_rows(res,tmp)
+    res <- dplyr::bind_rows(res,tmp)
   }
   return(res)
 }

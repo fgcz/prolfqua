@@ -51,7 +51,7 @@ compute_roc <- function(data, config){
   dumm <- nested %>% dplyr::select(!!sym(config$table$hierarchyKeys()[1]),
                                    !!sym(config$table$hierarchyKeys(TRUE)[1]),
                                    rocs) %>%  tidyr::unnest()
-  dumm <- dumm %>% dplyr::mutate(comparison = map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
+  dumm <- dumm %>% dplyr::mutate(comparison = purrr::map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
   dumm <- dumm %>% tidyr::separate(comparison, into = c("response1" , "response2"), sep=" ")
   dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
     arrange(desc(auc))

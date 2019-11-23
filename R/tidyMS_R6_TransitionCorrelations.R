@@ -636,7 +636,8 @@ filter_factor_levels_by_missing <- function(data,
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
-  summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>% dplyr::select(c(table$hierarchyKeys())) %>% distinct()
+  summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>%
+    dplyr::select(c(table$hierarchyKeys())) %>% dplyr::distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
   res <- summaryPerPrecursorFiltered %>% left_join(data)
   return( dplyr::ungroup(res))
