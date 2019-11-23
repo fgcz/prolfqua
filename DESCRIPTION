@@ -25,7 +25,6 @@ Imports:
     glue,
     GGally,
     heatmap3,
-    kableExtra,
     limma,
     lme4,
     lmerTest,

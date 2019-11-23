@@ -7,18 +7,19 @@ output:
   html_document: default
 vignette: >
   %\VignetteIndexEntry{Analyse correlations among precursors}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
-  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = TRUE,
-message = FALSE,
-warning = FALSE,
-fig.width = 10,
-fig.height = 10
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 10
 )
 
 ```
@@ -49,24 +50,24 @@ x <- R6extractValues(config)
 
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
 if(0){
-  not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
-           "PEP.GroupingKey", "PEP.GroupingKeyType",   "PEP.IsProteotypic",               "PEP.NrOfMissedCleavages",
-           "PEP.Rank",   "PEP.RunEvidenceCount",            "PEP.UsedForProteinGroupQuantity",
-           "EG.iRTPredicted",                 "EG.IsDecoy" ,"EG.ModifiedPeptide",
-           "EG.UserGroup",                    "EG.Workflow",
-           "EG.IsUserPeak",                   "EG.IsVerified",  "EG.iRTEmpirical",
-           "EG.MeanApexRT",                   "EG.RTPredicted",                  "EG.AvgProfileQvalue",             "EG.MaxProfileQvalue",
-           "EG.MinProfileQvalue",             "EG.PercentileQvalue",             "EG.ReferenceQuantity..Settings.", "EG.TargetQuantity..Settings.",
-           "FG.PrecMz",                       "FG.PrecMzCalibrated",             "FG.ShapeQualityScore",
-           "Tube.Id","Extract.Name" ,"Species" ,"Condition","Resource_id", "EG.good")
-  
-  
-  
-  longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
-  colnames(longFormat) <- make.names(colnames(longFormat))
-  longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
-  spectronautDIAData250 <- longFormat
-  #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
+not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
+"PEP.GroupingKey", "PEP.GroupingKeyType",   "PEP.IsProteotypic",               "PEP.NrOfMissedCleavages",
+"PEP.Rank",   "PEP.RunEvidenceCount",            "PEP.UsedForProteinGroupQuantity",
+"EG.iRTPredicted",                 "EG.IsDecoy" ,"EG.ModifiedPeptide",
+"EG.UserGroup",                    "EG.Workflow",
+"EG.IsUserPeak",                   "EG.IsVerified",  "EG.iRTEmpirical",
+"EG.MeanApexRT",                   "EG.RTPredicted",                  "EG.AvgProfileQvalue",             "EG.MaxProfileQvalue",
+"EG.MinProfileQvalue",             "EG.PercentileQvalue",             "EG.ReferenceQuantity..Settings.", "EG.TargetQuantity..Settings.",
+"FG.PrecMz",                       "FG.PrecMzCalibrated",             "FG.ShapeQualityScore",
+"Tube.Id","Extract.Name" ,"Species" ,"Condition","Resource_id", "EG.good")
+
+
+
+longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
+colnames(longFormat) <- make.names(colnames(longFormat))
+longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
+spectronautDIAData250 <- longFormat
+#usethis::use_data(spectronautDIAData250,overwrite = TRUE)
 }
 ```
 
@@ -99,7 +100,8 @@ knitr::kable(LFQService::hierarchyCounts(longQSummaries, config))
 ```
 
 ```{r}
-qvalFilt <- longQSummaries %>% filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
+qvalFilt <- longQSummaries %>% 
+  filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 LFQService::hierarchyCounts(qvalFilt, config)
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
@@ -126,68 +128,78 @@ knitr::kable(hierarchyCounts(qvalFiltV,config))
 
 # Correlation Filtering
 
-```{r}
+```{r markdecorellated}
 #config$table$popWorkIntensity()
 qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
-xx <- markDecorrelated(qvalFiltV, config)
-minCorrelation = 0.7 
-
-
+xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
+```
+
+```{r shownotcorrelated}
 nested <- xx %>% group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
-
-config$table$workIntensity
-
 
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
-
 plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"))
+plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) + 
+  geom_line(aes_string(linetype = "srm_decorelated"))
+```
 
+
+```{r summarizeDataAfterCorrelationRemoval}
 knitr::kable(hierarchyCounts(xx, config))
 qvalFiltCorr <- dplyr::filter(xx, srm_decorelated == FALSE)
 knitr::kable(hierarchyCounts(qvalFiltCorr, config))
 ```
 
-
-
-```{r}
+```{r clusterOfCorrelatedData}
 plot_heatmap_cor(qvalFiltCorr, config)
 ```
 
 ### Rank precursors by Intensity
 
-```{r}
-qvalFiltCorr %>% select(protein_Id,precursor_Id, srm_NrNotNAs) %>% distinct()
-qvalFiltCorrSI <- rankPrecursorsByIntensity(qvalFiltCorr, config)
-
-qvalFiltImputed <- impute_correlationBased(qvalFiltCorrSI, config)
+```{r rankprec}
+qvalFiltImputed <- impute_correlationBased(qvalFiltCorr, config)
+qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 
 ```
 
 # Aggregation
 
 
-```{r}
+```{r aggregate}
 
 mean_na <- function(x){mean(x,na.rm=TRUE)}
-proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, func = mean_na, N=3)$data
+proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
+                                               config,
+                                               func = mean_na, N=3)$data
 
+```
+
+
+```{r doplottingOFProtein}
 # nest transtions
 xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
-plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
-plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
-plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 
+
+#plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
+#plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
+#plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
-figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])) ,
-                                           plot_hierarchies_line, config))
-ff <- proteinIntensities %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest(.key = "topNIntensity")
+figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])),plot_hierarchies_line, config))
+
+ff <- proteinIntensities %>% 
+  group_by_at(config$table$hierarchyKeys()[1]) %>% 
+  tidyr::nest(.key = "topNIntensity")
 
 figs4 <- dplyr::inner_join(figs3,ff)
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
+plot_hierarchies_add_quantline(figs4$plotlog[[2]], figs4$topNIntensity[[2]], "srm_mean_na_3", config)
+plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "srm_mean_na_3", config)
+
+
 proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
 
 #quantable::simpleheatmap(t(scale(t(log2(1+proteinsWide[2:ncol(proteinsWide)])))), margins = c(16,5))
