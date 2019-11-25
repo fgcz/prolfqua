@@ -72,7 +72,11 @@ LFQService::toWideConfig(protintensity$data, protintensity$config)
 #readr::write_csv(protintensity$data,
 #                 path = file.path(path,"transformed_ProteinIntensities.csv"))
 
-#rmarkdown::render("Summarize_Filtering.Rmd", params=results, envir = new.env())
+results$path = "."
+
+render_SummarizeFiltering_rmd(results,workdir = ".")
+
+rmarkdown::render("Summarize_Filtering.Rmd", params=results, envir = new.env())
 #rmarkdown::render("Summarize_Filtering.Rmd", params=results)
 
 #render_SummarizeFiltering_rmd(results, dest_path=path, dest_file_name = "SummarizeFiltering.pdf",workdir = getwd())
@@ -91,3 +95,4 @@ res <- plot_hierarchies_line_df(results$pepIntensityNormalized, results$config_p
 res[[1]]
 res <- plot_hierarchies_boxplot_df(results$pepIntensityNormalized, results$config_pepIntensityNormalized)
 res[[1]]
+

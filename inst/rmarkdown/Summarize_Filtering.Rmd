@@ -53,13 +53,12 @@ knitr::kable(hierarchyCounts(params$resDataStart, params$config_resDataStart),
 
 
 ```{r}
-knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataStart),
+knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)("wide"),
              catpion = "NR Proteins and peptides by sample.")
 ```
 
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
-hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)
-
+hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)("wide")
 hcs <- hcs %>% tidyr::gather("key", "nr",
                       -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
 ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
@@ -105,7 +104,7 @@ knitr::kable(params$removed_proteins, caption="Proteins removed from analysis.")
 
 
 ```{r}
-knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredPep),
+knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredPep)("wide"),
              caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample")
 
 ```
@@ -171,6 +170,7 @@ figpath <- file.path(path,"heatmap_after_filtering.pdf")
 if(params$HEATMAP){
   pdf(figpath)
   x <- plot_heatmap(params$pepIntensityNormalized, params$config_pepIntensityNormalized)
+  print(x)
   dev.off()
 }
 knitr::include_graphics(figpath)
