@@ -743,7 +743,7 @@ missigness_impute_interactions <- function(mdataTrans,
         dplyr::select( -one_of(c("meanArea", "nrMeasured", "imputed"))) %>%
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
-          dplyr::ungroup()
+        dplyr::ungroup()
 
       nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
@@ -1506,7 +1506,7 @@ plot_stdv_vs_mean <- function(data, config){
 plot_heatmap_cor <- function(data,
                              config,
                              R2 = FALSE,
-                             distfun = function(x) as.dist(1 - cor(t(x), use = "pa")),
+                             color = colorRampPalette(c("white", "red"))(1024),
                              ...){
 
 
@@ -1536,6 +1536,7 @@ plot_heatmap_cor <- function(data,
                             border_color=NA,
                             main = ifelse(R2, "R^2", "correlation"),
                             silent=TRUE,
+                            color = color,
                             ...=...)
   invisible(res)
 
@@ -1577,28 +1578,6 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
   invisible(res)
 }
 
-#' plot PCA
-#' @export
-#' @import ggfortify
-#' @examples
-#'
-#' library(tidyverse)
-#' library(LFQService)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
-#' plot_pca(data, config)
-plot_pca <- function(data , config){
-  wide <- toWideConfig(data, config ,as.matrix = TRUE)
-  ff <- na.omit(wide$data)
-  ff <- t(ff)
-  ids <- wide$annotation
-  res <- autoplot(prcomp(ff), data=ids, colour=config$table$fkeysLevel()[1],
-                  shape=if(!is.na(config$table$fkeysLevel()[2])){
-                    config$table$fkeysLevel()[2]
-                  })
-  return(res)
-}
-
 #' plot heatmap of NA values
 #' @export
 #' @importFrom pheatmap pheatmap
@@ -1612,14 +1591,15 @@ plot_pca <- function(data , config){
 #' tmp <- plot_NA_heatmap(data, config)
 #' print(tmp$plot)
 #' xx <- plot_NA_heatmap(data, config,distance="euclidean")
+#' print(xx$plot)
 #' dev.off()
 #' print(xx$plot)
 #' names(xx)
 #'
 plot_NA_heatmap <- function(data,
-                               config,
-                               limitrows=10000,
-                               distance = "binary"){
+                            config,
+                            limitrows=10000,
+                            distance = "binary"){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1643,9 +1623,17 @@ plot_NA_heatmap <- function(data,
     }else{
       res
     }
-    res_plot <- pheatmap::pheatmap(res,
+
+    # not showing row dendrogram trick
+    resclust <- pheatmap::pheatmap(res,
+                              scale = "none",
+                              silent = TRUE,
+                              clustering_distance_cols = distance,
+                              clustering_distance_rows = distance)
+
+    res_plot <- pheatmap::pheatmap(res[resclust$tree_row$order,],
+                                   cluster_rows  = FALSE,
                                    clustering_distance_cols = distance,
-                                   clustering_distance_rows = distance,
                                    scale = "none",
                                    annotation_col = factors,
                                    color = c("white","black"),
@@ -1661,10 +1649,10 @@ plot_NA_heatmap <- function(data,
 
 #'
 plot_NA_heatmap_deprec <- function(data,
-                            config,
-                            showRowDendro=FALSE,
-                            cexCol=1,
-                            limitrows=10000){
+                                   config,
+                                   showRowDendro=FALSE,
+                                   cexCol=1,
+                                   limitrows=10000){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1704,4 +1692,28 @@ plot_NA_heatmap_deprec <- function(data,
     invisible(list(res = res, res_plot=res_plot))
 
   }
+}
+
+
+
+#' plot PCA
+#' @export
+#' @import ggfortify
+#' @examples
+#'
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- sample_analysis
+#' config <- skylineconfig$clone(deep=TRUE)
+#' plot_pca(data, config)
+plot_pca <- function(data , config){
+  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  ff <- na.omit(wide$data)
+  ff <- t(ff)
+  ids <- wide$annotation
+  res <- autoplot(prcomp(ff), data=ids, colour=config$table$fkeysLevel()[1],
+                  shape=if(!is.na(config$table$fkeysLevel()[2])){
+                    config$table$fkeysLevel()[2]
+                  })
+  return(res)
 }
