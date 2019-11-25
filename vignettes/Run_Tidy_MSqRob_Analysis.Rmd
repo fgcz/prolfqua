@@ -1,0 +1,47 @@
+---
+title: "DIA data analysis with MSqROB"
+author: "Functional Genomics Center Zurich"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document: default
+  html_document: default
+vignette: >
+  %\VignetteIndexEntry{DIA data analysis with MSqROB}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+echo = FALSE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
+
+```
+
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(readxl)
+library(yaml)
+library(LFQService)
+evalVignette <- FALSE
+if(require("MSqRob")){
+  evalVignette <- TRUE
+}
+if(!evalVignette){
+  print("The rpackage MSqRob is not installed.")
+}
+options(warn=0)
+```
+
+
+
+```{r conditional_print, child='MSqRob_vignette.Rmd', eval = evalVignette}
+```
+
