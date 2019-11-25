@@ -124,7 +124,9 @@ application_set_up_MQ_run <- function(outpath,
                                       id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results"){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
+  if(!is.null(id_extractor)){
+    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
+  }
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -182,7 +184,9 @@ application_set_up_MQ_run <- function(outpath,
   resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
 
   resPepProtAnnot$isotope = "light"
-  resPepProtAnnot <- id_extractor(resPepProtAnnot)
+  if(!is.null(id_extractor)){
+    resPepProtAnnot <- id_extractor(resPepProtAnnot)
+  }
   resDataStart <- setup_analysis(resPepProtAnnot, config)
 
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
