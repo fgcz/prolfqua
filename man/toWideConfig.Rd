@@ -11,6 +11,7 @@ toWideConfig(data, config, as.matrix = FALSE, fileName = FALSE,
 transform long to wide
 }
 \examples{
+library(tidyverse)
 config <- skylineconfig$clone(deep=TRUE)
 res <- toWideConfig(sample_analysis, skylineconfig)
 res$data

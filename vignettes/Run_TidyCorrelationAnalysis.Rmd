@@ -87,9 +87,9 @@ longNoDecoy <- setup_analysis(longFormat, config)
 ```{r}
 data <- longNoDecoy
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
+
 longQSummaries <- summariseQValues(longNoDecoy, config)
 knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)))
-
 ```
 
 
@@ -120,6 +120,7 @@ print(res)
 ```{r}
 xx <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2], FALSE)
 longQNASummaries <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
+
 qvalFiltV <- dplyr::filter(longQNASummaries, nr_peptide_Id_by_protein_Id > 1)
 knitr::kable(hierarchyCounts(qvalFiltV,config))
 
@@ -154,7 +155,7 @@ knitr::kable(hierarchyCounts(qvalFiltCorr, config))
 ```
 
 ```{r clusterOfCorrelatedData}
-plot_heatmap_cor(qvalFiltCorr, config)
+print(plot_heatmap_cor(qvalFiltCorr, config))
 ```
 
 ### Rank precursors by Intensity

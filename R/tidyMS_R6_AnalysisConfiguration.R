@@ -1526,8 +1526,8 @@ plot_heatmap_cor <- function(data,
   rownames(factors) <- annot$sampleName
 
   res <- pheatmap::pheatmap(cres,
-                            scale = "none")
-
+                            scale = "none",
+                            silent=TRUE)
   res <- pheatmap::pheatmap(cres[res$tree_row$order,],
                             scale="none",
                             cluster_rows  = FALSE,
@@ -1535,6 +1535,7 @@ plot_heatmap_cor <- function(data,
                             show_rownames = F,
                             border_color=NA,
                             main = ifelse(R2, "R^2", "correlation"),
+                            silent=TRUE,
                             ...=...)
   invisible(res)
 
@@ -1563,7 +1564,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
 
   # not showing row dendrogram trick
   res <- pheatmap::pheatmap(resdata,
-                            scale = "row")
+                            scale = "row", silent = TRUE)
 
   res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
                             cluster_rows  = FALSE,
@@ -1571,7 +1572,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
                             annotation_col = factors,
                             show_rownames = F,
                             border_color=NA,
-                            ...=...)
+                            ...=..., silent=TRUE)
 
   invisible(res)
 }
