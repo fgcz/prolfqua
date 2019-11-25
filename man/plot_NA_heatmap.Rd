@@ -15,8 +15,8 @@ library(tidyverse)
 library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-tmp <- plot_NA_heatmap(data, config, cexCol=1)
-xx <- plot_NA_heatmap_V2(data, config)
+tmp <- plot_NA_heatmap(data, config)
+xx <- plot_NA_heatmap(data, config)
 names(xx)
 
 }

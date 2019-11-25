@@ -24,7 +24,7 @@ path <- "."
 #usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
 resMetabo <- LFQService::resMetaboDataProgenesis
 resMetabo <- resMetabo  %>% mutate(NRS = gsub( "NRS","NRS_",NRS))
-resMetabo %>% rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
+resMetabo %>% dplyr::rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
 
 createMetaboCompoundConfiguration <- function(isotopeLabel="isotope",
                                                   qValue="Score"){
@@ -88,7 +88,7 @@ filteredPep <- filter_factor_levels_by_missing(resDataStart,
 results$filteredPep <- filteredPep
 results$config_filteredPep <- config
 results$removedFeatures <- anti_join(results$resDataStart, results$filteredPep, by="Compound")
-results$removedFeatures %>% dplyr::select(Compound) %>% distinct()
+results$removedFeatures %>% dplyr::select(Compound) %>% dplyr::distinct()
 
 results$config_dataTransformed <- config$clone(deep=TRUE)
 filteredPep <- LFQService::transform_work_intensity(filteredPep, results$config_dataTransformed, log2)

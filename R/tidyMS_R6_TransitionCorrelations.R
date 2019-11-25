@@ -271,6 +271,7 @@ toWide <- function(data,
 #' transform long to wide
 #' @export
 #' @examples
+#' library(tidyverse)
 #' config <- skylineconfig$clone(deep=TRUE)
 #' res <- toWideConfig(sample_analysis, skylineconfig)
 #' res$data
@@ -288,7 +289,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 
   ids <- dplyr::select_at(data,
                        c( config$table$sampleName, config$table$fileName, config$table$factorKeys())) %>%
-    distinct() %>% dplyr::arrange_at(newcolname)
+    dplyr::distinct() %>% dplyr::arrange_at(newcolname)
 
   res <- toWide( data, c(config$table$hierarchyKeys()) ,
                  newcolname,
@@ -516,7 +517,7 @@ rankProteinPrecursors <- function(data,
 #' @section TODO
 #' @export
 #' @examples
-#'
+#' library(tidyverse)
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByIntensity(res,config)
@@ -580,6 +581,7 @@ aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1
 #' Ranks precursors by NAs (adds new column .NARank)
 #' @export
 #' @examples
+#' library(tidyverse)
 #' config <- spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByNAs(res,config)
@@ -636,7 +638,8 @@ filter_factor_levels_by_missing <- function(data,
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
-  summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>% dplyr::select(c(table$hierarchyKeys())) %>% distinct()
+  summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>%
+    dplyr::select(c(table$hierarchyKeys())) %>% dplyr::distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
   res <- summaryPerPrecursorFiltered %>% left_join(data)
   return( dplyr::ungroup(res))

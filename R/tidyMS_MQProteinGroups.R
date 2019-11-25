@@ -388,9 +388,11 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
                   pep = min(pep, na.rm=TRUE),
                   peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>%  dplyr::ungroup()
 
-  dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>% distinct() %>% nrow()
+  dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>%
+    dplyr::distinct() %>% nrow()
 
-  peptides <- xx %>% dplyr::select( one_of(relevantColumns) ) %>% distinct()
+  peptides <- xx %>% dplyr::select( one_of(relevantColumns) ) %>%
+    dplyr::distinct()
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
 }
@@ -401,8 +403,8 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 #' @param modSpecData modeSpecPeptides.txt
 tidyMQ_top_protein_name <- function(modSpecData){
   modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
-  nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% distinct() %>% nrow()
-  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% distinct()
+  nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
+  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% dplyr::distinct()
   groupIDprotein %>% separate_rows(proteins, sep=";",convert =TRUE) -> groupIDprotein_Separated
   groupIDprotein_Separated %>% dplyr::group_by(protein.group.id) %>% tidyr::nest() -> groupIDprotein_Separated
 
@@ -411,7 +413,7 @@ tidyMQ_top_protein_name <- function(modSpecData){
     sort(names(aa[aa == max(aa)]), decreasing = TRUE)[1]
   }
   topProtein <- groupIDprotein_Separated %>%
-    dplyr::mutate(top_protein = map_chr(data,  extractMostFreqNamePerGroup)) %>%
+    dplyr::mutate(top_protein = purrr::map_chr(data,  extractMostFreqNamePerGroup)) %>%
     dplyr::select(protein.group.id, top_protein)
   stopifnot(nrow(topProtein) == nrProteinGroups)
   resPepProtAnnot <- dplyr::inner_join(modSpecData,topProtein )

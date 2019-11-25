@@ -14,10 +14,10 @@ x<- data.frame(a = 1:3, b=4:6)
 x
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 lfq_write_format
-lfq_write_table(x, "test.csv")
+#lfq_write_table(x, "test.csv")
 assign("lfq_write_format", "csv", envir = .GlobalEnv)
-lfq_write_table(x, "test.csv")
+#lfq_write_table(x, "test.csv")
 
 assign("lfq_write_format", "both", envir = .GlobalEnv)
-lfq_write_table(x, "test.csv")
+#lfq_write_table(x, "test.csv")
 }

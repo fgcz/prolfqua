@@ -10,6 +10,7 @@ rankPrecursorsByNAs(data, config)
 Ranks precursors by NAs (adds new column .NARank)
 }
 \examples{
+library(tidyverse)
 config <- spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByNAs(res,config)

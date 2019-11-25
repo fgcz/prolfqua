@@ -743,19 +743,19 @@ missigness_impute_interactions <- function(mdataTrans,
         dplyr::select( -one_of(c("meanArea", "nrMeasured", "imputed"))) %>%
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
-          ungroup()
+          dplyr::ungroup()
 
       nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
-        arrange(!!!syms(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
         tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
-        arrange(!!!syms(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
         tidyr::spread(interaction, imputed, sep=".imputed.") %>%
-        arrange(!!!syms(pid)) %>% ungroup()
+        arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
 
       allTables <- list(meanArea= meanArea,
@@ -862,7 +862,7 @@ workflow_missigness_impute_contrasts <- function(data,
   message("missigness_impute_factors_interactions : meanArea")
   mean <- missigness_impute_contrasts(xx, config, contrasts)
 
-  dd <- bind_rows(imputed, mean)
+  dd <- dplyr::bind_rows(imputed, mean)
   dd_long <- dd %>% gather("contrast","int_val",
                            colnames(dd)[sapply(dd, is.numeric)])
 
@@ -1245,7 +1245,7 @@ summarize_cv <- function(data, config, all = TRUE){
                        mean=mean(!!intsym,na.rm = T))
 
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
-    hierarchyFactor <- bind_rows(hierarchyFactor,hierarchy)
+    hierarchyFactor <- dplyr::bind_rows(hierarchyFactor,hierarchy)
   }
   if(config$parameter$is_intensity_transformed == FALSE){
     hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
@@ -1526,8 +1526,8 @@ plot_heatmap_cor <- function(data,
   rownames(factors) <- annot$sampleName
 
   res <- pheatmap::pheatmap(cres,
-                            scale = "none")
-
+                            scale = "none",
+                            silent=TRUE)
   res <- pheatmap::pheatmap(cres[res$tree_row$order,],
                             scale="none",
                             cluster_rows  = FALSE,
@@ -1535,6 +1535,7 @@ plot_heatmap_cor <- function(data,
                             show_rownames = F,
                             border_color=NA,
                             main = ifelse(R2, "R^2", "correlation"),
+                            silent=TRUE,
                             ...=...)
   invisible(res)
 
@@ -1563,7 +1564,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
 
   # not showing row dendrogram trick
   res <- pheatmap::pheatmap(resdata,
-                            scale = "row")
+                            scale = "row", silent = TRUE)
 
   res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
                             cluster_rows  = FALSE,
@@ -1571,7 +1572,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
                             annotation_col = factors,
                             show_rownames = F,
                             border_color=NA,
-                            ...=...)
+                            ...=..., silent=TRUE)
 
   invisible(res)
 }
@@ -1608,8 +1609,8 @@ plot_pca <- function(data , config){
 #' library(LFQService)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' tmp <- plot_NA_heatmap(data, config, cexCol=1)
-#' xx <- plot_NA_heatmap_V2(data, config)
+#' tmp <- plot_NA_heatmap(data, config)
+#' xx <- plot_NA_heatmap(data, config)
 #' names(xx)
 #'
 plot_NA_heatmap <- function(data,

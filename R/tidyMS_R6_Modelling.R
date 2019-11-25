@@ -378,7 +378,15 @@ workflow_model_analyse <- function(data,
                                    subject_Id)
 
   # delay write
-  res_fun <- function(path = NULL, all=FALSE){
+  res_fun <- function(path = NULL, all=FALSE, DEBUG = TRUE){
+    if(DEBUG){
+      return(list(
+        modellingResult = modellingResult,
+        modelName = modelName,
+        subject_Id = subject_Id
+      ))
+    }
+
     summaryResult <- model_analyse_summarize(modellingResult$modelProtein,
                                              modelName = modelName,
                                              subject_Id = subject_Id)
@@ -675,9 +683,9 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' linfct_matrix_contrasts(linfct, Contrasts )
 linfct_matrix_contrasts<- function(linfct , contrasts){
   linfct <- t(linfct)
-  df <- as_tibble(linfct, rownames = "interaction")
+  df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data,
-                        contrasts)
+                             contrasts)
   {
     cnams <- setdiff(colnames(data),"interaction")
     for(i in 1:length(contrasts)){
@@ -786,7 +794,7 @@ my_glht <- function(model, linfct , sep=TRUE ) {
       x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
       res[[i]] <- x
     }
-    res <- bind_rows(res)
+    res <- dplyr::bind_rows(res)
     return(res)
   }else{
     x <- multcomp::glht(model, linfct = linfct)
@@ -913,7 +921,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
                               stringsAsFactors = FALSE)
     }
   }
-  res <- bind_rows(res)
+  res <- dplyr::bind_rows(res)
   return(res)
 }
 
@@ -939,9 +947,9 @@ my_contest <- function(model, linfct){
   }else{
     res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
   }
-  res <- as_tibble(res, rownames="lhs")
+  res <- tibble::as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
-  res <- res %>% rename(estimate = Estimate,
+  res <- res %>% dplyr::rename(estimate = Estimate,
                         std.error = "Std. Error",
                         statistic="t value",
                         p.value = "Pr(>|t|)",
@@ -1028,7 +1036,7 @@ contrasts_linfct <- function(models,
   }
 
   interaction_model_matrix %>%
-    dplyr::mutate(classC = map_chr(contrast,mclass)) %>%
+    dplyr::mutate(classC = purrr::map_chr(contrast,mclass)) %>%
     dplyr::filter(classC != "logical") -> interaction_model_matrix
 
   contrasts <- interaction_model_matrix %>%
@@ -1037,12 +1045,14 @@ contrasts_linfct <- function(models,
   modelInfos <- models %>%
     dplyr::select_at(c(subject_Id, "isSingular",
                        "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" )) %>% distinct()
+                       "df.residual.model" = "df.residual" )) %>%
+    dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
 
   # adjust
   contrasts <- contrasts %>% group_by_at("lhs") %>%
-    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>% ungroup()
+    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>%
+    dplyr::ungroup()
 
   return(contrasts)
 }
@@ -1109,23 +1119,23 @@ contrasts_linfct_vis <- function(contrasts,
 
 
     fig$fig <- LFQService:::.multigroupVolcano(contrasts,
-                                  effect = "estimate",
-                                  p.value = column,
-                                  condition = "lhs",
-                                  text = "label",
-                                  xintercept = c(-fc, fc),
-                                  colour = "isSingular",
-                                  scales="free_y")
+                                               effect = "estimate",
+                                               p.value = column,
+                                               condition = "lhs",
+                                               text = "label",
+                                               xintercept = c(-fc, fc),
+                                               colour = "isSingular",
+                                               scales="free_y")
 
     fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
       LFQService:::.multigroupVolcano(.,
-                         effect = "estimate",
-                         p.value = column,
-                         condition = "lhs",
-                         text = "label",
-                         xintercept = c(-fc, fc),
-                         colour = "isSingular",
-                         scales="free_y") %>%
+                                      effect = "estimate",
+                                      p.value = column,
+                                      condition = "lhs",
+                                      text = "label",
+                                      xintercept = c(-fc, fc),
+                                      colour = "isSingular",
+                                      scales="free_y") %>%
       plotly::ggplotly(tooltip = "label")
 
     res[[name]] <- fig
@@ -1215,7 +1225,7 @@ workflow_contrasts_linfct <- function(models,
                                       prefix = "Contrasts",
                                       contrastfun = LFQService::my_contest )
 {
-  warning("DEPRECATE workflow_contrasts_linfct!!!")
+  warning("DEPRECATE workflow_contrasts_linfct!\n use workflow_contrasts_linfct_V2")
   if(class(contrasts) == "matrix"){
     linfct_A <- contrasts
   }else{
@@ -1239,7 +1249,17 @@ workflow_contrasts_linfct <- function(models,
   res_fun <- function(path = NULL, columns = c("p.value",
                                                "p.value.adjusted",
                                                "moderated.p.value",
-                                               "moderated.p.value.adjusted")){
+                                               "moderated.p.value.adjusted"),
+                      DEBUG=FALSE){
+    if(DEBUG){
+      return(list(contrast_result = contrast_result,
+                  modelName = modelName,
+                  config = config,
+                  prefix = prefix,
+                  subject_Id = subject_Id,
+                  columns = columns
+      ))
+    }
 
     visualization <- contrasts_linfct_vis(contrast_result,
                                           modelName ,
@@ -1340,7 +1360,17 @@ workflow_contrasts_linfct_V2 <- function(models,
   res_fun <- function(path = NULL, columns = c("p.value",
                                                "p.value.adjusted",
                                                "moderated.p.value",
-                                               "moderated.p.value.adjusted")){
+                                               "moderated.p.value.adjusted"),
+                      DEBUG = FALSE){
+    if(DEBUG){
+      return(list(contrast_result = contrast_result,
+                  modelName = modelName,
+                  config = config,
+                  prefix = prefix,
+                  subject_Id = subject_Id,
+                  columns = columns
+      ))
+    }
 
     visualization <- contrasts_linfct_vis(contrast_result,
                                           modelName ,
@@ -1389,13 +1419,14 @@ workflow_contrasts_linfct_V2 <- function(models,
 #' @export
 moderated_p_limma <- function(mm, df = "df"){
   sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]])
-  sv <- as_tibble(sv)
+  sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
   mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
   mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
   mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
-  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>% ungroup()
+  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>%
+    dplyr::ungroup()
   return(mm)
 }
 

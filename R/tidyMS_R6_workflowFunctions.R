@@ -50,7 +50,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(data, config,
                 stat_min_peptides_protein = stat_min_peptides_protein,
                 stat_correlated = stat_correlated
   )
-  x <- bind_rows(stats)
+  x <- dplyr::bind_rows(stats)
   stats <- add_column(x, processing = names(stats),.before = 1)
 
 
@@ -107,7 +107,7 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
                 stat_min_peptides_protein = stat_min_peptides_protein,
                 stat_correlated = stat_correlated
   )
-  x <- bind_rows(stats)
+  x <- dplyr::bind_rows(stats)
   stats <- add_column(x, processing = names(stats),.before = 1)
   return(qvalFiltImputed)
 }

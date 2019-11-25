@@ -14,7 +14,7 @@ NA
 }
 
 \examples{
-
+library(tidyverse)
 config <- spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByIntensity(res,config)
