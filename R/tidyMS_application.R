@@ -128,7 +128,6 @@ application_set_up_MQ_run <- function(outpath,
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
-
   if(!dir.exists(outpath)){
     dir.create(outpath)
   }
@@ -137,7 +136,6 @@ application_set_up_MQ_run <- function(outpath,
   if(!dir.exists(qc_path)){
     dir.create(qc_path)
   }
-
 
   ## read the data
 

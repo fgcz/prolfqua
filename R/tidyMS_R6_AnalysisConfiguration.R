@@ -1610,7 +1610,10 @@ plot_pca <- function(data , config){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #' tmp <- plot_NA_heatmap(data, config)
-#' xx <- plot_NA_heatmap(data, config)
+#' print(tmp$plot)
+#' xx <- plot_NA_heatmap(data, config,distance="euclidean")
+#' dev.off()
+#' print(xx$plot)
 #' names(xx)
 #'
 plot_NA_heatmap <- function(data,
@@ -1634,23 +1637,24 @@ plot_NA_heatmap <- function(data,
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
   if(nrow(res) > 0){
-    if(nrow(res) > limitrows ){
+    res <- if(nrow(res) > limitrows ){
       message("limiting nr of rows to:", limitrows,"\n")
-      resPlot <- res[sample( 1:nrow(res),limitrows),]
+      res[sample( 1:nrow(res),limitrows),]
     }else{
-      resPlot <- res
+      res
     }
-    res_plot <- pheatmap::pheatmap(resPlot,
+    res_plot <- pheatmap::pheatmap(res,
                                    clustering_distance_cols = distance,
                                    clustering_distance_rows = distance,
-                                   scale="none",
+                                   scale = "none",
                                    annotation_col = factors,
-                                   color=c("white","black"),
-                                   show_rownames=FALSE,
-                                   border_color=NA,
-                                   legend=FALSE
+                                   color = c("white","black"),
+                                   show_rownames = FALSE,
+                                   border_color = NA,
+                                   legend = FALSE,
+                                   silent = TRUE
     )
-    invisible(list(res = res, res_plot=res_plot))
+    invisible( list( res = res, plot = res_plot ) )
   }
 }
 
