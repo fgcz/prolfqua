@@ -73,10 +73,9 @@ LFQService::toWideConfig(protintensity$data, protintensity$config)
 #                 path = file.path(path,"transformed_ProteinIntensities.csv"))
 
 results$path = "."
-
 render_SummarizeFiltering_rmd(results,workdir = ".")
 
-rmarkdown::render("Summarize_Filtering.Rmd", params=results, envir = new.env())
+#rmarkdown::render("Summarize_Filtering.Rmd", params=results, envir = new.env())
 #rmarkdown::render("Summarize_Filtering.Rmd", params=results)
 
 #render_SummarizeFiltering_rmd(results, dest_path=path, dest_file_name = "SummarizeFiltering.pdf",workdir = getwd())
