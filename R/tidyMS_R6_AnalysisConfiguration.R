@@ -1188,11 +1188,11 @@ quants_write <- function(data,
 
   #troubelmaker goes fist
   pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
-  LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction)
+  print(LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction))
   dev.off()
 
   pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
-  plot_heatmap_cor(unnest$data,unnest$config)
+  print(plot_heatmap_cor(unnest$data,unnest$config))
   dev.off()
 
   res <- plot_pca(unnest$data,unnest$config)
