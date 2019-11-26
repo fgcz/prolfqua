@@ -40,11 +40,6 @@ ftab
 
 ```
 
-```{r include=FALSE}
- 
-```
-
-
 
 - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"}
 - [PCA plot](qc_results/protein_intensities_PCA_.pdf){target="_blank"} showing the samples according to the first and second principal component.
