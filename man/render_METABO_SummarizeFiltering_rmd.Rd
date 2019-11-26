@@ -4,9 +4,12 @@
 \alias{render_METABO_SummarizeFiltering_rmd}
 \title{render Filtering Summary.}
 \usage{
-render_METABO_SummarizeFiltering_rmd(results, dest_path = ".",
+render_METABO_SummarizeFiltering_rmd(
+  results,
+  dest_path = ".",
   dest_file_name = "METABO_Summarize_Filtering.pdf",
-  workdir = tempdir())
+  workdir = tempdir()
+)
 }
 \description{
 render Filtering Summary.

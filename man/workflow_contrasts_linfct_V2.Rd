@@ -4,9 +4,14 @@
 \alias{workflow_contrasts_linfct_V2}
 \title{Do contrast}
 \usage{
-workflow_contrasts_linfct_V2(models, contrasts, config,
-  modelName = "Model", prefix = "Contrasts",
-  contrastfun = LFQService::my_contest)
+workflow_contrasts_linfct_V2(
+  models,
+  contrasts,
+  config,
+  modelName = "Model",
+  prefix = "Contrasts",
+  contrastfun = LFQService::my_contest
+)
 }
 \description{
 Do contrast

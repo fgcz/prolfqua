@@ -4,8 +4,11 @@
 \alias{missingPerCondition}
 \title{Summarize missing in condtion as barplot}
 \usage{
-missingPerCondition(x, configuration,
-  factors = configuration$table$fkeysLevel())
+missingPerCondition(
+  x,
+  configuration,
+  factors = configuration$table$fkeysLevel()
+)
 }
 \description{
 Summarize missing in condtion as barplot

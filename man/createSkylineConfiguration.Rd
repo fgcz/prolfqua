@@ -4,8 +4,10 @@
 \alias{createSkylineConfiguration}
 \title{This function sets up an example configuration}
 \usage{
-createSkylineConfiguration(isotopeLabel = "Isotope.Label",
-  ident_qValue = "annotation_QValue")
+createSkylineConfiguration(
+  isotopeLabel = "Isotope.Label",
+  ident_qValue = "annotation_QValue"
+)
 }
 \description{
 This function sets up an example configuration

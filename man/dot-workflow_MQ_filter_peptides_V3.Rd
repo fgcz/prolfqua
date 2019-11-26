@@ -4,8 +4,12 @@
 \alias{.workflow_MQ_filter_peptides_V3}
 \title{Keep only those proteins with 2 IDENTIFIED peptides}
 \usage{
-.workflow_MQ_filter_peptides_V3(resDataStart, config, percent = 50,
-  nr_peptide_id = 2)
+.workflow_MQ_filter_peptides_V3(
+  resDataStart,
+  config,
+  percent = 50,
+  nr_peptide_id = 2
+)
 }
 \description{
 Keep only those proteins with 2 IDENTIFIED peptides

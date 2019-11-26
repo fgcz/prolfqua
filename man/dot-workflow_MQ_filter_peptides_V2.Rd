@@ -4,8 +4,12 @@
 \alias{.workflow_MQ_filter_peptides_V2}
 \title{Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides}
 \usage{
-.workflow_MQ_filter_peptides_V2(resDataStart, config, percent = 50,
-  nr_peptide_id = 2)
+.workflow_MQ_filter_peptides_V2(
+  resDataStart,
+  config,
+  percent = 50,
+  nr_peptide_id = 2
+)
 }
 \description{
 Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides

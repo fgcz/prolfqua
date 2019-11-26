@@ -26,7 +26,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
                   "fgcz_formatting/fgcz.css",
                   "fgcz_formatting/fgcz_banner.png",
                   "rmarkdown/mixed_model_analysis_script_Report.Rmd",
-                  "doc/bibliography.bib"
+                  "rmarkdown/bibliography.bib"
                   )
   .scriptCopyHelperVec(runscripts, workdir = workdir)
 }
@@ -43,7 +43,7 @@ copy_linear_model_analysis_script <- function(workdir = getwd()){
                   "fgcz_formatting/fgcz.css",
                   "fgcz_formatting/fgcz_banner.png",
                   "rmarkdown/linear_model_analysis_script_Report.Rmd",
-                  "doc/bibliography.bib")
+                  "rmarkdown/bibliography.bib")
   .scriptCopyHelperVec(runscripts, workdir = workdir)
 }
 

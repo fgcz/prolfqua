@@ -4,8 +4,12 @@
 \alias{missignessHistogram}
 \title{Histogram summarizing missigness}
 \usage{
-missignessHistogram(x, configuration, showempty = TRUE,
-  factors = configuration$table$fkeysLevel())
+missignessHistogram(
+  x,
+  configuration,
+  showempty = TRUE,
+  factors = configuration$table$fkeysLevel()
+)
 }
 \description{
 Histogram summarizing missigness

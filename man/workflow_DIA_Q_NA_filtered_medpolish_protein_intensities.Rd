@@ -4,8 +4,13 @@
 \alias{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}
 \title{Get Protein Intensities after QValue NA filtering and medianpolish}
 \usage{
-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config,
-  percent = 60, hierarchy_level = 1, factor_level = 1)
+workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(
+  data,
+  config,
+  percent = 60,
+  hierarchy_level = 1,
+  factor_level = 1
+)
 }
 \description{
 Get Protein Intensities after QValue NA filtering and medianpolish
@@ -24,7 +29,8 @@ nrow(res$data)
 hierarchyCounts(res$data, res$config)
 }
 \seealso{
-Other workflow functions: \code{\link{workflow_DIA_NA_preprocessing}},
-  \code{\link{workflow_correlation_preprocessing_protein_intensities}}
+Other workflow functions: 
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{workflow functions}

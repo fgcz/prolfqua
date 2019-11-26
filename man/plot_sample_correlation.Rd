@@ -17,6 +17,7 @@ mm <- toWideConfig(analysis, config, as.matrix = TRUE)
 plot_sample_correlation(analysis, config)
 }
 \seealso{
-Other plotting: \code{\link{plot_intensity_distribution_violin}}
+Other plotting: 
+\code{\link{plot_intensity_distribution_violin}()}
 }
 \concept{plotting}

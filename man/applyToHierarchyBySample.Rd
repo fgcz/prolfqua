@@ -4,8 +4,7 @@
 \alias{applyToHierarchyBySample}
 \title{applys func - a function working on matrix for each protein.}
 \usage{
-applyToHierarchyBySample(data, config, func = medpolishPly,
-  unnest = FALSE)
+applyToHierarchyBySample(data, config, func = medpolishPly, unnest = FALSE)
 }
 \description{
 applys func - a function working on matrix for each protein.

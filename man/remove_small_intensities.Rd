@@ -22,6 +22,7 @@ res1000 <- remove_small_intensities(analysis, config2, threshold=1000 )
 stopifnot(nrow(res1) >  nrow(res1000))
 }
 \seealso{
-Other filter functions: \code{\link{removeLarge_Q_Values}}
+Other filter functions: 
+\code{\link{removeLarge_Q_Values}()}
 }
 \concept{filter functions}

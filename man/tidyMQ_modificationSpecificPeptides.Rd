@@ -19,7 +19,7 @@ peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/m
 peptides_txt <- read.csv(peptides_txt,
  header=TRUE,
   stringsAsFactors = FALSE,
-   sep="\\t")
+   sep="\t")
 head(peptides_txt)
 MQPeptides <- peptides_txt
 View(MQPeptides)

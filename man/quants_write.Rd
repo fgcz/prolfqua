@@ -4,8 +4,14 @@
 \alias{quants_write}
 \title{write intensites into folder - for the moment protein}
 \usage{
-quants_write(data, config, path_qc, suffix = "", prefix = "protein",
-  na_fraction = 0.3)
+quants_write(
+  data,
+  config,
+  path_qc,
+  suffix = "",
+  prefix = "protein",
+  na_fraction = 0.3
+)
 }
 \description{
 write intensites into folder - for the moment protein

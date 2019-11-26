@@ -4,8 +4,14 @@
 \alias{application_summarize_compound}
 \title{preprocess peptide data, compute protein data, store results in qc_path folder}
 \usage{
-application_summarize_compound(data, config, qc_path, DEBUG = FALSE,
-  WRITE_PROTS = TRUE, prefix = c("peptide", "compound"))
+application_summarize_compound(
+  data,
+  config,
+  qc_path,
+  DEBUG = FALSE,
+  WRITE_PROTS = TRUE,
+  prefix = c("peptide", "compound")
+)
 }
 \description{
 preprocess peptide data, compute protein data, store results in qc_path folder

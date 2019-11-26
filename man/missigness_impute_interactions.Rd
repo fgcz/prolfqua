@@ -5,8 +5,12 @@
 \title{Compute interaction averages and
 impute data using mean of lowest 0.1 (default)}
 \usage{
-missigness_impute_interactions(mdataTrans, pepConfig,
-  factors = pepConfig$table$fkeysLevel(), probs = 0.1)
+missigness_impute_interactions(
+  mdataTrans,
+  pepConfig,
+  factors = pepConfig$table$fkeysLevel(),
+  probs = 0.1
+)
 }
 \value{
 function

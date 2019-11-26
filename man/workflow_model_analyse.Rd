@@ -4,8 +4,12 @@
 \alias{workflow_model_analyse}
 \title{workflow_model_analyse}
 \usage{
-workflow_model_analyse(data, modelFunction, modelName = "Model",
-  subject_Id = "protein_Id")
+workflow_model_analyse(
+  data,
+  modelFunction,
+  modelName = "Model",
+  subject_Id = "protein_Id"
+)
 }
 \description{
 workflow_model_analyse

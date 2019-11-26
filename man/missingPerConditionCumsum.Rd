@@ -4,8 +4,11 @@
 \alias{missingPerConditionCumsum}
 \title{cumulative sums of missing}
 \usage{
-missingPerConditionCumsum(x, configuration,
-  factors = configuration$table$fkeysLevel())
+missingPerConditionCumsum(
+  x,
+  configuration,
+  factors = configuration$table$fkeysLevel()
+)
 }
 \description{
 cumulative sums of missing

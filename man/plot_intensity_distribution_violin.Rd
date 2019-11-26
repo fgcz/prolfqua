@@ -26,8 +26,10 @@ analysis <- transform_work_intensity(sample_analysis, config, log2)
 plot_intensity_distribution_density(analysis, config)
 }
 \seealso{
-Other plotting: \code{\link{plot_sample_correlation}}
+Other plotting: 
+\code{\link{plot_sample_correlation}()}
 
-Other plotting: \code{\link{plot_sample_correlation}}
+Other plotting: 
+\code{\link{plot_sample_correlation}()}
 }
 \concept{plotting}

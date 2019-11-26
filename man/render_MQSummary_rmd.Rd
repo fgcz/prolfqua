@@ -4,9 +4,15 @@
 \alias{render_MQSummary_rmd}
 \title{render MQ Summary.}
 \usage{
-render_MQSummary_rmd(data, config, pep = TRUE, dest_path = ".",
-  dest_file_name = "MQSummary2", workdir = tempdir(),
-  format = c("pdf", "html"))
+render_MQSummary_rmd(
+  data,
+  config,
+  pep = TRUE,
+  dest_path = ".",
+  dest_file_name = "MQSummary2",
+  workdir = tempdir(),
+  format = c("pdf", "html")
+)
 }
 \description{
 render MQ Summary.

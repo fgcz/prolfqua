@@ -48,4 +48,4 @@ Remotes:
     protViz/quantable,
     statOmics/MSqRob,
     bioc::3.9/limma
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1

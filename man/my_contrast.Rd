@@ -4,8 +4,13 @@
 \alias{my_contrast}
 \title{compute contrasts for full models}
 \usage{
-my_contrast(m, linfct, coef = coefficients(m), Sigma.hat = vcov(m),
-  confint = 0.95)
+my_contrast(
+  m,
+  linfct,
+  coef = coefficients(m),
+  Sigma.hat = vcov(m),
+  confint = 0.95
+)
 }
 \description{
 compute contrasts for full models

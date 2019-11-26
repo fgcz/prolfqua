@@ -4,8 +4,11 @@
 \alias{workflow_correlation_preprocessing_protein_intensities}
 \title{correlation preprocessing}
 \usage{
-workflow_correlation_preprocessing_protein_intensities(data, config,
-  minCorrelation = 0.7)
+workflow_correlation_preprocessing_protein_intensities(
+  data,
+  config,
+  minCorrelation = 0.7
+)
 }
 \description{
 correlation preprocessing
@@ -21,7 +24,8 @@ names(res)
 
 }
 \seealso{
-Other workflow functions: \code{\link{workflow_DIA_NA_preprocessing}},
-  \code{\link{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}}
+Other workflow functions: 
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}()}
 }
 \concept{workflow functions}

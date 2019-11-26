@@ -4,8 +4,13 @@
 \alias{lfq_power_t_test_proteins}
 \title{Compute theoretical sample sizes from factor level standard deviations}
 \usage{
-lfq_power_t_test_proteins(data, config, delta = c(1.5, 2, 4),
-  power = 0.8, sig.level = 0.05)
+lfq_power_t_test_proteins(
+  data,
+  config,
+  delta = c(1.5, 2, 4),
+  power = 0.8,
+  sig.level = 0.05
+)
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

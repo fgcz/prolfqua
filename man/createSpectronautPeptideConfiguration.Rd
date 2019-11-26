@@ -4,8 +4,10 @@
 \alias{createSpectronautPeptideConfiguration}
 \title{This function sets up an example spectronaut configuration}
 \usage{
-createSpectronautPeptideConfiguration(isotopeLabel = "Isotope.Label",
-  ident_qValue = "EG.Qvalue")
+createSpectronautPeptideConfiguration(
+  isotopeLabel = "Isotope.Label",
+  ident_qValue = "EG.Qvalue"
+)
 }
 \description{
 This function sets up an example spectronaut configuration

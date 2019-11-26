@@ -4,8 +4,12 @@
 \alias{plot_lmer_model_and_data_TWO}
 \title{Plotting two independent random effects}
 \usage{
-plot_lmer_model_and_data_TWO(m, proteinID, legend.position = "none",
-  firstlast = TRUE)
+plot_lmer_model_and_data_TWO(
+  m,
+  proteinID,
+  legend.position = "none",
+  firstlast = TRUE
+)
 }
 \description{
 Plotting two independent random effects

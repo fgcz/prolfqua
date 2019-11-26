@@ -4,8 +4,14 @@
 \alias{lfq_power_t_test_quantiles}
 \title{Compute theoretical sample sizes from factor level standard deviations}
 \usage{
-lfq_power_t_test_quantiles(data, config, delta = 1, power = 0.8,
-  sig.level = 0.05, probs = seq(0.5, 0.9, by = 0.1))
+lfq_power_t_test_quantiles(
+  data,
+  config,
+  delta = 1,
+  power = 0.8,
+  sig.level = 0.05,
+  probs = seq(0.5, 0.9, by = 0.1)
+)
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

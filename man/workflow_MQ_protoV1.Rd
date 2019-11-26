@@ -4,8 +4,12 @@
 \alias{workflow_MQ_protoV1}
 \title{runs data preprocessing for peptide level data based protein modelling}
 \usage{
-workflow_MQ_protoV1(resDataStart, config, path,
-  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides)
+workflow_MQ_protoV1(
+  resDataStart,
+  config,
+  path,
+  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides
+)
 }
 \arguments{
 \item{peptideFilterFunction}{can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2}

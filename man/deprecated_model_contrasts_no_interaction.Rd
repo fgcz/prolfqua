@@ -4,8 +4,7 @@
 \alias{deprecated_model_contrasts_no_interaction}
 \title{compute all contrasts from non interaction model automatically.}
 \usage{
-deprecated_model_contrasts_no_interaction(modelProteinF, modelName,
-  pepConfig)
+deprecated_model_contrasts_no_interaction(modelProteinF, modelName, pepConfig)
 }
 \description{
 used p2109

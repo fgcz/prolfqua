@@ -4,8 +4,13 @@
 \alias{render_METABO_Summary_rmd}
 \title{render MQ Summary.}
 \usage{
-render_METABO_Summary_rmd(data, config, dest_path = ".",
-  dest_file_name = "Metabo_Summary.pdf", workdir = tempdir())
+render_METABO_Summary_rmd(
+  data,
+  config,
+  dest_path = ".",
+  dest_file_name = "Metabo_Summary.pdf",
+  workdir = tempdir()
+)
 }
 \description{
 render MQ Summary.

@@ -4,8 +4,12 @@
 \alias{contrasts_linfct}
 \title{compute group averages}
 \usage{
-contrasts_linfct(models, linfct, subject_Id = "protein_Id",
-  contrastfun = LFQService::my_contest)
+contrasts_linfct(
+  models,
+  linfct,
+  subject_Id = "protein_Id",
+  contrastfun = LFQService::my_contest
+)
 }
 \description{
 used in p2621, p2109

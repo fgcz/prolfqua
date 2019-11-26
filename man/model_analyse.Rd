@@ -4,8 +4,12 @@
 \alias{model_analyse}
 \title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
 \usage{
-model_analyse(pepIntensity, modelFunction, modelName,
-  subject_Id = "protein_Id")
+model_analyse(
+  pepIntensity,
+  modelFunction,
+  modelName,
+  subject_Id = "protein_Id"
+)
 }
 \description{
 used in project p2901

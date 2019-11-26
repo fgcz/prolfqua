@@ -4,8 +4,12 @@
 \alias{missigness_impute_contrasts}
 \title{Compute fold changes given Contrasts}
 \usage{
-missigness_impute_contrasts(data, config, contrasts,
-  agg_fun = function(x) {     median(x, na.rm = TRUE) })
+missigness_impute_contrasts(
+  data,
+  config,
+  contrasts,
+  agg_fun = function(x) {     median(x, na.rm = TRUE) }
+)
 }
 \description{
 Compute fold changes given Contrasts

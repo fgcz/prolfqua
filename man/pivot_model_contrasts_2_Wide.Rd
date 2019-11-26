@@ -4,9 +4,11 @@
 \alias{pivot_model_contrasts_2_Wide}
 \title{pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...}
 \usage{
-pivot_model_contrasts_2_Wide(modelWithInteractionsContrasts,
-  subject_Id = "protein_Id", columns = c("estimate", "p.value",
-  "p.value.adjusted"))
+pivot_model_contrasts_2_Wide(
+  modelWithInteractionsContrasts,
+  subject_Id = "protein_Id",
+  columns = c("estimate", "p.value", "p.value.adjusted")
+)
 }
 \description{
 pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...

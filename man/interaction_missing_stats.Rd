@@ -4,9 +4,12 @@
 \alias{interaction_missing_stats}
 \title{compute missing statistics}
 \usage{
-interaction_missing_stats(x, configuration,
+interaction_missing_stats(
+  x,
+  configuration,
   factors = configuration$table$fkeysLevel(),
-  workIntensity = configuration$table$getWorkIntensity())
+  workIntensity = configuration$table$getWorkIntensity()
+)
 }
 \description{
 compute missing statistics

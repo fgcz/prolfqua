@@ -5,8 +5,7 @@
 \title{plot intensities per interaction with Two
  independent random effects removed (1|A) + (1|B)}
 \usage{
-plot_lmer_peptide_noRandom_TWO(m, legend.position = "none",
-  firstlast = TRUE)
+plot_lmer_peptide_noRandom_TWO(m, legend.position = "none", firstlast = TRUE)
 }
 \description{
 plot intensities per interaction with Two

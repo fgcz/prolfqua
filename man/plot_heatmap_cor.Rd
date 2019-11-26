@@ -4,8 +4,13 @@
 \alias{plot_heatmap_cor}
 \title{plot correlation heatmap with annotations}
 \usage{
-plot_heatmap_cor(data, config, R2 = FALSE,
-  color = colorRampPalette(c("white", "red"))(1024), ...)
+plot_heatmap_cor(
+  data,
+  config,
+  R2 = FALSE,
+  color = colorRampPalette(c("white", "red"))(1024),
+  ...
+)
 }
 \description{
 plot correlation heatmap with annotations

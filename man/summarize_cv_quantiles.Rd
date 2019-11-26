@@ -4,8 +4,12 @@
 \alias{summarize_cv_quantiles}
 \title{summarize stats output}
 \usage{
-summarize_cv_quantiles(stats_res, config, stats = c("sd", "CV"),
-  probs = c(0.1, 0.25, 0.5, 0.75, 0.9))
+summarize_cv_quantiles(
+  stats_res,
+  config,
+  stats = c("sd", "CV"),
+  probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
+)
 }
 \description{
 summarize stats output

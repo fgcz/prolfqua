@@ -4,9 +4,18 @@
 \alias{plot_hierarchies_line_default}
 \title{Plot peptide and fragments}
 \usage{
-plot_hierarchies_line_default(data, proteinName, sample, intensity,
-  peptide, fragment, factor, isotopeLabel, separate = FALSE,
-  log_y = FALSE)
+plot_hierarchies_line_default(
+  data,
+  proteinName,
+  sample,
+  intensity,
+  peptide,
+  fragment,
+  factor,
+  isotopeLabel,
+  separate = FALSE,
+  log_y = FALSE
+)
 }
 \description{
 Plot peptide and fragments

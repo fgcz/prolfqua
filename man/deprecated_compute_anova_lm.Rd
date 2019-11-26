@@ -4,8 +4,13 @@
 \alias{deprecated_compute_anova_lm}
 \title{Perform anova analysis}
 \usage{
-deprecated_compute_anova_lm(data, config, .formula = NULL,
-  hierarchy_level = 1, factor_level = 1)
+deprecated_compute_anova_lm(
+  data,
+  config,
+  .formula = NULL,
+  hierarchy_level = 1,
+  factor_level = 1
+)
 }
 \description{
 Perform anova analysis

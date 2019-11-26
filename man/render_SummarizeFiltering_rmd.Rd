@@ -4,8 +4,12 @@
 \alias{render_SummarizeFiltering_rmd}
 \title{render Filtering Summary.}
 \usage{
-render_SummarizeFiltering_rmd(results, dest_path = ".",
-  dest_file_name = "Summarize_Filtering.pdf", workdir = tempdir())
+render_SummarizeFiltering_rmd(
+  results,
+  dest_path = ".",
+  dest_file_name = "Summarize_Filtering.pdf",
+  workdir = tempdir()
+)
 }
 \description{
 render Filtering Summary.

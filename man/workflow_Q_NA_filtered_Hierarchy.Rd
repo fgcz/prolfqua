@@ -4,8 +4,13 @@
 \alias{workflow_Q_NA_filtered_Hierarchy}
 \title{Deprecated}
 \usage{
-workflow_Q_NA_filtered_Hierarchy(data, config, percent = 60,
-  hierarchy_level = 1, factor_level = 1)
+workflow_Q_NA_filtered_Hierarchy(
+  data,
+  config,
+  percent = 60,
+  hierarchy_level = 1,
+  factor_level = 1
+)
 }
 \description{
 Deprecated

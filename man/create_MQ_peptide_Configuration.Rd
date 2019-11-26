@@ -4,8 +4,11 @@
 \alias{create_MQ_peptide_Configuration}
 \title{MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides}
 \usage{
-create_MQ_peptide_Configuration(ident_qValue = "pep",
-  intensity = "peptide.intensity", isotopeLabel = "isotope")
+create_MQ_peptide_Configuration(
+  ident_qValue = "pep",
+  intensity = "peptide.intensity",
+  isotopeLabel = "isotope"
+)
 }
 \description{
 MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides

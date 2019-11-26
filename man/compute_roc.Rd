@@ -23,7 +23,7 @@ dim(res)
 head(res)
 i <- 2
 
-pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
+pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 unique(res$protein_Id)
 
 }

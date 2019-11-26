@@ -4,8 +4,13 @@
 \alias{application_summarize_data}
 \title{DEPRECATED}
 \usage{
-application_summarize_data(data, config, qc_path, DEBUG = FALSE,
-  WRITE_PROTS = TRUE)
+application_summarize_data(
+  data,
+  config,
+  qc_path,
+  DEBUG = FALSE,
+  WRITE_PROTS = TRUE
+)
 }
 \description{
 DEPRECATED
