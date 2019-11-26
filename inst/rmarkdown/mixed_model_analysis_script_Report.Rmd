@@ -9,6 +9,8 @@ output:
       after_body: fgcz_footer.html
 params:
   pars: NULL
+bibliography: bibliography.bib
+
 ---
 
 
