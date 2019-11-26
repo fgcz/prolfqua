@@ -40,31 +40,39 @@ ftab
 
 ```
 
+
+
 - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"} 
 - [PCA plot](qc_results/protein_intensities_PCA_.pdf){target="_blank"} showing the samples according to the first and second principal component.
-- [Heatmap based on sample correlation](qc_results/protein_intensities_heatmap_correlation_.pdf){target="_blank"}.
-- [Protein Intensity heatmap](qc_results/protein_intensities_heatmap_.pdf){target="_blank"}.
-- The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx){target="_blank"}.
-- A [pdf file](qc_results/protein_intensities_inference_figures.pdf){target="_blank"} containing all the peptide and protein intensities. 
+- [Heatmap based on protein intensity correlation among samples](qc_results/protein_intensities_heatmap_correlation_.pdf){target="_blank"}.
+- [Protein intensities heatmap](qc_results/protein_intensities_heatmap_.pdf){target="_blank"}.
+- The protein intensities [^1] in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx){target="_blank"}.
+- A [pdf file](qc_results/protein_intensities_inference_figures.pdf){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
 - A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html){target="_blank"}.
+
+The diagnostic plots were generated using transformed, normalized and aggregated protein intensities [^1]. 
+
+[^1]: To determine protein intensities the peptide intensities were log2 transformed and z-scored. The protein intensity was determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish).  
 
 
 # Mixed Effects Model
 
-The following mixed effects model was fitted: 
+The following mixed effects model was fitted [see @lmer2015]: 
 
 __`r format(formula(pars$model))`__
 
-Using this model the following contrasts were computed.
-
+Using this model the following contrasts were computed. 
 
 ```{r contrasts}
 Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = pars$Contrasts)
 ft_contrast <- flextable(Contrasts)
 ft_contrast <- ft_contrast %>% set_caption("Contrasts (vs - versus, gv - given).")
 ft_contrast
-
 ```
+
+
+The p values of the ANOVA analysis and p values of the contrasts were estimated using the R package lmerTest [see @lmerTest2017].
+
 
 ```{r filepaths, include=FALSE}
 anovaXLSX <- file.path(pars$modelling_dir, "Anova_Model")
@@ -78,15 +86,16 @@ maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
 ```
 
 
-- ANOVA results ([excel xlsx format](`r paste0(anovaXLSX,".xlsx")`);[html](`r paste0(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r anovaPDF`){target="_blank"} which shows which factors are most significant.
+- ANOVA results ([excel xlsx format](`r paste0(anovaXLSX,".xlsx")`);[html](`r paste0(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r anovaPDF`){target="_blank"} which shows which factors in the model are most significant.
 
 - For all contrasts and proteins:
-    - A __table__ with all fold change estimates and p-Values ([excel xlsx format](`r paste0(contrastXLSX,".xlsx")`); [html](`r paste0(contrastXLSX,".html")`){target="_blank"}) with p-Values for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided.
-    - __Histogram of p-Values__ ([pdf](`r paste0(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast to see which contrast produced the largest number of significant changes
-    - __Histogram of adjusted p-Values__ ([pdf](`r paste0(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the p-Values after multiplicity adjustment for each contrast to see which contrast produced the largest number of significant changes.
-    - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste0(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein p-Values versus the the log2 fold changes on the horizontal axis.
-    - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste0(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the adjusted protein _p-Values_ versus the the _log2_ fold changes on the horizontal axis.
-    - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r paste0(maPlot,".pdf")`){target="_blank"}; [html](`r paste0(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments.
+    - A __table__ with all fold change estimates and p values ([excel xlsx format](`r paste0(contrastXLSX,".xlsx")`); [html](`r paste0(contrastXLSX,".html")`){target="_blank"}) for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided [^1].
+    - __Histogram of p-Values__ ([pdf](`r paste0(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast. This plot can be used to asses the quality of you data and model (see [How to interpret p-value histogram]( http://varianceexplained.org/statistics/interpreting-pvalue-histogram/)).
+    - __Histogram of adjusted p-Values__ ([pdf](`r paste0(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the false discovery rates (FDR - p values adjusted using the Benjamin and Hochberg method [see @BenjaminiHochberg1995]).
+    - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste0(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein $-log10(p~values)$ versus the the log2 fold changes on the horizontal axis.
+    - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste0(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste0(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the $-log10(FDR)$ versus the the _log2_ fold changes on the horizontal axis.
+    - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r paste0(maPlot,".pdf")`){target="_blank"}; [html](`r paste0(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments (this is also known as mean difference plot MD).
     
 
 
+[^1]: To estimate a fold-changes for those proteins were a mixed effects model could not be fitted we proceeded as follows: for each peptide we compute the mean intensity for all interactions. If this mean can not be estimated (no samples for this interaction) we impute it using the mean of the $10\%$ smallest values in the sample. Afterwards contrasts (differences between interaction means) are computed for each peptide. Finally the median of the peptide estimates is used to provide a per protein estimate.  
