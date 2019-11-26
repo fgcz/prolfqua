@@ -2,12 +2,13 @@ rm(list=ls())
 library(LFQService)
 library(tidyverse)
 
-DEBUG <- FALSE
 
 
-outpath <- "results_modelling"
-inputMQfile <-  "data/MQresults-20190805_combined_txt.zip"
-inputAnntation <- "annotation.xlsx"
+outpath <- "results_modelling_testing"
+inputMQfile <-  "../samples/p2558_05748_modspec.zip"
+
+
+inputAnntation <- "../samples/p2558_05748_annotation.xlsx"
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
@@ -16,82 +17,89 @@ config <- LFQService::create_MQ_peptide_Configuration()
 
 annotation <- readxl::read_xlsx(inputAnntation)
 
-config$table$factors[["genotype_"]] = "genotype"
+config$table$factors[["drug_"]] = "genotype"
 config$table$factors[["SCI_"]] = "SCI"
-config$table$factors[["wasIstDas"]] = "wasIstDas"
 config$table$factorLevel <- 2
 
+config$order_Id = "o5748"
+config$project_Id = "p2558"
+config$workunit_Id = "20191120_MQ_repack.zip"
+
 
 # specify model definition
-modelName  <- "f_genotype_SCI"
-model <- "~ genotype_*SCI_  + (1|peptide_Id)"
+modelName  <- "Model"
+model <- "~ drug_ * SCI_  + (1|peptide_Id)"
 is.mixed <- TRUE
-DEBUG <- TRUE
+DEBUG <- FALSE
+RUN_ALL <- TRUE
 
-Contrasts <- c("8w - nv" = "SCI_8w - SCI_nv",
-               "7d - nv" = "SCI_7d - SCI_nv" ,
-               "tlr4 - wt" = "genotype_tlr4 - genotype_wt",
-               "tlr4_vs_wt_given_nv" = "`genotype_tlr4:SCI_nv` - `genotype_wt:SCI_nv`",
-               "tlr4_vs_wt_given_7d" = "`genotype_tlr4:SCI_7d` - `genotype_wt:SCI_7d`",
-               "tlr4_vs_wt_given_8w" = "`genotype_tlr4:SCI_8w` - `genotype_wt:SCI_8w`",
-               "interaction_genotype_with_7d_nv" = "tlr4_vs_wt_given_7d - tlr4_vs_wt_given_nv",
-               "interaction_genotype_with_8w_nv" = "tlr4_vs_wt_given_8w - tlr4_vs_wt_given_nv"
+Contrasts <- c("8wk - 1wk" = "SCI_8wk - SCI_1wk",
+               "t - v" = "drug_t - drug_v",
+               "t_vs_v_given_8wk" = "`drug_t:SCI_8wk` - `drug_v:SCI_8wk`",
+               "t_vs_v_given_1wk" = "`drug_t:SCI_1wk` - `drug_v:SCI_1wk`",
+               "interaction_construct_with_time" = "t_vs_v_given_8wk - t_vs_v_given_1wk"
 )
 
+if(TRUE){
+  assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+  #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 
-assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+  res <- application_set_up_MQ_run(outpath = outpath,
+                                   inputMQfile = inputMQfile,
+                                   inputAnntation = inputAnntation,
+                                   config=config,
+                                   id_extractor = NULL)
+  config$table$hierarchy
+  summarised <- application_summarize_data_pep_to_prot(res$data,
+                                                       res$config,
+                                                       res$qc_path,
+                                                       DEBUG = DEBUG,
+                                                       WRITE_PROTS=TRUE)
 
-# specify model definition
-modelName  <- "f_genotype_SCI"
-model <- "~ genotype_*SCI_  + (1|peptide_Id)"
-
-reportColumns <- c("p.value",
-                   "p.value.adjusted")
-
-
-res <- application_set_up_MQ_run(outpath = outpath,
-                                 inputMQfile = inputMQfile,
-                                 inputAnntation = inputAnntation)
-
-summarised <- application_summarize_data(res$data,
-                                         res$config,
-                                         res$qc_path,
-                                         DEBUG = DEBUG)
-
+}else{
+  summarised <- readRDS("aaa_summarized.RDA")
+}
 
 
 model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() ,model)
 modelFunction <- make_custom_model_lmer( model, model_name = "Model")
+reportColumns <- c("p.value",
+                   "p.value.adjusted")
 
-source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-res <- application_run_modelling(outpath = outpath,
-                                 protIntensityNormalized = summarised$results$pepIntensityNormalized,
-                                 pepConfig = summarised$results$config_pepIntensityNormalized,
-                                 modelFunction = modelFunction,
-                                 Contrasts = Contrasts,
-                                 modelling_dir = "modelling_results_peptide")
+
+pepConfig <- summarised$results$config_pepIntensityNormalized
+
+#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
+if(TRUE){
+  resXX <- application_run_modelling_V2(outpath = outpath,
+                                        data = summarised$results$pepIntensityNormalized,
+                                        pepConfig = summarised$results$config_pepIntensityNormalized,
+                                        modelFunction = modelFunction,
+                                        contrasts = Contrasts,
+                                        modelling_dir = "modelling_results_peptide")
+  #saveRDS(resXX, file="resXX.rda")
+}
 
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
                            modelling_dir = "modelling_results_peptide",
-                           workunit_name = "MaxQuant_p3147_o5997",
+                           workunit_Id = config$workunit_Id,
                            annotation = annotation,
                            reportColumns = reportColumns,
                            config = config,
                            model= model,
                            Contrasts = Contrasts,
-                           project_id = "p3147",
-                           order_id = "o5997",
+                           project_Id = config$project_Id,
+                           order_Id = config$order_Id,
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
 
-copy_mixed_model_analysis_script()
+LFQService::copy_mixed_model_analysis_script()
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   params= list(pars = relevantParameters),
                   output_format = "html_document",
                   output_dir = outpath,
                   output_file = "index.html")
-
 
 
