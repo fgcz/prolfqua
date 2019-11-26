@@ -866,9 +866,18 @@ workflow_missigness_impute_contrasts <- function(data,
   dd_long <- dd %>% gather("contrast","int_val",
                            colnames(dd)[sapply(dd, is.numeric)])
 
-  res <- function(value = c("long", "wide","raw"), what = c("contrasts", "factors", "all")){
+  res_fun <- function(value = c("long", "wide","raw"),
+                      what = c("contrasts", "factors", "all"),
+                      DEBUG=FALSE){
     value <- match.arg( value )
     what  <- match.arg( what  )
+    if(DEBUG){
+      return(list(value = value,
+                  what = what,
+                  dd_long = dd_long,
+                  contrasts = contrasts,
+                  config=config ))
+    }
 
     if(what == "contrasts"){
       dd_long <- dplyr::filter(dd_long, contrast %in% names(contrasts))
@@ -888,6 +897,7 @@ workflow_missigness_impute_contrasts <- function(data,
       return(dd_long)
     }
   }
+  return(res_fun)
 }
 #' Histogram summarizing missigness
 #' @export
