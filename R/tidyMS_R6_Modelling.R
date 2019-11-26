@@ -285,7 +285,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   ## Coef_Histogram
   fig$fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",modelName,".pdf")
   fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
-    geom_histogram(bins = 20) +
+    geom_histogram(breaks = seq(0,1,by=0.05)) +
     facet_wrap(~row.names.x.)
 
   ## Coef_VolcanoPlot
@@ -311,7 +311,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
   fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
     ggplot( aes(x = Pr..F., group=rownames.x.)) +
-    geom_histogram(bins = 20) +
+    geom_histogram(breaks = seq(0,1,by=0.05)) +
     facet_wrap(~rownames.x.)
 
   return(fig)
@@ -378,7 +378,7 @@ workflow_model_analyse <- function(data,
                                    subject_Id)
 
   # delay write
-  res_fun <- function(path = NULL, all=FALSE, DEBUG = TRUE){
+  res_fun <- function(path = NULL, all=FALSE, DEBUG = FALSE){
     if(DEBUG){
       return(list(
         modellingResult = modellingResult,
