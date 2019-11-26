@@ -152,8 +152,14 @@ application_set_up_MQ_run <- function(outpath,
     dev.off()
   }
 
-  peptidestxt <- tidyMQ_Peptides(inputMQfile)
-  resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
+  if("peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name){
+    peptidestxt <- tidyMQ_Peptides(inputMQfile)
+    resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
+  }else{
+    warning("no peptides.txt found!!!")
+    config$table$workIntensity <- "mod.peptide.intensity"
+    config$table$hierarchy[["peptide_Id"]] <- c("sequence","modifications","mod.peptide.id")
+  }
   resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
 
 
