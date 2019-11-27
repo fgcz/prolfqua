@@ -2,12 +2,14 @@
 % Please edit documentation in R/tidyMS_rocs.R
 \name{compute_roc}
 \alias{compute_roc}
-\title{Apply roc analysis on main factor on lowest level}
+\title{Apply roc analysis on main factor on lowest hierarchy level
+probably deprecate function.}
 \usage{
 compute_roc(data, config)
 }
 \description{
-Apply roc analysis on main factor on lowest level
+Apply roc analysis on main factor on lowest hierarchy level
+probably deprecate function.
 }
 \examples{
 
@@ -23,7 +25,8 @@ dim(res)
 head(res)
 i <- 2
 
-pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
+pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
+ main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 unique(res$protein_Id)
 
 }

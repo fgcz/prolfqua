@@ -12,12 +12,16 @@
   for(i in 1:ncol(comparisons)){
     comp <- comparisons[,i]
     res[[i]] <-  tryCatch(pROC::roc(response = responseX,
-                                    predictor = predictorX , levels=comp), error = function(x) NULL)
+                                    predictor = predictorX,
+                                    direction = "<",
+                                    levels=comp), error = function(x) NULL)
   }
   return(res)
 }
 
-#' Apply roc analysis on main factor on lowest level
+#' Apply roc analysis on main factor on lowest hierarchy level
+#' probably deprecate function.
+#'
 #' @export
 #' @importFrom purrr map
 #' @examples
@@ -34,24 +38,27 @@
 #' head(res)
 #' i <- 2
 #'
-#' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE, main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
+#' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
+#'  main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 #' unique(res$protein_Id)
 #'
 compute_roc <- function(data, config){
-  nested <- data %>% dplyr::group_by(!!sym(config$table$hierarchyKeys()[1]) ,
-                                     !!sym(config$table$hierarchyKeys(TRUE)[1])) %>% nest()
+  nested <- data %>% dplyr::group_by(!!!syms(config$table$hierarchyKeys())) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
-                                                .rocs, response = config$table$factorKeys()[1],
-                                                predictor= config$table$getWorkIntensity() ))
-
+                                                .rocs,
+                                                response = config$table$fkeysLevel(),
+                                                predictor = config$table$getWorkIntensity() ))
   nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
     dplyr::filter(cls == FALSE)
+
   #nested <- nested %>% mutate(names = map(rocs, names))
 
-  dumm <- nested %>% dplyr::select(!!sym(config$table$hierarchyKeys()[1]),
-                                   !!sym(config$table$hierarchyKeys(TRUE)[1]),
-                                   rocs) %>%  tidyr::unnest()
-  dumm <- dumm %>% dplyr::mutate(comparison = purrr::map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
+  dumm <- nested %>% dplyr::select(!!!syms(config$table$hierarchyKeys()),
+                                   rocs) %>%  tidyr::unnest(cols=c("rocs"))
+
+  dumm <- dumm %>%
+    dplyr::mutate(comparison =
+                    purrr::map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
   dumm <- dumm %>% tidyr::separate(comparison, into = c("response1" , "response2"), sep=" ")
   dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
     arrange(desc(auc))
