@@ -34,11 +34,11 @@ resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases
 
 smallData <- resDataStart %>% dplyr::filter(protein_Id %in% sample(resDataStart$protein_Id,20))
 testData2954 <- list(resDataStart = smallData, config = config)
-usethis::use_data(testData2954)
+#usethis::use_data(testData2954)
 resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
                                                  config,
                                                  path ,
                                                  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
 
-usethis::use_data(resultsV12954, overwrite=TRUE)
+#usethis::use_data(resultsV12954, overwrite=TRUE)
 
