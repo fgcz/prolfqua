@@ -183,7 +183,6 @@ application_set_up_MQ_run <- function(outpath,
   }
 
   resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by= "raw.file")
-  ###
   ###  Setup analysis ####
 
 
@@ -221,8 +220,6 @@ application_summarize_data_pep_to_prot <- function(data,
 
   wideFRAME <- LFQService::toWideConfig(results$pepIntensityNormalized,
                                         results$config_pepIntensityNormalized)
-
-
   lfq_write_table(separate_hierarchy(wideFRAME$data,
                                      results$config_pepIntensityNormalized),
                   file.path(qc_path, "peptide_intensities.csv"))
@@ -238,28 +235,17 @@ application_summarize_data_pep_to_prot <- function(data,
                                      format = "html")
   }
 
-
   ### PROTEIN QUANTIFICATION ####
   protintensity <- medpolish_protein_quants( results$pepIntensityNormalized,
                                              results$config_pepIntensityNormalized )
 
-  unnest <- protintensity("unnest")
-  quants_write(unnest$data, unnest$config, qc_path, na_fraction = 0.3)
-
-
-  figs <- protintensity("plot")
-
-  if(WRITE_PROTS){
-    pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
-    lapply(figs$plot, print)
-    dev.off()
-  }
-
+  unnestProt <- protintensity("unnest")
+  quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
 
   # render protein quantification reprot
   if(!DEBUG){
-    LFQService::render_MQSummary_rmd(protintensity("unnest")$data,
-                                     protintensity("unnest")$config$clone(deep=TRUE),
+    LFQService::render_MQSummary_rmd(unnestProt$data,
+                                     unnestProt$config$clone(deep=TRUE),
                                      pep=FALSE,
                                      workdir = ".",
                                      dest_path = qc_path,
@@ -267,24 +253,23 @@ application_summarize_data_pep_to_prot <- function(data,
                                      format="html"
     )
   }
+
+  if(WRITE_PROTS){
+    figs <- protintensity("plot")
+    pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
+    lapply(figs$plot, print)
+    dev.off()
+  }
+
   return(list(results  = results, prot_results = protintensity))
 }
 
 
-#' DEPRECATED
-#' @export
-application_summarize_data <- function(data,
-                                       config,
-                                       qc_path,
-                                       DEBUG= FALSE,
-                                       WRITE_PROTS=TRUE){
-  message("application_summarize_data is deprecated\n")
-  stop("use application_summarize_data_pep_to_prot\n")
-}
 
 
 
-#' preprocess peptide data, compute protein data, store results in qc_path folder
+#' Used for metabolomics data analysis.
+#'
 #' @export
 #'
 application_summarize_compound <- function(data,
@@ -296,20 +281,14 @@ application_summarize_compound <- function(data,
   prefix <- match.arg(prefix)
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
-
   results <- LFQService:::.workflow_MQ_normalize_log2_robscale(data, config)
+  quants_write(results$data, results$config, qc_path, prefix = prefix)
 
   wideFRAME <- LFQService::toWideConfig(results$data,
                                         results$config)
-
-
-  #return(wideFRAME)
-
   lfq_write_table(separate_hierarchy(wideFRAME$data,
                                      results$config),
                   path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
-
-
   if(!DEBUG){
     LFQService::render_MQSummary_rmd(results$data,
                                      results$config$clone(deep=TRUE),
@@ -321,18 +300,12 @@ application_summarize_compound <- function(data,
   }
 
 
-  quants_write(results$data, results$config, qc_path, prefix = prefix)
-
-
-
   if(WRITE_PROTS){
     figs <- plot_hierarchies_line_df(results$data, results$config )
     pdf(file.path(qc_path, paste0(prefix, "_intensities_.pdf")))
     lapply(figs, print)
     dev.off()
   }
-
-
   return(list(data  = results$data, config = results$config))
 }
 #################################################

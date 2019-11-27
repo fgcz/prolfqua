@@ -2,12 +2,14 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{.workflow_MQ_filter_peptides}
 \alias{.workflow_MQ_filter_peptides}
-\title{Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides}
+\title{Filter peptides for NA's first, and than count how many have still 2 peptides and keep only those.
+This filtering was implemented to prevent models from failing to fit. Now deprecated.}
 \usage{
 .workflow_MQ_filter_peptides(resDataStart, config, percent = 50)
 }
 \description{
-Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides
+Filter peptides for NA's first, and than count how many have still 2 peptides and keep only those.
+This filtering was implemented to prevent models from failing to fit. Now deprecated.
 }
 \examples{
 library(tidyverse)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_application.R
 \name{application_summarize_compound}
 \alias{application_summarize_compound}
-\title{preprocess peptide data, compute protein data, store results in qc_path folder}
+\title{Used for metabolomics data analysis.}
 \usage{
 application_summarize_compound(
   data,
@@ -14,5 +14,5 @@ application_summarize_compound(
 )
 }
 \description{
-preprocess peptide data, compute protein data, store results in qc_path folder
+Used for metabolomics data analysis.
 }

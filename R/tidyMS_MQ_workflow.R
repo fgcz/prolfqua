@@ -1,7 +1,7 @@
 # Helper functions -----
 
-#' Filter peptides for NA's within factors and keep only those proteins with 2 QUANTIFIED peptides
-#'
+#' Filter peptides for NA's first, and than count how many have still 2 peptides and keep only those.
+#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
 #' @export
 #' @examples
 #' library(tidyverse)
@@ -10,20 +10,25 @@
 #' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
 #' hierarchyCounts(dd$data, dd$config)
 .workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
+  warning("Deprecated, do not use since it is too strict.")
   config <- config$clone(deep = TRUE)
+
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent
   )
 
   proteinsWith2Peptides <- summarizeHierarchy(resNACondition, config)
-  proteinsWith2Peptides <- proteinsWith2Peptides %>% dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
+  proteinsWith2Peptides <- proteinsWith2Peptides %>%
+    dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
   return(list(data=filteredPep, config=config))
 }
 
 
-#' Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides
+#' Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
+#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
+#' Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
 #' @export
 #' @examples
 #' library(tidyverse)
@@ -33,8 +38,9 @@
 .workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
                                              config,
                                              percent = 50,
-                                             nr_peptide_id = 2){
-
+                                             nr_peptide_id = 2,
+                                             firstNA = FALSE){
+  warning("Deprecated, do not use since it is too strict.")
 
   config <- config$clone(deep = TRUE)
 
@@ -89,7 +95,11 @@
 
 # Workflow function ----
 
-#' runs data preprocessing for peptide level data based protein modelling
+#' runs peptide data preprocessing for peptide level protein modelling
+#' first runs peptide filtering
+#' then it runs data noramlization (log2 transform intensities and apply robust z transformation)
+#' But mainly also summarizes data filtering (reports which proteins were removed etc.)
+#'
 #' @export
 #' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
 #' @examples
@@ -125,23 +135,22 @@ workflow_MQ_protoV1 <- function( resDataStart,
   RESULTS$filteredPep <- filteredPep
 
   pepIntensityNormalized <- .workflow_MQ_normalize_log2_robscale(filteredPep, config)
-
   RESULTS$config_pepIntensityNormalized <- pepIntensityNormalized$config
   RESULTS$pepIntensityNormalized <- pepIntensityNormalized$data
 
   # Summarize number of peptides with more than 2
   x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
-  x3_start <- x3_start %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
-                                                                         peptide_Id_n > 1 ~ "two and more"))
+  x3_start <- x3_start %>%
+    dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
+                                                  peptide_Id_n > 1 ~ "two and more"))
   RESULTS$nrPeptidesPerProtein_start <- x3_start %>% dplyr::group_by(protein_with) %>%
     dplyr::summarize(n=n())
 
-
-
   # Summarize filtered data - number of peptides with more than 2
   x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
-  x3_filt <- x3_filt %>% dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
-                                                                       peptide_Id_n > 1 ~ "two and more"))
+  x3_filt <- x3_filt %>%
+    dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
+                                                  peptide_Id_n > 1 ~ "two and more"))
   RESULTS$nrPeptidesPerProtein_filtered <- x3_filt %>% dplyr::group_by(protein_with) %>%
     dplyr::summarize(n=n())
 
