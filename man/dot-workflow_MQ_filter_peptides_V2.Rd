@@ -2,17 +2,22 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{.workflow_MQ_filter_peptides_V2}
 \alias{.workflow_MQ_filter_peptides_V2}
-\title{Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides}
+\title{Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
+This filtering was implemented to prevent models from failing to fit. Now deprecated.
+Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).}
 \usage{
 .workflow_MQ_filter_peptides_V2(
   resDataStart,
   config,
   percent = 50,
-  nr_peptide_id = 2
+  nr_peptide_id = 2,
+  firstNA = FALSE
 )
 }
 \description{
-Filter peptides for NA's within factors and keep only those proteins with 2 IDENTIFIED peptides
+Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
+This filtering was implemented to prevent models from failing to fit. Now deprecated.
+Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
 }
 \examples{
 library(tidyverse)

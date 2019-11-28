@@ -2,7 +2,10 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{workflow_MQ_protoV1}
 \alias{workflow_MQ_protoV1}
-\title{runs data preprocessing for peptide level data based protein modelling}
+\title{runs peptide data preprocessing for peptide level protein modelling
+first runs peptide filtering
+then it runs data noramlization (log2 transform intensities and apply robust z transformation)
+But mainly also summarizes data filtering (reports which proteins were removed etc.)}
 \usage{
 workflow_MQ_protoV1(
   resDataStart,
@@ -15,7 +18,10 @@ workflow_MQ_protoV1(
 \item{peptideFilterFunction}{can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2}
 }
 \description{
-runs data preprocessing for peptide level data based protein modelling
+runs peptide data preprocessing for peptide level protein modelling
+first runs peptide filtering
+then it runs data noramlization (log2 transform intensities and apply robust z transformation)
+But mainly also summarizes data filtering (reports which proteins were removed etc.)
 }
 \examples{
 resDataStart <- LFQService::testData2954$resDataStart
