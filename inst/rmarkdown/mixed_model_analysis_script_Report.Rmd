@@ -29,9 +29,16 @@ pars <- params$pars
 - modelling implemented by : `r pars$author`
 
 
+# Method [^0]
 
-Protein fold changes were computed based on peptide intensity values reported in the MaxQuant generated peptides.txt file, using linear mixed effects models [@lmer2015].
-The peptide intensities reproted in the peptides.txt file were preprocessed as follows: intensities equal zero were removed, non zero intensities were log2 transformed and modified using robust z-score transformation. If there are no peptide measurements for a protein in one of the conditions, a pseudo fold change is computed by replacing the missing group average by the mean of 10% smallest peptides in that condition.
+
+Protein fold changes were computed based on peptide intensity values reported in the MaxQuant generated `peptides.txt` file, using linear mixed-effects models [@lmer2015].
+We preprocess the peptide intensities reported in the peptides.txt file as follows: we remove intensities equal zero, non zero intensities are log2 transformed and modified using robust z-score transformation. Afterwards, for each protein, we fitted a mixed-effects model to the peptide intensities, and fold changes and p-values are computed based on this model for each contrast [@lmerTest2017]. For a contrast, all the protein p-values are adjusted using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [@BenjaminiHochberg1995].
+
+To estimate fold-changes for proteins for which we could not fit a mixed-effects model because of an excess in missing measurements, we proceed as follows: First, we compute the mean intensity for all peptides for each condition. For the proteins with no measurements, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. 
+Afterwards, we compute contrasts (differences between conditions) for each peptide and finally, the median of the peptide estimates is used to provide a per protein fold change estimate.  
+
+[^0]: This section can be used in the material and methods section alongside the model formula and the contrast specifications given below.
 
 # Data preprocessing and sample QC
 
@@ -56,12 +63,12 @@ ftab
 
 The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized aprotein intensities [^1]. 
 
-[^1]: The peptide intensities are log2 transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
+[^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
 
 
 # Mixed Effects Model
 
-The following mixed effects model was fitted [see @lmer2015]: 
+The following mixed-effects model was fitted [see @lmer2015]: 
 
 __`r format(formula(pars$model))`__
 
@@ -102,4 +109,5 @@ maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
     
 
 
-[^2]: To estimate a fold-changes for those proteins were a mixed effects model could not be fitted we proceeded as follows: for each peptide we compute the mean intensity for all interactions. If this mean can not be estimated (no samples for this interaction) we impute it using the mean of the $10\%$ smallest values in the sample. Afterwards contrasts (differences between interaction means) are computed for each peptide. Finally the median of the peptide estimates is used to provide a per protein estimate.  
+[^2]:  To estimate a fold-changes for proteins were a mixed-effects model can not be fitted, because there is no measurement for on of the conditions, we proceed as follows: First, we compute the mean intensity of all peptides for that condition. For the proteins with no measurements, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. 
+Afterwards, we compute contrasts (differences between conditions) for each peptide and finally, the median of the peptide estimates is used to provide a per protein fold change estimate.  
