@@ -115,6 +115,9 @@ application_run_modelling_V2 <- function(outpath,
 }
 
 #' add Annotation to an MQ output
+#'
+#' for an usage example see run_script lfq_mixed_model_inference
+#'
 #' @export
 #'
 application_set_up_MQ_run <- function(outpath,
@@ -122,7 +125,10 @@ application_set_up_MQ_run <- function(outpath,
                                       inputAnntation,
                                       config,
                                       id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
-                                      qcdir = "qc_results"){
+                                      qcdir = "qc_results",
+                                      use = c("peptides", "modificationSpecificPeptides" )){
+  peptides <- match.args(use)
+
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
   if(!is.null(id_extractor)){
     config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
@@ -141,9 +147,9 @@ application_set_up_MQ_run <- function(outpath,
 
   ## read the data
 
-  resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
 
-  {
+  resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
+  { # create visualization for modified peptide sequence
     height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
     png(file.path(qc_path, "retention_time_plot.png"), height = height, width=1200)
     resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
@@ -152,48 +158,48 @@ application_set_up_MQ_run <- function(outpath,
     dev.off()
   }
 
-  if("peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name){
+  peptides_available <- "peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
+  if(peptides_available & peptides == "peptides"){
+     resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
+  }
+  else if(peptides_available & peptides == "modificationSpecificPeptides"){
     peptidestxt <- tidyMQ_Peptides(inputMQfile)
     resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
-  }else{
-    warning("no peptides.txt found!!!")
+  }else if(!peptides_available){
+    warning("no peptides.txt found!! working with modificationSpecificPeptides")
     config$table$workIntensity <- "mod.peptide.intensity"
-    config$table$hierarchy[["peptide_Id"]] <- c("sequence","modifications","mod.peptide.id")
+    config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
+  }else{
+    warning("peptides_available : " ,peptides_available, "peptides : ", peptides)
   }
+
   resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
-
-
-
-  # add annotation
-  annotation <- readxl::read_xlsx(inputAnntation)
-  noData <- annotation[!annotation$raw.file %in% resPepProtAnnot$raw.file,]
-
-
-  if(nrow(noData)){
-    message("some files in annotation have no measurements")
-    message(paste(noData,collapse = " "))
-  }
-
-  measSamples <- unique(resPepProtAnnot$raw.file)
-  noAnnot <- measSamples[! measSamples%in% annotation$raw.file]
-
-  if(length(noAnnot) > 0 ){
-    message("some measured samples have no annotation!")
-    message(paste(noAnnot,collapse = " "))
-  }
-
-  resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by= "raw.file")
-  ###  Setup analysis ####
-
-
   resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
-
   resPepProtAnnot$isotope = "light"
+
   if(!is.null(id_extractor)){
     resPepProtAnnot <- id_extractor(resPepProtAnnot)
   }
-  resDataStart <- setup_analysis(resPepProtAnnot, config)
 
+  {# add annotation
+    annotation <- readxl::read_xlsx(inputAnntation)
+    noData <- annotation[!annotation$raw.file %in% resPepProtAnnot$raw.file,]
+    if(nrow(noData)){
+      message("some files in annotation have no measurements")
+      message(paste(noData,collapse = " "))
+    }
+    measSamples <- unique(resPepProtAnnot$raw.file)
+    noAnnot <- measSamples[! measSamples%in% annotation$raw.file]
+    if(length(noAnnot) > 0 ){
+      message("some measured samples have no annotation!")
+      message(paste(noAnnot,collapse = " "))
+    }
+    resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by= "raw.file")
+    ###  Setup analysis ####
+  }
+
+
+  resDataStart <- setup_analysis(resPepProtAnnot, config)
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
     completeCases(config)
   return(list(data = resDataStart,config=config, qc_path = qc_path))
@@ -308,6 +314,7 @@ application_summarize_compound <- function(data,
   }
   return(list(data  = results$data, config = results$config))
 }
+
 #################################################
 ### Do missing value imputation
 

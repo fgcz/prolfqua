@@ -1,6 +1,7 @@
 # Helper functions -----
 
-#' Filter peptides for NA's first, and than count how many have still 2 peptides and keep only those.
+#' Filter peptides for NA's first,
+#' and than count how many, have still 2 peptides and keep only those.
 #' This filtering was implemented to prevent models from failing to fit. Now deprecated.
 #' @export
 #' @examples
@@ -25,7 +26,6 @@
   return(list(data=filteredPep, config=config))
 }
 
-
 #' Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
 #' This filtering was implemented to prevent models from failing to fit. Now deprecated.
 #' Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
@@ -41,9 +41,7 @@
                                              nr_peptide_id = 2,
                                              firstNA = FALSE){
   warning("Deprecated, do not use since it is too strict.")
-
   config <- config$clone(deep = TRUE)
-
   # get proteins with more than 1 peptide before NA filtering.
   summaryH <- summarizeHierarchy(resDataStart, config)
   proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
@@ -57,18 +55,15 @@
 
 #' Keep only those proteins with 2 IDENTIFIED peptides
 #' @export
+#'
 .workflow_MQ_filter_peptides_V3 <-  function(resDataStart,
                                              config,
                                              percent = 50,
                                              nr_peptide_id = 2){
-
-
   config <- config$clone(deep = TRUE)
-
   # get proteins with more than 1 peptide before NA filtering.
   summaryH <- summarizeHierarchy(resDataStart, config)
   proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
-
 
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by="protein_Id")
   return(list(data=filteredPep, config=config))

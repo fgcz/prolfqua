@@ -29,7 +29,11 @@ pars <- params$pars
 - modelling implemented by : `r pars$author`
 
 
-# Sample QC
+
+Protein fold changes were computed based on peptide intensity values reported in the MaxQuant generated peptides.txt file, using linear mixed effects models [@lmer2015].
+The peptide intensities reproted in the peptides.txt file were preprocessed as follows: intensities equal zero were removed, non zero intensities were log2 transformed and modified using robust z-score transformation. If there are no peptide measurements for a protein in one of the conditions, a pseudo fold change is computed by replacing the missing group average by the mean of 10% smallest peptides in that condition.
+
+# Data preprocessing and sample QC
 
 The raw files are annotated with the following factors and factor levels:
 
@@ -39,6 +43,7 @@ ftab <- flextable(pars$annotation) %>%
 ftab
 
 ```
+
 
 
 - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"}
