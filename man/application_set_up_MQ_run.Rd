@@ -11,9 +11,10 @@ application_set_up_MQ_run(
   config,
   id_extractor = function(df) {     fgczgseaora::get_UniprotID_from_fasta_header(df,
     idcolumn = "top_protein") },
-  qcdir = "qc_results"
+  qcdir = "qc_results",
+  use = c("peptides", "modificationSpecificPeptides")
 )
 }
 \description{
-add Annotation to an MQ output
+for an usage example see run_script lfq_mixed_model_inference
 }

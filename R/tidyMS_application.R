@@ -127,7 +127,7 @@ application_set_up_MQ_run <- function(outpath,
                                       id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results",
                                       use = c("peptides", "modificationSpecificPeptides" )){
-  peptides <- match.args(use)
+  peptides <- match.arg(use)
 
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
   if(!is.null(id_extractor)){
