@@ -9,7 +9,7 @@
 #' testDataStart2954 <- LFQService::testDataStart2954
 #' path <- "dummy_test"
 #' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
-#' hierarchyCounts(dd$data, dd$config)
+#' hierarchy_counts(dd$data, dd$config)
 .workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
   warning("Deprecated, do not use since it is too strict.")
   config <- config$clone(deep = TRUE)
@@ -34,7 +34,7 @@
 #' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
 #' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
-#' hierarchyCounts(dd$data, dd$config)
+#' hierarchy_counts(dd$data, dd$config)
 .workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
                                              config,
                                              percent = 50,

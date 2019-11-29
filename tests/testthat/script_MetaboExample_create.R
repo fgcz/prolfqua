@@ -57,7 +57,7 @@ precursorData <- setup_analysis(resMetabo, config)
 precursorData <- remove_small_intensities(precursorData, config,threshold = 4)
 
 # filter qvalues and aggregate peptides -----
-hierarchyCounts(precursorData,config)
+hierarchy_counts(precursorData,config)
 # This code should be the same for maxquant ----
 
 resDataStart <- LFQService::make_interaction_column_config(precursorData, config)

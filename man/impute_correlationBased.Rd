@@ -15,9 +15,10 @@ library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 data <- completeCases(data, config)
+dim(data)
 mean(is.na(data$Area))
 dataI <- impute_correlationBased(data, config)
-stopifnot(dim(dataI) == c(20416,11))
+stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
 mean(is.na(dataI$srm_ImputedIntensity)) == 0
 
 }

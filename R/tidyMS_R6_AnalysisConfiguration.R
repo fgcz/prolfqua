@@ -517,8 +517,8 @@ table_factors <- function(data, configuration){
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' hierarchyCounts(sample_analysis, skylineconfig)
-hierarchyCounts <- function(x, configuration){
+#' hierarchy_counts(sample_analysis, skylineconfig)
+hierarchy_counts <- function(x, configuration){
   hierarchy <- names( configuration$table$hierarchy )
   res <- x %>% dplyr::group_by_at(configuration$table$isotopeLabel) %>%
     dplyr::summarise_at( hierarchy, n_distinct )

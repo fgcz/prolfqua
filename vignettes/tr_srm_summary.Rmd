@@ -29,9 +29,9 @@ configuration <- eval(params$configuration)
 
 ## Summarize levels
 
-```{r hierarchyCounts}
+```{r hierarchy_counts}
 
-x <- hierarchyCounts( data , configuration )
+x <- hierarchy_counts( data , configuration )
 knitr::kable(data.frame(NR = x), caption="summary")
 
 ```

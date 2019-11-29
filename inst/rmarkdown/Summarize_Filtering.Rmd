@@ -46,7 +46,7 @@ knitr::include_graphics(figpath)
 
 
 ```{r}
-knitr::kable(hierarchyCounts(params$resDataStart, params$config_resDataStart),
+knitr::kable(hierarchy_counts(params$resDataStart, params$config_resDataStart),
              caption = "Nr Proteins and peptides before missigness filtering.")
 ```
 
@@ -84,7 +84,7 @@ ggplot(results$nrPeptidesPerProtein_start, aes(x =protein_with , y = n)) + geom_
 # Filtered data
 
 ```{r}
-knitr::kable(hierarchyCounts(params$filteredPep, params$config_filteredPep),
+knitr::kable(hierarchy_counts(params$filteredPep, params$config_filteredPep),
              caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
 ```
 

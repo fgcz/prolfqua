@@ -96,16 +96,16 @@ knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config))
 ## Filter by NA's
 
 ```{r}
-knitr::kable(LFQService::hierarchyCounts(longQSummaries, config))
+knitr::kable(LFQService::hierarchy_counts(longQSummaries, config))
 ```
 
 ```{r}
 qvalFilt <- longQSummaries %>% 
   filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
-LFQService::hierarchyCounts(qvalFilt, config)
+LFQService::hierarchy_counts(qvalFilt, config)
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
-knitr::kable(LFQService::hierarchyCounts(longQNASummaries, config))
+knitr::kable(LFQService::hierarchy_counts(longQNASummaries, config))
 ```
 
 
@@ -122,7 +122,7 @@ xx <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$h
 longQNASummaries <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
 
 qvalFiltV <- dplyr::filter(longQNASummaries, nr_peptide_Id_by_protein_Id > 1)
-knitr::kable(hierarchyCounts(qvalFiltV,config))
+knitr::kable(hierarchy_counts(qvalFiltV,config))
 
 ```
 
@@ -149,9 +149,9 @@ plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) +
 
 
 ```{r summarizeDataAfterCorrelationRemoval}
-knitr::kable(hierarchyCounts(xx, config))
+knitr::kable(hierarchy_counts(xx, config))
 qvalFiltCorr <- dplyr::filter(xx, srm_decorelated == FALSE)
-knitr::kable(hierarchyCounts(qvalFiltCorr, config))
+knitr::kable(hierarchy_counts(qvalFiltCorr, config))
 ```
 
 ```{r clusterOfCorrelatedData}

@@ -23,5 +23,5 @@ Will not work with mixed effect models which model peptide level data (and requi
 library(tidyverse)
 testDataStart2954 <- LFQService::testDataStart2954
 dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
-hierarchyCounts(dd$data, dd$config)
+hierarchy_counts(dd$data, dd$config)
 }
