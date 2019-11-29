@@ -5,7 +5,9 @@ library(tidyverse)
 
 
 outpath <- "results_modelling_testing"
+
 inputMQfile <-  "../samples/p2558_05748_modspec.zip"
+inputMQfile <-  "../samples/p2558_o5748_peptides.zip"
 
 
 inputAnntation <- "../samples/p2558_05748_annotation.xlsx"
@@ -48,7 +50,8 @@ if(TRUE){
                                    inputMQfile = inputMQfile,
                                    inputAnntation = inputAnntation,
                                    config=config,
-                                   id_extractor = NULL)
+                                   id_extractor = NULL,
+                                   use="peptides")
   config$table$hierarchy
   summarised <- application_summarize_data_pep_to_prot(res$data,
                                                        res$config,
