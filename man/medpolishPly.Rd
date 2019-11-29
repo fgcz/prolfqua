@@ -14,5 +14,9 @@ compute tukeys median polish from peptide or precursor intensities
 }
 \examples{
 medpolishPly(name=T)
+gg <- matrix(runif(20),4,5)
+rownames(gg) <- make.names(1:4)
+colnames(gg) <- make.names(1:5)
+medpolishPly(gg)
 }
 \concept{matrix manipulation}

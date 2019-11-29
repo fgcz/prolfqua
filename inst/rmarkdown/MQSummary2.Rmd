@@ -125,9 +125,9 @@ Ideally, we identify each `r if(params$pep){"peptide"}else{"protein"}` in all of
 
 ```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="(ref:missingFigIntensityHistorgram)"}
 data_cc <- data
-p <- missignessHistogram(data_cc, local_config)
-xx3 <- missingPerCondition(data_cc, local_config)
-xx4 <- missingPerConditionCumsum(data_cc, local_config)
+p <- missigness_histogram(data_cc, local_config)
+xx3 <- missingness_per_condition(data_cc, local_config)
+xx4 <- missingness_per_condition_cumsum(data_cc, local_config)
 gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 ```

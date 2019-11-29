@@ -53,19 +53,19 @@ knitr::kable(tmp, caption="Protein Summaries")
 #interaction_missing_stats(data, configuration)
 #interaction_missing_stats(data, configuration)
 
-missignessHistogram(data, configuration)
+missigness_histogram(data, configuration)
 
 ```
 
 
 ```{r missingFigBarplot, fig.cap = "nr of missing"}
-xx <- missingPerCondition(data, configuration)
+xx <- missingness_per_condition(data, configuration)
 xx$figure
 ```
 
 
 
 ```{r missingFigBarplotCumsum, fig.cap="cumulative sum of missing"}
-xx <- missingPerConditionCumsum(data, configuration)
+xx <- missingness_per_condition_cumsum(data, configuration)
 xx$figure
 ```

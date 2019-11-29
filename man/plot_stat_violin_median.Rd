@@ -4,8 +4,16 @@
 \alias{plot_stat_violin_median}
 \title{plot_stat_violin_median}
 \usage{
-plot_stat_violin_median(data, config, stat = c("CV", "sd"))
+plot_stat_violin_median(data, config, stat = c("CV", "mean", "sd"))
 }
 \description{
 plot_stat_violin_median
+}
+\examples{
+library(LFQService)
+library(tidyverse)
+data <- sample_analysis
+config <- skylineconfig$clone(deep=TRUE)
+res <- summarize_cv(data, config)
+plot_stat_violin_median(res, config, stat="mean")
 }

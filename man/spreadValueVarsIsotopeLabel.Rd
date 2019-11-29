@@ -4,7 +4,7 @@
 \alias{spreadValueVarsIsotopeLabel}
 \title{spreads isotope label heavy light into two columns}
 \usage{
-spreadValueVarsIsotopeLabel(resData, configuration)
+spreadValueVarsIsotopeLabel(resData, config)
 }
 \description{
 spreads isotope label heavy light into two columns

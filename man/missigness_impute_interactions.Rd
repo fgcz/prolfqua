@@ -7,8 +7,8 @@ impute data using mean of lowest 0.1 (default)}
 \usage{
 missigness_impute_interactions(
   mdataTrans,
-  pepConfig,
-  factors = pepConfig$table$fkeysLevel(),
+  config,
+  factors = config$table$fkeysLevel(),
   probs = 0.1
 )
 }
@@ -17,4 +17,8 @@ function
 }
 \description{
 used in Acetylation project p2916
+}
+\examples{
+fun <- missigness_impute_interactions(xx, skylineconfig)
+fun("long")
 }

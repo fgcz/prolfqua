@@ -1,3 +1,44 @@
+#' Light only version.
+#' Summarize Protein counts
+#'
+#' @export
+#' @importFrom dplyr group_by_at
+#' @examples
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#'   ident_qValue="Detection.Q.Value")
+#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+#' data(skylinePRMSampleData)
+#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+#' summarizeProteins(sample_analysis, skylineconfig)
+#'configuration <- skylineconfig
+#'summarizeHierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
+#'summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
+summarizeProteins <- function( x, configuration ){
+  warning("DEPRECATED use summarize hierarchy instead")
+  rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
+
+  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
+    group_by_at(rev_hierarchy[-1]) %>%
+    dplyr::summarize(nrFragments = n())
+
+  peptideSum <- precursorSum %>% group_by_at(rev_hierarchy[-(1:2)]) %>%
+    dplyr::summarize(nrPrecursors = n(),
+                     minNrFragments = min(nrFragments),
+                     maxNrFragments = max(nrFragments))
+
+
+  proteinSum <- peptideSum %>% group_by_at(rev_hierarchy[-(1:3)])  %>%
+    dplyr::summarize(nrpeptides = n(),
+                     minNrPrecursors = min(nrPrecursors),
+                     maxNrPrecursors = max(nrPrecursors),
+                     minNrFragments= min(minNrFragments),
+                     maxNrFragments = max(maxNrFragments)
+    )
+  proteinPeptide <- proteinSum %>% tidyr::unite(Precursors ,minNrPrecursors , maxNrPrecursors, sep="-", remove=FALSE)
+  proteinPeptide <- proteinPeptide %>% tidyr::unite(Fragments ,minNrFragments , maxNrFragments, sep="-", remove=FALSE)
+  return(proteinPeptide)
+}
+
 #' run the modelling using lmer and lm models - DEPRECATED use version V2
 #'
 #' @export

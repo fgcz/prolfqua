@@ -14,5 +14,7 @@ library(tidyverse)
 library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-plot_heatmap(data, config)
+
+print(plot_heatmap(data, config))
+
 }
