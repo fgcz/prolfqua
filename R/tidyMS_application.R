@@ -148,24 +148,32 @@ application_set_up_MQ_run <- function(outpath,
   ## read the data
 
 
-  resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
-  { # create visualization for modified peptide sequence
-    height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
-    png(file.path(qc_path, "retention_time_plot.png"), height = height, width=1200)
-    resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
-    tmp <- ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) + geom_point(alpha=1/20, size=0.3) + facet_wrap(~raw.file, ncol=2 )
-    print(tmp)
-    dev.off()
+  mod_peptides_available <- "modificationSpecificPeptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
+  resPepProtAnnot <- NULL
+  if(mod_peptides_available){
+    resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
+    { # create visualization for modified peptide sequence
+      height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
+      png(file.path(qc_path, "retention_time_plot.png"), height = height, width=1200)
+      resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
+
+      tmp <- ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) +
+        geom_point(alpha=1/20, size=0.3) +
+        facet_wrap(~raw.file, ncol=2 )
+
+      print(tmp)
+      dev.off()
+    }
   }
 
   peptides_available <- "peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
   if(peptides_available & peptides == "peptides"){
      resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
   }
-  else if(peptides_available & peptides == "modificationSpecificPeptides"){
+  else if((peptides_available & mod_peptides_available) & peptides == "modificationSpecificPeptides"){
     peptidestxt <- tidyMQ_Peptides(inputMQfile)
     resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
-  }else if(!peptides_available){
+  }else if(!peptides_available & mod_peptides_available){
     warning("no peptides.txt found!! working with modificationSpecificPeptides")
     config$table$workIntensity <- "mod.peptide.intensity"
     config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
@@ -232,8 +240,8 @@ application_summarize_data_pep_to_prot <- function(data,
 
 
   if(!DEBUG){
-    LFQService::render_MQSummary_rmd(data,
-                                     config$clone(deep=TRUE),
+    LFQService::render_MQSummary_rmd(results$filteredPep,
+                                     results$config_filteredPep$clone(deep=TRUE),
                                      pep=TRUE,
                                      workdir = ".",
                                      dest_path = qc_path,
