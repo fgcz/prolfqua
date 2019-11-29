@@ -616,10 +616,10 @@ rankPrecursorsByNAs <- function(data, config){
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' data <- removeLarge_Q_Values(data, config)
-#' hierarchyCounts(data, config)
+#' hierarchy_counts(data, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
 #' data1 <-completeCases(data, config)
-#' hierarchyCounts(res, config)
+#' hierarchy_counts(res, config)
 #' summarizeHierarchy(res,config) %>%
 #'  dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
