@@ -26,7 +26,7 @@ nrow(tmp$data)
 config <- spectronautDIAData250_config$clone(deep=TRUE)
 res <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=1)
 nrow(res$data)
-hierarchy_counts(res$data, res$config)
+hierarchyCounts(res$data, res$config)
 }
 \seealso{
 Other workflow functions: 
