@@ -3,7 +3,7 @@ library(tidyverse)
 library(readr)
 library(LFQService)
 
-resPepProtAnnot <- read_csv(file = file.path( find.package("LFQService") ,  "/samples/testdata/annotatedData.csv"))
+resPepProtAnnot <- read_csv(file = file.path( find.package("LFQService") ,  "inst/samples/testdata/annotatedData.csv"))
 
 createMQSTYConfiguration <- function(ident_qValue = "pep",
                                      intensity = "intensity",

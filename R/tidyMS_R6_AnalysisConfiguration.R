@@ -661,8 +661,13 @@ interaction_missing_stats <- function(x,
 #' @export
 #' @return function
 #' @examples
+#'
+#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+#' xx <- completeCases(xx, skylineconfig)
 #' fun <- missigness_impute_interactions(xx, skylineconfig)
 #' fun("long")
+#'
 missigness_impute_interactions <- function(mdataTrans,
                                            config,
                                            factors = config$table$fkeysLevel(),
