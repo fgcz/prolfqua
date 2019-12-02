@@ -642,7 +642,7 @@ interaction_missing_stats <- function(x,
 {
 
   x <- completeCases(x, config)
-  table <- configuration$table
+  table <- config$table
   missingPrec <- x %>% group_by_at(c(factors,
                                      hierarchy,
                                      table$isotopeLabel
