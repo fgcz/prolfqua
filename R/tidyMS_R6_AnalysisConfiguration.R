@@ -642,7 +642,7 @@ interaction_missing_stats <- function(x,
 {
 
   x <- completeCases(x, config)
-  table <- configuration$table
+  table <- config$table
   missingPrec <- x %>% group_by_at(c(factors,
                                      hierarchy,
                                      table$isotopeLabel
@@ -1006,6 +1006,19 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 
 # Computing protein Intensity summaries ---
 
+.reestablish_condition <- function(data,
+                                 medpolishRes,
+                                 configuration
+){
+  table <- configuration$table
+  xx <- data %>%  dplyr::select(c(table$sampleName,
+                                  table$factorKeys(),
+                                  table$fileName,
+                                  table$isotopeLabel)) %>% dplyr::distinct()
+  res <- dplyr::inner_join(xx,medpolishRes, by=table$sampleName)
+  res
+}
+
 
 #' compute tukeys median polish from peptide or precursor intensities
 #' @family matrix manipulation
@@ -1069,7 +1082,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
   xnested <- xnested %>%
     dplyr::mutate(!!makeName := map(spreadMatrix, func))
   xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map2(data,!!sym(makeName),reestablishCondition, config ))
+    dplyr::mutate(!!makeName := map2(data,!!sym(makeName),.reestablish_condition, config ))
 
 
   res_fun <- function(value = c("nested","unnest","wide","plot"), DEBUG = FALSE){
