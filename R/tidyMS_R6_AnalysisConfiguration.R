@@ -5,12 +5,19 @@ library(R6)
 #' @export
 AnalysisParameters <- R6::R6Class("AnalysisParameters",
                                   public = list(
+                                    #' @field qVal_individual_threshold qValue threshold for sample
                                     qVal_individual_threshold  = 0.05,
+                                    #' @field qVal_experiment_threshold qValue threshold for dataset
                                     qVal_experiment_threshold = 0.01,
+                                    #' @field qVal_minNumber_below_experiment_threshold how many samples need to meet qVal_experiment_threshold
                                     qVal_minNumber_below_experiment_threshold = 3,
+                                    #' @field is_intensity_transformed is the intensity transformed (typically log2)
                                     is_intensity_transformed = FALSE, # important for some plotting functions
+                                    #' @field min_nr_of_notNA minimum number of not NA's in all samples default 1
                                     min_nr_of_notNA = 1, # how many values per transition total
+                                    #' @field min_nr_of_notNA_condition minimum number of not NA's in interaction
                                     min_nr_of_notNA_condition = 0, # how many not missing in condition
+                                    #' @field min_peptides_protein minimum number of peptides per protein
                                     min_peptides_protein = 2
                                   )
 )
@@ -18,7 +25,7 @@ AnalysisParameters <- R6::R6Class("AnalysisParameters",
 # AnalysisTableAnnotation ----
 #' Create Annotation
 #' @export
-AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
+AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                    public = list(
 
                                      fileName = NULL,
@@ -41,9 +48,10 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                      opt_mz = NULL,
 
 
-
+                                     #' create a new  AnalysisTableAnnotation
                                      initialize = function(){
                                      },
+                                     #' get number of factor Levels
                                      getFactorLevel = function(){
                                        if(length(self$factorLevel) == 0){
                                          return(length(self$factors))
@@ -51,19 +59,22 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
                                          return(self$factorLevel)
                                        }
                                      },
+                                     #' set name of working intensity
                                      setWorkIntensity = function(colName){
                                        self$workIntensity <- c(self$workIntensity, colName)
                                      },
+                                     #' get name of working intensity column
                                      getWorkIntensity = function(){
                                        return(tail(self$workIntensity, n=1))
                                      },
+                                     #' remove working intensity column
                                      popWorkIntensity=function(){
                                        res <- self$workIntensity[length(self$workIntensity)]
                                        self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
                                        return(res)
                                      },
+                                     #' Id Columns which must be in the input data frame
                                      idRequired = function(){
-                                       "Id Columns which must be in the input data frame"
                                        idVars <- c(
                                          self$fileName,
                                          unlist(self$factors),
@@ -119,7 +130,7 @@ AnalysisTableAnnotation <- R6Class("AnalysisTableAnnotation",
 # AnalysisConfiguration ----
 #' Analysis Configuration
 #' @export
-AnalysisConfiguration <- R6Class("AnalysisConfiguration",
+AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                  public = list(
                                    project_Id="",
                                    order_Id="",
@@ -688,13 +699,13 @@ missigness_impute_interactions <- function(mdataTrans,
   xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
 
   res_fun <- function(value = c("long",
-                            "nrReplicates",
-                            "nrMeasured",
-                            "meanArea",
-                            "imputed",
-                            "allWide",
-                            "all" ),
-                  add.prefix = TRUE, DEBUG = FALSE){
+                                "nrReplicates",
+                                "nrMeasured",
+                                "meanArea",
+                                "imputed",
+                                "allWide",
+                                "all" ),
+                      add.prefix = TRUE, DEBUG = FALSE){
     value <- match.arg(value)
     if(DEBUG){
       return(list(value= value, long = xx , config = config ))
@@ -924,8 +935,8 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' names(res)
 #' print(res$figure)
 missingness_per_condition_cumsum <- function(x,
-                                      config,
-                                      factors = config$table$fkeysLevel()){
+                                             config,
+                                             factors = config$table$fkeysLevel()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config,factors)
 
@@ -1012,8 +1023,8 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 # Computing protein Intensity summaries ---
 
 .reestablish_condition <- function(data,
-                                 medpolishRes,
-                                 configuration
+                                   medpolishRes,
+                                   configuration
 ){
   table <- configuration$table
   xx <- data %>%  dplyr::select(c(table$sampleName,
@@ -1621,10 +1632,10 @@ plot_NA_heatmap <- function(data,
 
     # not showing row dendrogram trick
     resclust <- pheatmap::pheatmap(res,
-                              scale = "none",
-                              silent = TRUE,
-                              clustering_distance_cols = distance,
-                              clustering_distance_rows = distance)
+                                   scale = "none",
+                                   silent = TRUE,
+                                   clustering_distance_cols = distance,
+                                   clustering_distance_rows = distance)
 
     res_plot <- pheatmap::pheatmap(res[resclust$tree_row$order,],
                                    cluster_rows  = FALSE,

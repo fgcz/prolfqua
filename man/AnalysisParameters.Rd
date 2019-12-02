@@ -8,6 +8,25 @@ Analysis parameters
 
 Analysis parameters
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{qVal_individual_threshold}}{qValue threshold for sample}
+
+\item{\code{qVal_experiment_threshold}}{qValue threshold for dataset}
+
+\item{\code{qVal_minNumber_below_experiment_threshold}}{how many samples need to meet qVal_experiment_threshold}
+
+\item{\code{is_intensity_transformed}}{is the intensity transformed (typically log2)}
+
+\item{\code{min_nr_of_notNA}}{minimum number of not NA's in all samples default 1}
+
+\item{\code{min_nr_of_notNA_condition}}{minimum number of not NA's in interaction}
+
+\item{\code{min_peptides_protein}}{minimum number of peptides per protein}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
