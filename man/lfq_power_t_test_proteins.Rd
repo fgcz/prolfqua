@@ -9,18 +9,20 @@ lfq_power_t_test_proteins(
   config,
   delta = c(1.5, 2, 4),
   power = 0.8,
-  sig.level = 0.05
+  sig.level = 0.05,
+  min.n = 1.5
 )
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations
 }
 \examples{
-
+library(LFQService)
+library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 
 data2 <- transform_work_intensity(data, config, transformation = log2)
-#lfq_power_t_test_proteins(data2, config)
-#data <- data2
+bb <- lfq_power_t_test_proteins(data2, config)
+head(bb)
 }

@@ -21,4 +21,5 @@ config <- skylineconfig$clone(deep=TRUE)
 res <- summarize_cv(data, config)
 plot_stat_density_median(res, config,"CV")
 plot_stat_density_median(res, config,"mean")
+plot_stat_density_median(res, config,"sd")
 }
