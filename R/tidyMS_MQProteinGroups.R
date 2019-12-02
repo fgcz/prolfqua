@@ -138,7 +138,7 @@ tidyMQ_All <- function(txt_directory){
 #' # res <- tidyMQ_PeptideProtein(zip_archive)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
-  if(grepl("\\.zip$",txt_directory)){
+  if(grepl("\\.zip$",tolower(txt_directory))){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
@@ -187,7 +187,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' }
 tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
-    if(grepl("\\.zip$",MQPeptides)){
+    if(grepl("\\.zip$",tolower(MQPeptides))){
       message(MQPeptides)
       MQPeptides <- read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
@@ -283,7 +283,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' head(mq_peptides)
 tidyMQ_Peptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
-    if(grepl("\\.zip$",MQPeptides)){
+    if(grepl("\\.zip$",tolower(MQPeptides))){
       MQPeptides <- read.csv(unz(MQPeptides,"peptides.txt"),
                              header=TRUE, sep="\t", stringsAsFactors = FALSE)
     }else{
