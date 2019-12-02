@@ -26,123 +26,123 @@ AnalysisParameters <- R6::R6Class("AnalysisParameters",
 #' Create Annotation
 #' @export
 AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
-                                   public = list(
+                                       public = list(
 
-                                     fileName = NULL,
-                                     factors = list(), # ordering is important - first is considered the main
-                                     factorLevel=1,
+                                         fileName = NULL,
+                                         factors = list(), # ordering is important - first is considered the main
+                                         factorLevel=1,
 
-                                     sampleName = "sampleName",
-                                     # measurement levels
-                                     hierarchy = list(),
-                                     hierarchyLevel = 1,
-                                     retentionTime = NULL,
-                                     isotopeLabel = character(),
-                                     # do you want to model charge sequence etc?
+                                         sampleName = "sampleName",
+                                         # measurement levels
+                                         hierarchy = list(),
+                                         hierarchyLevel = 1,
+                                         retentionTime = NULL,
+                                         isotopeLabel = character(),
+                                         # do you want to model charge sequence etc?
 
-                                     ident_qValue = character(), # rename to score (smaller better)
-                                     ident_Score = character(), # larger better
-                                     workIntensity = NULL, # could be list with names and functions
+                                         ident_qValue = character(), # rename to score (smaller better)
+                                         ident_Score = character(), # larger better
+                                         workIntensity = NULL, # could be list with names and functions
 
-                                     opt_rt  = NULL,
-                                     opt_mz = NULL,
+                                         opt_rt  = NULL,
+                                         opt_mz = NULL,
 
 
-                                     #' create a new  AnalysisTableAnnotation
-                                     initialize = function(){
-                                     },
-                                     #' get number of factor Levels
-                                     getFactorLevel = function(){
-                                       if(length(self$factorLevel) == 0){
-                                         return(length(self$factors))
-                                       }else{
-                                         return(self$factorLevel)
-                                       }
-                                     },
-                                     #' set name of working intensity
-                                     setWorkIntensity = function(colName){
-                                       self$workIntensity <- c(self$workIntensity, colName)
-                                     },
-                                     #' get name of working intensity column
-                                     getWorkIntensity = function(){
-                                       return(tail(self$workIntensity, n=1))
-                                     },
-                                     #' remove working intensity column
-                                     popWorkIntensity=function(){
-                                       res <- self$workIntensity[length(self$workIntensity)]
-                                       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
-                                       return(res)
-                                     },
-                                     #' Id Columns which must be in the input data frame
-                                     idRequired = function(){
-                                       idVars <- c(
-                                         self$fileName,
-                                         unlist(self$factors),
-                                         unlist(self$hierarchy),
-                                         self$isotopeLabel
+                                         #' create a new  AnalysisTableAnnotation
+                                         initialize = function(){
+                                         },
+                                         #' get number of factor Levels
+                                         getFactorLevel = function(){
+                                           if(length(self$factorLevel) == 0){
+                                             return(length(self$factors))
+                                           }else{
+                                             return(self$factorLevel)
+                                           }
+                                         },
+                                         #' set name of working intensity
+                                         setWorkIntensity = function(colName){
+                                           self$workIntensity <- c(self$workIntensity, colName)
+                                         },
+                                         #' get name of working intensity column
+                                         getWorkIntensity = function(){
+                                           return(tail(self$workIntensity, n=1))
+                                         },
+                                         #' remove working intensity column
+                                         popWorkIntensity=function(){
+                                           res <- self$workIntensity[length(self$workIntensity)]
+                                           self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
+                                           return(res)
+                                         },
+                                         #' Id Columns which must be in the input data frame
+                                         idRequired = function(){
+                                           idVars <- c(
+                                             self$fileName,
+                                             unlist(self$factors),
+                                             unlist(self$hierarchy),
+                                             self$isotopeLabel
+                                           )
+                                           return(idVars)
+                                         },
+                                         hierarchyKeys = function(rev = FALSE){
+                                           if(rev){
+                                             return(rev(names(self$hierarchy)))
+                                           }else{
+                                             return(names(self$hierarchy))
+                                           }
+                                         },
+                                         hkeysLevel = function(names = TRUE){
+                                           res <- head( self$hierarchy,n=self$hierarchyLevel)
+                                           res <- if(names){
+                                             names(res)
+                                           }else{
+                                             res
+                                           }
+                                           return(res)
+                                         },
+                                         factorKeys = function(){
+                                           return(names(self$factors))
+                                         },
+                                         fkeysLevel = function(){
+                                           res <- head(self$factors, n= self$factorLevel)
+                                           return(names(res))
+                                         },
+                                         idVars = function(){
+                                           "Id Columns which must be in the output data frame"
+                                           idVars <- c(
+                                             self$fileName,
+                                             names(self$factors),
+                                             names(self$hierarchy),
+                                             self$isotopeLabel,
+                                             self$sampleName)
+                                           return(idVars)
+                                         },
+                                         valueVars = function(){
+                                           "Columns containing values"
+                                           valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+                                           return(valueVars)
+                                         },
+                                         annotationVars = function(){
+                                           annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
+                                           return(annotationVars)
+                                         }
                                        )
-                                       return(idVars)
-                                     },
-                                     hierarchyKeys = function(rev = FALSE){
-                                       if(rev){
-                                         return(rev(names(self$hierarchy)))
-                                       }else{
-                                         return(names(self$hierarchy))
-                                       }
-                                     },
-                                     hkeysLevel = function(names = TRUE){
-                                       res <- head( self$hierarchy,n=self$hierarchyLevel)
-                                       res <- if(names){
-                                         names(res)
-                                       }else{
-                                         res
-                                       }
-                                       return(res)
-                                     },
-                                     factorKeys = function(){
-                                       return(names(self$factors))
-                                     },
-                                     fkeysLevel = function(){
-                                       res <- head(self$factors, n= self$factorLevel)
-                                       return(names(res))
-                                     },
-                                     idVars = function(){
-                                       "Id Columns which must be in the output data frame"
-                                       idVars <- c(
-                                         self$fileName,
-                                         names(self$factors),
-                                         names(self$hierarchy),
-                                         self$isotopeLabel,
-                                         self$sampleName)
-                                       return(idVars)
-                                     },
-                                     valueVars = function(){
-                                       "Columns containing values"
-                                       valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
-                                       return(valueVars)
-                                     },
-                                     annotationVars = function(){
-                                       annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
-                                       return(annotationVars)
-                                     }
-                                   )
 )
 # AnalysisConfiguration ----
 #' Analysis Configuration
 #' @export
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
-                                 public = list(
-                                   project_Id="",
-                                   order_Id="",
-                                   workunit_Id="",
-                                   sep = "~",
-                                   table = NULL,
-                                   parameter = NULL,
-                                   initialize = function(analysisTableAnnotation, analysisParameter){
-                                     self$table <- analysisTableAnnotation
-                                     self$parameter <- analysisParameter
-                                   }
-                                 )
+                                     public = list(
+                                       project_Id="",
+                                       order_Id="",
+                                       workunit_Id="",
+                                       sep = "~",
+                                       table = NULL,
+                                       parameter = NULL,
+                                       initialize = function(analysisTableAnnotation, analysisParameter){
+                                         self$table <- analysisTableAnnotation
+                                         self$parameter <- analysisParameter
+                                       }
+                                     )
 )
 
 #' Make reduced hierarchy configuration
@@ -1255,6 +1255,13 @@ summarize_cv <- function(data, config, all = TRUE){
 #' head(stats_res)
 #' summarize_cv_quantiles(stats_res, config)
 #' summarize_cv_quantiles(stats_res, config, stats="CV")
+#'
+#'
+#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' stats_res <- summarize_cv(data2, config)
+#' xx <- summarize_cv_quantiles(stats_res, config, probs=seq(0,1,by=0.1))
+#' ggplot(xx$long, aes(x = probs, y = quantiles, color=Time)) + geom_line() + geom_point()
+#'
 summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
   stats <- match.arg(stats)
   toQuantiles <- function(x, probs_i = probs) {
@@ -1270,11 +1277,66 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
   sd_quantile_res2 <- xx2 %>%
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  %>%
     dplyr::select(!!!syms(c(config$table$fkeysLevel(),q_column))) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = c(q_column))
 
   xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysLevel())
   wide <- xx %>%  spread("interaction", quantiles)
   return(list(long=sd_quantile_res2, wide= wide))
+}
+
+
+.lfq_power_t_test_quantiles <- function(quantile_sd,
+                                          delta = 1,
+                                          min.n = 1.5,
+                                          power=0.8,
+                                          sig.level=0.05
+                                          ){
+  minsd  <- power.t.test(delta = delta,
+                         n = min.n,
+                         sd= NULL,
+                         power=power,
+                         sig.level = sig.level)$sd
+  quantile_sd <- quantile_sd %>% mutate(sdtrimmed = case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
+
+  #, delta = delta, power=power, sig.level=sig.level
+  getSampleSize <- function(sd){
+    power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n
+  }
+  #  return(getSampleSize)
+
+  sampleSizes <- quantile_sd %>%
+    mutate( N_exact = purrr::map_dbl(sdtrimmed, getSampleSize), N = ceiling(N_exact))
+  return(sampleSizes)
+}
+#' estimate sample sizes
+#' @export
+#' @examples
+#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- sample_analysis
+#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' stats_res <- summarize_cv(data2, config)
+#' xx <- summarize_cv_quantiles(stats_res, config, probs=0.5)
+#' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
+#' bbb <- (bind_rows(bbb))
+#' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
+#' View(summary)
+lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
+                              delta = c(0.59,1,2),
+                              min.n = 1.5,
+                              power=0.8,
+                              sig.level=0.05){
+
+  res <- vector(mode="list", length=length(delta))
+  for(i in 1:length(delta)){
+    cat("i", i , "delta_i", delta[i], "\n")
+    res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
+                                            delta = delta[i],
+                                            min.n = min.n,
+                                            power=power,
+                                            sig.level=sig.level)
+    res[[i]]$delta = delta[i]
+  }
+  return(res)
 }
 
 
@@ -1290,6 +1352,7 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res
 #' stats_res <- summarize_cv(data2, config, all=FALSE)
+#' stats_res
 #' res <- lfq_power_t_test_quantiles(data2, config, delta=2)
 #' res
 #' res <- lfq_power_t_test_quantiles(data2, config, delta=c(0.5,1,2))
@@ -1308,6 +1371,7 @@ lfq_power_t_test_quantiles <- function(data,
 
   stats_res <- summarize_cv(data, config, all=FALSE)
   sd <- na.omit(stats_res$sd)
+
   if(length(sd) > 0){
     quantilesSD <- quantile(sd,probs)
 
@@ -1333,34 +1397,40 @@ lfq_power_t_test_quantiles <- function(data,
 #' Compute theoretical sample sizes from factor level standard deviations
 #' @export
 #' @examples
-#'
+#' library(LFQService)
+#' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
-#' #lfq_power_t_test_proteins(data2, config)
-#' #data <- data2
+#' bb <- lfq_power_t_test_proteins(data2, config)
+#' head(bb)
 lfq_power_t_test_proteins <- function(data,
                                       config,
                                       delta = c(1.5,2,4),
                                       power = 0.8,
-                                      sig.level = 0.05){
+                                      sig.level = 0.05,
+                                      min.n = 1.5){
+
+
   delta <- log2(delta)
   stats_res <- summarize_cv(data, config, all=FALSE)
   stats_res <- na.omit(stats_res)
-  head(stats_res)
   sd_delta <- map_df(delta, function(x){mutate(stats_res, delta = x)} )
 
   getSampleSize <- function(sd, delta){
-    cat("delta",delta," sd ",sd,"\n")
+    sd_threshold <- power.t.test(delta = delta,
+                 n = min.n,
+                 sd = NULL,
+                 power = power,
+                 sig.level = sig.level)$sd
+    #cat("delta",delta," sd ", sd, " sd_threshold ", max(sd_threshold, sd) , " sig.level ", sig.level, "\n" )
 
-    power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n
+    power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
-
-
   sampleSizes <- sd_delta %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-  sampleSizes <- sd %>% mutate( N = ceiling(N_exact))
-  return(sampleSize)
+  sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
+  return(sampleSizes)
 }
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
@@ -1390,6 +1460,7 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat =
 #' res <- summarize_cv(data, config)
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
+#' plot_stat_density_median(res, config,"sd")
 plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
