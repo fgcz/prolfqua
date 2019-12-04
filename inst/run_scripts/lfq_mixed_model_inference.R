@@ -32,7 +32,7 @@ config$workunit_Id = "20191120_MQ_repack.zip"
 # specify model definition
 modelName  <- "Model"
 memodel <- "~ drug_ * SCI_  + (1|peptide_Id)"
-model <- "~ drug_ * SCI_"
+lmmodel <- "~ drug_ * SCI_"
 
 DEBUG <- TRUE
 RUN_ALL <- TRUE
@@ -88,7 +88,7 @@ if(TRUE){
 
 
 prot <- summarised$prot_results("unnest")
-model <- paste0(prot$config$table$getWorkIntensity() , model)
+model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( model, model_name = "Model")
 if(TRUE){
@@ -100,12 +100,26 @@ if(TRUE){
                                         modelling_dir = "modelling_results_peptide")
 }
 
-names(resXX)
-resXX$result_table
-mean(resXX$result_table$isSingular,na.rm=TRUE)
 
 
+#'
 
+prot <- summarised$prot_results("unnest")
+model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  , lmmodel)
+summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <-2
+modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
+
+if(TRUE){
+  resXX <- application_run_modelling_V2(outpath = outpath,
+                                        data = summarised$results$pepIntensityNormalized,
+                                        pepConfig = summarised$results$config_pepIntensityNormalized,
+                                        modelFunction = modelFunction,
+                                        contrasts = Contrasts,
+                                        modelling_dir = "modelling_results_peptide")
+}
+
+
+foo
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
