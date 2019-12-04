@@ -30,9 +30,10 @@ config$workunit_Id = "20191120_MQ_repack.zip"
 
 # specify model definition
 modelName  <- "Model"
-model <- "~ drug_ * SCI_  + (1|peptide_Id)"
-is.mixed <- TRUE
-DEBUG <- FALSE
+memodel <- "~ drug_ * SCI_  + (1|peptide_Id)"
+model <- "~ drug_ * SCI_"
+
+DEBUG <- TRUE
 RUN_ALL <- TRUE
 
 Contrasts <- c("8wk - 1wk" = "SCI_8wk - SCI_1wk",
@@ -57,20 +58,19 @@ if(TRUE){
                                                        res$config,
                                                        res$qc_path,
                                                        DEBUG = DEBUG,
-                                                       WRITE_PROTS=TRUE)
+                                                       WRITE_PROTS=FALSE)
+
 
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
 }
 
 
-model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() ,model)
-modelFunction <- make_custom_model_lmer( model, model_name = "Model")
+memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
+modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
 reportColumns <- c("p.value",
                    "p.value.adjusted")
 
-
-pepConfig <- summarised$results$config_pepIntensityNormalized
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if(TRUE){
@@ -82,6 +82,27 @@ if(TRUE){
                                         modelling_dir = "modelling_results_peptide")
   #saveRDS(resXX, file="resXX.rda")
 }
+
+
+
+
+prot <- summarised$prot_results("unnest")
+model <- paste0(prot$config$table$getWorkIntensity() , model)
+modelFunction <- make_custom_model_lm( model, model_name = "Model")
+
+#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
+if(TRUE){
+  resXX <- application_run_modelling_V2(outpath = outpath,
+                                        data = summarised$results$pepIntensityNormalized,
+                                        pepConfig = summarised$results$config_pepIntensityNormalized,
+                                        modelFunction = modelFunction,
+                                        contrasts = Contrasts,
+                                        modelling_dir = "modelling_results_peptide")
+  #saveRDS(resXX, file="resXX.rda")
+}
+
+
+
 
 
 relevantParameters <- list(outpath = outpath,
@@ -104,5 +125,6 @@ rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   output_format = "html_document",
                   output_dir = outpath,
                   output_file = "index.html")
+
 
 
