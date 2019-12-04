@@ -48,7 +48,8 @@ resPepProtAnnot %>% dplyr::filter(reverse == FALSE) -> resPepProtAnnot
 resDataStart <- setup_analysis(resPepProtAnnot, config)
 
 
-resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
+resDataStart <- remove_small_intensities(resDataStart, config) %>%
+  complete_cases(config)
 resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 
 # LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")

@@ -38,7 +38,7 @@ head(resDataStart)
 #resDataStart %>% filter(sample_name != "bbh_1688") -> resDataStart
 
 resDataStart <- remove_small_intensities( resDataStart, config ) %>%
-  completeCases(config)
+  complete_cases(config)
 
 
 configuration <- config

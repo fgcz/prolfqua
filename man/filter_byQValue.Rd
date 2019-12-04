@@ -14,7 +14,7 @@ qVal_individual_threshold and qVal_experiment_threshold
 library(tidyverse)
 config <- skylineconfig$clone(deep=TRUE)
 
-summarizeHierarchy(sample_analysis, config)
+summarize_hierarchy(sample_analysis, config)
 res <- filter_byQValue(sample_analysis, config)
-summarizeHierarchy(res, config)
+summarize_hierarchy(res, config)
 }

@@ -188,9 +188,9 @@ summariseQValues <- function(data,
 #' library(tidyverse)
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
-#' summarizeHierarchy(sample_analysis, config)
+#' summarize_hierarchy(sample_analysis, config)
 #' res <- filter_byQValue(sample_analysis, config)
-#' summarizeHierarchy(res, config)
+#' summarize_hierarchy(res, config)
 filter_byQValue <- function(data, config){
   data_NA <- removeLarge_Q_Values(data, config)
   data_NA <- summariseQValues(data_NA, config)
@@ -384,7 +384,7 @@ decorelatedPly <- function(x, corThreshold = 0.7){
 #'
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' data <- completeCases(data, config)
+#' data <- complete_cases(data, config)
 #' mean(is.na(data$Area))
 #' dataI <- markDecorrelated(data, config)
 #' head(dataI)
@@ -425,7 +425,7 @@ simpleImpute <- function(data){
 #' library(tidyverse)
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
-#' data <- completeCases(data, config)
+#' data <- complete_cases(data, config)
 #' dim(data)
 #' mean(is.na(data$Area))
 #' dataI <- impute_correlationBased(data, config)
@@ -433,7 +433,7 @@ simpleImpute <- function(data){
 #' mean(is.na(dataI$srm_ImputedIntensity)) == 0
 #'
 impute_correlationBased <- function(x , config){
-  x <- completeCases(x, config)
+  x <- complete_cases(x, config)
   nestedX <- x %>%  dplyr::group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
   nestedX <- nestedX %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
 
@@ -619,9 +619,9 @@ rankPrecursorsByNAs <- function(data, config){
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchy_counts(data, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
-#' data1 <-completeCases(data, config)
+#' data1 <-complete_cases(data, config)
 #' hierarchy_counts(res, config)
-#' summarizeHierarchy(res,config) %>%
+#' summarize_hierarchy(res,config) %>%
 #'  dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
 filter_factor_levels_by_missing <- function(data,
@@ -631,7 +631,7 @@ filter_factor_levels_by_missing <- function(data,
   summaryColumn = "srm_NrNotNAs"
   column <- table$getWorkIntensity()
 
-  data <- completeCases( data , config)
+  data <- complete_cases( data , config)
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- data %>%
     dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysLevel() ))) %>%

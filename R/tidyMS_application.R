@@ -209,8 +209,10 @@ application_set_up_MQ_run <- function(outpath,
 
   resDataStart <- setup_analysis(resPepProtAnnot, config)
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
-    completeCases(config)
-  return(list(data = resDataStart,config=config, qc_path = qc_path))
+    complete_cases(config)
+  return(list(data = resDataStart,
+              config=config,
+              qc_path = qc_path))
 }
 
 
@@ -250,10 +252,10 @@ application_summarize_data_pep_to_prot <- function(data,
   }
 
   ### PROTEIN QUANTIFICATION ####
-  protintensity <- medpolish_protein_quants( results$pepIntensityNormalized,
+  protintensity_fun <- medpolish_protein_quants( results$pepIntensityNormalized,
                                              results$config_pepIntensityNormalized )
 
-  unnestProt <- protintensity("unnest")
+  unnestProt <- protintensity_fun("unnest")
   quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
 
   # render protein quantification reprot
@@ -269,13 +271,14 @@ application_summarize_data_pep_to_prot <- function(data,
   }
 
   if(WRITE_PROTS){
-    figs <- protintensity("plot")
+    figs <- protintensity_fun("plot")
     pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
     lapply(figs$plot, print)
     dev.off()
   }
 
-  return(list(results  = results, prot_results = protintensity))
+  return(list(results  = results,
+              prot_results = protintensity_fun))
 }
 
 

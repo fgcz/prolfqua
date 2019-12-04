@@ -26,7 +26,7 @@ But mainly also summarizes data filtering (reports which proteins were removed e
 \examples{
 resDataStart <- LFQService::testData2954$resDataStart
 config <-  LFQService::testDataStart2954$config
-summarizeHierarchy(resDataStart, config)
+summarize_hierarchy(resDataStart, config)
 path <- "dummy_test"
 resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
  config,

@@ -14,7 +14,7 @@ library(LFQService)
 library(tidyverse)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-data <- completeCases(data, config)
+data <- complete_cases(data, config)
 dim(data)
 mean(is.na(data$Area))
 dataI <- impute_correlationBased(data, config)

@@ -70,7 +70,7 @@ if(MQSUMMARY){
 }
 
 
-x3 <- summarizeHierarchy(resDataStart, config)
+x3 <- summarize_hierarchy(resDataStart, config)
 x3 %>% inner_join(resDataStart, by="Compound") -> resDataStart
 
 ############################
@@ -78,7 +78,7 @@ x3 %>% inner_join(resDataStart, by="Compound") -> resDataStart
 config$table$getWorkIntensity()
 
 results <- list()
-results$resDataStart <- completeCases(resDataStart, config)
+results$resDataStart <- complete_cases(resDataStart, config)
 results$config_resDataStart <- config$clone(deep=TRUE)
 
 filteredPep <- filter_factor_levels_by_missing(resDataStart,

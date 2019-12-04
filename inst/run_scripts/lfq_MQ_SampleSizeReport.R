@@ -91,7 +91,8 @@ config$workunit_Id <- workunit
 
 
 resDataStart <- setup_analysis(resPepProtAnnot, config)
-resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
+resDataStart <- remove_small_intensities(resDataStart, config) %>%
+  complete_cases(config)
 
 
 filename <- basename(tools::file_path_sans_ext(mqzip))

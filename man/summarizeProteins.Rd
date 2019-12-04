@@ -19,6 +19,6 @@ data(skylinePRMSampleData)
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 summarizeProteins(sample_analysis, skylineconfig)
 configuration <- skylineconfig
-summarizeHierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
+summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
 }

@@ -19,7 +19,7 @@ marks decorrelated elements
 
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
-data <- completeCases(data, config)
+data <- complete_cases(data, config)
 mean(is.na(data$Area))
 dataI <- markDecorrelated(data, config)
 head(dataI)

@@ -4,9 +4,7 @@
 \alias{AnalysisParameters}
 \title{Analysis parameters}
 \description{
-Analysis parameters
-
-Analysis parameters
+Hello world
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

@@ -4,9 +4,20 @@
 \alias{AnalysisTableAnnotation}
 \title{Create Annotation}
 \description{
-Create Annotation
-
-Create Annotation
+Hello world
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{fileName}}{some funny name
+create a new  AnalysisTableAnnotation
+get number of factor Levels
+set name of working intensity
+get name of working intensity column
+remove working intensity column
+Id Columns which must be in the input data frame}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{

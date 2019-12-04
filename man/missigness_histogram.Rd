@@ -17,10 +17,10 @@ Histogram summarizing missigness
 \examples{
 library(tidyverse)
 library(LFQService)
-xx <- completeCases(sample_analysis,skylineconfig)
+xx <- complete_cases(sample_analysis,skylineconfig)
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-xx <- completeCases(xx, skylineconfig)
+xx <- complete_cases(xx, skylineconfig)
 missigness_histogram(xx, skylineconfig)
 
 missingPrec <- interaction_missing_stats(xx, skylineconfig)

@@ -12,8 +12,8 @@ plot heatmap with annotations
 \examples{
 library(tidyverse)
 library(LFQService)
-data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+data <- LFQService::sample_analysis
+config <- LFQService::skylineconfig$clone(deep=TRUE)
 
 print(plot_heatmap(data, config))
 

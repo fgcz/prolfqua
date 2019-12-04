@@ -19,7 +19,7 @@
                                                     percent = percent
   )
 
-  proteinsWith2Peptides <- summarizeHierarchy(resNACondition, config)
+  proteinsWith2Peptides <- summarize_hierarchy(resNACondition, config)
   proteinsWith2Peptides <- proteinsWith2Peptides %>%
     dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
@@ -43,7 +43,7 @@
   warning("Deprecated, do not use since it is too strict.")
   config <- config$clone(deep = TRUE)
   # get proteins with more than 1 peptide before NA filtering.
-  summaryH <- summarizeHierarchy(resDataStart, config)
+  summaryH <- summarize_hierarchy(resDataStart, config)
   proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
   # fitler for missingness
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
@@ -62,7 +62,7 @@
                                              nr_peptide_id = 2){
   config <- config$clone(deep = TRUE)
   # get proteins with more than 1 peptide before NA filtering.
-  summaryH <- summarizeHierarchy(resDataStart, config)
+  summaryH <- summarize_hierarchy(resDataStart, config)
   proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
 
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by="protein_Id")
@@ -100,7 +100,7 @@
 #' @examples
 #' resDataStart <- LFQService::testData2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
-#' summarizeHierarchy(resDataStart, config)
+#' summarize_hierarchy(resDataStart, config)
 #' path <- "dummy_test"
 #' resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
 #'  config,
@@ -134,7 +134,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
   RESULTS$pepIntensityNormalized <- pepIntensityNormalized$data
 
   # Summarize number of peptides with more than 2
-  x3_start <- summarizeHierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
+  x3_start <- summarize_hierarchy(RESULTS$resDataStart, RESULTS$config_resDataStart)
   x3_start <- x3_start %>%
     dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
                                                   peptide_Id_n > 1 ~ "two and more"))
@@ -142,7 +142,7 @@ workflow_MQ_protoV1 <- function( resDataStart,
     dplyr::summarize(n=n())
 
   # Summarize filtered data - number of peptides with more than 2
-  x3_filt <- summarizeHierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
+  x3_filt <- summarize_hierarchy(RESULTS$filteredPep, RESULTS$config_filteredPep)
   x3_filt <- x3_filt %>%
     dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
                                                   peptide_Id_n > 1 ~ "two and more"))

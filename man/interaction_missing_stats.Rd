@@ -22,10 +22,10 @@ library(LFQService)
 
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-xx <- completeCases(xx, skylineconfig)
+xx <- complete_cases(xx, skylineconfig)
 interaction_missing_stats(xx, skylineconfig)
 tmp <- interaction_missing_stats(xx, skylineconfig, factors= character(), hierarchy = skylineconfig$table$hierarchyKeys()[1])
 tmp \%>\% mutate(perc = nrNAs/nrReplicates )
-summarizeHierarchy(xx , skylineconfig)
+summarize_hierarchy(xx , skylineconfig)
 
 }

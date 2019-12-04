@@ -30,7 +30,8 @@ resPepProtAnnot %>% dplyr::filter(reverse == FALSE) -> resPepProtAnnot
 
 
 resDataStart <- setup_analysis(resPepProtAnnot, config)
-resDataStart <- remove_small_intensities(resDataStart, config) %>% completeCases(config)
+resDataStart <- remove_small_intensities(resDataStart, config) %>%
+  complete_cases(config)
 
 smallData <- resDataStart %>% dplyr::filter(protein_Id %in% sample(resDataStart$protein_Id,20))
 testData2954 <- list(resDataStart = smallData, config = config)

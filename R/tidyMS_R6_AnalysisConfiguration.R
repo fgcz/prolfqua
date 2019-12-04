@@ -2,6 +2,7 @@ library(R6)
 
 # AnalysisParameters ----
 #' Analysis parameters
+#' @description Hello world
 #' @export
 AnalysisParameters <- R6::R6Class("AnalysisParameters",
                                   public = list(
@@ -23,11 +24,15 @@ AnalysisParameters <- R6::R6Class("AnalysisParameters",
 )
 
 # AnalysisTableAnnotation ----
+
+
+
 #' Create Annotation
+#' @description Hello world
 #' @export
 AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                        public = list(
-
+                                         #' @field fileName some funny name
                                          fileName = NULL,
                                          factors = list(), # ordering is important - first is considered the main
                                          factorLevel=1,
@@ -127,11 +132,15 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          }
                                        )
 )
+
 # AnalysisConfiguration ----
 #' Analysis Configuration
+#' @description Hello world
 #' @export
+#'
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                      public = list(
+                                       #' @field project_Id the project Id
                                        project_Id="",
                                        order_Id="",
                                        workunit_Id="",
@@ -252,7 +261,7 @@ setup_analysis <- function(data, configuration ){
 
   # Make implicit NA's explicit
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
-  data <- completeCases( data , configuration)
+  data <- complete_cases( data , configuration)
 
   return( data )
 }
@@ -285,15 +294,16 @@ separate_factors <- function(data, config){
 #'  config$table$isotopeLabel <- "Isotope.Label.Type"
 #'  data <- LFQService::sample_analysis
 #'  data
-#'  xx <- completeCases(sample_analysis,skylineconfig)
-completeCases <- function(data, config){
-  data <- tidyr::complete(
+#'  xx <- complete_cases(sample_analysis,skylineconfig)
+complete_cases <- function(data, config){
+  res <- tidyr::complete(
     data ,
     tidyr::nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
-    tidyr::nesting(!!!syms(c(config$table$fileName , config$table$sampleName, config$table$factorKeys() )))
+    tidyr::nesting(!!!syms(c( config$table$factorKeys(), config$table$fileName , config$table$sampleName)))
   )
-  return(data)
+  return(res)
 }
+
 
 # Functions - Plotting ----
 #' Plot peptide and fragments
@@ -598,24 +608,24 @@ hierarchy_counts_sample <- function(data,
 #' #configuration <- skylineconfig
 #' #hierarchy = configuration$table$hkeysLevel()
 #'
-#' summarizeHierarchy(sample_analysis, skylineconfig)
-#' summarizeHierarchy(sample_analysis, skylineconfig, factors=character())
+#' summarize_hierarchy(sample_analysis, skylineconfig)
+#' summarize_hierarchy(sample_analysis, skylineconfig, factors=character())
 #'
-#' summarizeHierarchy(sample_analysis, skylineconfig,
+#' summarize_hierarchy(sample_analysis, skylineconfig,
 #'  hierarchy = skylineconfig$table$hkeysLevel() )
-#' summarizeHierarchy(sample_analysis, skylineconfig,
+#' summarize_hierarchy(sample_analysis, skylineconfig,
 #'  hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
 #' skylineconfig$table$hierarchyLevel=1
-#' summarizeHierarchy(sample_analysis, skylineconfig,
+#' summarize_hierarchy(sample_analysis, skylineconfig,
 #'  factors = skylineconfig$table$fkeysLevel())
 #' skylineconfig$table$hierarchyLevel=2
-#' summarizeHierarchy(sample_analysis, skylineconfig)
+#' summarize_hierarchy(sample_analysis, skylineconfig)
 #' skylineconfig$table$hierarchyLevel=3
-#' summarizeHierarchy(sample_analysis, skylineconfig )
+#' summarize_hierarchy(sample_analysis, skylineconfig )
 #' skylineconfig$table$hierarchyLevel=4
-#' summarizeHierarchy(sample_analysis, skylineconfig )
-#' summarizeHierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
-summarizeHierarchy <- function(x,
+#' summarize_hierarchy(sample_analysis, skylineconfig )
+#' summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
+summarize_hierarchy <- function(x,
                                configuration,
                                hierarchy = configuration$table$hkeysLevel(),
                                factors=character())
@@ -639,11 +649,11 @@ summarizeHierarchy <- function(x,
 #'
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- completeCases(xx, skylineconfig)
+#' xx <- complete_cases(xx, skylineconfig)
 #' interaction_missing_stats(xx, skylineconfig)
 #' tmp <- interaction_missing_stats(xx, skylineconfig, factors= character(), hierarchy = skylineconfig$table$hierarchyKeys()[1])
 #' tmp %>% mutate(perc = nrNAs/nrReplicates )
-#' summarizeHierarchy(xx , skylineconfig)
+#' summarize_hierarchy(xx , skylineconfig)
 #'
 interaction_missing_stats <- function(x,
                                       config,
@@ -652,7 +662,7 @@ interaction_missing_stats <- function(x,
                                       workIntensity = config$table$getWorkIntensity())
 {
 
-  x <- completeCases(x, config)
+  x <- complete_cases(x, config)
   table <- config$table
   missingPrec <- x %>% group_by_at(c(factors,
                                      hierarchy,
@@ -675,7 +685,7 @@ interaction_missing_stats <- function(x,
 #'
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- completeCases(xx, skylineconfig)
+#' xx <- complete_cases(xx, skylineconfig)
 #' fun <- missigness_impute_interactions(xx, skylineconfig)
 #' fun("long")
 #'
@@ -869,7 +879,7 @@ workflow_missigness_impute_contrasts <- function(data,
       return(long_xxxx)
     }else if(value == "wide"){
       dd <- dd_long %>% unite(contrast.v , value, contrast, sep="~") %>% spread(contrast.v, int_val)
-      xxx_imputed <- inner_join(LFQService::summarizeHierarchy(data,config),dd)
+      xxx_imputed <- inner_join(LFQService::summarize_hierarchy(data,config),dd)
       return(xxx_imputed)
     }else if(value == "raw"){
       return(dd_long)
@@ -882,10 +892,10 @@ workflow_missigness_impute_contrasts <- function(data,
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' xx <- completeCases(sample_analysis,skylineconfig)
+#' xx <- complete_cases(sample_analysis,skylineconfig)
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- completeCases(xx, skylineconfig)
+#' xx <- complete_cases(xx, skylineconfig)
 #' missigness_histogram(xx, skylineconfig)
 #'
 #' missingPrec <- interaction_missing_stats(xx, skylineconfig)
@@ -1082,7 +1092,7 @@ medpolishPly <- function(x, name=FALSE){
 #' dd$plot[[2]]
 #' # example how to add peptide count information
 #'
-#' tmp <- summarizeHierarchy(data, config)
+#' tmp <- summarize_hierarchy(data, config)
 #' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysLevel())
 #' head(tmp)
 intensity_summary_by_hkeys <- function( data, config, func)
@@ -1623,8 +1633,8 @@ plot_heatmap_cor <- function(data,
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- LFQService::sample_analysis
+#' config <- LFQService::skylineconfig$clone(deep=TRUE)
 #'
 #' print(plot_heatmap(data, config))
 #'

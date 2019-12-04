@@ -36,7 +36,7 @@ dd$medpolishPly[[1]]
 dd$plot[[2]]
 # example how to add peptide count information
 
-tmp <- summarizeHierarchy(data, config)
+tmp <- summarize_hierarchy(data, config)
 tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysLevel())
 head(tmp)
 }

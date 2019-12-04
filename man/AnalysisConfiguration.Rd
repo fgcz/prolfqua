@@ -4,9 +4,14 @@
 \alias{AnalysisConfiguration}
 \title{Analysis Configuration}
 \description{
-Analysis Configuration
-
-Analysis Configuration
+Hello world
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{project_Id}}{the project Id}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
