@@ -18,6 +18,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 config <- LFQService::create_MQ_peptide_Configuration()
 
 annotation <- readxl::read_xlsx(inputAnntation)
+annotation <- annotation %>% filter(annotation$SCI!="un")
 
 config$table$factors[["drug_"]] = "genotype"
 config$table$factors[["SCI_"]] = "SCI"
@@ -49,11 +50,11 @@ if(TRUE){
 
   res <- application_set_up_MQ_run(outpath = outpath,
                                    inputMQfile = inputMQfile,
-                                   inputAnntation = inputAnntation,
+                                   inputAnnotation = annotation,
                                    config=config,
                                    id_extractor = NULL,
                                    use="peptides")
-  config$table$hierarchy
+
   summarised <- application_summarize_data_pep_to_prot(res$data,
                                                        res$config,
                                                        res$qc_path,
@@ -88,19 +89,20 @@ if(TRUE){
 
 prot <- summarised$prot_results("unnest")
 model <- paste0(prot$config$table$getWorkIntensity() , model)
-modelFunction <- make_custom_model_lm( model, model_name = "Model")
 
-#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
+modelFunction <- make_custom_model_lm( model, model_name = "Model")
 if(TRUE){
   resXX <- application_run_modelling_V2(outpath = outpath,
-                                        data = summarised$results$pepIntensityNormalized,
-                                        pepConfig = summarised$results$config_pepIntensityNormalized,
+                                        data = prot$data,
+                                        pepConfig = prot$config,
                                         modelFunction = modelFunction,
                                         contrasts = Contrasts,
                                         modelling_dir = "modelling_results_peptide")
-  #saveRDS(resXX, file="resXX.rda")
 }
 
+names(resXX)
+resXX$result_table
+mean(resXX$result_table$isSingular,na.rm=TRUE)
 
 
 

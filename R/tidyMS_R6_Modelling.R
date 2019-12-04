@@ -369,7 +369,7 @@ model_analyse_summarize_vis_write <- function(modelling_result,
 #' reslist <- modellingResult()
 workflow_model_analyse <- function(data,
                                    modelFunction,
-                                   modelName = "Model",
+                                   modelName = modelFunction$model_name,
                                    subject_Id = "protein_Id"){
 
   modellingResult <- model_analyse(data,
@@ -405,6 +405,7 @@ workflow_model_analyse <- function(data,
 
 
 #' p2621 workflow likelihood ratio test
+#' TODO: deprecate
 #' @export
 workflow_likelihood_ratio_test <- function(modelProteinF,
                                            modelName,

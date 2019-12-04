@@ -49,7 +49,6 @@ application_run_modelling_V2 <- function(outpath,
     dir.create(modelling_path)
   }
 
-
   ### make modelling  -----
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
@@ -74,25 +73,32 @@ application_run_modelling_V2 <- function(outpath,
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
                                                 contrasts,
                                                 pepConfig,
+                                                modelName = modelFunction$model_name,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
 
 
-  xx <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
+  xx <- res_contrasts(modelling_path,
+                      columns = modelFunction$report_columns)
 
   contrast_results <- right_join( xx$contrast_minimal,
                                   xx_imputed,
                                   by= c(pepConfig$table$hkeysLevel(),
                                         "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
-  contrast_results <- contrast_results %>% mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
+  contrast_results <- contrast_results %>%
+    mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
 
-  contrast_results <- contrast_results %>% mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+  contrast_results <- contrast_results %>%
+    mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
   if(remove_imputed){
-    contrast_results <- contrast_results %>% mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
-    contrast_results <- contrast_results %>% mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
-    contrast_results <- contrast_results %>% dplyr::select(-contains("_imputed"))
+    contrast_results <- contrast_results %>%
+      mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
+    contrast_results <- contrast_results %>%
+      mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
+    contrast_results <- contrast_results %>%
+      dplyr::select(-contains("_imputed"))
   }
 
   separate_hierarchy(contrast_results, config) -> filtered_dd
@@ -122,7 +128,7 @@ application_run_modelling_V2 <- function(outpath,
 #'
 application_set_up_MQ_run <- function(outpath,
                                       inputMQfile,
-                                      inputAnntation,
+                                      inputAnnotation,
                                       config,
                                       id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results",
@@ -190,7 +196,11 @@ application_set_up_MQ_run <- function(outpath,
   }
 
   {# add annotation
-    annotation <- readxl::read_xlsx(inputAnntation)
+    if(is.character(inputAnnotation)){
+      annotation <- readxl::read_xlsx(inputAnnotation)
+    }else{
+      annotation <- inputAnnotation
+    }
     noData <- annotation[!annotation$raw.file %in% resPepProtAnnot$raw.file,]
     if(nrow(noData)){
       message("some files in annotation have no measurements")

@@ -7,7 +7,7 @@
 workflow_model_analyse(
   data,
   modelFunction,
-  modelName = "Model",
+  modelName = modelFunction$model_name,
   subject_Id = "protein_Id"
 )
 }

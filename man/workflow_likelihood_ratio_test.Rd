@@ -2,7 +2,8 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{workflow_likelihood_ratio_test}
 \alias{workflow_likelihood_ratio_test}
-\title{p2621 workflow likelihood ratio test}
+\title{p2621 workflow likelihood ratio test
+TODO: deprecate}
 \usage{
 workflow_likelihood_ratio_test(
   modelProteinF,
@@ -15,4 +16,5 @@ workflow_likelihood_ratio_test(
 }
 \description{
 p2621 workflow likelihood ratio test
+TODO: deprecate
 }
