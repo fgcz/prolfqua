@@ -53,13 +53,8 @@ application_run_modelling_V2 <- function(outpath,
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
                                                 subject_Id = pepConfig$table$hkeysLevel())
-
-
-
-
   #################################################
   ### Do missing value imputation
-
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
                                                                 contrasts)
@@ -76,8 +71,6 @@ application_run_modelling_V2 <- function(outpath,
                                                 modelName = modelFunction$model_name,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
-
-
 
   xx <- res_contrasts(modelling_path,
                       columns = modelFunction$report_columns)

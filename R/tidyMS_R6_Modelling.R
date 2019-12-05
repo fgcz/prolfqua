@@ -82,9 +82,11 @@ isSingular_lm <- function(m){
   if(anyNA){
     return(TRUE)
   }else{
+    if(df.residual(m)){
+      return(TRUE)
+    }
     return(FALSE)
   }
-
 }
 
 
@@ -1608,32 +1610,41 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' hist(xx$median.p, breaks=20)
 #' hist(xx$beta.based.significance, breaks = 20)
 #'
+#'
+#' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast="contrast")
 summary_ROPECA_median_p.scaled <- function(contrasts_data,
                                            contrast = "lhs",
                                            subject_Id = "protein_Id",
                                            estimate = "estimate",
                                            p.value="moderated.p.value",
                                            max.n = 10){
-  addscaled.p <- contrasts_data %>%
+
+  contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
+    summarize(n=n()) -> nrpepsPerProt
+
+  summarized.protein <- contrasts_data %>% dplyr::filter(!is.na(!!sym(p.value))) %>%
+
     dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
 
-  summarized.protein <- addscaled.p %>% group_by_at(c(subject_Id, contrast))
-
   summarized.protein <- summarized.protein %>%
+    group_by_at(c(subject_Id, contrast)) %>%
     summarize(
-      n=n(),
-      n_not_na = sum(!is.na(!!sym(estimate))),
+      n_not_na = n(),
       median.estimate = median(!!sym(estimate), na.rm=TRUE),
       sd.estimate = sd(!!sym(estimate), na.rm=TRUE),
       median.p.scaled = median(scaled.p, na.rm=TRUE))
 
-  # scale it back here.
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(median.p = 1- abs(median.p.scaled))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
+
+
+  summarized.protein <- inner_join(nrpepsPerProt,summarized.protein, by= c(subject_Id, contrast))
+
+  # scale it back here.
   return(summarized.protein)
 }
 

@@ -37,8 +37,8 @@ lmmodel <- "~ drug_ * SCI_"
 DEBUG <- TRUE
 RUN_ALL <- TRUE
 
-Contrasts <- c("8wk - 1wk" = "SCI_8wk - SCI_1wk",
-               "t - v" = "drug_t - drug_v",
+Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
+               "t_vs_v" = "drug_t - drug_v",
                "t_vs_v_given_8wk" = "`drug_t:SCI_8wk` - `drug_v:SCI_8wk`",
                "t_vs_v_given_1wk" = "`drug_t:SCI_1wk` - `drug_v:SCI_1wk`",
                "interaction_construct_with_time" = "t_vs_v_given_8wk - t_vs_v_given_1wk"
@@ -75,7 +75,7 @@ reportColumns <- c("p.value",
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if(TRUE){
-  resXX <- application_run_modelling_V2(outpath = outpath,
+  resXXmixmodel <- application_run_modelling_V2(outpath = outpath,
                                         data = summarised$results$pepIntensityNormalized,
                                         pepConfig = summarised$results$config_pepIntensityNormalized,
                                         modelFunction = modelFunction,
@@ -92,7 +92,7 @@ model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( model, model_name = "Model")
 if(TRUE){
-  resXX <- application_run_modelling_V2(outpath = outpath,
+  resXXmedpolish <- application_run_modelling_V2(outpath = outpath,
                                         data = prot$data,
                                         pepConfig = prot$config,
                                         modelFunction = modelFunction,
@@ -106,11 +106,12 @@ if(TRUE){
 
 prot <- summarised$prot_results("unnest")
 model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  , lmmodel)
-summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <-2
+summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <- 2
 modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
 
 if(TRUE){
-  resXX <- application_run_modelling_V2(outpath = outpath,
+
+  resXXRopeca <- application_run_modelling_V2(outpath = outpath,
                                         data = summarised$results$pepIntensityNormalized,
                                         pepConfig = summarised$results$config_pepIntensityNormalized,
                                         modelFunction = modelFunction,
@@ -118,8 +119,23 @@ if(TRUE){
                                         modelling_dir = "modelling_results_peptide")
 }
 
+ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca$result_table,contrast = "contrast")
 
-foo
+mixmod <- resXXmixmodel$result_table
+medpol <- resXXmedpolish$result_table
+mixmod <- mixmod %>% select( protein_Id, contrast, estimate,  p.value)
+medpol <- medpol %>% select( protein_Id, contrast, estimate,  moderated.p.value)
+ropeca_P <- ropeca_P %>% select(protein_Id, contrast, median.estimate,  beta.based.significance)
+
+tmp <- inner_join(mixmod,medpol, by=c("protein_Id", "contrast"),suffix=c(".mixed",".medpol") )
+tmp <- left_join(tmp, ropeca_P, by=c("protein_Id", "contrast"),suffix=c(".mixed",".medpol"))
+
+tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% cor(.,use="pairwise.complete.obs")
+tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% pairs(.,pch=".")
+
+tmp %>% select( p.value,  moderated.p.value ,beta.based.significance) %>% cor(.,use="pairwise.complete.obs")
+tmp %>% select( p.value,  moderated.p.value ,beta.based.significance) %>% pairs(.,pch=".")
+
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
