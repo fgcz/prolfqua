@@ -10,6 +10,8 @@ contrasts_linfct_vis(
   prefix = "Contrasts",
   subject_Id = "protein_Id",
   columns = c("p.value", "p.value.adjusted"),
+  estimate = "estimate",
+  contrast = "lhs",
   fc = 1
 )
 }

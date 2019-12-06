@@ -14,6 +14,9 @@ summary_ROPECA_median_p.scaled(
   max.n = 10
 )
 }
+\arguments{
+\item{max.n}{used to limit the number of peptides in probablity computation.}
+}
 \description{
 compute protein level fold changes and p.values (using beta distribution)
 takes p-value of the scaled p-value
@@ -44,4 +47,6 @@ hist(xx$median.p.scaled, breaks=20)
 hist(xx$median.p, breaks=20)
 hist(xx$beta.based.significance, breaks = 20)
 
+
+summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast="contrast")
 }

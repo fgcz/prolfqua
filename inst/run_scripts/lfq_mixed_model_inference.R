@@ -120,6 +120,64 @@ if(TRUE){
 }
 
 ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca$result_table,contrast = "contrast")
+ropeca_P$isSingular <- FALSE
+
+tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),estimate = "median.estimate",contrast="contrast")
+tmp$Contrasts_Histogram_beta.based.significance
+tmp$Contrasts_Volcano_beta.based.significance
+tmp$Contrasts_Histogram_FC_esimate
+
+
+tmp$Contrasts_Histogram_beta.based.significance
+
+LFQService:::.multigroupVolcano
+ropeca_P %>% plotly::highlight_key(~label) %>%
+  LFQService:::.multigroupVolcano(.,
+                                  effect =  "median.estimate",
+                                  p.value = "beta.based.significance",
+                                  condition = "contrast",
+                                  text = "label",
+                                  xintercept = c(-1, 1),
+                                  colour = "isSingular",
+                                  scales="free_y") %>%
+  plotly::ggplotly(tooltip = "label")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 mixmod <- resXXmixmodel$result_table
 medpol <- resXXmedpolish$result_table
@@ -130,12 +188,12 @@ ropeca_P <- ropeca_P %>% select(protein_Id, contrast, median.estimate,  beta.bas
 tmp <- inner_join(mixmod,medpol, by=c("protein_Id", "contrast"),suffix=c(".mixed",".medpol") )
 tmp <- left_join(tmp, ropeca_P, by=c("protein_Id", "contrast"),suffix=c(".mixed",".medpol"))
 
-tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% cor(.,use="pairwise.complete.obs")
+tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% cor(.,use="pairwise.complete.obs", method="spearman")
 tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% pairs(.,pch=".")
 
-tmp %>% select( p.value,  moderated.p.value ,beta.based.significance) %>% cor(.,use="pairwise.complete.obs")
-tmp %>% select( p.value,  moderated.p.value ,beta.based.significance) %>% pairs(.,pch=".")
-
+tmp %>% select( p.value,  moderated.p.value , beta.based.significance) %>% cor(.,use="pairwise.complete.obs", method="spearman")
+tmp %>% select( p.value,  moderated.p.value , beta.based.significance) %>% pairs(.,pch=".")
+View(tmp)
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,

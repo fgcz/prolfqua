@@ -1075,7 +1075,7 @@ contrasts_linfct <- function(models,
                                 maxNrOfSignificantText = 20)
 {
   colname = paste("-log10(", p.value, ")", sep = "")
-  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = "label")) +
+  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = text)) +
     geom_point(alpha = 0.5)
   p <- p + scale_colour_manual(values = c("black", "green",
                                           "blue", "red"))
@@ -1101,9 +1101,12 @@ contrasts_linfct_vis <- function(contrasts,
                                  prefix = "Contrasts",
                                  subject_Id = "protein_Id",
                                  columns = c("p.value","p.value.adjusted"),
+                                 estimate = "estimate",
+                                 contrast = "lhs",
                                  fc = 1){
   res <- list()
   contrasts %>% tidyr::unite("label", subject_Id, sep="~", remove=FALSE) -> contrasts
+  #return(contrasts)
   # add histogram of p-values
   for(column in columns){
     fig <- list()
@@ -1111,56 +1114,57 @@ contrasts_linfct_vis <- function(contrasts,
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data=contrasts, aes(x = !!sym(column))) +
       geom_histogram(breaks = seq(0, 1, by=0.05)) +
-      facet_wrap(~lhs)
+      facet_wrap(vars(!!sym(contrast)))
     res[[name]] <- fig
   }
+  message("histograms created")
   # add volcano plots
   for(column in columns){
+    message(column)
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
     fig$fname <- paste0(name, "_", modelName )
-
-
     fig$fig <- LFQService:::.multigroupVolcano(contrasts,
-                                               effect = "estimate",
+                                               effect = estimate,
                                                p.value = column,
-                                               condition = "lhs",
+                                               condition = contrast,
                                                text = "label",
                                                xintercept = c(-fc, fc),
                                                colour = "isSingular",
                                                scales="free_y")
 
+    message("volcano1")
     fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
       LFQService:::.multigroupVolcano(.,
-                                      effect = "estimate",
+                                      effect = estimate,
                                       p.value = column,
-                                      condition = "lhs",
+                                      condition = contrast,
                                       text = "label",
                                       xintercept = c(-fc, fc),
                                       colour = "isSingular",
                                       scales="free_y") %>%
       plotly::ggplotly(tooltip = "label")
-
+    message("volcano plotly")
     res[[name]] <- fig
   }
-
+  message("volcanos_build")
   # add histogram of fold changes
   {
     fig <- list()
     name <- paste0(prefix,"_Histogram_FC_esimate")
     fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- ggplot(data=contrasts, aes(x = !!sym("estimate"))) +
-      geom_histogram(breaks = seq(floor(min(contrasts$estimate, na.rm=TRUE)),
-                                  ceiling(max(contrasts$estimate, na.rm=TRUE)), by=0.1)) +
-      facet_wrap(~lhs)
+    fig$fig <- ggplot(data=contrasts, aes(x = !!sym(estimate))) +
+      geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm=TRUE)),
+                                  ceiling(max(contrasts[[estimate]], na.rm=TRUE)), by=0.1)) +
+      facet_wrap(vars(!!sym(contrast)))
     res[[name]] <- fig
   }
   # MA plot
   {
     ma_plot <- function(x, fc = 1){
-      x <- ggplot(x , aes(x = (c1+c2)/2, y = estimate, text = !!sym("label"), colour = !!sym("isSingular"))) +
+      x <- ggplot(x , aes(x = (c1+c2)/2, y = !!sym(estimate), text = !!sym("label"), colour = !!sym("isSingular"))) +
         geom_point(alpha = 0.5) + scale_colour_manual(values = c("black", "red")) +
-        facet_wrap(~lhs) + theme_light() +
+        facet_wrap(vars(!!sym(contrast))) + theme_light() +
         geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
       return(x)
     }
@@ -1544,7 +1548,9 @@ get_model_coefficients <- function(modeldata, config){
 #' abline(h=.05,col=2)
 #' plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 #'
-get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
+get_p_values_pbeta <- function(median.p.value,
+                               n.obs,
+                               max.n = 10){
   n.obs <- pmin(n.obs, max.n)
 
   shape1 <- (n.obs/2 + 0.5)
@@ -1582,6 +1588,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs , max.n = 10){
 #' compute protein level fold changes and p.values (using beta distribution)
 #' takes p-value of the scaled p-value
 #'
+#' @param max.n used to limit the number of peptides in probablity computation.
 #' @export
 #'
 #' @examples
@@ -1631,11 +1638,12 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
     summarize(
       n_not_na = n(),
       median.estimate = median(!!sym(estimate), na.rm=TRUE),
-      sd.estimate = sd(!!sym(estimate), na.rm=TRUE),
+      sd.estimate = mad(!!sym(estimate), na.rm=TRUE),
       median.p.scaled = median(scaled.p, na.rm=TRUE))
 
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(median.p = 1- abs(median.p.scaled))
+
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
