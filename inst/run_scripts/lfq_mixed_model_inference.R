@@ -100,14 +100,13 @@ if(TRUE){
                                         modelling_dir = "modelling_results_peptide")
 }
 
-
-
 #'
-
 prot <- summarised$prot_results("unnest")
 model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  , lmmodel)
 summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <- 2
 modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
+
+
 
 if(TRUE){
 
@@ -127,6 +126,7 @@ tmp$Contrasts_Histogram_beta.based.significance
 tmp$Contrasts_Volcano_beta.based.significance
 tmp$Contrasts_Histogram_FC_esimate
 
+contrasts_linfct_vis_write()
 
 tmp$Contrasts_Histogram_beta.based.significance
 
