@@ -193,7 +193,6 @@ tmp %>% select(estimate.mixed, estimate.medpol, median.estimate) %>% pairs(.,pch
 
 tmp %>% select( p.value,  moderated.p.value , beta.based.significance) %>% cor(.,use="pairwise.complete.obs", method="spearman")
 tmp %>% select( p.value,  moderated.p.value , beta.based.significance) %>% pairs(.,pch=".")
-View(tmp)
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,

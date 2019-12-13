@@ -22,7 +22,7 @@ peptides_txt <- read.csv(peptides_txt,
    sep="\t")
 head(peptides_txt)
 MQPeptides <- peptides_txt
-View(MQPeptides)
+#View(MQPeptides)
 mq_peptides <- tidyMQ_modificationSpecificPeptides(peptides_txt)
 
 head(mq_peptides)

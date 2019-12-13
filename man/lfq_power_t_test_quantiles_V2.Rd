@@ -24,5 +24,5 @@ xx <- summarize_cv_quantiles(stats_res, config, probs=0.5)
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- (bind_rows(bbb))
 summary <- bbb \%>\% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\% spread(delta, N, sep="=")
-View(summary)
+#View(summary)
 }
