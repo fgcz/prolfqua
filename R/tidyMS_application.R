@@ -260,8 +260,7 @@ application_summarize_data_pep_to_prot <- function(data,
 data_pep_to_prot <- function(data,
                              config,
                              qc_path){
-  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-
+  qc_path <- qc_path
   results <- LFQService::workflow_MQ_protoV1(
     data,
     config,
@@ -279,6 +278,8 @@ data_pep_to_prot <- function(data,
     if(DEBUG){
       return(list(qcpath = qcpath, pepintensity = results, protintensity_fun = protintensity_fun ))
     }
+    assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
+
     if(do == "render"){
       LFQService::render_MQSummary_rmd(results$filteredPep,
                                        results$config_filteredPep$clone(deep=TRUE),
