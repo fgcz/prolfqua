@@ -23,6 +23,35 @@
   return(res)
 }
 
+.makeResult_contrasts <- function(res_contrasts,
+                                  contrasts_xx_imputed,
+                                  columns,
+                                  remove_imputed = TRUE ){
+
+  contrasts_xx <- res_contrasts(columns = columns)
+  contrast_results <- right_join( contrasts_xx$contrast_minimal,
+                                  contrasts_xx_imputed,
+                                  by= c(pepConfig$table$hkeysLevel(),
+                                        "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+  contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
+  contrast_results <- contrast_results %>%
+    mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
+
+  contrast_results <- contrast_results %>%
+    mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+  if(remove_imputed){
+    contrast_results <- contrast_results %>%
+      mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
+    contrast_results <- contrast_results %>%
+      mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
+    contrast_results <- contrast_results %>%
+      dplyr::select(-contains("_imputed"))
+  }
+
+  separate_hierarchy(contrast_results, config) -> filtered_dd
+  return(filtered_dd)
+}
+
 #' run the modelling using lmer and lm models
 #'
 #' @export
@@ -58,12 +87,12 @@ application_run_modelling_V2 <- function(outpath,
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 pepConfig,
                                                                 contrasts)
-  xx_imputed <- res_contrasts_imputed("long",what = "all")
-  xx_imputed <- .columnsImputed(xx_imputed,
+  contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
+  contrasts_xx_imputed <- .columnsImputed(xx_imputed,
                                 contrasts = contrasts[setdiff(names(contrasts) , do_not_report)])
 
   #### Compute contrasts from model ####
-  modellingResult <-  modellingResult_fun(modelling_path)
+  modellingResult <-  modellingResult_fun()
   modelProteinF <- modellingResult$modellingResult$modelProtein
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
                                                 contrasts,
@@ -72,45 +101,29 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  xx <- res_contrasts(modelling_path,
-                      columns = modelFunction$report_columns)
+  res_fun <- function(do=c("result"),DEBuG = FALSE){
+    if(DEBUG){
+      list(modelFunction = modelFunction,
+           imputed = contrasts_xx_imputed,
+           remove_imputed = remove_imputed,
+           subject_Id = pepConfig$table$hkeysLevel(),
+           modelling_path = modelling_path,
+           modellingResult_fun = modellingResult_fun,
+           res_contrasts = res_contrasts
+      )
+    }
 
-  contrast_results <- right_join( xx$contrast_minimal,
-                                  xx_imputed,
-                                  by= c(pepConfig$table$hkeysLevel(),
-                                        "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
-  contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
-  contrast_results <- contrast_results %>%
-    mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
+    if(do == "result"){
+      result_table <- .makeResult_contrasts(res_contrasts, contrasts_xx_imputed, columns = modelFunction$report_columns)
+      return(result_table)
+    }else if(do == "write"){
+      modellingResult_fun(modelling_path)
+      res_contrasts(modelling_path, columns = modelFunction$report_columns)
+      lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
 
-  contrast_results <- contrast_results %>%
-    mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
-  if(remove_imputed){
-    contrast_results <- contrast_results %>%
-      mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
-    contrast_results <- contrast_results %>%
-      mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
-    contrast_results <- contrast_results %>%
-      dplyr::select(-contains("_imputed"))
+    }
   }
-
-  separate_hierarchy(contrast_results, config) -> filtered_dd
-  lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
-
-  if(DEBUG){
-    return(list(extract = list(contrasts = xx$contrast_minimal,
-                               imputed = xx_imputed,
-                               subject_Id = pepConfig$table$hkeysLevel(),
-                               modelFunction = modelFunction,
-                               remove_imputed = remove_imputed),
-                res_modelling = modellingResult_fun(),
-                res_contrasts = res_contrasts))
-  }
-  else{
-    return(list( result_table  = filtered_dd,
-                 res_modelling = modellingResult_fun(),
-                 res_contrasts = res_contrasts))
-  }
+  return(res_fun)
 }
 
 #' add Annotation to an MQ output
@@ -167,7 +180,7 @@ application_set_up_MQ_run <- function(outpath,
 
   peptides_available <- "peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
   if(peptides_available & peptides == "peptides"){
-     resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
+    resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
   }
   else if((peptides_available & mod_peptides_available) & peptides == "modificationSpecificPeptides"){
     peptidestxt <- tidyMQ_Peptides(inputMQfile)
@@ -229,6 +242,23 @@ application_summarize_data_pep_to_prot <- function(data,
                                                    qc_path,
                                                    DEBUG= FALSE,
                                                    WRITE_PROTS=TRUE){
+  message("deprecated use data_pep_to_prot instead")
+  res_fun <- data_pep_to_prot(data,
+                          config,
+                          qc_path)
+
+  if(!DEBUG){res_fun("render")}
+  if(WRITE_PROTS){res_fun("plotprot")}
+  res_fun("pepwrite")
+  res_fun("protwrite")
+  return(res_fun(DEBUG=TRUE))
+}
+
+#' data_pep_to_prot
+#' @export
+data_pep_to_prot <- function(data,
+                             config,
+                             qc_path){
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService::workflow_MQ_protoV1(
@@ -237,51 +267,51 @@ application_summarize_data_pep_to_prot <- function(data,
     outpath,
     peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
 
-  wideFRAME <- LFQService::toWideConfig(results$pepIntensityNormalized,
-                                        results$config_pepIntensityNormalized)
-  lfq_write_table(separate_hierarchy(wideFRAME$data,
-                                     results$config_pepIntensityNormalized),
-                  file.path(qc_path, "peptide_intensities.csv"))
-
-
-  if(!DEBUG){
-    LFQService::render_MQSummary_rmd(results$filteredPep,
-                                     results$config_filteredPep$clone(deep=TRUE),
-                                     pep=TRUE,
-                                     workdir = ".",
-                                     dest_path = qc_path,
-                                     dest_file_name="peptide_intensities_qc",
-                                     format = "html")
-  }
-
   ### PROTEIN QUANTIFICATION ####
   protintensity_fun <- medpolish_protein_quants( results$pepIntensityNormalized,
-                                             results$config_pepIntensityNormalized )
+                                                 results$config_pepIntensityNormalized )
 
-  unnestProt <- protintensity_fun("unnest")
-  quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
 
-  # render protein quantification reprot
-  if(!DEBUG){
-    LFQService::render_MQSummary_rmd(unnestProt$data,
-                                     unnestProt$config$clone(deep=TRUE),
-                                     pep=FALSE,
-                                     workdir = ".",
-                                     dest_path = qc_path,
-                                     dest_file_name="protein_intensities_qc",
-                                     format="html"
-    )
+  ### generate return value
+  res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"),DEBUG=FALSE){
+    do <- match.arg(do)
+    if(DEBUG){
+      return(list(qcpath = qcpath, pepintensity = results, protintensity_fun = protintensity_fun ))
+    }
+    if(do == "render"){
+      LFQService::render_MQSummary_rmd(results$filteredPep,
+                                       results$config_filteredPep$clone(deep=TRUE),
+                                       pep=TRUE,
+                                       workdir = ".",
+                                       dest_path = qc_path,
+                                       dest_file_name="peptide_intensities_qc",
+                                       format = "html")
+      LFQService::render_MQSummary_rmd(unnestProt$data,
+                                       unnestProt$config$clone(deep=TRUE),
+                                       pep=FALSE,
+                                       workdir = ".",
+                                       dest_path = qc_path,
+                                       dest_file_name="protein_intensities_qc",
+                                       format="html"
+      )
+    }else if(do == "plotprot"){
+      figs <- protintensity_fun("plot")
+      pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
+      lapply(figs$plot, print)
+      dev.off()
+
+    }else if(do =="protwrite"){
+      unnestProt <- protintensity_fun("unnest")
+      quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
+    }else if(do == "pepwrite"){
+      wideFRAMEPeptide <- LFQService::toWideConfig(results$pepIntensityNormalized,
+                                                   results$config_pepIntensityNormalized)
+      lfq_write_table(separate_hierarchy(wideFRAMEPeptide$data,
+                                         results$config_pepIntensityNormalized),
+                      file.path(qc_path, "peptide_intensities.csv"))
+    }
   }
-
-  if(WRITE_PROTS){
-    figs <- protintensity_fun("plot")
-    pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
-    lapply(figs$plot, print)
-    dev.off()
-  }
-
-  return(list(results  = results,
-              prot_results = protintensity_fun))
+  return(res_fun)
 }
 
 
