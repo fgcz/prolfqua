@@ -4,7 +4,7 @@
 \alias{setup_analysis}
 \title{Extracts columns relevant for a configuration from a data frame}
 \usage{
-setup_analysis(data, configuration)
+setup_analysis(data, configuration, cc = TRUE)
 }
 \description{
 Extracts columns relevant for a configuration from a data frame

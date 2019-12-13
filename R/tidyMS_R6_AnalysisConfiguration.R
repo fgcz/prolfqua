@@ -226,7 +226,7 @@ R6extractValues <- function(r6class){
 #'
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #'
-setup_analysis <- function(data, configuration ){
+setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
@@ -261,8 +261,10 @@ setup_analysis <- function(data, configuration ){
 
   # Make implicit NA's explicit
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
-  data <- complete_cases( data , configuration)
 
+  if(cc){
+    data <- complete_cases( data , configuration)
+  }
   return( data )
 }
 
@@ -295,11 +297,15 @@ separate_factors <- function(data, config){
 #'  data <- LFQService::sample_analysis
 #'  data
 #'  xx <- complete_cases(sample_analysis,skylineconfig)
+
 complete_cases <- function(data, config){
+  message("completing cases")
+  fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factorKeys())
+  hkeys <- c(config$table$isotopeLabel, config$table$hierarchyKeys())
   res <- tidyr::complete(
     data ,
-    tidyr::nesting(!!!syms(c(config$table$hierarchyKeys(), config$table$isotopeLabel))),
-    tidyr::nesting(!!!syms(c( config$table$factorKeys(), config$table$fileName , config$table$sampleName)))
+    tidyr::nesting(!!!syms(fkeys)),
+    tidyr::nesting(!!!syms(hkeys))
   )
   return(res)
 }
@@ -1329,7 +1335,7 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- (bind_rows(bbb))
 #' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
-#' View(summary)
+#' #View(summary)
 lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
                               delta = c(0.59,1,2),
                               min.n = 1.5,
