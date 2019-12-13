@@ -75,12 +75,13 @@ reportColumns <- c("p.value",
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if(TRUE){
-  resXXmixmodel <- application_run_modelling_V2(outpath = outpath,
-                                        data = summarised$results$pepIntensityNormalized,
-                                        pepConfig = summarised$results$config_pepIntensityNormalized,
-                                        modelFunction = modelFunction,
-                                        contrasts = Contrasts,
-                                        modelling_dir = "modelling_results_peptide")
+  resXXmixmodel <- application_run_modelling_V2(
+    outpath = outpath,
+    data = summarised$results$pepIntensityNormalized,
+    pepConfig = summarised$results$config_pepIntensityNormalized,
+    modelFunction = modelFunction,
+    contrasts = Contrasts,
+    modelling_dir = "modelling_results_peptide")
   #saveRDS(resXX, file="resXX.rda")
 }
 
@@ -92,12 +93,13 @@ model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( model, model_name = "Model")
 if(TRUE){
-  resXXmedpolish <- application_run_modelling_V2(outpath = outpath,
-                                        data = prot$data,
-                                        pepConfig = prot$config,
-                                        modelFunction = modelFunction,
-                                        contrasts = Contrasts,
-                                        modelling_dir = "modelling_results_peptide")
+  resXXmedpolish <- application_run_modelling_V2(
+    outpath = outpath,
+    data = prot$data,
+    pepConfig = prot$config,
+    modelFunction = modelFunction,
+    contrasts = Contrasts,
+    modelling_dir = "modelling_results_peptide")
 }
 
 #'
@@ -109,26 +111,24 @@ modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
 
 
 if(TRUE){
-
-  resXXRopeca <- application_run_modelling_V2(outpath = outpath,
-                                        data = summarised$results$pepIntensityNormalized,
-                                        pepConfig = summarised$results$config_pepIntensityNormalized,
-                                        modelFunction = modelFunction,
-                                        contrasts = Contrasts,
-                                        modelling_dir = "modelling_results_peptide")
+  resXXRopeca <- application_run_modelling_V2(
+    outpath = outpath,
+    data = summarised$results$pepIntensityNormalized,
+    pepConfig = summarised$results$config_pepIntensityNormalized,
+    modelFunction = modelFunction,
+    contrasts = Contrasts,
+    modelling_dir = "modelling_results_peptide")
 }
 
+detach("package:LFQService",unload=TRUE)
+library(LFQService)
 ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca$result_table,contrast = "contrast")
-ropeca_P$isSingular <- FALSE
+tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
+                            estimate = "median.estimate",
+                            contrast="contrast",modelName = "pepModel")
 
-tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),estimate = "median.estimate",contrast="contrast")
-tmp$Contrasts_Histogram_beta.based.significance
-tmp$Contrasts_Volcano_beta.based.significance
-tmp$Contrasts_Histogram_FC_esimate
+contrasts_linfct_vis_write(tmp,path = file.path(outpath,"modelling_results_peptide"))
 
-contrasts_linfct_vis_write()
-
-tmp$Contrasts_Histogram_beta.based.significance
 
 LFQService:::.multigroupVolcano
 ropeca_P %>% plotly::highlight_key(~label) %>%

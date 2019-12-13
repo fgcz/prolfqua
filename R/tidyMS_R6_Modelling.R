@@ -953,11 +953,11 @@ my_contest <- function(model, linfct){
   res <- tibble::as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
   res <- res %>% dplyr::rename(estimate = Estimate,
-                        std.error = "Std. Error",
-                        statistic="t value",
-                        p.value = "Pr(>|t|)",
-                        conf.low = "lower",
-                        conf.high = "upper")
+                               std.error = "Std. Error",
+                               statistic="t value",
+                               p.value = "Pr(>|t|)",
+                               conf.low = "lower",
+                               conf.high = "upper")
   return(res)
 }
 
@@ -1619,18 +1619,18 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #'
 #' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast="contrast")
-summary_ROPECA_median_p.scaled <- function(contrasts_data,
-                                           contrast = "lhs",
-                                           subject_Id = "protein_Id",
-                                           estimate = "estimate",
-                                           p.value="moderated.p.value",
-                                           max.n = 10){
+summary_ROPECA_median_p.scaled <- function(
+  contrasts_data,
+  contrast = "lhs",
+  subject_Id = "protein_Id",
+  estimate = "estimate",
+  p.value="moderated.p.value",
+  max.n = 10){
 
   contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
     summarize(n=n()) -> nrpepsPerProt
 
   summarized.protein <- contrasts_data %>% dplyr::filter(!is.na(!!sym(p.value))) %>%
-
     dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
 
   summarized.protein <- summarized.protein %>%
@@ -1639,7 +1639,11 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
       n_not_na = n(),
       median.estimate = median(!!sym(estimate), na.rm=TRUE),
       sd.estimate = mad(!!sym(estimate), na.rm=TRUE),
-      median.p.scaled = median(scaled.p, na.rm=TRUE))
+      median.p.scaled = median(scaled.p, na.rm=TRUE),
+      c1_name = unique(c1_name),
+      c1 = median(c1),
+      c2_name = unique(c2_name),
+      c2 = median(c2) )
 
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(median.p = 1- abs(median.p.scaled))
@@ -1651,7 +1655,7 @@ summary_ROPECA_median_p.scaled <- function(contrasts_data,
 
 
   summarized.protein <- inner_join(nrpepsPerProt,summarized.protein, by= c(subject_Id, contrast))
-
+  summarized.protein$isSingular <- FALSE
   # scale it back here.
   return(summarized.protein)
 }
