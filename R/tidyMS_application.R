@@ -23,6 +23,7 @@
   return(res)
 }
 
+# merges contrasts and imputed contrasts
 .makeResult_contrasts <- function(res_contrasts,
                                   contrasts_xx_imputed,
                                   columns,

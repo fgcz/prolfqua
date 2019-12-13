@@ -180,7 +180,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #'    sep="\t")
 #' head(peptides_txt)
 #' MQPeptides <- peptides_txt
-#' View(MQPeptides)
+#' #View(MQPeptides)
 #' mq_peptides <- tidyMQ_modificationSpecificPeptides(peptides_txt)
 #'
 #' head(mq_peptides)
