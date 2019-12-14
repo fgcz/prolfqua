@@ -289,6 +289,7 @@ data_pep_to_prot <- function(data,
                                        dest_path = qc_path,
                                        dest_file_name="peptide_intensities_qc",
                                        format = "html")
+      unnestProt <- protintensity_fun("unnest")
       LFQService::render_MQSummary_rmd(unnestProt$data,
                                        unnestProt$config$clone(deep=TRUE),
                                        pep=FALSE,
