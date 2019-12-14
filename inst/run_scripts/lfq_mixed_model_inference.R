@@ -66,7 +66,7 @@ if(TRUE){
   summarised <- readRDS("aaa_summarized.RDA")
 }
 
-
+message("######################## fit mixed #######################")
 memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
 modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
 reportColumns <- c("p.value",
@@ -82,13 +82,14 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
+  resXXmixmodel <- resXXmixmodel(do="result")
   #saveRDS(resXX, file="resXX.rda")
 }
 
 
 
-# fit medpolish
-prot <- summarised$prot_results("unnest")
+message("################## fit medpolish ######################")
+prot <- summarised$protintensity_fun("unnest")
 model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( model, model_name = "Model")
@@ -100,10 +101,11 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
+  resXXmedpolish <- resXXmedpolish(do="result")
 }
 
-# fit ROPECA
-prot <- summarised$prot_results("unnest")
+
+message("###################### fit ROPECA #######################")
 model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  , lmmodel)
 summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <- 2
 modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
@@ -117,16 +119,18 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
+  resXXRopeca <- resXXRopeca(do="result")
+
 }
 
 detach("package:LFQService",unload=TRUE)
 library(LFQService)
-ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca$result_table,contrast = "contrast")
+ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca,contrast = "contrast")
 tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
                             estimate = "median.estimate",
-                            contrast="contrast",modelName = "pepModel")
-
-contrasts_linfct_vis_write(tmp,path = file.path(outpath,"modelling_results_peptide"))
+                            contrast = "contrast",
+                            modelName = "protModelRopeca")
+contrasts_linfct_vis_write(tmp, path = file.path(outpath,"modelling_results_peptide"))
 
 
 relevantParameters <- list(outpath = outpath,

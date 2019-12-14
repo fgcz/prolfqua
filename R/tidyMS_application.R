@@ -24,15 +24,14 @@
 }
 
 # merges contrasts and imputed contrasts
-.makeResult_contrasts <- function(res_contrasts,
+.makeResult_contrasts <- function(contrasts_xx,
                                   contrasts_xx_imputed,
-                                  columns,
+                                  subject_Id,
                                   remove_imputed = TRUE ){
 
-  contrasts_xx <- res_contrasts(columns = columns)
   contrast_results <- right_join( contrasts_xx$contrast_minimal,
                                   contrasts_xx_imputed,
-                                  by= c(pepConfig$table$hkeysLevel(),
+                                  by= c(subject_Id,
                                         "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>%
@@ -89,7 +88,7 @@ application_run_modelling_V2 <- function(outpath,
                                                                 pepConfig,
                                                                 contrasts)
   contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
-  contrasts_xx_imputed <- .columnsImputed(xx_imputed,
+  contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
                                 contrasts = contrasts[setdiff(names(contrasts) , do_not_report)])
 
   #### Compute contrasts from model ####
@@ -102,7 +101,8 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result"),DEBuG = FALSE){
+  res_fun <- function(do=c("result","write"),DEBuG = FALSE){
+    do <- match.arg(do)
     if(DEBUG){
       list(modelFunction = modelFunction,
            imputed = contrasts_xx_imputed,
@@ -115,13 +115,14 @@ application_run_modelling_V2 <- function(outpath,
     }
 
     if(do == "result"){
-      result_table <- .makeResult_contrasts(res_contrasts, contrasts_xx_imputed, columns = modelFunction$report_columns)
+      result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
+                                            ,contrasts_xx_imputed,
+                                            pepConfig$table$hkeysLevel())
       return(result_table)
     }else if(do == "write"){
       modellingResult_fun(modelling_path)
       res_contrasts(modelling_path, columns = modelFunction$report_columns)
       lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
-
     }
   }
   return(res_fun)
@@ -260,7 +261,7 @@ application_summarize_data_pep_to_prot <- function(data,
 data_pep_to_prot <- function(data,
                              config,
                              qc_path){
-  qc_path <- qc_path
+  #qc_path <- qc_path
   results <- LFQService::workflow_MQ_protoV1(
     data,
     config,
@@ -276,7 +277,7 @@ data_pep_to_prot <- function(data,
   res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"),DEBUG=FALSE){
     do <- match.arg(do)
     if(DEBUG){
-      return(list(qcpath = qcpath, pepintensity = results, protintensity_fun = protintensity_fun ))
+      return(list(qc_path = qc_path, results = results, protintensity_fun = protintensity_fun ))
     }
     assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
