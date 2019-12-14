@@ -65,8 +65,8 @@
 #'  results$fig$histogram_coeff_p.values
 #' }
 deprecated_model_contrasts_no_interaction <- function(modelProteinF,
-                                                    modelName,
-                                                    pepConfig
+                                                      modelName,
+                                                      pepConfig
 )
 {
   warning("Softdeprecated - use explicit linear functions and workflow_model_contrasts function")
@@ -80,8 +80,11 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
   #result$contrasts <- contrasts
   result$fig <- list()
   result$fig$histogram_coeff_p.values_name <- paste0("Contrasts_Auto_histogram_",modelName,".pdf")
-  result$fig$histogram_coeff_p.values <- ggplot(data=contrasts,
-                                                aes(x = p.value, group=lhs)) + geom_histogram(bins = 20) + facet_wrap(~lhs)
+  result$fig$histogram_coeff_p.values <-
+    ggplot(data=contrasts,
+           aes(x = p.value, group=lhs)) +
+    geom_histogram(bins = 20) +
+    facet_wrap(~lhs)
 
 
   result$fig$VolcanoPlot_name <- paste0("Contrasts_Auto_Volcano_",modelName,".pdf")

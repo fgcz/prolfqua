@@ -1663,6 +1663,6 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- inner_join(nrpepsPerProt,summarized.protein, by= c(subject_Id, contrast))
   summarized.protein$isSingular <- FALSE
   # scale it back here.
-  return(summarized.protein)
+  return(ungroup(summarized.protein))
 }
 
