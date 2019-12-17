@@ -61,7 +61,7 @@ if(TRUE){
                                                        DEBUG = DEBUG,
                                                        WRITE_PROTS=FALSE)
 
-
+  saveRDS(summarised,"aaa_summarized.RDA")
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
 }
