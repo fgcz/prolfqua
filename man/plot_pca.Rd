@@ -16,7 +16,7 @@ library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 
-tmp <- plot_pca(data, config)
-
-#plotly::ggplotly(tmp)
+tmp <- plot_pca(data, config, label=FALSE)
+print(tmp)
+plotly::ggplotly(tmp)
 }

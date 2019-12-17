@@ -297,7 +297,6 @@ separate_factors <- function(data, config){
 #'  data <- LFQService::sample_analysis
 #'  data
 #'  xx <- complete_cases(sample_analysis,skylineconfig)
-
 complete_cases <- function(data, config){
   message("completing cases")
   fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factorKeys())
@@ -1799,20 +1798,36 @@ plot_NA_heatmap_deprec <- function(data,
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
-#' tmp <- plot_pca(data, config)
-#'
-#' #plotly::ggplotly(tmp)
+#' tmp <- plot_pca(data, config, label=FALSE)
+#' print(tmp)
+#' plotly::ggplotly(tmp)
 plot_pca <- function(data , config){
+  xx <- as_tibble(prcomp(ff)$x, rownames="sampleName")
+  xx <- inner_join(ids, xx)
+  x <- ggplot(xx, aes(x = PC1, y=PC2,
+                      color=!!sym(config$table$fkeysLevel()[1]),
+                      label=!!sym(config$table$sampleName))) +
+    if(!is.null(sh)){
+      geom_point(aes(shape=!!sym(sh)))
+    }else{
+      geom_point()
+    }
+  return(x)
+}
+
+
+plot_pca_deprec <- function(data , config, label=FALSE){
   wide <- toWideConfig(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
   ids <- wide$annotation
+  dd <- prcomp(ff)
   res <- autoplot(prcomp(ff),
                   data=ids,
+                  label=label,
                   colour=config$table$fkeysLevel()[1],
                   shape=if(!is.na(config$table$fkeysLevel()[2])){
                     config$table$fkeysLevel()[2]
                   })
   return(res)
 }
-
