@@ -1359,10 +1359,9 @@ workflow_contrasts_linfct_V2 <- function(models,
 
 
   contrast_result <- moderated_p_limma_long(contrast_result)
-  subject_Id <- subject_Id
   prefix <- prefix
   modelName <- modelName
-  linfct_A <- linfct_A
+
 
   res_fun <- function(path = NULL, columns = c("p.value",
                                                "p.value.adjusted",
@@ -1371,6 +1370,7 @@ workflow_contrasts_linfct_V2 <- function(models,
                       DEBUG = FALSE){
     if(DEBUG){
       return(list(contrast_result = contrast_result,
+                  linfct_A = linfct_A,
                   modelName = modelName,
                   config = config,
                   prefix = prefix,
