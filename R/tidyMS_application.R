@@ -101,10 +101,10 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result","write"),DEBuG = FALSE){
+  res_fun <- function(do=c("result","write"),DEBUG = FALSE){
     do <- match.arg(do)
     if(DEBUG){
-      list(modelFunction = modelFunction,
+      res <- list(modelFunction = modelFunction,
            imputed = contrasts_xx_imputed,
            remove_imputed = remove_imputed,
            subject_Id = pepConfig$table$hkeysLevel(),
@@ -112,6 +112,7 @@ application_run_modelling_V2 <- function(outpath,
            modellingResult_fun = modellingResult_fun,
            res_contrasts = res_contrasts
       )
+      return(res)
     }
 
     if(do == "result"){
@@ -234,8 +235,6 @@ application_set_up_MQ_run <- function(outpath,
 }
 
 
-
-
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #' @export
 #'
@@ -244,6 +243,7 @@ application_summarize_data_pep_to_prot <- function(data,
                                                    qc_path,
                                                    DEBUG= FALSE,
                                                    WRITE_PROTS=TRUE){
+
   message("deprecated use data_pep_to_prot instead")
   res_fun <- data_pep_to_prot(data,
                           config,
@@ -254,6 +254,7 @@ application_summarize_data_pep_to_prot <- function(data,
   res_fun("pepwrite")
   res_fun("protwrite")
   return(res_fun(DEBUG=TRUE))
+
 }
 
 #' data_pep_to_prot
@@ -261,7 +262,7 @@ application_summarize_data_pep_to_prot <- function(data,
 data_pep_to_prot <- function(data,
                              config,
                              qc_path){
-  #qc_path <- qc_path
+  qc_path <- qc_path
   results <- LFQService::workflow_MQ_protoV1(
     data,
     config,
