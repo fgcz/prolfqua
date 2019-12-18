@@ -631,9 +631,9 @@ hierarchy_counts_sample <- function(data,
 #' summarize_hierarchy(sample_analysis, skylineconfig )
 #' summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 summarize_hierarchy <- function(x,
-                               configuration,
-                               hierarchy = configuration$table$hkeysLevel(),
-                               factors=character())
+                                configuration,
+                                hierarchy = configuration$table$hkeysLevel(),
+                                factors=character())
 {
   all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
@@ -1205,10 +1205,18 @@ quants_write <- function(data,
   print(plot_heatmap_cor(unnest$data,unnest$config))
   dev.off()
 
-  res <- plot_pca(unnest$data,unnest$config)
+  res <- plot_pca(unnest$data,unnest$config, add_txt= TRUE)
   pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")), width=6, height=6)
   print(res)
   dev.off()
+
+  pcaPlot <- plot_pca(data, config, add_txt= FALSE)
+  plotly <- plotly::ggplotly(pcaPlot, tooltip=config$table$sampleName)
+
+  fname <- paste0(prefix,"intensities_PCA",suffix,".html")
+  html_path <- file.path(".",path_qc,fname)
+  htmlwidgets::saveWidget(widget = plotly, file = paste0(prefix,"intensities_PCA",suffix,".html") )
+  file.rename(fname, html_path)
 
   lfq_write_table(separate_hierarchy(wide$data, unnest$config),
                   path = file.path(path_qc,paste0(prefix,"intensities_wide",suffix,".csv")))
@@ -1230,7 +1238,7 @@ quants_write <- function(data,
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
 #' res <- summarize_cv(data, config)
-#' res$CV <- res$sd/res$mean
+#' res$CV <- res$sd/res$mea\n
 summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
 
@@ -1301,11 +1309,11 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 
 
 .lfq_power_t_test_quantiles <- function(quantile_sd,
-                                          delta = 1,
-                                          min.n = 1.5,
-                                          power=0.8,
-                                          sig.level=0.05
-                                          ){
+                                        delta = 1,
+                                        min.n = 1.5,
+                                        power=0.8,
+                                        sig.level=0.05
+){
   minsd  <- power.t.test(delta = delta,
                          n = min.n,
                          sd= NULL,
@@ -1336,10 +1344,10 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
 #' #View(summary)
 lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
-                              delta = c(0.59,1,2),
-                              min.n = 1.5,
-                              power=0.8,
-                              sig.level=0.05){
+                                          delta = c(0.59,1,2),
+                                          min.n = 1.5,
+                                          power=0.8,
+                                          sig.level=0.05){
 
   res <- vector(mode="list", length=length(delta))
   for(i in 1:length(delta)){
@@ -1435,10 +1443,10 @@ lfq_power_t_test_proteins <- function(data,
 
   getSampleSize <- function(sd, delta){
     sd_threshold <- power.t.test(delta = delta,
-                 n = min.n,
-                 sd = NULL,
-                 power = power,
-                 sig.level = sig.level)$sd
+                                 n = min.n,
+                                 sd = NULL,
+                                 power = power,
+                                 sig.level = sig.level)$sd
     #cat("delta",delta," sd ", sd, " sd_threshold ", max(sd_threshold, sd) , " sig.level ", sig.level, "\n" )
 
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
@@ -1803,22 +1811,32 @@ plot_NA_heatmap_deprec <- function(data,
 #' tmp <- plot_pca(data, config, add_txt= FALSE)
 #' print(tmp)
 #' plotly::ggplotly(tmp, tooltip=config$table$sampleName)
-plot_pca <- function(data , config, add_txt = FALSE){
+#'
+plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
+  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  ff <- na.omit(wide$data)
+  ff <- t(ff)
   xx <- as_tibble(prcomp(ff)$x, rownames="sampleName")
-  xx <- inner_join(ids, xx)
+  xx <- inner_join(wide$annotation, xx)
 
-  point <- (if(!is.null(sh)){
+
+  sh <- config$table$fkeysLevel()[2]
+  point <- (if(!is.na(sh)){
     geom_point(aes(shape=!!sym(sh)))
   }else{
     geom_point()
   })
 
-  text <- geom_text(aes(label=!!sym(config$table$sampleName)),check_overlap = TRUE)
+  text <- geom_text(aes(label=!!sym(config$table$sampleName)),check_overlap = TRUE,
+                    nudge_x = 0.25,
+                    nudge_y = 0.25 )
 
   x <- ggplot(xx, aes(x = PC1, y=PC2,
                       color=!!sym(config$table$fkeysLevel()[1]),
                       text=!!sym(config$table$sampleName))) +
-     if(add_txt){text}else{point}
+    point + if(add_txt){text}
+
+
   return(x)
 }
 
