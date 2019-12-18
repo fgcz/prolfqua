@@ -25,8 +25,8 @@ pars <- params$pars
 - project Id : `r pars$project_Id`
 - order Id : `r pars$order_Id`
 - parent work-unit Id : `r pars$workunit_Id`
-- input file : `r pars$inputMQfile`
 - modelling implemented by : `r pars$author`
+- input file : `r pars$inputMQfile`
 
 
 # Method [^0]
@@ -39,7 +39,12 @@ To estimate fold-changes for proteins for which we could not fit a mixed-effects
 
 [^0]: This section can be used in the material and methods section alongside the model formula and the contrast specifications given below.
 
-# Data preprocessing and sample QC
+# Data preprocessing and diagnostic plots
+
+A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized protein intensities [^1]. 
+[^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
+
+
 
 The raw files are annotated with the following factors and factor levels:
 
@@ -53,16 +58,14 @@ ftab
 
 
 - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"}
-- [PCA plot](qc_results/protein_intensities_PCA_.pdf){target="_blank"} showing the samples according to the first and second principal component.
+- PCA plot ([pdf](qc_results/protein_intensities_PCA_.pdf){target="_blank"},[html](qc_results/protein_intensities_PCA_.html){target="_blank"}) showing the samples according to the first and second principal component.
 - [Heatmap based on protein intensity correlation among samples](qc_results/protein_intensities_heatmap_correlation_.pdf){target="_blank"}.
 - [Protein intensities heatmap](qc_results/protein_intensities_heatmap_.pdf){target="_blank"}. The columns represent samples while the rows represent proteins. The protein intensities were z scored.
 - The protein intensities in [excel xlsx format](qc_results/protein_intensities_wide_.xlsx){target="_blank"}.
 - A [pdf file](qc_results/protein_intensities_inference_figures.pdf){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
 - A quality control report of estimated protein intensities [html](qc_results/protein_intensities_qc.html){target="_blank"}.
 
-The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized aprotein intensities [^1]. 
 
-[^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
 
 
 # Mixed Effects Model
