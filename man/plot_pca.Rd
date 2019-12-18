@@ -4,7 +4,7 @@
 \alias{plot_pca}
 \title{plot PCA}
 \usage{
-plot_pca(data, config)
+plot_pca(data, config, add_txt = FALSE, plotly = FALSE)
 }
 \description{
 plot PCA
@@ -16,7 +16,10 @@ library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep=TRUE)
 
-tmp <- plot_pca(data, config, label=FALSE)
+tmp <- plot_pca(data, config, add_txt= TRUE)
 print(tmp)
-plotly::ggplotly(tmp)
+tmp <- plot_pca(data, config, add_txt= FALSE)
+print(tmp)
+plotly::ggplotly(tmp, tooltip=config$table$sampleName)
+
 }
