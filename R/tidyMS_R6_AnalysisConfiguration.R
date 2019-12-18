@@ -1238,7 +1238,7 @@ quants_write <- function(data,
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
 #' res <- summarize_cv(data, config)
-#' res$CV <- res$sd/res$mea\n
+#' res$CV <- res$sd/res$mean
 summarize_cv <- function(data, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
 
