@@ -82,8 +82,6 @@ if(TRUE){
 
   tmp <- resXXmixmodel(DEBUG=TRUE)
   dd <- tmp$res_contrasts(DEBUG=TRUE)
-
-
 }
 
 # Work on brms code
@@ -95,56 +93,13 @@ nested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
 library(brms)
 
 
-my_MCMC_constrast <- function(model, linfct_A){
-  my_MCMC_contrast_1 <- function(x,linfct_A){
-    x <- as_tibble(x) %>% dplyr::select(starts_with("b_"))
-    linfct_A <- dd$linfct_A
-    colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(dd$linfct_A)))
-    x <- select_at(x,colnames(linfct_A))
-    output <-  coda::mcmc(as.matrix(x)%*% t(dd$linfct_A))
-  }
-  xx <- brms::as.mcmc(model)
-  res <- coda::mcmc.list(lapply(xx, my_MCMC_contrast_1, dd$linfct_A))
-  return(res)
-}
-
-checkzero <- function(x = NULL){
-  if(!is.null(x)){
-    less0 <- mean(x < 0)
-    great0 <- mean(x > 0)
-    return(c( less0 = less0,
-              great0 = great0,
-              minp = min(less0, great0)))
-  }else{
-    return(c("less0", "great0", "minp"))
-  }
-}
-
-
-
-### Model with stan
-myBRMSModel<- function( mdata, memodel, linfct_A, summary=checkzero ){
-  if(class(memodel) == "character"){
-    resultmodel <- tryCatch(brm(memodel, data = mdata, cores= 6), error = function(x) NULL)
-  }else if(class(memodel) == "brmsfit"){
-    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores= 6), error = function(x) NULL)
-  }
-  res <- NULL
-  if(!is.null(resultmodel)){
-    res <- my_MCMC_constrast(resultmodel, linfct_A)
-    res <- as_tibble(MCMCsummary(res, func = summary, func_name = summary()), rownames="contrast")
-    return(res)
-  }else{
-    return(NULL)
-  }
-}
 
 #library(snow)
 #cl <- makeCluster(4)
 startmodel <- brms::brm(memodel, mdata, cores=6)
 
 nestedT <- nested[1:10,]
-res <- nestedT %>% mutate(summary = purrr::map( data, myBRMSModel, startmodel, dd$linfct_A))
+res <- nestedT %>% mutate(summary = purrr::map( data, ms_brms_model, startmodel, dd$linfct_A))
 res <- res %>% filter(!sapply(summary, is.null))
 res$summary[[1]]
 res %>% select(protein_Id, summary) %>% unnest()
