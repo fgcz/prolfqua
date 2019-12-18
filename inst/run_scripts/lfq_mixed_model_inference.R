@@ -60,6 +60,11 @@ if(TRUE){
                                                        res$qc_path,
                                                        DEBUG = DEBUG,
                                                        WRITE_PROTS=FALSE)
+  xx <- summarised$protintensity_fun("unnest")
+  p <- plot_pca(xx$data, xx$config, add_txt = TRUE)
+  print(p)
+  p <- plot_pca(xx$data, xx$config, add_txt = FALSE)
+  print(p)
 
   saveRDS(summarised,"aaa_summarized.RDA")
 }else{
@@ -88,51 +93,6 @@ if(TRUE){
 
 
 
-message("################## fit medpolish ######################")
-prot <- summarised$protintensity_fun("unnest")
-model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
-
-modelFunction <- make_custom_model_lm( model, model_name = "Model")
-if(TRUE){
-  resXXmedpolish <- application_run_modelling_V2(
-    outpath = outpath,
-    data = prot$data,
-    pepConfig = prot$config,
-    modelFunction = modelFunction,
-    contrasts = Contrasts,
-    modelling_dir = "modelling_results_peptide")
-  resXXmedpolish <- resXXmedpolish(do="result")
-}
-
-
-message("###################### fit ROPECA #######################")
-model <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  , lmmodel)
-summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <- 2
-modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
-
-
-if(TRUE){
-  resXXRopeca <- application_run_modelling_V2(
-    outpath = outpath,
-    data = summarised$results$pepIntensityNormalized,
-    pepConfig = summarised$results$config_pepIntensityNormalized,
-    modelFunction = modelFunction,
-    contrasts = Contrasts,
-    modelling_dir = "modelling_results_peptide")
-  resXXRopeca <- resXXRopeca(do="result")
-
-}
-
-detach("package:LFQService",unload=TRUE)
-library(LFQService)
-ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca,contrast = "contrast")
-tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
-                            estimate = "median.estimate",
-                            contrast = "contrast",
-                            modelName = "protModelRopeca")
-contrasts_linfct_vis_write(tmp, path = file.path(outpath,"modelling_results_peptide"))
-
-
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
                            modelling_dir = "modelling_results_peptide",
@@ -140,7 +100,7 @@ relevantParameters <- list(outpath = outpath,
                            annotation = annotation,
                            reportColumns = reportColumns,
                            config = config,
-                           model= model,
+                           model= memodel,
                            Contrasts = Contrasts,
                            project_Id = config$project_Id,
                            order_Id = config$order_Id,
