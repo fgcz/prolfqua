@@ -1798,36 +1798,27 @@ plot_NA_heatmap_deprec <- function(data,
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep=TRUE)
 #'
-#' tmp <- plot_pca(data, config, label=FALSE)
+#' tmp <- plot_pca(data, config, add_txt= TRUE)
 #' print(tmp)
-#' plotly::ggplotly(tmp)
-plot_pca <- function(data , config){
+#' tmp <- plot_pca(data, config, add_txt= FALSE)
+#' print(tmp)
+#' plotly::ggplotly(tmp, tooltip=config$table$sampleName)
+plot_pca <- function(data , config, add_txt = FALSE){
   xx <- as_tibble(prcomp(ff)$x, rownames="sampleName")
   xx <- inner_join(ids, xx)
+
+  point <- (if(!is.null(sh)){
+    geom_point(aes(shape=!!sym(sh)))
+  }else{
+    geom_point()
+  })
+
+  text <- geom_text(aes(label=!!sym(config$table$sampleName)),check_overlap = TRUE)
+
   x <- ggplot(xx, aes(x = PC1, y=PC2,
                       color=!!sym(config$table$fkeysLevel()[1]),
-                      label=!!sym(config$table$sampleName))) +
-    if(!is.null(sh)){
-      geom_point(aes(shape=!!sym(sh)))
-    }else{
-      geom_point()
-    }
+                      text=!!sym(config$table$sampleName))) +
+     if(add_txt){text}else{point}
   return(x)
 }
 
-
-plot_pca_deprec <- function(data , config, label=FALSE){
-  wide <- toWideConfig(data, config ,as.matrix = TRUE)
-  ff <- na.omit(wide$data)
-  ff <- t(ff)
-  ids <- wide$annotation
-  dd <- prcomp(ff)
-  res <- autoplot(prcomp(ff),
-                  data=ids,
-                  label=label,
-                  colour=config$table$fkeysLevel()[1],
-                  shape=if(!is.na(config$table$fkeysLevel()[2])){
-                    config$table$fkeysLevel()[2]
-                  })
-  return(res)
-}
