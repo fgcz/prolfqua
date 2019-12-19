@@ -2,72 +2,82 @@ rm(list=ls())
 library(LFQService)
 library(tidyverse)
 
+inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
+outpath <- "results_modelling"
+#outpath <- "results_modelling_WHO_noSex"
 
-
-outpath <- "results_modelling_testing"
-
-inputMQfile <-  "../samples/p2558_05748_modspec.zip"
-inputMQfile <-  "../samples/p2558_o5748_peptides.zip"
-
-
-inputAnntation <- "../samples/p2558_05748_annotation.xlsx"
+inputAnntation <- "../samples/annotationIonstar.xlsx"
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+
+
+# MQPeptides<- "D:/Dropbox/DataAnalysis/p2109_PEPTIDE_Analysis/data/MQWorkunit.zip"
+# unz(MQPeptides,"modificationSpecificPeptides.txt")
+# read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
+#         header=TRUE, sep="\t", stringsAsFactors = FALSE)
 
 
 # creates default configuration
 config <- LFQService::create_MQ_peptide_Configuration()
-
 annotation <- readxl::read_xlsx(inputAnntation)
-annotation <- annotation %>% filter(annotation$SCI!="un")
 
-config$table$factors[["drug"]] = "genotype"
-config$table$factors[["SCI"]] = "SCI"
-config$table$factorLevel <- 2
+config$table$factors[["dilution."]] = "sample"
+config$table$factors[["run_ID"]] = "run_ID"
 
-config$order_Id = "o5748"
-config$project_Id = "p2558"
-config$workunit_Id = "20191120_MQ_repack.zip"
+config$table$factorLevel <- 1
 
+config$order_Id = "IonStar"
+config$project_Id = "p3000"
+config$workunit_Id = "IonStar"
 
 # specify model definition
+
 modelName  <- "Model"
-memodel <- "~ drug * SCI  + (1|peptide_Id)"
-lmmodel <- "~ drug * SCI"
+memodel <- "~ dilution. +  (1|peptide_Id)"
+lmmodel <- "~ dilution."
 
-DEBUG <- TRUE
-RUN_ALL <- TRUE
+DEBUG <- FALSE
 
-Contrasts <- c("8wk_vs_1wk" = "SCI8wk - SCI1wk",
-               "t_vs_v" = "drugt - drugv",
-               "t_vs_v_given_8wk" = "`drugt:SCI8wk` - `drugv:SCI8wk`",
-               "t_vs_v_given_1wk" = "`drugt:SCI1wk` - `drugv:SCI1wk`",
-               "interaction_construct_with_time" = "t_vs_v_given_8wk - t_vs_v_given_1wk"
+Contrasts <- c(
+  "dilution_(9/3)_3" =   "dilution.e - dilution.a",
+  "dilution_(9/4.5)_2" =   "dilution.e - dilution.b",
+  "dilution_(9/6)_1.5" =   "dilution.e - dilution.c",
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
+
+  "dilution_(7.5/3)_2.5" =   "dilution.d - dilution.a",
+  "dilution_(7.5/4.5)_1.6(6)" =   "dilution.d - dilution.b",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
+
+  "dilution_(6/3)_2" =   "dilution.c - dilution.a",
+  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
+
+  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
 )
+
 
 if(TRUE){
   assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-
   res <- application_set_up_MQ_run(outpath = outpath,
                                    inputMQfile = inputMQfile,
-                                   inputAnnotation = annotation,
-                                   config=config,
-                                   id_extractor = NULL,
-                                   use="peptides")
+                                   inputAnnotation = inputAnntation,
+                                   config = config)
 
   summarised <- data_pep_to_prot(res$data,
                                  res$config,
                                  res$qc_path)
   summarised <- summarised(DEBUG=TRUE)
-  saveRDS(summarised,"aaa_summarized.RDA")
+  saveRDS(summarised, file="aaa_summarized.RDA")
+
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
 }
 
+
 message("######################## fit mixed #######################")
 memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
 modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
-modelFunction
+
+
 
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
@@ -86,21 +96,42 @@ if(TRUE){
 
 # Work on brms code
 
+library(brms)
+
 data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
 nested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
 
-library(brms)
+mdata2 <- nested$data[[2]]
+mdata1 <- nested$data[[1]]
+mdata26 <- nested$data[[26]]
+
+check_factors_level_coverage <- function(mdata26, fixeff){
+  complete <- mdata26 %>% dplyr::select_at(fixeff) %>% distinct()
+  omitted <- mdata26 %>% na.omit %>% dplyr::select_at(fixeff) %>% distinct()
+  return(nrow(complete) == nrow(omitted))
+}
+
+check_factors_level_coverage(mdata26)
 
 
+summary(lme4::lmer(memodel, mdata))
+startmodel <- brms::brm(memodel, mdata2, cores=6)
 
-#library(snow)
-#cl <- makeCluster(4)
-startmodel <- brms::brm(memodel, mdata, cores=6)
+tmp <- update(startmodel, newdata = mdata26)
 
-nestedT <- nested[1:10,]
-res <- nestedT %>% mutate(summary = purrr::map( data, ms_brms_model, startmodel, dd$linfct_A))
+ms_brms_model(mdata26, startmodel, dd$linfct_A)
+
+res <- ms_mcmc_constrast(tmp, dd$linfct_A)
+
+colnames(fixef(startmodel, summary=FALSE))
+
+library(MCMCvis)
+
+res <- nested %>% mutate(summary = purrr::map( data, ms_brms_model, startmodel, dd$linfct_A))
+
 res <- res %>% filter(!sapply(summary, is.null))
+dim(res)
 res$summary[[1]]
 res %>% select(protein_Id, summary) %>% unnest()
 

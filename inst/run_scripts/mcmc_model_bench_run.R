@@ -2,18 +2,9 @@ rm(list=ls())
 library(LFQService)
 library(tidyverse)
 
-LFQServiceAnalysisTemplate::setglobalLocation()
-thisdir <- file.path(projectLocation,
-                     thisPackageName,
-                     "inst/MQ_Ionstar2018_PXD003881")
-setwd(thisdir)
-
-inputMQfile <- "../samples/p2558_o5748_peptides.zip"
-
-
+inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
 outpath <- "results_modelling"
 #outpath <- "results_modelling_WHO_noSex"
-
 
 inputAnntation <- "../samples/annotationIonstar.xlsx"
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
@@ -28,7 +19,6 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 # creates default configuration
 config <- LFQService::create_MQ_peptide_Configuration()
 annotation <- readxl::read_xlsx(inputAnntation)
-annotation
 
 config$table$factors[["dilution_"]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
@@ -44,7 +34,9 @@ config$workunit_Id = "IonStar"
 
 modelName  <- "Model"
 memodel <- "~ dilution_ +  (1|peptide_Id)"
+rlmpep <- "~ dilution_ +  peptide_Id"
 lmmodel <- "~ dilution_"
+
 
 DEBUG <- FALSE
 
@@ -73,11 +65,12 @@ if(TRUE){
                                    inputAnnotation = inputAnntation,
                                    config = config)
 
-  summarised <- application_summarize_data_pep_to_prot(res$data,
-                                                       res$config,
-                                                       res$qc_path,
-                                                       DEBUG = DEBUG, WRITE_PROTS=FALSE)
+  summarised <- data_pep_to_prot(res$data,
+                                 res$config,
+                                 res$qc_path)
+  summarised <- summarised(DEBUG=TRUE)
   saveRDS(summarised, file="aaa_summarized.RDA")
+
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
 }
@@ -99,7 +92,6 @@ if(TRUE){
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
   resXXmixmodel <- resXXmixmodel(do="result")
-  #saveRDS(resXX, file="resXX.rda")
 }
 
 
@@ -146,33 +138,10 @@ ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca,contrast = "contrast")
 
 allresults <- list(ropeca_P = ropeca_P, resXXmedpolish = resXXmedpolish, resXXmixmodel = resXXmixmodel )
 saveRDS(allresults, file="allresults.Rds")
+
 tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
                             estimate = "median.estimate",
                             contrast = "contrast",
                             modelName = "protModelRopeca")
 contrasts_linfct_vis_write(tmp, path = file.path(outpath,"modelling_results_peptide"))
-
-
-relevantParameters <- list(outpath = outpath,
-                           inputMQfile = inputMQfile,
-                           modelling_dir = "modelling_results_peptide",
-                           workunit_Id = config$workunit_Id,
-                           annotation = annotation,
-                           reportColumns = reportColumns,
-                           config = config,
-                           model= model,
-                           Contrasts = Contrasts,
-                           project_Id = config$project_Id,
-                           order_Id = config$order_Id,
-                           author = "Witold Wolski <wew@fgcz.ethz.ch>"
-)
-
-LFQService::copy_mixed_model_analysis_script()
-rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
-                  params= list(pars = relevantParameters),
-                  output_format = "html_document",
-                  output_dir = outpath,
-                  output_file = "index.html")
-
-
 

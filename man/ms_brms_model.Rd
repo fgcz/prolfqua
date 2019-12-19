@@ -9,7 +9,8 @@ ms_brms_model(
   memodel,
   linfct_A,
   func = ms_mcmc_checkzero,
-  summarize = TRUE
+  summarize = TRUE,
+  cores = 6
 )
 }
 \description{

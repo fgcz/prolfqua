@@ -5,15 +5,20 @@
 #' @export
 #'
 ms_mcmc_constrast <- function(model, linfct_A){
+
+  colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(linfct_A)))
+
+  if(!all(colnames(linfct_A) %in% colnames(fixef(model, summary=FALSE)))){
+    return(NULL)
+  }
+
   my_MCMC_contrast_1 <- function(x,linfct_A){
     x <- as_tibble(x) %>% dplyr::select(starts_with("b_"))
-    linfct_A <- dd$linfct_A
-    colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(dd$linfct_A)))
     x <- select_at(x,colnames(linfct_A))
-    output <-  coda::mcmc(as.matrix(x)%*% t(dd$linfct_A))
+    output <-  coda::mcmc(as.matrix(x)%*% t(linfct_A))
   }
   xx <- brms::as.mcmc(model)
-  res <- coda::mcmc.list(lapply(xx, my_MCMC_contrast_1, dd$linfct_A))
+  res <- coda::mcmc.list(lapply(xx, my_MCMC_contrast_1, linfct_A))
   return(res)
 }
 
@@ -42,16 +47,20 @@ ms_brms_model<- function( mdata,
                         memodel,
                         linfct_A,
                         func=ms_mcmc_checkzero,
-                        summarize=TRUE){
+                        summarize=TRUE,
+                        cores = 6){
+
+
   if(class(memodel) == "character"){
-    resultmodel <- tryCatch(brm(memodel, data = mdata, cores= 6), error = function(x) NULL)
+    resultmodel <- tryCatch(brm(memodel, data = mdata, cores= cores), error = function(x) NULL)
   }else if(class(memodel) == "brmsfit"){
-    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores= 6), error = function(x) NULL)
+    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores= cores), error = function(x) NULL)
   }
   res <- NULL
   if(!is.null(resultmodel)){
     if(summarize){
       res <- ms_mcmc_constrast(resultmodel, linfct_A)
+      if(is.null(res)){return(NULL)}
       res <- as_tibble(MCMCsummary(res, func = func, func_name = func()), rownames="contrast")
       return(res)
     } else{

@@ -666,7 +666,6 @@ interaction_missing_stats <- function(x,
                                       hierarchy = table$hierarchyKeys(),
                                       workIntensity = config$table$getWorkIntensity())
 {
-
   x <- complete_cases(x, config)
   table <- config$table
   missingPrec <- x %>% group_by_at(c(factors,

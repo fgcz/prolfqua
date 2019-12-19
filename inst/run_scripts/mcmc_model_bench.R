@@ -18,6 +18,7 @@ preprocess <- function(data){
 
 tmp <- preprocess(allresults$ropeca_P)
 tmp <- tmp %>% mutate(median.estimate = abs(median.estimate))
+
 tmpRopecaBBS <- add_FPRTPR(tmp,arrangby = "beta.based.significance", type="probability")
 tmpRopecaMedianEstimate <- add_FPRTPR(tmp, arrangby = "median.estimate", type="foldchange", desc=TRUE)
 
@@ -31,6 +32,9 @@ tmpMedpolishEstimate <- tmpMedpolishEstimate %>% mutate(arrangeby = paste0("medp
 tmp <- preprocess(allresults$resXXmixmodel)
 tmp <- tmp %>% mutate(pseudo_estimate = abs(pseudo_estimate))
 
+tmpMMpValueMod <- add_FPRTPR(tmp, arrangby = "moderated.p.value.adjusted",type="probability")
+tmpMMpValueMod <- tmpMMpValueMod %>% mutate(arrangeby = paste0("mm.",arrangeby))
+
 tmpMMpValue <- add_FPRTPR(tmp, arrangby = "p.value.adjusted",type="probability")
 tmpMMMedianEstimate <- add_FPRTPR(tmp, arrangby = "pseudo_estimate",type="foldchange", desc=TRUE)
 tmpMMMedianEstimate <- tmpMMMedianEstimate %>% mutate(arrangeby = paste0("mm.",arrangeby))
@@ -43,8 +47,12 @@ if(FALSE){
 }
 
 res <- bind_rows(list(tmpRopecaBBS,tmpRopecaMedianEstimate,
-                      tmpMedpolishPValue,tmpMedpolishEstimate,
+                      tmpMedpolishPValue,tmpMedpolishEstimate,tmpMMpValueMod,
                       tmpMMpValue,tmpMMMedianEstimate))
+
+#res <- bind_rows(list(tmpMMpValueMod,
+#                 tmpMMpValue))
+
 ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
   geom_line(aes(linetype=type)) +
   facet_wrap(~contrast) + ylim(0.5,1)
@@ -55,14 +63,14 @@ ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
 
 summary <- res %>%
   group_by(arrangeby,contrast) %>%
-  summarise(n=n(), auc = auc(FPR, TPR), auc01 = auc(FPR, TPR, 0.2) )
+  summarise(n=n(), auc = auc(FPR, TPR), auc01 = auc(FPR, TPR, 0.2), type=unique(type) )
 head(summary)
-ggplot(summary, aes(x=contrast, y = auc )) +
+ggplot(summary, aes(x=contrast, y = auc , color= type)) +
   geom_bar(stat="identity") +
   facet_wrap(~arrangeby) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-ggplot(summary, aes(x=arrangeby, y = auc01 )) +
+ggplot(summary, aes(x=arrangeby, y = auc01, color=type )) +
   geom_bar(stat="identity") +
   facet_wrap(~contrast) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
