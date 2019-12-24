@@ -7,10 +7,11 @@
 ms_brms_model(
   mdata,
   memodel,
+  fixef,
   linfct_A,
   func = ms_mcmc_checkzero,
   summarize = TRUE,
-  cores = 6
+  cores = parallel::detectCores()
 )
 }
 \description{
