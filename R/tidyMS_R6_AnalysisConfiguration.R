@@ -655,8 +655,10 @@ summarize_hierarchy <- function(x,
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
-#' interaction_missing_stats(xx, skylineconfig)
-#' tmp <- interaction_missing_stats(xx, skylineconfig, factors= character(), hierarchy = skylineconfig$table$hierarchyKeys()[1])
+#' interaction_missing_stats(xx, skylineconfig)$data %>% arrange(desc(nrNAs))
+#' tmp <- interaction_missing_stats(xx, skylineconfig,
+#'  factors= character(),
+#'   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
 #' tmp %>% mutate(perc = nrNAs/nrReplicates )
 #' summarize_hierarchy(xx , skylineconfig)
 #'
@@ -676,8 +678,9 @@ interaction_missing_stats <- function(x,
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanArea = mean(!!sym(workIntensity), na.rm=TRUE)) %>%
-    arrange(desc(nrNAs)) %>% dplyr::ungroup()
-  missingPrec
+    mutate(nrMeasured = nrReplicates-nrNAs) %>% dplyr::ungroup()
+  return(list(data = missingPrec,
+              summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea")))
 }
 #' Compute interaction averages and
 #' impute data using mean of lowest 0.1 (default)
@@ -690,18 +693,23 @@ interaction_missing_stats <- function(x,
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
+#' tmp <- interaction_missing_stats(xx, skylineconfig)
 #' fun <- missigness_impute_interactions(xx, skylineconfig)
-#' fun("long")
-#'
+#' dd <- fun("long")
+#' head(dd)
+#' undebug(fun)
+#' xxx <- (fun("nrReplicates"))
+#' xxx <- fun("all")
+#' head(xxx)
 missigness_impute_interactions <- function(mdataTrans,
                                            config,
                                            factors = config$table$fkeysLevel(),
                                            probs = 0.1){
-  xx <- interaction_missing_stats(mdataTrans, config, factors=factors)
+  x <- interaction_missing_stats(mdataTrans, config, factors=factors)
+  x_summaries <- x$summaries
+  xx <- x$data
   xx <- make_interaction_column(xx, factors, sep=":")
 
-  #xx %>% mutate(perc_missing= nrNAs/nrReplicates*100) -> xx
-  xx %>% mutate(nrMeasured = nrReplicates - nrNAs) -> xx
 
   lowerMean <- function(meanArea, probs = probs){
     meanAreaNotNA <- na.omit(meanArea)
@@ -710,7 +718,9 @@ missigness_impute_interactions <- function(mdataTrans,
     return(meanArea)
   }
 
-  xx <- xx %>% group_by(interaction) %>% mutate(imputed = lowerMean(meanArea,probs=0.2))
+  xx <- xx %>%
+    group_by(interaction) %>%
+    mutate(imputed = lowerMean(meanArea,probs=0.2))
 
   res_fun <- function(value = c("long",
                                 "nrReplicates",
@@ -719,7 +729,8 @@ missigness_impute_interactions <- function(mdataTrans,
                                 "imputed",
                                 "allWide",
                                 "all" ),
-                      add.prefix = TRUE, DEBUG = FALSE){
+                      add.prefix = TRUE,
+                      DEBUG = FALSE){
     value <- match.arg(value)
     if(DEBUG){
       return(list(value= value, long = xx , config = config ))
@@ -728,27 +739,26 @@ missigness_impute_interactions <- function(mdataTrans,
     if(value == "long"){
       return(xx)
     }else{
-      xx %>% dplyr::select(-one_of(c("nrNAs", factors))) -> xx
+      xx <- xx %>% dplyr::select(-one_of(factors))
 
       pid <- config$table$hkeysLevel()
       nrReplicates <- xx %>%
-        dplyr::select( -one_of(c("meanArea", "nrMeasured", "imputed"))) %>%
+        dplyr::select( -one_of(setdiff(x_summaries,"nrReplicates" ))) %>%
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
         dplyr::ungroup()
 
-      nrMeasured <- xx%>% dplyr::select( -meanArea, -nrReplicates, -imputed) %>%
+      nrMeasured <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"nrMeasured" ) )) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanArea <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -imputed) %>%
+      meanArea <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"meanArea" ) )) %>%
         tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanAreaImputed <- xx%>% dplyr::select(-nrReplicates, -nrMeasured, -meanArea) %>%
+      meanAreaImputed <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
         tidyr::spread(interaction, imputed, sep=".imputed.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
-
 
       allTables <- list(meanArea= meanArea,
                         nrMeasured = nrMeasured,
@@ -793,32 +803,45 @@ missigness_impute_interactions <- function(mdataTrans,
 #' compute per group averages and impute values
 #' should generalize at some stage
 #' @export
-missigness_impute_factors_interactions <- function(data,
-                                                   config,
-                                                   value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
-                                                   probs=0.1,
-                                                   add.prefix=FALSE){
-  value <- match.arg(value)
-  fac_fun <- list()
-  fac_fun[["interaction"]] <- missigness_impute_interactions(data,
-                                                             config, probs = probs)
-  if(config$table$factorLevel > 1 ){ # if 1 only then done
-    for(factor in config$table$fkeysLevel()){
-      fac_fun[[factor]] <- missigness_impute_interactions(data,
-                                                          config,
-                                                          factors = factor,
-                                                          probs = probs)
+#' @examples
+#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+#' xx <- complete_cases(xx, skylineconfig)
+#' fun <- missigness_impute_factors_interactions(xx, skylineconfig)
+#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value="imputed")
+#' head(fun)
+#' dim(fun)
+#' dim(distinct(fun[,1:6]))
+#'
+missigness_impute_factors_interactions <-
+  function(data,
+           config,
+           value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
+           probs=0.1,
+           add.prefix=FALSE){
+    value <- match.arg(value)
+    fac_fun <- list()
+    fac_fun[["interaction"]] <- missigness_impute_interactions(data,
+                                                               config,
+                                                               probs = probs)
+    if(config$table$factorLevel > 1 ){ # if 1 only then done
+      for(factor in config$table$fkeysLevel()){
+        fac_fun[[factor]] <- missigness_impute_interactions(data,
+                                                            config,
+                                                            factors = factor,
+                                                            probs = probs)
+      }
     }
+    fac_res <- list()
+    for(fun_name in names(fac_fun)){
+      fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix=add.prefix)
+    }
+    intfact <- purrr::reduce(fac_res,
+                             dplyr::inner_join,
+                             by = c(config$table$hierarchyKeys(),
+                                    config$table$isotopeLabel, "value"))
+    return(intfact)
   }
-  fac_res <- list()
-  for(fun_name in names(fac_fun)){
-    fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix=add.prefix)
-  }
-  intfact <- purrr::reduce(fac_res,dplyr::inner_join,
-                           by = c(config$table$hierarchyKeys(),
-                                  config$table$isotopeLabel, "value"))
-  return(intfact)
-}
 
 #' Compute fold changes given Contrasts
 #'
@@ -843,6 +866,7 @@ missigness_impute_contrasts <- function(data,
 #' Compute fold changes given Contrasts 2
 #'
 #' @export
+#'
 workflow_missigness_impute_contrasts <- function(data,
                                                  config,
                                                  contrasts){
@@ -910,7 +934,7 @@ workflow_missigness_impute_contrasts <- function(data,
 #'
 missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysLevel()){
   table <- config$table
-  missingPrec <- interaction_missing_stats(x, config , factors)
+  missingPrec <- interaction_missing_stats(x, config , factors)$data
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
 
   if(showempty){
@@ -952,7 +976,7 @@ missingness_per_condition_cumsum <- function(x,
                                              config,
                                              factors = config$table$fkeysLevel()){
   table <- config$table
-  missingPrec <- interaction_missing_stats(x, config,factors)
+  missingPrec <- interaction_missing_stats(x, config,factors)$data
 
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize(nrTransitions =n())
@@ -989,7 +1013,7 @@ missingness_per_condition_cumsum <- function(x,
 #'
 missingness_per_condition <- function(x, config, factors = config$table$fkeysLevel()){
   table <- config$table
-  missingPrec <- interaction_missing_stats(x, config, factors)
+  missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <-missingPrec %>% group_by_at(c(table$isotopeLabel,
