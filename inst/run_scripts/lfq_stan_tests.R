@@ -33,7 +33,7 @@ config$workunit_Id = "IonStar"
 
 modelName  <- "Model"
 memodel <- "~ dilution. +  (1|peptide_Id)"
-lmmodel <- "~ dilution."
+memodel <- "~ dilution.|trunc() +  (1|peptide_Id)"
 
 DEBUG <- FALSE
 
@@ -106,34 +106,42 @@ mdata2 <- nested$data[[2]]
 mdata1 <- nested$data[[1]]
 mdata26 <- nested$data[[26]]
 
-check_factors_level_coverage <- function(mdata26, fixeff){
-  complete <- mdata26 %>% dplyr::select_at(fixeff) %>% distinct()
-  omitted <- mdata26 %>% na.omit %>% dplyr::select_at(fixeff) %>% distinct()
-  return(nrow(complete) == nrow(omitted))
-}
 
-check_factors_level_coverage(mdata26)
+#check_factors_level_coverage(mdata26, config$table$fkeysLevel())
+#check_factors_level_coverage(mdata1, config$table$fkeysLevel())
 
 
-summary(lme4::lmer(memodel, mdata))
+summary(lme4::lmer(memodel, mdata2))
 startmodel <- brms::brm(memodel, mdata2, cores=6)
 
 tmp <- update(startmodel, newdata = mdata26)
 
-ms_brms_model(mdata26, startmodel, dd$linfct_A)
-
-res <- ms_mcmc_constrast(tmp, dd$linfct_A)
-
-colnames(fixef(startmodel, summary=FALSE))
-
+source("../../R/tidyMS_stanr.R")
 library(MCMCvis)
+res <- ms_brms_model(mdata = mdata2,
+              memodel = startmodel,
+              fixef = config$table$fkeysLevel(),
+              linfct_A = dd$linfct_A)
+res <- ms_brms_model(mdata = mdata2,
+                     memodel = startmodel,
+                     fixef = config$table$fkeysLevel(),
+                     linfct_A = dd$linfct_A,
+                     summarize = FALSE)
 
-res <- nested %>% mutate(summary = purrr::map( data, ms_brms_model, startmodel, dd$linfct_A))
+#res <- ms_mcmc_constrast(tmp, dd$linfct_A)
+
+
+
+res <- nested %>% mutate(summary =
+                           purrr::map( data, ms_brms_model,
+                                       startmodel,
+                                       config$table$fkeysLevel(),
+                                       dd$linfct_A)
+                         )
+saveRDS(res, file="rstandSimpleMixed.RDS")
+dim(nested)
+dim(res)
 
 res <- res %>% filter(!sapply(summary, is.null))
-dim(res)
-res$summary[[1]]
-res %>% select(protein_Id, summary) %>% unnest()
-
-as_tibble(res$summary[[1]], rownames="contrast")
-"transformedIntensity~ drug * SCI  + (1|peptide_Id)"
+restable <- res %>% select(protein_Id, summary) %>% unnest(cols="summary")
+write_tsv(restable,"restablerstan.tsv")

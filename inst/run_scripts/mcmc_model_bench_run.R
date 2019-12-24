@@ -20,7 +20,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 config <- LFQService::create_MQ_peptide_Configuration()
 annotation <- readxl::read_xlsx(inputAnntation)
 
-config$table$factors[["dilution_"]] = "sample"
+config$table$factors[["dilution."]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
 
 
@@ -33,27 +33,27 @@ config$workunit_Id = "IonStar"
 # specify model definition
 
 modelName  <- "Model"
-memodel <- "~ dilution_ +  (1|peptide_Id)"
-rlmpep <- "~ dilution_ +  peptide_Id"
-lmmodel <- "~ dilution_"
+memodel <- "~ dilution. +  (1|peptide_Id)"
+rlmpep <- "~ dilution. +  peptide_Id"
+lmmodel <- "~ dilution."
 
 
 DEBUG <- FALSE
 
 Contrasts <- c(
-  "dilution_(9/3)_3" =   "dilution_e - dilution_a",
-  "dilution_(9/4.5)_2" =   "dilution_e - dilution_b",
-  "dilution_(9/6)_1.5" =   "dilution_e - dilution_c",
-  "dilution_(9/7.5)_1.2" =   "dilution_e - dilution_d",
+  "dilution_(9/3)_3" =   "dilution.e - dilution.a",
+  "dilution_(9/4.5)_2" =   "dilution.e - dilution.b",
+  "dilution_(9/6)_1.5" =   "dilution.e - dilution.c",
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
 
-  "dilution_(7.5/3)_2.5" =   "dilution_d - dilution_a",
-  "dilution_(7.5/4.5)_1.6(6)" =   "dilution_d - dilution_b",
-  "dilution_(7.5/6)_1.25" =   "dilution_d - dilution_c",
+  "dilution_(7.5/3)_2.5" =   "dilution.d - dilution.a",
+  "dilution_(7.5/4.5)_1.6(6)" =   "dilution.d - dilution.b",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
 
-  "dilution_(6/3)_2" =   "dilution_c - dilution_a",
-  "dilution_(6/4.5)_1.3(3)" =   "dilution_c - dilution_b",
+  "dilution_(6/3)_2" =   "dilution.c - dilution.a",
+  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
 
-  "dilution_(4.5/3)_1.5" =   "dilution_b - dilution_a"
+  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
 )
 
 
