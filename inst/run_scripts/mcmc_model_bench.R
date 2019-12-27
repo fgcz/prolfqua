@@ -16,6 +16,7 @@ preprocess <- function(data){
 }
 
 
+source("../../R/tidyMS_benchmark.R")
 if(TRUE){
   allresultsStan <- readRDS("rstandTruncMixed.RDS")
   allresultsStanf <- allresultsStan %>% dplyr::filter(!sapply(summary, is.null))
@@ -23,33 +24,33 @@ if(TRUE){
   allresultsStan <- left_join(dplyr::select(allresultsStan,protein_Id), allresultsStanf)
   tmp <- preprocess(allresultsStan)
   tmp <- tmp %>% mutate(stanR.mean.estimate = abs(mean))
-  tmpStanRProb <- ms_bench_add_FPRTPR(tmp,arrangby = "minp", type="probability")
-  tmpStanEEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "stanR.mean.estimate", type="foldchange", desc=TRUE)
+  tmpStanRProb <- ms_bench_add_FPRTPR(tmp,arrangeby = "minp", type="probability")
+  tmpStanEEstimate <- ms_bench_add_FPRTPR(tmp, arrangeby = "stanR.mean.estimate", type="foldchange", desc=TRUE)
 }
 
 
 allresults <- readRDS("allresults.Rds")
 tmp <- preprocess(allresults$ropeca_P)
 tmp <- tmp %>% mutate(median.estimate = abs(median.estimate))
+tmpRopecaBBS <- ms_bench_add_FPRTPR(tmp,arrangeby = "beta.based.significance", type="probability")
 
-tmpRopecaBBS <- ms_bench_add_FPRTPR(tmp,arrangby = "beta.based.significance", type="probability")
-tmpRopecaMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "median.estimate", type="foldchange", desc=TRUE)
+tmpRopecaMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangeby = "median.estimate", type="foldchange", desc=TRUE)
 
 tmp <- preprocess(allresults$resXXmedpolish)
 tmp <- tmp %>% mutate(pseudo_estimate = abs(pseudo_estimate))
 
-tmpMedpolishPValue <- ms_bench_add_FPRTPR(tmp,arrangby = "moderated.p.value.adjusted", type="probability")
-tmpMedpolishEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "pseudo_estimate", type="foldchange", desc=TRUE)
+tmpMedpolishPValue <- ms_bench_add_FPRTPR(tmp,arrangeby = "moderated.p.value.adjusted", type="probability")
+tmpMedpolishEstimate <- ms_bench_add_FPRTPR(tmp, arrangeby = "pseudo_estimate", type="foldchange", desc=TRUE)
 tmpMedpolishEstimate <- tmpMedpolishEstimate %>% mutate(arrangeby = paste0("medpolish.",arrangeby))
 
 tmp <- preprocess(allresults$resXXmixmodel)
 tmp <- tmp %>% mutate(pseudo_estimate = abs(pseudo_estimate))
 
-tmpMMpValueMod <- ms_bench_add_FPRTPR(tmp, arrangby = "moderated.p.value.adjusted",type="probability")
+tmpMMpValueMod <- ms_bench_add_FPRTPR(tmp, arrangeby = "moderated.p.value.adjusted",type="probability")
 tmpMMpValueMod <- tmpMMpValueMod %>% mutate(arrangeby = paste0("mm.",arrangeby))
 
-tmpMMpValue <- ms_bench_add_FPRTPR(tmp, arrangby = "p.value.adjusted",type="probability")
-tmpMMMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "pseudo_estimate",type="foldchange", desc=TRUE)
+tmpMMpValue <- ms_bench_add_FPRTPR(tmp, arrangeby = "p.value.adjusted",type="probability")
+tmpMMMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangeby = "pseudo_estimate",type="foldchange", desc=TRUE)
 tmpMMMedianEstimate <- tmpMMMedianEstimate %>% mutate(arrangeby = paste0("mm.",arrangeby))
 
 if(FALSE){
@@ -75,11 +76,19 @@ res <- bind_rows(list(tmpStanRProb,
                       tmpMMpValue))
 
 
-#res <- bind_rows(list(tmpMMpValueMod,
-#                 tmpMMpValue))
 
-foo
 res %>% group_by(arrangeby, type) %>% summarize(n = n())
+res <- res %>% arrange(FDP)
+res %>% filter(arrangeby == "minp" & contrast == "dilution_(9/6)_1.5"	) %>% View
+foo
+ggplot(res, aes(x=FDP,y = TPR, color = arrangeby)) +
+  geom_line(aes(linetype=type)) +
+  facet_wrap(~contrast) + ylim(0,1)
+
+
+ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
+  geom_line(aes(linetype=type)) +
+  facet_wrap(~contrast) + ylim(0.5,1)
 ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
   geom_line(aes(linetype=type)) +
   facet_wrap(~contrast) + ylim(0.5,1)

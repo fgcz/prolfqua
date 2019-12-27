@@ -747,7 +747,6 @@ missigness_impute_interactions <- function(mdataTrans,
         tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
         dplyr::ungroup()
-
       nrMeasured <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"nrMeasured" ) )) %>%
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
@@ -773,7 +772,6 @@ missigness_impute_interactions <- function(mdataTrans,
         srepl <- if(add.prefix){"nrRep."}else{""}
         colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
         nrReplicates <- tibble::add_column( nrReplicates, "value" = value, .before = 1)
-
         return(nrReplicates)
       }else if(value == "nrMeasured"){
         srepl <- if(add.prefix){"nrMeas."}else{""}

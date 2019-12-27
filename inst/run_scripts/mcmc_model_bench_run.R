@@ -86,18 +86,19 @@ config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
 #  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
 mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))
 #foo
-if(TRUE){
-  x <- interaction_missing_stats(data_c, config_c)$data
+if(FALSE){
+  x <- LFQService::interaction_missing_stats(data_c, config_c)$data
   x0 <- x %>% dplyr::filter(nrMeasured == 0)
   x1 <- x %>% dplyr::filter(nrMeasured == 1)
   xx0 <- inner_join(data_c, x0)
   xx0 <- xx0 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx0),replace = T))
-  xx1 <- inner_join(data_c, x1)
-  xx1 <- xx1 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx1),replace = T))
-  daNo01<- anti_join(data_c, bind_rows(x0,x1))
+  #xx1 <- inner_join(data_c, x1)
+  #xx1 <- xx1 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx1),replace = T))
+
+  daNo01<- anti_join(data_c, bind_rows(x0))
   daNo01 <- daNo01 %>% mutate(intImputed  = transformedIntensity)
 
-  imputed <- bind_rows(xx0, xx1, daNo01)
+  imputed <- bind_rows(xx0, daNo01)
   config_c$table$setWorkIntensity("intImputed")
   data_c <- imputed
 }

@@ -1,4 +1,5 @@
-## functions supporting working with stand
+## functions supporting working with stan and brms
+#'
 #' Compute contrasts an
 #' covert brms output
 #' to code mcmc.list
