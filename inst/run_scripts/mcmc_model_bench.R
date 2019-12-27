@@ -1,7 +1,6 @@
 rm(list=ls())
 library(LFQServiceAnalysisTemplate)
 library(tidyverse)
-allresults <- readRDS("allresults.Rds")
 
 preprocess <- function(data){
   tmp <- data %>%
@@ -16,27 +15,41 @@ preprocess <- function(data){
   return(tmp)
 }
 
+
+if(TRUE){
+  allresultsStan <- readRDS("rstandTruncMixed.RDS")
+  allresultsStanf <- allresultsStan %>% dplyr::filter(!sapply(summary, is.null))
+  allresultsStanf <- allresultsStan %>% select(protein_Id, summary) %>% unnest(cols="summary")
+  allresultsStan <- left_join(dplyr::select(allresultsStan,protein_Id), allresultsStanf)
+  tmp <- preprocess(allresultsStan)
+  tmp <- tmp %>% mutate(stanR.mean.estimate = abs(mean))
+  tmpStanRProb <- ms_bench_add_FPRTPR(tmp,arrangby = "minp", type="probability")
+  tmpStanEEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "stanR.mean.estimate", type="foldchange", desc=TRUE)
+}
+
+
+allresults <- readRDS("allresults.Rds")
 tmp <- preprocess(allresults$ropeca_P)
 tmp <- tmp %>% mutate(median.estimate = abs(median.estimate))
 
-tmpRopecaBBS <- add_FPRTPR(tmp,arrangby = "beta.based.significance", type="probability")
-tmpRopecaMedianEstimate <- add_FPRTPR(tmp, arrangby = "median.estimate", type="foldchange", desc=TRUE)
+tmpRopecaBBS <- ms_bench_add_FPRTPR(tmp,arrangby = "beta.based.significance", type="probability")
+tmpRopecaMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "median.estimate", type="foldchange", desc=TRUE)
 
 tmp <- preprocess(allresults$resXXmedpolish)
 tmp <- tmp %>% mutate(pseudo_estimate = abs(pseudo_estimate))
 
-tmpMedpolishPValue <- add_FPRTPR(tmp,arrangby = "moderated.p.value.adjusted", type="probability")
-tmpMedpolishEstimate <- add_FPRTPR(tmp, arrangby = "pseudo_estimate", type="foldchange", desc=TRUE)
+tmpMedpolishPValue <- ms_bench_add_FPRTPR(tmp,arrangby = "moderated.p.value.adjusted", type="probability")
+tmpMedpolishEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "pseudo_estimate", type="foldchange", desc=TRUE)
 tmpMedpolishEstimate <- tmpMedpolishEstimate %>% mutate(arrangeby = paste0("medpolish.",arrangeby))
 
 tmp <- preprocess(allresults$resXXmixmodel)
 tmp <- tmp %>% mutate(pseudo_estimate = abs(pseudo_estimate))
 
-tmpMMpValueMod <- add_FPRTPR(tmp, arrangby = "moderated.p.value.adjusted",type="probability")
+tmpMMpValueMod <- ms_bench_add_FPRTPR(tmp, arrangby = "moderated.p.value.adjusted",type="probability")
 tmpMMpValueMod <- tmpMMpValueMod %>% mutate(arrangeby = paste0("mm.",arrangeby))
 
-tmpMMpValue <- add_FPRTPR(tmp, arrangby = "p.value.adjusted",type="probability")
-tmpMMMedianEstimate <- add_FPRTPR(tmp, arrangby = "pseudo_estimate",type="foldchange", desc=TRUE)
+tmpMMpValue <- ms_bench_add_FPRTPR(tmp, arrangby = "p.value.adjusted",type="probability")
+tmpMMMedianEstimate <- ms_bench_add_FPRTPR(tmp, arrangby = "pseudo_estimate",type="foldchange", desc=TRUE)
 tmpMMMedianEstimate <- tmpMMMedianEstimate %>% mutate(arrangeby = paste0("mm.",arrangeby))
 
 if(FALSE){
@@ -46,20 +59,33 @@ if(FALSE){
   View(inner_join(tmp, xx))
 }
 
-res <- bind_rows(list(tmpRopecaBBS,tmpRopecaMedianEstimate,
+res <- bind_rows(list(tmpStanRProb,tmpStanEEstimate,
+                      tmpRopecaBBS,tmpRopecaMedianEstimate,
                       tmpMedpolishPValue,tmpMedpolishEstimate,tmpMMpValueMod,
                       tmpMMpValue,tmpMMMedianEstimate))
+
+res <- bind_rows(list(tmpStanEEstimate,
+                      tmpRopecaMedianEstimate,
+                      tmpMedpolishEstimate,
+                      tmpMMMedianEstimate))
+
+res <- bind_rows(list(tmpStanRProb,
+                      tmpRopecaBBS,
+                      tmpMedpolishPValue,
+                      tmpMMpValue))
+
 
 #res <- bind_rows(list(tmpMMpValueMod,
 #                 tmpMMpValue))
 
+foo
+res %>% group_by(arrangeby, type) %>% summarize(n = n())
 ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
   geom_line(aes(linetype=type)) +
   facet_wrap(~contrast) + ylim(0.5,1)
 ggplot(res, aes(x = FPR, y = TPR, color = arrangeby)) +
   geom_line(aes(linetype=type)) +
   facet_wrap(~contrast) + xlim(0,0.2)
-
 
 summary <- res %>%
   group_by(arrangeby,contrast) %>%

@@ -1,3 +1,5 @@
+# Run mixed models on benchmark dataset.
+
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
@@ -76,18 +78,42 @@ if(TRUE){
 }
 
 message("######################## fit mixed #######################")
-memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
-modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
+
+#mycenter <- function(x){x - mean(x, na.rm=TRUE)}
+data_c <- summarised$results$pepIntensityNormalized
+config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
+#data_c <- data_c %>% group_by(config_c$table$hkeysLevel()) %>%
+#  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
+mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))
+#foo
+if(TRUE){
+  x <- interaction_missing_stats(data_c, config_c)$data
+  x0 <- x %>% dplyr::filter(nrMeasured == 0)
+  x1 <- x %>% dplyr::filter(nrMeasured == 1)
+  xx0 <- inner_join(data_c, x0)
+  xx0 <- xx0 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx0),replace = T))
+  xx1 <- inner_join(data_c, x1)
+  xx1 <- xx1 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx1),replace = T))
+  daNo01<- anti_join(data_c, bind_rows(x0,x1))
+  daNo01 <- daNo01 %>% mutate(intImputed  = transformedIntensity)
+
+  imputed <- bind_rows(xx0, xx1, daNo01)
+  config_c$table$setWorkIntensity("intImputed")
+  data_c <- imputed
+}
+mean(is.na(data_c$intImputed))
+
+memodel_full <- paste0(config_c$table$getWorkIntensity() , memodel)
+modelFunction <- make_custom_model_lmer( memodel_full, model_name = "meModel")
 reportColumns <- c("p.value",
                    "p.value.adjusted")
-
-
+#foo
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if(TRUE){
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
-    data = summarised$results$pepIntensityNormalized,
-    pepConfig = summarised$results$config_pepIntensityNormalized,
+    data = data_c,
+    pepConfig = config_c,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
