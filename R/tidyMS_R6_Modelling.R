@@ -1466,6 +1466,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' @param group_by_col colnames with contrast description - default 'lhs'
 #' @export
 #' @examples
+#'
 #' library(LFQService)
 #' modelSummary_A <- LFQService::modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
@@ -1495,7 +1496,9 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' abline(0,1, col=2)
 #'
 moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
-  dfg <- mm %>% group_by_at(group_by_col) %>% group_split()
+  dfg <- mm %>%
+    dplyr::group_by_at(group_by_col) %>%
+    dplyr::group_split()
   xx <- purrr::map_df(dfg, moderated_p_limma)
   return(xx)
 }

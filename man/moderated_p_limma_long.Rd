@@ -15,6 +15,7 @@ moderated_p_limma_long(mm, group_by_col = "lhs")
 Moderate p-value for long table
 }
 \examples{
+
 library(LFQService)
 modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
