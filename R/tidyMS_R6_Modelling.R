@@ -1067,7 +1067,7 @@ contrasts_linfct <- function(models,
     dplyr::filter(classC != "logical") -> interaction_model_matrix
 
   contrasts <- interaction_model_matrix %>%
-    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest()
+    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest(cols="contrast")
 
   modelInfos <- models %>%
     dplyr::select_at(c(subject_Id, "isSingular",
@@ -1448,8 +1448,8 @@ workflow_contrasts_linfct_V2 <- function(models,
 
 #' Moderate p-values - limma approach
 #' @export
-moderated_p_limma <- function(mm, df = "df"){
-  sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]])
+moderated_p_limma <- function(mm, df = "df", robust = FALSE){
+  sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]],robust=robust)
   sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- bind_cols(mm, sv)
