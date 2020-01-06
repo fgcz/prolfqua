@@ -33,7 +33,7 @@ config$workunit_Id = "IonStar"
 
 modelName  <- "Model"
 memodel <- "~ dilution. +  (1|peptide_Id)"
-lmmodel <- "~ dilution."
+memodel_trunc <- "|trunc() ~ dilution. +  (1|peptide_Id)"
 
 DEBUG <- FALSE
 
@@ -74,11 +74,8 @@ if(TRUE){
 
 
 message("######################## fit mixed #######################")
-memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
-modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
-
-
-
+memodel_full <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
+modelFunction <- make_custom_model_lmer( memodel_full, model_name = "meModel")
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if(TRUE){
@@ -100,40 +97,43 @@ library(brms)
 
 data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
+
+
 nested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
 
 mdata2 <- nested$data[[2]]
 mdata1 <- nested$data[[1]]
 mdata26 <- nested$data[[26]]
 
-check_factors_level_coverage <- function(mdata26, fixeff){
-  complete <- mdata26 %>% dplyr::select_at(fixeff) %>% distinct()
-  omitted <- mdata26 %>% na.omit %>% dplyr::select_at(fixeff) %>% distinct()
-  return(nrow(complete) == nrow(omitted))
-}
-
-check_factors_level_coverage(mdata26)
-
-
-summary(lme4::lmer(memodel, mdata))
-startmodel <- brms::brm(memodel, mdata2, cores=6)
-
+startmodel <- brms::brm(memodel_full, mdata2, cores=6)
 tmp <- update(startmodel, newdata = mdata26)
 
-ms_brms_model(mdata26, startmodel, dd$linfct_A)
-
-res <- ms_mcmc_constrast(tmp, dd$linfct_A)
-
-colnames(fixef(startmodel, summary=FALSE))
-
+source("../../R/tidyMS_stanr.R")
 library(MCMCvis)
 
-res <- nested %>% mutate(summary = purrr::map( data, ms_brms_model, startmodel, dd$linfct_A))
+res <- ms_brms_model(mdata = mdata2,
+              memodel = startmodel,
+              fixef = config$table$fkeysLevel(),
+              linfct_A = dd$linfct_A)
 
-res <- res %>% filter(!sapply(summary, is.null))
-dim(res)
-res$summary[[1]]
-res %>% select(protein_Id, summary) %>% unnest()
+if(FALSE){
+res <- nested %>% mutate(summary =
+                           purrr::map( data, ms_brms_model,
+                                       startmodel,
+                                       config$table$fkeysLevel(),
+                                       dd$linfct_A)
+                         )
+saveRDS(res, file="rstandSimpleMixed.RDS")
+}
 
-as_tibble(res$summary[[1]], rownames="contrast")
-"transformedIntensity~ drug * SCI  + (1|peptide_Id)"
+if(TRUE){
+  memodel_trunc_full <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel_trunc)
+  startmodel <- brms::brm(memodel_trunc_full, mdata2, cores=6)
+  res <- nested %>% mutate(summary =
+                             purrr::map( data, ms_brms_model,
+                                         startmodel,
+                                         config$table$fkeysLevel(),
+                                         dd$linfct_A)
+  )
+  saveRDS(res, file="rstandTruncMixed.RDS")
+}

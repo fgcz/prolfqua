@@ -1,9 +1,15 @@
 #' adds FDR and TPR plots
+#'
+#' FDP - false discovery proportion (Q in Benjamini hochber table)
+#' FPR - false positive rate
+#' TPR - true positive rate
+#' TP_hits - true positives
+#'
 #' @export
 ms_bench_add_FPRTPR <- function(tmp, idcol = "protein_Id",
                        TPcol = "TP",
                        groupby = "contrast",
-                       arrangby = "beta.based.significance",
+                       arrangeby = "beta.based.significance",
                        type = c("probability","foldchange"),desc = FALSE){
 
   tmp$TP_total <- length(unique(tmp[[idcol]][ tmp[[TPcol]] == TRUE]))
@@ -11,19 +17,19 @@ ms_bench_add_FPRTPR <- function(tmp, idcol = "protein_Id",
   tmp %>% summarise(n = n())
 
   tmp <- if(!desc){
-    tmp %>% arrange(!!sym(arrangby))
+    tmp %>% arrange(!!sym(arrangeby))#,desc(!!sym(TPcol)))
   }else{
-    tmp %>% arrange(desc(!!sym(arrangby)))
+    tmp %>% arrange(desc(!!sym(arrangeby)))#,desc(!!sym(TPcol)))
   }
-  tmp <- tmp %>% mutate(FDP = cummean(!TP)
+  tmp <- tmp %>% mutate( FDP = cummean(!TP)
                         , FPR = cumsum(!TP)/sum(!TP)
                         , TPR  = cumsum(TP)/TP_total
                         , TP_hits = cumsum(TP)
 
   ) %>% ungroup
   res <- tmp %>%
-    dplyr::select_at(c(idcol, TPcol, groupby, "FDP", "FPR", "TPR", "TP_hits"))
-  res$arrangeby <- arrangby
+    dplyr::select_at(c(idcol, TPcol, groupby , score = arrangeby ,"FDP", "FPR", "TPR", "TP_hits"))
+  res$arrangeby <- arrangeby
   res$type <- match.arg(type)
   return(res)
 }

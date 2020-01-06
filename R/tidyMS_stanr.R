@@ -1,17 +1,12 @@
-## functions supporting working with stand
+## functions supporting working with stan and brms
+#'
 #' Compute contrasts an
 #' covert brms output
 #' to code mcmc.list
 #' @export
 #'
 ms_mcmc_constrast <- function(model, linfct_A){
-
   colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(linfct_A)))
-
-  if(!all(colnames(linfct_A) %in% colnames(fixef(model, summary=FALSE)))){
-    return(NULL)
-  }
-
   my_MCMC_contrast_1 <- function(x,linfct_A){
     x <- as_tibble(x) %>% dplyr::select(starts_with("b_"))
     x <- select_at(x,colnames(linfct_A))
@@ -38,18 +33,28 @@ ms_mcmc_checkzero <- function(x = NULL){
   }
 }
 
+# do not even try to fit if levels are missing
+check_factors_level_coverage <- function(mdata26, fixeff){
+  complete <- mdata26 %>% dplyr::select_at(fixeff) %>% distinct()
+  omitted <- mdata26 %>% na.omit %>% dplyr::select_at(fixeff) %>% distinct()
+  return(nrow(complete) == nrow(omitted))
+}
 
 
 ### Model with stan
 #' fits brms model and computes summary.
 #' @export
 ms_brms_model<- function( mdata,
-                        memodel,
-                        linfct_A,
-                        func=ms_mcmc_checkzero,
-                        summarize=TRUE,
-                        cores = 6){
+                          memodel,
+                          fixef,
+                          linfct_A,
+                          func=ms_mcmc_checkzero,
+                          summarize=TRUE,
+                          cores = parallel::detectCores()){
 
+  if(!check_factors_level_coverage(mdata, fixef)){
+    return(NULL)
+  }
 
   if(class(memodel) == "character"){
     resultmodel <- tryCatch(brm(memodel, data = mdata, cores= cores), error = function(x) NULL)

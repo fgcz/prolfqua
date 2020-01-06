@@ -9,11 +9,14 @@ ms_bench_add_FPRTPR(
   idcol = "protein_Id",
   TPcol = "TP",
   groupby = "contrast",
-  arrangby = "beta.based.significance",
+  arrangeby = "beta.based.significance",
   type = c("probability", "foldchange"),
   desc = FALSE
 )
 }
 \description{
-adds FDR and TPR plots
+FDP - false discovery proportion (Q in Benjamini hochber table)
+FPR - false positive rate
+TPR - true positive rate
+TP_hits - true positives
 }

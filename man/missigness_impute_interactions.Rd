@@ -23,7 +23,12 @@ used in Acetylation project p2916
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
+tmp <- interaction_missing_stats(xx, skylineconfig)
 fun <- missigness_impute_interactions(xx, skylineconfig)
-fun("long")
-
+dd <- fun("long")
+head(dd)
+undebug(fun)
+xxx <- (fun("nrReplicates"))
+xxx <- fun("all")
+head(xxx)
 }
