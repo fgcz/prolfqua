@@ -4,7 +4,7 @@
 \alias{moderated_p_limma_long}
 \title{Moderate p-value for long table}
 \usage{
-moderated_p_limma_long(mm, group_by_col = "lhs")
+moderated_p_limma_long(mm, group_by_col = "lhs", robust = FALSE)
 }
 \arguments{
 \item{mm}{result of `contrasts_linfct``}
