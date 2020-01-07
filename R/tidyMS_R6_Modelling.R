@@ -1584,6 +1584,7 @@ get_p_values_pbeta <- function(median.p.value,
 
   shape1 <- (n.obs/2 + 0.5)
   shape2 <- (n.obs - (n.obs/2 + 0.5) + 1)
+  # n.obs/2 + 0.5
 
   stopifnot(shape1 == shape2)
   res.p.value <- pbeta(median.p.value,
@@ -1670,6 +1671,8 @@ summary_ROPECA_median_p.scaled <- function(
       sd.estimate = mad(!!sym(estimate), na.rm=TRUE),
       median.p.scaled = median(scaled.p, na.rm=TRUE))
 
+  summarized.protein <- inner_join(summarized.protein , nrpepsPerProt, by=c(subject_Id, contrast))
+
   if(has_name(contrasts_data, "c1_name")){
     ccsummary <- contrasts_data %>%
       group_by_at(c(subject_Id, contrast)) %>%
@@ -1682,7 +1685,7 @@ summary_ROPECA_median_p.scaled <- function(
   }
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(median.p = 1- abs(median.p.scaled))
+    dplyr::mutate(median.p = 1 - abs(median.p.scaled))
 
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
