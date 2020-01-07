@@ -1452,7 +1452,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
   sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]],robust=robust)
   sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
-  mm <- bind_cols(mm, sv)
+  mm <- dplyr::bind_cols(mm, sv)
   mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
   mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
   mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
@@ -1495,11 +1495,13 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
 #' abline(0,1, col=2)
 #'
-moderated_p_limma_long <- function( mm , group_by_col = "lhs"){
+moderated_p_limma_long <- function( mm ,
+                                    group_by_col = "lhs",
+                                    robust = FALSE){
   dfg <- mm %>%
     dplyr::group_by_at(group_by_col) %>%
     dplyr::group_split()
-  xx <- purrr::map_df(dfg, moderated_p_limma)
+  xx <- purrr::map_df(dfg, moderated_p_limma, robust = robust)
   return(xx)
 }
 
