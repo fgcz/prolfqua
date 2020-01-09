@@ -972,7 +972,10 @@ my_contest <- function(model, linfct){
     #                         joint = FALSE,
     #                         confint = TRUE)
   }else{
-    res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE)
+    res <- lmerTest::contest(model,
+                             linfct,
+                             joint = FALSE,
+                             confint = TRUE)
   }
   res <- tibble::as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
