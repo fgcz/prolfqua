@@ -1081,7 +1081,21 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 #' gg <- matrix(runif(20),4,5)
 #' rownames(gg) <- make.names(1:4)
 #' colnames(gg) <- make.names(1:5)
-#' medpolishPly(gg)
+#' mx <- medpolishPly(gg)
+#'
+#' # compare it with other methods of protein inference
+#' dd <- tidyr::gather(as_tibble(gg))
+#' x <- robust::lmRob(value ~ key, data = dd )
+#' pred_lmRob <- c(coef(x)[1] , coef(x)[1] + coef(x)[-1])
+#' xl <- lm(value ~ key , data = dd)
+#' pred_lm <- c(coef(xl)[1] , coef(xl)[1] + coef(xl)[-1])
+#' xr <- MASS::rlm(value ~ key , data = dd)
+#' pred_rlm <- c(coef(xr)[1] , coef(xr)[1] + coef(xr)[-1])
+#'
+#' xx <- cbind(pred_lmRob = pred_lmRob, medpolish = mx$medpolish, pred_lm=pred_lm,pred_rlm=pred_rlm )
+#' head(xx)
+#' matplot(xx, type="l")
+
 medpolishPly <- function(x, name=FALSE){
   if(name){
     return("medpolish")
@@ -1090,6 +1104,8 @@ medpolishPly <- function(x, name=FALSE){
   res <- tibble("sampleName" = names(X$col) , medpolish = X$col + X$overall)
   res
 }
+
+
 #' Summarizes the intensities within hierarchy
 #'
 #' @param func - a function working on a matrix of intensities for each protein.

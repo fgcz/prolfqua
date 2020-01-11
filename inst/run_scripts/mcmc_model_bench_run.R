@@ -82,6 +82,9 @@ message("######################## fit mixed #######################")
 #mycenter <- function(x){x - mean(x, na.rm=TRUE)}
 data_c <- summarised$results$pepIntensityNormalized
 config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
+usethis::use_data(data_c)
+usethis::use_data(config_c)
+
 #data_c <- data_c %>% group_by(config_c$table$hkeysLevel()) %>%
 #  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
 mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))

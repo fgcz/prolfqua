@@ -955,15 +955,28 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' applies contrast computation using lmerTest::contest function
 #' @export
 #' @examples
+#' library(LFQService)
 #' mb <- LFQService::basicModel_p1807
+#' summary(mb)
+#'
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
-#' lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 #' my_contest(mb, linfct$linfct_factors)
 #' my_contest(mb, linfct$linfct_interactions)
-#' #my_glht(mb, linfct$linfct_factors)
-#' #my_glht(mb, linfct$linfct_interactions)
-my_contest <- function(model, linfct){
+#'
+#' # my_glht(mb, linfct$linfct_factors)
+#' # my_glht(mb, linfct$linfct_interactions)
+#' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint=FALSE)
+#' summary(mb)
+#'
+#'
+#' library(pbkrtest)
+#' (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+#' class(fm1)
+#' get_ddf_Lb.lmerMod(fm1)
+#'
+my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
+  ddf <- match.arg(ddf)
   if(length(lme4::fixef(model)) != ncol(linfct) ){
     warning("Model is rank deficient!")
     return(NA) # catch rank defficient
@@ -975,13 +988,14 @@ my_contest <- function(model, linfct){
     res <- lmerTest::contest(model,
                              linfct,
                              joint = FALSE,
-                             confint = TRUE)
+                             confint = TRUE,
+                             ddf = ddf)
   }
   res <- tibble::as_tibble(res, rownames="lhs")
   res$sigma <- sigma(model)
   res <- res %>% dplyr::rename(estimate = Estimate,
                                std.error = "Std. Error",
-                               statistic="t value",
+                               statistic = "t value",
                                p.value = "Pr(>|t|)",
                                conf.low = "lower",
                                conf.high = "upper")
@@ -1024,7 +1038,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' modelSummary_A <- LFQService::modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
-#'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #' factor_contrasts
 #'
@@ -1036,16 +1049,19 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' #usethis::use_data(factor_levelContrasts, overwrite=TRUE)
 #'
 #' models_interaction <- LFQService::models_interaction
-#' #models_interaction$modelProtein <- dplyr::rename(models_interaction$modelProtein, linear_model = lmer_f_Condition_r_peptid_r_patient)
-#' #usethis::use_data(models_interaction,overwrite = TRUE)
+#'
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
+#' m$linear_model[[1]]
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-#' m
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'                            factor_contrasts,
 #'                        subject_Id = "protein_Id")
 #' head(factor_levelContrasts)
+#' m$linear_model[[1]]
+#' my_contest(m$linear_model[[1]],factor_contrasts )
+#'
 #' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
+#' abline(c(0,1))
 #' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 #'
 contrasts_linfct <- function(models,
@@ -1065,17 +1081,21 @@ contrasts_linfct <- function(models,
     class(x)[1]
   }
 
-  interaction_model_matrix %>%
+  interaction_model_matrix <-  interaction_model_matrix %>%
     dplyr::mutate(classC = purrr::map_chr(contrast,mclass)) %>%
-    dplyr::filter(classC != "logical") -> interaction_model_matrix
+    dplyr::filter(classC != "logical")
 
   contrasts <- interaction_model_matrix %>%
-    dplyr::select_at( c(subject_Id, "contrast") ) %>% tidyr::unnest(cols="contrast")
+    dplyr::select_at( c(subject_Id, "contrast") ) %>%
+    tidyr::unnest(cols="contrast")
 
+  # take sigma and df from somewhere else.
   modelInfos <- models %>%
-    dplyr::select_at(c(subject_Id, "isSingular",
+    dplyr::select_at(c(subject_Id,
+                       "isSingular",
                        "sigma.model" = "sigma",
                        "df.residual.model" = "df.residual" )) %>%
+
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
 

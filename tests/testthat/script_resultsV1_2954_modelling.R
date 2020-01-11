@@ -31,8 +31,9 @@ modelName  <- "f_Condition_r_peptide"
 
 formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 models_base <- model_analyse(results$pepIntensityNormalized, formula_randomPeptide, modelName)
-
 summary_base <- model_analyse_summarize(models_base$modelProtein,models_base$modelName)
+
+
 
 
 #model_analyse_write(models_base, modelName, results$path)
@@ -43,11 +44,33 @@ model_analyse_summarize_vis_write(reslist, path = results$path)
 
 # Model2
 modelName  <- "f_Condition_r_peptid_r_patient"
-formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1|patient_id)", model_name=modelName)
+formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition +  (1|patient_id) + (1|peptide_Id)", model_name=modelName)
 
 models_interaction <- model_analyse(results$pepIntensityNormalized,
                                     formula_randomPatient,
                                     modelName)
+
+
+if(TRUE){
+  m <- get_complete_model_fit(models_interaction$modelProtein)
+  m$linear_model[[1]]
+  factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+  factor_levelContrasts <- contrasts_linfct( m,
+                                             factor_contrasts,
+                                             subject_Id = "protein_Id")
+  head(factor_levelContrasts)
+  m$linear_model[[1]]
+  my_contest(m$linear_model[[1]],factor_contrasts )
+}
+
+
+
+
+
+
+
+
+
 
 # usethis::use_data(models_interaction, overwrite = TRUE)
 

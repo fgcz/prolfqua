@@ -4,18 +4,30 @@
 \alias{my_contest}
 \title{applies contrast computation using lmerTest::contest function}
 \usage{
-my_contest(model, linfct)
+my_contest(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 }
 \description{
 applies contrast computation using lmerTest::contest function
 }
 \examples{
+library(LFQService)
 mb <- LFQService::basicModel_p1807
+summary(mb)
+
 linfct <- linfct_from_model(mb)
 names(linfct)
-lmerTest::contest(mb, linfct$linfct_interactions, joint = FALSE, confint = TRUE)
 my_contest(mb, linfct$linfct_factors)
 my_contest(mb, linfct$linfct_interactions)
-#my_glht(mb, linfct$linfct_factors)
-#my_glht(mb, linfct$linfct_interactions)
+
+# my_glht(mb, linfct$linfct_factors)
+# my_glht(mb, linfct$linfct_interactions)
+lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint=FALSE)
+summary(mb)
+
+
+library(pbkrtest)
+(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+class(fm1)
+get_ddf_Lb.lmerMod(fm1)
+
 }

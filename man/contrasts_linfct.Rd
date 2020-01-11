@@ -19,7 +19,6 @@ used in p2621, p2109
 modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 
-
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 factor_contrasts
 
@@ -31,16 +30,19 @@ factor_levelContrasts <- contrasts_linfct( m,
 #usethis::use_data(factor_levelContrasts, overwrite=TRUE)
 
 models_interaction <- LFQService::models_interaction
-#models_interaction$modelProtein <- dplyr::rename(models_interaction$modelProtein, linear_model = lmer_f_Condition_r_peptid_r_patient)
-#usethis::use_data(models_interaction,overwrite = TRUE)
+
 m <- get_complete_model_fit(models_interaction$modelProtein)
+m$linear_model[[1]]
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-m
 factor_levelContrasts <- contrasts_linfct( m,
                            factor_contrasts,
                        subject_Id = "protein_Id")
 head(factor_levelContrasts)
+m$linear_model[[1]]
+my_contest(m$linear_model[[1]],factor_contrasts )
+
 plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
+abline(c(0,1))
 plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 
 }
