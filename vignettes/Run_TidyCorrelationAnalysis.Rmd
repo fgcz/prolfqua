@@ -181,7 +181,7 @@ proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
 
 ```{r doplottingOFProtein}
 # nest transtions
-xnested <- qvalFiltImputed %>% group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
+xnested <- qvalFiltImputed %>% group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
 
 
 #plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
@@ -193,7 +193,6 @@ figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hier
 ff <- proteinIntensities %>% 
   group_by_at(config$table$hierarchyKeys()[1]) %>% 
   tidyr::nest(.key = "topNIntensity")
-
 figs4 <- dplyr::inner_join(figs3,ff)
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
