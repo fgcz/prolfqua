@@ -41,7 +41,9 @@ To estimate fold-changes for proteins for which we could not fit a mixed-effects
 
 # Data preprocessing and diagnostic plots
 
-A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized protein intensities [^1]. 
+A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized protein intensities [^1].
+
+
 [^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
 
 
