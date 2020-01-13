@@ -18,7 +18,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 config <- LFQService::create_MQ_peptide_Configuration()
 
 annotation <- readxl::read_xlsx(inputAnntation)
-annotation <- annotation %>% filter(annotation$SCI!="un")
+annotation <- annotation %>% filter(annotation$SCI != "un")
 
 config$table$factors[["drug_"]] = "genotype"
 config$table$factors[["SCI_"]] = "SCI"
@@ -44,22 +44,22 @@ Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
                "interaction_construct_with_time" = "t_vs_v_given_8wk - t_vs_v_given_1wk"
 )
 
-if(TRUE){
+if (TRUE) {
   assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 
   res <- application_set_up_MQ_run(outpath = outpath,
                                    inputMQfile = inputMQfile,
                                    inputAnnotation = annotation,
-                                   config=config,
+                                   config = config,
                                    id_extractor = NULL,
-                                   use="peptides")
+                                   use = "peptides")
 
   summarised <- application_summarize_data_pep_to_prot(res$data,
                                                        res$config,
                                                        res$qc_path,
-                                                       DEBUG = DEBUG,
-                                                       WRITE_PROTS=FALSE)
+                                                       DEBUG = FALSE,
+                                                       WRITE_PROTS = FALSE)
   xx <- summarised$protintensity_fun("unnest")
   p <- plot_pca(xx$data, xx$config, add_txt = TRUE)
   print(p)
@@ -79,7 +79,7 @@ reportColumns <- c("p.value",
 
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-if(TRUE){
+if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
     data = summarised$results$pepIntensityNormalized,
@@ -87,9 +87,11 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
-  resXXmixmodel <- resXXmixmodel(do="result")
-  #saveRDS(resXX, file="resXX.rda")
+  #debug(resXXmixmodel)
+  resXXmixmodel(do = "write")
+  #resXXmixmodel <- resXXmixmodel(do = "result")
 }
+
 
 
 
@@ -100,7 +102,7 @@ relevantParameters <- list(outpath = outpath,
                            annotation = annotation,
                            reportColumns = reportColumns,
                            config = config,
-                           model= memodel,
+                           model = memodel,
                            Contrasts = Contrasts,
                            project_Id = config$project_Id,
                            order_Id = config$order_Id,
@@ -109,7 +111,7 @@ relevantParameters <- list(outpath = outpath,
 
 LFQService::copy_mixed_model_analysis_script()
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
-                  params= list(pars = relevantParameters),
+                  params = list(pars = relevantParameters),
                   output_format = "html_document",
                   output_dir = outpath,
                   output_file = "index.html")
