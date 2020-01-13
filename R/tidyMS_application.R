@@ -29,23 +29,23 @@
                                   subject_Id,
                                   remove_imputed = TRUE ){
 
-  contrast_results <- right_join( contrasts_xx$contrast_minimal,
+  contrast_results <- dplyr::right_join( contrasts_xx$contrast_minimal,
                                   contrasts_xx_imputed,
-                                  by= c(subject_Id,
+                                  by = c(subject_Id,
                                         "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>%
-    mutate(pseudo_estimate = case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
+    dplyr::mutate(pseudo_estimate = dplyr::case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
 
   contrast_results <- contrast_results %>%
-    mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
-  if(remove_imputed){
+    dplyr::mutate(is_pseudo_estimate = dplyr::case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+  if (remove_imputed) {
     contrast_results <- contrast_results %>%
-      mutate(c1 = case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
+      dplyr::mutate(c1 = dplyr::case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
     contrast_results <- contrast_results %>%
-      mutate(c2 = case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
+      dplyr::mutate(c2 = dplyr::case_when(is.na(estimate) ~ c2_imputed, TRUE ~ c2))
     contrast_results <- contrast_results %>%
-      dplyr::select(-contains("_imputed"))
+      dplyr::select(-dplyr::contains("_imputed"))
   }
 
   separate_hierarchy(contrast_results, config) -> filtered_dd
@@ -71,10 +71,10 @@ application_run_modelling_V2 <- function(outpath,
 
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)
-  if(!dir.exists(outpath)){
+  if (!dir.exists(outpath)) {
     dir.create(outpath)
   }
-  if(!dir.exists(modelling_path)){
+  if (!dir.exists(modelling_path)) {
     dir.create(modelling_path)
   }
 
@@ -101,9 +101,9 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result","write"),DEBUG = FALSE){
+  res_fun <- function(do=c("result","write_modelling","write_contrasts"), DEBUG = FALSE){
     do <- match.arg(do)
-    if(DEBUG){
+    if (DEBUG) {
       res <- list(modelFunction = modelFunction,
            imputed = contrasts_xx_imputed,
            remove_imputed = remove_imputed,
@@ -115,16 +115,22 @@ application_run_modelling_V2 <- function(outpath,
       return(res)
     }
 
-    if(do == "result"){
+    if (do == "result") {
       result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
                                             ,contrasts_xx_imputed,
                                             pepConfig$table$hkeysLevel())
-      return(result_table)
-    }else if(do == "write"){
+    }else if (do == "write_modelling") {
       modellingResult_fun(modelling_path)
-      res_contrasts(modelling_path, columns = modelFunction$report_columns)
-      lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))
+    }else if (do == "write_contrasts") {
+
+      filtered_dd <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
+      result_table <- .makeResult_contrasts(filtered_dd
+                                            ,contrasts_xx_imputed,
+                                            pepConfig$table$hkeysLevel())
+      lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
     }
+    return(result_table)
+
   }
   return(res_fun)
 }
