@@ -1450,7 +1450,10 @@ lfq_power_t_test_quantiles <- function(data,
     summary <- sampleSizes %>% dplyr::select( -N_exact, -delta) %>% spread(FC, N, sep="=")
     return(list(long = sampleSizes, summary = summary))
   }else{
-    message("no standard deviation is available, check if model is saturated (factor level variable).")
+    message("!!! ERROR !!! No standard deviation is available,
+            check if model is saturated (factor level variable).
+            lfq_power_t_test_quantiles.
+            !!! ERROR !!!")
     return(NULL)
   }
 }
