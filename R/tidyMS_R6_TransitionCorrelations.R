@@ -557,12 +557,12 @@ rankPrecursorsByIntensity <- function(data, config){
 #' stopifnot(dim(res$data) == c(10423, 10))
 #' stopifnot(names(res) %in% c("data", "newconfig"))
 #'
-aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1){
+aggregateTopNIntensities <- function(data , config, func, N){
   x <- as.list( match.call() )
   newcol <- make.names(glue::glue("srm_{deparse(x$func)}_{x$N}"))
   topInt <- data %>%
     dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
-    dplyr::group_by(!!!syms(c( config$table$hierarchyKeys()[1:hierarchy_level],
+    dplyr::group_by(!!!syms(c( config$table$hkeysLevel(),
                                config$table$sampleName,
                                config$table$fileName,
                                config$table$isotopeLabel,
@@ -573,7 +573,7 @@ aggregateTopNIntensities <- function(data , config, func, N, hierarchy_level = 1
 
   newconfig <- make_reduced_hierarchy_config(config,
                                              workIntensity = newcol,
-                                             hierarchy = config$table$hierarchy[1:hierarchy_level])
+                                             hierarchy = config$table$hierarchy[1:config$table$hierarchyLevel])
   return(list(data = sumTopInt, newconfig = newconfig))
 }
 
