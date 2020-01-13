@@ -10,6 +10,7 @@ plot_hierarchies_line_df(filteredPep, config)
 generates peptide level plots for all Proteins
 }
 \examples{
+library(tidyverse)
 resDataStart <- LFQService::testDataStart2954$resDataStart
 config <-  LFQService::testDataStart2954$config
 res <- plot_hierarchies_line_df(resDataStart, config)

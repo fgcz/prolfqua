@@ -4,7 +4,7 @@
 \alias{aggregateTopNIntensities}
 \title{aggregates top N intensities}
 \usage{
-aggregateTopNIntensities(data, config, func, N, hierarchy_level = 1)
+aggregateTopNIntensities(data, config, func, N)
 }
 \description{
 run \link{rankPrecursorsByIntensity} first
