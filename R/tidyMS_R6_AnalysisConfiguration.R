@@ -399,6 +399,7 @@ plot_hierarchies_line <- function(res, proteinName,
 #' @export
 #'
 #' @examples
+#' library(tidyverse)
 #' resDataStart <- LFQService::testDataStart2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
 #' res <- plot_hierarchies_line_df(resDataStart, config)
