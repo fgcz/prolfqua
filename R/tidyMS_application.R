@@ -119,6 +119,7 @@ application_run_modelling_V2 <- function(outpath,
       result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
                                             ,contrasts_xx_imputed,
                                             pepConfig$table$hkeysLevel())
+      return(result_table)
     }else if (do == "write_modelling") {
       modellingResult_fun(modelling_path)
     }else if (do == "write_contrasts") {
@@ -128,8 +129,9 @@ application_run_modelling_V2 <- function(outpath,
                                             ,contrasts_xx_imputed,
                                             pepConfig$table$hkeysLevel())
       lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
+      return(result_table)
     }
-    return(result_table)
+
 
   }
   return(res_fun)
