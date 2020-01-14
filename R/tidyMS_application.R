@@ -1,5 +1,5 @@
-.columnsImputed <- function(all, contrasts){
-  get_sides <- function(contrast){
+.columnsImputed <- function(all, contrasts) {
+  get_sides <- function(contrast) {
     bb <- str_split(contrast,"[-+]")
     bb <- gsub("[ `]", "", bb[[1]])
     return(bb)
@@ -7,7 +7,7 @@
 
   res <- NULL
 
-  for(i in 1:length(contrasts)){
+  for(i in 1:length(contrasts)) {
     cname <- names(contrasts)[i]
     cc <- get_sides(contrasts[i])
 
@@ -27,7 +27,7 @@
 .makeResult_contrasts <- function(contrasts_xx,
                                   contrasts_xx_imputed,
                                   subject_Id,
-                                  remove_imputed = TRUE ){
+                                  remove_imputed = TRUE ) {
 
   contrast_results <- dplyr::right_join( contrasts_xx$contrast_minimal,
                                   contrasts_xx_imputed,
@@ -66,7 +66,7 @@ application_run_modelling_V2 <- function(outpath,
                                          do_not_report = "",
                                          DEBUG= FALSE
 
-){
+) {
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
@@ -101,7 +101,7 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result","write_modelling","write_contrasts"), DEBUG = FALSE){
+  res_fun <- function(do=c("result","write_modelling","write_contrasts"), DEBUG = FALSE) {
     do <- match.arg(do)
     if (DEBUG) {
       res <- list(modelFunction = modelFunction,
@@ -147,24 +147,24 @@ application_set_up_MQ_run <- function(outpath,
                                       inputMQfile,
                                       inputAnnotation,
                                       config,
-                                      id_extractor = function(df){fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
+                                      id_extractor = function(df) {fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results",
-                                      use = c("peptides", "modificationSpecificPeptides" )){
+                                      use = c("peptides", "modificationSpecificPeptides" )) {
   peptides <- match.arg(use)
 
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  if(!is.null(id_extractor)){
+  if (!is.null(id_extractor)) {
     config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
   }
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
-  if(!dir.exists(outpath)){
+  if (!dir.exists(outpath)) {
     dir.create(outpath)
   }
 
   message(qc_path,"\n")
-  if(!dir.exists(qc_path)){
+  if (!dir.exists(qc_path)) {
     dir.create(qc_path)
   }
 
@@ -173,16 +173,16 @@ application_set_up_MQ_run <- function(outpath,
 
   mod_peptides_available <- "modificationSpecificPeptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
   resPepProtAnnot <- NULL
-  if(mod_peptides_available){
+  if (mod_peptides_available) {
     resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
-    { # create visualization for modified peptide sequence
+    {# create visualization for modified peptide sequence
       height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
-      png(file.path(qc_path, "retention_time_plot.png"), height = height, width=1200)
+      png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
       resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
 
-      tmp <- ggplot(resPepProtVis, aes(x = retention.time, y= log2(mod.peptide.intensity))) +
-        geom_point(alpha=1/20, size=0.3) +
-        facet_wrap(~raw.file, ncol=2 )
+      tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
+        geom_point(alpha = 1/20, size = 0.3) +
+        facet_wrap(~raw.file, ncol = 2)
 
       print(tmp)
       dev.off()
@@ -190,13 +190,13 @@ application_set_up_MQ_run <- function(outpath,
   }
 
   peptides_available <- "peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
-  if(peptides_available & peptides == "peptides"){
+  if (peptides_available & peptides == "peptides") {
     resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
   }
-  else if((peptides_available & mod_peptides_available) & peptides == "modificationSpecificPeptides"){
+  else if ((peptides_available & mod_peptides_available) & peptides == "modificationSpecificPeptides") {
     peptidestxt <- tidyMQ_Peptides(inputMQfile)
     resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
-  }else if(!peptides_available & mod_peptides_available){
+  }else if (!peptides_available & mod_peptides_available) {
     warning("no peptides.txt found!! working with modificationSpecificPeptides")
     config$table$workIntensity <- "mod.peptide.intensity"
     config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
@@ -206,26 +206,26 @@ application_set_up_MQ_run <- function(outpath,
 
   resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
   resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
-  resPepProtAnnot$isotope = "light"
+  resPepProtAnnot$isotope <- "light"
 
-  if(!is.null(id_extractor)){
+  if (!is.null(id_extractor)) {
     resPepProtAnnot <- id_extractor(resPepProtAnnot)
   }
 
   {# add annotation
-    if(is.character(inputAnnotation)){
+    if (is.character(inputAnnotation)) {
       annotation <- readxl::read_xlsx(inputAnnotation)
     }else{
       annotation <- inputAnnotation
     }
     noData <- annotation[!annotation$raw.file %in% resPepProtAnnot$raw.file,]
-    if(nrow(noData)){
+    if (nrow(noData)) {
       message("some files in annotation have no measurements")
       message(paste(noData,collapse = " "))
     }
     measSamples <- unique(resPepProtAnnot$raw.file)
     noAnnot <- measSamples[! measSamples%in% annotation$raw.file]
-    if(length(noAnnot) > 0 ){
+    if (length(noAnnot) > 0 ) {
       message("some measured samples have no annotation!")
       message(paste(noAnnot,collapse = " "))
     }
@@ -250,15 +250,15 @@ application_summarize_data_pep_to_prot <- function(data,
                                                    config,
                                                    qc_path,
                                                    DEBUG= FALSE,
-                                                   WRITE_PROTS=TRUE){
+                                                   WRITE_PROTS=TRUE) {
 
   message("deprecated use data_pep_to_prot instead")
   res_fun <- data_pep_to_prot(data,
                           config,
                           qc_path)
 
-  if(!DEBUG){res_fun("render")}
-  if(WRITE_PROTS){res_fun("plotprot")}
+  if (!DEBUG) {res_fun("render")}
+  if (WRITE_PROTS) {res_fun("plotprot")}
   res_fun("pepwrite")
   res_fun("protwrite")
   return(res_fun(DEBUG=TRUE))
@@ -269,7 +269,7 @@ application_summarize_data_pep_to_prot <- function(data,
 #' @export
 data_pep_to_prot <- function(data,
                              config,
-                             qc_path){
+                             qc_path) {
   qc_path <- qc_path
   results <- LFQService::workflow_MQ_protoV1(
     data,
@@ -283,14 +283,14 @@ data_pep_to_prot <- function(data,
 
 
   ### generate return value
-  res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"),DEBUG=FALSE){
+  res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"),DEBUG=FALSE) {
     do <- match.arg(do)
-    if(DEBUG){
+    if (DEBUG) {
       return(list(qc_path = qc_path, results = results, protintensity_fun = protintensity_fun ))
     }
     assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
-    if(do == "render"){
+    if (do == "render") {
       LFQService::render_MQSummary_rmd(results$filteredPep,
                                        results$config_filteredPep$clone(deep=TRUE),
                                        pep=TRUE,
@@ -307,16 +307,16 @@ data_pep_to_prot <- function(data,
                                        dest_file_name="protein_intensities_qc",
                                        format="html"
       )
-    }else if(do == "plotprot"){
+    }else if (do == "plotprot") {
       figs <- protintensity_fun("plot")
       pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
       lapply(figs$plot, print)
       dev.off()
 
-    }else if(do =="protwrite"){
+    }else if (do =="protwrite") {
       unnestProt <- protintensity_fun("unnest")
       quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
-    }else if(do == "pepwrite"){
+    }else if (do == "pepwrite") {
       wideFRAMEPeptide <- LFQService::toWideConfig(results$pepIntensityNormalized,
                                                    results$config_pepIntensityNormalized)
       lfq_write_table(separate_hierarchy(wideFRAMEPeptide$data,
@@ -340,7 +340,7 @@ application_summarize_compound <- function(data,
                                            qc_path,
                                            DEBUG= FALSE,
                                            WRITE_PROTS=TRUE,
-                                           prefix = c("peptide", "compound")){
+                                           prefix = c("peptide", "compound")) {
   prefix <- match.arg(prefix)
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
@@ -352,7 +352,7 @@ application_summarize_compound <- function(data,
   lfq_write_table(separate_hierarchy(wideFRAME$data,
                                      results$config),
                   path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
-  if(!DEBUG){
+  if (!DEBUG) {
     LFQService::render_MQSummary_rmd(results$data,
                                      results$config$clone(deep=TRUE),
                                      pep=TRUE,
@@ -363,7 +363,7 @@ application_summarize_compound <- function(data,
   }
 
 
-  if(WRITE_PROTS){
+  if (WRITE_PROTS) {
     figs <- plot_hierarchies_line_df(results$data, results$config )
     pdf(file.path(qc_path, paste0(prefix, "_intensities_.pdf")))
     lapply(figs, print)
