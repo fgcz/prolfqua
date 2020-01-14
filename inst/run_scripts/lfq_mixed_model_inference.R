@@ -55,16 +55,18 @@ if (TRUE) {
                                    id_extractor = NULL,
                                    use = "peptides")
 
+
   summarised <- application_summarize_data_pep_to_prot(res$data,
                                                        res$config,
                                                        res$qc_path,
                                                        DEBUG = FALSE,
                                                        WRITE_PROTS = FALSE)
-  xx <- summarised$protintensity_fun("unnest")
-  p <- plot_pca(xx$data, xx$config, add_txt = TRUE)
-  print(p)
-  p <- plot_pca(xx$data, xx$config, add_txt = FALSE)
-  print(p)
+
+
+  summarised("render")
+  summarised("plotprot")
+  summarised("pepwrite")
+  summarised("protwrite")
 
   saveRDS(summarised,"aaa_summarized.RDA")
 }else{
@@ -87,9 +89,10 @@ if (TRUE) {
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
-  #debug(resXXmixmodel)
-  resXXmixmodel(do = "write")
-  #resXXmixmodel <- resXXmixmodel(do = "result")
+
+  resXXmixmodel(do = "write_modelling")
+  resXXmixmodel(do = "write_contrasts")
+
 }
 
 
