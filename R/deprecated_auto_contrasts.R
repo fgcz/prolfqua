@@ -169,30 +169,29 @@ deprecated_compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_l
 
 
 deprecated_model_full_lmer <- function(config, factor_level=2, random= NULL){
-  if(factor_level > 2)
+  if (factor_level > 2)
   {
-    error("can't automatically create model formula")
+    stop("can't automatically create model formula")
   }
   formula_str <- paste0(config$table$getWorkIntensity(), " ~ ",
                         "1 + ",
-                        paste(config$table$factorKeys()[1:factor_level], collapse=" + "),
+                        paste(config$table$factorKeys()[1:factor_level], collapse = " + "),
                         " + ",
-                        paste(config$table$factorKeys()[1:factor_level], collapse=" * "),
+                        paste(config$table$factorKeys()[1:factor_level], collapse = " * "),
                         paste0(" + (1|", setdiff(config$table$hierarchyKeys() , config$table$hkeysLevel()),")"))
-  if(!is.null(random)){
+  if (!is.null(random)) {
     formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
   }
   formula <- as.formula( formula_str )
 
   print(formula)
-  model_fun <- function(x, get_formula=FALSE){
-    if(get_formula)
-    {
+  model_fun <- function(x, get_formula = FALSE){
+    if (get_formula) {
       return(formula)
     }
 
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
-                          error=function(e){print(e);return=NULL})
+    modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
+                          error = function(e){print(e); return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -203,9 +202,9 @@ deprecated_model_full_lmer <- function(config, factor_level=2, random= NULL){
 
 deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random = NULL){
   formula_str <- paste0(config$table$getWorkIntensity(), " ~ ",
-                        paste(config$table$factorKeys()[1:factor_level], collapse="+"),
+                        paste(config$table$factorKeys()[1:factor_level], collapse = "+"),
                         paste0(" + (1|", config$table$hierarchyKeys(TRUE)[1],")"))
-  if(!is.null(random)){
+  if (!is.null(random)) {
     formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
   }
   formula <- as.formula(
@@ -213,12 +212,12 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
   )
   print(formula)
   model_fun <- function(x, get_formula=FALSE){
-    if(get_formula)
+    if (get_formula)
     {
       return(formula)
     }
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
-                          error=function(e){print(e);return=NULL})
+    modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
+                          error = function(e){print(e);return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,

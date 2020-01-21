@@ -4,9 +4,9 @@
 #' @examples
 #' data(correlatedPeptideList)
 #' transitionCorrelations(correlatedPeptideList[[1]])
-transitionCorrelations <- function(dataX){
+transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
-    ordt <- (dataX)[order(apply(dataX, 1, mean)),]
+    ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     dd <- stats::cor(t(ordt), use = "pairwise.complete.obs", method = "spearman")
     return(dd)
   }else{
@@ -21,22 +21,14 @@ transitionCorrelations <- function(dataX){
 #' @examples
 #' data(correlatedPeptideList)
 #' transitionCorrelationsJack(correlatedPeptideList[[1]])
-transitionCorrelationsJack <- function(dataX, distmethod = function(x){cor(x,
-                                                                           use = "pairwise.complete.obs", method = "pearson")}){
+transitionCorrelationsJack <- function(dataX,
+                                       distmethod =
+                                         function(x){cor(x, use = "pairwise.complete.obs", method = "pearson")}) {
   if (nrow(dataX) > 1) {
-    ordt <- (dataX)[order(apply(dataX,1,mean)),]
+    ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     xpep <- t(ordt)
     quantable::jackknifeMatrix(xpep, distmethod)
   }else{
-    message("Could not compute correlation, nr rows : " , nrow(dataX) )
+    message("Could not compute correlation, nr rows : ", nrow(dataX))
   }
 }
-
-
-
-
-
-
-
-
-
