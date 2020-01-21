@@ -855,14 +855,14 @@ my_contrast <- function(m,
 
   estimate <- linfct %*% t(t(coef))
 
-  if(df > 0){
+  if (df > 0) {
     std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
     statistic <- estimate / std.error
 
     #p.value <- pt(-abs(statistic), df = df) * 2
 
     p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
-    prqt <- -qt((1-confint)/2, df=df)
+    prqt <- -qt((1 - confint)/2, df = df)
     conf.low <- estimate  - prqt * std.error
     conf.high <- estimate + prqt * std.error
 
@@ -881,8 +881,9 @@ my_contrast <- function(m,
                     std.error = std.error,
                     statistic = statistic ,
                     p.value = p.value,
-                    conf.low= conf.low,
-                    conf.high =conf.high, stringsAsFactors = FALSE)
+                    conf.low = conf.low,
+                    conf.high = conf.high,
+                    stringsAsFactors = FALSE)
   return(res)
 }
 

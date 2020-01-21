@@ -323,36 +323,37 @@ plot_hierarchies_line_default <- function(data,
                                           separate = FALSE,
                                           log_y=FALSE
 ){
-  if(length(isotopeLabel)){
-    if(separate){
-      formula <- paste(paste( isotopeLabel, collapse="+"), "~", paste(factor , collapse = "+"))
+  if (length(isotopeLabel)) {
+    if (separate) {
+      formula <- paste(paste( isotopeLabel, collapse = "+"), "~", paste(factor , collapse = "+"))
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
-                                   group=fragment,
-                                   color= peptide
+                                   group = fragment,
+                                   color = peptide
       ))
     }else{
-      formula <- sprintf("~%s",paste(factor, collapse=" + "))
+      formula <- sprintf("~%s",paste(factor, collapse = " + "))
       data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
       p <- ggplot(data, aes_string(x = sample,
                                    y = intensity,
-                                   group="fragment_label",
-                                   color= peptide
+                                   group = "fragment_label",
+                                   color = peptide
       ))
     }
-    p <- p +  geom_point(aes_string(shape= isotopeLabel)) + geom_line(aes_string(linetype = isotopeLabel))
+    p <- p +  geom_point(aes_string(shape = isotopeLabel)) +
+      geom_line(aes_string(linetype = isotopeLabel))
   }else{
-    formula <- sprintf("~%s", paste(factor, collapse=" + "))
-    p <- ggplot(data, aes_string(x = sample, y = intensity, group=fragment,  color= peptide))
+    formula <- sprintf("~%s", paste(factor, collapse = " + "))
+    p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color = peptide))
     p <- p +  geom_point() + geom_line()
   }
 
   #p <- ggplot(data, aes_string(x = sample, y = intensity, group=fragment,  color= peptide, linetype = isotopeLabel))
   p <- p + facet_grid(as.formula(formula), scales = "free_x"   )
   p <- p + ggtitle(proteinName) + theme_classic()
-  p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position="top")
-  if(log_y){
-    p <- p + scale_y_continuous(trans='log10')
+  p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
+  if (log_y) {
+    p <- p + scale_y_continuous(trans = 'log10')
   }
   return(p)
 }
@@ -458,7 +459,11 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' #boxplot=TRUE
 #' #factor_level = 1
 #' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot=FALSE )
-plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1, boxplot=TRUE){
+plot_hierarchies_boxplot <- function(ddd,
+                                     proteinName,
+                                     config,
+                                     factor_level = 1,
+                                     boxplot=TRUE){
 
   stopifnot(factor_level <= length(config$table$factorKeys()))
   isotopeLabel <- config$table$isotopeLabel
@@ -466,19 +471,19 @@ plot_hierarchies_boxplot <- function(ddd, proteinName, config , factor_level = 1
   ddlong <- as.data.frame(unclass(ddlong))
   p <- ggplot(ddlong, aes_string(x = tail(config$table$hierarchyKeys(),1),
                                  y = config$table$getWorkIntensity(),
-                                 fill="level"
+                                 fill = "level"
   )) +
-    facet_wrap(~factor, ncol=1) +
+    facet_wrap(~factor, ncol = 1) +
     theme_classic() +
-    theme(axis.text.x = element_text(angle =45, hjust = 1, vjust=1)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(proteinName)
-  if(!config$parameter$is_intensity_transformed){
-    p <- p + scale_y_continuous(trans="log10")
+  if (!config$parameter$is_intensity_transformed) {
+    p <- p + scale_y_continuous(trans = "log10")
   }
-  if(boxplot){
+  if (boxplot) {
     p <- p + geom_boxplot()
-  }else{
-    p <- p + ggbeeswarm::geom_quasirandom(dodge.width=0.7)
+  } else {
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7)
   }
   return(p)
 }

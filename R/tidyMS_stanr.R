@@ -10,7 +10,7 @@ ms_mcmc_constrast <- function(model, linfct_A){
   my_MCMC_contrast_1 <- function(x,linfct_A){
     x <- as_tibble(x) %>% dplyr::select(starts_with("b_"))
     x <- select_at(x,colnames(linfct_A))
-    output <-  coda::mcmc(as.matrix(x)%*% t(linfct_A))
+    output <-  coda::mcmc(as.matrix(x) %*% t(linfct_A))
   }
   xx <- brms::as.mcmc(model)
   res <- coda::mcmc.list(lapply(xx, my_MCMC_contrast_1, linfct_A))
@@ -22,7 +22,7 @@ ms_mcmc_constrast <- function(model, linfct_A){
 #'
 #'
 ms_mcmc_checkzero <- function(x = NULL){
-  if(!is.null(x)){
+  if (!is.null(x)) {
     less0 <- mean(x < 0)
     great0 <- mean(x > 0)
     return(c( less0 = less0,
@@ -44,7 +44,7 @@ check_factors_level_coverage <- function(mdata26, fixeff){
 ### Model with stan
 #' fits brms model and computes summary.
 #' @export
-ms_brms_model<- function( mdata,
+ms_brms_model <- function(mdata,
                           memodel,
                           fixef,
                           linfct_A,
@@ -52,21 +52,21 @@ ms_brms_model<- function( mdata,
                           summarize=TRUE,
                           cores = parallel::detectCores()){
 
-  if(!check_factors_level_coverage(mdata, fixef)){
+  if (!check_factors_level_coverage(mdata, fixef)) {
     return(NULL)
   }
 
-  if(class(memodel) == "character"){
-    resultmodel <- tryCatch(brm(memodel, data = mdata, cores= cores), error = function(x) NULL)
-  }else if(class(memodel) == "brmsfit"){
-    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores= cores), error = function(x) NULL)
+  if (class(memodel) == "character") {
+    resultmodel <- tryCatch(brm(memodel, data = mdata, cores = cores), error = function(x) NULL)
+  }else if (class(memodel) == "brmsfit") {
+    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores = cores), error = function(x) NULL)
   }
   res <- NULL
-  if(!is.null(resultmodel)){
-    if(summarize){
+  if (!is.null(resultmodel)) {
+    if (summarize) {
       res <- ms_mcmc_constrast(resultmodel, linfct_A)
-      if(is.null(res)){return(NULL)}
-      res <- as_tibble(MCMCsummary(res, func = func, func_name = func()), rownames="contrast")
+      if (is.null(res)) {return(NULL)}
+      res <- as_tibble(MCMCsummary(res, func = func, func_name = func()), rownames = "contrast")
       return(res)
     } else{
       return(resultmodel)
