@@ -20,15 +20,22 @@ knitr::opts_chunk$set(echo = FALSE)
 library(flextable)
 pars <- params$pars
 
-paste_file <- function(..., collapse = NULL){
-  x <- c(...)
-  res <- paste(x, collapse = "")
-  if (file.exists(res)) {
-    return(res)
-  }else{
-    stop("File ", res, " does not exist!")
+
+makefunction <- function(outpath) {
+  outpath <- outpath
+  res <-  function(..., collapse = NULL){
+    x <- c(...)
+    res <- paste(x, collapse = "")
+    if (file.exists(file.path(outpath,res))) {
+      return(res)
+    }else{
+      stop("File ", file.path(outpath,res) , " does not exist!")
+    }
   }
+  return(res)
 }
+
+paste_file <- makefunction(outpath = pars$outpath)
 
 ```
 
@@ -74,7 +81,7 @@ ftab
 - PCA plot ([pdf](`r paste_file("qc_results/protein_intensities_PCA_.pdf")`){target="_blank"},[html](qc_results/protein_intensities_PCA_.html){target="_blank"}) showing the samples according to the first and second principal component.
 - [Heatmap based on protein intensity correlation among samples](`r paste_file("qc_results/protein_intensities_heatmap_correlation_.pdf")`){target="_blank"}.
 - [Protein intensities heatmap](`r paste_file("qc_results/protein_intensities_heatmap_.pdf")`){target="_blank"}. The columns represent samples while the rows represent proteins. The protein intensities were z scored.
-- The protein intensities in [excel xlsx format](`r paste_file("qc_results/protein_intensities_wide_.xlsx")`{target="_blank"}.
+- The protein intensities in [excel xlsx format](`r paste_file("qc_results/protein_intensities_wide_.xlsx")`){target="_blank"}.
 - A [pdf file](`r paste_file("qc_results/protein_intensities_inference_figures.pdf")`){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
 - A quality control report of estimated protein intensities [html](`r paste_file("qc_results/protein_intensities_qc.html")`){target="_blank"}.
 
@@ -112,17 +119,16 @@ maPlot <- file.path(pars$modelling_dir, "Contrasts_MA_FC_estimate_Model")
 
 
 
-- ANOVA results ([excel xlsx format](`r paste_file(anovaXLSX,".xlsx")`);[html](`r paste_file(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r paste_file(anovaPDF)`){target="_blank"} which shows which factors in the model are most significant.
 
-- For all contrasts and proteins:
+- For all contrasts and proteins we provide:
     - A __table__ with all fold change estimates and p values ([excel xlsx format](`r paste_file(contrastXLSX,".xlsx")`); [html](`r paste_file(contrastXLSX,".html")`){target="_blank"}) 
-    for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided [^2]. The columns `estimate` and `pseudo_estimate` hold the fold changes. The column `p.value.adjusted` hods the False Discovery Rate. 
+    for all proteins and contrasts. For proteins not quantified in one of the conditions, _pseudo_ estimates are provided [^2]. The columns `estimate` and `pseudo_estimate` hold the fold changes. The column `p.value.adjusted` holds the False Discovery Rate. 
     - __Histogram of p-Values__ ([pdf](`r paste_file(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast. This plot can be used to asses the quality of you data and model (see [How to interpret p-value histogram]( http://varianceexplained.org/statistics/interpreting-pvalue-histogram/)).
     - __Histogram of adjusted p-Values__ ([pdf](`r paste_file(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the false discovery rates (FDR - p values adjusted using the Benjamin and Hochberg method [see @BenjaminiHochberg1995]).
     - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste_file(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste_file(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein $-\log_{10}(p~values)$ versus the the log2 fold changes on the horizontal axis.
     - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste_file(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste_file(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the $-\log_{10}(FDR)$ versus the the _log2_ fold changes on the horizontal axis.
     - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r paste_file(maPlot,".pdf")`){target="_blank"}; [html](`r paste_file(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments (this is also known as mean difference plot MD).
-    
+    - ANOVA results ([excel xlsx format](`r paste_file(anovaXLSX,".xlsx")`);[html](`r paste_file(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r paste_file(anovaPDF)`){target="_blank"}) which show which factors included in the model are significant.
 
 
 [^2]:  To estimate a fold-changes for proteins were a mixed-effects model can not be fitted, because there is no measurement for on of the conditions, we proceed as follows: First, we compute the mean intensity of all peptides for that condition. For the proteins with no measurements, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. 

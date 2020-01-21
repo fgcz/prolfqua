@@ -56,11 +56,9 @@ if (TRUE) {
                                    use = "peptides")
 
 
-  summarised <- application_summarize_data_pep_to_prot(res$data,
-                                                       res$config,
-                                                       res$qc_path,
-                                                       DEBUG = FALSE,
-                                                       WRITE_PROTS = FALSE)
+  summarised <- data_pep_to_prot(res$data,
+                                 res$config,
+                                 res$qc_path)
 
 
   summarised("render")
@@ -73,9 +71,10 @@ if (TRUE) {
   summarised <- readRDS("aaa_summarized.RDA")
 }
 
+summarised <- summarised(DEBUG = TRUE)
 message("######################## fit mixed #######################")
 memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
-modelFunction <- make_custom_model_lmer( memodel, model_name = "meModel")
+modelFunction <- make_custom_model_lmer( memodel, model_name = "Model")
 reportColumns <- c("p.value",
                    "p.value.adjusted")
 
@@ -111,7 +110,6 @@ relevantParameters <- list(outpath = outpath,
                            order_Id = config$order_Id,
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
-
 LFQService::copy_mixed_model_analysis_script()
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   params = list(pars = relevantParameters),
