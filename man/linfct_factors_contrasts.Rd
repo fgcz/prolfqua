@@ -14,6 +14,6 @@ library(LFQService)
 m <- LFQService::basicModel_p1807
 xl <- linfct_factors_contrasts(m)
 xl
-m <- lm(Petal.Width ~ Species, data=iris)
+m <- lm(Petal.Width ~ Species, data = iris)
 linfct_factors_contrasts(m)
 }

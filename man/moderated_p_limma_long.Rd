@@ -26,8 +26,8 @@ factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
                                                    contrastfun = my_contrast_V2)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-abline(0,1, col=2)
+plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
+abline(0,1, col = 2)
 
 # updating lmer model
 models_interaction <- LFQService::models_interaction
@@ -41,7 +41,7 @@ factor_levelContrasts <- contrasts_linfct(m,
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 head(mmm)
-plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-abline(0,1, col=2)
+plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
+abline(0,1, col = 2)
 
 }

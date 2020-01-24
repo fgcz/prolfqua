@@ -14,9 +14,9 @@ p-value of protein from p.value of the median fold change peptide.
 }
 \examples{
 plot(get_p_values_pbeta(0.1,1:10))
-abline(h=.05,col=2)
+abline(h=.05,col = 2)
 plot(get_p_values_pbeta(0.3,1:30))
-abline(h=.05,col=2)
+abline(h=.05,col = 2)
 plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 
 }

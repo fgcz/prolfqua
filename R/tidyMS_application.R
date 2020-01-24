@@ -7,7 +7,7 @@
 
   res <- NULL
 
-  for(i in 1:length(contrasts)) {
+  for (i in 1:length(contrasts)) {
     cname <- names(contrasts)[i]
     cc <- get_sides(contrasts[i])
 
@@ -229,7 +229,7 @@ application_set_up_MQ_run <- function(outpath,
       message("some measured samples have no annotation!")
       message(paste(noAnnot,collapse = " "))
     }
-    resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by= "raw.file")
+    resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by = "raw.file")
     ###  Setup analysis ####
   }
 

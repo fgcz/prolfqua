@@ -11,7 +11,7 @@ linfct_matrix_contrasts
 }
 \examples{
 m <- LFQService::basicModel_p1807
-linfct <- linfct_from_model(m,as_list=FALSE)
+linfct <- linfct_from_model(m,as_list = FALSE)
 linfct
 
 Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",

@@ -27,7 +27,7 @@ factor_levelContrasts <- contrasts_linfct( m,
         subject_Id = "Compound",
         contrastfun = LFQService::my_contrast_V2)
 
-#usethis::use_data(factor_levelContrasts, overwrite=TRUE)
+#usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 
 models_interaction <- LFQService::models_interaction
 

@@ -29,7 +29,7 @@ nrProtein <- 800
 p.value <- runif(nrPep)
 estimate <- sample(c(-1,1),nrPep, replace = TRUE)
 protein_Id <- sample(1:800, size = nrPep,
-  replace=TRUE, prob = dexp(seq(0,5,length=800)))
+  replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 
 plot(table(table(protein_Id)))
 
@@ -39,14 +39,14 @@ xx <- summary_ROPECA_median_p.scaled(testdata,
 
                                     subject_Id = "protein_Id",
                                     estimate = "estimate",
-                                    p.value="p.value",
+                                    p.value = "p.value",
                                     max.n = 10)
 colnames(xx)
 hist(testdata$p.value)
-hist(xx$median.p.scaled, breaks=20)
-hist(xx$median.p, breaks=20)
+hist(xx$median.p.scaled, breaks = 20)
+hist(xx$median.p, breaks = 20)
 hist(xx$beta.based.significance, breaks = 20)
 
 
-summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast="contrast")
+summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
 }

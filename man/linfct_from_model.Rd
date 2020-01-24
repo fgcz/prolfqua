@@ -26,6 +26,6 @@ all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
 linfct$linfct_interactions
 #}
 
-m <- lm(Petal.Width ~ Species, data=iris)
+m <- lm(Petal.Width ~ Species, data = iris)
 linfct_from_model(m)
 }

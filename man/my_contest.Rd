@@ -21,7 +21,7 @@ my_contest(mb, linfct$linfct_interactions)
 
 # my_glht(mb, linfct$linfct_factors)
 # my_glht(mb, linfct$linfct_interactions)
-lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint=FALSE)
+lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 summary(mb)
 
 

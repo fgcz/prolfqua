@@ -11,6 +11,6 @@ Create custom ml model
 }
 \examples{
 tmp <- make_custom_model_rlm("Intensity ~ condition", model_name = "parallel design")
-tmp$model_fun(get_formula=TRUE)
+tmp$model_fun(get_formula = TRUE)
 tmp$isSingular
 }
