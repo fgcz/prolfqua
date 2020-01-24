@@ -11,7 +11,7 @@ table factors
 }
 \examples{
 library(tidyverse)
-conf <- LFQService::skylineconfig$clone(deep=TRUE)
+conf <- LFQService::skylineconfig$clone(deep = TRUE)
 configuration <- conf
 data <- LFQService::sample_analysis
 xx <- table_factors(data,configuration )

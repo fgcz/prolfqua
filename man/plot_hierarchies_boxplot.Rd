@@ -18,7 +18,7 @@ plot peptides by factors and its levels.
 \examples{
 library(LFQService)
 library(tidyverse)
-conf <- LFQService::skylineconfig$clone(deep=TRUE)
+conf <- LFQService::skylineconfig$clone(deep = TRUE)
 xnested <- LFQService::sample_analysis \%>\%
  group_by_at(conf$table$hkeysLevel()) \%>\% tidyr::nest()
 
@@ -26,7 +26,7 @@ plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
 #ddd <- xnested$data[[3]]
 #proteinName <- xnested$protein_Id[[3]]
 #config <- conf
-#boxplot=TRUE
+#boxplot = TRUE
 #factor_level = 1
-plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot=FALSE )
+plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot = FALSE )
 }

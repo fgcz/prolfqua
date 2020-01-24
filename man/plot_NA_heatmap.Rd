@@ -14,10 +14,10 @@ plot heatmap of NA values
 library(tidyverse)
 library(LFQService)
 data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 tmp <- plot_NA_heatmap(data, config)
 print(tmp$plot)
-xx <- plot_NA_heatmap(data, config,distance="euclidean")
+xx <- plot_NA_heatmap(data, config,distance = "euclidean")
 print(xx$plot)
 dev.off()
 print(xx$plot)

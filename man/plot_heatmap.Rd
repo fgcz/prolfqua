@@ -13,8 +13,14 @@ plot heatmap with annotations
 library(tidyverse)
 library(LFQService)
 data <- LFQService::sample_analysis
-config <- LFQService::skylineconfig$clone(deep=TRUE)
+config <- LFQService::skylineconfig$clone(deep = TRUE)
+graphics.off()
+.Device
+ p  <- plot_heatmap(data, config)
+.Device
+ print(p)
+ .Device
+ plot(1)
 
-print(plot_heatmap(data, config))
-
+ print(p)
 }

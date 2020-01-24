@@ -17,8 +17,8 @@ Summarize peptide Counts
 \examples{
 library(LFQService)
 library(tidyverse)
-skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
- ident_qValue="Detection.Q.Value")
+skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+ ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 data(skylinePRMSampleData)
 configuration <- skylineconfig
@@ -29,20 +29,20 @@ sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #hierarchy = configuration$table$hkeysLevel()
 
 summarize_hierarchy(sample_analysis, skylineconfig)
-summarize_hierarchy(sample_analysis, skylineconfig, factors=character())
+summarize_hierarchy(sample_analysis, skylineconfig, factors = character())
 
 summarize_hierarchy(sample_analysis, skylineconfig,
  hierarchy = skylineconfig$table$hkeysLevel() )
 summarize_hierarchy(sample_analysis, skylineconfig,
- hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
-skylineconfig$table$hierarchyLevel=1
+ hierarchy = NULL, factors = skylineconfig$table$fkeysLevel() )
+skylineconfig$table$hierarchyLevel = 1
 summarize_hierarchy(sample_analysis, skylineconfig,
  factors = skylineconfig$table$fkeysLevel())
-skylineconfig$table$hierarchyLevel=2
+skylineconfig$table$hierarchyLevel = 2
 summarize_hierarchy(sample_analysis, skylineconfig)
-skylineconfig$table$hierarchyLevel=3
+skylineconfig$table$hierarchyLevel = 3
 summarize_hierarchy(sample_analysis, skylineconfig )
-skylineconfig$table$hierarchyLevel=4
+skylineconfig$table$hierarchyLevel = 4
 summarize_hierarchy(sample_analysis, skylineconfig )
 summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 }

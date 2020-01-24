@@ -12,7 +12,7 @@ Count distinct elements for each level of hierarchy
 \examples{
 library(tidyverse)
 library(LFQService)
-skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)

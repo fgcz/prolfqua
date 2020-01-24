@@ -18,7 +18,7 @@ extracts the relevant information from the configuration to make the plot.
 \examples{
 library(LFQService)
 library(tidyverse)
-conf <- LFQService::skylineconfig$clone(deep=TRUE)
+conf <- LFQService::skylineconfig$clone(deep = TRUE)
 xnested <- LFQService::sample_analysis \%>\%
  group_by_at(conf$table$hkeysLevel()) \%>\% tidyr::nest()
 

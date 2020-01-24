@@ -13,9 +13,9 @@ applys func - a funciton workin on matrix for each protein and returning a vecto
 library(LFQService)
 library(tidyverse)
 data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
-plot_stat_violin(res, config, stat="mean")
-plot_stat_violin(res, config, stat="sd")
-plot_stat_violin(res, config, stat="CV")
+plot_stat_violin(res, config, stat = "mean")
+plot_stat_violin(res, config, stat = "sd")
+plot_stat_violin(res, config, stat = "CV")
 }

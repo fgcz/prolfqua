@@ -13,7 +13,7 @@ medpolishPly(x, name = FALSE)
 compute tukeys median polish from peptide or precursor intensities
 }
 \examples{
-medpolishPly(name=T)
+medpolishPly(name = T)
 gg <- matrix(runif(20),4,5)
 rownames(gg) <- make.names(1:4)
 colnames(gg) <- make.names(1:5)
@@ -28,8 +28,8 @@ pred_lm <- c(coef(xl)[1] , coef(xl)[1] + coef(xl)[-1])
 xr <- MASS::rlm(value ~ key , data = dd)
 pred_rlm <- c(coef(xr)[1] , coef(xr)[1] + coef(xr)[-1])
 
-xx <- cbind(pred_lmRob = pred_lmRob, medpolish = mx$medpolish, pred_lm=pred_lm,pred_rlm=pred_rlm )
+xx <- cbind(pred_lmRob = pred_lmRob, medpolish = mx$medpolish, pred_lm = pred_lm,pred_rlm = pred_rlm )
 head(xx)
-matplot(xx, type="l")
+matplot(xx, type = "l")
 }
 \concept{matrix manipulation}

@@ -22,7 +22,7 @@ skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
 fun <- missigness_impute_factors_interactions(xx, skylineconfig)
-fun <- missigness_impute_factors_interactions(xx, skylineconfig, value="imputed")
+fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 head(fun)
 dim(fun)
 dim(distinct(fun[,1:6]))

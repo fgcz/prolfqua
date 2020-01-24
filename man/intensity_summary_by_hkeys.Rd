@@ -19,13 +19,13 @@ Summarizes the intensities within hierarchy
 
 library(LFQService)
 library(tidyverse)
-config <- LFQService::skylineconfig$clone(deep=TRUE)
+config <- LFQService::skylineconfig$clone(deep = TRUE)
 data <- LFQService::sample_analysis
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 res <- x("unnest")
 x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") \%>\% tidyr::unnest()
-config <- LFQService::skylineconfig$clone(deep=TRUE)
+config <- LFQService::skylineconfig$clone(deep = TRUE)
 config$table$hierarchyLevel <- 1
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 

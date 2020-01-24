@@ -19,17 +19,17 @@ Compute theoretical sample sizes from factor level standard deviations
 \examples{
 
 data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 
 data2 <- transform_work_intensity(data, config, transformation = log2)
 
 res <- lfq_power_t_test_quantiles(data2, config)
 res
-stats_res <- summarize_cv(data2, config, all=FALSE)
+stats_res <- summarize_cv(data2, config, all = FALSE)
 stats_res
-res <- lfq_power_t_test_quantiles(data2, config, delta=2)
+res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 res
-res <- lfq_power_t_test_quantiles(data2, config, delta=c(0.5,1,2))
+res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
 res
 
 }

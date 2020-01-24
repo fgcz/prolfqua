@@ -13,7 +13,7 @@ stddev vs mean
 library(LFQService)
 library(tidyverse)
 data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
 plot_stdv_vs_mean(res, config)
 datalog2 <- transform_work_intensity(data, config, transformation = log2)

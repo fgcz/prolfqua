@@ -28,6 +28,6 @@ summary(mb)
 library(pbkrtest)
 (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
 class(fm1)
-get_ddf_Lb.lmerMod(fm1)
+#pbkrtest::get_ddf_Lb.lmerMod(fm1)
 
 }

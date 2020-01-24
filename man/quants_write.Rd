@@ -10,9 +10,22 @@ quants_write(
   path_qc,
   suffix = "",
   prefix = "protein",
-  na_fraction = 0.3
+  na_fraction = 0.3,
+  close_devices = TRUE
 )
+}
+\arguments{
+\item{close_devices}{default TRUE, there are problems writing heatmaps trygin to fix it by closing all grafic devices.}
 }
 \description{
 write intensites into folder - for the moment protein
+}
+\examples{
+
+data <- LFQService::data_c
+config <- config <- LFQService::config_c
+path_qc = "."
+if(FALSE){
+   quants_write(data, config, path_qc)
+}
 }

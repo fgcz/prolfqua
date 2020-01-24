@@ -16,11 +16,11 @@ lfq_power_t_test_quantiles_V2(
 estimate sample sizes
 }
 \examples{
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 data <- sample_analysis
 data2 <- transform_work_intensity(data, config, transformation = log2)
 stats_res <- summarize_cv(data2, config)
-xx <- summarize_cv_quantiles(stats_res, config, probs=0.5)
+xx <- summarize_cv_quantiles(stats_res, config, probs = 0.5)
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- (bind_rows(bbb))
 summary <- bbb \%>\% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\% spread(delta, N, sep="=")

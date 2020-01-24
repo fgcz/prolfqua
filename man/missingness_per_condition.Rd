@@ -17,7 +17,7 @@ names(res)
 res$data
 res$figure
 print(res$figure)
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 x <- sample_analysis
 
 }

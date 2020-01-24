@@ -13,7 +13,7 @@ plot_stat_violin_median
 library(LFQService)
 library(tidyverse)
 data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+config <- skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
-plot_stat_violin_median(res, config, stat="mean")
+plot_stat_violin_median(res, config, stat = "mean")
 }
