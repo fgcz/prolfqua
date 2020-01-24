@@ -35,7 +35,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          #' @field fileName some funny name
                                          fileName = NULL,
                                          factors = list(), # ordering is important - first is considered the main
-                                         factorLevel=1,
+                                         factorLevel = 1,
 
                                          sampleName = "sampleName",
                                          # measurement levels
@@ -70,10 +70,10 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          },
                                          #' get name of working intensity column
                                          getWorkIntensity = function(){
-                                           return(tail(self$workIntensity, n=1))
+                                           return(tail(self$workIntensity, n = 1))
                                          },
                                          #' remove working intensity column
-                                         popWorkIntensity=function(){
+                                         popWorkIntensity = function(){
                                            res <- self$workIntensity[length(self$workIntensity)]
                                            self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
                                            return(res)
@@ -96,7 +96,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                            }
                                          },
                                          hkeysLevel = function(names = TRUE){
-                                           res <- head( self$hierarchy,n=self$hierarchyLevel)
+                                           res <- head( self$hierarchy,n = self$hierarchyLevel)
                                            res <- if(names){
                                              names(res)
                                            }else{
@@ -160,7 +160,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' make_reduced_hierarchy_config(skylineconfig, "testintensity", skylineconfig$table$hierarchy[1:2])
 #'
 make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
-  newConfig <-config$clone(deep=TRUE)
+  newConfig <-config$clone(deep = TRUE)
   newConfig$table$hierarchy = hierarchy
   newConfig$table$workIntensity = workIntensity
   return(newConfig)
@@ -177,7 +177,7 @@ make_interaction_column <- function(data, columns, sep="."){
   intr <- purrr::map2_dfc(columns, intr, paste0)
   colnames(intr) <- paste0("interaction_",columns)
   colname <- "interaction"
-  data <- data %>% dplyr::mutate(!!colname := interaction(intr, sep=sep))
+  data <- data %>% dplyr::mutate(!!colname := interaction(intr, sep = sep))
   return(data)
 }
 
@@ -191,7 +191,7 @@ make_interaction_column <- function(data, columns, sep="."){
 #' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
 make_interaction_column_config <- function(data, config, sep="."){
   columns <- config$table$fkeysLevel()
-  data <- make_interaction_column(data, columns, sep=sep)
+  data <- make_interaction_column(data, columns, sep = sep)
   return(data)
 }
 
@@ -219,8 +219,8 @@ R6extractValues <- function(r6class){
 #' @export
 #' @examples
 #'
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
-#'  ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+#'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #'
@@ -230,14 +230,14 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
   for(i in 1:length(table$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep=configuration$sep)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
   for(i in 1:length(table$factors))
   {
     if( length(table$factors[[i]]) > 1){
-      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE, sep=configuration$sep)
+      data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE, sep = configuration$sep)
     }else{
       newname <-table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -249,10 +249,10 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   if(!sampleName  %in% names(data)){
     message("creating sampleName")
 
-    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep=configuration$sep) %>%
+    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) %>%
       dplyr::select(sampleName, table$fileName) %>% dplyr::distinct() %>%
-      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep=configuration$sep )}) %>%
-      dplyr::inner_join(data, by=table$fileName)
+      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep = configuration$sep )}) %>%
+      dplyr::inner_join(data, by = table$fileName)
   } else{
     warning(sampleName, " already exists")
   }
@@ -272,7 +272,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' @export
 separate_hierarchy <- function(data, config){
   for(hkey in config$table$hkeysLevel()){
-    data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep=config$sep, remove=FALSE)
+    data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -281,7 +281,7 @@ separate_hierarchy <- function(data, config){
 #' @export
 separate_factors <- function(data, config){
   for(fkey in config$table$factorKeys()){
-    data<- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep=config$sep, remove=FALSE)
+    data<- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -321,7 +321,7 @@ plot_hierarchies_line_default <- function(data,
                                           factor,
                                           isotopeLabel,
                                           separate = FALSE,
-                                          log_y=FALSE
+                                          log_y = FALSE
 ){
   if (length(isotopeLabel)) {
     if (separate) {
@@ -348,7 +348,7 @@ plot_hierarchies_line_default <- function(data,
     p <- p +  geom_point() + geom_line()
   }
 
-  #p <- ggplot(data, aes_string(x = sample, y = intensity, group=fragment,  color= peptide, linetype = isotopeLabel))
+  #p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color= peptide, linetype = isotopeLabel))
   p <- p + facet_grid(as.formula(formula), scales = "free_x"   )
   p <- p + ggtitle(proteinName) + theme_classic()
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
@@ -363,7 +363,7 @@ plot_hierarchies_line_default <- function(data,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
@@ -371,8 +371,8 @@ plot_hierarchies_line_default <- function(data,
 #'
 plot_hierarchies_line <- function(res, proteinName,
                                   configuration,
-                                  factor_level=1,
-                                  separate=FALSE){
+                                  factor_level = 1,
+                                  separate = FALSE){
 
   rev_hnames <- configuration$table$hierarchyKeys(TRUE)
   fragment <- rev_hnames[1]
@@ -405,16 +405,16 @@ plot_hierarchies_line <- function(res, proteinName,
 #' config <-  LFQService::testDataStart2954$config
 #' res <- plot_hierarchies_line_df(resDataStart, config)
 #' res[[1]]
-#' config <- config$clone(deep=TRUE)
+#' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
-#' #config$table$hierarchyLevel=2
+#' #config$table$hierarchyLevel = 2
 #' #res <- plot_hierarchies_line_df(resDataStart, config)
 #filteredPep <- resDataStart
 plot_hierarchies_line_df <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
 
   hierarchy_ID <- "hierarchy_ID"
-  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()), remove=FALSE)
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()), remove = FALSE)
 
   xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
 
@@ -433,13 +433,13 @@ plot_hierarchies_line_df <- function(filteredPep, config){
 #'
 plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
   table <- configuration$table
-  p + geom_line(data=data,
-                aes_string(x = table$sampleName , y = aes_y, group=1),
-                size=1.3,
-                color="black",
-                linetype="dashed") +
-    geom_point(data=data,
-               aes_string(x = table$sampleName , y = aes_y, group=1), color="black", shape=10)
+  p + geom_line(data = data,
+                aes_string(x = table$sampleName , y = aes_y, group = 1),
+                size = 1.3,
+                color = "black",
+                linetype = "dashed") +
+    geom_point(data = data,
+               aes_string(x = table$sampleName , y = aes_y, group = 1), color = "black", shape = 10)
 }
 
 #' plot peptides by factors and its levels.
@@ -448,7 +448,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
@@ -456,14 +456,14 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' #ddd <- xnested$data[[3]]
 #' #proteinName <- xnested$protein_Id[[3]]
 #' #config <- conf
-#' #boxplot=TRUE
+#' #boxplot = TRUE
 #' #factor_level = 1
-#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot=FALSE )
+#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot = FALSE )
 plot_hierarchies_boxplot <- function(ddd,
                                      proteinName,
                                      config,
                                      factor_level = 1,
-                                     boxplot=TRUE){
+                                     boxplot = TRUE){
 
   stopifnot(factor_level <= length(config$table$factorKeys()))
   isotopeLabel <- config$table$isotopeLabel
@@ -495,9 +495,9 @@ plot_hierarchies_boxplot <- function(ddd,
 #' config <-  LFQService::testDataStart2954$config
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 #' res[[1]]
-#' config <- config$clone(deep=TRUE)
+#' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
-#' config$table$hierarchyLevel=2
+#' config$table$hierarchyLevel = 2
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 plot_hierarchies_boxplot_df <- function(filteredPep, config){
   factor_level <- config$table$factorLevel
@@ -523,7 +523,7 @@ plot_hierarchies_boxplot_df <- function(filteredPep, config){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep=TRUE)
+#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
 #' configuration <- conf
 #' data <- LFQService::sample_analysis
 #' xx <- table_factors(data,configuration )
@@ -545,7 +545,7 @@ table_factors <- function(data, configuration){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
@@ -562,7 +562,7 @@ hierarchy_counts <- function(x, configuration){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type", ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
@@ -591,7 +591,7 @@ hierarchy_counts_sample <- function(data,
       }else if(value == "plot"){
         nudgeval <- max(long$nr) * 0.05
         ggplot(long, aes(x = sampleName, y = nr)) +
-          geom_bar(stat = "identity", position = "dodge", colour="black", fill="white") +
+          geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           facet_wrap( ~ key, scales = "free_y", ncol = 1) +
           geom_text(aes(label = nr), nudge_y = nudgeval) +
           theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -608,8 +608,8 @@ hierarchy_counts_sample <- function(data,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
-#'  ident_qValue="Detection.Q.Value")
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+#'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' data(skylinePRMSampleData)
 #' configuration <- skylineconfig
@@ -620,26 +620,26 @@ hierarchy_counts_sample <- function(data,
 #' #hierarchy = configuration$table$hkeysLevel()
 #'
 #' summarize_hierarchy(sample_analysis, skylineconfig)
-#' summarize_hierarchy(sample_analysis, skylineconfig, factors=character())
+#' summarize_hierarchy(sample_analysis, skylineconfig, factors = character())
 #'
 #' summarize_hierarchy(sample_analysis, skylineconfig,
 #'  hierarchy = skylineconfig$table$hkeysLevel() )
 #' summarize_hierarchy(sample_analysis, skylineconfig,
-#'  hierarchy = NULL, factors=skylineconfig$table$fkeysLevel() )
-#' skylineconfig$table$hierarchyLevel=1
+#'  hierarchy = NULL, factors = skylineconfig$table$fkeysLevel() )
+#' skylineconfig$table$hierarchyLevel = 1
 #' summarize_hierarchy(sample_analysis, skylineconfig,
 #'  factors = skylineconfig$table$fkeysLevel())
-#' skylineconfig$table$hierarchyLevel=2
+#' skylineconfig$table$hierarchyLevel = 2
 #' summarize_hierarchy(sample_analysis, skylineconfig)
-#' skylineconfig$table$hierarchyLevel=3
+#' skylineconfig$table$hierarchyLevel = 3
 #' summarize_hierarchy(sample_analysis, skylineconfig )
-#' skylineconfig$table$hierarchyLevel=4
+#' skylineconfig$table$hierarchyLevel = 4
 #' summarize_hierarchy(sample_analysis, skylineconfig )
 #' summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 summarize_hierarchy <- function(x,
                                 configuration,
                                 hierarchy = configuration$table$hkeysLevel(),
-                                factors=character())
+                                factors = character())
 {
   all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
@@ -683,7 +683,7 @@ interaction_missing_stats <- function(x,
   missingPrec <- missingPrec %>%
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
-                     meanArea = mean(!!sym(workIntensity), na.rm=TRUE)) %>%
+                     meanArea = mean(!!sym(workIntensity), na.rm = TRUE)) %>%
     mutate(nrMeasured = nrReplicates-nrNAs) %>% dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea")))
@@ -711,7 +711,7 @@ missigness_impute_interactions <- function(mdataTrans,
                                            config,
                                            factors = config$table$fkeysLevel(),
                                            probs = 0.1){
-  x <- interaction_missing_stats(mdataTrans, config, factors=factors)
+  x <- interaction_missing_stats(mdataTrans, config, factors = factors)
   x_summaries <- x$summaries
   xx <- x$data
   xx <- make_interaction_column(xx, factors, sep=":")
@@ -726,7 +726,7 @@ missigness_impute_interactions <- function(mdataTrans,
 
   xx <- xx %>%
     group_by(interaction) %>%
-    mutate(imputed = lowerMean(meanArea,probs=0.2))
+    mutate(imputed = lowerMean(meanArea,probs = 0.2))
 
   res_fun <- function(value = c("long",
                                 "nrReplicates",
@@ -757,42 +757,42 @@ missigness_impute_interactions <- function(mdataTrans,
         tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanArea <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"meanArea" ) )) %>%
-        tidyr::spread(interaction, meanArea, sep=".meanArea.") %>%
+      meanArea <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"meanArea" ) )) %>%
+        tidyr::spread(interaction, meanArea, sep = ".meanArea.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanAreaImputed <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
+      meanAreaImputed <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
         tidyr::spread(interaction, imputed, sep=".imputed.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      allTables <- list(meanArea= meanArea,
+      allTables <- list(meanArea = meanArea,
                         nrMeasured = nrMeasured,
                         nrReplicates = nrReplicates,
                         meanAreaImputed = meanAreaImputed)
-      if(value == "all"){
+      if (value == "all") {
         allTables[["long"]] <- xx
         return(allTables)
-      }else if(value == "allWide"){
+      }else if (value == "allWide") {
         return(purrr::reduce(allTables, inner_join))
-      }else if(value == "nrReplicates"){
-        srepl <- if(add.prefix){"nrRep."}else{""}
+      }else if (value == "nrReplicates") {
+        srepl <- if (add.prefix) {"nrRep."}else{""}
         colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
         nrReplicates <- tibble::add_column( nrReplicates, "value" = value, .before = 1)
         return(nrReplicates)
-      }else if(value == "nrMeasured"){
-        srepl <- if(add.prefix){"nrMeas."}else{""}
+      }else if (value == "nrMeasured") {
+        srepl <- if (add.prefix) {"nrMeas."}else{""}
         colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl ,colnames(nrMeasured))
         nrMeasured <- tibble::add_column( nrMeasured, "value" = value, .before = 1)
         return(nrMeasured)
-      }else if(value == "meanArea"){
-        srepl <- if(add.prefix){"mean."}else{""}
+      }else if (value == "meanArea") {
+        srepl <- if (add.prefix) {"mean."}else{""}
         colnames(meanArea) <- gsub("interaction.meanArea.", srepl ,colnames(meanArea))
         meanArea <- tibble::add_column( meanArea, "value" = value, .before = 1)
         return(meanArea)
-      }else if(value == "imputed"){
-        srepl <- if(add.prefix){"mean.imp."}else{""}
+      }else if (value == "imputed") {
+        srepl <- if (add.prefix) {"mean.imp."}else{""}
         colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAreaImputed))
-        meanAreaImputed<- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
+        meanAreaImputed <- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
         return(meanAreaImputed)
       }
     }
@@ -812,7 +812,7 @@ missigness_impute_interactions <- function(mdataTrans,
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
 #' fun <- missigness_impute_factors_interactions(xx, skylineconfig)
-#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value="imputed")
+#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 #' head(fun)
 #' dim(fun)
 #' dim(distinct(fun[,1:6]))
@@ -821,15 +821,15 @@ missigness_impute_factors_interactions <-
   function(data,
            config,
            value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
-           probs=0.1,
-           add.prefix=FALSE){
+           probs = 0.1,
+           add.prefix = FALSE){
     value <- match.arg(value)
     fac_fun <- list()
     fac_fun[["interaction"]] <- missigness_impute_interactions(data,
                                                                config,
                                                                probs = probs)
-    if(config$table$factorLevel > 1 ){ # if 1 only then done
-      for(factor in config$table$fkeysLevel()){
+    if (config$table$factorLevel > 1 ) { # if 1 only then done
+      for (factor in config$table$fkeysLevel()) {
         fac_fun[[factor]] <- missigness_impute_interactions(data,
                                                             config,
                                                             factors = factor,
@@ -837,8 +837,8 @@ missigness_impute_factors_interactions <-
       }
     }
     fac_res <- list()
-    for(fun_name in names(fac_fun)){
-      fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix=add.prefix)
+    for (fun_name in names(fac_fun)) {
+      fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
     }
     intfact <- purrr::reduce(fac_res,
                              dplyr::inner_join,
@@ -853,14 +853,14 @@ missigness_impute_factors_interactions <-
 missigness_impute_contrasts <- function(data,
                                         config,
                                         contrasts,
-                                        agg_fun=function(x){median(x, na.rm = TRUE)})
+                                        agg_fun = function(x){median(x, na.rm = TRUE)})
 {
-  for(i in 1:length(contrasts)){
+  for (i in 1:length(contrasts)) {
     message(names(contrasts)[i], "=", contrasts[i],"\n")
     data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
 
-  if(!is.null(agg_fun)){
+  if (!is.null(agg_fun)) {
     data <- data %>% group_by_at(c("value" , config$table$hkeysLevel())) %>%
       summarise_if(is.numeric, agg_fun)
   }
@@ -888,32 +888,32 @@ workflow_missigness_impute_contrasts <- function(data,
 
   res_fun <- function(value = c("long", "wide","raw"),
                       what = c("contrasts", "factors", "all"),
-                      DEBUG=FALSE){
+                      DEBUG = FALSE){
     value <- match.arg( value )
     what  <- match.arg( what  )
-    if(DEBUG){
+    if (DEBUG) {
       return(list(value = value,
                   what = what,
                   dd_long = dd_long,
                   contrasts = contrasts,
-                  config=config ))
+                  config = config ))
     }
 
-    if(what == "contrasts"){
+    if (what == "contrasts") {
       dd_long <- dplyr::filter(dd_long, contrast %in% names(contrasts))
-    }else if(what == "factors"){
+    }else if (what == "factors") {
       dd_long <- dplyr::filter(dd_long, ! contrast %in% names(contrasts))
-    }else if(what == "all"){
+    }else if (what == "all") {
     }
 
-    if(value == "long"){
+    if (value == "long") {
       long_xxxx <- dd_long %>% spread(value, int_val)
       return(long_xxxx)
-    }else if(value == "wide"){
+    }else if (value == "wide") {
       dd <- dd_long %>% unite(contrast.v , value, contrast, sep="~") %>% spread(contrast.v, int_val)
       xxx_imputed <- inner_join(LFQService::summarize_hierarchy(data,config),dd)
       return(xxx_imputed)
-    }else if(value == "raw"){
+    }else if (value == "raw") {
       return(dd_long)
     }
   }
@@ -941,9 +941,8 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
   missingPrec <- interaction_missing_stats(x, config , factors)$data
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
 
-  if(showempty){
-    if(config$parameter$is_intensity_transformed)
-    {
+  if (showempty) {
+    if (config$parameter$is_intensity_transformed) {
       missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),1,meanArea))
     }else{
       missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),-20,meanArea))
@@ -960,8 +959,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
     facet_grid(as.formula(formula)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if(!config$parameter$is_intensity_transformed)
-  {
+  if (!config$parameter$is_intensity_transformed) {
     p <- p + scale_x_log10()
   }
   p
@@ -982,10 +980,10 @@ missingness_per_condition_cumsum <- function(x,
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config,factors)$data
 
-  xx <-missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
+  xx <- missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize(nrTransitions =n())
 
-  xxcs <-xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
+  xxcs <- xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
     dplyr::mutate(cumulative_sum = cumsum(nrTransitions))
   res <- xxcs  %>% dplyr::select(-nrTransitions)
 
@@ -993,13 +991,13 @@ missingness_per_condition_cumsum <- function(x,
   message(formula)
 
   nudgeval = max(res$cumulative_sum) * 0.05
-  p <- ggplot(res, aes(x= nrNAs, y = cumulative_sum)) +
-    geom_bar(stat="identity", color="black", fill="white") +
+  p <- ggplot(res, aes(x = nrNAs, y = cumulative_sum)) +
+    geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = cumulative_sum), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
 
   res <- res %>% tidyr::spread("nrNAs","cumulative_sum")
-  return(list(data =res, figure=p))
+  return(list(data = res, figure = p))
 }
 
 #' Summarize missing in condtion as barplot
@@ -1012,7 +1010,7 @@ missingness_per_condition_cumsum <- function(x,
 #' res$data
 #' res$figure
 #' print(res$figure)
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' x <- sample_analysis
 #'
 missingness_per_condition <- function(x, config, factors = config$table$fkeysLevel()){
@@ -1020,7 +1018,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysLev
   missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
-  xx <-missingPrec %>% group_by_at(c(table$isotopeLabel,
+  xx <- missingPrec %>% group_by_at(c(table$isotopeLabel,
                                      factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize( !!sym(hierarchyKey) := n())
 
@@ -1029,8 +1027,8 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysLev
 
   nudgeval = max(xx[[hierarchyKey]]) * 0.05
 
-  p <- ggplot(xx, aes_string(x= "nrNAs", y = hierarchyKey)) +
-    geom_bar(stat="identity", color="black", fill="white") +
+  p <- ggplot(xx, aes_string(x = "nrNAs", y = hierarchyKey)) +
+    geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval) +
     facet_grid(as.formula(formula))
   xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
@@ -1073,7 +1071,7 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
                                   table$factorKeys(),
                                   table$fileName,
                                   table$isotopeLabel)) %>% dplyr::distinct()
-  res <- dplyr::inner_join(xx,medpolishRes, by=table$sampleName)
+  res <- dplyr::inner_join(xx,medpolishRes, by = table$sampleName)
   res
 }
 
@@ -1083,7 +1081,7 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 #' @param name if TRUE returns the name of the summary column
 #' @export
 #' @examples
-#' medpolishPly(name=T)
+#' medpolishPly(name = T)
 #' gg <- matrix(runif(20),4,5)
 #' rownames(gg) <- make.names(1:4)
 #' colnames(gg) <- make.names(1:5)
@@ -1098,15 +1096,15 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 #' xr <- MASS::rlm(value ~ key , data = dd)
 #' pred_rlm <- c(coef(xr)[1] , coef(xr)[1] + coef(xr)[-1])
 #'
-#' xx <- cbind(pred_lmRob = pred_lmRob, medpolish = mx$medpolish, pred_lm=pred_lm,pred_rlm=pred_rlm )
+#' xx <- cbind(pred_lmRob = pred_lmRob, medpolish = mx$medpolish, pred_lm = pred_lm,pred_rlm = pred_rlm )
 #' head(xx)
-#' matplot(xx, type="l")
+#' matplot(xx, type = "l")
 
-medpolishPly <- function(x, name=FALSE){
-  if(name){
+medpolishPly <- function(x, name = FALSE){
+  if (name) {
     return("medpolish")
   }
-  X <- medpolish(x,na.rm=TRUE, trace.iter=FALSE, maxiter = 10);
+  X <- medpolish(x,na.rm = TRUE, trace.iter = FALSE, maxiter = 10);
   res <- tibble("sampleName" = names(X$col) , medpolish = X$col + X$overall)
   res
 }
@@ -1123,13 +1121,13 @@ medpolishPly <- function(x, name=FALSE){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQService::skylineconfig$clone(deep=TRUE)
+#' config <- LFQService::skylineconfig$clone(deep = TRUE)
 #' data <- LFQService::sample_analysis
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' res <- x("unnest")
 #' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
-#' config <- LFQService::skylineconfig$clone(deep=TRUE)
+#' config <- LFQService::skylineconfig$clone(deep = TRUE)
 #' config$table$hierarchyLevel <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
@@ -1143,11 +1141,11 @@ medpolishPly <- function(x, name=FALSE){
 #' tmp <- summarize_hierarchy(data, config)
 #' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysLevel())
 #' head(tmp)
-intensity_summary_by_hkeys <- function( data, config, func)
+intensity_summary_by_hkeys <- function(data, config, func)
 {
   x <- as.list( match.call() )
   makeName <- make.names(as.character(x$func))
-  config <- config$clone(deep=TRUE)
+  config <- config$clone(deep = TRUE)
 
   xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
 
@@ -1162,28 +1160,28 @@ intensity_summary_by_hkeys <- function( data, config, func)
   res_fun <- function(value = c("nested","unnest","wide","plot"), DEBUG = FALSE){
 
     value <- match.arg(value)
-    if(DEBUG){
-      return(list(config = config, value=value, xnested = xnested  ))
+    if (DEBUG) {
+      return(list(config = config, value = value, xnested = xnested  ))
     }
 
-    if(value == "nested"){
+    if (value == "nested") {
       return(xnested)
-    }else if(value == "unnest" || value =="wide"){
+    }else if (value == "unnest" || value == "wide") {
       unnested <- xnested %>%
         dplyr::select(config$table$hkeysLevel(), makeName) %>%
         tidyr::unnest(cols = c(medpolishPly)) %>%
         dplyr::ungroup()
       newconfig <- make_reduced_hierarchy_config(config,
-                                                 workIntensity = func(name=TRUE),
-                                                 hierarchy = config$table$hkeysLevel(names=FALSE))
+                                                 workIntensity = func(name = TRUE),
+                                                 hierarchy = config$table$hkeysLevel(names = FALSE))
 
-      if(value == "wide"){
+      if (value == "wide") {
         wide <- LFQService::toWideConfig(unnested, newconfig)
         wide$config <- newconfig
         return(wide)
       }
       return(list(data = unnested, config = newconfig))
-    }else if(value == "plot"){
+    }else if (value == "plot") {
       hierarchy_ID <- "hierarchy_ID"
       xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
       figs <- xnested %>%
@@ -1193,7 +1191,7 @@ intensity_summary_by_hkeys <- function( data, config, func)
 
       figs <- figs %>%
         dplyr::mutate(plot = map2(plot, !!sym(makeName) ,
-                                  plot_hierarchies_add_quantline, func(name=TRUE), config ))
+                                  plot_hierarchies_add_quantline, func(name = TRUE), config ))
       return(figs)
     }
   }
@@ -1221,51 +1219,68 @@ medpolish_protein_quants <- function(data, config){
 
 
 #' write intensites into folder - for the moment protein
+#' @param close_devices default TRUE, there are problems writing heatmaps trygin to fix it by closing all grafic devices.
 #' @export
+#' @examples
 #'
-#'
-#'
+#' data <- LFQService::data_c
+#' config <- config <- LFQService::config_c
+#' path_qc = "."
+#' if(FALSE){
+#'    quants_write(data, config, path_qc)
+#' }
 quants_write <- function(data,
                          config,
                          path_qc,
                          suffix="",
                          prefix = "protein",
-                         na_fraction = 0.3){
+                         na_fraction = 0.3,
+                         close_devices = TRUE){
   suffix <- paste0("_",suffix)
   prefix <- paste0(prefix,"_")
   message("writing protein intensity data into: ", path_qc)
 
 
-  unnest <- list(data = data ,config =config)
-  wide <- LFQService::toWideConfig(data, config)
+  # fix problem writing heatmaps.
+  if (close_devices) {
+    graphics.off()
+  }
+
 
   #troubelmaker goes fist
-  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")), width = 10, height = 10)
-  print(LFQService::plot_heatmap(unnest$data, unnest$config, na_fraction = na_fraction))
-  dev.off()
+  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap",suffix,".pdf")),
+      width = 10,
+      height = 10)
+  print(LFQService::plot_heatmap(data, config, na_fraction = na_fraction))
+  graphics.off()
 
-  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap_correlation",suffix,".pdf")), width = 10, height = 10)
-  print(plot_heatmap_cor(unnest$data,unnest$config))
-  dev.off()
+  pdf(file.path(path_qc,paste0(prefix,"intensities_heatmap_correlation",suffix,".pdf")),
+      width = 10,
+      height = 10)
+  print(plot_heatmap_cor(data, config))
+  graphics.off()
 
-  res <- plot_pca(unnest$data,unnest$config, add_txt= TRUE)
-  pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")), width=6, height=6)
+  res <- plot_pca(data, config, add_txt = TRUE)
+  pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")),
+      width = 6,
+      height = 6)
   print(res)
-  dev.off()
+  graphics.off()
 
-  pcaPlot <- plot_pca(data, config, add_txt= FALSE)
-  plotly <- plotly::ggplotly(pcaPlot, tooltip=config$table$sampleName)
+  pcaPlot <- plot_pca(data, config, add_txt = FALSE)
+  plotly <- plotly::ggplotly(pcaPlot, tooltip = config$table$sampleName)
 
   fname <- paste0(prefix,"intensities_PCA",suffix,".html")
   html_path <- file.path(".",path_qc,fname)
   htmlwidgets::saveWidget(widget = plotly, file = paste0(prefix,"intensities_PCA",suffix,".html") )
   file.rename(fname, html_path)
 
-  lfq_write_table(separate_hierarchy(wide$data, unnest$config),
+  wide <- LFQService::toWideConfig(data, config)
+  lfq_write_table(separate_hierarchy(wide$data, config),
                   path = file.path(path_qc,paste0(prefix,"intensities_wide",suffix,".csv")))
   lfq_write_table(wide$annotation,
                   path = file.path(path_qc,paste0(prefix,"intensities_file_annotation",suffix,".csv")))
-  lfq_write_table(separate_factors(separate_hierarchy(unnest$data, unnest$config), unnest$config),
+  lfq_write_table(separate_factors(separate_hierarchy(data, config), config),
                   path = file.path(path_qc,paste0(prefix,"intensities_long",suffix,".csv")))
 }
 
@@ -1275,10 +1290,11 @@ quants_write <- function(data,
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #'
 #' res <- summarize_cv(data, config)
 #' res$CV <- res$sd/res$mean
@@ -1291,22 +1307,22 @@ summarize_cv <- function(data, config, all = TRUE){
     dplyr::summarize(n = n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym, na.rm = T),
-                     mean=mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
+                     mean = mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysLevel(), funs(as.character) )
 
-  if(all){
+  if (all) {
     hierarchy <- data %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       dplyr::summarize(n = n(),
                        not_na = sum(!is.na(!!intsym)),
                        sd = sd(!!intsym,na.rm = T),
-                       mean=mean(!!intsym,na.rm = T))
+                       mean = mean(!!intsym,na.rm = T))
 
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- dplyr::bind_rows(hierarchyFactor,hierarchy)
   }
-  if(config$parameter$is_intensity_transformed == FALSE){
+  if (config$parameter$is_intensity_transformed == FALSE) {
     hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
   return(hierarchyFactor)
@@ -1315,18 +1331,18 @@ summarize_cv <- function(data, config, all = TRUE){
 #' summarize stats output
 #' @export
 #' @examples
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' data <- sample_analysis
 #' stats_res <- summarize_cv(data, config)
 #' head(stats_res)
 #' summarize_cv_quantiles(stats_res, config)
-#' summarize_cv_quantiles(stats_res, config, stats="CV")
+#' summarize_cv_quantiles(stats_res, config, stats = "CV")
 #'
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' stats_res <- summarize_cv(data2, config)
-#' xx <- summarize_cv_quantiles(stats_res, config, probs=seq(0,1,by=0.1))
-#' ggplot(xx$long, aes(x = probs, y = quantiles, color=Time)) + geom_line() + geom_point()
+#' xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
+#' ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
 #'
 summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
   stats <- match.arg(stats)
@@ -1347,26 +1363,26 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 
   xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysLevel())
   wide <- xx %>%  spread("interaction", quantiles)
-  return(list(long=sd_quantile_res2, wide= wide))
+  return(list(long = sd_quantile_res2, wide = wide))
 }
 
 
 .lfq_power_t_test_quantiles <- function(quantile_sd,
                                         delta = 1,
                                         min.n = 1.5,
-                                        power=0.8,
-                                        sig.level=0.05
+                                        power = 0.8,
+                                        sig.level = 0.05
 ){
   minsd  <- power.t.test(delta = delta,
                          n = min.n,
-                         sd= NULL,
-                         power=power,
+                         sd = NULL,
+                         power = power,
                          sig.level = sig.level)$sd
   quantile_sd <- quantile_sd %>% mutate(sdtrimmed = case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
 
-  #, delta = delta, power=power, sig.level=sig.level
+  #, delta = delta, power = power, sig.level = sig.level
   getSampleSize <- function(sd){
-    power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n
+    power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
   }
   #  return(getSampleSize)
 
@@ -1377,11 +1393,11 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' estimate sample sizes
 #' @export
 #' @examples
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' data <- sample_analysis
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' stats_res <- summarize_cv(data2, config)
-#' xx <- summarize_cv_quantiles(stats_res, config, probs=0.5)
+#' xx <- summarize_cv_quantiles(stats_res, config, probs = 0.5)
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- (bind_rows(bbb))
 #' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
@@ -1389,17 +1405,17 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
                                           delta = c(0.59,1,2),
                                           min.n = 1.5,
-                                          power=0.8,
-                                          sig.level=0.05){
+                                          power = 0.8,
+                                          sig.level = 0.05){
 
-  res <- vector(mode="list", length=length(delta))
-  for(i in 1:length(delta)){
+  res <- vector(mode = "list", length = length(delta))
+  for (i in 1:length(delta)) {
     cat("i", i , "delta_i", delta[i], "\n")
     res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
                                             delta = delta[i],
                                             min.n = min.n,
-                                            power=power,
-                                            sig.level=sig.level)
+                                            power = power,
+                                            sig.level = sig.level)
     res[[i]]$delta = delta[i]
   }
   return(res)
@@ -1411,17 +1427,17 @@ lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
 #' @examples
 #'
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res
-#' stats_res <- summarize_cv(data2, config, all=FALSE)
+#' stats_res <- summarize_cv(data2, config, all = FALSE)
 #' stats_res
-#' res <- lfq_power_t_test_quantiles(data2, config, delta=2)
+#' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 #' res
-#' res <- lfq_power_t_test_quantiles(data2, config, delta=c(0.5,1,2))
+#' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
 #' res
 #'
 lfq_power_t_test_quantiles <- function(data,
@@ -1431,26 +1447,26 @@ lfq_power_t_test_quantiles <- function(data,
                                        sig.level = 0.05,
                                        probs = seq(0.5,0.9, by = 0.1)){
 
-  if(!config$parameter$is_intensity_transformed){
+  if (!config$parameter$is_intensity_transformed) {
     warning("Intensities are not transformed yet.")
   }
 
-  stats_res <- summarize_cv(data, config, all=FALSE)
+  stats_res <- summarize_cv(data, config, all = FALSE)
   sd <- na.omit(stats_res$sd)
 
-  if(length(sd) > 0){
+  if (length(sd) > 0) {
     quantilesSD <- quantile(sd,probs)
 
     sampleSizes <- expand.grid(probs = probs, delta = delta)
     quantilesSD <- quantile( sd, sampleSizes$probs )
-    sampleSizes <- add_column( sampleSizes, sd = quantilesSD, .before=2 )
-    sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before=1 )
+    sampleSizes <- add_column( sampleSizes, sd = quantilesSD, .before = 2 )
+    sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before = 1 )
 
-    getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd=sd, power=power, sig.level=sig.level)$n}
+    getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n}
 
     sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
     sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
-    sampleSizes <- sampleSizes %>% mutate( FC = round(2^delta, digits=2))
+    sampleSizes <- sampleSizes %>% mutate( FC = round(2^delta, digits = 2))
 
     summary <- sampleSizes %>% dplyr::select( -N_exact, -delta) %>% spread(FC, N, sep="=")
     return(list(long = sampleSizes, summary = summary))
@@ -1469,7 +1485,7 @@ lfq_power_t_test_quantiles <- function(data,
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' bb <- lfq_power_t_test_proteins(data2, config)
@@ -1483,7 +1499,7 @@ lfq_power_t_test_proteins <- function(data,
 
 
   delta <- log2(delta)
-  stats_res <- summarize_cv(data, config, all=FALSE)
+  stats_res <- summarize_cv(data, config, all = FALSE)
   stats_res <- na.omit(stats_res)
   sd_delta <- map_df(delta, function(x){mutate(stats_res, delta = x)} )
 
@@ -1508,11 +1524,11 @@ lfq_power_t_test_proteins <- function(data,
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
-#' plot_stat_density(res, config, stat="mean")
-#' plot_stat_density(res, config, stat="sd")
-#' plot_stat_density(res, config, stat="CV")
+#' plot_stat_density(res, config, stat = "mean")
+#' plot_stat_density(res, config, stat = "sd")
+#' plot_stat_density(res, config, stat = "CV")
 plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
@@ -1525,7 +1541,7 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat =
 #'@examples
 #'
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
@@ -1534,7 +1550,7 @@ plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), g
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
   data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
-  res <- data %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm=TRUE),"top 50","bottom 50")) -> top50
+  res <- data %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = config$table$factorKeys()[1])) +
     geom_line(stat = ggstat) + facet_wrap("top")
   return(p)
@@ -1546,12 +1562,12 @@ plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), g
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
-#' plot_stat_violin(res, config, stat="mean")
-#' plot_stat_violin(res, config, stat="sd")
-#' plot_stat_violin(res, config, stat="CV")
-plot_stat_violin <- function(data, config, stat = c("CV","mean","sd")){
+#' plot_stat_violin(res, config, stat = "mean")
+#' plot_stat_violin(res, config, stat = "sd")
+#' plot_stat_violin(res, config, stat = "CV")
+plot_stat_violin <- function(data, config, stat = c("CV", "mean", "sd")){
   stat <- match.arg(stat)
   p <- ggplot(data, aes_string(x = config$table$factorKeys()[1], y = stat  )) +
     geom_violin()
@@ -1563,10 +1579,10 @@ plot_stat_violin <- function(data, config, stat = c("CV","mean","sd")){
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
-#' plot_stat_violin_median(res, config, stat="mean")
-plot_stat_violin_median <- function(data, config , stat=c("CV","mean","sd")){
+#' plot_stat_violin_median(res, config, stat = "mean")
+plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd")){
   median.quartile <- function(x){
     out <- quantile(x, probs = c(0.25,0.5,0.75))
     names(out) <- c("ymin","y","ymax")
@@ -1580,7 +1596,8 @@ plot_stat_violin_median <- function(data, config , stat=c("CV","mean","sd")){
 
   p <- ggplot(top50, aes_string(x = config$table$factorKeys()[1], y = stat)) +
     geom_violin() +
-    stat_summary(fun.y=median.quartile,geom='point', shape=3) + stat_summary(fun.y=median,geom='point', shape=1) +
+    stat_summary(fun.y = median.quartile, geom = 'point', shape = 3) +
+    stat_summary(fun.y = median, geom = 'point', shape = 1) +
     facet_wrap("top")
   return(p)
 }
@@ -1591,7 +1608,7 @@ plot_stat_violin_median <- function(data, config , stat=c("CV","mean","sd")){
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stdv_vs_mean(res, config)
 #' datalog2 <- transform_work_intensity(data, config, transformation = log2)
@@ -1605,19 +1622,19 @@ plot_stat_violin_median <- function(data, config , stat=c("CV","mean","sd")){
 plot_stdv_vs_mean <- function(data, config){
   p <- ggplot(data, aes(x = mean, y = abs(sd))) +
     geom_point() +
-    geom_smooth(method="loess") +
-    facet_wrap(config$table$factorKeys()[1], nrow=1) +
+    geom_smooth(method = "loess") +
+    facet_wrap(config$table$factorKeys()[1], nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   return(p)
 }
 
 
-.string.to.colors <- function(string, colors=NULL){
-  if (is.factor(string)){
+.string.to.colors <- function(string, colors = NULL){
+  if (is.factor(string)) {
     string = as.character(string)
   }
-  if (!is.null(colors)){
-    if (length(colors)!=length(unique(string))){
+  if (!is.null(colors)) {
+    if (length(colors) != length(unique(string))) {
       stop("The number of colors must be equal to the number of unique elements.")
     }
     else {
@@ -1626,12 +1643,12 @@ plot_stdv_vs_mean <- function(data, config){
   } else {
     conv = cbind(unique(string), rainbow(length(unique(string))))
   }
-  unlist(lapply(string, FUN=function(x){conv[which(conv[,1]==x),2]}))
+  unlist(lapply(string, FUN = function(x){conv[which(conv[,1] == x),2]}))
 }
 
-.number.to.colors = function(value, colors=c("red", "blue"), num=100){
+.number.to.colors = function(value, colors = c("red", "blue"), num = 100){
   cols = colorRampPalette(colors)(num)
-  cols = 	cols[findInterval(value, vec=seq(from=min(value), to=max(value), length.out=num))]
+  cols = 	cols[findInterval(value, vec = seq(from = min(value), to = max(value), length.out = num))]
   cols
 }
 
@@ -1643,9 +1660,9 @@ plot_stdv_vs_mean <- function(data, config){
 #' @examples
 #' library(tidyverse)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone( deep=TRUE )
+#' config <- skylineconfig$clone( deep = TRUE )
 #' LFQService::plot_heatmap_cor( data, config )
-#' plot_heatmap_cor( data, config, R2=TRUE )
+#' plot_heatmap_cor( data, config, R2 = TRUE )
 #'
 plot_heatmap_cor <- function(data,
                              config,
@@ -1661,7 +1678,7 @@ plot_heatmap_cor <- function(data,
 
 
   cres <- cor(res, use = "pa")
-  if(R2){
+  if (R2) {
     cres <- cres^2
   }
 
@@ -1671,19 +1688,18 @@ plot_heatmap_cor <- function(data,
 
   res <- pheatmap::pheatmap(cres,
                             scale = "none",
-                            silent=TRUE)
+                            silent = TRUE)
   res <- pheatmap::pheatmap(cres[res$tree_row$order,],
-                            scale="none",
+                            scale = "none",
                             cluster_rows  = FALSE,
                             annotation_col = factors,
                             show_rownames = F,
-                            border_color=NA,
+                            border_color = NA,
                             main = ifelse(R2, "R^2", "correlation"),
-                            silent=TRUE,
+                            silent = TRUE,
                             color = color,
-                            ...=...)
+                            ... = ...)
   invisible(res)
-
 }
 #' plot heatmap with annotations
 #'
@@ -1693,11 +1709,18 @@ plot_heatmap_cor <- function(data,
 #' library(tidyverse)
 #' library(LFQService)
 #' data <- LFQService::sample_analysis
-#' config <- LFQService::skylineconfig$clone(deep=TRUE)
+#' config <- LFQService::skylineconfig$clone(deep = TRUE)
+#' graphics.off()
+#' .Device
+#'  p  <- plot_heatmap(data, config)
+#' .Device
+#'  print(p)
+#'  .Device
+#'  plot(1)
 #'
-#' print(plot_heatmap(data, config))
-#'
-plot_heatmap <- function(data, config, na_fraction = 0.4,...){
+#'  print(p)
+
+plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   resdata <- res$data
@@ -1718,8 +1741,8 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
                             scale = "row",
                             annotation_col = factors,
                             show_rownames = F,
-                            border_color=NA,
-                            ...=..., silent=TRUE)
+                            border_color = NA,
+                            ... = ..., silent = TRUE)
 
   invisible(res)
 }
@@ -1733,10 +1756,10 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
 #' library(tidyverse)
 #' library(LFQService)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #' tmp <- plot_NA_heatmap(data, config)
 #' print(tmp$plot)
-#' xx <- plot_NA_heatmap(data, config,distance="euclidean")
+#' xx <- plot_NA_heatmap(data, config,distance = "euclidean")
 #' print(xx$plot)
 #' dev.off()
 #' print(xx$plot)
@@ -1744,7 +1767,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4,...){
 #'
 plot_NA_heatmap <- function(data,
                             config,
-                            limitrows=10000,
+                            limitrows = 10000,
                             distance = "binary"){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
@@ -1762,8 +1785,8 @@ plot_NA_heatmap <- function(data,
   res <- res[apply(res,1, sum) > 0,]
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
-  if(nrow(res) > 0){
-    res <- if(nrow(res) > limitrows ){
+  if (nrow(res) > 0) {
+    res <- if (nrow(res) > limitrows ) {
       message("limiting nr of rows to:", limitrows,"\n")
       res[sample( 1:nrow(res),limitrows),]
     }else{
@@ -1796,9 +1819,9 @@ plot_NA_heatmap <- function(data,
 #'
 plot_NA_heatmap_deprec <- function(data,
                                    config,
-                                   showRowDendro=FALSE,
-                                   cexCol=1,
-                                   limitrows=10000){
+                                   showRowDendro = FALSE,
+                                   cexCol = 1,
+                                   limitrows = 10000){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1814,28 +1837,28 @@ plot_NA_heatmap_deprec <- function(data,
   res <- res[apply(res,1, sum) > 0,]
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
-  if(nrow(res) > 0){
-    if(nrow(res) > limitrows ){
+  if (nrow(res) > 0) {
+    if (nrow(res) > limitrows ) {
       message("limiting nr of rows to:", limitrows,"\n")
       resPlot <- res[sample( 1:nrow(res),limitrows),]
     }else{
       resPlot <- res
     }
     res_plot <- heatmap3::heatmap3(resPlot,
-                                   distfun = function(x){dist(x, method="binary")},
-                                   scale="none",
-                                   col=c("white","black"),
+                                   distfun = function(x){dist(x, method = "binary")},
+                                   scale = "none",
+                                   col = c("white","black"),
                                    labRow = "",
                                    ColSideColors = ColSideColors,
                                    showRowDendro = showRowDendro,
                                    cexCol = cexCol,
                                    margin = c(8,3),
                                    legendfun = function()
-                                     heatmap3::showLegend(legend=c("NA"),
-                                                          col=c("black"),
-                                                          cex=1.5))
+                                     heatmap3::showLegend(legend = c("NA"),
+                                                          col = c("black"),
+                                                          cex = 1.5))
 
-    invisible(list(res = res, res_plot=res_plot))
+    invisible(list(res = res, res_plot = res_plot))
 
   }
 }
@@ -1850,37 +1873,37 @@ plot_NA_heatmap_deprec <- function(data,
 #' library(tidyverse)
 #' library(LFQService)
 #' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- skylineconfig$clone(deep = TRUE)
 #'
 #' tmp <- plot_pca(data, config, add_txt= TRUE)
 #' print(tmp)
 #' tmp <- plot_pca(data, config, add_txt= FALSE)
 #' print(tmp)
-#' plotly::ggplotly(tmp, tooltip=config$table$sampleName)
+#' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 #'
 plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   wide <- toWideConfig(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
-  xx <- as_tibble(prcomp(ff)$x, rownames="sampleName")
+  xx <- as_tibble(prcomp(ff)$x, rownames = "sampleName")
   xx <- inner_join(wide$annotation, xx)
 
 
   sh <- config$table$fkeysLevel()[2]
-  point <- (if(!is.na(sh)){
-    geom_point(aes(shape=!!sym(sh)))
+  point <- (if (!is.na(sh)) {
+    geom_point(aes(shape = !!sym(sh)))
   }else{
     geom_point()
   })
 
-  text <- geom_text(aes(label=!!sym(config$table$sampleName)),check_overlap = TRUE,
+  text <- geom_text(aes(label = !!sym(config$table$sampleName)),check_overlap = TRUE,
                     nudge_x = 0.25,
                     nudge_y = 0.25 )
 
-  x <- ggplot(xx, aes(x = PC1, y=PC2,
-                      color=!!sym(config$table$fkeysLevel()[1]),
-                      text=!!sym(config$table$sampleName))) +
-    point + if(add_txt){text}
+  x <- ggplot(xx, aes(x = PC1, y = PC2,
+                      color = !!sym(config$table$fkeysLevel()[1]),
+                      text = !!sym(config$table$sampleName))) +
+    point + if (add_txt) {text}
 
 
   return(x)
