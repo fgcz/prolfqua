@@ -283,29 +283,35 @@ data_pep_to_prot <- function(data,
 
 
   ### generate return value
-  res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"),DEBUG=FALSE) {
+  res_fun <- function(do = c("render","plotprot","pepwrite","protwrite"), DEBUG = FALSE) {
+
     do <- match.arg(do)
     if (DEBUG) {
       return(list(qc_path = qc_path, results = results, protintensity_fun = protintensity_fun ))
     }
+
+    if (!dir.exists(qc_path)) {
+      dir.create(qc_path)
+    }
     assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
+
 
     if (do == "render") {
       LFQService::render_MQSummary_rmd(results$filteredPep,
-                                       results$config_filteredPep$clone(deep=TRUE),
-                                       pep=TRUE,
+                                       results$config_filteredPep$clone(deep = TRUE),
+                                       pep = TRUE,
                                        workdir = ".",
                                        dest_path = qc_path,
-                                       dest_file_name="peptide_intensities_qc",
+                                       dest_file_name = "peptide_intensities_qc",
                                        format = "html")
       unnestProt <- protintensity_fun("unnest")
       LFQService::render_MQSummary_rmd(unnestProt$data,
-                                       unnestProt$config$clone(deep=TRUE),
-                                       pep=FALSE,
+                                       unnestProt$config$clone(deep = TRUE),
+                                       pep = FALSE,
                                        workdir = ".",
                                        dest_path = qc_path,
-                                       dest_file_name="protein_intensities_qc",
-                                       format="html"
+                                       dest_file_name = "protein_intensities_qc",
+                                       format = "html"
       )
     }else if (do == "plotprot") {
       figs <- protintensity_fun("plot")
@@ -313,7 +319,7 @@ data_pep_to_prot <- function(data,
       lapply(figs$plot, print)
       dev.off()
 
-    }else if (do =="protwrite") {
+    }else if (do == "protwrite") {
       unnestProt <- protintensity_fun("unnest")
       quants_write(unnestProt$data, unnestProt$config, qc_path, na_fraction = 0.3)
     }else if (do == "pepwrite") {

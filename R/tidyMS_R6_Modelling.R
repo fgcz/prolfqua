@@ -8,19 +8,18 @@
 #' @export
 #' @examples
 #'
-#' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name="random_example")
-#' tmp$model_fun(get_formula=TRUE)
+#' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
+#' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 #'
-make_custom_model_lmer <- function( modelstr, model_name = "Model") {
+make_custom_model_lmer <- function(modelstr, model_name = "Model") {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula=FALSE){
-    if(get_formula)
-    {
+  model_fun <- function(x, get_formula = FALSE){
+    if (get_formula) {
       return(formula)
     }
-    modelTest <- tryCatch(lmerTest::lmer( formula , data=x ),
-                          error = function(e){print(e) ; return=NULL})
+    modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
+                          error = function(e){print(e) ; return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -35,17 +34,16 @@ make_custom_model_lmer <- function( modelstr, model_name = "Model") {
 #' @export
 #' @examples
 #' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula=TRUE)
+#' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-make_custom_model_lm <- function( modelstr, model_name) {
+make_custom_model_lm <- function(modelstr, model_name) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula=FALSE){
-    if(get_formula)
-    {
+  model_fun <- function(x, get_formula = FALSE){
+    if (get_formula) {
       return(formula)
     }
-    modelTest <- tryCatch(lm( formula , data=x ),
-                          error = function(e){print(e) ; return=NULL})
+    modelTest <- tryCatch(lm( formula , data = x ),
+                          error = function(e){print(e) ; return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -60,17 +58,16 @@ make_custom_model_lm <- function( modelstr, model_name) {
 #' @export
 #' @examples
 #' tmp <- make_custom_model_rlm("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula=TRUE)
+#' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-make_custom_model_rlm <- function( modelstr, model_name) {
+make_custom_model_rlm <- function(modelstr, model_name) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula=FALSE){
-    if(get_formula)
-    {
+  model_fun <- function(x, get_formula = FALSE){
+    if (get_formula) {
       return(formula)
     }
-    modelTest <- tryCatch(rlm( formula , data=x ),
-                          error = function(e){print(e) ; return=NULL})
+    modelTest <- tryCatch(rlm( formula , data = x ),
+                          error = function(e){print(e) ; return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -83,7 +80,7 @@ make_custom_model_rlm <- function( modelstr, model_name) {
 
 .likelihood_ratio_test <- function(modelNO, model) {
   res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
-  if(!is.null(res)){
+  if(!is.null(res)) {
     res <- suppressWarnings(broom::tidy(res))[2,"p.value"]
     return(as.numeric(res))
 
@@ -103,10 +100,10 @@ make_custom_model_rlm <- function( modelstr, model_name) {
 #'
 isSingular_lm <- function(m){
   anyNA <- any(is.na(coefficients(m)))
-  if(anyNA){
+  if (anyNA) {
     return(TRUE)
-  }else{
-    if(df.residual(m)){
+  } else {
+    if (df.residual(m)) {
       return(TRUE)
     }
     return(FALSE)
@@ -155,9 +152,9 @@ model_analyse <- function(pepIntensity,
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
   modelProteinF <- modelProteinF %>% dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
 
-  nrcoeff <- function(x){
+  nrcoeff <- function(x) {
     cc <- coefficients(x)
-    if(class(cc) == "numeric"){
+    if (class(cc) == "numeric") {
       return(length(cc))
     }else{
       return(ncol(cc[[1]]))
@@ -166,7 +163,7 @@ model_analyse <- function(pepIntensity,
 
   nrcoeff_not_NA <- function(x){
     cc <- coefficients(x)
-    if(class(cc) == "numeric"){
+    if (class(cc) == "numeric") {
       return(sum(!is.na(cc)))
     }else{
       return(ncol(cc[[1]]))
@@ -193,7 +190,8 @@ model_analyse <- function(pepIntensity,
 #'
 get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>% dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
+  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>%
+    dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
   modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
@@ -203,13 +201,13 @@ get_complete_model_fit <- function(modelProteinF){
 #'
 #' @export
 #' @examples
-#' rm(list=ls())
+#' rm(list = ls())
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
 #'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
-#'    model_name=modelName)
+#'    model_name = modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
 #' config$table$hkeysLevel()
@@ -231,7 +229,7 @@ model_analyse_summarize <- function(modelProteinF,
   # Extract coefficients
   .coef_df <-  function(x){
     x <- coef(summary(x));
-    x<- data.frame(row.names(x), x);
+    x <- data.frame(row.names(x), x);
     return(x)
   }
 
@@ -269,9 +267,9 @@ model_analyse_summarize <- function(modelProteinF,
 
 #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
 #' @export
-model_analyse_summarize_write  <- function(modellingResult, path, all=FALSE){
+model_analyse_summarize_write  <- function(modellingResult, path, all = FALSE){
   message("writing tables into :", path)
-  if(all){
+  if (all) {
     lfq_write_table(modellingResult$Model_Coeff,
                     path = file.path( path,modellingResult$fname_Model_Coeff ))
   }
@@ -310,8 +308,8 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
 
   ## Coef_Histogram
   fig$fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",modelName,".pdf")
-  fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group=row.names.x.)) +
-    geom_histogram(breaks = seq(0,1,by=0.05)) +
+  fig$histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = row.names.x.)) +
+    geom_histogram(breaks = seq(0,1,by = 0.05)) +
     facet_wrap(~row.names.x.)
 
   ## Coef_VolcanoPlot
@@ -331,13 +329,13 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
     dplyr::select(!!sym("subject_Id") , row.names.x. ,  Estimate ) %>%
     tidyr::spread(row.names.x.,Estimate )
   fig$fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_",modelName,".pdf")
-  fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns=2:ncol(forPairs))
+  fig$Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
 
   ## Anova_p.values
   fig$fname_histogram_anova_p.values <- paste0("Anova_p.values_", modelName, ".pdf")
   fig$histogram_anova_p.values <-  modellingResult$Model_Anova %>% dplyr::filter(rownames.x. != "Residuals") %>%
-    ggplot( aes(x = Pr..F., group=rownames.x.)) +
-    geom_histogram(breaks = seq(0,1,by=0.05)) +
+    ggplot( aes(x = Pr..F., group = rownames.x.)) +
+    geom_histogram(breaks = seq(0,1,by = 0.05)) +
     facet_wrap(~rownames.x.)
 
   return(fig)
@@ -352,7 +350,7 @@ model_analyse_summarize_vis_write <- function(modelling_result,
                                               fig.width = 10 ,
                                               fig.height = 10,
                                               all = FALSE){
-  if(all){
+  if (all) {
     fpath <- file.path(path, modelling_result$fname_histogram_coeff_p.values)
     message("Writing figure into : ", fpath, "\n")
     pdf(fpath, width = fig.width, height = fig.height )
@@ -404,8 +402,8 @@ workflow_model_analyse <- function(data,
                                    subject_Id)
 
   # delay write
-  res_fun <- function(path = NULL, all=FALSE, DEBUG = FALSE){
-    if(DEBUG){
+  res_fun <- function(path = NULL, all = FALSE, DEBUG = FALSE){
+    if (DEBUG) {
       return(list(
         modellingResult = modellingResult,
         modelName = modelName,
@@ -418,9 +416,9 @@ workflow_model_analyse <- function(data,
                                              subject_Id = subject_Id)
     visualization <- model_analyse_summarize_vis(summaryResult, subject_Id)
 
-    if(!is.null(path)){
-      model_analyse_summarize_write(summaryResult, path, all=all)
-      model_analyse_summarize_vis_write(visualization, path,all=all)
+    if (!is.null(path)) {
+      model_analyse_summarize_write(summaryResult, path, all = all)
+      model_analyse_summarize_vis_write(visualization, path, all = all)
     }
     return(list(modellingResult = modellingResult,
                 summaryResult = summaryResult,
@@ -442,26 +440,30 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 ){
   # Model Comparison
   reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
-                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by=subject_Id)
+                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by = subject_Id)
 
   reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
                                                                          !!sym("linear_model.y"),
                                                                          .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
-    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>% tidyr::unnest()
+    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>%
+    tidyr::unnest()
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
 
 
-  if(!is.null(path)){
-    fileName <- paste("hist_LRT_", modelName, "_", modelName_Int,".pdf", sep="")
+  if (!is.null(path)) {
+    fileName <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
     fileName <- file.path(path, fileName)
     message("writing figure : " , fileName , "\n")
     pdf(fileName)
-    par(mfrow=c(2,1))
-    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue, breaks=20)
-    plot(ecdf(likelihood_ratio_test_result$likelihood_ratio_test.pValue))
-    abline(v=c(0.01,0.05), col=c(3,2))
+    par(mfrow = c(2, 1))
+    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue,
+         breaks = 20)
+    plot(ecdf(
+      likelihood_ratio_test_result$likelihood_ratio_test.pValue
+    ))
+    abline(v = c(0.01, 0.05), col = c(3, 2))
     dev.off()
   }
 
@@ -479,10 +481,10 @@ plot_lmer_peptide_predictions <- function(m){
   data <- m@frame
   data$prediction <- predict(m)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  data <- make_interaction_column(data, interactionColumns, sep=":")
+  data <- make_interaction_column(data, interactionColumns, sep = ":")
   gg <- ggplot(data, aes(x = interaction , y= transformedIntensity)) + geom_point()
-  gg <- gg + geom_point(aes(x = interaction, y = prediction), color=2) + facet_wrap(~peptide_Id)
-  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0))
+  gg <- gg + geom_point(aes(x = interaction, y = prediction), color = 2) + facet_wrap(~peptide_Id)
+  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))
   return(gg)
 }
 
@@ -497,7 +499,7 @@ plot_lmer_peptide_predictions <- function(m){
 #'
 #' m <- LFQService::interactionModel_p1807
 #' plot_lmer_peptide_noRandom(m)
-plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
+plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
@@ -505,19 +507,20 @@ plot_lmer_peptide_noRandom <- function(m,legend.position="none"){
   colnames(ran) <- gsub("[()]","",colnames(ran))
   head(data)
   head(ran)
-  ran <- dplyr::inner_join(data, ran, by=randeffect)
+  ran <- dplyr::inner_join(data, ran, by = randeffect)
 
   ran <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - Intercept)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  ran <- make_interaction_column(ran,interactionColumns, sep=":" )
+  ran <- make_interaction_column(ran,interactionColumns, sep = ":" )
 
-  meanx <- function(x){mean(x,na.rm=TRUE)}
-  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color=peptide_Id)) +
+  meanx <- function(x){mean(x,na.rm = TRUE)}
+  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color = peptide_Id)) +
     geom_point(position = position_jitterdodge())
-  gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
-                          shape=12, size=3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position =legend.position)
-  gg <- gg + geom_boxplot(alpha=0.1)
+  gg <- gg + stat_summary(fun.y = meanx, colour = "black", geom = "point",
+                          shape = 12, size = 3,show.legend = FALSE)
+  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0),
+                   legend.position = legend.position)
+  gg <- gg + geom_boxplot(alpha = 0.1)
 
   return(gg)
 }
@@ -536,13 +539,13 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
     name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
     colnames(ran) <- name
     ran <- tibble::as_tibble(ran,rownames = rand_i)
-    ran <- dplyr::inner_join(data, ran, by=rand_i)
+    ran <- dplyr::inner_join(data, ran, by = rand_i)
     ran_res <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
     ran_res
   }
 
   data <- m@frame
-  if(firstlast){
+  if (firstlast) {
     i1 <- 1;  i2 <- 2
   } else {
     i1 <- 2;  i2 <- 1
@@ -557,18 +560,19 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
   #name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
   #colnames(ran) <- name
   #ran <- as_tibble(ran,rownames = rand_i)
-  #ran_res <- dplyr::inner_join(ran_res, ran, by=rand_i)
+  #ran_res <- dplyr::inner_join(ran_res, ran, by = rand_i)
   #ran_res <- ran_res %>% dplyr::mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  ran_res <- make_interaction_column(ran_res,interactionColumns, sep=":" )
+  ran_res <- make_interaction_column(ran_res,interactionColumns, sep = ":" )
 
-  meanx <- function(x){mean(x,na.rm=TRUE)}
-  gg <- ggplot(ran_res,aes(x = interaction , y= int_randcorrected, color=!!sym(randeffect[i1]))) +
+  meanx <- function(x){mean(x,na.rm = TRUE)}
+  gg <- ggplot(ran_res,aes(x = interaction , y = int_randcorrected,
+                           color = !!sym(randeffect[i1]))) +
     geom_point(position = position_jitterdodge(jitter.width = 0.2))
-  gg <- gg + stat_summary(fun.y=meanx, colour="black", geom="point",
-                          shape=12, size=3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x=element_text(angle = -90, hjust = 0),legend.position=legend.position)
-  gg <- gg + geom_boxplot(alpha=0.1)
+  gg <- gg + stat_summary(fun.y = meanx, colour = "black", geom = "point",
+                          shape = 12, size = 3,show.legend = FALSE)
+  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0),legend.position = legend.position)
+  gg <- gg + geom_boxplot(alpha = 0.1)
   gg
   return(gg)
 }
@@ -582,10 +586,11 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
 plot_lmer_predicted_interactions <- function(gg, m){
   cm <- .lmer4_coeff_matrix(m)
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
-  ystart_end <- data.frame(xend = rownames(cm$mm), ystart =rep(0, nrow(cm$mm)),
+  ystart_end <- data.frame(xend = rownames(cm$mm), ystart = rep(0, nrow(cm$mm)),
                            yend = cm$mm %*% cm$coeffs)
-  segments <- dplyr::inner_join(xstart_end, ystart_end, by="xend")
-  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend), data=segments, color = "blue", arrow=arrow())
+  segments <- dplyr::inner_join(xstart_end, ystart_end, by = "xend")
+  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend),
+                          data = segments, color = "blue", arrow = arrow())
   return(gg)
 }
 
@@ -596,7 +601,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' plot_lmer_model_and_data(m,"dumm")
 #'
 plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
-  gg <- plot_lmer_peptide_noRandom(m,legend.position=legend.position)
+  gg <- plot_lmer_peptide_noRandom(m,legend.position = legend.position)
   gg <- plot_lmer_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
   gg
@@ -621,26 +626,26 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 .lmer4_coeff_matrix <- function(m){
   data <- NULL
-  if(class(m)  == "lm"){
+  if (class(m)  == "lm") {
     data <- m$model
   }else{
     # for "lmerModLmerTest"
     data <- m@frame
   }
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  data <- make_interaction_column(data, interactionColumns, sep=":")
+  data <- make_interaction_column(data, interactionColumns, sep = ":")
 
   coeffs <- coefficients(summary(m))[,'Estimate']
 
   inter <- unique(data$interaction)
-  mm <- matrix(0, nrow=length(inter), ncol=length(coeffs))
+  mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
   rownames(mm) <- inter
   colnames(mm) <- names(coeffs)
-  mm[,1]<-1
+  mm[,1] <- 1
   coefi <- coeffs[-1]
-  for(i in 1:length(coefi)){
+  for (i in 1:length(coefi)) {
     positionIDX <- grep(names(coefi)[i], inter)
-    mm[positionIDX,i+1] <- 1
+    mm[positionIDX, i + 1 ] <- 1
   }
   return(list(mm = mm, coeffs = coeffs))
 }
@@ -650,9 +655,9 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 .coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
     idx <- grep(factor_level, rownames(mm))
-    x <- as.list(apply(mm[idx,, drop=FALSE],2,mean) )
+    x <- as.list(apply(mm[idx,, drop = FALSE],2,mean) )
     x <- tibble::as_tibble(x)
-    tibble::add_column(x, "factor_level" = factor_level,.before=1)
+    tibble::add_column(x, "factor_level" = factor_level,.before = 1)
   }
   factor_levels <- unique(unlist(stringr::str_split(rownames(mm), ":")))
   xx <- purrr::map_df(factor_levels, getCoeffs, mm)
@@ -678,7 +683,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #' linfct$linfct_interactions
 #' #}
 #'
-#' m <- lm(Petal.Width ~ Species, data=iris)
+#' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_from_model(m)
 linfct_from_model <- function(m, as_list = TRUE){
 
@@ -691,7 +696,7 @@ linfct_from_model <- function(m, as_list = TRUE){
   dd_m <- dd_m[order(rownames(dd_m)),]
   res <- list(linfct_factors = dd_m , linfct_interactions = cm_mm)
 
-  if(as_list){
+  if (as_list) {
     return(res)
   }else{
     do.call( rbind, res)
@@ -702,20 +707,20 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @export
 #' @examples
 #' m <- LFQService::basicModel_p1807
-#' linfct <- linfct_from_model(m,as_list=FALSE)
+#' linfct <- linfct_from_model(m,as_list = FALSE)
 #' linfct
 #'
 #' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 #' linfct_matrix_contrasts(linfct, Contrasts )
-linfct_matrix_contrasts<- function(linfct , contrasts){
+linfct_matrix_contrasts <- function(linfct , contrasts){
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data,
                              contrasts)
   {
     cnams <- setdiff(colnames(data),"interaction")
-    for(i in 1:length(contrasts)){
+    for (i in 1:length(contrasts)) {
       message(names(contrasts)[i], "=", contrasts[i],"\n")
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
@@ -740,13 +745,13 @@ linfct_matrix_contrasts<- function(linfct , contrasts){
 #' xl <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
-.linfct_all_possible_contrasts <- function( lin_int ){
+.linfct_all_possible_contrasts <- function(lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))
-  new_lin_fct <- matrix(NA,  nrow= ncol(combs), ncol =ncol(lin_int))
-  for(i in 1:ncol(combs)){
-    newnames[i] <- paste(names[combs[,i]], collapse=" - ")
+  new_lin_fct <- matrix(NA,  nrow = ncol(combs), ncol = ncol(lin_int))
+  for (i in 1:ncol(combs)) {
+    newnames[i] <- paste(names[combs[,i]], collapse = " - ")
     new_lin_fct[i,] <- lin_int[combs[1,i],] - lin_int[combs[2,i],]
   }
   rownames(new_lin_fct) <- newnames
@@ -761,7 +766,7 @@ linfct_matrix_contrasts<- function(linfct , contrasts){
 #' m <- LFQService::basicModel_p1807
 #' xl <- linfct_factors_contrasts(m)
 #' xl
-#' m <- lm(Petal.Width ~ Species, data=iris)
+#' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_factors_contrasts(m)
 linfct_factors_contrasts <- function(m){
   ffac <- attributes(terms(m))$term.labels
@@ -770,7 +775,7 @@ linfct_factors_contrasts <- function(m){
 
   factorLevels <- rownames(linfct_factors)
   res <- vector(length(ffac), mode = "list")
-  for(i in 1:length(ffac)){
+  for (i in 1:length(ffac)) {
     fac <- ffac[i]
     idx <- grep(fac, factorLevels)
     linfct_m <- linfct_factors[idx,]
@@ -796,23 +801,23 @@ linfct_factors_contrasts <- function(m){
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
-my_glht <- function(model, linfct , sep=TRUE ) {
-  if(!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+my_glht <- function(model, linfct , sep = TRUE ) {
+  if (!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
-    if(length(lme4::fixef(model)) != ncol(linfct) ){
+    if (length(lme4::fixef(model)) != ncol(linfct)) {
       return(NA) # catch rank defficient
     }
   }else{
-    if(isSingular_lm(model)){
+    if (isSingular_lm(model)) {
       return(NA)
     }
     model$model <- as.data.frame(unclass(model$model))
   }
-  if(sep){
+  if (sep) {
     res <- list()
-    for(i in 1:nrow(linfct)){
-      x <- multcomp::glht(model, linfct=linfct[i,,drop=FALSE])
+    for (i in 1:nrow(linfct)) {
+      x <- multcomp::glht(model, linfct = linfct[i,,drop = FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
 
       RHS$df <- x$df
@@ -895,7 +900,7 @@ my_contrast <- function(m,
 #' my_glht(m, linfct)
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
-my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
+my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
   Sigma.hat <- vcov(incomplete)
   Sigma.hat[is.na(Sigma.hat)] <- 0
   coef <- coefficients(incomplete)
@@ -921,20 +926,20 @@ my_contrast_V1 <- function(incomplete, linfct,confint = 0.95){
 my_contrast_V2 <- function(m, linfct,confint = 0.95){
   Sigma.hat <- vcov(m)
   coef <- coefficients(m)
-  res <- vector(nrow(linfct), mode="list")
-  for(i in 1:nrow(linfct)){
-    linfct_v <- linfct[i,,drop=FALSE]
+  res <- vector(nrow(linfct), mode = "list")
+  for (i in 1:nrow(linfct)) {
+    linfct_v <- linfct[i,,drop = FALSE]
     idx <- which(linfct_v != 0)
     nam <- colnames(linfct_v)[idx]
 
-    if(all(nam %in% names(coef))){
-      linfct_v_red <- linfct_v[, nam, drop=FALSE]
-      Sigma.hat_red <- Sigma.hat[nam,nam,drop=FALSE]
+    if (all(nam %in% names(coef))) {
+      linfct_v_red <- linfct_v[, nam, drop = FALSE]
+      Sigma.hat_red <- Sigma.hat[nam,nam,drop = FALSE]
       coef_red <- coef[nam]
       stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
       res[[i]] <- my_contrast(m,linfct_v_red,
-                              coef=coef_red,
+                              coef = coef_red,
                               Sigma.hat = Sigma.hat_red,confint = confint)
     }else{
       res[[i]] <-  data.frame(lhs = rownames(linfct_v),
@@ -944,8 +949,8 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
                               std.error = NA,
                               statistic = NA ,
                               p.value = NA,
-                              conf.low= NA,
-                              conf.high =NA,
+                              conf.low = NA,
+                              conf.high = NA,
                               stringsAsFactors = FALSE)
     }
   }
@@ -967,18 +972,18 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #'
 #' # my_glht(mb, linfct$linfct_factors)
 #' # my_glht(mb, linfct$linfct_interactions)
-#' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint=FALSE)
+#' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #' summary(mb)
 #'
 #'
 #' library(pbkrtest)
 #' (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
 #' class(fm1)
-#' get_ddf_Lb.lmerMod(fm1)
+#' #pbkrtest::get_ddf_Lb.lmerMod(fm1)
 #'
 my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
   ddf <- match.arg(ddf)
-  if(length(lme4::fixef(model)) != ncol(linfct) ){
+  if (length(lme4::fixef(model)) != ncol(linfct) ) {
     warning("Model is rank deficient!")
     return(NA) # catch rank defficient
     #res <- lmerTest::contest(model,
@@ -992,7 +997,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
                              confint = TRUE,
                              ddf = ddf)
   }
-  res <- tibble::as_tibble(res, rownames="lhs")
+  res <- tibble::as_tibble(res, rownames = "lhs")
   res$sigma <- sigma(model)
   res <- res %>% dplyr::rename(estimate = Estimate,
                                std.error = "Std. Error",
@@ -1023,8 +1028,8 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
     return(res)
   }
   res <- list()
-  for(column in columns){
-    res[[column]] <- m_spread(modelWithInteractionsContrasts,subject_Id,column)
+  for (column in columns) {
+    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id,column)
   }
   res <- res %>% reduce(left_join, by = c(subject_Id,"isSingular"))
   return(res)
@@ -1047,7 +1052,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'         subject_Id = "Compound",
 #'         contrastfun = LFQService::my_contrast_V2)
 #'
-#' #usethis::use_data(factor_levelContrasts, overwrite=TRUE)
+#' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 #'
 #' models_interaction <- LFQService::models_interaction
 #'
@@ -1088,7 +1093,7 @@ contrasts_linfct <- function(models,
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>%
-    tidyr::unnest(cols="contrast")
+    tidyr::unnest(cols = "contrast")
 
   # take sigma and df from somewhere else.
   modelInfos <- models %>%
@@ -1098,11 +1103,11 @@ contrasts_linfct <- function(models,
                        "df.residual.model" = "df.residual" )) %>%
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, modelInfos, by=subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
 
   # adjust
   contrasts <- contrasts %>% group_by_at("lhs") %>%
-    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method="BH")) %>%
+    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method = "BH")) %>%
     dplyr::ungroup()
 
   return(contrasts)
@@ -1110,7 +1115,7 @@ contrasts_linfct <- function(models,
 
 
 
-.multigroupVolcano <- function (data,
+.multigroupVolcano <- function(data,
                                 effect = "fc",
                                 p.value = "p.adjust",
                                 condition = "condition",
@@ -1118,7 +1123,7 @@ contrasts_linfct <- function(models,
                                 xintercept = c(-2,2),
                                 pvalue = 0.05,
                                 text = NULL,
-                                ablines = data.frame(fc = c(0, 0), p = c(0.01, 0.05), Area = c("p=0.01", "p=0.05")),
+                                ablines = data.frame(fc = c(0, 0), p = c(0.01, 0.05), Area = c("p = 0.01", "p = 0.05")),
                                 scales = "fixed",
                                 maxNrOfSignificantText = 20)
 {
@@ -1153,21 +1158,21 @@ contrasts_linfct_vis <- function(contrasts,
                                  contrast = "lhs",
                                  fc = 1){
   res <- list()
-  contrasts %>% tidyr::unite("label", subject_Id, sep="~", remove=FALSE) -> contrasts
+  contrasts %>% tidyr::unite("label", subject_Id, sep = "~", remove = FALSE) -> contrasts
   #return(contrasts)
   # add histogram of p-values
-  for(column in columns){
+  for (column in columns) {
     fig <- list()
     name <- paste0(prefix,"_Histogram_",column)
     fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- ggplot(data=contrasts, aes(x = !!sym(column))) +
-      geom_histogram(breaks = seq(0, 1, by=0.05)) +
+    fig$fig <- ggplot(data = contrasts, aes(x = !!sym(column))) +
+      geom_histogram(breaks = seq(0, 1, by = 0.05)) +
       facet_wrap(vars(!!sym(contrast)))
     res[[name]] <- fig
   }
   message("histograms created")
   # add volcano plots
-  for(column in columns){
+  for (column in columns) {
     message(column)
     fig <- list()
     name <- paste0(prefix,"_Volcano_",column)
@@ -1179,7 +1184,7 @@ contrasts_linfct_vis <- function(contrasts,
                                                text = "label",
                                                xintercept = c(-fc, fc),
                                                colour = "isSingular",
-                                               scales="free_y")
+                                               scales = "free_y")
 
     message("volcano1")
     fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
@@ -1190,7 +1195,7 @@ contrasts_linfct_vis <- function(contrasts,
                                       text = "label",
                                       xintercept = c(-fc, fc),
                                       colour = "isSingular",
-                                      scales="free_y") %>%
+                                      scales = "free_y") %>%
       plotly::ggplotly(tooltip = "label")
     message("volcano plotly")
     res[[name]] <- fig
@@ -1201,23 +1206,26 @@ contrasts_linfct_vis <- function(contrasts,
     fig <- list()
     name <- paste0(prefix,"_Histogram_FC_esimate")
     fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- ggplot(data=contrasts, aes(x = !!sym(estimate))) +
-      geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm=TRUE)),
-                                  ceiling(max(contrasts[[estimate]], na.rm=TRUE)), by=0.1)) +
+    fig$fig <- ggplot(data = contrasts, aes(x = !!sym(estimate))) +
+      geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm = TRUE)),
+                                  ceiling(max(contrasts[[estimate]], na.rm = TRUE)), by = 0.1)) +
       facet_wrap(vars(!!sym(contrast)))
     res[[name]] <- fig
   }
   # MA plot
   {
     ma_plot <- function(x, fc = 1){
-      x <- ggplot(x , aes(x = (c1+c2)/2, y = !!sym(estimate), text = !!sym("label"), colour = !!sym("isSingular"))) +
+      x <- ggplot(x , aes(x = (c1 + c2)/2,
+                          y = !!sym(estimate),
+                          text = !!sym("label"),
+                          colour = !!sym("isSingular"))) +
         geom_point(alpha = 0.5) + scale_colour_manual(values = c("black", "red")) +
         facet_wrap(vars(!!sym(contrast))) + theme_light() +
         geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
       return(x)
     }
 
-    if(!is.null(contrasts$c1) && !is.null(contrasts$c2)){
+    if (!is.null(contrasts$c1) && !is.null(contrasts$c2)) {
       fig <- list()
       name <- paste0(prefix,"_MA_FC_estimate")
       fig$fname <- paste0(name, "_", modelName )
@@ -1247,21 +1255,21 @@ contrasts_linfct_vis_write <- function(fig_list,
                                        fig.height = 10,
                                        format = c("pdf","html")){
   format <- match.arg(format)
-  if(!is.null(path)){
-    for(fig in fig_list){
+  if (!is.null(path)) {
+    for (fig in fig_list) {
 
       fpath <- file.path(path,paste0(fig$fname,".", format))
 
 
-      if(format == "pdf"){
+      if (format == "pdf") {
         message("Writing: ",fpath,"\n")
         pdf(fpath, width = fig.width, height = fig.height)
         print(fig$fig)
         dev.off()
-      }else if(format == "html"){
-        if(!is.null(fig$plotly)){
+      }else if (format == "html") {
+        if (!is.null(fig$plotly)) {
           message("Writing: ",fpath,"\n")
-          htmlwidgets::saveWidget(widget=fig$plotly, fig$fname, selfcontained = TRUE)
+          htmlwidgets::saveWidget(widget = fig$plotly, fig$fname, selfcontained = TRUE)
           file.rename(fig$fname, fpath)
         }
       }
@@ -1281,7 +1289,7 @@ workflow_contrasts_linfct <- function(models,
                                       contrastfun = LFQService::my_contest )
 {
   warning("DEPRECATE workflow_contrasts_linfct!\n use workflow_contrasts_linfct_V2")
-  if(class(contrasts) == "matrix"){
+  if (class(contrasts) == "matrix") {
     linfct_A <- contrasts
   }else{
     models <- models %>% dplyr::filter(exists_lmer == TRUE)
@@ -1305,8 +1313,8 @@ workflow_contrasts_linfct <- function(models,
                                                "p.value.adjusted",
                                                "moderated.p.value",
                                                "moderated.p.value.adjusted"),
-                      DEBUG=FALSE){
-    if(DEBUG){
+                      DEBUG = FALSE){
+    if (DEBUG) {
       return(list(contrast_result = contrast_result,
                   modelName = modelName,
                   config = config,
@@ -1328,19 +1336,19 @@ workflow_contrasts_linfct <- function(models,
 
     contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                    subject_Id = subject_Id,
-                                                   columns=c("estimate", columns))
+                                                   columns = c("estimate", columns))
 
-    if(!is.null(path)){
-      if(FALSE){
+    if (!is.null(path)) {
+      if (FALSE) {
         contrasts_linfct_write(contrast_minimal,
                                config,
-                               path=path,
+                               path = path,
                                modelName = modelName,
                                prefix = prefix,
                                columns = c("estimate", columns))
       }
-      contrasts_linfct_vis_write(visualization, path=path, format = "pdf")
-      contrasts_linfct_vis_write(visualization, path=path, format = "html")
+      contrasts_linfct_vis_write(visualization, path = path, format = "pdf")
+      contrasts_linfct_vis_write(visualization, path = path, format = "html")
     }
 
     res <- list(contrast_result = contrast_result,
@@ -1370,9 +1378,9 @@ workflow_contrasts_linfct_V2 <- function(models,
 
   # extract contrast sides
   tt <- contrasts[grep("-",contrasts)]
-  tt <- tibble(lhs = names(tt) , contrast= tt)
+  tt <- tibble(lhs = names(tt) , contrast = tt)
   tt <- tt %>% mutate(contrast = gsub("[` ]","",contrast)) %>%
-    tidyr::separate(contrast, c("c1", "c2"), sep="-")
+    tidyr::separate(contrast, c("c1", "c2"), sep = "-")
 
 
 
@@ -1397,8 +1405,8 @@ workflow_contrasts_linfct_V2 <- function(models,
   get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
     data.frame(lhs = contrast_table[i, "lhs"],
                dplyr::select_at(contrast_results, c( subject_ID ,unlist(contrast_table[i,c("c1","c2")]))),
-               c1_name = contrast_table[i,"c1", drop=T],
-               c2_name = contrast_table[i,"c2", drop=T], stringsAsFactors = FALSE)
+               c1_name = contrast_table[i,"c1", drop = T],
+               c2_name = contrast_table[i,"c2", drop = T], stringsAsFactors = FALSE)
   }
 
   contrast_sides <- purrr::map_df(1:nrow(tt), get_contrast_cols, xx, tt, subject_Id)
@@ -1416,7 +1424,7 @@ workflow_contrasts_linfct_V2 <- function(models,
                                                "moderated.p.value",
                                                "moderated.p.value.adjusted"),
                       DEBUG = FALSE){
-    if(DEBUG){
+    if (DEBUG) {
       return(list(contrast_result = contrast_result,
                   linfct_A = linfct_A,
                   modelName = modelName,
@@ -1439,20 +1447,20 @@ workflow_contrasts_linfct_V2 <- function(models,
 
     contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                    subject_Id = subject_Id,
-                                                   columns=c("estimate", columns))
+                                                   columns = c("estimate", columns))
 
-    if(!is.null(path)){
-      if(FALSE){
+    if (!is.null(path)) {
+      if (FALSE) {
         contrasts_linfct_write(contrast_minimal,
                                config,
-                               path=path,
+                               path = path,
                                modelName = modelName,
                                prefix = prefix,
                                columns = c("estimate", columns))
       }
 
-      contrasts_linfct_vis_write(visualization, path=path, format = "pdf")
-      contrasts_linfct_vis_write(visualization, path=path, format = "html")
+      contrasts_linfct_vis_write(visualization, path = path, format = "pdf")
+      contrasts_linfct_vis_write(visualization, path = path, format = "html")
     }
 
     res <- list(contrast_result = contrast_result,
@@ -1473,14 +1481,14 @@ workflow_contrasts_linfct_V2 <- function(models,
 #' Moderate p-values - limma approach
 #' @export
 moderated_p_limma <- function(mm, df = "df", robust = FALSE){
-  sv <- limma::squeezeVar(mm$sigma^2, df=mm[[df]],robust=robust)
+  sv <- limma::squeezeVar(mm$sigma^2, df = mm[[df]],robust = robust)
   sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- dplyr::bind_cols(mm, sv)
   mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
   mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
-  mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df=moderated.df.total, lower.tail=FALSE) )
-  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method="BH")) %>%
+  mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df = moderated.df.total, lower.tail = FALSE) )
+  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method = "BH")) %>%
     dplyr::ungroup()
   return(mm)
 }
@@ -1501,8 +1509,8 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #'                                                    contrastfun = my_contrast_V2)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-#' abline(0,1, col=2)
+#' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
+#' abline(0,1, col = 2)
 #'
 #' # updating lmer model
 #' models_interaction <- LFQService::models_interaction
@@ -1516,10 +1524,10 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #' head(mmm)
-#' plot(mmm$p.value, mmm$moderated.p.value, log="xy")
-#' abline(0,1, col=2)
+#' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
+#' abline(0,1, col = 2)
 #'
-moderated_p_limma_long <- function( mm ,
+moderated_p_limma_long <- function(mm ,
                                     group_by_col = "lhs",
                                     robust = FALSE){
   dfg <- mm %>%
@@ -1541,7 +1549,7 @@ contrasts_linfct_write <- function(results,
 
   subject_Id <- config$table$hkeysLevel()
 
-  if(!is.null(path)){
+  if (!is.null(path)) {
     fileLong <- file.path(path,paste0(prefix, "_", modelName, ".csv"))
     message("Writing: ", fileLong, "\n")
     lfq_write_table(separate_hierarchy(results, config) , path = fileLong)
@@ -1549,7 +1557,7 @@ contrasts_linfct_write <- function(results,
     message("Writing: ", fileWide, "\n")
     resultswide <- pivot_model_contrasts_2_Wide(results,
                                                 subject_Id = subject_Id,
-                                                columns=columns)
+                                                columns = columns)
     lfq_write_table(separate_hierarchy(resultswide, config), path = fileWide)
   }
 }
@@ -1561,7 +1569,7 @@ contrasts_linfct_write <- function(results,
 #'
 get_model_coefficients <- function(modeldata, config){
   l_coeff <- function(m){
-    if(!is.null(m)){
+    if (!is.null(m)) {
       res <- as.numeric(coefficients(m))
       return(res)
     }
@@ -1569,7 +1577,7 @@ get_model_coefficients <- function(modeldata, config){
   }
 
   n_coeff <- function(m){
-    if(!is.null(m)){
+    if (!is.null(m)) {
       res <- names(coefficients(m))
       return(res)
     }
@@ -1583,7 +1591,7 @@ get_model_coefficients <- function(modeldata, config){
   xxs <- xx %>% dplyr::select( config$table$hkeysLevel(),
                                coefficients_values,
                                coefficients_names)
-  xxxn<-xxs %>% unnest()
+  xxxn <- xxs %>% unnest()
   xxcoef <- xxxn %>% spread(coefficients_names,coefficients_values)
   return(xxcoef)
 }
@@ -1596,9 +1604,9 @@ get_model_coefficients <- function(modeldata, config){
 #' @export
 #' @examples
 #' plot(get_p_values_pbeta(0.1,1:10))
-#' abline(h=.05,col=2)
+#' abline(h=.05,col = 2)
 #' plot(get_p_values_pbeta(0.3,1:30))
-#' abline(h=.05,col=2)
+#' abline(h=.05,col = 2)
 #' plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 #'
 get_p_values_pbeta <- function(median.p.value,
@@ -1619,8 +1627,8 @@ get_p_values_pbeta <- function(median.p.value,
 
 # TODO delete
 .getMedianIDX <- function(nrows){
-  if(nrows%%2 == 0){
-    idx <- c(nrows/2 , nrows/2 +1)
+  if (nrows %% 2 == 0) {
+    idx <- c(nrows/2 , nrows/2 + 1)
   }else{
     idx <- ceiling(nrows/2)
   }
@@ -1653,7 +1661,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' p.value <- runif(nrPep)
 #' estimate <- sample(c(-1,1),nrPep, replace = TRUE)
 #' protein_Id <- sample(1:800, size = nrPep,
-#'   replace=TRUE, prob = dexp(seq(0,5,length=800)))
+#'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 #'
 #' plot(table(table(protein_Id)))
 #'
@@ -1663,41 +1671,41 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #'                                     subject_Id = "protein_Id",
 #'                                     estimate = "estimate",
-#'                                     p.value="p.value",
+#'                                     p.value = "p.value",
 #'                                     max.n = 10)
 #' colnames(xx)
 #' hist(testdata$p.value)
-#' hist(xx$median.p.scaled, breaks=20)
-#' hist(xx$median.p, breaks=20)
+#' hist(xx$median.p.scaled, breaks = 20)
+#' hist(xx$median.p, breaks = 20)
 #' hist(xx$beta.based.significance, breaks = 20)
 #'
 #'
-#' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast="contrast")
+#' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
   contrast = "lhs",
   subject_Id = "protein_Id",
   estimate = "estimate",
-  p.value="moderated.p.value",
+  p.value = "moderated.p.value",
   max.n = 10){
 
   contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
-    summarize(n=n()) -> nrpepsPerProt
+    summarize(n = n()) -> nrpepsPerProt
 
   contrasts_data <- contrasts_data %>% dplyr::filter(!is.na(!!sym(p.value))) %>%
-    dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1-!!sym(p.value) , !!sym(p.value)-1))
+    dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
 
   summarized.protein <- contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
     summarize(
       n_not_na = n(),
-      median.estimate = median(!!sym(estimate), na.rm=TRUE),
-      sd.estimate = mad(!!sym(estimate), na.rm=TRUE),
-      median.p.scaled = median(scaled.p, na.rm=TRUE))
+      median.estimate = median(!!sym(estimate), na.rm = TRUE),
+      sd.estimate = mad(!!sym(estimate), na.rm = TRUE),
+      median.p.scaled = median(scaled.p, na.rm = TRUE))
 
-  summarized.protein <- inner_join(summarized.protein , nrpepsPerProt, by=c(subject_Id, contrast))
+  summarized.protein <- inner_join(summarized.protein , nrpepsPerProt, by = c(subject_Id, contrast))
 
-  if(has_name(contrasts_data, "c1_name")){
+  if (has_name(contrasts_data, "c1_name")) {
     ccsummary <- contrasts_data %>%
       group_by_at(c(subject_Id, contrast)) %>%
       summarize(
@@ -1705,7 +1713,7 @@ summary_ROPECA_median_p.scaled <- function(
         c1 = median(c1),
         c2_name = unique(c2_name),
         c2 = median(c2) )
-    summarized.protein <- inner_join(summarized.protein, ccsummary, by=c(subject_Id, contrast))
+    summarized.protein <- inner_join(summarized.protein, ccsummary, by = c(subject_Id, contrast))
   }
 
   summarized.protein <- summarized.protein %>%

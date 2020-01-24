@@ -44,27 +44,33 @@ Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
                "interaction_construct_with_time" = "t_vs_v_given_8wk - t_vs_v_given_1wk"
 )
 
+assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
+
+res <- application_set_up_MQ_run(outpath = outpath,
+                                 inputMQfile = inputMQfile,
+                                 inputAnnotation = annotation,
+                                 config = config,
+                                 id_extractor = NULL,
+                                 use = "peptides")
+
+
+summarised <- data_pep_to_prot(res$data,
+                               res$config,
+                               res$qc_path)
+
+
 if (TRUE) {
-  assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
-  #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-
-  res <- application_set_up_MQ_run(outpath = outpath,
-                                   inputMQfile = inputMQfile,
-                                   inputAnnotation = annotation,
-                                   config = config,
-                                   id_extractor = NULL,
-                                   use = "peptides")
-
-
-  summarised <- data_pep_to_prot(res$data,
-                                 res$config,
-                                 res$qc_path)
-
-
+  .Device
   summarised("render")
-  summarised("plotprot")
+  .Device
+
   summarised("pepwrite")
+  .Device
   summarised("protwrite")
+  .Device
+
+  summarised("plotprot")
 
   saveRDS(summarised,"aaa_summarized.RDA")
 }else{
