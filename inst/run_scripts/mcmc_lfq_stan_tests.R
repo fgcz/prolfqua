@@ -1,6 +1,7 @@
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
+library(dplyr)
 
 inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
 outpath <- "results_modelling"
@@ -32,8 +33,8 @@ config$workunit_Id = "IonStar"
 # specify model definition
 
 modelName  <- "Model"
-memodel <- "~ dilution. +  (1|peptide_Id)"
-memodel_trunc <- "|trunc() ~ dilution. +  (1|peptide_Id)"
+memodel <- "~ dilution. +  (1|peptide_Id) + (1|sampleName)"
+memodel_trunc <- "|trunc() ~ dilution. +  (1|peptide_Id) + (1|sampleName)"
 
 DEBUG <- FALSE
 
@@ -54,7 +55,7 @@ Contrasts <- c(
 )
 
 
-if(TRUE){
+if (TRUE) {
   assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
   res <- application_set_up_MQ_run(outpath = outpath,
@@ -65,8 +66,8 @@ if(TRUE){
   summarised <- data_pep_to_prot(res$data,
                                  res$config,
                                  res$qc_path)
-  summarised <- summarised(DEBUG=TRUE)
-  saveRDS(summarised, file="aaa_summarized.RDA")
+  summarised <- summarised(DEBUG = TRUE)
+  saveRDS(summarised, file = "aaa_summarized.RDA")
 
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
@@ -78,7 +79,7 @@ memodel_full <- paste0(summarised$results$config_pepIntensityNormalized$table$ge
 modelFunction <- make_custom_model_lmer( memodel_full, model_name = "meModel")
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-if(TRUE){
+if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
     data = summarised$results$pepIntensityNormalized,
@@ -87,8 +88,8 @@ if(TRUE){
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
 
-  tmp <- resXXmixmodel(DEBUG=TRUE)
-  dd <- tmp$res_contrasts(DEBUG=TRUE)
+  tmp <- resXXmixmodel(DEBUG = TRUE)
+  dd <- tmp$res_contrasts(DEBUG = TRUE)
 }
 
 # Work on brms code
@@ -105,7 +106,7 @@ mdata2 <- nested$data[[2]]
 mdata1 <- nested$data[[1]]
 mdata26 <- nested$data[[26]]
 
-startmodel <- brms::brm(memodel_full, mdata2, cores=6)
+startmodel <- brms::brm(memodel_full, mdata2, cores = 6)
 tmp <- update(startmodel, newdata = mdata26)
 
 source("../../R/tidyMS_stanr.R")
@@ -116,24 +117,24 @@ res <- ms_brms_model(mdata = mdata2,
               fixef = config$table$fkeysLevel(),
               linfct_A = dd$linfct_A)
 
-if(FALSE){
+if (FALSE) {
 res <- nested %>% mutate(summary =
                            purrr::map( data, ms_brms_model,
                                        startmodel,
                                        config$table$fkeysLevel(),
                                        dd$linfct_A)
                          )
-saveRDS(res, file="rstandSimpleMixed.RDS")
+saveRDS(res, file = "rstandSimpleMixed.RDS")
 }
 
-if(TRUE){
+if (TRUE) {
   memodel_trunc_full <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel_trunc)
-  startmodel <- brms::brm(memodel_trunc_full, mdata2, cores=6)
+  startmodel <- brms::brm(memodel_trunc_full, mdata2, cores = 6)
   res <- nested %>% mutate(summary =
                              purrr::map( data, ms_brms_model,
                                          startmodel,
                                          config$table$fkeysLevel(),
                                          dd$linfct_A)
   )
-  saveRDS(res, file="rstandTruncMixed.RDS")
+  saveRDS(res, file = "rstandTruncMixed.RDS")
 }
