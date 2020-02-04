@@ -1,6 +1,7 @@
-rm(list=ls())
+rm(list = ls())
 library(LFQServiceAnalysisTemplate)
 library(tidyverse)
+library(dplyr)
 
 preprocess <- function(data){
   tmp <- data %>%
@@ -30,6 +31,7 @@ if(TRUE){
 
 
 allresults <- readRDS("allresults.Rds")
+
 tmp <- preprocess(allresults$ropeca_P)
 tmp <- tmp %>% mutate(median.estimate = abs(median.estimate))
 tmpRopecaBBS <- ms_bench_add_FPRTPR(tmp,arrangeby = "beta.based.significance", type="probability")

@@ -1,8 +1,9 @@
 # Run mixed models on benchmark dataset.
 
-rm(list=ls())
+rm(list = ls())
 library(LFQService)
 library(tidyverse)
+library(dplyr)
 
 inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
 outpath <- "results_modelling"
@@ -15,7 +16,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 # MQPeptides<- "D:/Dropbox/DataAnalysis/p2109_PEPTIDE_Analysis/data/MQWorkunit.zip"
 # unz(MQPeptides,"modificationSpecificPeptides.txt")
 # read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
-#         header=TRUE, sep="\t", stringsAsFactors = FALSE)
+#         header = TRUE, sep="\t", stringsAsFactors = FALSE)
 
 
 # creates default configuration
@@ -35,7 +36,7 @@ config$workunit_Id = "IonStar"
 # specify model definition
 
 modelName  <- "Model"
-memodel <- "~ dilution. +  (1|peptide_Id)"
+memodel <- "~ dilution. +  (1|peptide_Id) + (1|sampleName)"
 rlmpep <- "~ dilution. +  peptide_Id"
 lmmodel <- "~ dilution."
 
@@ -59,7 +60,7 @@ Contrasts <- c(
 )
 
 
-if(TRUE){
+if (TRUE) {
   assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
   res <- application_set_up_MQ_run(outpath = outpath,
@@ -70,8 +71,8 @@ if(TRUE){
   summarised <- data_pep_to_prot(res$data,
                                  res$config,
                                  res$qc_path)
-  summarised <- summarised(DEBUG=TRUE)
-  saveRDS(summarised, file="aaa_summarized.RDA")
+  summarised <- summarised(DEBUG = TRUE)
+  saveRDS(summarised, file = "aaa_summarized.RDA")
 
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
@@ -79,17 +80,17 @@ if(TRUE){
 
 message("######################## fit mixed #######################")
 
-#mycenter <- function(x){x - mean(x, na.rm=TRUE)}
+#mycenter <- function(x){x - mean(x, na.rm = TRUE)}
 data_c <- summarised$results$pepIntensityNormalized
 config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
-usethis::use_data(data_c)
-usethis::use_data(config_c)
+#usethis::use_data(data_c)
+#usethis::use_data(config_c)
 
 #data_c <- data_c %>% group_by(config_c$table$hkeysLevel()) %>%
 #  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
 mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))
 #foo
-if(FALSE){
+if (FALSE) {
   x <- LFQService::interaction_missing_stats(data_c, config_c)$data
   x0 <- x %>% dplyr::filter(nrMeasured == 0)
   x1 <- x %>% dplyr::filter(nrMeasured == 1)
@@ -98,7 +99,7 @@ if(FALSE){
   #xx1 <- inner_join(data_c, x1)
   #xx1 <- xx1 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx1),replace = T))
 
-  daNo01<- anti_join(data_c, bind_rows(x0))
+  daNo01 <- anti_join(data_c, bind_rows(x0))
   daNo01 <- daNo01 %>% mutate(intImputed  = transformedIntensity)
 
   imputed <- bind_rows(xx0, daNo01)
@@ -113,7 +114,7 @@ reportColumns <- c("p.value",
                    "p.value.adjusted")
 #foo
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-if(TRUE){
+if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
     data = data_c,
@@ -121,7 +122,7 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
-  resXXmixmodel <- resXXmixmodel(do="result")
+  resXXmixmodel <- resXXmixmodel(do = "result")
 }
 
 
@@ -131,7 +132,7 @@ prot <- summarised$protintensity_fun("unnest")
 model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( model, model_name = "Model")
-if(TRUE){
+if (TRUE) {
   resXXmedpolish <- application_run_modelling_V2(
     outpath = outpath,
     data = prot$data,
@@ -139,7 +140,7 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
-  resXXmedpolish <- resXXmedpolish(do="result")
+  resXXmedpolish <- resXXmedpolish(do = "result")
 }
 
 
@@ -149,7 +150,7 @@ summarised$results$config_pepIntensityNormalized$table$hierarchyLevel <- 2
 modelFunction <- make_custom_model_lm( model, model_name = "pepModel")
 
 
-if(TRUE){
+if (TRUE) {
   resXXRopeca <- application_run_modelling_V2(
     outpath = outpath,
     data = summarised$results$pepIntensityNormalized,
@@ -157,17 +158,16 @@ if(TRUE){
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
-  resXXRopeca <- resXXRopeca(do="result")
-
+  resXXRopeca <- resXXRopeca(do = "result")
 }
 
-detach("package:LFQService",unload=TRUE)
+detach("package:LFQService",unload = TRUE)
 library(LFQService)
 ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca,contrast = "contrast")
 
 
 allresults <- list(ropeca_P = ropeca_P, resXXmedpolish = resXXmedpolish, resXXmixmodel = resXXmixmodel )
-saveRDS(allresults, file="allresults.Rds")
+saveRDS(allresults, file = "allresults.Rds")
 
 tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
                             estimate = "median.estimate",
