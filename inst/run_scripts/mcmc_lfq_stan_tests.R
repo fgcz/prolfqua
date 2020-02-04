@@ -106,7 +106,7 @@ mdata2 <- nested$data[[2]]
 mdata1 <- nested$data[[1]]
 mdata26 <- nested$data[[26]]
 
-startmodel <- brms::brm(memodel_full, mdata2, cores = 6)
+startmodel <- brms::brm(memodel_full, mdata2, cores = 6, refresh = 0)
 tmp <- update(startmodel, newdata = mdata26)
 
 source("../../R/tidyMS_stanr.R")
@@ -129,7 +129,7 @@ saveRDS(res, file = "rstandSimpleMixed.RDS")
 
 if (TRUE) {
   memodel_trunc_full <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel_trunc)
-  startmodel <- brms::brm(memodel_trunc_full, mdata2, cores = 6)
+  startmodel <- brms::brm(memodel_trunc_full, mdata2, cores = 6, refresh = 0)
   res <- nested %>% mutate(summary =
                              purrr::map( data, ms_brms_model,
                                          startmodel,
