@@ -31,7 +31,7 @@ config$workunit_Id = "20191120_MQ_repack.zip"
 
 # specify model definition
 modelName  <- "Model"
-memodel <- "~ drug_ * SCI_  + (1|peptide_Id)"
+memodel <- "~ drug_ * SCI_  + (1|peptide_Id) + (1|sampleName)"
 lmmodel <- "~ drug_ * SCI_"
 
 DEBUG <- TRUE
@@ -64,14 +64,11 @@ if (TRUE) {
   .Device
   summarised("render")
   .Device
-
   summarised("pepwrite")
   .Device
   summarised("protwrite")
   .Device
-
   summarised("plotprot")
-
   saveRDS(summarised,"aaa_summarized.RDA")
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
