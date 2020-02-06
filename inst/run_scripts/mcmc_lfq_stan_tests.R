@@ -117,7 +117,7 @@ res <- ms_brms_model(mdata = mdata2,
               fixef = config$table$fkeysLevel(),
               linfct_A = dd$linfct_A)
 
-if (FALSE) {
+if (TRUE) {
 res <- nested %>% mutate(summary =
                            purrr::map( data, ms_brms_model,
                                        startmodel,
@@ -127,7 +127,7 @@ res <- nested %>% mutate(summary =
 saveRDS(res, file = "rstandSimpleMixed.RDS")
 }
 
-if (TRUE) {
+if (FALSE) {
   memodel_trunc_full <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel_trunc)
   startmodel <- brms::brm(memodel_trunc_full, mdata2, cores = 6, refresh = 0)
   res <- nested %>% mutate(summary =

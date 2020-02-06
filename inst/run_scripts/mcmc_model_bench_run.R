@@ -35,8 +35,8 @@ config$workunit_Id = "IonStar"
 
 # specify model definition
 
-modelName  <- "Model"
-memodel <- "~ dilution. +  (1|peptide_Id) + (1|sampleName)"
+#modelName  <- "Model"
+memodel <- "~ dilution +  (1|peptide_Id) + (1|sampleName)"
 rlmpep <- "~ dilution. +  peptide_Id"
 lmmodel <- "~ dilution."
 
