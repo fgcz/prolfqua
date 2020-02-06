@@ -1,17 +1,27 @@
 .columnsImputed <- function(all, contrasts) {
-  get_sides <- function(contrast) {
-    bb <- str_split(contrast,"[-+]")
-    bb <- gsub("[ `]", "", bb[[1]])
+  getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
+
+  get_sides <- function(contrast, all_variables) {
+    ast_list <- getAST(rlang::parse_expr(contrast))
+    ast_array <- array(as.character(unlist(ast_list)))
+    bb <- intersect(ast_array,all_variables)
     return(bb)
   }
+
+  all_variables <- c(names(contrasts), unique(all$contrast))
+
 
   res <- NULL
 
   for (i in 1:length(contrasts)) {
     cname <- names(contrasts)[i]
-    cc <- get_sides(contrasts[i])
+    cc <- get_sides(contrasts[i], all_variables)
+    if (length(cc) != 2) {
+      message("there are ", length(cc) , "> 2 elements")
+      next;
+    }
 
-    tmp <- all %>% dplyr::filter(contrast %in% c(cname,cc))
+    tmp <- all %>% dplyr::filter( contrast %in% c(cname,cc) )
     tmp <- tmp %>% dplyr::select(-meanArea) %>% tidyr::spread(contrast , imputed)
 
     tmp <- tmp %>% add_column(lhs = cname,.after = 1)
@@ -89,7 +99,8 @@ application_run_modelling_V2 <- function(outpath,
                                                                 contrasts)
   contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
   contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
-                                contrasts = contrasts[setdiff(names(contrasts) , do_not_report)])
+                                contrasts = contrasts[setdiff(names(contrasts) ,
+                                                              do_not_report)])
 
   #### Compute contrasts from model ####
   modellingResult <-  modellingResult_fun()
@@ -101,7 +112,9 @@ application_run_modelling_V2 <- function(outpath,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result","write_modelling","write_contrasts"), DEBUG = FALSE) {
+  res_fun <- function(do=c("result",
+                           "write_modelling",
+                           "write_contrasts"), DEBUG = FALSE) {
     do <- match.arg(do)
     if (DEBUG) {
       res <- list(modelFunction = modelFunction,
