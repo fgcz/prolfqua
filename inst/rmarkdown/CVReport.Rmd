@@ -39,7 +39,7 @@ cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",p
 ```{r printTable, results="asis"}
 ftab <- flextable::flextable(cv_quantiles_res) %>%
   flextable::autofit() %>%
-  flextable::set_caption("Summary of the coefficient of variation (CV) at the 10th, 25th, 50th, 7th and 90th percentile.")
+  flextable::set_caption("Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
 ftab
 
 ```
@@ -47,7 +47,7 @@ ftab
 ```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities."}
 if(params$plot_density){
   p0 <- LFQService::plot_intensity_distribution_density(data_cc, local_config) + 
-    theme(legend.text=element_text(size=5))
+    theme(legend.text = element_text(size=5))
   p0
 } else{
   p1 <- LFQService::plot_intensity_distribution_violin(data_cc, local_config)
