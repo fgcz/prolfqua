@@ -10,13 +10,14 @@ ms_bench_add_FPRTPR <- function(tmp, idcol = "protein_Id",
                        TPcol = "TP",
                        groupby = "contrast",
                        arrangeby = "beta.based.significance",
-                       type = c("probability","foldchange"),desc = FALSE){
+                       type = c("probability","foldchange"),
+                       desc = FALSE){
 
   tmp$TP_total <- length(unique(tmp[[idcol]][ tmp[[TPcol]] == TRUE]))
   tmp <- tmp %>% group_by(!!!syms(groupby))
   tmp %>% summarise(n = n())
 
-  tmp <- if(!desc){
+  tmp <- if (!desc) {
     tmp %>% arrange(!!sym(arrangeby))#,desc(!!sym(TPcol)))
   }else{
     tmp %>% arrange(desc(!!sym(arrangeby)))#,desc(!!sym(TPcol)))
@@ -41,7 +42,7 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1){
   TPR <- TPR[idx]
   FPR <- FPR[idx]
 
-  res <- 1/2*sum(diff(FPR) * (head(TPR,-1)+tail(TPR,-1)))
+  res <- 1/2*sum(diff(FPR) * (head(TPR,-1) + tail(TPR,-1)))
   return(res)
 }
 
