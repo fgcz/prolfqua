@@ -574,26 +574,26 @@ hierarchy_counts_sample <- function(data,
                                     configuration)
 {
   hierarchy <- configuration$table$hierarchyKeys()
-  summary <-data %>% dplyr::filter(! is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
+  summary <- data %>% dplyr::filter(!is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
     dplyr::summarise_at( hierarchy, n_distinct )
 
   res <- function(value = c("wide", "long", "plot")){
     value <- match.arg(value)
-    if(value == "wide"){
+    if (value == "wide") {
       return(summary)
     }else{
       long <- summary %>% tidyr::gather("key",
                                         "nr",-dplyr::one_of(configuration$table$isotopeLabel,
                                                             configuration$table$sampleName))
-      if(value == "long"){
+      if (value == "long") {
         return(long)
-      }else if(value == "plot"){
-        nudgeval <- max(long$nr) * 0.05
-        ggplot(long, aes(x = sampleName, y = nr)) +
+      }else if (value == "plot") {
+        nudgeval <- mean(long$nr) * 0.05
+        ggplot2::ggplot(long, aes(x = sampleName, y = nr)) +
           geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           facet_wrap( ~ key, scales = "free_y", ncol = 1) +
-          geom_text(aes(label = nr), nudge_y = nudgeval) +
+          geom_text(aes(label = nr), nudge_y = nudgeval, angle = 45) +
           theme(axis.text.x = element_text(angle = 90, hjust = 1))
       }
     }
@@ -990,10 +990,10 @@ missingness_per_condition_cumsum <- function(x,
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  nudgeval = max(res$cumulative_sum) * 0.05
+  nudgeval = mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = nrNAs, y = cumulative_sum)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
-    geom_text(aes(label = cumulative_sum), nudge_y = nudgeval) +
+    geom_text(aes(label = cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
   res <- res %>% tidyr::spread("nrNAs","cumulative_sum")
@@ -1029,7 +1029,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysLev
 
   p <- ggplot(xx, aes_string(x = "nrNAs", y = hierarchyKey)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
-    geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval) +
+    geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
   xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
 
@@ -1621,7 +1621,8 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
 #' plot_stdv_vs_mean(ressqrt, config)
 plot_stdv_vs_mean <- function(data, config){
   p <- ggplot(data, aes(x = mean, y = abs(sd))) +
-    geom_point() +
+    geom_hex() +
+    #stat_density2d(geom="tile", aes(fill=..density..^0.25), contour=FALSE) +
     geom_smooth(method = "loess") +
     facet_wrap(config$table$factorKeys()[1], nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
