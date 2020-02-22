@@ -48,8 +48,8 @@ transform_work_intensity <- function(data,
                                      transformation,
                                      intesityNewName = NULL){
   x <- as.list( match.call() )
-  if(is.null(intesityNewName)){
-    newcol <- paste(as.character(x$transformation), config$table$getWorkIntensity(), sep="_")
+  if (is.null(intesityNewName)) {
+    newcol <- paste(as.character(x$transformation), config$table$getWorkIntensity(), sep = "_")
   }else{
     newcol <- intesityNewName
   }
@@ -74,9 +74,9 @@ transform_work_intensity <- function(data,
 plot_intensity_distribution_violin <- function(data, config){
   p <- ggplot(data, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
     geom_violin() +
-    theme(axis.text.x = element_text(angle=90))
-  if(!config$parameter$is_intensity_transformed){
-    p <- p + scale_y_continuous(trans='log10')
+    theme(axis.text.x = element_text(angle = ))
+  if (!config$parameter$is_intensity_transformed) {
+    p <- p + scale_y_continuous(trans = 'log10')
   }
   return(p)
 }
@@ -94,9 +94,9 @@ plot_intensity_distribution_violin <- function(data, config){
 #' plot_intensity_distribution_density(analysis, config)
 plot_intensity_distribution_density <- function(data, config){
   p <- ggplot(data, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
-    geom_line(stat="density")
-  if(!config$parameter$is_intensity_transformed){
-    p <- p + scale_x_continuous(trans='log10')
+    geom_line(stat = "density")
+  if (!config$parameter$is_intensity_transformed) {
+    p <- p + scale_x_continuous(trans = 'log10')
   }
   return(p)
 }
@@ -113,25 +113,25 @@ plot_intensity_distribution_density <- function(data, config){
 #' plot_sample_correlation(analysis, config)
 plot_sample_correlation <- function(data, config){
   matrix <- toWideConfig(data, config, as.matrix = TRUE)$data
-  M <- cor(matrix, use="pairwise.complete.obs")
-  if(nrow(M)>12){
-    corrplot::corrplot.mixed(M,upper="ellipse",
-                             lower="pie",
-                             diag="u",
-                             tl.cex=.6,
-                             tl.pos="lt",
-                             tl.col="black",
-                             mar=c(2,5,5,2))
+  M <- cor(matrix, use = "pairwise.complete.obs")
+  if (nrow(M) > 12) {
+    corrplot::corrplot.mixed(M,upper = "ellipse",
+                             lower = "pie",
+                             diag = "u",
+                             tl.cex = .6,
+                             tl.pos = "lt",
+                             tl.col = "black",
+                             mar = c(2,5,5,2))
   } else{
-    corrplot::corrplot.mixed(M,upper="ellipse",
-                             lower="number",
+    corrplot::corrplot.mixed(M,upper = "ellipse",
+                             lower = "number",
                              lower.col = "black",
-                             tl.cex=.6,
+                             tl.cex = .6,
                              number.cex = .7,
-                             diag="u",
-                             tl.pos="lt",
-                             tl.col="black",
-                             mar=c(2,5,5,2))
+                             diag = "u",
+                             tl.pos = "lt",
+                             tl.col = "black",
+                             mar = c(2,5,5,2))
 
   }
   invisible(M)
@@ -328,12 +328,36 @@ gatherItBack <- function(x,value,config,data = NULL, sep="~lfq~"){
   return(x)
 }
 
+robustscale <- function(data,
+                        dim = 2,
+                        center = TRUE,
+                        scale = TRUE,
+                        preserveScale = TRUE)
+{
+  medians = NULL
+  if (center) {
+    medians <- apply(data, dim, median, na.rm = TRUE)
+    data = sweep(data, dim, medians, "-")
+  }
+  mads = NULL
+  if (scale) {
+    mads <- apply(data, dim, mad, na.rm = TRUE)
+    if (preserveScale) {
+      mads <- mads/mean(mads)
+    }
+    data = (sweep(data, dim, mads, "/"))
+  }
+  return(list(data = data, medians = medians, mads = mads))
+}
+
+
 # Functions working on Matrices go Here ----
 #' robust scale warpper
 #' @export
 robust_scale <- function(data){
-  return(quantable::robustscale(data)$data)
+  return(robustscale(data)$data)
 }
+
 
 
 #' apply Function To matrix
@@ -349,7 +373,7 @@ robust_scale <- function(data){
 #' res <- applyToIntensityMatrix(res, conf, .func = robust_scale)
 applyToIntensityMatrix <- function(data, config, .func){
   x <- as.list( match.call() )
-  colname <- make.names(paste(config$table$getWorkIntensity(), deparse(x$.func), sep="_"))
+  colname <- make.names(paste(config$table$getWorkIntensity(), deparse(x$.func), sep = "_"))
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
   data <- gatherItBack(mat, colname, config, data)
@@ -360,11 +384,11 @@ applyToIntensityMatrix <- function(data, config, .func){
 
 # Decorrelation analysis ----
 .findDecorrelated <- function(res, threshold = 0.65){
-  if(is.null(res))
+  if (is.null(res))
     return(NULL)
   nrtrans <- ncol(res)
   ids <- rowSums(res < threshold, na.rm = TRUE)
-  names(which((nrtrans-1)== ids))
+  names(which((nrtrans - 1) == ids))
 }
 
 #' finds decorrelated measues
@@ -396,8 +420,8 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
     dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
-  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep="~lfq~")
-  qvalFiltX <- dplyr::inner_join(data, unnest_res, by=c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
+  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep = "~lfq~")
+  qvalFiltX <- dplyr::inner_join(data, unnest_res, by = c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
   return(qvalFiltX)
 }
 
@@ -405,12 +429,12 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
 # Missing Value imputation ----
 
 simpleImpute <- function(data){
-  m <-apply(data,2, mean, na.rm=TRUE )
+  m <- apply(data,2, mean, na.rm = TRUE )
   res <- sweep(data,2,m,"-")
   dim(data)
   dim(res)
   resMean <- apply(res, 1, mean, na.rm = TRUE)
-  resid <- matrix(replicate(length(m),resMean), nrow=length(resMean))
+  resid <- matrix(replicate(length(m),resMean), nrow = length(resMean))
   imp <- sweep(resid,2,m,"+")
   res <- data
   res[is.na(res)] <- imp[is.na(res)]
@@ -439,26 +463,26 @@ impute_correlationBased <- function(x , config){
 
   gatherItback <- function(x,config){
     x <- dplyr::bind_cols(
-      row=rownames(x),
+      row = rownames(x),
       tibble::as_tibble(x)
     )
-    tidyr::gather(x,key= !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
+    tidyr::gather(x,key = !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
   unnest_res <- nestedX %>% dplyr::select(config$table$hkeysLevel(), "imputed") %>% tidyr::unnest(cols = c(imputed))
-  unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep="~lfq~" )
+  unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
-                          by=c(config$table$hierarchyKeys(), config$table$sampleName) )
+                          by = c(config$table$hierarchyKeys(), config$table$sampleName) )
   config$table$setWorkIntensity("srm_ImputedIntensity")
   return(qvalFiltX)
 }
 
 #' @export
 make_name <- function(levelA, levelB, prefix="nr_"){
-  c_name <- paste(prefix ,levelB,"_by_",levelA,sep="")
+  c_name <- paste(prefix, levelB, "_by_", levelA, sep = "")
   return(c_name)
 }
 
@@ -474,16 +498,16 @@ make_name <- function(levelA, levelB, prefix="nr_"){
 nr_B_in_A <- function(data,
                       levelA,
                       levelB, merge=TRUE){
-  c_name <-make_name(levelA, levelB)
+  c_name <- make_name(levelA, levelB)
   tmp <- data %>%
     dplyr::select_at(c(levelA, levelB)) %>%
     dplyr::distinct() %>%
     dplyr::group_by_at(levelA) %>%
-     dplyr::summarize(!!c_name:=n())
-  if(!merge){
+     dplyr::summarize(!!c_name := n())
+  if (!merge) {
     return(tmp)
   }
-  data <- dplyr::inner_join(data, tmp, by=levelA )
+  data <- dplyr::inner_join(data, tmp, by = levelA )
   message("Column added : ", c_name)
   return(data)
 }
@@ -492,14 +516,14 @@ nr_B_in_A <- function(data,
 rankProteinPrecursors <- function(data,
                                   config,
                                   column = config$table$getWorkIntensity(),
-                                  fun = function(x){ mean(x, na.rm=TRUE)},
+                                  fun = function(x){ mean(x, na.rm = TRUE)},
                                   summaryColumn = "srm_meanInt",
                                   rankColumn = "srm_meanIntRank",
                                   rankFunction = function(x){min_rank(desc(x))}
 ){
   table <- config$table
 
-  summaryPerPrecursor <-data %>%
+  summaryPerPrecursor <- data %>%
     dplyr::group_by(!!!syms(table$hierarchyKeys())) %>%
      dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
 
@@ -528,8 +552,8 @@ rankProteinPrecursors <- function(data,
 rankPrecursorsByIntensity <- function(data, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  data<- rankProteinPrecursors(data, config, column = config$table$getWorkIntensity(),
-                               fun = function(x){ mean(x, na.rm=TRUE)},
+  data <- rankProteinPrecursors(data, config, column = config$table$getWorkIntensity(),
+                               fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
                                rankFunction = function(x){min_rank(desc(x))}
