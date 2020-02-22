@@ -1,12 +1,16 @@
 # Run mixed models on benchmark dataset.
 
 rm(list = ls())
+
+
 library(LFQService)
 library(tidyverse)
 library(dplyr)
 
 inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
-outpath <- "results_modelling"
+
+inputMQfile <- "C:\\Users\\wolski\\MAS_WEW/LFQServiceAnalysisTemplate//inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
+outpath <- "results_modelling_all"
 #outpath <- "results_modelling_WHO_noSex"
 
 inputAnntation <- "../samples/annotationIonstar.xlsx"
@@ -72,7 +76,7 @@ if (TRUE) {
                                  res$config,
                                  res$qc_path)
   summarised <- summarised(DEBUG = TRUE)
-  saveRDS(summarised, file = "aaa_summarized.RDA")
+  #saveRDS(summarised, file = "aaa_summarized.RDA")
 
 }else{
   summarised <- readRDS("aaa_summarized.RDA")
@@ -81,8 +85,13 @@ if (TRUE) {
 message("######################## fit mixed #######################")
 
 #mycenter <- function(x){x - mean(x, na.rm = TRUE)}
+
+#dataIonstar <- summarised
+##usethis::use_data(dataIonstar)
+
 data_c <- summarised$results$pepIntensityNormalized
 config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
+
 #usethis::use_data(data_c)
 #usethis::use_data(config_c)
 
@@ -90,28 +99,12 @@ config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
 #  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
 mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))
 #foo
-if (FALSE) {
-  x <- LFQService::interaction_missing_stats(data_c, config_c)$data
-  x0 <- x %>% dplyr::filter(nrMeasured == 0)
-  x1 <- x %>% dplyr::filter(nrMeasured == 1)
-  xx0 <- inner_join(data_c, x0)
-  xx0 <- xx0 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx0),replace = T))
-  #xx1 <- inner_join(data_c, x1)
-  #xx1 <- xx1 %>% mutate(intImputed = sample(x1$meanArea[x1$meanArea<quantile(x1$meanArea,0.1)],nrow(xx1),replace = T))
-
-  daNo01 <- anti_join(data_c, bind_rows(x0))
-  daNo01 <- daNo01 %>% mutate(intImputed  = transformedIntensity)
-
-  imputed <- bind_rows(xx0, daNo01)
-  config_c$table$setWorkIntensity("intImputed")
-  data_c <- imputed
-}
-mean(is.na(data_c$intImputed))
 
 memodel_full <- paste0(config_c$table$getWorkIntensity() , memodel)
 modelFunction <- make_custom_model_lmer( memodel_full, model_name = "meModel")
 reportColumns <- c("p.value",
                    "p.value.adjusted")
+
 #foo
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
