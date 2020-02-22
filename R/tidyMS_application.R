@@ -37,6 +37,7 @@
 .makeResult_contrasts <- function(contrasts_xx,
                                   contrasts_xx_imputed,
                                   subject_Id,
+                                  config,
                                   remove_imputed = TRUE ) {
 
   contrast_results <- dplyr::right_join( contrasts_xx$contrast_minimal,
@@ -131,7 +132,8 @@ application_run_modelling_V2 <- function(outpath,
     if (do == "result") {
       result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
                                             ,contrasts_xx_imputed,
-                                            pepConfig$table$hkeysLevel())
+                                            pepConfig$table$hkeysLevel(),
+                                            pepConfig)
       return(result_table)
     }else if (do == "write_modelling") {
       modellingResult_fun(modelling_path)
@@ -140,7 +142,8 @@ application_run_modelling_V2 <- function(outpath,
       filtered_dd <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
       result_table <- .makeResult_contrasts(filtered_dd
                                             ,contrasts_xx_imputed,
-                                            pepConfig$table$hkeysLevel())
+                                            pepConfig$table$hkeysLevel(),
+                                            pepConfig)
       lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
       return(result_table)
     }
