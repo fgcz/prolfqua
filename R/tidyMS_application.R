@@ -237,7 +237,7 @@ application_set_up_MQ_run <- function(outpath,
       message(paste(noData,collapse = " "))
     }
     measSamples <- unique(resPepProtAnnot$raw.file)
-    noAnnot <- measSamples[! measSamples%in% annotation$raw.file]
+    noAnnot <- measSamples[!measSamples %in% annotation$raw.file]
     if (length(noAnnot) > 0 ) {
       message("some measured samples have no annotation!")
       message(paste(noAnnot,collapse = " "))
