@@ -12,7 +12,10 @@
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 #'
-make_custom_model_lmer <- function(modelstr, model_name = "Model") {
+make_custom_model_lmer <- function(modelstr,
+                                   model_name = "Model",
+                                   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+                                   ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, get_formula = FALSE){
     if (get_formula) {
@@ -26,7 +29,7 @@ make_custom_model_lmer <- function(modelstr, model_name = "Model") {
               isSingular = lme4::isSingular,
               contrast_fun = my_contest,
               model_name = model_name,
-              report_columns = c("p.value", "p.value.adjusted", "moderated.p.value.adjusted") )
+              report_columns = report_columns )
   return(res)
 }
 
@@ -36,7 +39,10 @@ make_custom_model_lmer <- function(modelstr, model_name = "Model") {
 #' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-make_custom_model_lm <- function(modelstr, model_name) {
+make_custom_model_lm <- function(modelstr,
+                                 model_name = "Model",
+                                 report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+                                 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, get_formula = FALSE){
     if (get_formula) {
@@ -50,33 +56,10 @@ make_custom_model_lm <- function(modelstr, model_name) {
               isSingular = isSingular_lm,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
-              report_columns = c("moderated.p.value", "moderated.p.value.adjusted") )
+              report_columns = report_columns )
   return(res)
 }
 
-#' Create custom ml model
-#' @export
-#' @examples
-#' tmp <- make_custom_model_rlm("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
-make_custom_model_rlm <- function(modelstr, model_name) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula = FALSE){
-    if (get_formula) {
-      return(formula)
-    }
-    modelTest <- tryCatch(rlm( formula , data = x ),
-                          error = function(e){print(e) ; return = NULL})
-    return(modelTest)
-  }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_lm,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = c("moderated.p.value", "moderated.p.value.adjusted") )
-  return(res)
-}
 
 .likelihood_ratio_test <- function(modelNO, model) {
   res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
