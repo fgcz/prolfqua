@@ -1,8 +1,10 @@
 rm(list = ls())
+
 library(LFQServiceAnalysisTemplate)
 library(tidyverse)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 
 preprocess <- function(data) {
   tmp <- data %>%
@@ -12,7 +14,7 @@ preprocess <- function(data) {
       grepl("ECOLI", protein_Id) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
-  tmp <- tmp %>% filter(!ss == "OTHER")
+  tmp <- tmp %>% dplyr::filter(!ss == "OTHER")
   tmp <- tmp %>% mutate(TP = ss == "ECOLI")
 
   return(tmp)
@@ -93,7 +95,7 @@ if (FALSE) {
   xx <-
     tmpMMMedianEstimate %>%  dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
   plot(xx$FPR, xx$TPR, xlim = c(0.694 , 0.6944))
-  xx <- xx %>%  filter(FPR > 0.694 &  FPR < 0.6944)
+  xx <- xx %>%  dplyr::filter(FPR > 0.694 &  FPR < 0.6944)
   View(inner_join(tmp, xx))
 }
 
@@ -133,7 +135,7 @@ res <- bind_rows(list(tmpStanRProb,
 
 res %>% group_by(arrangeby, type) %>% summarize(n = n())
 res <- res %>% arrange(FDP)
-#res %>% filter(arrangeby == "minp" & contrast == "dilution_(9/6)_1.5"	) %>% View
+#res %>% dplyr::filter(arrangeby == "minp" & contrast == "dilution_(9/6)_1.5"	) %>% View
 
 ggplot(res, aes(x = FDP, y = TPR, color = arrangeby)) +
   geom_line(aes(linetype = type)) +
