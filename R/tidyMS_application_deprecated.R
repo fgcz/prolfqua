@@ -116,8 +116,9 @@ application_run_modelling <- function(outpath,
     res <- res %>% dplyr::mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
     res <- res %>% dplyr::mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
 
-    for(column in modelFunction$report_columns){
-      res <- res %>% dplyr::mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate, TRUE ~ !!sym(column)))
+    for (column in modelFunction$report_columns) {
+      res <- res %>% dplyr::mutate(!!sym(paste0("pseudo_",column)) := case_when(is.na(estimate) ~ estimate,
+                                                                                TRUE ~ !!sym(column)))
     }
     res <- res %>% dplyr::select(-imputed, -meanArea)
     return(res)

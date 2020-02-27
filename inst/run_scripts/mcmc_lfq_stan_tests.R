@@ -96,7 +96,6 @@ if (TRUE) {
 # Work on brms code
 
 library(brms)
-
 data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
 

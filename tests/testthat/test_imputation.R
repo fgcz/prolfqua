@@ -1,4 +1,5 @@
-rm(list=ls())
+rm(list = ls())
+
 library(tidyverse)
 library(readr)
 library(LFQService)
@@ -47,7 +48,7 @@ config$table$factorLevel <- 2
 #rmarkdown::render("MQSummary.Rmd",params = list(configuration = config$clone(deep=TRUE), data = resDataStart))
 
 bb <- interaction_missing_stats(resDataStart, config, factors = NULL)
-bb %>% dplyr::filter(nrNAs < nrReplicates -4) -> bb
+bb$data %>% dplyr::filter(nrNAs < nrReplicates -4) -> bb
 resDataStart <- inner_join(bb,resDataStart)
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())
