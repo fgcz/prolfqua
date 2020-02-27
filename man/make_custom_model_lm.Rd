@@ -4,7 +4,12 @@
 \alias{make_custom_model_lm}
 \title{Create custom ml model}
 \usage{
-make_custom_model_lm(modelstr, model_name)
+make_custom_model_lm(
+  modelstr,
+  model_name = "Model",
+  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
+    "moderated.p.value.adjusted")
+)
 }
 \description{
 Create custom ml model

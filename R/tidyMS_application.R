@@ -147,8 +147,6 @@ application_run_modelling_V2 <- function(outpath,
       lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
       return(result_table)
     }
-
-
   }
   return(res_fun)
 }

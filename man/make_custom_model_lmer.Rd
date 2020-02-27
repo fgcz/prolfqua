@@ -4,7 +4,12 @@
 \alias{make_custom_model_lmer}
 \title{Create custom lmer model}
 \usage{
-make_custom_model_lmer(modelstr, model_name = "Model")
+make_custom_model_lmer(
+  modelstr,
+  model_name = "Model",
+  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
+    "moderated.p.value.adjusted")
+)
 }
 \description{
 Create custom lmer model
