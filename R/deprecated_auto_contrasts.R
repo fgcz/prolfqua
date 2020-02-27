@@ -191,7 +191,7 @@ deprecated_model_full_lmer <- function(config, factor_level=2, random= NULL){
     }
 
     modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
-                          error = function(e){print(e); return = NULL})
+                          error = function(e){warning(e); return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -217,7 +217,7 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
       return(formula)
     }
     modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
-                          error = function(e){print(e);return = NULL})
+                          error = function(e){warning(e);return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,

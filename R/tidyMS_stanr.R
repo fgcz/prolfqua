@@ -57,9 +57,9 @@ ms_brms_model <- function(mdata,
   }
 
   if (class(memodel) == "character") {
-    resultmodel <- tryCatch(brm(memodel, data = mdata, cores = cores), error = function(x) NULL)
+    resultmodel <- tryCatch(brm(memodel, data = mdata, cores = cores, refresh = 0), error = function(x) warning(x))
   }else if (class(memodel) == "brmsfit") {
-    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores = cores), error = function(x) NULL)
+    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores = cores, refresh = 0), error = function(x) warning(x))
   }
   res <- NULL
   if (!is.null(resultmodel)) {

@@ -22,7 +22,7 @@ make_custom_model_lmer <- function(modelstr,
       return(formula)
     }
     modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
-                          error = function(e){print(e) ; return = NULL})
+                          error = function(e){warning(e) ; return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -49,7 +49,7 @@ make_custom_model_lm <- function(modelstr,
       return(formula)
     }
     modelTest <- tryCatch(lm( formula , data = x ),
-                          error = function(e){print(e) ; return = NULL})
+                          error = function(e){warning(e) ; return = NULL})
     return(modelTest)
   }
   res <- list(model_fun = model_fun,

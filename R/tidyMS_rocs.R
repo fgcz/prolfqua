@@ -14,7 +14,7 @@
     res[[i]] <-  tryCatch(pROC::roc(response = responseX,
                                     predictor = predictorX,
                                     direction = "<",
-                                    levels=comp), error = function(x) NULL)
+                                    levels=comp), error = function(e) warning(e))
   }
   return(res)
 }
