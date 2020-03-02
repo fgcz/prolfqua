@@ -1669,24 +1669,27 @@ summary_ROPECA_median_p.scaled <- function(
   contrast = "lhs",
   subject_Id = "protein_Id",
   estimate = "estimate",
+  statistic = "statistic",
   p.value = "moderated.p.value",
   max.n = 10){
 
   contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
     summarize(n = n()) -> nrpepsPerProt
 
-  contrasts_data <- contrasts_data %>% dplyr::filter(!is.na(!!sym(p.value))) %>%
+  contrasts_data <- contrasts_data %>%
+    # dplyr::filter(!is.na(!!sym(p.value))) %>%
     dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
 
   summarized.protein <- contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
     summarize(
       n_not_na = n(),
+      median.pseudo_estimate = median(pseudo_estimate),
       median.estimate = median(!!sym(estimate), na.rm = TRUE),
-      sd.estimate = mad(!!sym(estimate), na.rm = TRUE),
+      median.sd = mad(!!sym(estimate), na.rm = TRUE),
+      median.statistic = median(!!sym(statistic), na.rm = TRUE),
       median.p.scaled = median(scaled.p, na.rm = TRUE))
 
-  summarized.protein <- inner_join(summarized.protein , nrpepsPerProt, by = c(subject_Id, contrast))
 
   if (has_name(contrasts_data, "c1_name")) {
     ccsummary <- contrasts_data %>%
@@ -1707,7 +1710,8 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
-  summarized.protein <- inner_join(nrpepsPerProt,summarized.protein, by= c(subject_Id, contrast))
+  summarized.protein <- inner_join(nrpepsPerProt , summarized.protein ,  by = c(subject_Id, contrast))
+
   summarized.protein$isSingular <- FALSE
   # scale it back here.
   return(ungroup(summarized.protein))

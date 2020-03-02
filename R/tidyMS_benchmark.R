@@ -1,3 +1,19 @@
+#' preprocess
+#' @export
+ms_bench_preprocess <- function(data) {
+  tmp <- data %>%
+    ungroup() %>%
+    mutate(ss  = case_when(
+      grepl("HUMAN", protein_Id) ~ "HUMAN",
+      grepl("ECOLI", protein_Id) ~ "ECOLI",
+      TRUE ~ "OTHER"
+    ))
+  tmp <- tmp %>% dplyr::filter(!ss == "OTHER")
+  tmp <- tmp %>% mutate(TP = ss == "ECOLI")
+  return(tmp)
+}
+
+
 #' adds FDR and TPR plots
 #'
 #' FDP - false discovery proportion (Q in Benjamini hochber table)
@@ -6,42 +22,51 @@
 #' TP_hits - true positives
 #'
 #' @export
-ms_bench_add_FPRTPR <- function(tmp, idcol = "protein_Id",
-                       TPcol = "TP",
-                       groupby = "contrast",
-                       arrangeby = "beta.based.significance",
-                       type = c("probability","foldchange"),
-                       desc = FALSE){
+ms_bench_add_FPRTPR <- function(data,
+                                TP_col = "TP",
+                                arrangeby = "estimate",
+                                desc = TRUE){
+  #data <- est
 
-  tmp$TP_total <- length(unique(tmp[[idcol]][ tmp[[TPcol]] == TRUE]))
-  tmp <- tmp %>% group_by(!!!syms(groupby))
-  tmp %>% summarise(n = n())
-
-  tmp <- if (!desc) {
-    tmp %>% arrange(!!sym(arrangeby))#,desc(!!sym(TPcol)))
+  data <- if (!desc) {
+    data %>% arrange(!!sym(arrangeby))#,desc(!!sym(TPcol)))
   }else{
-    tmp %>% arrange(desc(!!sym(arrangeby)))#,desc(!!sym(TPcol)))
+    data %>% arrange(desc(!!sym(arrangeby)))#,desc(!!sym(TPcol)))
   }
-  tmp <- tmp %>% mutate( FDP = cummean(!TP)
-                        , FPR = cumsum(!TP)/sum(!TP)
-                        , TPR  = cumsum(TP)/TP_total
-                        , TP_hits = cumsum(TP)
+  data <- data %>% select(scorecol = !!sym(arrangeby) ,TP_col)
+  data$what <- arrangeby
+  data$F_ <- sum(!data$TP)
+  data$T_ <- sum(data$TP)
+
+  data <- na.omit(data)
+  data <- data %>% mutate(
+    R = 1:n()
+    ,FDP = cummean(!TP)
+    , TP_hits = cumsum(TP)
+    , FN_hits = T_ - TP_hits
+    , FP_hits = cumsum(!TP)
+    , TN_hits = F_ - FP_hits
+    , FPR = FP_hits/F_
+    , TPR  = TP_hits/T_
+    , ACC = (TP_hits + TN_hits)/(T_ + F_)
 
   ) %>% ungroup
-  res <- tmp %>%
-    dplyr::select_at(c(idcol, TPcol, groupby , score = arrangeby ,"FDP", "FPR", "TPR", "TP_hits"))
-  res$arrangeby <- arrangeby
-  res$type <- match.arg(type)
-  return(res)
+  return(data)
 }
+
 
 #' computes auc and pauc given output from ms_bench_add_FPRTPR
 #' @export
 ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1){
+  # make sure that sorted.
+  oFPR <- order(FPR)
+  FPR <- FPR[oFPR]
+  TPR <- TPR[oFPR]
+
   idx <- FPR < fpr_threshold
   TPR <- TPR[idx]
   FPR <- FPR[idx]
-
+  #integrate
   res <- 1/2*sum(diff(FPR) * (head(TPR,-1) + tail(TPR,-1)))
   return(res)
 }

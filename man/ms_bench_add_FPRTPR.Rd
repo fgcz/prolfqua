@@ -4,15 +4,7 @@
 \alias{ms_bench_add_FPRTPR}
 \title{adds FDR and TPR plots}
 \usage{
-ms_bench_add_FPRTPR(
-  tmp,
-  idcol = "protein_Id",
-  TPcol = "TP",
-  groupby = "contrast",
-  arrangeby = "beta.based.significance",
-  type = c("probability", "foldchange"),
-  desc = FALSE
-)
+ms_bench_add_FPRTPR(data, TP_col = "TP", arrangeby = "estimate", desc = TRUE)
 }
 \description{
 FDP - false discovery proportion (Q in Benjamini hochber table)

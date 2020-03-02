@@ -66,7 +66,7 @@ ms_brms_model <- function(mdata,
     if (summarize) {
       res <- ms_mcmc_constrast(resultmodel, linfct_A)
       if (is.null(res)) {return(NULL)}
-      res <- as_tibble(MCMCsummary(res, func = func, func_name = func()), rownames = "contrast")
+      res <- as_tibble(MCMCVis::MCMCsummary(res, func = func, func_name = func()), rownames = "contrast")
       return(res)
     } else{
       return(resultmodel)
