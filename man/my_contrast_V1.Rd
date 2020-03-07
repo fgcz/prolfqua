@@ -12,6 +12,7 @@ handles incomplete models by setting coefficients to 0
 \examples{
 m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
+m
 my_glht(m, linfct)
 my_contrast_V1(m, linfct, confint = 0.95)
 my_contrast_V1(m, linfct, confint = 0.99)

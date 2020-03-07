@@ -41,7 +41,11 @@ make_custom_model_lmer <- function(modelstr,
 #' tmp$isSingular
 make_custom_model_lm <- function(modelstr,
                                  model_name = "Model",
-                                 report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+                                 report_columns = c("statistic",
+                                                    "p.value",
+                                                    "p.value.adjusted",
+                                                    "moderated.p.value",
+                                                    "moderated.p.value.adjusted")
                                  ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, get_formula = FALSE){
@@ -880,6 +884,7 @@ my_contrast <- function(m,
 #' @examples
 #' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
+#' m
 #' my_glht(m, linfct)
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
@@ -1649,7 +1654,8 @@ get_p_values_pbeta <- function(median.p.value,
 #' plot(table(table(protein_Id)))
 #'
 #' testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id,
-#'   estimate = estimate, p.value = p.value )
+#'   estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
+#'   head(testdata)
 #' xx <- summary_ROPECA_median_p.scaled(testdata,
 #'
 #'                                     subject_Id = "protein_Id",
@@ -1684,10 +1690,10 @@ summary_ROPECA_median_p.scaled <- function(
     group_by_at(c(subject_Id, contrast)) %>%
     summarize(
       n_not_na = n(),
-      median.pseudo_estimate = median(pseudo_estimate),
-      median.estimate = median(!!sym(estimate), na.rm = TRUE),
-      median.sd = mad(!!sym(estimate), na.rm = TRUE),
-      median.statistic = median(!!sym(statistic), na.rm = TRUE),
+      pseudo_estimate = median(pseudo_estimate),
+      estimate = median(!!sym(estimate), na.rm = TRUE),
+      mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
+      statistic = median(!!sym(statistic), na.rm = TRUE),
       median.p.scaled = median(scaled.p, na.rm = TRUE))
 
 

@@ -8,9 +8,10 @@ ms_bench_preprocess <- function(data) {
       grepl("ECOLI", protein_Id) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
-  tmp <- tmp %>% dplyr::filter(!ss == "OTHER")
-  tmp <- tmp %>% mutate(TP = ss == "ECOLI")
-  return(tmp)
+  res <- tmp %>% dplyr::filter(!ss == "OTHER")
+
+  res <- res %>% mutate(TP = (ss == "ECOLI"))
+  return(list(data = res , table = table(tmp$ss)))
 }
 
 

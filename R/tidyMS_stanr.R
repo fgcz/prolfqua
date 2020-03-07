@@ -35,8 +35,13 @@ ms_mcmc_checkzero <- function(x = NULL){
 
 # do not even try to fit if levels are missing
 check_factors_level_coverage <- function(mdata26, fixeff){
-  complete <- mdata26 %>% dplyr::select_at(fixeff) %>% distinct()
-  omitted <- mdata26 %>% na.omit %>% dplyr::select_at(fixeff) %>% distinct()
+  complete <- mdata26 %>%
+    dplyr::select_at(fixeff) %>%
+    dplyr::distinct()
+  omitted <- mdata26 %>%
+    na.omit %>%
+    dplyr::select_at(fixeff) %>%
+    dplyr::distinct()
   return(nrow(complete) == nrow(omitted))
 }
 
@@ -66,7 +71,7 @@ ms_brms_model <- function(mdata,
     if (summarize) {
       res <- ms_mcmc_constrast(resultmodel, linfct_A)
       if (is.null(res)) {return(NULL)}
-      res <- as_tibble(MCMCVis::MCMCsummary(res, func = func, func_name = func()), rownames = "contrast")
+      res <- as_tibble(MCMCvis::MCMCsummary(res, func = func, func_name = func()), rownames = "contrast")
       return(res)
     } else{
       return(resultmodel)
