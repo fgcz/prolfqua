@@ -72,7 +72,7 @@ application_run_modelling_V2 <- function(outpath,
                                          pepConfig,
                                          modelFunction,
                                          contrasts,
-                                         modelling_dir="modelling_results_protein" ,
+                                         modelling_dir = "modelling_results_protein" ,
                                          remove_imputed = TRUE,
                                          do_not_report = "",
                                          DEBUG= FALSE

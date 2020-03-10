@@ -35,7 +35,8 @@ protein_Id <- sample(1:800, size = nrPep,
 plot(table(table(protein_Id)))
 
 testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id,
-  estimate = estimate, p.value = p.value )
+  estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
+  head(testdata)
 xx <- summary_ROPECA_median_p.scaled(testdata,
 
                                     subject_Id = "protein_Id",
