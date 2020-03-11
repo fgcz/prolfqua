@@ -128,7 +128,8 @@ plot_FDR_summaries <- function(pStats, model_type = "mixed effects model"){
   barp <- ggplot(sumd, aes(x = what, y = value)) +
     geom_bar(stat = "identity",position = position_dodge()) +
     facet_wrap(~variable, scales = "free") +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    coord_cartesian(ylim = c(floor(min(sumd$value)/10)*10,100))
 
 
   p1 <- ggplot(pStats , aes(x = FPR, y = TPR, color = what)) + geom_path()  + labs(tag = "A")
@@ -153,4 +154,40 @@ summarise_missing_contrasts <- function(data,
   return(list(xx = xx, xxA = xxA ))
 }
 
+#' benchmark
+#' @export
+benchmark <- function(resXXmedpolishTSV,
+                      relevantContrasts = NULL,
+                      completeContrasts = TRUE,
+                      toscale = c("p.value", "moderated.p.value"),
+                      benchmark = c("pseudo_estimate", "estimate",  "statistic",  "scaled.p.value", "scaled.moderated.p.value" ),
+                      model_type = "protein level measurments, linear model"
+){
+  res <- list()
+  if (!is.null(relevantContrasts)) {
+    resXXmedpolishTSV <- resXXmedpolishTSV %>% dplyr::filter(contrast %in% relevantContrasts)
+  }
 
+  prpr <- ms_bench_preprocess(resXXmedpolishTSV)
+  smc <- summarise_missing_contrasts(prpr$data)
+  res$smc <- smc
+  prpr$data <- scale_probabilities(prpr$data, toscale = toscale)
+
+
+  if ( completeContrasts ) {
+    message("completing contrasts")
+    print(dim(smc$xxA))
+    print(dim(prpr$data))
+    smc$xxA <- smc$xxA %>% filter(n == n - nr_na )
+    prpr$data <- prpr$data %>% filter(protein_Id %in% smc$xxA$protein_Id)
+    print(dim(smc$xxA))
+    print(dim(prpr$data))
+
+  }
+
+  confusion <- do_confusion(prpr$data, arrangeby = benchmark)
+  vissum <- plot_FDR_summaries(confusion,model_type = model_type)
+  res$confusion <-  confusion
+  res$vissum <- vissum
+  return(res)
+}
