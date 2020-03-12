@@ -92,7 +92,6 @@ for(i in 1:length(results)){
 ```{r}
 allContrasts <- bind_rows(results)
 #write.csv(results,file=file.path(outdir,"MSqRobSignificances.tsv"))
-library(quantable)
 
 #pdf(file.path(outdir,"MSqRob_pValue_Volcano.pdf"))
 quantable::multigroupVolcano(allContrasts,
