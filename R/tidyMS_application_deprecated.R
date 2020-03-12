@@ -89,9 +89,9 @@ application_run_modelling <- function(outpath,
 
   if(DEBUG){
     pdf(file.path(modelling_path,"Linear_functions.pdf"), width=18, height=10)
-    quantable::imageWithLabels(t(linfct_A),
-                               col = quantable::getBlueWhiteRed(),
-                               marLeft = c(8,10,4.1,2.1))
+    #quantable::imageWithLabels(t(linfct_A),
+    #                           col = quantable::getBlueWhiteRed(),
+    #                           marLeft = c(8,10,4.1,2.1))
     dev.off()
   }
 
