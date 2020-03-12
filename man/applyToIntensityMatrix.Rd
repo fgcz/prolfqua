@@ -17,5 +17,5 @@ res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
 stopifnot("Area_base..scale" \%in\% colnames(res))
 stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
 
-res <- applyToIntensityMatrix(res, conf, .func = robust_scale)
+res <- applyToIntensityMatrix(sample_analysis, conf, .func = robust_scale)
 }

@@ -281,7 +281,7 @@ toWide <- function(data,
 #' res <- scale(res$data)
 #'
 toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
-  if(fileName){
+  if (fileName) {
     newcolname <- config$table$fileName
   }else{
     newcolname <- config$table$sampleName
@@ -370,12 +370,33 @@ robust_scale <- function(data){
 #' stopifnot("Area_base..scale" %in% colnames(res))
 #' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
 #'
-#' res <- applyToIntensityMatrix(res, conf, .func = robust_scale)
+#' res <- applyToIntensityMatrix(sample_analysis, conf, .func = robust_scale)
 applyToIntensityMatrix <- function(data, config, .func){
   x <- as.list( match.call() )
-  colname <- make.names(paste(config$table$getWorkIntensity(), deparse(x$.func), sep = "_"))
+  colname <- make.names( paste( config$table$getWorkIntensity(), deparse(x$.func), sep = "_"))
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
+  data <- gatherItBack(mat, colname, config, data)
+  return(data)
+}
+
+#' scale_with_subset
+#' @export
+#' @examples
+#' library(tidyverse)
+#' conf <- skylineconfig$clone(deep = TRUE)
+#'
+#'
+#' res <- scale_with_subset(sample_analysis, sample_analysis, conf)
+#' head(res)
+scale_with_subset <- function(data, subset, config){
+  colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
+  subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
+  scales <- LFQService:::robustscale(subset)
+  mat <- toWideConfig(data, config, as.matrix = TRUE)$data
+  mat = sweep(mat, 2, scales$medians, "-")
+  mat = sweep(mat, 2, scales$mads, "/")
+
   data <- gatherItBack(mat, colname, config, data)
   return(data)
 }
