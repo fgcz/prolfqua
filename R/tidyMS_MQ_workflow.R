@@ -113,7 +113,7 @@
 #'
 #' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
 #'
-workflow_MQ_protoV1 <- function( resDataStart,
+workflow_MQ_protoV1 <- function(resDataStart,
                                  config,
                                  path,
                                  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides ){

@@ -43,23 +43,14 @@ ms_bench_add_FPRTPR <- function(data,
   data <- na.omit(data)
   data <- data %>% mutate(
     R = 1:n()
-    ,
-    FDP = cummean(!TP)
-    ,
-    TP_hits = cumsum(TP)
-    ,
-    FN_hits = T_ - TP_hits
-    ,
-    FP_hits = cumsum(!TP)
-    ,
-    TN_hits = F_ - FP_hits
-    ,
-    FPR = FP_hits / F_
-    ,
-    TPR  = TP_hits / T_
-    ,
-    ACC = (TP_hits + TN_hits) / (T_ + F_)
-
+    , FDP = cummean(!TP)
+    , TP_hits = cumsum(TP)
+    , FN_hits = T_ - TP_hits
+    , FP_hits = cumsum(!TP)
+    , TN_hits = F_ - FP_hits
+    , FPR = FP_hits / F_
+    , TPR  = TP_hits / T_
+    , ACC = (TP_hits + TN_hits) / (T_ + F_)
   ) %>% ungroup
   return(data)
 }
@@ -143,9 +134,7 @@ plot_FDR_summaries <-
         auc20 = ms_bench_auc(FPR, TPR, 0.2)
       )
 
-    ftable <- flextable::flextable(summaryS) %>%
-      flextable::set_caption(caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_type))  %>%
-      flextable::colformat_num(digits = 2)
+    ftable <- list(content = summaryS, caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_type), digits = 2)
 
     sumd <- reshape2::melt(summaryS)
     barp <- ggplot(sumd, aes(x = what, y = value)) +
@@ -153,7 +142,6 @@ plot_FDR_summaries <-
       facet_wrap(~ variable, scales = "free") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       coord_cartesian(ylim = c(floor(min(sumd$value) / 10) * 10, 100))
-
 
     p1 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
@@ -241,4 +229,17 @@ benchmark <- function(resXXmedpolishTSV,
   res$confusion <-  confusion
   res$vissum <- vissum
   return(res)
+}
+
+#' table facade to easily switch implementations
+#' @export
+table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
+  if (kable) {
+    knitr::kable(df, digits = digits, caption = caption )
+  }
+}
+#' table facade to easily switch implementations
+#' @export
+table_facade.list <- function(parlist, kable=TRUE){
+    table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
 }
