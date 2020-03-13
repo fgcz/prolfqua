@@ -183,7 +183,7 @@ summarise_missing_contrasts <- function(data,
     group_by_at(hierarchy) %>%
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
   xx <- as.data.frame(table(xxA$nr_na))
-  colnames(xx) <- c("nr_missing", "nr_Proteins")
+  colnames(xx) <- c("nr_missing", paste(hierarchy, collapse = "_"))
 
   return(list(xx = xx, xxA = xxA))
 }
@@ -195,7 +195,6 @@ benchmark <- function(resXXmedpolishTSV,
                       completeContrasts = TRUE,
                       toscale = c("p.value", "moderated.p.value"),
                       benchmark = c(
-                        "pseudo_estimate",
                         "estimate",
                         "statistic",
                         "scaled.p.value",

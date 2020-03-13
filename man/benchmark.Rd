@@ -9,8 +9,7 @@ benchmark(
   relevantContrasts = NULL,
   completeContrasts = TRUE,
   toscale = c("p.value", "moderated.p.value"),
-  benchmark = c("pseudo_estimate", "estimate", "statistic", "scaled.p.value",
-    "scaled.moderated.p.value"),
+  benchmark = c("estimate", "statistic", "scaled.p.value", "scaled.moderated.p.value"),
   model_type = "protein level measurments, linear model",
   hierarchy = c("protein_Id")
 )
