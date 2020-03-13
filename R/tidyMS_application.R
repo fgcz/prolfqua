@@ -47,9 +47,9 @@
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>%
     dplyr::mutate(pseudo_estimate = dplyr::case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
-
   contrast_results <- contrast_results %>%
     dplyr::mutate(is_pseudo_estimate = dplyr::case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
+
   if (remove_imputed) {
     contrast_results <- contrast_results %>%
       dplyr::mutate(c1 = dplyr::case_when(is.na(estimate) ~ c1_imputed, TRUE ~ c1))
@@ -115,7 +115,7 @@ application_run_modelling_V2 <- function(outpath,
 
   res_fun <- function(do=c("result",
                            "write_modelling",
-                           "write_contrasts"), DEBUG = FALSE) {
+                           "write_contrasts"), DEBUG = FALSE, remove_imputed = TRUE) {
     do <- match.arg(do)
     if (DEBUG) {
       res <- list(modelFunction = modelFunction,
@@ -133,7 +133,8 @@ application_run_modelling_V2 <- function(outpath,
       result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
                                             ,contrasts_xx_imputed,
                                             pepConfig$table$hkeysLevel(),
-                                            pepConfig)
+                                            pepConfig,
+                                            remove_imputed = remove_imputed)
       return(result_table)
     }else if (do == "write_modelling") {
       modellingResult_fun(modelling_path)

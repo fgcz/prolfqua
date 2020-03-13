@@ -23,7 +23,7 @@
   proteinsWith2Peptides <- proteinsWith2Peptides %>%
     dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
-  return(list(data=filteredPep, config=config))
+  return(list(data = filteredPep, config = config))
 }
 
 #' Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
