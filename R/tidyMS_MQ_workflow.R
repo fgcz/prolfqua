@@ -49,8 +49,8 @@
   resNACondition <- filter_factor_levels_by_missing(resDataStart,
                                                     config,
                                                     percent = percent)
-  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by="protein_Id")
-  return(list(data=filteredPep, config=config))
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by = "protein_Id")
+  return(list(data = filteredPep, config = config))
 }
 
 #' Keep only those proteins with 2 IDENTIFIED peptides
@@ -65,8 +65,8 @@
   summaryH <- summarize_hierarchy(resDataStart, config)
   proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
 
-  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by="protein_Id")
-  return(list(data=filteredPep, config=config))
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by = "protein_Id")
+  return(list(data = filteredPep, config = config))
 }
 
 #'
@@ -119,7 +119,7 @@ workflow_MQ_protoV1 <- function(resDataStart,
                                  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides ){
   RESULTS <- list()
   RESULTS$path <- path
-  config <- config$clone(deep=TRUE)
+  config <- config$clone(deep = TRUE)
   RESULTS$config_resDataStart <- config
   RESULTS$resDataStart <- resDataStart
 
@@ -134,6 +134,7 @@ workflow_MQ_protoV1 <- function(resDataStart,
 
   pepIntensityNormalized <- .workflow_MQ_normalize_log2_robscale(filteredPep,
                                                                  config)
+
   RESULTS$config_pepIntensityNormalized <- pepIntensityNormalized$config
   RESULTS$pepIntensityNormalized <- pepIntensityNormalized$data
 
@@ -142,6 +143,7 @@ workflow_MQ_protoV1 <- function(resDataStart,
   x3_start <- x3_start %>%
     dplyr::mutate(protein_with = dplyr::case_when(peptide_Id_n == 1 ~ "one",
                                                   peptide_Id_n > 1 ~ "two and more"))
+
   RESULTS$nrPeptidesPerProtein_start <- x3_start %>% dplyr::group_by(protein_with) %>%
     dplyr::summarize(n=n())
 
