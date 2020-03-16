@@ -133,6 +133,8 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 ```
 
 (ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
+
+
 ```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
 print(plot_NA_heatmap(data = data_cc, config = local_config)$plot)
 show_text <- !local_config$parameter$is_intensity_transformed
@@ -159,6 +161,7 @@ if(!local_config$parameter$is_intensity_transformed){
 
 
 (ref:plotTransformedIntensityDistributions) `r if(params$pep){"Peptide"}else{"Protein"}` intensity distribution after transformation.
+
 ```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
 if (params$plot_density) {
   p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, local_config) + 
@@ -170,7 +173,8 @@ if (params$plot_density) {
 }
 ```
 
-(ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples
+(ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples.
+
 ```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}
 hm <- plot_heatmap_cor(dataTransformed, local_config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
 print(hm)
@@ -217,6 +221,7 @@ if (params$plot_density) {
 
 
 (ref:sdecdf) Visualization of `r if(params$pep){"peptide"}else{"protein"}` standard deviations as empirical cumulative distribution function. A) all. B) - for low (bottom 50) and high intensity (top 50).
+
 ```{r sdecdf,fig.cap="(ref:sdecdf)", fig.height=6, fig.width=8}
 
 if (params$plot_density) {
@@ -262,6 +267,7 @@ ftab
 ```
 
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
+
 ```{r overviewHeat, fig.cap="(ref:overviewHeat)"}
 if(params$plot_sd_vs_mean){
   hm <- plot_heatmap(dataTransformed, local_config)
