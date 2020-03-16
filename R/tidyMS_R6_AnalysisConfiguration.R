@@ -671,7 +671,7 @@ summarize_hierarchy <- function(x,
 interaction_missing_stats <- function(x,
                                       config,
                                       factors = config$table$fkeysLevel(),
-                                      hierarchy = table$hierarchyKeys(),
+                                      hierarchy = config$table$hierarchyKeys(),
                                       workIntensity = config$table$getWorkIntensity())
 {
   x <- complete_cases(x, config)
@@ -714,12 +714,12 @@ missigness_impute_interactions <- function(mdataTrans,
   x <- interaction_missing_stats(mdataTrans, config, factors = factors)
   x_summaries <- x$summaries
   xx <- x$data
-  xx <- make_interaction_column(xx, factors, sep=":")
+  xx <- make_interaction_column(xx, factors, sep = ":")
 
 
   lowerMean <- function(meanArea, probs = probs){
     meanAreaNotNA <- na.omit(meanArea)
-    small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs= probs)]
+    small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs = probs)]
     meanArea[is.na(meanArea)] <- mean(small10)
     return(meanArea)
   }
@@ -738,11 +738,11 @@ missigness_impute_interactions <- function(mdataTrans,
                       add.prefix = TRUE,
                       DEBUG = FALSE){
     value <- match.arg(value)
-    if(DEBUG){
-      return(list(value= value, long = xx , config = config ))
+    if (DEBUG) {
+      return(list(value = value, long = xx , config = config ))
     }
 
-    if(value == "long"){
+    if (value == "long") {
       return(xx)
     }else{
       xx <- xx %>% dplyr::select(-one_of(factors))
@@ -750,11 +750,11 @@ missigness_impute_interactions <- function(mdataTrans,
       pid <- config$table$hkeysLevel()
       nrReplicates <- xx %>%
         dplyr::select( -one_of(setdiff(x_summaries,"nrReplicates" ))) %>%
-        tidyr::spread(interaction, nrReplicates, sep=".nrReplicates.") %>%
+        tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
         dplyr::ungroup()
       nrMeasured <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"nrMeasured" ) )) %>%
-        tidyr::spread(interaction, nrMeasured, sep=".nrMeasured.") %>%
+        tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       meanArea <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"meanArea" ) )) %>%
@@ -762,13 +762,14 @@ missigness_impute_interactions <- function(mdataTrans,
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       meanAreaImputed <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
-        tidyr::spread(interaction, imputed, sep=".imputed.") %>%
+        tidyr::spread(interaction, imputed, sep = ".imputed.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       allTables <- list(meanArea = meanArea,
                         nrMeasured = nrMeasured,
                         nrReplicates = nrReplicates,
                         meanAreaImputed = meanAreaImputed)
+
       if (value == "all") {
         allTables[["long"]] <- xx
         return(allTables)
@@ -883,7 +884,7 @@ workflow_missigness_impute_contrasts <- function(data,
   mean <- missigness_impute_contrasts(xx, config, contrasts)
 
   dd <- dplyr::bind_rows(imputed, mean)
-  dd_long <- dd %>% gather("contrast","int_val",
+  dd_long <- dd %>% dplyr::gather("contrast","int_val",
                            colnames(dd)[sapply(dd, is.numeric)])
 
   res_fun <- function(value = c("long", "wide","raw"),
