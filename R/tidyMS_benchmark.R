@@ -35,7 +35,7 @@ ms_bench_add_FPRTPR <- function(data,
   } else{
     data %>% arrange(desc(!!sym(arrangeby)))#,desc(!!sym(TPcol)))
   }
-  data <- data %>% select(scorecol = !!sym(arrangeby) , TP_col)
+  data <- data %>% select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
   data$F_ <- sum(!data$TP)
   data$T_ <- sum(data$TP)
@@ -99,8 +99,7 @@ scale_probabilities <-
 #'
 do_confusion <-
   function(data,
-           arrangeby = c("pseudo_estimate",
-                         "estimate",
+           arrangeby = c("estimate",
                          "statistic",
                          "scaled.p",
                          "scaled.moderated.p")) {
@@ -142,7 +141,6 @@ plot_FDR_summaries <-
       facet_wrap(~ variable, scales = "free") +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       coord_cartesian(ylim = c(floor(min(sumd$value) / 10) * 10, 100))
-
     p1 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
       geom_path() +
