@@ -193,14 +193,15 @@ application_set_up_MQ_run <- function(outpath,
     {# create visualization for modified peptide sequence
       height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
       png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
-      resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
+      {
+        resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
 
-      tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
-        geom_point(alpha = 1/20, size = 0.3) +
-        facet_wrap(~raw.file, ncol = 2)
+        tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
+          geom_point(alpha = 1/20, size = 0.3) +
+          facet_wrap(~raw.file, ncol = 2)
 
-      print(tmp)
-      dev.off()
+        print(tmp)
+      } dev.off()
     }
   }
 
@@ -253,7 +254,7 @@ application_set_up_MQ_run <- function(outpath,
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
     complete_cases(config)
   return(list(data = resDataStart,
-              config=config,
+              config = config,
               qc_path = qc_path))
 }
 
@@ -276,8 +277,7 @@ application_summarize_data_pep_to_prot <- function(data,
   if (WRITE_PROTS) {res_fun("plotprot")}
   res_fun("pepwrite")
   res_fun("protwrite")
-  return(res_fun(DEBUG=TRUE))
-
+  return(res_fun(DEBUG = TRUE))
 }
 
 #' data_pep_to_prot
