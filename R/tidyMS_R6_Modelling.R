@@ -14,7 +14,11 @@
 #'
 make_custom_model_lmer <- function(modelstr,
                                    model_name = "Model",
-                                   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+                                   report_columns = c("statistic",
+                                                      "p.value",
+                                                      "p.value.adjusted",
+                                                      "moderated.p.value",
+                                                      "moderated.p.value.adjusted")
                                    ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, get_formula = FALSE){
