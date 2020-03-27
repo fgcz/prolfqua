@@ -2,8 +2,6 @@ rm(list=ls())
 library(LFQService)
 library(tidyverse)
 
-
-
 outpath <- "results_modelling_testing"
 
 inputMQfile <-  "../samples/p2558_05748_modspec.zip"
@@ -45,7 +43,6 @@ Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
 )
 
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
-#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 
 res <- application_set_up_MQ_run(outpath = outpath,
                                  inputMQfile = inputMQfile,
@@ -87,18 +84,14 @@ if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
     data = summarised$results$pepIntensityNormalized,
-    pepConfig = summarised$results$config_pepIntensityNormalized,
+    config = summarised$results$config_pepIntensityNormalized,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
 
   resXXmixmodel(do = "write_modelling")
   resXXmixmodel(do = "write_contrasts")
-
 }
-
-
-
 
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
@@ -113,6 +106,8 @@ relevantParameters <- list(outpath = outpath,
                            order_Id = config$order_Id,
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
+
+
 LFQService::copy_mixed_model_analysis_script()
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   params = list(pars = relevantParameters),
