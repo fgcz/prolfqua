@@ -40,6 +40,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$new()}\if{html}{\out{</div>}}
@@ -48,6 +49,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-getFactorLevel"></a>}}
+\if{latex}{\out{\hypertarget{method-getFactorLevel}{}}}
 \subsection{Method \code{getFactorLevel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getFactorLevel()}\if{html}{\out{</div>}}
@@ -56,6 +58,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setWorkIntensity"></a>}}
+\if{latex}{\out{\hypertarget{method-setWorkIntensity}{}}}
 \subsection{Method \code{setWorkIntensity()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$setWorkIntensity(colName)}\if{html}{\out{</div>}}
@@ -64,6 +67,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-getWorkIntensity"></a>}}
+\if{latex}{\out{\hypertarget{method-getWorkIntensity}{}}}
 \subsection{Method \code{getWorkIntensity()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getWorkIntensity()}\if{html}{\out{</div>}}
@@ -72,6 +76,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-popWorkIntensity"></a>}}
+\if{latex}{\out{\hypertarget{method-popWorkIntensity}{}}}
 \subsection{Method \code{popWorkIntensity()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$popWorkIntensity()}\if{html}{\out{</div>}}
@@ -80,6 +85,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idRequired"></a>}}
+\if{latex}{\out{\hypertarget{method-idRequired}{}}}
 \subsection{Method \code{idRequired()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idRequired()}\if{html}{\out{</div>}}
@@ -88,6 +94,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-hierarchyKeys"></a>}}
+\if{latex}{\out{\hypertarget{method-hierarchyKeys}{}}}
 \subsection{Method \code{hierarchyKeys()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hierarchyKeys(rev = FALSE)}\if{html}{\out{</div>}}
@@ -96,6 +103,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-hkeysLevel"></a>}}
+\if{latex}{\out{\hypertarget{method-hkeysLevel}{}}}
 \subsection{Method \code{hkeysLevel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hkeysLevel(names = TRUE)}\if{html}{\out{</div>}}
@@ -104,6 +112,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-factorKeys"></a>}}
+\if{latex}{\out{\hypertarget{method-factorKeys}{}}}
 \subsection{Method \code{factorKeys()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factorKeys()}\if{html}{\out{</div>}}
@@ -112,6 +121,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-fkeysLevel"></a>}}
+\if{latex}{\out{\hypertarget{method-fkeysLevel}{}}}
 \subsection{Method \code{fkeysLevel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysLevel()}\if{html}{\out{</div>}}
@@ -120,6 +130,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idVars"></a>}}
+\if{latex}{\out{\hypertarget{method-idVars}{}}}
 \subsection{Method \code{idVars()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idVars()}\if{html}{\out{</div>}}
@@ -128,6 +139,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-valueVars"></a>}}
+\if{latex}{\out{\hypertarget{method-valueVars}{}}}
 \subsection{Method \code{valueVars()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$valueVars()}\if{html}{\out{</div>}}
@@ -136,6 +148,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-annotationVars"></a>}}
+\if{latex}{\out{\hypertarget{method-annotationVars}{}}}
 \subsection{Method \code{annotationVars()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$annotationVars()}\if{html}{\out{</div>}}
@@ -144,6 +157,7 @@ Id Columns which must be in the input data frame}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

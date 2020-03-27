@@ -4,7 +4,9 @@
 \name{skylineconfig}
 \alias{skylineconfig}
 \title{A configuration which matches the \link{sample_analysis} data.}
-\format{A AnalysisConfiguration R6 class}
+\format{
+A AnalysisConfiguration R6 class
+}
 \usage{
 skylineconfig
 }

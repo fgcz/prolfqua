@@ -7,7 +7,7 @@
 application_run_modelling_V2(
   outpath,
   data,
-  pepConfig,
+  config,
   modelFunction,
   contrasts,
   modelling_dir = "modelling_results_protein",

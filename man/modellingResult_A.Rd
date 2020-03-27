@@ -4,7 +4,9 @@
 \name{modellingResult_A}
 \alias{modellingResult_A}
 \title{modellingResult_A - output of 'model_analyse_summarize' for lm model}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \usage{
 modellingResult_A
 }

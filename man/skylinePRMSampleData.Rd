@@ -5,7 +5,9 @@
 \alias{skylinePRMSampleData}
 \title{Data frame which can be transformed into \link{sample_analysis}
 by applying the \link{skylineconfig} using the function \link{setup_analysis}.}
-\format{A AnalysisConfiguration R6 class}
+\format{
+A AnalysisConfiguration R6 class
+}
 \usage{
 skylinePRMSampleData
 }
