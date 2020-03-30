@@ -176,9 +176,6 @@ application_set_up_MQ_run <- function(outpath,
   peptides <- match.arg(use)
 
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  if (!is.null(id_extractor)) {
-    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
-  }
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -233,6 +230,8 @@ application_set_up_MQ_run <- function(outpath,
 
   if (!is.null(id_extractor)) {
     resPepProtAnnot <- id_extractor(resPepProtAnnot)
+    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
+
   }
 
   {# add annotation
@@ -261,7 +260,7 @@ application_set_up_MQ_run <- function(outpath,
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
     complete_cases(config)
   return(list(data = resDataStart,
-              config=config,
+              config = config,
               qc_path = qc_path))
 }
 
