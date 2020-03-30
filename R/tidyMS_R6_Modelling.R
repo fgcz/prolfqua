@@ -1196,7 +1196,7 @@ contrasts_linfct_vis <- function(contrasts,
   # add histogram of fold changes
   {
     fig <- list()
-    name <- paste0(prefix,"_Histogram_FC_esimate")
+    name <- paste0(prefix,"_Histogram_FC_estimate")
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data = contrasts, aes(x = !!sym(estimate))) +
       geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm = TRUE)),
