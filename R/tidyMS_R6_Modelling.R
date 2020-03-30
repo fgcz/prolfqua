@@ -968,9 +968,9 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' summary(mb)
 #'
 #'
-#' library(pbkrtest)
-#' (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-#' class(fm1)
+#' #library(pbkrtest)
+#' #(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+#' #class(fm1)
 #' #pbkrtest::get_ddf_Lb.lmerMod(fm1)
 #'
 my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
