@@ -28,4 +28,13 @@ linfct$linfct_interactions
 
 m <- lm(Petal.Width ~ Species, data = iris)
 linfct_from_model(m)
+xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
+m <- lm(Y ~ Condition, data = xx)
+linfct_from_model(m)
+xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
+m <- lm(Y ~ Condition, data = xx)
+linfct_from_model(m)
+xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
+m <- lm(Y ~ Condition, data = xx)
+linfct_from_model(m)
 }
