@@ -229,7 +229,7 @@ model_analyse_summarize <- function(modelProteinF,
 
   Model_Coeff <- Model_Coeff %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = "Coeffs_model")
 
   # ANOVA
   .anova_df <- function(x){
@@ -243,7 +243,7 @@ model_analyse_summarize <- function(modelProteinF,
 
   Model_Anova <- Model_Anova %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = "Anova_model")
 
 
   return(list(
