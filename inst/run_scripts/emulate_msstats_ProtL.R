@@ -96,7 +96,8 @@ summarised <- data_pep_to_prot(res$data,
                                res$config,
                                res$qc_path)
 
-names(summarised)
+saveRDS(summarised , file = "summarised.Rds")
+
 
 if (TRUE) {
   .Device
@@ -106,14 +107,12 @@ if (TRUE) {
   .Device
   summarised("protwrite")
   .Device
-  summarised("plotprot")
+  #summarised("plotprot")
   saveRDS(summarised,"aaa_summarized.RDA")
 }
 
 summarised <- summarised(DEBUG = TRUE)
-names(summarised)
 protIntensity <- summarised$protintensity_fun("unnest")
-names(protIntensity)
 
 message("######################## fit mixed #######################")
 #reportColumns <- c("p.value",
@@ -134,11 +133,17 @@ if (TRUE) {
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")
 
+  #names(modelFunction)
+  xx <- resXXmixmodel(DEBUG = TRUE)
+  dd <- xx$modellingResult_fun()
+  dd$modellingResult$modelProtein
+  m <- dd$modellingResult$modelProtein$linear_model[[1]]
+  #modelFunction$isSingular(m)
 
   bb <- resXXmixmodel(do = "write_modelling")
-  resXXmixmodel(do = "write_contrasts")
+  bb <- resXXmixmodel(do = "write_contrasts")
 }
-
+reportColumns <- ""
 relevantParameters <- list(outpath = outpath,
                            inputMQfile = inputMQfile,
                            modelling_dir = "modelling_results_peptide",

@@ -3,7 +3,7 @@ library(LFQService)
 library(tidyverse)
 
 ###### Setting up output dir
-outpath <- "results_modelling_testing_msstats"
+outpath <- "results_modelling_pepAggregate_msstats"
 qcdir = "qc_results"
 
 qc_path <- file.path(outpath, qcdir )
@@ -22,24 +22,31 @@ inputMQfile <-  "../samples/timstof/MSstats.zip"
 inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
 inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "")
 inputFile$Condition <- gsub("-",".",inputFile$Condition)
+
 unique(inputFile$Condition)
 
+pepInputFile <- inputFile %>%
+  dplyr::group_by(ProteinName , PeptideSequence , IsotopeLabelType, Condition, BioReplicate, Run) %>%
+  dplyr::summarize( pepIntensity = sum(Intensity, na.rm = TRUE)) %>% ungroup()
 
-mean(is.na(inputFile$FragmentIon))
-mean(is.na(inputFile$ProductCharge))
-inputFile$pep <- 0
-annotation <- inputFile %>% dplyr::select(Run, Condition, BioReplicate) %>% distinct()
+dim(inputFile)/dim(pepInputFile)
+
+
+#mean(is.na(inputFile$FragmentIon))
+#mean(is.na(inputFile$ProductCharge))
+pepInputFile$pep <- 0
+annotation <- pepInputFile %>% dplyr::select(Run, Condition, BioReplicate) %>% distinct()
 
 
 msstats_config <- function(
   ident_qValue = "pep",
-  intensity = "Intensity",
+  intensity = "pepIntensity",
   isotopeLabel = "IsotopeLabelType"){
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "raw.file"
   # measurement levels.
   atable$hierarchy[["protein_Id"]] <- c("ProteinName")
-  atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
+  atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence")
 
   atable$fileName = "Run"
   atable$hierarchyLevel <- 1
@@ -66,7 +73,8 @@ config$workunit_Id = "20191120_MQ_repack.zip"
 
 # specify model definition
 modelName  <- "Model"
-memodel <- "~ Condition_ * BioReplicate_  + (1|peptide_Id) + (1|Run)"
+memodel <- "~ Condition_  + (1|peptide_Id) + (1|Run)"
+
 #lmmodel <- "~ drug_ * SCI_"
 
 DEBUG <- TRUE
@@ -75,7 +83,7 @@ RUN_ALL <- TRUE
 Contrasts <- c("RKOvsRKO.R" = "Condition_RKO - Condition_RKO.R")
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
-resDataStart <- setup_analysis(inputFile, config)
+resDataStart <- setup_analysis(pepInputFile, config)
 unique(resDataStart$Condition_)
 resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%  complete_cases(config)
 
@@ -97,7 +105,7 @@ if (TRUE) {
   .Device
   summarised("protwrite")
   .Device
-  # summarised("plotprot")
+  summarised("plotprot")
   saveRDS(summarised,"aaa_summarized.RDA")
 }
 
