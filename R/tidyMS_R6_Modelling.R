@@ -95,9 +95,9 @@ isSingular_lm <- function(m){
     return(TRUE)
   } else {
     if (df.residual(m)) {
-      return(TRUE)
+      return(FALSE)
     }
-    return(FALSE)
+    return(TRUE)
   }
 }
 
@@ -645,7 +645,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #' coeff_weights_factor_levels
 .coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
-    idx <- grep(factor_level, rownames(mm))
+    idx <- rownames(mm)[ rownames(mm) %in% factor_level]
     x <- as.list(apply(mm[idx,, drop = FALSE],2,mean) )
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level,.before = 1)
@@ -675,6 +675,15 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #' #}
 #'
 #' m <- lm(Petal.Width ~ Species, data = iris)
+#' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
+#' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
+#' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
 linfct_from_model <- function(m, as_list = TRUE){
 
@@ -1396,7 +1405,7 @@ workflow_contrasts_linfct_V2 <- function(models,
 
   get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
     data.frame(lhs = contrast_table[i, "lhs"],
-               dplyr::select_at(contrast_results, c( subject_ID ,unlist(contrast_table[i,c("c1","c2")]))),
+               dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("c1","c2")]))),
                c1_name = contrast_table[i,"c1", drop = T],
                c2_name = contrast_table[i,"c2", drop = T], stringsAsFactors = FALSE)
   }
