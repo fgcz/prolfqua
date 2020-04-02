@@ -642,10 +642,17 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 }
 
 
+.get_match_idx <- function(mm, factor_level){
+  ddd <- quantable::split2table(rownames(mm), split=":")
+  xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
+  idx <- which(apply(xd,1, sum) > 0)
+  return(idx)
+}
+
 #' coeff_weights_factor_levels
 .coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
-    idx <- rownames(mm)[ rownames(mm) %in% factor_level]
+    idx <- .get_match_idx(mm, factor_level)
     x <- as.list(apply(mm[idx,, drop = FALSE],2,mean) )
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level,.before = 1)
@@ -685,16 +692,21 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
+#'
+
 linfct_from_model <- function(m, as_list = TRUE){
 
-  cm <- .lmer4_coeff_matrix(m)
+  cm <- LFQService:::.lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
-  dd <- .coeff_weights_factor_levels(cm_mm)
-  dd_m <- dd %>% dplyr::select(-factor_level) %>% data.matrix()
-  rownames(dd_m) <- dd$factor_level
-  dd_m <- dd_m[order(rownames(dd_m)),]
-  res <- list(linfct_factors = dd_m , linfct_interactions = cm_mm)
+  l_factors <- LFQService:::.coeff_weights_factor_levels(cm_mm)
+  linfct_factors <- l_factors %>%
+    dplyr::select(-factor_level) %>%
+    data.matrix()
+
+  rownames(linfct_factors) <- l_factors$factor_level
+  linfct_factors <- linfct_factors[order(rownames(linfct_factors)),]
+  res <- list(linfct_factors = linfct_factors , linfct_interactions = cm_mm)
 
   if (as_list) {
     return(res)
@@ -1692,7 +1704,8 @@ summary_ROPECA_median_p.scaled <- function(
   p.value = "moderated.p.value",
   max.n = 10){
 
-  contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
+  contrasts_data %>%
+    group_by_at(c(subject_Id, contrast)) %>%
     summarize(n = n()) -> nrpepsPerProt
 
   contrasts_data <- contrasts_data %>%

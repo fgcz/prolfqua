@@ -1,4 +1,4 @@
-rm(list=ls())
+rm(list = ls())
 library(LFQService)
 library(tidyverse)
 
@@ -16,7 +16,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 config <- LFQService::create_MQ_peptide_Configuration()
 
 annotation <- readxl::read_xlsx(inputAnntation)
-annotation <- annotation %>% filter(annotation$SCI != "un")
+annotation <- annotation %>% dplyr::filter(annotation$SCI != "un")
 
 config$table$factors[["drug_"]] = "genotype"
 config$table$factors[["SCI_"]] = "SCI"

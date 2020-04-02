@@ -12,3 +12,4 @@ doc
 /tests/testthat/*.csv
 /tests/testthat/*.txt
 /tests/testthat/*_files/
+.idea
