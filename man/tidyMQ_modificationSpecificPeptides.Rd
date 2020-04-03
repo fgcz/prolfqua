@@ -7,7 +7,7 @@
 tidyMQ_modificationSpecificPeptides(MQPeptides)
 }
 \arguments{
-\item{MQPeptides}{data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)}
+\item{MQPeptides}{data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)}
 }
 \description{
 parse MQ modificationSpecificPeptides.txt
@@ -17,9 +17,9 @@ library(tidyverse)
 if(FALSE){
 peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 peptides_txt <- read.csv(peptides_txt,
- header=TRUE,
+ header = TRUE,
   stringsAsFactors = FALSE,
-   sep="\t")
+   sep = "\t")
 head(peptides_txt)
 MQPeptides <- peptides_txt
 #View(MQPeptides)

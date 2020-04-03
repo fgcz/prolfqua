@@ -185,9 +185,9 @@ samples <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% dis
 if (length(samples) > 10) {
   limit <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
   ldata <- dataTransformed %>% dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
-  quantable::mypairsSmooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
+  LFQService::mypairsSmooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
 }else{
-  quantable::mypairsSmooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
+  LFQService::mypairsSmooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
 }
 ```
 

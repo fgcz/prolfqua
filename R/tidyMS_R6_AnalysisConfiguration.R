@@ -1731,7 +1731,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
-  resdata <- quantable::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+  resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
 
   # not showing row dendrogram trick
@@ -1814,54 +1814,6 @@ plot_NA_heatmap <- function(data,
                                    silent = TRUE
     )
     invisible( list( res = res, plot = res_plot ) )
-  }
-}
-
-
-#'
-plot_NA_heatmap_deprec <- function(data,
-                                   config,
-                                   showRowDendro = FALSE,
-                                   cexCol = 1,
-                                   limitrows = 10000){
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- res$annotation
-  res <- res$data
-  stopifnot(annot$sampleName == colnames(res))
-
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
-  ColSideColors <- as.matrix(dplyr::mutate_all(factors, list(LFQService:::.string.to.colors)))
-  rownames(ColSideColors) <- annot$sampleName
-
-  res[!is.na(res)] <- 0
-  res[is.na(res)] <- 1
-  allrows <- nrow(res)
-  res <- res[apply(res,1, sum) > 0,]
-
-  message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
-  if (nrow(res) > 0) {
-    if (nrow(res) > limitrows ) {
-      message("limiting nr of rows to:", limitrows,"\n")
-      resPlot <- res[sample( 1:nrow(res),limitrows),]
-    }else{
-      resPlot <- res
-    }
-    res_plot <- heatmap3::heatmap3(resPlot,
-                                   distfun = function(x){dist(x, method = "binary")},
-                                   scale = "none",
-                                   col = c("white","black"),
-                                   labRow = "",
-                                   ColSideColors = ColSideColors,
-                                   showRowDendro = showRowDendro,
-                                   cexCol = cexCol,
-                                   margin = c(8,3),
-                                   legendfun = function()
-                                     heatmap3::showLegend(legend = c("NA"),
-                                                          col = c("black"),
-                                                          cex = 1.5))
-
-    invisible(list(res = res, res_plot = res_plot))
-
   }
 }
 

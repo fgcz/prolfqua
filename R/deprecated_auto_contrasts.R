@@ -88,7 +88,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 
 
   result$fig$VolcanoPlot_name <- paste0("Contrasts_Auto_Volcano_",modelName,".pdf")
-  result$fig$VolcanoPlot <- quantable::multigroupVolcano(contrasts,
+  result$fig$VolcanoPlot <- LFQService::multigroupVolcano(contrasts,
                                                          effect = "estimate",
                                                          p.value = "p.value",
                                                          condition = "lhs",

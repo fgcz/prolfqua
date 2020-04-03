@@ -80,8 +80,8 @@ results <- test.contrast_adjust(models, L)
 
 
 names(results)[1]
-for(i in 1:length(results)){
-  tmp <- quantable::matrix_to_tibble(results[[i]])
+for (i in 1:length(results)) {
+  tmp <- LFQService::matrix_to_tibble(results[[i]])
   tmp$contrast <- names(results)[i]
   results[[i]] <- tmp
 }
@@ -94,7 +94,7 @@ allContrasts <- bind_rows(results)
 #write.csv(results,file=file.path(outdir,"MSqRobSignificances.tsv"))
 
 #pdf(file.path(outdir,"MSqRob_pValue_Volcano.pdf"))
-quantable::multigroupVolcano(allContrasts,
+LFQService::multigroupVolcano(allContrasts,
                              effect = "estimate",
                              p.value = "pval",
                              condition = "contrast",
@@ -103,7 +103,7 @@ quantable::multigroupVolcano(allContrasts,
 #dev.off()
 
 #pdf(file.path(outdir,"MSqRob_qValue_Volcano.pdf"))
-quantable::multigroupVolcano(allContrasts,
+LFQService::multigroupVolcano(allContrasts,
                              effect = "estimate",
                              p.value = "qval",
                              condition = "contrast",

@@ -104,17 +104,17 @@ if (TRUE) {
   .Device
   summarised("protwrite")
   .Device
-  #summarised("plotprot")
+  summarised("plotprot")
   saveRDS(summarised,"aaa_summarized.RDA")
 }
 
-summarised <- summarised(DEBUG = TRUE)
+summarisedData <- summarised(DEBUG = TRUE)
 message("######################## fit mixed #######################")
 reportColumns <- c("p.value",
                    "p.value.adjusted",
                    "statistic")
 
-memodel <- paste0(summarised$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
+memodel <- paste0(summarisedData$results$config_pepIntensityNormalized$table$getWorkIntensity() , memodel)
 modelFunction <- make_custom_model_lmer( memodel,
                                          model_name = "Model", report_columns =  reportColumns)
 
@@ -124,8 +124,8 @@ if (TRUE) {
 
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
-    data = summarised$results$pepIntensityNormalized,
-    config = summarised$results$config_pepIntensityNormalized,
+    data = summarisedData$results$pepIntensityNormalized,
+    config = summarisedData$results$config_pepIntensityNormalized,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide")

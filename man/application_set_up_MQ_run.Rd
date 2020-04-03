@@ -9,7 +9,7 @@ application_set_up_MQ_run(
   inputMQfile,
   inputAnnotation,
   config,
-  id_extractor = function(df) {     fgczgseaora::get_UniprotID_from_fasta_header(df,
+  id_extractor = function(df) {     fgcz.gsea.ora::get_UniprotID_from_fasta_header(df,
     idcolumn = "top_protein") },
   qcdir = "qc_results",
   use = c("peptides", "modificationSpecificPeptides")

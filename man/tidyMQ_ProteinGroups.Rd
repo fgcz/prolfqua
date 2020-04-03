@@ -17,4 +17,5 @@ protein_txt <- system.file("samples/maxquant_txt/MSQC1/proteinGroups.txt",packag
 protein_txt <- read.csv(protein_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 head(mq_proteins)
+
 }

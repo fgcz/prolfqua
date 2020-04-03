@@ -27,7 +27,7 @@ transitionCorrelationsJack <- function(dataX,
   if (nrow(dataX) > 1) {
     ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     xpep <- t(ordt)
-    quantable::jackknifeMatrix(xpep, distmethod)
+    LFQService::jackknifeMatrix(xpep, distmethod)
   }else{
     message("Could not compute correlation, nr rows : ", nrow(dataX))
   }

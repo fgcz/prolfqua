@@ -6,8 +6,7 @@
 \usage{
 do_confusion(
   data,
-  arrangeby = c("pseudo_estimate", "estimate", "statistic", "scaled.p",
-    "scaled.moderated.p")
+  arrangeby = c("estimate", "statistic", "scaled.p", "scaled.moderated.p")
 )
 }
 \description{

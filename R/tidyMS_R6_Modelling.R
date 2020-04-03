@@ -307,7 +307,7 @@ model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id
   fig$fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",modelName,".pdf")
   fig$VolcanoPlot <- Model_Coeff %>%
     dplyr::filter(row.names.x. != "(Intercept)") %>%
-    quantable::multigroupVolcano(
+    LFQService::multigroupVolcano(
       effect = "Estimate",
       p.value = "Pr...t..",
       condition = "row.names.x.",
@@ -643,7 +643,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 
 
 .get_match_idx <- function(mm, factor_level){
-  ddd <- quantable::split2table(rownames(mm), split=":")
+  ddd <- split2table(rownames(mm), split=":")
   xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
   idx <- which(apply(xd,1, sum) > 0)
   return(idx)
@@ -1034,10 +1034,10 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          columns = c("estimate", "p.value","p.value.adjusted")){
 
   m_spread <- function(longContrasts, subject_Id, column ){
-    longContrasts %>%
-      dplyr::select_at(c(subject_Id, "isSingular", "lhs",  column)) %>%
-      dplyr::mutate(lhs = glue::glue('{column}.{lhs}')) %>%
-      tidyr::spread(lhs, !!sym(column) ) -> res
+    res <- longContrasts %>%
+      dplyr::select_at(c(subject_Id, "isSingular", "lhs",  column))
+    res <- res %>% dplyr::mutate(lhs = glue::glue('{column}.{lhs}'))
+    res <- res %>% tidyr::spread(lhs, !!sym(column) )
     return(res)
   }
   res <- list()

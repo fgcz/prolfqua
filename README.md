@@ -17,9 +17,9 @@ a Windows/Linux/MacOSX x64 platform R 3.5.
 ```{r}
 pkgs <- c('broom', 'bookdown', 'conflicted', 'corrplot', 'dplyr',
   'flextable', 'docopt',
-  'ggplot2', 'ggbeeswarm', 'ggfortify', 'glue', 'GGally', 'heatmap3',
+  'ggplot2', 'ggbeeswarm', 'ggfortify', 'glue', 'GGally', 'pheatmap',
   'kableExtra', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp',
-  'quantable', 'plotly', 'purrr', 'readxl', 'tidyverse', 'yaml',
+  'plotly', 'purrr', 'readxl', 'tidyverse', 'yaml',
   'tidyr', 'writexl')
 
 pkgs <- pkgs[(!pkgs %in% unique(installed.packages()[,'Package']))]

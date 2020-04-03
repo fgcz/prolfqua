@@ -24,14 +24,12 @@ Imports:
     ggfortify,
     glue,
     GGally,
-    heatmap3,
     limma,
     lme4,
     lmerTest,
     magrittr,
     multcomp,
     pheatmap,
-    quantable,
     plotly,
     purrr,
     readxl,
@@ -45,7 +43,5 @@ Suggests:
     rmarkdown,
     testthat
 Remotes:
-    protViz/quantable,
-    statOmics/MSqRob,
     bioc::3.9/limma
 RoxygenNote: 7.1.0
