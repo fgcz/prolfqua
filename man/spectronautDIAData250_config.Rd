@@ -4,7 +4,9 @@
 \name{spectronautDIAData250_config}
 \alias{spectronautDIAData250_config}
 \title{A configuration which matches the \link{spectronautDIAData250} and \link{spectronautDIAData250} data.}
-\format{A AnalysisConfiguration R6 class}
+\format{
+A AnalysisConfiguration R6 class
+}
 \usage{
 spectronautDIAData250_config
 }

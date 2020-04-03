@@ -4,7 +4,9 @@
 \name{sample_analysis_HL}
 \alias{sample_analysis_HL}
 \title{A data frame wich goes along with the \link{skylineconfig_HL}.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5715 rows and 11 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5715 rows and 11 columns.
+}
 \source{
 \url{http://www.fgcz.ch/}
 }

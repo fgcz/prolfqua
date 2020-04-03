@@ -4,7 +4,7 @@
   get_sides <- function(contrast, all_variables) {
     ast_list <- getAST(rlang::parse_expr(contrast))
     ast_array <- array(as.character(unlist(ast_list)))
-    bb <- intersect(ast_array,all_variables)
+    bb <- intersect(gsub("`","",ast_array),all_variables)
     return(bb)
   }
 
@@ -34,16 +34,17 @@
 }
 
 # merges contrasts and imputed contrasts
-.makeResult_contrasts <- function(contrasts_xx,
+.makeResult_contrasts <- function(contrast_minimal,
                                   contrasts_xx_imputed,
                                   subject_Id,
                                   config,
                                   remove_imputed = TRUE ) {
 
-  contrast_results <- dplyr::right_join( contrasts_xx$contrast_minimal,
+  contrast_results <- dplyr::right_join( contrast_minimal,
                                   contrasts_xx_imputed,
                                   by = c(subject_Id,
                                         "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>%
     dplyr::mutate(pseudo_estimate = dplyr::case_when(is.na(estimate) ~ estimate_imputed, TRUE ~ estimate))
@@ -69,7 +70,7 @@
 #'
 application_run_modelling_V2 <- function(outpath,
                                          data,
-                                         pepConfig,
+                                         config,
                                          modelFunction,
                                          contrasts,
                                          modelling_dir = "modelling_results_protein" ,
@@ -89,14 +90,15 @@ application_run_modelling_V2 <- function(outpath,
     dir.create(modelling_path)
   }
 
-  ### make modelling  -----
+  ### make modeling  -----
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
-                                                subject_Id = pepConfig$table$hkeysLevel())
+                                                subject_Id = config$table$hkeysLevel())
+
   #################################################
   ### Do missing value imputation
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
-                                                                pepConfig,
+                                                                config,
                                                                 contrasts)
   contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
   contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
@@ -104,24 +106,29 @@ application_run_modelling_V2 <- function(outpath,
                                                               do_not_report)])
 
   #### Compute contrasts from model ####
+
   modellingResult <-  modellingResult_fun()
   modelProteinF <- modellingResult$modellingResult$modelProtein
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
                                                 contrasts,
-                                                pepConfig,
+                                                config,
                                                 modelName = modelFunction$model_name,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
 
-  res_fun <- function(do=c("result",
+  # RESULT FUNCTION
+  res_fun <- function(do = c("result",
                            "write_modelling",
-                           "write_contrasts"), DEBUG = FALSE, remove_imputed = TRUE) {
+                           "write_contrasts"),
+                      DEBUG = FALSE,
+                      remove_imputed = TRUE) {
+
     do <- match.arg(do)
     if (DEBUG) {
       res <- list(modelFunction = modelFunction,
            imputed = contrasts_xx_imputed,
            remove_imputed = remove_imputed,
-           subject_Id = pepConfig$table$hkeysLevel(),
+           subject_Id = config$table$hkeysLevel(),
            modelling_path = modelling_path,
            modellingResult_fun = modellingResult_fun,
            res_contrasts = res_contrasts
@@ -130,21 +137,22 @@ application_run_modelling_V2 <- function(outpath,
     }
 
     if (do == "result") {
-      result_table <- .makeResult_contrasts(res_contrasts(columns = modelFunction$report_columns)
+      contrasts_minimal <- res_contrasts(columns = modelFunction$report_columns)$contrasts_minimal
+      result_table <- .makeResult_contrasts(contrasts_minimal
                                             ,contrasts_xx_imputed,
-                                            pepConfig$table$hkeysLevel(),
-                                            pepConfig,
+                                            config$table$hkeysLevel(),
+                                            config,
                                             remove_imputed = remove_imputed)
-      return(result_table)
-    }else if (do == "write_modelling") {
-      modellingResult_fun(modelling_path)
-    }else if (do == "write_contrasts") {
 
+      return(result_table)
+    } else if (do == "write_modelling") {
+      modellingResult_fun(modelling_path)
+    } else if (do == "write_contrasts") {
       filtered_dd <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
-      result_table <- .makeResult_contrasts(filtered_dd
+      result_table <- .makeResult_contrasts(filtered_dd$contrast_minimal
                                             ,contrasts_xx_imputed,
-                                            pepConfig$table$hkeysLevel(),
-                                            pepConfig)
+                                            config$table$hkeysLevel(),
+                                            config)
       lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
       return(result_table)
     }
@@ -168,9 +176,6 @@ application_set_up_MQ_run <- function(outpath,
   peptides <- match.arg(use)
 
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  if (!is.null(id_extractor)) {
-    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
-  }
   # create result structure
   qc_path <- file.path(outpath, qcdir )
 
@@ -226,6 +231,8 @@ application_set_up_MQ_run <- function(outpath,
 
   if (!is.null(id_extractor)) {
     resPepProtAnnot <- id_extractor(resPepProtAnnot)
+    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
+
   }
 
   {# add annotation

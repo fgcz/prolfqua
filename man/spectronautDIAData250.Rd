@@ -4,7 +4,9 @@
 \name{spectronautDIAData250}
 \alias{spectronautDIAData250}
 \title{Data frame of a Spectronaut export with DIA data}
-\format{a data frame}
+\format{
+a data frame
+}
 \usage{
 spectronautDIAData250
 }

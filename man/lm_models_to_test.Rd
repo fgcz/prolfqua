@@ -4,7 +4,9 @@
 \name{lm_models_to_test}
 \alias{lm_models_to_test}
 \title{lm_models_to_test - linear models which can be used for testing}
-\format{An object of class \code{list} of length 6.}
+\format{
+An object of class \code{list} of length 6.
+}
 \usage{
 lm_models_to_test
 }

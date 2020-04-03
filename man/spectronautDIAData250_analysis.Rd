@@ -4,7 +4,9 @@
 \name{spectronautDIAData250_analysis}
 \alias{spectronautDIAData250_analysis}
 \title{A data frame wich goes along with the \link{spectronautDIAData250_config}.}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 188730 rows and 13 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 188730 rows and 13 columns.
+}
 \source{
 \url{http://www.fgcz.ch/}
 }

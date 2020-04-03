@@ -4,7 +4,9 @@
 \name{correlatedPeptideList}
 \alias{correlatedPeptideList}
 \title{List with peptide intensities}
-\format{A list of data frames}
+\format{
+A list of data frames
+}
 \usage{
 correlatedPeptideList
 }

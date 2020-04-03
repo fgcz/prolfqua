@@ -134,7 +134,6 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 (ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
 
-
 ```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
 print(plot_NA_heatmap(data = data_cc, config = local_config)$plot)
 show_text <- !local_config$parameter$is_intensity_transformed

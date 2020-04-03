@@ -311,17 +311,18 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #' res <- toWideConfig(sample_analysis, conf, as.matrix = TRUE)
 #' res <- scale(res$data)
 #'
-#' xx <- gatherItBack(res,"srm_intensityScaled",conf)
-#' xx <- gatherItBack(res,"srm_intensityScaled",conf,sample_analysis)
+#' xx <- gatherItBack(res,"srm_intensityScaled", conf)
+#' xx <- gatherItBack(res,"srm_intensityScaled", conf, sample_analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
-gatherItBack <- function(x,value,config,data = NULL, sep="~lfq~"){
+#'
+gatherItBack <- function(x, value, config, data = NULL, sep = "~lfq~"){
   x <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(x)),
     tibble::as_tibble(x)
   )
-  x <- tidyr::gather(x,key= !!config$table$sampleName, value = !!value, 2:ncol(x))
-  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep="~lfq~")
-  if(!is.null(data)){
+  x <- tidyr::gather(x,key = !!config$table$sampleName, value = !!value, 2:ncol(x))
+  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep = "~lfq~")
+  if (!is.null(data)) {
     x <- dplyr::inner_join(data, x)
     config$table$setWorkIntensity(value)
   }
@@ -359,18 +360,21 @@ robust_scale <- function(data){
 }
 
 
-
 #' apply Function To matrix
 #' @export
 #' @examples
+#'
 #' library(tidyverse)
 #' conf <- skylineconfig$clone(deep = TRUE)
 #'
 #' res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
+#'
 #' stopifnot("Area_base..scale" %in% colnames(res))
 #' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
 #'
-#' res <- applyToIntensityMatrix(sample_analysis, conf, .func = robust_scale)
+#' conf <- skylineconfig$clone(deep = TRUE)
+#' res <- applyToIntensityMatrix(sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
+#'
 applyToIntensityMatrix <- function(data, config, .func){
   x <- as.list( match.call() )
   colname <- make.names( paste( config$table$getWorkIntensity(), deparse(x$.func), sep = "_"))

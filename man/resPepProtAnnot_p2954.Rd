@@ -4,7 +4,9 @@
 \name{resPepProtAnnot_p2954}
 \alias{resPepProtAnnot_p2954}
 \title{resPepProtAnnot_p2954 - raw data used in script_resultsV1_2954_create}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 3696 rows and 20 columns.}
+\format{
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 3696 rows and 20 columns.
+}
 \usage{
 resPepProtAnnot_p2954
 }

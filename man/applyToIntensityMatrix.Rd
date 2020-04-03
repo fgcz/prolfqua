@@ -10,12 +10,16 @@ applyToIntensityMatrix(data, config, .func)
 apply Function To matrix
 }
 \examples{
+
 library(tidyverse)
 conf <- skylineconfig$clone(deep = TRUE)
 
 res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
+
 stopifnot("Area_base..scale" \%in\% colnames(res))
 stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
 
-res <- applyToIntensityMatrix(sample_analysis, conf, .func = robust_scale)
+conf <- skylineconfig$clone(deep = TRUE)
+res <- applyToIntensityMatrix(sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
+
 }

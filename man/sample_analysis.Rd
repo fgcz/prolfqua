@@ -5,12 +5,14 @@
 \alias{sample_analysis}
 \title{A data frame wich goes along with the \link{skylineconfig}
 and was generate from \link{skylinePRMSampleData}}
-\format{A data frame with 53940 rows and 10 variables:
+\format{
+A data frame with 53940 rows and 10 variables:
 \describe{
   \item{protein_Id}{protein id}
   \item{peptide_Id}{peptide id - stripped sequence}
   ...
-}}
+}
+}
 \source{
 \url{http://www.fgcz.ch/}
 }

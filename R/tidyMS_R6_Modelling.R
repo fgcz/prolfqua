@@ -14,7 +14,11 @@
 #'
 make_custom_model_lmer <- function(modelstr,
                                    model_name = "Model",
-                                   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+                                   report_columns = c("statistic",
+                                                      "p.value",
+                                                      "p.value.adjusted",
+                                                      "moderated.p.value",
+                                                      "moderated.p.value.adjusted")
                                    ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, get_formula = FALSE){
@@ -91,9 +95,9 @@ isSingular_lm <- function(m){
     return(TRUE)
   } else {
     if (df.residual(m)) {
-      return(TRUE)
+      return(FALSE)
     }
-    return(FALSE)
+    return(TRUE)
   }
 }
 
@@ -225,7 +229,7 @@ model_analyse_summarize <- function(modelProteinF,
 
   Model_Coeff <- Model_Coeff %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = "Coeffs_model")
 
   # ANOVA
   .anova_df <- function(x){
@@ -239,7 +243,7 @@ model_analyse_summarize <- function(modelProteinF,
 
   Model_Anova <- Model_Anova %>%
     dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = "Anova_model")
 
 
   return(list(
@@ -638,10 +642,17 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 }
 
 
+.get_match_idx <- function(mm, factor_level){
+  ddd <- quantable::split2table(rownames(mm), split=":")
+  xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
+  idx <- which(apply(xd,1, sum) > 0)
+  return(idx)
+}
+
 #' coeff_weights_factor_levels
 .coeff_weights_factor_levels <- function(mm){
   getCoeffs <- function(factor_level, mm){
-    idx <- grep(factor_level, rownames(mm))
+    idx <- .get_match_idx(mm, factor_level)
     x <- as.list(apply(mm[idx,, drop = FALSE],2,mean) )
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level,.before = 1)
@@ -672,16 +683,30 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 #'
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
+#' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
+#' linfct_from_model(m)
+#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
+#' m <- lm(Y ~ Condition, data = xx)
+#' linfct_from_model(m)
+#'
+
 linfct_from_model <- function(m, as_list = TRUE){
 
-  cm <- .lmer4_coeff_matrix(m)
+  cm <- LFQService:::.lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
-  dd <- .coeff_weights_factor_levels(cm_mm)
-  dd_m <- dd %>% dplyr::select(-factor_level) %>% data.matrix()
-  rownames(dd_m) <- dd$factor_level
-  dd_m <- dd_m[order(rownames(dd_m)),]
-  res <- list(linfct_factors = dd_m , linfct_interactions = cm_mm)
+  l_factors <- LFQService:::.coeff_weights_factor_levels(cm_mm)
+  linfct_factors <- l_factors %>%
+    dplyr::select(-factor_level) %>%
+    data.matrix()
+
+  rownames(linfct_factors) <- l_factors$factor_level
+  linfct_factors <- linfct_factors[order(rownames(linfct_factors)),]
+  res <- list(linfct_factors = linfct_factors , linfct_interactions = cm_mm)
 
   if (as_list) {
     return(res)
@@ -964,9 +989,9 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' summary(mb)
 #'
 #'
-#' library(pbkrtest)
-#' (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-#' class(fm1)
+#' #library(pbkrtest)
+#' #(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+#' #class(fm1)
 #' #pbkrtest::get_ddf_Lb.lmerMod(fm1)
 #'
 my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
@@ -1192,7 +1217,7 @@ contrasts_linfct_vis <- function(contrasts,
   # add histogram of fold changes
   {
     fig <- list()
-    name <- paste0(prefix,"_Histogram_FC_esimate")
+    name <- paste0(prefix,"_Histogram_FC_estimate")
     fig$fname <- paste0(name, "_", modelName )
     fig$fig <- ggplot(data = contrasts, aes(x = !!sym(estimate))) +
       geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm = TRUE)),
@@ -1392,7 +1417,7 @@ workflow_contrasts_linfct_V2 <- function(models,
 
   get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
     data.frame(lhs = contrast_table[i, "lhs"],
-               dplyr::select_at(contrast_results, c( subject_ID ,unlist(contrast_table[i,c("c1","c2")]))),
+               dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("c1","c2")]))),
                c1_name = contrast_table[i,"c1", drop = T],
                c2_name = contrast_table[i,"c2", drop = T], stringsAsFactors = FALSE)
   }
@@ -1679,7 +1704,8 @@ summary_ROPECA_median_p.scaled <- function(
   p.value = "moderated.p.value",
   max.n = 10){
 
-  contrasts_data %>%  group_by_at(c(subject_Id, contrast)) %>%
+  contrasts_data %>%
+    group_by_at(c(subject_Id, contrast)) %>%
     summarize(n = n()) -> nrpepsPerProt
 
   contrasts_data <- contrasts_data %>%

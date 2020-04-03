@@ -4,7 +4,9 @@
 \name{models_interaction}
 \alias{models_interaction}
 \title{models_interaction - output of 'model_analyse_summarize' for lmer model}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \usage{
 models_interaction
 }

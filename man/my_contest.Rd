@@ -25,9 +25,9 @@ lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 summary(mb)
 
 
-library(pbkrtest)
-(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-class(fm1)
+#library(pbkrtest)
+#(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+#class(fm1)
 #pbkrtest::get_ddf_Lb.lmerMod(fm1)
 
 }

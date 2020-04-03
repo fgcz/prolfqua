@@ -4,7 +4,9 @@
 \name{skylineSRM_HL_data}
 \alias{skylineSRM_HL_data}
 \title{Data frame with a skyline export for an heavy to light experiment}
-\format{a data frame}
+\format{
+a data frame
+}
 \usage{
 skylineSRM_HL_data
 }
