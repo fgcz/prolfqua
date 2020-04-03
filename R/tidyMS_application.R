@@ -162,7 +162,7 @@ application_set_up_MQ_run <- function(outpath,
                                       inputMQfile,
                                       inputAnnotation,
                                       config,
-                                      id_extractor = function(df) {fgczgseaora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
+                                      id_extractor = function(df) {fgcz.gsea.ora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                       qcdir = "qc_results",
                                       use = c("peptides", "modificationSpecificPeptides" )) {
   peptides <- match.arg(use)
@@ -195,13 +195,13 @@ application_set_up_MQ_run <- function(outpath,
       png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
       {
         resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
-
         tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
           geom_point(alpha = 1/20, size = 0.3) +
           facet_wrap(~raw.file, ncol = 2)
 
         print(tmp)
-      } dev.off()
+      }
+      dev.off()
     }
   }
 
@@ -248,7 +248,6 @@ application_set_up_MQ_run <- function(outpath,
     resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by = "raw.file")
     ###  Setup analysis ####
   }
-
 
   resDataStart <- setup_analysis(resPepProtAnnot, config)
   resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%

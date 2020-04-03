@@ -6,14 +6,15 @@
 #' protein_txt <- read.csv(protein_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
+#'
 tidyMQ_ProteinGroups <- function(MQProteinGroups){
-  if(is.character(MQProteinGroups)){
-    if(grepl("\\.zip$",MQProteinGroups)){
+  if (is.character(MQProteinGroups)) {
+    if (grepl("\\.zip$",MQProteinGroups)) {
       message(MQProteinGroups)
       MQProteinGroups <- read.csv(unz(MQProteinGroups,"proteinGroups.txt"),
-                           header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                           header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     }else{
-      MQProteinGroups <- read.csv(MQProteinGroups, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+      MQProteinGroups <- read.csv(MQProteinGroups, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
     }
   }
   colnames(MQProteinGroups) <- tolower(colnames(MQProteinGroups))
@@ -30,15 +31,15 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
   )
 
   pint <- pint %>%
-    tidyr::gather(key="raw.file", value="mq.protein.intensity", starts_with("intensity.")) %>%
+    tidyr::gather(key = "raw.file", value = "mq.protein.intensity", starts_with("intensity.")) %>%
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   pintLFQ <- pintLFQ %>%
-    tidyr::gather(key="raw.file", value="mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
+    tidyr::gather(key = "raw.file", value = "mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",raw.file))
 
-  pint <- dplyr::inner_join(pint, pintLFQ , by=c("protein.group.id","raw.file"))
-  res <- dplyr::inner_join(meta, pint , by="protein.group.id")
+  pint <- dplyr::inner_join(pint, pintLFQ , by = c("protein.group.id","raw.file"))
+  res <- dplyr::inner_join(meta, pint , by = "protein.group.id")
   return(res)
 }
 
@@ -55,9 +56,9 @@ tidyMQ_Evidence <- function(Evidence){
     if(grepl("\\.zip$",Evidence)){
       message(Evidence)
       Evidence <- read.csv(unz(Evidence,"evidence.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     }else{
-      Evidence <- read.csv(Evidence, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+      Evidence <- read.csv(Evidence, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
     }
   }
   colnames(Evidence) <- tolower(colnames(Evidence))
@@ -65,8 +66,8 @@ tidyMQ_Evidence <- function(Evidence){
                        "evidence.id" = "id",
                        "peptide.id",
                        "raw.file",
-                       "protein.group.id"="protein.group.ids",
-                       "mod.peptide.id"="mod..peptide.id",
+                       "protein.group.id" = "protein.group.ids",
+                       "mod.peptide.id" = "mod..peptide.id",
                        "leading.razor.protein",
                        "evidence.score" = "score",
                        "delta.score",
@@ -87,7 +88,7 @@ tidyMQ_Evidence <- function(Evidence){
   res <- res %>% dplyr::mutate(reverse = dplyr::case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
   res %>% dplyr::mutate(raw.file = tolower(raw.file)) -> res
   res$proteotypic <-!grepl(";",res$protein.group.id)
-  res <- res %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
+  res <- res %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
 #' Generating mq all level file incuding evidence - modseqPeptide still missing.
@@ -97,16 +98,16 @@ tidyMQ_Evidence <- function(Evidence){
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' allData <- tidyMQ_merged(txt_directory)
-#' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
+#' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package = "LFQService")
 #' res <- tidyMQ_merged(zip_archive)
 tidyMQ_merged <- function(txt_directory){
   if(grepl("\\.zip$",txt_directory)){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors  =  FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     evidence_txt <- read.csv(unz(txt_directory,"evidence.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
   }else{
     proteins_txt <- file.path(txt_directory, "proteinGroups.txt")
     peptides_txt <- file.path(txt_directory, "peptides.txt")
@@ -133,18 +134,18 @@ tidyMQ_All <- function(txt_directory){
 #' @examples
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
-#' allData <- tidyMQ_merged(txt_directory)
+#' allData <- tidyMQ_PeptideProtein(txt_directory)
 #' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
-#' # res <- tidyMQ_PeptideProtein(zip_archive)
+#' res <- tidyMQ_PeptideProtein(zip_archive)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
   if(grepl("\\.zip$",tolower(txt_directory))){
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     mod_spec_peptides_txt <- read.csv(unz(txt_directory,"modificationSpecificPeptides.txt"),
-                                      header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                                      header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
   }else{
     proteins_txt <- file.path(txt_directory, "proteinGroups.txt")
@@ -157,7 +158,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 
   resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
 
-  if(.all){
+  if (.all) {
     return(list(resProt_Pep = resProt_Pep,
                 mq_proteins = mq_proteins,
                 mq_peptides = mq_peptides,
@@ -169,15 +170,15 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 
 #' parse MQ modificationSpecificPeptides.txt
 #' @export
-#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
+#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
 #' @examples
 #' library(tidyverse)
 #' if(FALSE){
 #' peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt,
-#'  header=TRUE,
+#'  header = TRUE,
 #'   stringsAsFactors = FALSE,
-#'    sep="\t")
+#'    sep = "\t")
 #' head(peptides_txt)
 #' MQPeptides <- peptides_txt
 #' #View(MQPeptides)
@@ -186,13 +187,13 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' head(mq_peptides)
 #' }
 tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
-  if(is.character(MQPeptides)){
-    if(grepl("\\.zip$",tolower(MQPeptides))){
+  if (is.character(MQPeptides)) {
+    if (grepl("\\.zip$",tolower(MQPeptides))) {
       message(MQPeptides)
       MQPeptides <- read.csv(unz(MQPeptides,"modificationSpecificPeptides.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     }else{
-      MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+      MQPeptides <- read.csv(MQPeptides, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
     }
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
@@ -204,10 +205,10 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         "sequence",
                         "modifications",
                         "proteins",
-                        "protein.group.id"="protein.group.ids",
+                        "protein.group.id" = "protein.group.ids",
                         "mass",
                         "retention.time",
-                        "mod.peptide.score" ="score",
+                        "mod.peptide.score" = "score",
                         "delta.score",
                         "pep",
                         dplyr::one_of("missed.cleavages"),
@@ -225,13 +226,13 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
       mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol)
       mod_cols <- setNames(mod_cols , paste0("modification.", colnames(mod_cols)))
       #return(list(mod_cols = mod_cols, meta = meta))
-      meta <- dplyr::inner_join(meta, mod_cols, by=c("mod.peptide.id"="modification.id"))
+      meta <- dplyr::inner_join(meta, mod_cols, by = c("mod.peptide.id" = "modification.id"))
     }
   }
   if(sum(grepl("site.ids",colnames(MQPeptides)))){
     mod_cols2 <- dplyr::select(MQPeptides, "id", dplyr::ends_with("site.ids"))
     mod_cols2 <- setNames(mod_cols2 , paste0("site.ids.", colnames(mod_cols2)))
-    meta <- dplyr::inner_join(meta, mod_cols2, by=c("mod.peptide.id"="site.ids.id"))
+    meta <- dplyr::inner_join(meta, mod_cols2, by = c("mod.peptide.id" = "site.ids.id"))
   }
   sc <- sym("potential.contaminant")
   meta <- meta %>%  dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
@@ -245,36 +246,36 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 
   pint <- dplyr::select(MQPeptides,"mod.peptide.id"= "id", starts_with("intensity."))
   PepIntensities <- pint %>%
-    tidyr::gather(key="raw.file", value="mod.peptide.intensity", starts_with("intensity.")) %>%
+    tidyr::gather(key = "raw.file", value = "mod.peptide.intensity", starts_with("intensity.")) %>%
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
-  idtype <- dplyr::select(MQPeptides, "mod.peptide.id"="id", starts_with("identification.type."))
+  idtype <- dplyr::select(MQPeptides, "mod.peptide.id" = "id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      tidyr::gather(key="raw.file", value="mod.id.type", starts_with("identification.type.")) %>%
+      tidyr::gather(key = "raw.file", value = "mod.id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by=c("mod.peptide.id", "raw.file" ))
+    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by = c("mod.peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx <- dplyr::inner_join(meta , PepIntensities, by="mod.peptide.id")
+  xx <- dplyr::inner_join(meta , PepIntensities, by = "mod.peptide.id")
   xx$proteotypic <-!grepl(";",xx$protein.group.id)
-  xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
+  xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
 
 #' parse MQ peptides.txt
 #' @export
-#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
+#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
 #' @examples
 #' library(tidyverse)
 #'
 #' #peptide_txt <- "D:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
 #' peptide_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
-#' peptides_txt <- read.csv(peptide_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+#' peptides_txt <- read.csv(peptide_txt, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
 #' peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "LFQService")
-#' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+#' peptides_txt <- read.csv(peptides_txt, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
 #' tmp <- strsplit(tmp, ";")
 #' length(unique(tmp[[1]]))
@@ -285,9 +286,9 @@ tidyMQ_Peptides <- function(MQPeptides){
   if(is.character(MQPeptides)){
     if(grepl("\\.zip$",tolower(MQPeptides))){
       MQPeptides <- read.csv(unz(MQPeptides,"peptides.txt"),
-                             header=TRUE, sep="\t", stringsAsFactors = FALSE)
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     }else{
-      MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+      MQPeptides <- read.csv(MQPeptides, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
     }
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
@@ -298,7 +299,7 @@ tidyMQ_Peptides <- function(MQPeptides){
                         "proteins",
                         "leading.razor.protein",
                         "protein.group.id"="protein.group.ids",
-                        "peptide.score" ="score",
+                        "peptide.score"  = "score",
                         "pep",
                         dplyr::one_of("missed.cleavages"),
                         "unique.groups" = "unique..groups.",
@@ -310,35 +311,35 @@ tidyMQ_Peptides <- function(MQPeptides){
     dplyr::mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                             !!sym("reverse") == "" ~ FALSE))
 
-  pint <- dplyr::select(MQPeptides,"peptide.id"= "id", starts_with("intensity."))
+  pint <- dplyr::select(MQPeptides,"peptide.id" =  "id", starts_with("intensity."))
 
   PepIntensities <- pint %>%
-    tidyr::gather(key="raw.file", value="peptide.intensity", starts_with("intensity.")) %>%
+    tidyr::gather(key = "raw.file", value = "peptide.intensity", starts_with("intensity.")) %>%
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
-  idtype <- dplyr::select(MQPeptides, "peptide.id"="id", starts_with("identification.type."))
+  idtype <- dplyr::select(MQPeptides, "peptide.id" = "id", starts_with("identification.type."))
   if(ncol(idtype) > 1){ # if only one file no id type is provided
     PepIDType <- idtype %>%
-      tidyr::gather(key="raw.file", value="id.type", starts_with("identification.type.")) %>%
+      tidyr::gather(key = "raw.file", value = "id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by=c("peptide.id", "raw.file" ))
+    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by = c("peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx<-dplyr::inner_join(meta , PepIntensities, by="peptide.id")
+  xx<-dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
 
   xx$proteotypic <-!grepl(";",xx$protein.group.id)
-  xx <- xx %>% separate_rows(protein.group.id, sep=";",convert =TRUE)
+  xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
 
 #' parse MQ allPeptides.txt
 #' @export
-#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
+#' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
 #' @examples
 #' if(FALSE){
 #' peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
-#' peptides_txt <- read.csv(peptides_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+#' peptides_txt <- read.csv(peptides_txt, header = TRUE, stringsAsFactors = FALSE, sep="\t")
 #' MQPeptides <- peptides_txt
 #' head(MQPeptides)
 #' mq_peptides <- tidyMQ_allPeptides(peptides_txt)
@@ -351,8 +352,8 @@ tidyMQ_Peptides <- function(MQPeptides){
 #' head(mq_peptides)
 #'}
 tidyMQ_allPeptides <- function(MQPeptides){
-  if(is.character(MQPeptides)){
-    MQPeptides <- read.csv(MQPeptides, header=TRUE, stringsAsFactors = FALSE, sep="\t")
+  if (is.character(MQPeptides)) {
+    MQPeptides <- read.csv(MQPeptides, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
   }
   colnames(MQPeptides) <- tolower(colnames(MQPeptides))
   colnames(MQPeptides)
@@ -366,7 +367,7 @@ tidyMQ_allPeptides <- function(MQPeptides){
                       "sequence",
                       "modified.sequence",
                       "proteins",
-                      "peptide.score" ="score",
+                      "peptide.score" = "score",
                       "intensity",
                       "ms.ms.count") %>%
     dplyr::mutate(sequence = str_trim(sequence), modified.sequence = str_trim(modified.sequence))
@@ -384,7 +385,7 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 
   xx <- mq_modSpecPeptides %>%
     dplyr::group_by(peptide.id, raw.file ) %>%
-    dplyr::mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm=TRUE),
+    dplyr::mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm = TRUE),
                   pep = min(pep, na.rm=TRUE),
                   peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>%  dplyr::ungroup()
 

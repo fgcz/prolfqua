@@ -884,7 +884,7 @@ workflow_missigness_impute_contrasts <- function(data,
   mean <- missigness_impute_contrasts(xx, config, contrasts)
 
   dd <- dplyr::bind_rows(imputed, mean)
-  dd_long <- dd %>% dplyr::gather("contrast","int_val",
+  dd_long <- dd %>% tidyr::gather("contrast","int_val",
                            colnames(dd)[sapply(dd, is.numeric)])
 
   res_fun <- function(value = c("long", "wide","raw"),

@@ -72,38 +72,64 @@ if (TRUE) {
                                    inputAnnotation = inputAnntation,
                                    config = config)
 
+
   summarised <- data_pep_to_prot(res$data,
                                  res$config,
                                  res$qc_path)
-  summarised <- summarised(DEBUG = TRUE)
-  #saveRDS(summarised, file = "aaa_summarized.RDA")
 
-}else{
-  summarised <- readRDS("aaa_summarized.RDA")
-}
+  summarised <- summarised(DEBUG = TRUE)
+  data_c <- summarised$results$pepIntensityNormalized
+  config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
+
+  #usethis::use_data(data_c)
+  #usethis::use_data(config_c)
+  #dataIonstar <- summarised
+  ##usethis::use_data(dataIonstar)
+
+} else {
+
+  res <- application_set_up_MQ_run(outpath = outpath,
+                                   inputMQfile = inputMQfile,
+                                   inputAnnotation = inputAnntation,
+                                   config = config$clone(deep = TRUE))
+
+
+  dd <- LFQService:::.workflow_MQ_filter_peptides_V3(res$data, res$config)
+  pepIntensityNormalized <- transform_work_intensity(dd$data, dd$config, log2)
+
+
+  subset <- pepIntensityNormalized %>% filter(grepl("HUMAN", pepIntensityNormalized$protein_Id))
+  dd$config$table$workIntensity
+  pepIntensityNormalized <- scale_with_subset(pepIntensityNormalized,subset, dd$config)
+
+  dd$config$table$workIntensity
+
+  hist(pepIntensityNormalized$log2_peptide.intensity)
+  hist(pepIntensityNormalized$log2_peptide.intensity_subset_scaled)
+
+  pepIntensityNormalized <-
+    pepIntensityNormalized <- pepIntensityNormalized %>%
+    dplyr::rename(transformedIntensity = dd$config$table$getWorkIntensity())
+  dd$config$table$popWorkIntensity()
+  dd$config$table$setWorkIntensity("transformedIntensity")
+
+  res <- list(pepIntensityNormalized = pepIntensityNormalized, config_pepIntensityNormalized = dd$config)
+  dataIonstarSubsetNorm <- list()
+  dataIonstarSubsetNorm$results <- res
+  usethis::use_data(dataIonstarSubsetNorm, overwrite = TRUE)
+
+ }
 
 message("######################## fit mixed #######################")
 
-#mycenter <- function(x){x - mean(x, na.rm = TRUE)}
-
-#dataIonstar <- summarised
-##usethis::use_data(dataIonstar)
-
-data_c <- summarised$results$pepIntensityNormalized
-config_c <- summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
-
-#usethis::use_data(data_c)
-#usethis::use_data(config_c)
-
-#data_c <- data_c %>% group_by(config_c$table$hkeysLevel()) %>%
-#  mutate(transformedIntensity = mycenter(transformedIntensity)) %>% ungroup()
 mean(is.na(summarised$results$pepIntensityNormalized$transformedIntensity))
-#foo
 
 memodel_full <- paste0(config_c$table$getWorkIntensity() , memodel)
 modelFunction <- make_custom_model_lmer( memodel_full, model_name = "meModel")
-reportColumns <- c("p.value",
-                   "p.value.adjusted")
+reportColumns <- c(
+  "statistic",
+  "p.value",
+  "p.value.adjusted")
 
 #foo
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
@@ -117,7 +143,6 @@ if (TRUE) {
     modelling_dir = "modelling_results_peptide")
   resXXmixmodel <- resXXmixmodel(do = "result")
 }
-
 
 
 message("################## fit medpolish ######################")
@@ -160,7 +185,7 @@ ropeca_P <- summary_ROPECA_median_p.scaled(resXXRopeca,contrast = "contrast")
 
 
 allresults <- list(ropeca_P = ropeca_P, resXXmedpolish = resXXmedpolish, resXXmixmodel = resXXmixmodel )
-saveRDS(allresults, file = "allresults.Rds")
+#saveRDS(allresults, file = "allresults.Rds")
 
 tmp <- contrasts_linfct_vis(ropeca_P,columns = c("beta.based.significance"),
                             estimate = "median.estimate",
