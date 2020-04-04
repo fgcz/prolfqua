@@ -133,10 +133,10 @@ tidyMQ_All <- function(txt_directory){
 #' @export
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
-#' allData <- tidyMQ_PeptideProtein(txt_directory)
-#' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
-#' res <- tidyMQ_PeptideProtein(zip_archive)
+#' #txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
+#' #allData <- tidyMQ_PeptideProtein(txt_directory)
+#' #zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
+#' #res <- tidyMQ_PeptideProtein(zip_archive)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
   if(grepl("\\.zip$",tolower(txt_directory))){
