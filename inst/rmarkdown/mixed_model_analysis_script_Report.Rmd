@@ -86,7 +86,7 @@ table_facade(pars$annotation, "Sample annotations.")
 
 # Mixed Effects Model
 
-```{r alttext include =FALSE}
+```{r alttext, include=FALSE}
 mixed_txt <- "The following mixed-effects model was fitted [see @lmer2015]: "
 fixed_txt <- "The following linear model was fitted: "
 ```
@@ -118,11 +118,29 @@ histogramFC <- file.path(pars$modelling_dir, "contrasts_Histogram_FC_estimate_Mo
 histogramPVal <-   file.path(pars$modelling_dir, "contrasts_Histogram_p.value_Model")
 histogramPValAdj <- file.path(pars$modelling_dir, "contrasts_Histogram_p.value.adjusted_Model")
 volcanoPVal <- file.path(pars$modelling_dir, "contrasts_Volcano_p.value_Model")
+volcanoAdjModPval <- file.path(pars$modelling_dir, "contrasts_Volcano_moderated.p.value.adjusted_Model")
 volcanoPValAdj <- file.path(pars$modelling_dir, "contrasts_Volcano_p.value.adjusted_Model")
 maPlot <- file.path(pars$modelling_dir, "contrasts_MA_FC_estimate_Model")
 ```
 
 
+```{r alttext2, include =FALSE}
+t1 <- "- __Volcano plot of p-Values vs fold change estimate__ ([pdf]("
+t2 <- paste_file(volcanoPVal,".pdf")
+t3 <- "){target='_blank'}; [html]("
+t4 <- paste_file(volcanoPVal,".html")
+t5 <- "){target='_blank'}) which on the vertical axis shows the protein $-\\log_{10}(p~values)$ versus the the log2 fold changes on the horizontal axis."
+volcanoPValue <- paste(c(t1,t2,t3,t4,t5), collapse = "")
+
+if (!is_mixed_model(pars$model)) {
+  t1 <- "- __Volcano plot of adjusted moderated p-Values vs fold change estimate__ ([pdf]("
+  t2 <- paste_file(volcanoAdjModPval,".pdf")
+  t3 <- "){target='_blank'}; [html]("
+  t4 <- paste_file(volcanoAdjModPval,".html")
+  t5 <- "){target='_blank'}) which on the vertical axis shows the protein $-\\log_{10}(p~values)$ versus the the log2 fold changes on the horizontal axis."
+  volcanoModeratedAdjustedPValue <- paste(c(t1,t2,t3,t4,t5), collapse = "")
+}
+```
 
 
 
@@ -132,8 +150,9 @@ maPlot <- file.path(pars$modelling_dir, "contrasts_MA_FC_estimate_Model")
     - __Histogram of fold changes__ ([pdf](`r paste_file(histogramFC, ".pdf")`){target="_blank"}) shows the distribution of the contrasts for each comparison.
     - __Histogram of p-Values__ ([pdf](`r paste_file(histogramPVal,".pdf")`){target="_blank"}) shows the distribution of the p-Values for each contrast. This plot is used to asses the quality of your data and of the model (see [How to interpret p-value histogram]( http://varianceexplained.org/statistics/interpreting-pvalue-histogram/)).
     - __Histogram of adjusted p-Values__ ([pdf](`r paste_file(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the false discovery rates (FDR - p values adjusted using the Benjamin and Hochberg method [see @BenjaminiHochberg1995]).
-    - __Volcano plot of p-Values vs fold change estimate__ ([pdf](`r  paste_file(volcanoPVal,".pdf")`){target="_blank"}; [html](`r paste_file(volcanoPVal,".html")`){target="_blank"}) which on the vertical axis shows the protein $-\log_{10}(p~values)$ versus the the log2 fold changes on the horizontal axis.
+    `r if(FALSE){volcanoPValue}`
     - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r paste_file(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r paste_file(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the $-\log_{10}(FDR)$ versus the the _log2_ fold changes on the horizontal axis.
+    `r if(!is_mixed_model(pars$model)){volcanoModeratedAdjustedPValue}`
     - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r paste_file(maPlot,".pdf")`){target="_blank"}; [html](`r paste_file(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments (this is also known as mean difference plot MD).
     - ANOVA results ([excel xlsx format](`r paste_file(anovaXLSX,".xlsx")`);[html](`r paste_file(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r paste_file(anovaPDF)`){target="_blank"}) which show which factors included in the model are significant.
 
