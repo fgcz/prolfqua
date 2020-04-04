@@ -70,10 +70,7 @@ A set of diagnostic plots is generated from protein intensities. The diagnostic 
 The raw files are annotated with the following factors and factor levels:
 
 ```{r annotation}
-ftab <- flextable::flextable(pars$annotation) %>%
-  autofit() %>% 
-  flextable::set_caption("Sample annotations.")
-ftab
+table_facade(pars$annotation, "Sample annotations.")
 
 ```
 
@@ -89,17 +86,23 @@ ftab
 
 # Mixed Effects Model
 
-The following mixed-effects model was fitted [see @lmer2015]: 
+```{r alttext include =FALSE}
+mixed_txt <- "The following mixed-effects model was fitted [see @lmer2015]: "
+fixed_txt <- "The following linear model was fitted: "
+```
+
+
+`r if(is_mixed_model(pars$model)) {mixed_txt} else {fixed_txt}`
 
 __`r format(formula(pars$model))`__
 
 Using this model the following contrasts were computed. 
 
 ```{r contrasts}
+
 Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = as.character(pars$Contrasts))
-ft_contrast <- flextable::flextable(Contrasts)
-ft_contrast <- ft_contrast %>% flextable::set_caption("Contrasts (vs - versus, gv - given).")
-ft_contrast
+
+table_facade(Contrasts, "Contrasts (vs - versus, gv - given).")
 
 ```
 
