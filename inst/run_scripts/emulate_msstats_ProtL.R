@@ -31,9 +31,6 @@ pepInputFile <- inputFile %>%
 
 dim(inputFile)/dim(pepInputFile)
 
-
-#mean(is.na(inputFile$FragmentIon))
-#mean(is.na(inputFile$ProductCharge))
 pepInputFile$pep <- 0
 annotation <- pepInputFile %>% dplyr::select(Run, Condition, BioReplicate) %>% distinct()
 

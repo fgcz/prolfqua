@@ -55,7 +55,5 @@ plot volcano given multiple conditions
 library(ggplot2)
 library(tidyverse)
 library(ggrepel)
-data(multigroupFCDATA)
-colnames(multigroupFCDATA)
-multigroupVolcano(multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
+multigroupVolcano(LFQService::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
 }
