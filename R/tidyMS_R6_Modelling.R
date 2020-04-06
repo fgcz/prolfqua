@@ -94,7 +94,7 @@ isSingular_lm <- function(m){
   if (anyNA) {
     return(TRUE)
   } else {
-    if (df.residual(m)) {
+    if (df.residual(m) > 0) {
       return(FALSE)
     }
     return(TRUE)
