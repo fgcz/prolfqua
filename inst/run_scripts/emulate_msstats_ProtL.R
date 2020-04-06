@@ -23,7 +23,6 @@ inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
 inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "")
 inputFile$Condition <- gsub("-",".",inputFile$Condition)
 
-unique(inputFile$Condition)
 
 pepInputFile <- inputFile %>%
   dplyr::group_by(ProteinName , PeptideSequence , IsotopeLabelType, Condition, BioReplicate, Run) %>%
@@ -70,14 +69,18 @@ config$workunit_Id = "20191120_MQ_repack.zip"
 
 # specify model definition
 modelName  <- "Model"
-memodel <- "~ Condition_"
 
-#lmmodel <- "~ drug_ * SCI_"
+memodel <- "~ Condition_"
+# how to model repeated measurements
+#memodel <- "~ Condition_ + (1|BioReplicate)"
+# how to model techreps
+#memodel <- "~ condition_ + (1|BioReplicate) + (1|Run)"
 
 DEBUG <- TRUE
 RUN_ALL <- TRUE
 
 Contrasts <- c("RKOvsRKO.R" = "Condition_RKO - Condition_RKO.R")
+
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 resDataStart <- setup_analysis(pepInputFile, config)
