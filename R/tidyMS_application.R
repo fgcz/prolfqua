@@ -137,8 +137,8 @@ application_run_modelling_V2 <- function(outpath,
     }
 
     if (do == "result") {
-      contrasts_minimal <- res_contrasts(columns = modelFunction$report_columns)$contrasts_minimal
-      result_table <- .makeResult_contrasts(contrasts_minimal
+      contrast_minimal <- res_contrasts(columns = modelFunction$report_columns)$contrast_minimal
+      result_table <- .makeResult_contrasts(contrast_minimal
                                             ,contrasts_xx_imputed,
                                             config$table$hkeysLevel(),
                                             config,
