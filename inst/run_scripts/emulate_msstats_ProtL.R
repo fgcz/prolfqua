@@ -3,8 +3,54 @@ library(LFQService)
 library(tidyverse)
 
 ###### Setting up output dir
+# specify model definition
+
+inputMQfile <-  "../samples/timstof/MSstats.zip"
+inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
+inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "")
+inputFile$Condition <- gsub("-",".",inputFile$Condition)
+inputFile$pep <- 0
+
+annotation <- inputFile %>%
+  dplyr::select(Run, Condition, BioReplicate) %>%
+  distinct()
+
+## Tell LFQ Service what column is what.
+atable <- AnalysisTableAnnotation$new()
+# measurement levels.
+atable$hierarchy[["protein_Id"]] <- c("ProteinName")
+atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
+atable$fileName = "Run"
+atable$ident_qValue = "pep"
+atable$setWorkIntensity("Intensity")
+atable$isotopeLabel = "IsotopeLabelType"
+
+anaparam <- AnalysisParameters$new()
+anaparam$min_peptides_protein <- 2
+config <- AnalysisConfiguration$new(atable, anaparam)
+
+memodel <- "~ Condition_"
+# how to model repeated measurements
+#memodel <- "~ Condition_ + (1|BioReplicate)"
+# how to model techreps
+#memodel <- "~ condition_ + (1|BioReplicate) + (1|Run)"
+config$table$factors[["Condition_"]] <- "Condition"
+config$table$factors[["BioReplicate_"]] <- "BioReplicate"
+atable$hierarchyLevel <- 1
+
+Contrasts <- c("RKOvsRKO.R" = "Condition_RKO - Condition_RKO.R")
+
+
+config$order_Id = "o1"
+config$project_Id = "p3061"
+config$workunit_Id = "Resource : 1577525 - 20200317_TK.zip"
+
+
 outpath <- "results_modelling_protAggregate_msstats"
 qcdir = "qc_results"
+
+
+
 
 qc_path <- file.path(outpath, qcdir )
 if (!dir.exists(qc_path)) {
@@ -16,75 +62,13 @@ dirlayout$outdir <- outpath
 dirlayout$qc_path = qc_path
 #####
 
-
-inputMQfile <-  "../samples/timstof/MSstats.zip"
-
-inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
-inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "")
-inputFile$Condition <- gsub("-",".",inputFile$Condition)
-
-
-pepInputFile <- inputFile %>%
-  dplyr::group_by(ProteinName , PeptideSequence , IsotopeLabelType, Condition, BioReplicate, Run) %>%
-  dplyr::summarize( pepIntensity = sum(Intensity, na.rm = TRUE)) %>% ungroup()
-
-dim(inputFile)/dim(pepInputFile)
-
-pepInputFile$pep <- 0
-annotation <- pepInputFile %>% dplyr::select(Run, Condition, BioReplicate) %>% distinct()
-
-
-msstats_config <- function(
-  ident_qValue = "pep",
-  intensity = "pepIntensity",
-  isotopeLabel = "IsotopeLabelType"){
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "raw.file"
-  # measurement levels.
-  atable$hierarchy[["protein_Id"]] <- c("ProteinName")
-  atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence")
-
-  atable$fileName = "Run"
-  atable$hierarchyLevel <- 1
-  #
-  atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity(intensity)
-  atable$isotopeLabel = isotopeLabel
-
-  anaparam <- AnalysisParameters$new()
-  anaparam$min_peptides_protein <- 2
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
-  return(configuration)
-}
-
-config <- msstats_config()
-config$table$factors[["Condition_"]] <- "Condition"
-config$table$factors[["BioReplicate_"]] <- "BioReplicate"
-
-
-config$order_Id = "o5748"
-config$project_Id = "p2558"
-config$workunit_Id = "20191120_MQ_repack.zip"
-
-
-# specify model definition
-modelName  <- "Model"
-
-memodel <- "~ Condition_"
-# how to model repeated measurements
-#memodel <- "~ Condition_ + (1|BioReplicate)"
-# how to model techreps
-#memodel <- "~ condition_ + (1|BioReplicate) + (1|Run)"
-
 DEBUG <- TRUE
 RUN_ALL <- TRUE
 
-Contrasts <- c("RKOvsRKO.R" = "Condition_RKO - Condition_RKO.R")
 
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
-resDataStart <- setup_analysis(pepInputFile, config)
-unique(resDataStart$Condition_)
+resDataStart <- setup_analysis( inputFile, config)
 resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%  complete_cases(config)
 
 res <- list()
@@ -107,7 +91,7 @@ if (TRUE) {
   .Device
   summarised("protwrite")
   .Device
-  #summarised("plotprot")
+  summarised("plotprot")
   saveRDS(summarised,"aaa_summarized.RDA")
 }
 
