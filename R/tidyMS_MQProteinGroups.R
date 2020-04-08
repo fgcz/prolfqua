@@ -386,8 +386,8 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
   xx <- mq_modSpecPeptides %>%
     dplyr::group_by(peptide.id, raw.file ) %>%
     dplyr::mutate(peptide.intensity = sum(mod.peptide.intensity, na.rm = TRUE),
-                  pep = min(pep, na.rm=TRUE),
-                  peptide.score = max(mod.peptide.score, na.rm=TRUE)) %>%  dplyr::ungroup()
+                  pep = min(pep, na.rm = TRUE),
+                  peptide.score = max(mod.peptide.score, na.rm = TRUE)) %>%  dplyr::ungroup()
 
   dimcheck <- mq_modSpecPeptides %>% dplyr::select(peptide.id, raw.file ) %>%
     dplyr::distinct() %>% nrow()
@@ -456,10 +456,10 @@ tidyMQ_from_Sites <- function(pDat){
 
   intensities <- pDat %>% dplyr::select("site.id" = "id", contains("___") )
   longish <- intensities %>% gather(key = "raw.file", value = "intensity", contains("___"))
-  longish <- longish %>% separate(raw.file, into=c("raw.file", "multiplicity"), sep="___")
+  longish <- longish %>% separate(raw.file, into = c("raw.file", "multiplicity"), sep="___")
   longish <- longish %>% mutate(raw.file = gsub("intensity\\.", "", raw.file))
 
-  res <- inner_join(longish, annotation, by="site.id")
+  res <- inner_join(longish, annotation, by = "site.id")
   return(list(data = res, annotation = annotation))
 }
 
