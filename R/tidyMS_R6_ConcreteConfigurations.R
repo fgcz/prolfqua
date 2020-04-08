@@ -76,7 +76,7 @@ create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
 
 #' Create configuration for MSFragger output
 #' @export
-create_MSstats_MSFragger_config <- function(min_peptides_protein = 2){
+create_MSFragger_MSstats_config <- function(min_peptides_protein = 2){
   ## Tell LFQ Service what column is what.
   atable <- AnalysisTableAnnotation$new()
   # measurement levels.
