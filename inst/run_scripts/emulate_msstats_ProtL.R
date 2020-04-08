@@ -6,13 +6,9 @@ outpath <- "results_modelling_protAggregate_msstats"
 inputMQfile <-  "../samples/timstof/MSstats.zip"
 
 # massaging of the input.
-inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
-inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "")
-inputFile$Condition <- make.names(inputFile$Condition)
-inputFile$pep <- 0
-
+inputFile <- read_MSFragger_MSstats_csv(inputMQfile)
 # setup modelling
-config <- create_MSstats_MSFragger_config()
+config <- create_MSFragger_MSstats_config()
 config$table$factors[["Celline_"]] <- "Condition"
 config$table$factors[["BioReplicate_"]] <- "BioReplicate"
 config$table$hierarchyLevel <- 1 # max 2 - for plotting (heatmaps QC etc)
