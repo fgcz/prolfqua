@@ -73,3 +73,22 @@ create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
 
   return(configuration)
 }
+
+#' Create configuration for MSFragger output
+#' @export
+create_MSstats_MSFragger_config <- function(min_peptides_protein = 2){
+  ## Tell LFQ Service what column is what.
+  atable <- AnalysisTableAnnotation$new()
+  # measurement levels.
+  atable$hierarchy[["protein_Id"]] <- c("ProteinName")
+  atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
+  atable$fileName = "Run"
+  atable$ident_qValue = "pep"
+  atable$setWorkIntensity("Intensity")
+  atable$isotopeLabel = "IsotopeLabelType"
+  anaparam <- AnalysisParameters$new()
+  anaparam$min_peptides_protein <- 2
+  config <- AnalysisConfiguration$new(atable, anaparam)
+  return(config)
+}
+
