@@ -1665,10 +1665,13 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' @param max.n used to limit the number of peptides in probablity computation.
 #' @export
+#' @return data.frame with columns
+#'
 #'
 #' @examples
 #'
 #' library(LFQService)
+#' library(tidyverse)
 #' nrPep <- 10000
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)
@@ -1706,7 +1709,7 @@ summary_ROPECA_median_p.scaled <- function(
 
   contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
-    summarize(n = n()) -> nrpepsPerProt
+    dplyr::summarize(n = n()) -> nrpepsPerProt
 
   contrasts_data <- contrasts_data %>%
     # dplyr::filter(!is.na(!!sym(p.value))) %>%
@@ -1714,7 +1717,7 @@ summary_ROPECA_median_p.scaled <- function(
 
   summarized.protein <- contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
-    summarize(
+    dplyr::summarize(
       n_not_na = n(),
       pseudo_estimate = median(pseudo_estimate),
       estimate = median(!!sym(estimate), na.rm = TRUE),
@@ -1726,7 +1729,7 @@ summary_ROPECA_median_p.scaled <- function(
   if (has_name(contrasts_data, "c1_name")) {
     ccsummary <- contrasts_data %>%
       group_by_at(c(subject_Id, contrast)) %>%
-      summarize(
+      dplyr::summarize(
         c1_name = unique(c1_name),
         c1 = median(c1),
         c2_name = unique(c2_name),
@@ -1742,10 +1745,10 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
-  summarized.protein <- inner_join(nrpepsPerProt , summarized.protein ,  by = c(subject_Id, contrast))
+  summarized.protein <- dplyr::inner_join(nrpepsPerProt , summarized.protein ,  by = c(subject_Id, contrast))
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.
-  return(ungroup(summarized.protein))
+  return(ungroup( summarized.protein ))
 }
 

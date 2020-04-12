@@ -188,7 +188,7 @@ summarise_missing_contrasts <- function(data,
 
 #' benchmark
 #' @export
-benchmark <- function(resXXmedpolishTSV,
+benchmark <- function(data,
                       relevantContrasts = NULL,
                       completeContrasts = TRUE,
                       toscale = c("p.value", "moderated.p.value"),
@@ -199,14 +199,16 @@ benchmark <- function(resXXmedpolishTSV,
                         "scaled.moderated.p.value"
                       ),
                       model_type = "protein level measurments, linear model",
-                      hierarchy = c("protein_Id")) {
+                      hierarchy = c("protein_Id"),
+                      ms_bench_preprocess = ms_bench_preprocess
+                      ) {
   res <- list()
   if (!is.null(relevantContrasts)) {
-    resXXmedpolishTSV <-
-      resXXmedpolishTSV %>% dplyr::filter(contrast %in% relevantContrasts)
+    data <-
+      data %>% dplyr::filter(contrast %in% relevantContrasts)
   }
 
-  prpr <- ms_bench_preprocess(resXXmedpolishTSV)
+  prpr <- ms_bench_preprocess(data)
   smc <-
     summarise_missing_contrasts(prpr$data, hierarchy = hierarchy)
   res$smc <- smc

@@ -18,6 +18,9 @@ summary_ROPECA_median_p.scaled(
 \arguments{
 \item{max.n}{used to limit the number of peptides in probablity computation.}
 }
+\value{
+data.frame with columns
+}
 \description{
 compute protein level fold changes and p.values (using beta distribution)
 takes p-value of the scaled p-value
@@ -25,6 +28,7 @@ takes p-value of the scaled p-value
 \examples{
 
 library(LFQService)
+library(tidyverse)
 nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)

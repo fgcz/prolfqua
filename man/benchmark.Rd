@@ -5,13 +5,14 @@
 \title{benchmark}
 \usage{
 benchmark(
-  resXXmedpolishTSV,
+  data,
   relevantContrasts = NULL,
   completeContrasts = TRUE,
   toscale = c("p.value", "moderated.p.value"),
   benchmark = c("estimate", "statistic", "scaled.p.value", "scaled.moderated.p.value"),
   model_type = "protein level measurments, linear model",
-  hierarchy = c("protein_Id")
+  hierarchy = c("protein_Id"),
+  ms_bench_preprocess = ms_bench_preprocess
 )
 }
 \description{

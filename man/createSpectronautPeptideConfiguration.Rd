@@ -19,4 +19,5 @@ config$table$factors[["coding"]] = "coding"
 config$table$factors[["sex"]] = "sex"
 config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
+
 }
