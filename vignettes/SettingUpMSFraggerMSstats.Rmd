@@ -1,0 +1,45 @@
+---
+title: "MSFragger LFQService"
+author: 'Witold Wolski Std Nr:'
+date: "4/8/2020"
+output: html_document
+---
+
+```{r setup, include=TRUE, eval=FALSE}
+library(LFQService)
+
+outpath <- "results_modelling_protAggregate_msstats"
+inputMQfile <-  "../samples/timstof/MSstats.zip"
+
+# massage the Input.
+inputFile <- readr::read_csv(unz(inputMQfile, filename = "MSstats.csv"))
+inputFile$BioReplicate <- paste("br", inputFile$BioReplicate, sep = "") # convert to factor
+inputFile$Condition <- make.names(inputFile$Condition) # fix names
+inputFile$pep <- 0
+
+# setup modelling
+config <- create_MSstats_MSFragger_config()
+# If you want to have some specific names 
+config$table$factors[["Celline_"]] <- "Condition"
+# config$table$factors[["BioReplicate_"]] <- "BioReplicate"
+config$table$hierarchyLevel <- 1 # max 2 - for plotting (heatmaps QC etc)
+
+# Set your model
+memodel <- "~ Celline_"
+# repeated measurements
+#memodel <- "~ Celline_ + (1|BioReplicate_)"
+# techreps
+#memodel <- "~ Celline_ + (1|BioReplicate_) + (1|Run)"
+# Factorial design
+# memodel <- "~ Celline_ * BioReplicate_"
+
+Contrasts <- c("RKOvsRKO.R" = "Celline_RKO - Celline_RKO.R")
+
+# Bookkeeping
+config$order_Id = "o1"
+config$project_Id = "p3061"
+config$workunit_Id = "Resource : 1577525 - 20200317_TK.zip"
+
+##### Boilerplate code below to run the analysis
+# ...
+```
