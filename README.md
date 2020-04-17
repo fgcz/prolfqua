@@ -10,7 +10,12 @@ The R package contains vignettes and functions for analyzing mass spec device ba
 
 ## 1.1. Install R
 
-a Windows/Linux/MacOSX x64 platform R 3.5.
+a Windows/Linux/MacOSX x64 platform R 3.6.
+
+```{r}
+# requires install.packages(c(BiocManager, 'remotes'))
+BiocManager::install('protViz/SRMService')
+```
 
 ### 1.2. Required packages
 
