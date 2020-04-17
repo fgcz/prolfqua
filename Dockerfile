@@ -17,7 +17,7 @@ RUN Rscript -e 'install.packages(c("bookdown", \
 
 
 # wew@fgcz.ethz.ch packages
-RUN Rscript -e 'install.packages(c("quantable"), repos="https://stat.ethz.ch/CRAN/")'
+# RUN Rscript -e 'install.packages(c("quantable"), repos="https://stat.ethz.ch/CRAN/")'
 
 #  plotly \
   #limma \
@@ -31,7 +31,7 @@ RUN  Rscript -e 'BiocManager::install(c("specL", "msqc1", "NestLink", "tartare")
 
 
 RUN apt-get install libxml2-dev libcurl4-openssl-dev libssl-dev zlib1g-dev pandoc  libfontconfig1-dev libcairo2-dev -y
-RUN Rscript -e 'install.packages(c("data.table", "kableExtra", "quantable", "plotly", "tidyverse", "writexl"), repos="https://stat.ethz.ch/CRAN/")'
+RUN Rscript -e 'install.packages(c("data.table", "kableExtra", "plotly", "tidyverse", "writexl"), repos="https://stat.ethz.ch/CRAN/")'
 RUN Rscript -e 'install.packages(c("gdtools", "flextable"), repos="https://stat.ethz.ch/CRAN/")'
 
 RUN mkdir /tmp/LFQService
