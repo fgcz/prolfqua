@@ -14,7 +14,7 @@ a Windows/Linux/MacOSX x64 platform R 3.6.
 
 ```{r}
 # requires install.packages(c(BiocManager, 'remotes'))
-BiocManager::install('protViz/SRMService')
+BiocManager::install('wolski/LFQService')
 ```
 
 ### 1.2. Required packages
