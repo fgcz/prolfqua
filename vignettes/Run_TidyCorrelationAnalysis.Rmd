@@ -13,6 +13,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+This vignette describes how `correlation filtering` is used to remove uncorrelated precursors or peptides from the data.
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = TRUE,
@@ -25,8 +29,11 @@ knitr::opts_chunk$set(
 ```
 
 
+First we load the required packages.
+
 ```{r}
-rm(list=ls())
+rm(list = ls())
+
 library(conflicted)
 library(tidyverse)
 library(dplyr)
@@ -35,7 +42,7 @@ library(LFQService)
 ```
 
 
-# Setup Data
+Next the configuration for Spectronaut is clreated and factor variables are defined.
 
 ```{r}
 config <- createSpectronautPeptideConfiguration()
@@ -45,69 +52,84 @@ config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
 
 x <- R6extractValues(config)
+
 ```
 
 
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
 if(0){
-not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
-"PEP.GroupingKey", "PEP.GroupingKeyType",   "PEP.IsProteotypic",               "PEP.NrOfMissedCleavages",
-"PEP.Rank",   "PEP.RunEvidenceCount",            "PEP.UsedForProteinGroupQuantity",
-"EG.iRTPredicted",                 "EG.IsDecoy" ,"EG.ModifiedPeptide",
-"EG.UserGroup",                    "EG.Workflow",
-"EG.IsUserPeak",                   "EG.IsVerified",  "EG.iRTEmpirical",
-"EG.MeanApexRT",                   "EG.RTPredicted",                  "EG.AvgProfileQvalue",             "EG.MaxProfileQvalue",
-"EG.MinProfileQvalue",             "EG.PercentileQvalue",             "EG.ReferenceQuantity..Settings.", "EG.TargetQuantity..Settings.",
-"FG.PrecMz",                       "FG.PrecMzCalibrated",             "FG.ShapeQualityScore",
-"Tube.Id","Extract.Name" ,"Species" ,"Condition","Resource_id", "EG.good")
-
-
-
-longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
-colnames(longFormat) <- make.names(colnames(longFormat))
-longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
-spectronautDIAData250 <- longFormat
-#usethis::use_data(spectronautDIAData250,overwrite = TRUE)
+  not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
+           "PEP.GroupingKey", "PEP.GroupingKeyType", "PEP.IsProteotypic", "PEP.NrOfMissedCleavages",
+           "PEP.Rank",   "PEP.RunEvidenceCount", "PEP.UsedForProteinGroupQuantity",
+           "EG.iRTPredicted", "EG.IsDecoy" ,"EG.ModifiedPeptide",
+           "EG.UserGroup", "EG.Workflow",
+           "EG.IsUserPeak", "EG.IsVerified",  "EG.iRTEmpirical",
+           "EG.MeanApexRT", "EG.RTPredicted", "EG.AvgProfileQvalue", "EG.MaxProfileQvalue",
+           "EG.MinProfileQvalue", "EG.PercentileQvalue", "EG.ReferenceQuantity..Settings.", "EG.TargetQuantity..Settings.",
+           "FG.PrecMz", "FG.PrecMzCalibrated", "FG.ShapeQualityScore",
+           "Tube.Id","Extract.Name" ,"Species" ,"Condition","Resource_id", "EG.good")
+  
+  
+  longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
+  colnames(longFormat) <- make.names(colnames(longFormat))
+  longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
+  spectronautDIAData250 <- longFormat
+  #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
 }
+
 ```
+
+Given a sample dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
 longFormat <- LFQService::spectronautDIAData250
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 
-config_tmp <- config$clone(deep=TRUE)
+config_tmp <- config$clone(deep = TRUE)
 longNoDecoy <- setup_analysis(longFormat, config)
 
 ```
 
-## QValue Summaries
 
+
+For Spectronaut data QValue filtering can be performed using thersholds specified in the configuration.
+First we remove precursors with QValue larger than `qVal_individual_threshold`.
 
 ```{r}
-data <- longNoDecoy
+config$parameter$qVal_individual_threshold
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
-
 longQSummaries <- summariseQValues(longNoDecoy, config)
-knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)))
+
+knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)$data))
+
 ```
 
-
-## Filter by NA's
 
 ```{r}
 knitr::kable(LFQService::hierarchy_counts(longQSummaries, config))
 ```
 
+Then we remove precrusors that do not pass the  `qVal_experiment_threshold`.
+
 ```{r}
+config$parameter$qVal_experiment_threshold 
 qvalFilt <- longQSummaries %>% 
   filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 LFQService::hierarchy_counts(qvalFilt, config)
+```
+
+
+The next code snipped computes the number of observed values for each precursor, than keeps only the precursors with more than $20$ observations.
+
+```{r}
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(LFQService::hierarchy_counts(longQNASummaries, config))
 ```
 
+
+Finally we plot a heatmap of the cleaned up data.
 
 ```{r}
 res <- plot_heatmap_cor(longQNASummaries, config)
@@ -116,6 +138,7 @@ print(res)
 
 
 # Remove single hit wonders
+
 
 ```{r}
 xx <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2], FALSE)
