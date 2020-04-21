@@ -200,7 +200,7 @@ benchmark <- function(data,
                       ),
                       model_type = "protein level measurments, linear model",
                       hierarchy = c("protein_Id"),
-                      ms_bench_preprocess = ms_bench_preprocess
+                      .preprocess_fun = LFQService::ms_bench_preprocess
                       ) {
   res <- list()
   if (!is.null(relevantContrasts)) {
@@ -208,7 +208,7 @@ benchmark <- function(data,
       data %>% dplyr::filter(contrast %in% relevantContrasts)
   }
 
-  prpr <- ms_bench_preprocess(data)
+  prpr <- .preprocess_fun(data)
   smc <-
     summarise_missing_contrasts(prpr$data, hierarchy = hierarchy)
   res$smc <- smc
