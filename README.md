@@ -10,7 +10,12 @@ The R package contains vignettes and functions for analyzing mass spec device ba
 
 ## 1.1. Install R
 
-a Windows/Linux/MacOSX x64 platform R 3.5.
+a Windows/Linux/MacOSX x64 platform R 3.6.
+
+```{r}
+# requires install.packages(c(BiocManager, 'remotes'))
+BiocManager::install('wolski/LFQService')
+```
 
 ### 1.2. Required packages
 
@@ -41,7 +46,31 @@ lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
 
 ## 3. Best of code snippets
 
+
 ```
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
 ```
+
+(get it running with sample date from repo).
+
+# How to get started
+
+## 2 grp analysis
+- See vignettes.
+
+## Parallel design
+What is parallel design.
+- See vignettes.
+
+## repeated measurements
+What is a paired measurement.
+- See vignettes.
+
+## Contrasts
+- See vignettes.
+
+
+# TODO
+- Make public
+
