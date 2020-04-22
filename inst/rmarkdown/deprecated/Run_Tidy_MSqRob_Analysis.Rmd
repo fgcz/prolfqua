@@ -25,19 +25,19 @@ fig.height = 10
 
 
 ```{r}
-rm(list=ls())
+rm(list = ls())
 library(tidyverse)
 library(readxl)
 library(yaml)
 library(LFQService)
 evalVignette <- FALSE
-if(require("MSqRob")){
+if (require("MSqRob")) {
   evalVignette <- TRUE
 }
-if(!evalVignette){
+if (!evalVignette) {
   print("The rpackage MSqRob is not installed.")
 }
-options(warn=0)
+options(warn = 0)
 ```
 
 

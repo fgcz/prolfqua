@@ -1,4 +1,12 @@
 
+
+```{r}
+library(LFQService)
+library(tidyverse)
+
+```
+
+
 ```{r}
 config <- createSpectronautPeptideConfiguration()
 config$table$factors[["coding"]] = "coding"
@@ -61,19 +69,22 @@ save_model <- TRUE #Alternative: save_model <- FALSE
 export_folder <- "./tmp/"
 
 #Construct the contrast matrix L for testing on the fold changes of interest (i.e. our research hypotheses)
-L <- makeContrast(contrasts=c("codingPartialResponders - codingResponders",
+L <- makeContrast(contrasts = c("codingPartialResponders - codingResponders",
                               "codingResponders - codingControl"),
-                  levels=c("codingResponders","codingPartialResponders","codingControl", "codingNonResponders"))
+                  levels = c("codingResponders","codingPartialResponders","codingControl", "codingNonResponders"))
 ```
 
 #Set the significance threshold (default: 5% FDR)
 
 
 ```{r}
-FDRlevel=0.05
+FDRlevel = 0.05
 
 #Fit the models
-models <- fit.model(protdata=proteins, response="quant_value", fixed=fixed, random=random)
+models <- fit.model(protdata = proteins,
+                    response = "quant_value",
+                    fixed = fixed,
+                    random = random)
 
 #Test the appropriate research hypotheses
 results <- test.contrast_adjust(models, L)
