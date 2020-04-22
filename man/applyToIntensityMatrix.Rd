@@ -13,13 +13,13 @@ apply Function To matrix
 
 library(tidyverse)
 conf <- skylineconfig$clone(deep = TRUE)
-
+#conf$table$popWorkIntensity()
 res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
 
 stopifnot("Area_base..scale" \%in\% colnames(res))
 stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
-
 conf <- skylineconfig$clone(deep = TRUE)
+#conf$table$popWorkIntensity()
 res <- applyToIntensityMatrix(sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
 
 }

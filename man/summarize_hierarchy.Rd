@@ -21,28 +21,25 @@ skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 data(skylinePRMSampleData)
-configuration <- skylineconfig
-sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+configuration <- skylineconfig$clone(deep=TRUE)
+sample_analysis <- setup_analysis(skylinePRMSampleData, configuration)
 
-#x <- sample_analysis
-#configuration <- skylineconfig
-#hierarchy = configuration$table$hkeysLevel()
 
-summarize_hierarchy(sample_analysis, skylineconfig)
-summarize_hierarchy(sample_analysis, skylineconfig, factors = character())
+summarize_hierarchy(sample_analysis, configuration)
+summarize_hierarchy(sample_analysis, configuration, factors = character())
 
-summarize_hierarchy(sample_analysis, skylineconfig,
- hierarchy = skylineconfig$table$hkeysLevel() )
-summarize_hierarchy(sample_analysis, skylineconfig,
- hierarchy = NULL, factors = skylineconfig$table$fkeysLevel() )
-skylineconfig$table$hierarchyLevel = 1
-summarize_hierarchy(sample_analysis, skylineconfig,
- factors = skylineconfig$table$fkeysLevel())
-skylineconfig$table$hierarchyLevel = 2
-summarize_hierarchy(sample_analysis, skylineconfig)
-skylineconfig$table$hierarchyLevel = 3
-summarize_hierarchy(sample_analysis, skylineconfig )
-skylineconfig$table$hierarchyLevel = 4
-summarize_hierarchy(sample_analysis, skylineconfig )
+summarize_hierarchy(sample_analysis, configuration,
+ hierarchy = configuration$table$hkeysLevel() )
+summarize_hierarchy(sample_analysis, configuration,
+ hierarchy = NULL, factors = configuration$table$fkeysLevel() )
+configuration$table$hierarchyLevel = 1
+summarize_hierarchy(sample_analysis, configuration,
+ factors = configuration$table$fkeysLevel())
+configuration$table$hierarchyLevel = 2
+summarize_hierarchy(sample_analysis, configuration)
+configuration$table$hierarchyLevel = 3
+summarize_hierarchy(sample_analysis, configuration )
+configuration$table$hierarchyLevel = 4
+summarize_hierarchy(sample_analysis, configuration )
 summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 }

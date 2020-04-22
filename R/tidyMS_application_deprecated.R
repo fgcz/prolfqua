@@ -10,7 +10,7 @@
 #' data(skylinePRMSampleData)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' summarizeProteins(sample_analysis, skylineconfig)
-#'configuration <- skylineconfig
+#'configuration <- skylineconfig$clone(deep=TRUE)
 #'summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 #'summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
 summarizeProteins <- function( x, configuration ){
