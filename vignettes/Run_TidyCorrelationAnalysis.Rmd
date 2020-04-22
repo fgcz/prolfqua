@@ -13,7 +13,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-This vignette describes how `correlation filtering` is used to remove uncorrelated precursors or peptides from the data.
+
+This vignette describes how QValue filtering, missing value filtering and than `correlation filtering` can be implemented.
+
 
 
 
@@ -92,8 +94,9 @@ longNoDecoy <- setup_analysis(longFormat, config)
 ```
 
 
+# QValue Filtering
 
-For Spectronaut data QValue filtering can be performed using thersholds specified in the configuration.
+QValue filtering thresholds are specified in the configuration.
 First we remove precursors with QValue larger than `qVal_individual_threshold`.
 
 ```{r}
@@ -110,7 +113,7 @@ knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)$
 knitr::kable(LFQService::hierarchy_counts(longQSummaries, config))
 ```
 
-Then we remove precrusors that do not pass the  `qVal_experiment_threshold`.
+Then we remove precrusors that do not pass the  `qVal_experiment_threshold`, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.
 
 ```{r}
 config$parameter$qVal_experiment_threshold 
@@ -119,6 +122,7 @@ qvalFilt <- longQSummaries %>%
 LFQService::hierarchy_counts(qvalFilt, config)
 ```
 
+# NA filtering
 
 The next code snipped computes the number of observed values for each precursor, than keeps only the precursors with more than $20$ observations.
 
@@ -152,11 +156,15 @@ knitr::kable(hierarchy_counts(qvalFiltV,config))
 
 # Correlation Filtering
 
+First mark de-correlated transitions using `markDecorrelated`.
+
+
 ```{r markdecorellated}
 #config$table$popWorkIntensity()
 qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
 xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
+
 ```
 
 ```{r shownotcorrelated}
@@ -170,6 +178,7 @@ plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) +
   geom_line(aes_string(linetype = "srm_decorelated"))
 ```
 
+Now remove the de-correlated transitions.
 
 ```{r summarizeDataAfterCorrelationRemoval}
 knitr::kable(hierarchy_counts(xx, config))
@@ -181,7 +190,7 @@ knitr::kable(hierarchy_counts(qvalFiltCorr, config))
 print(plot_heatmap_cor(qvalFiltCorr, config))
 ```
 
-### Rank precursors by Intensity
+### Rank precursors by intensity and aggregate top 3 precursors 
 
 ```{r rankprec}
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorr, config)
@@ -189,15 +198,15 @@ qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 
 ```
 
-# Aggregation
 
 
 ```{r aggregate}
 
-mean_na <- function(x){mean(x,na.rm=TRUE)}
+mean_na <- function(x){mean(x,na.rm = TRUE)}
 proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
                                                config,
-                                               func = mean_na, N=3)$data
+                                               func = mean_na,
+                                               N = 3)$data
 
 ```
 
@@ -224,7 +233,6 @@ plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "sr
 
 
 proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
-
 
 nrPep <- qvalFiltImputed %>% select(config$table$hierarchyKeys()[1], nr_peptide_Id_by_protein_Id) %>% distinct()
 xx <- dplyr::inner_join(nrPep,proteinsWide)

@@ -22,7 +22,7 @@ fig.height = 10
 ```
 
 ```{r}
-rm(list=ls())
+rm(list = ls())
 library(conflicted)
 library(tidyverse)
 library(LFQService)
@@ -39,7 +39,8 @@ outdir <- tempdir()
 ```{r}
 allDataM <- LFQService::skylineSRM_HL_data
 
-skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label", ident_qValue="annotation_QValue")
+skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label",
+                                            ident_qValue = "annotation_QValue")
 skylineconfig$table$factors[["treatment_c"]] <- "Condition2"
 skylineconfig$table$factors[["time_c"]] <- "time"
 skylineconfig$parameter$is_intensity_transformed = FALSE
@@ -60,11 +61,18 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 proteinIDsymbol <- sym(skylineconfig$table$hierarchyKeys()[1])
 
 xnested <- resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
-plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfig)
+plot_hierarchies_line(xnested$data[[2]],
+                      xnested$protein_Id[[2]],
+                      skylineconfig)
+
 ```
 
+
 ```{r fig.cap="transitions in separate plot."}
-plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[[3]], skylineconfig, separate = TRUE)
+plot_hierarchies_line(xnested$data[[3]],
+                      xnested$protein_Id[[3]],
+                      skylineconfig,
+                      separate = TRUE)
 ```
 
 \clearpage
@@ -94,7 +102,7 @@ rmarkdown::render("tr_srm_summary_HL.Rmd",
 
 ```{r}
 HLData <- spreadValueVarsIsotopeLabel(resData, skylineconfig)
-HLData <- HLData %>% dplyr::mutate(log2L_log2H = log2(light_Area)- log2(heavy_Area))
+HLData <- HLData %>% dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Area))
 HLData$Isotope.Label <- "L/H"
 
 skylineconfigHL <- skylineconfig
@@ -104,6 +112,7 @@ skylineconfigHL$table$isotopeLabel
 
 xnested <- HLData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
 skylineconfigHL$table$getWorkIntensity()
+
 ```
 
 ## Plot heavy to light ratio
@@ -129,15 +138,17 @@ skylineconfigHL$table$hkeysLevel()
 
 HLfigs3 <- LFQService::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolishPly)
 HLfigs3 <- HLfigs3()
-HLfigs3 <- dplyr::inner_join(HLfigs3,HLfigs, by=skylineconfigHL$table$hierarchyKeys()[1])
+
+HLfigs3 <- dplyr::inner_join(HLfigs3, HLfigs, by = skylineconfigHL$table$hierarchyKeys()[1])
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
   plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
 p
+
 ```
 
 ```{r eval=FALSE}
-
-HLfigs3 <- HLfigs3 %>% dplyr::mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
+HLfigs3 <- HLfigs3 %>%
+  dplyr::mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)
 invisible(lapply(HLfigs3$figsMed[2:5], print))
@@ -151,7 +162,7 @@ prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly)
   tidyr::unnest()
 write_tsv(prots, path = file.path(outdir,"proteins.tsv"))
 
-ggplot(prots, aes(x=time_c, y=medpolish, group=treatment_c, color=treatment_c )) +
+ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
   geom_point() +
   geom_line() +
   facet_wrap(~protein_Id) +
@@ -161,10 +172,10 @@ ggplot(prots, aes(x=time_c, y=medpolish, group=treatment_c, color=treatment_c ))
 
 
 ```{r fig.cap="Plot protein intensities"}
-ggplot(prots, aes(x=time_c, y=medpolish, group=treatment_c, color=treatment_c )) +
+ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
   geom_point() +
   geom_line() +
-  facet_wrap(~protein_Id, scales="free_y" ) +
+  facet_wrap(~protein_Id, scales = "free_y" ) +
   theme_classic()
 ```
 
