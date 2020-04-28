@@ -82,7 +82,7 @@ scale_probabilities <-
       scaled.p = paste0("scaled.", scale)
       data <-
         data %>% dplyr::mutate(!!scaled.p := ifelse(!!sym(estimate) > 0,
-                                                    1-!!sym(scale) , !!sym(scale) - 1))
+                                                    1 - !!sym(scale) , !!sym(scale) - 1))
       return(data)
     }
 
@@ -128,9 +128,9 @@ plot_FDR_summaries <-
   function(pStats, model_type = "mixed effects model") {
     summaryS <- pStats %>% dplyr::group_by(what) %>%
       dplyr::summarize(
-        auc = ms_bench_auc(FPR, TPR),
-        auc10 =  ms_bench_auc(FPR, TPR, 0.1),
-        auc20 = ms_bench_auc(FPR, TPR, 0.2)
+        AUC = ms_bench_auc(FPR, TPR),
+        pAUC_10 =  ms_bench_auc(FPR, TPR, 0.1),
+        pAUC_20 = ms_bench_auc(FPR, TPR, 0.2)
       )
 
     ftable <- list(content = summaryS, caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_type), digits = 2)

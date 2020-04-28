@@ -7,14 +7,14 @@ library(LFQService)
 library(tidyverse)
 library(dplyr)
 
-inputMQfile <- "../samples/test_MQ_IonStar2018_PXD003881.zip"
+conflict_prefer("filter", "dplyr")
 
 inputMQfile <-
-  "C:\\Users\\wolski\\MAS_WEW/LFQServiceAnalysisTemplate//inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
+  "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
 outpath <- "results_modelling_all"
 #outpath <- "results_modelling_WHO_noSex"
 
-inputAnntation <- "../samples/annotationIonstar.xlsx"
+inputAnntation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
@@ -26,6 +26,7 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 # creates default configuration
 config <- LFQService::create_MQ_peptide_Configuration()
+
 annotation <- readxl::read_xlsx(inputAnntation)
 
 config$table$factors[["dilution."]] = "sample"
@@ -65,8 +66,8 @@ Contrasts <- c(
 )
 
 
+assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 if (TRUE) {
-  assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
   res <- application_set_up_MQ_run(
     outpath = outpath,
@@ -89,45 +90,10 @@ if (TRUE) {
   #usethis::use_data(config_c)
   #dataIonstar <- summarised
   ##usethis::use_data(dataIonstar)
-
+  prot <- summarised$protintensity_fun("unnest")
 } else {
-  res <- application_set_up_MQ_run(
-    outpath = outpath,
-    inputMQfile = inputMQfile,
-    inputAnnotation = inputAnntation,
-    config = config$clone(deep = TRUE)
-  )
-
-
-  dd <-
-    LFQService:::.workflow_MQ_filter_peptides_V3(res$data, res$config)
-  pepIntensityNormalized <-
-    transform_work_intensity(dd$data, dd$config, log2)
-
-
-  subset <-
-    pepIntensityNormalized %>% filter(grepl("HUMAN", pepIntensityNormalized$protein_Id))
-  pepIntensityNormalized <-
-    scale_with_subset(pepIntensityNormalized, subset, dd$config)
-
-  hist(pepIntensityNormalized$log2_peptide.intensity)
-  hist(pepIntensityNormalized$log2_peptide.intensity_subset_scaled)
-
-  pepIntensityNormalized <- pepIntensityNormalized %>%
-    dplyr::rename(transformedIntensity = dd$config$table$getWorkIntensity())
-  dd$config$table$popWorkIntensity()
-  dd$config$table$setWorkIntensity("transformedIntensity")
-
-  res <-
-    list(
-      pepIntensityNormalized = pepIntensityNormalized,
-      config_pepIntensityNormalized = dd$config
-    )
-  dataIonstarSubsetNorm <- list()
-  dataIonstarSubsetNorm$results <- res
-  usethis::use_data(dataIonstarSubsetNorm, overwrite = TRUE)
-
 }
+
 
 message("######################## fit mixed #######################")
 
@@ -148,7 +114,7 @@ if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
     outpath = outpath,
     data = data_c,
-    pepConfig = config_c,
+    config = config_c,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -158,7 +124,6 @@ if (TRUE) {
 
 
 message("################## fit medpolish ######################")
-prot <- summarised$protintensity_fun("unnest")
 model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm(model, model_name = "Model")
@@ -166,7 +131,7 @@ if (TRUE) {
   resXXmedpolish <- application_run_modelling_V2(
     outpath = outpath,
     data = prot$data,
-    pepConfig = prot$config,
+    config = prot$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -191,7 +156,7 @@ if (TRUE) {
   resXXRopeca <- application_run_modelling_V2(
     outpath = outpath,
     data = summarised$results$pepIntensityNormalized,
-    pepConfig = summarised$results$config_pepIntensityNormalized,
+    config = summarised$results$config_pepIntensityNormalized,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -199,8 +164,6 @@ if (TRUE) {
   resXXRopeca <- resXXRopeca(do = "result")
 }
 
-detach("package:LFQService", unload = TRUE)
-library(LFQService)
 ropeca_P <-
   summary_ROPECA_median_p.scaled(resXXRopeca, contrast = "contrast")
 
