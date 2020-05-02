@@ -4,21 +4,24 @@
 ms_bench_preprocess <- function(data) {
   tmp <- data %>%
     ungroup() %>%
-    mutate(ss  = case_when(
+    mutate(species  = case_when(
       grepl("HUMAN", protein_Id) ~ "HUMAN",
       grepl("ECOLI", protein_Id) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
-  res <- tmp %>% dplyr::filter(!ss == "OTHER")
+  res <- tmp %>% dplyr::filter(!species == "OTHER")
 
-  res <- res %>% mutate(TP = (ss == "ECOLI"))
-  return(list(data = res , table = table(tmp$ss)))
+  res <- res %>% mutate(TP = (species == "ECOLI"))
+  return(list(data = res , table = table(tmp$species)))
 }
 
 
-#' adds FDR and TPR plots
-#'
-#' FDP - false discovery proportion (Q in Benjamini hochber table)
+#' adds FDR, TPR and FDP to data.
+#' @param data
+#' @param TP_col column name of TP (TRUE, FALSE)
+#' @param arrangeby - by which column to sort.
+#' @param desc  descending or ascending.
+#' FDP - false discovery proportion (Q in Benjamini Hochberg table)
 #' FPR - false positive rate
 #' TPR - true positive rate
 #' TP_hits - true positives
@@ -57,6 +60,7 @@ ms_bench_add_FPRTPR <- function(data,
 
 
 #' computes auc and pauc given output from ms_bench_add_FPRTPR
+#' using trapez rule
 #' @export
 ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
   # make sure that sorted.
@@ -74,10 +78,11 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 
 
 #' scale_probabilities
-#'@export
-#'
+#' @export
+#' @param toscale columns to scale
+#' @param estimate fold change column
 scale_probabilities <-
-  function(est , estimate = "estimate", toscale) {
+  function(est ,toscale , estimate = "estimate") {
     addScaledP <- function(data , estimate , scale) {
       scaled.p = paste0("scaled.", scale)
       data <-
@@ -125,7 +130,7 @@ do_confusion <-
 #' @export
 #'
 plot_FDR_summaries <-
-  function(pStats, model_type = "mixed effects model") {
+  function(pStats, model_type = "mixed effects model", xlim=0.2) {
     summaryS <- pStats %>% dplyr::group_by(what) %>%
       dplyr::summarize(
         AUC = ms_bench_auc(FPR, TPR),
@@ -148,11 +153,11 @@ plot_FDR_summaries <-
     p2 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
       geom_path()  +
-      labs(tag = "B") + xlim(0, 0.2)
+      labs(tag = "B") + xlim(0, xlim)
     p3 <-
       ggplot(pStats , aes(x = FDP, y = TPR, color = what)) +
       geom_path()  +
-      labs(tag = "C") + xlim(0, 0.2)
+      labs(tag = "C") + xlim(0, xlim)
     #rocp <- list(p1 = p1, p2 = p2, p3 = p3)
     rocp <-
       ggpubr::ggarrange(
@@ -200,7 +205,8 @@ benchmark <- function(data,
                       ),
                       model_type = "protein level measurments, linear model",
                       hierarchy = c("protein_Id"),
-                      .preprocess_fun = LFQService::ms_bench_preprocess
+                      .preprocess_fun = LFQService::ms_bench_preprocess,
+                      xlim=0.5
                       ) {
   res <- list()
   if (!is.null(relevantContrasts)) {
@@ -224,21 +230,13 @@ benchmark <- function(data,
 
   confusion <- do_confusion(prpr$data, arrangeby = benchmark)
   vissum <- plot_FDR_summaries(confusion,
-                               model_type = paste0(ifelse(completeContrasts, " (CC) " , " (NC) "), model_type))
+                               model_type = paste0(ifelse(completeContrasts, " (CC) " , " (NC) "), model_type),
+                               xlim = xlim)
+
   res$confusion <-  confusion
   res$vissum <- vissum
   return(res)
 }
 
-#' table facade to easily switch implementations
-#' @export
-table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
-  if (kable) {
-    knitr::kable(df, digits = digits, caption = caption )
-  }
-}
-#' table facade to easily switch implementations
-#' @export
-table_facade.list <- function(parlist, kable=TRUE){
-    table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
-}
+
+

@@ -340,6 +340,15 @@ mypairsSmooth = function(dataframe, legend = FALSE, ...) {
 
 
 
-
-
-
+#' table facade to easily switch implementations
+#' @export
+table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
+  if (kable) {
+    knitr::kable(df, digits = digits, caption = caption )
+  }
+}
+#' table facade to easily switch implementations
+#' @export
+table_facade.list <- function(parlist, kable=TRUE){
+  table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
+}
