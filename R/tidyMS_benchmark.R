@@ -75,9 +75,9 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 }
 
 
-#' scale_probabilities
-#' @param toscale columns to scale
-#' @param estimate fold change column
+# scale_probabilities
+# @param toscale columns to scale
+# @param estimate fold change column
 .scale_probabilities <-
   function(est ,toscale , estimate = "estimate") {
     addScaledP <- function(data , estimate , scale) {

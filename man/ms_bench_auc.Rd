@@ -2,10 +2,12 @@
 % Please edit documentation in R/tidyMS_benchmark.R
 \name{ms_bench_auc}
 \alias{ms_bench_auc}
-\title{computes auc and pauc given output from ms_bench_add_FPRTPR}
+\title{computes auc and pauc given output from ms_bench_add_FPRTPR
+using trapez rule}
 \usage{
 ms_bench_auc(FPR, TPR, fpr_threshold = 1)
 }
 \description{
 computes auc and pauc given output from ms_bench_add_FPRTPR
+using trapez rule
 }
