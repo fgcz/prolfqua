@@ -1698,6 +1698,7 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #'
 #' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
+#'
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
   contrast = "lhs",
@@ -1742,6 +1743,8 @@ summary_ROPECA_median_p.scaled <- function(
 
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+  summarized.protein <- summarized.protein %>%
+    mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
