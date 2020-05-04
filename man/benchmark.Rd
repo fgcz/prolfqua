@@ -5,14 +5,16 @@
 \title{benchmark}
 \usage{
 benchmark(
-  data,
-  relevantContrasts = NULL,
+  prpr,
   completeContrasts = TRUE,
+  contrast = "contrast",
   toscale = c("p.value", "moderated.p.value"),
-  benchmark = c("estimate", "statistic", "scaled.p.value", "scaled.moderated.p.value"),
+  benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
+    TRUE), list(sc = "scaled.p.value", desc = TRUE), list(sc =
+    "scaled.moderated.p.value", desc = TRUE)),
   model_type = "protein level measurments, linear model",
   hierarchy = c("protein_Id"),
-  .preprocess_fun = LFQService::ms_bench_preprocess
+  xlim = 0.5
 )
 }
 \description{
