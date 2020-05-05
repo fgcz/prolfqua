@@ -124,11 +124,13 @@ do_confusion_c <- function(data,
                            contrast = "contrast",
                            arrangeby = list(list(sc = "p.value.adjusted", desc = FALSE),
                                             list(sc = "moderated.p.value.adjusted", desc=FALSE))){
-  txx <- data %>% group_by(!!sym(contrast)) %>% nest()
+  txx <- data %>% group_by_at(contrast) %>% nest()
   txx <- txx %>% mutate(out  = map(data,
                                    do_confusion,
                                    arrangeby = arrangeby))
-  xx <- txx  %>% select_at(!!sym(contrast), out) %>% unnest("out") %>% ungroup()
+  xx <- txx  %>% select_at(c(contrast, "out")) %>%
+    unnest("out") %>%
+    ungroup()
   return(xx)
 }
 
@@ -231,51 +233,8 @@ do_confusion_c <- function(data,
 }
 
 
-
-#' benchmark
+#' Benchmark
 #' @export
-#'
-benchmark <- function(prpr,
-                      completeContrasts = TRUE,
-                      contrast = "contrast",
-                      toscale = c("p.value", "moderated.p.value"),
-                      benchmark = list(
-                        list(sc = "estimate", desc = TRUE),
-                        list(sc = "statistic", desc = TRUE),
-                        list(sc = "scaled.p.value", desc = TRUE),
-                        list(sc = "scaled.moderated.p.value", desc = TRUE)
-                      ),
-                      model_type = "protein level measurments, linear model",
-                      hierarchy = c("protein_Id"),
-                      xlim=0.5
-) {
-  res <- list()
-  res$smc <- .summarise_missing_contrasts(prpr$data, hierarchy = hierarchy)
-  prpr$data <- .scale_probabilities(prpr$data, toscale = toscale)
-
-
-  if (completeContrasts) {
-    message("completing contrasts")
-    complete <- res$smc$nr_na %>% filter(n == n - nr_na)
-    prpr$data <-
-      dplyr::inner_join(prpr$data, complete, by = hierarchy)
-  }
-
-  confusion <- do_confusion_c(prpr$data, contrast = contrast, arrangeby = benchmark)
-  vissum <-
-    .plot_FDR_summaries(confusion,
-                        fpr_lim = xlim)
-  roc_summary <-
-    .partial_AUC_summary(pStats,
-                         model_type = paste0(ifelse(completeContrasts, " (CC) " , " (NC) "), model_type))
-
-  res$confusion <-  confusion
-  res$roc_vis <- vissum
-  res$roc_summary <- roc_summary
-  return(res)
-}
-
-
 Benchmark <-
   R6::R6Class(
     "Benchmark",
@@ -289,9 +248,9 @@ Benchmark <-
       hierarchy = "",
       smc = NULL, # summarize missing contrasts
       confusion = NULL,
+      species = "",
 
       initialize = function(data,
-                            contrast = "contrast",
                             toscale = c("p.value", "moderated.p.value"),
                             benchmark = list(
                               list(sc = "estimate", desc = TRUE),
@@ -300,20 +259,23 @@ Benchmark <-
                               list(sc = "scaled.moderated.p.value", desc = TRUE)
                             ),
                             model_type = "protein level measurments, linear model",
+                            contrast = "contrast",
+                            species = "species",
                             hierarchy = c("protein_Id") ) {
         self$.data <- data
         self$contrast <- contrast
-        toscale <- toscale
-        benchmark <- benchmark
-        model_type <- model_type
-        hierarchy <- hierarchy
+        self$toscale <- toscale
+        self$benchmark <- benchmark
+        self$model_type <- model_type
+        self$hierarchy <- hierarchy
+        self$species <- species
 
-        self$smc <- .summarise_missing_contrasts(self$data, hierarchy = hierarchy)
-        self$data <- .scale_probabilities(self$data, toscale = toscale)
+        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy)
+        self$.data <- .scale_probabilities(self$.data, toscale = toscale)
 
       },
       data = function(){
-        if (self$complete) {
+        if (self$is_complete) {
           nr_na <- self$smc$nr_na %>% filter(n == n - nr_na)
           return(dplyr::inner_join(self$.data, nr_na, by = self$hierarchy))
         } else {
@@ -324,28 +286,29 @@ Benchmark <-
         if (missing(value)) {
           return(self$is_complete);
         } else {
-          self$is_missing = value
+          self$is_complete = value
         }
       },
       get_confusion = function(arrange){
         confusion <- do_confusion_c(self$data(), contrast = self$contrast, arrangeby = arrange)
         return(confusion)
       },
-      plot_FDR_summaries = function(){
-        confusion <- get_confusion(arrange = self$benchmark)
+      plot_FDR_summaries = function(xlim = 0.5){
+        confusion <- self$get_confusion(arrange = self$benchmark)
         vissum <- .plot_FDR_summaries(confusion,
                                       fpr_lim = xlim)
         return(vissum)
       },
       pAUC_summaries = function(){
-        confusion <- get_confusion(arrangeby = self$benchmark)
+        confusion <- self$get_confusion(arrange = self$benchmark)
         pauc <- .partial_AUC_summary(confusion,
-                                     model_type = paste0(ifelse(completeContrasts, " (CC) " , " (NC) "), self$model_type))
+                                     model_type = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_type))
         return(pauc)
       },
-      plot_FDRvsFDP = function(){
-        xx <- do_confusion_c(slef$data())
-        ##xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
+      plot_FDRvsFDP = function(arrange = list(list(sc = "p.value.adjusted", desc = FALSE),
+                                    list(sc = "moderated.p.value.adjusted", desc = FALSE))){
+        xx <- self$get_confusion(arrange = arrange)
+        #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
         p <- ggplot(xx, aes(x = scorecol, y = FDP, color = !!sym(self$contrast))) +
           geom_line() +
           geom_abline(slope = 1, col = 2) +
@@ -354,13 +317,61 @@ Benchmark <-
       },
       plot_score_distribution = function(score =list(list(score = "estimate", xlim = c(-1,2) ),
                                                      list(score = "statistic", xlim = c(-3,10) ))){
-        .plot_score_distribution(ttd$data,
+        .plot_score_distribution(self$data(),
                                  score = score,
                                  contrast = self$contrast,
                                  species = self$species,
                                  annot = paste0("statistics density of ", self$model_type ) )
+      },
+      plot_scatter = function(score =list(list(score = "estimate", ylim = c(-1,2) ),
+                                          list(score = "statistic", ylim = c(-3,10) ))){
+        x <- self$data()
+
+        x <- x %>% arrange(desc(!!sym(self$species)))
+        plots <- list()
+
+        for (i in score) {
+          score <- i$score
+          ylim <- i$ylim
+
+          plots[[score]] <- x %>%
+            ggplot(aes(x = (c1 + c2)/2, y = !!sym(score), color = !!sym(self$species) )) +
+            geom_point(alpha = 0.2) +
+            ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
+            ylim(ylim)
+        }
+        fig <- ggarrange(plotlist = plots,
+                         nrow = 1,
+                         common.legend = TRUE,
+                         legend = "bottom")
+        fig <- annotate_figure(fig, bottom = text_grob(self$model_typ , size = 10))
+        return(fig)
       }
+
     ))
 
 
+#' Benchmark
+#' @export
+#'
+make_benchmark <- function(prpr,
+                           contrast = "contrast",
+                           toscale = c("p.value", "moderated.p.value"),
+                           benchmark = list(
+                             list(sc = "estimate", desc = TRUE),
+                             list(sc = "statistic", desc = TRUE),
+                             list(sc = "scaled.p.value", desc = TRUE),
+                             list(sc = "scaled.moderated.p.value", desc = TRUE)
+                           ),
+                           model_type = "protein level measurments, linear model",
+                           hierarchy = c("protein_Id")
+) {
+  res <- Benchmark$new(prpr,
+                       contrast = "contrast",
+                       toscale = toscale,
+                       benchmark = benchmark,
+                       model_type = model_type,
+                       hierarchy = hierarchy)
+  return(res)
 
+}
