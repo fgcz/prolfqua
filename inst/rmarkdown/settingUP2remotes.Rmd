@@ -1,0 +1,43 @@
+This configuration is based on 
+
+[https://github.com/isse-augsburg/minibrass/wiki/Setting-up-a-new-git-repo-with-two-remotes]
+
+```{bash, eval=FALSE}
+
+#git clone git@github.com:isse-augsburg/minibrass.git
+cd minibrass
+git remote -v
+
+```
+
+output
+
+```
+origin  https://github.com/wolski/LFQService.git (fetch)
+origin  https://github.com/wolski/LFQService.git (push)
+```
+
+
+```{bash}
+git remote rename origin github
+git remote add gitlab https://gitlab.bfabric.org/wolski/lfqservice.git
+git remote -v
+```
+
+github	git@github.com:isse-augsburg/minibrass.git (fetch)
+github	git@github.com:isse-augsburg/minibrass.git (push)
+gitlab	git@gitlab.isse.de:so/research-projects/minibrass/minibrass.git (fetch)
+gitlab	git@gitlab.isse.de:so/research-projects/minibrass/minibrass.git (push)
+
+
+```{bash}
+git remote add all https://github.com/wolski/LFQService.git
+git remote set-url --add --push all https://github.com/wolski/LFQService.git
+git remote set-url --add --push all https://gitlab.bfabric.org/wolski/lfqservice.git
+git remote -v
+```
+
+
+```{bash}
+git push -u all
+```
