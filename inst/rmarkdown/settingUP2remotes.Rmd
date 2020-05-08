@@ -18,16 +18,21 @@ origin  https://github.com/wolski/LFQService.git (push)
 ```
 
 
+
 ```{bash}
 git remote rename origin github
 git remote add gitlab https://gitlab.bfabric.org/wolski/lfqservice.git
 git remote -v
 ```
 
+output
+
+```
 github	git@github.com:isse-augsburg/minibrass.git (fetch)
 github	git@github.com:isse-augsburg/minibrass.git (push)
 gitlab	git@gitlab.isse.de:so/research-projects/minibrass/minibrass.git (fetch)
 gitlab	git@gitlab.isse.de:so/research-projects/minibrass/minibrass.git (push)
+```
 
 
 ```{bash}
