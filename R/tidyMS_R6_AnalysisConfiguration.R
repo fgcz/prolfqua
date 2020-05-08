@@ -452,41 +452,55 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' xnested <- LFQService::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
 #'
-#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf ,
+#'    hierarchy_level = NULL)
+#' p
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf )
+#' p
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf,
+#'   hierarchy_level =  conf$table$hierarchyKeys()[3])
+#' p
 #' #ddd <- xnested$data[[3]]
 #' #proteinName <- xnested$protein_Id[[3]]
 #' #config <- conf
 #' #boxplot = TRUE
 #' #factor_level = 1
-#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot = FALSE )
+#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, beeswarm = FALSE )
 plot_hierarchies_boxplot <- function(ddd,
                                      proteinName,
                                      config,
-                                     factor_level = 1,
-                                     boxplot = TRUE){
+                                     hierarchy_level = tail(config$table$hierarchyKeys(),1),
+                                     beeswarm = TRUE){
 
-  stopifnot(factor_level <= length(config$table$factorKeys()))
   isotopeLabel <- config$table$isotopeLabel
-  ddd %>%  tidyr::gather("factor","level",config$table$factorKeys()[1:factor_level]) -> ddlong
-  ddlong <- as.data.frame(unclass(ddlong))
-  p <- ggplot(ddlong, aes_string(x = tail(config$table$hierarchyKeys(),1),
-                                 y = config$table$getWorkIntensity(),
-                                 fill = "level"
-  )) +
-    facet_wrap(~factor, ncol = 1) +
-    theme_classic() +
+  ddd <- LFQService::make_interaction_column( ddd , config$table$fkeysLevel())
+  p <- ggplot(ddd, aes_string(x = "interaction",
+                              y = config$table$getWorkIntensity()
+  )) + theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(proteinName)
+
   if (!config$parameter$is_intensity_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
-  if (boxplot) {
-    p <- p + geom_boxplot()
-  } else {
+  p <- p + geom_boxplot()
+
+  if ( beeswarm ) {
     p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7)
+  }
+  if (!is.null( hierarchy_level ) && hierarchy_level %in% colnames(ddd)) {
+    p <- p + facet_grid( formula(paste0("~", hierarchy_level ) ))
   }
   return(p)
 }
+
+
 #' generates peptide level plots for all Proteins
 #' @export
 #'
@@ -495,23 +509,23 @@ plot_hierarchies_boxplot <- function(ddd,
 #' config <-  LFQService::testDataStart2954$config
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 #' res[[1]]
+#' res <- plot_hierarchies_boxplot_df(resDataStart, config, hierarchy_level = "peptide_Id")
+#' res[[1]]
 #' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
 #' config$table$hierarchyLevel = 2
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
-plot_hierarchies_boxplot_df <- function(filteredPep, config){
-  factor_level <- config$table$factorLevel
+#' res[[1]]
+plot_hierarchies_boxplot_df <- function(filteredPep, config, hierarchy = "protein_Id", hierarchy_level = NULL){
 
-  hierarchy_ID <- "hierarchy_ID"
-  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
 
-  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
+  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy) %>% tidyr::nest()
 
   figs <- xnested %>%
-    dplyr::mutate(boxplot = map2(data, !!sym(hierarchy_ID),
+    dplyr::mutate(boxplot = map2(data, !!sym(hierarchy),
                                  plot_hierarchies_boxplot,
                                  config ,
-                                 factor_level = factor_level))
+                                 hierarchy_level = hierarchy_level))
   return(figs$boxplot)
 }
 
@@ -1155,23 +1169,24 @@ intensity_summary_by_hkeys <- function(data, config, func)
     dplyr::mutate(!!makeName := map2(data,!!sym(makeName),.reestablish_condition, config ))
 
 
-  res_fun <- function(value = c("nested","unnest","wide","plot"), DEBUG = FALSE){
+  res_fun <- function(value = c("nested", "unnest", "wide", "plot"), DEBUG = FALSE){
 
     value <- match.arg(value)
     if (DEBUG) {
       return(list(config = config, value = value, xnested = xnested  ))
     }
 
+    newconfig <- make_reduced_hierarchy_config(config,
+                                               workIntensity = func(name = TRUE),
+                                               hierarchy = config$table$hkeysLevel(names = FALSE))
+
     if (value == "nested") {
-      return(xnested)
+      return(list(xnested = xnested, config = newconfig))
     }else if (value == "unnest" || value == "wide") {
       unnested <- xnested %>%
         dplyr::select(config$table$hkeysLevel(), makeName) %>%
         tidyr::unnest(cols = c(medpolishPly)) %>%
         dplyr::ungroup()
-      newconfig <- make_reduced_hierarchy_config(config,
-                                                 workIntensity = func(name = TRUE),
-                                                 hierarchy = config$table$hkeysLevel(names = FALSE))
 
       if (value == "wide") {
         wide <- LFQService::toWideConfig(unnested, newconfig)
