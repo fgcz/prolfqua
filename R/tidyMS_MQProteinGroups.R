@@ -87,7 +87,7 @@ tidyMQ_Evidence <- function(Evidence){
                        )
   res <- res %>% dplyr::mutate(reverse = dplyr::case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
   res %>% dplyr::mutate(raw.file = tolower(raw.file)) -> res
-  res$proteotypic <-!grepl(";",res$protein.group.id)
+  res$proteotypic <- !grepl(";",res$protein.group.id)
   res <- res %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
@@ -219,17 +219,17 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
                         )
 
   # add columns with modification to data.
-  if("missed.cleavages" %in% colnames(meta)){
+  if ("missed.cleavages" %in% colnames(meta)) {
     stMODcol <- grep(pattern = "unique..proteins." ,colnames(MQPeptides)) + 1
     endMODcol <- grep(pattern = "missed.cleavages" ,colnames(MQPeptides)) - 1
-    if(endMODcol > stMODcol){
+    if (endMODcol > stMODcol) {
       mod_cols <- dplyr::select(MQPeptides, "id", stMODcol:endMODcol)
       mod_cols <- setNames(mod_cols , paste0("modification.", colnames(mod_cols)))
       #return(list(mod_cols = mod_cols, meta = meta))
       meta <- dplyr::inner_join(meta, mod_cols, by = c("mod.peptide.id" = "modification.id"))
     }
   }
-  if(sum(grepl("site.ids",colnames(MQPeptides)))){
+  if (sum(grepl("site.ids",colnames(MQPeptides)))) {
     mod_cols2 <- dplyr::select(MQPeptides, "id", dplyr::ends_with("site.ids"))
     mod_cols2 <- setNames(mod_cols2 , paste0("site.ids.", colnames(mod_cols2)))
     meta <- dplyr::inner_join(meta, mod_cols2, by = c("mod.peptide.id" = "site.ids.id"))
@@ -250,16 +250,16 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   idtype <- dplyr::select(MQPeptides, "mod.peptide.id" = "id", starts_with("identification.type."))
-  if(ncol(idtype) > 1){ # if only one file no id type is provided
+  if (ncol(idtype) > 1) { # if only one file no id type is provided
     PepIDType <- idtype %>%
       tidyr::gather(key = "raw.file", value = "mod.id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by = c("mod.peptide.id", "raw.file" ))
+    PepIntensities <- dplyr::inner_join(PepIntensities,PepIDType, by = c("mod.peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
   xx <- dplyr::inner_join(meta , PepIntensities, by = "mod.peptide.id")
-  xx$proteotypic <-!grepl(";",xx$protein.group.id)
+  xx$proteotypic <- !grepl(";",xx$protein.group.id)
   xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
@@ -318,17 +318,17 @@ tidyMQ_Peptides <- function(MQPeptides){
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
   idtype <- dplyr::select(MQPeptides, "peptide.id" = "id", starts_with("identification.type."))
-  if(ncol(idtype) > 1){ # if only one file no id type is provided
+  if (ncol(idtype) > 1) { # if only one file no id type is provided
     PepIDType <- idtype %>%
       tidyr::gather(key = "raw.file", value = "id.type", starts_with("identification.type.")) %>%
       dplyr::mutate(raw.file = gsub("identification.type.","",raw.file))
-    PepIntensities <-dplyr::inner_join(PepIntensities,PepIDType, by = c("peptide.id", "raw.file" ))
+    PepIntensities <- dplyr::inner_join(PepIntensities,PepIDType, by = c("peptide.id", "raw.file" ))
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
-  xx<-dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
+  xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
 
-  xx$proteotypic <-!grepl(";",xx$protein.group.id)
+  xx$proteotypic <- !grepl(";",xx$protein.group.id)
   xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
