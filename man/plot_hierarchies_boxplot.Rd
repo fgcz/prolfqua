@@ -8,8 +8,8 @@ plot_hierarchies_boxplot(
   ddd,
   proteinName,
   config,
-  factor_level = 1,
-  boxplot = TRUE
+  hierarchy_level = tail(config$table$hierarchyKeys(), 1),
+  beeswarm = TRUE
 )
 }
 \description{
@@ -22,11 +22,24 @@ conf <- LFQService::skylineconfig$clone(deep = TRUE)
 xnested <- LFQService::sample_analysis \%>\%
  group_by_at(conf$table$hkeysLevel()) \%>\% tidyr::nest()
 
-plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf )
+p <- plot_hierarchies_boxplot(xnested$data[[3]],
+ xnested$protein_Id[[3]],
+  conf ,
+   hierarchy_level = NULL)
+p
+p <- plot_hierarchies_boxplot(xnested$data[[3]],
+ xnested$protein_Id[[3]],
+  conf )
+p
+p <- plot_hierarchies_boxplot(xnested$data[[3]],
+ xnested$protein_Id[[3]],
+  conf,
+  hierarchy_level =  conf$table$hierarchyKeys()[3])
+p
 #ddd <- xnested$data[[3]]
 #proteinName <- xnested$protein_Id[[3]]
 #config <- conf
 #boxplot = TRUE
 #factor_level = 1
-plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, boxplot = FALSE )
+plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, beeswarm = FALSE )
 }

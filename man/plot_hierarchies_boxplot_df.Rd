@@ -4,7 +4,12 @@
 \alias{plot_hierarchies_boxplot_df}
 \title{generates peptide level plots for all Proteins}
 \usage{
-plot_hierarchies_boxplot_df(filteredPep, config)
+plot_hierarchies_boxplot_df(
+  filteredPep,
+  config,
+  hierarchy = "protein_Id",
+  hierarchy_level = NULL
+)
 }
 \description{
 generates peptide level plots for all Proteins
@@ -14,8 +19,11 @@ resDataStart <- LFQService::testDataStart2954$resDataStart
 config <-  LFQService::testDataStart2954$config
 res <- plot_hierarchies_boxplot_df(resDataStart, config)
 res[[1]]
+res <- plot_hierarchies_boxplot_df(resDataStart, config, hierarchy_level = "peptide_Id")
+res[[1]]
 config <- config$clone(deep = TRUE)
 #TODO make it work for other hiearachy levels.
 config$table$hierarchyLevel = 2
 res <- plot_hierarchies_boxplot_df(resDataStart, config)
+res[[1]]
 }
