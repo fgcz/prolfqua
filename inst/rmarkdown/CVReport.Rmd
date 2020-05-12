@@ -37,10 +37,9 @@ cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",p
 
 
 ```{r printTable, results="asis"}
-ftab <- flextable::flextable(cv_quantiles_res) %>%
-  flextable::autofit() %>%
-  flextable::set_caption("Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
-ftab
+ftab <- LFQService::table_facade(cv_quantiles_res,
+                                 caption = "Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
+  
 
 ```
 

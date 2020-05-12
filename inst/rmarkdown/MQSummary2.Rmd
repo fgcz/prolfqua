@@ -82,10 +82,13 @@ While the overall number of `r if(params$pep){"proteins and peptides"}else{"prot
 x <- hierarchy_counts(data, local_config)
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
 
-ftab <- flextable::flextable(data.frame(NR = x)) %>%
-  flextable::autofit() %>%
-  flextable::set_caption(caption = paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."))
-ftab
+LFQService::table_facade( 
+  data.frame(NR = x),
+  caption = paste0("Nr of",
+                   if(params$pep){"proteins and peptides"}
+                   else
+                   {"proteins"} ,
+                   " detected in all samples."))
 
 ```
 
@@ -100,8 +103,7 @@ hcs("plot")
 
 ```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
 x3 <- summarize_hierarchy(data, local_config)
-if(ncol(x3)>=4)
-{
+if (ncol(x3) >= 4) {
   cnames_x3 <- colnames(x3)[4]
   x3 <- x3 %>% dplyr::mutate(protein_with = case_when(!!sym(cnames_x3) == 1 ~ "one",
                                                       !!sym(cnames_x3) > 1 ~ "two and more"))
@@ -258,10 +260,8 @@ sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", 
 ```{r printSDTable}
 #knitr::kable(sd_quantile_res2,  digits = 3,
 #             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
-ftab <- flextable::flextable(sd_quantile_res2) %>%
-  flextable::autofit() %>%
-  flextable::set_caption("Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
-ftab
+LFQService::table_facade(sd_quantile_res2,
+  caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
 
 ```
 
@@ -304,14 +304,9 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 
 
 ```{r sampleSize}
-ftab <- flextable::flextable(dplyr::select( sampleSize$summary, -probs)) %>%
-  flextable::autofit() %>%
-  flextable::set_caption("Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
-ftab
-
-#knitr::kable( dplyr::select( sampleSize$summary, -probs),
-#              caption="Sample size needed to detect a log fold change greater than delta with a significance #level of 0.05 and power 0.8 when using a t-test to compare means.",
-#              digits = 2, format="html")
+ftab <- LFQService::table_facade(
+  dplyr::select( sampleSize$summary, -probs),
+  caption = "Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
 
 ```
 
@@ -327,19 +322,17 @@ Fold change: Suppose you are comparing a treatment group to a placebo group, and
 # Appendix
 
 ```{r sampleNameRawFileMapping}
-ftab <- flextable::flextable(table_factors(data, local_config)) %>%
-  flextable::autofit() %>%
-  flextable::set_caption("Mapping of raw file names to sample names used throughout this report.")
-ftab
+LFQService::table_facade(
+  table_factors(data, local_config),
+  caption = "Mapping of raw file names to sample names used throughout this report.")
 
 ```
 
 ```{r hierarchyCountsSample}
 caption <- paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
-ftab <- flextable::flextable(hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")) %>%
-  flextable::autofit() %>%
-  flextable::set_caption(caption)
-ftab
+LFQService::table_facade(
+  hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")
+  , caption = caption)
 
 ```
 
