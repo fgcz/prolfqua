@@ -119,11 +119,12 @@ do_confusion <-
     return(all)
   }
 
-# do_confusion for each condition
-do_confusion_c <- function(data,
-                           contrast = "contrast",
-                           arrangeby = list(list(sc = "p.value.adjusted", desc = FALSE),
-                                            list(sc = "moderated.p.value.adjusted", desc=FALSE))){
+# do_confusion for each contrast
+do_confusion_c <- function(
+  data,
+  contrast = "contrast",
+  arrangeby = list(list(sc = "p.value.adjusted", desc = FALSE),
+                   list(sc = "moderated.p.value.adjusted", desc = FALSE))) {
   txx <- data %>% group_by_at(contrast) %>% nest()
   txx <- txx %>% mutate(out  = map(data,
                                    do_confusion,
@@ -131,6 +132,12 @@ do_confusion_c <- function(data,
   xx <- txx  %>% select_at(c(contrast, "out")) %>%
     unnest("out") %>%
     ungroup()
+
+  # computes FDR FDP for all contrasts
+  xy <- do_confusion(data, arrangeby = arrangeby)
+  xy <- xy %>% dplyr::mutate(!!contrast := "all")
+  #xy <- tibble::add_column(data, contrast = "all", .before = 1)
+  xx <- dplyr::bind_rows(xy, xx)
   return(xx)
 }
 
@@ -170,7 +177,7 @@ do_confusion_c <- function(data,
 
   }
 
-.partial_AUC_summary <- function(pStats, model_type = "mixed effects model"){
+.partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
   summaryS <- pStats %>% dplyr::group_by(what, contrast) %>%
     dplyr::summarize(
       AUC = ms_bench_auc(FPR, TPR),
@@ -179,7 +186,7 @@ do_confusion_c <- function(data,
     )
 
   ftable <- list(content = summaryS,
-                 caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_type), digits = 2)
+                 caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description), digits = 2)
 
   sumd <- reshape2::melt(summaryS)
 
@@ -244,12 +251,13 @@ Benchmark <-
       contrast = "",
       toscale = c(""),
       benchmark = list(),
-      model_type = "",
+      model_description = "",
+      model_name = "",
       hierarchy = "",
       smc = NULL, # summarize missing contrasts
       confusion = NULL,
       species = "",
-
+      FDRvsFDP = NULL,
       initialize = function(data,
                             toscale = c("p.value", "moderated.p.value"),
                             benchmark = list(
@@ -258,7 +266,10 @@ Benchmark <-
                               list(sc = "scaled.p.value", desc = TRUE),
                               list(sc = "scaled.moderated.p.value", desc = TRUE)
                             ),
-                            model_type = "protein level measurments, linear model",
+                            FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE),
+                                           list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+                            model_description = "protein level measurments, linear model",
+                            model_name = "medpolish_lm",
                             contrast = "contrast",
                             species = "species",
                             hierarchy = c("protein_Id") ) {
@@ -266,7 +277,9 @@ Benchmark <-
         self$contrast <- contrast
         self$toscale <- toscale
         self$benchmark <- benchmark
-        self$model_type <- model_type
+        self$FDRvsFDP <- FDRvsFDP
+        self$model_description <- model_description
+        self$model_name <- model_name
         self$hierarchy <- hierarchy
         self$species <- species
 
@@ -290,24 +303,34 @@ Benchmark <-
         }
       },
       get_confusion = function(arrange){
-        confusion <- do_confusion_c(self$data(), contrast = self$contrast, arrangeby = arrange)
+        confusion <- do_confusion_c(self$data(),
+                                    contrast = self$contrast,
+                                    arrangeby = arrange)
+        confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)
         return(confusion)
       },
+      get_FDR_summaries = function(){
+        self$get_confusion(arrange = self$benchmark)
+      },
       plot_FDR_summaries = function(xlim = 0.5){
-        confusion <- self$get_confusion(arrange = self$benchmark)
+        confusion <- self$get_FDR_summaries()
         vissum <- .plot_FDR_summaries(confusion,
                                       fpr_lim = xlim)
         return(vissum)
       },
       pAUC_summaries = function(){
-        confusion <- self$get_confusion(arrange = self$benchmark)
-        pauc <- .partial_AUC_summary(confusion,
-                                     model_type = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_type))
+        confusion <- self$get_FDR_summaries()
+        pauc <- .partial_AUC_summary(
+          confusion,
+          model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_description))
         return(pauc)
       },
-      plot_FDRvsFDP = function(arrange = list(list(sc = "p.value.adjusted", desc = FALSE),
-                                    list(sc = "moderated.p.value.adjusted", desc = FALSE))){
-        xx <- self$get_confusion(arrange = arrange)
+      get_FDRvsFDP = function(){
+        xx <- self$get_confusion(arrange = self$FDRvsFDP)
+        return(xx)
+      },
+      plot_FDRvsFDP = function(){
+        xx <- self$get_FDRvsFDP()
         #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
         p <- ggplot(xx, aes(x = scorecol, y = FDP, color = !!sym(self$contrast))) +
           geom_line() +
@@ -321,7 +344,7 @@ Benchmark <-
                                  score = score,
                                  contrast = self$contrast,
                                  species = self$species,
-                                 annot = paste0("statistics density of ", self$model_type ) )
+                                 annot = paste0("statistics density of ", self$model_description ) )
       },
       plot_scatter = function(score =list(list(score = "estimate", ylim = c(-1,2) ),
                                           list(score = "statistic", ylim = c(-3,10) ))){
@@ -363,15 +386,19 @@ make_benchmark <- function(prpr,
                              list(sc = "scaled.p.value", desc = TRUE),
                              list(sc = "scaled.moderated.p.value", desc = TRUE)
                            ),
-                           model_type = "protein level measurments, linear model",
+                           FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE),
+                                           list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+                           model_description = "protein level measurments, linear model",
+                           model_name = "prot_med_lm",
                            hierarchy = c("protein_Id")
 ) {
   res <- Benchmark$new(prpr,
                        contrast = "contrast",
                        toscale = toscale,
                        benchmark = benchmark,
-                       model_type = model_type,
+                       FDRvsFDP = FDRvsFDP,
+                       model_description = model_description,
+                       model_name = model_name,
                        hierarchy = hierarchy)
   return(res)
-
 }

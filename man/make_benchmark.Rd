@@ -11,7 +11,10 @@ make_benchmark(
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
     TRUE), list(sc = "scaled.p.value", desc = TRUE), list(sc =
     "scaled.moderated.p.value", desc = TRUE)),
-  model_type = "protein level measurments, linear model",
+  FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE), list(sc =
+    "moderated.p.value.adjusted", desc = FALSE)),
+  model_description = "protein level measurments, linear model",
+  model_name = "prot_med_lm",
   hierarchy = c("protein_Id")
 )
 }

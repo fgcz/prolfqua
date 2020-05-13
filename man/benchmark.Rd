@@ -15,8 +15,10 @@ Benchmark
 \item \href{#method-data}{\code{Benchmark$data()}}
 \item \href{#method-complete}{\code{Benchmark$complete()}}
 \item \href{#method-get_confusion}{\code{Benchmark$get_confusion()}}
+\item \href{#method-get_FDR_summaries}{\code{Benchmark$get_FDR_summaries()}}
 \item \href{#method-plot_FDR_summaries}{\code{Benchmark$plot_FDR_summaries()}}
 \item \href{#method-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
+\item \href{#method-get_FDRvsFDP}{\code{Benchmark$get_FDRvsFDP()}}
 \item \href{#method-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
 \item \href{#method-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
 \item \href{#method-plot_scatter}{\code{Benchmark$plot_scatter()}}
@@ -34,7 +36,10 @@ Benchmark
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
     TRUE), list(sc = "scaled.p.value", desc = TRUE), list(sc =
     "scaled.moderated.p.value", desc = TRUE)),
-  model_type = "protein level measurments, linear model",
+  FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE), list(sc =
+    "moderated.p.value.adjusted", desc = FALSE)),
+  model_description = "protein level measurments, linear model",
+  model_name = "medpolish_lm",
   contrast = "contrast",
   species = "species",
   hierarchy = c("protein_Id")
@@ -70,6 +75,15 @@ Benchmark
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_FDR_summaries"></a>}}
+\if{latex}{\out{\hypertarget{method-get_FDR_summaries}{}}}
+\subsection{Method \code{get_FDR_summaries()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDR_summaries()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot_FDR_summaries"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_FDR_summaries}{}}}
 \subsection{Method \code{plot_FDR_summaries()}}{
@@ -88,14 +102,20 @@ Benchmark
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-get_FDRvsFDP}{}}}
+\subsection{Method \code{get_FDRvsFDP()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDRvsFDP()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot_FDRvsFDP"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_FDRvsFDP}{}}}
 \subsection{Method \code{plot_FDRvsFDP()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDRvsFDP(
-  arrange = list(list(sc = "p.value.adjusted", desc = FALSE), list(sc =
-    "moderated.p.value.adjusted", desc = FALSE))
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDRvsFDP()}\if{html}{\out{</div>}}
 }
 
 }
