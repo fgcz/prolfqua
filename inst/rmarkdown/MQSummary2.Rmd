@@ -304,7 +304,7 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 
 
 ```{r sampleSize}
-ftab <- LFQService::table_facade(
+LFQService::table_facade(
   dplyr::select( sampleSize$summary, -probs),
   caption = "Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
 
@@ -329,7 +329,8 @@ LFQService::table_facade(
 ```
 
 ```{r hierarchyCountsSample}
-caption <- paste("Number of quantified ", if(params$pep){"peptides and proteins"}else{"peptides"}, " per sample.")
+caption <- paste("Number of quantified ",
+                 if (params$pep) { "peptides and proteins" } else {"peptides" }, " per sample.")
 LFQService::table_facade(
   hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")
   , caption = caption)

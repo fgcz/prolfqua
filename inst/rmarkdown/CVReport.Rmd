@@ -24,7 +24,7 @@ if (params$plot_density) {
 
 ```{r}
 if(!local_config$parameter$is_intensity_transformed){
-  if(params$plot_sd_vs_mean){
+  if (params$plot_sd_vs_mean) {
     p0 <- plot_stdv_vs_mean(stats_res, local_config)  + labs(tag='A') # takes to long to plot.
   }
 }
@@ -37,9 +37,9 @@ cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",p
 
 
 ```{r printTable, results="asis"}
-ftab <- LFQService::table_facade(cv_quantiles_res,
-                                 caption = "Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
-  
+LFQService::table_facade(cv_quantiles_res,
+                         caption = "Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
+
 
 ```
 
