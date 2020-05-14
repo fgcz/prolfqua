@@ -170,11 +170,16 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' @export
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
-#' make_interaction_column(xx, c("B","A"))
-#' make_interaction_column(xx, c("A"))
+#' x <- make_interaction_column(xx, c("B","A"))
+#' x <- make_interaction_column(xx, c("A"))
 make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
+  intr <- purrr::map_dfc(intr, factor)
+
+  newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
   intr <- purrr::map2_dfc(columns, intr, paste0)
+  intr <- purrr::map2_dfc(intr , newlev, fct_relevel)
+
   colnames(intr) <- paste0("interaction_",columns)
   colname <- "interaction"
   data <- data %>% dplyr::mutate(!!colname := interaction(intr, sep = sep))
@@ -1273,10 +1278,10 @@ quants_write <- function(data,
   print(plot_heatmap_cor(data, config))
   graphics.off()
 
-  res <- plot_pca(data, config, add_txt = TRUE)
+  res <- plot_pca(data, config, add_txt = FALSE)
   pdf(file.path(path_qc,paste0(prefix,"intensities_PCA",suffix,".pdf")),
-      width = 6,
-      height = 6)
+      width = 7,
+      height = 7)
   print(res)
   graphics.off()
 
