@@ -88,8 +88,8 @@ if (TRUE) {
 
   #usethis::use_data(data_c)
   #usethis::use_data(config_c)
-  #dataIonstar <- summarised
-  ##usethis::use_data(dataIonstar)
+  dataIonstarFilteredPep <- list(data = summarised$results$filteredPep, config = summarised$results$config_filteredPep)
+  usethis::use_data(dataIonstarFilteredPep)
   prot <- summarised$protintensity_fun("unnest")
 } else {
 }

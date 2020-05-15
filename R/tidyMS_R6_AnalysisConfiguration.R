@@ -58,7 +58,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          },
                                          #' get number of factor Levels
                                          getFactorLevel = function(){
-                                           if(length(self$factorLevel) == 0){
+                                           if (length(self$factorLevel) == 0) {
                                              return(length(self$factors))
                                            }else{
                                              return(self$factorLevel)
@@ -82,14 +82,14 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          idRequired = function(){
                                            idVars <- c(
                                              self$fileName,
-                                             unlist(self$factors),
+                                             purrr::map_chr(self$factors,"colnames"),
                                              unlist(self$hierarchy),
                                              self$isotopeLabel
                                            )
                                            return(idVars)
                                          },
                                          hierarchyKeys = function(rev = FALSE){
-                                           if(rev){
+                                           if (rev) {
                                              return(rev(names(self$hierarchy)))
                                            }else{
                                              return(names(self$hierarchy))
@@ -108,7 +108,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                            return(names(self$factors))
                                          },
                                          fkeysLevel = function(){
-                                           res <- head(self$factors, n= self$factorLevel)
+                                           res <- head(self$factors, n = self$factorLevel)
                                            return(names(res))
                                          },
                                          idVars = function(){
@@ -141,9 +141,9 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                      public = list(
                                        #' @field project_Id the project Id
-                                       project_Id="",
-                                       order_Id="",
-                                       workunit_Id="",
+                                       project_Id = "",
+                                       order_Id = "",
+                                       workunit_Id = "",
                                        sep = "~",
                                        table = NULL,
                                        parameter = NULL,
@@ -160,7 +160,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' make_reduced_hierarchy_config(skylineconfig, "testintensity", skylineconfig$table$hierarchy[1:2])
 #'
 make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
-  newConfig <-config$clone(deep = TRUE)
+  newConfig <- config$clone(deep = TRUE)
   newConfig$table$hierarchy = hierarchy
   newConfig$table$workIntensity = workIntensity
   return(newConfig)
