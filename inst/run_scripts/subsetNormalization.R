@@ -77,7 +77,7 @@ resProt <- list(
   config_protIntensities = protL("unnest")$config
 )
 
-dataIonstarSubsetNorm <- list()
-dataIonstarSubsetNorm$resultsPep <- res
-dataIonstarSubsetNorm$resultsProt <- resProt
-usethis::use_data(dataIonstarSubsetNorm, overwrite = TRUE)
+dataIonstarSubsetNorm_V2 <- list()
+dataIonstarSubsetNorm_V2$resultsPep <- res
+dataIonstarSubsetNorm_V2$resultsProt <- resProt
+usethis::use_data(dataIonstarSubsetNorm_V2, overwrite = TRUE)
