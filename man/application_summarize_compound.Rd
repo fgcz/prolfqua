@@ -4,14 +4,7 @@
 \alias{application_summarize_compound}
 \title{Used for metabolomics data analysis.}
 \usage{
-application_summarize_compound(
-  data,
-  config,
-  qc_path,
-  DEBUG = FALSE,
-  WRITE_PROTS = TRUE,
-  prefix = c("peptide", "compound")
-)
+application_summarize_compound(data, config, qc_path, prefix = c("ms"))
 }
 \description{
 Used for metabolomics data analysis.

@@ -336,7 +336,7 @@ data_pep_to_prot <- function(data,
       )
     }else if (do == "plotprot") {
       figs <- protintensity_fun("plot")
-      pdf(file.path(qc_path, "protein_intensities_inference_figures.pdf"))
+      pdf(file.path(qc_path, "ms_intensities_inference_figures.pdf"))
       lapply(figs$plot, print)
       dev.off()
 
@@ -365,38 +365,42 @@ data_pep_to_prot <- function(data,
 application_summarize_compound <- function(data,
                                            config,
                                            qc_path,
-                                           DEBUG= FALSE,
-                                           WRITE_PROTS=TRUE,
-                                           prefix = c("peptide", "compound")) {
+                                           prefix = c("ms")) {
+  qc_apth <- qc_path
   prefix <- match.arg(prefix)
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService:::.workflow_MQ_normalize_log2_robscale(data, config)
-  quants_write(results$data, results$config, qc_path, prefix = prefix)
+  quants_write(results$data, results$config, qc_path)
 
   wideFRAME <- LFQService::toWideConfig(results$data,
                                         results$config)
   lfq_write_table(separate_hierarchy(wideFRAME$data,
                                      results$config),
                   path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
-  if (!DEBUG) {
-    LFQService::render_MQSummary_rmd(results$data,
-                                     results$config$clone(deep=TRUE),
-                                     pep=TRUE,
-                                     workdir = ".",
-                                     dest_path = qc_path,
-                                     dest_file_name = paste0(prefix, "_intensities_qc"),
-                                     format = "html")
-  }
 
+  res_fun <- function(do = c("render","print_compounds","data")){
+    do <- match.arg(do)
+    if (do == "render") {
+      LFQService::render_MQSummary_rmd(results$data,
+                                       results$config$clone(deep = TRUE),
+                                       pep = TRUE,
+                                       workdir = ".",
+                                       dest_path = qc_path,
+                                       dest_file_name = paste0(prefix, "_intensities_qc"),
+                                       format = "html")
+    }else if (do == "print_compounds") {
+      figs <- plot_hierarchies_line_df(results$data, results$config )
+      pdf(file.path(qc_path, paste0(prefix, "_intensities_inference_figures.pdf")))
+      lapply(figs, print)
+      dev.off()
+    }else if (do == "data") {
+      return(list(data  = results$data, config = results$config))
+    }
 
-  if (WRITE_PROTS) {
-    figs <- plot_hierarchies_line_df(results$data, results$config )
-    pdf(file.path(qc_path, paste0(prefix, "_intensities_.pdf")))
-    lapply(figs, print)
-    dev.off()
   }
-  return(list(data  = results$data, config = results$config))
+  return(res_fun)
+
 }
 
 #################################################
