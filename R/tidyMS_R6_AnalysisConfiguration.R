@@ -1251,7 +1251,7 @@ quants_write <- function(data,
                          config,
                          path_qc,
                          suffix="",
-                         prefix = "protein",
+                         prefix = "ms",
                          na_fraction = 0.3,
                          close_devices = TRUE){
   suffix <- paste0("_",suffix)

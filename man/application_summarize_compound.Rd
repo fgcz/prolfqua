@@ -10,7 +10,7 @@ application_summarize_compound(
   qc_path,
   DEBUG = FALSE,
   WRITE_PROTS = TRUE,
-  prefix = c("peptide", "compound")
+  prefix = c("ms")
 )
 }
 \description{

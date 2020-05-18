@@ -76,12 +76,12 @@ table_facade(pars$annotation, "Sample annotations.")
 
 
 `r if(file.exists("qc_results/retention_time_plot.png")){' - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"}'}`
-- PCA plot ([pdf](`r paste_file("qc_results/protein_intensities_PCA_.pdf")`){target="_blank"},[html](qc_results/protein_intensities_PCA_.html){target="_blank"}) showing the samples according to the first and second principal component.
-- [Heatmap based on protein intensity correlation among samples](`r paste_file("qc_results/protein_intensities_heatmap_correlation_.pdf")`){target="_blank"}.
-- [Protein intensities heatmap](`r paste_file("qc_results/protein_intensities_heatmap_.pdf")`){target="_blank"}. The columns represent samples while the rows represent proteins. The protein intensities were z scored.
-- The protein intensities in [excel xlsx format](`r paste_file("qc_results/protein_intensities_wide_.xlsx")`){target="_blank"}.
-- A [pdf file](`r paste_file("qc_results/protein_intensities_inference_figures.pdf")`){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
-- A quality control report of estimated protein intensities [html](`r paste_file("qc_results/protein_intensities_qc.html")`){target="_blank"}.
+- PCA plot ([pdf](`r paste_file("qc_results/ms_intensities_PCA_.pdf")`){target="_blank"},[html](qc_results/ms_intensities_PCA_.html){target="_blank"}) showing the samples according to the first and second principal component.
+- [Heatmap based on protein intensity correlation among samples](`r paste_file("qc_results/ms_intensities_heatmap_correlation_.pdf")`){target="_blank"}.
+- [Protein intensities heatmap](`r paste_file("qc_results/ms_intensities_heatmap_.pdf")`){target="_blank"}. The columns represent samples while the rows represent proteins. The protein intensities were z scored.
+- The protein intensities in [excel xlsx format](`r paste_file("qc_results/ms_intensities_wide_.xlsx")`){target="_blank"}.
+- A [pdf file](`r paste_file("qc_results/ms_intensities_inference_figures.pdf")`){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
+- A quality control report of estimated protein intensities [html](`r paste_file("qc_results/ms_intensities_qc.html")`){target="_blank"}.
 
 
 # Mixed Effects Model
