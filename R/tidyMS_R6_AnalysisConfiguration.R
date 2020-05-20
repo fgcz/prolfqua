@@ -901,7 +901,7 @@ workflow_missigness_impute_contrasts <- function(data,
 
   dd <- dplyr::bind_rows(imputed, mean)
   dd_long <- dd %>% tidyr::gather("contrast","int_val",
-                           colnames(dd)[sapply(dd, is.numeric)])
+                                  colnames(dd)[sapply(dd, is.numeric)])
 
   res_fun <- function(value = c("long", "wide","raw"),
                       what = c("contrasts", "factors", "all"),
@@ -1036,7 +1036,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysLev
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <- missingPrec %>% group_by_at(c(table$isotopeLabel,
-                                     factors,"nrNAs","nrReplicates")) %>%
+                                      factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize( !!sym(hierarchyKey) := n())
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
@@ -1689,8 +1689,6 @@ plot_heatmap_cor <- function(data,
                              color = colorRampPalette(c("white", "red"))(1024),
                              ...){
 
-
-
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
@@ -1708,6 +1706,7 @@ plot_heatmap_cor <- function(data,
   res <- pheatmap::pheatmap(cres,
                             scale = "none",
                             silent = TRUE)
+
   res <- pheatmap::pheatmap(cres[res$tree_row$order,],
                             scale = "none",
                             cluster_rows  = FALSE,
@@ -1761,7 +1760,8 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
                             annotation_col = factors,
                             show_rownames = F,
                             border_color = NA,
-                            ... = ..., silent = TRUE)
+                            silent = TRUE,
+                            ... = ...)
 
   invisible(res)
 }
@@ -1777,11 +1777,11 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep = TRUE)
 #' tmp <- plot_NA_heatmap(data, config)
-#' print(tmp$plot)
+#' print(tmp)
 #' xx <- plot_NA_heatmap(data, config,distance = "euclidean")
-#' print(xx$plot)
+#' print(xx)
 #' dev.off()
-#' print(xx$plot)
+#' print(xx)
 #' names(xx)
 #'
 plot_NA_heatmap <- function(data,
@@ -1797,13 +1797,13 @@ plot_NA_heatmap <- function(data,
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
-
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
   allrows <- nrow(res)
   res <- res[apply(res,1, sum) > 0,]
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
+
   if (nrow(res) > 0) {
     res <- if (nrow(res) > limitrows ) {
       message("limiting nr of rows to:", limitrows,"\n")
@@ -1819,7 +1819,7 @@ plot_NA_heatmap <- function(data,
                                    clustering_distance_cols = distance,
                                    clustering_distance_rows = distance)
 
-    res_plot <- pheatmap::pheatmap(res[resclust$tree_row$order,],
+    resclust <- pheatmap::pheatmap(res[resclust$tree_row$order,],
                                    cluster_rows  = FALSE,
                                    clustering_distance_cols = distance,
                                    scale = "none",
@@ -1830,7 +1830,9 @@ plot_NA_heatmap <- function(data,
                                    legend = FALSE,
                                    silent = TRUE
     )
-    invisible( list( res = res, plot = res_plot ) )
+    return(resclust)
+  } else {
+    return(NULL)
   }
 }
 

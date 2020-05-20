@@ -371,17 +371,25 @@ application_summarize_compound <- function(data,
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService:::.workflow_MQ_normalize_log2_robscale(data, config)
-  quants_write(results$data, results$config, qc_path)
 
-  wideFRAME <- LFQService::toWideConfig(results$data,
-                                        results$config)
-  lfq_write_table(separate_hierarchy(wideFRAME$data,
-                                     results$config),
-                  path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
 
-  res_fun <- function(do = c("render","print_compounds","data")){
+  res_fun <- function(do = c("plot", "write", "render", "print_compounds", "data"),
+                             DEBUG = FALSE){
     do <- match.arg(do)
-    if (do == "render") {
+    if (DEBUG) {
+      return(list(qc_path = qc_path, prefix = prefix, results = results ))
+    }
+
+    if ( do == "plot") {
+      quants_write(results$data, results$config, qc_path)
+    } else if (do == "write") {
+      wideFRAME <- LFQService::toWideConfig(results$data,
+                                            results$config)
+
+      lfq_write_table(separate_hierarchy(wideFRAME$data,
+                                         results$config),
+                      path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
+    }else if (do == "render") {
       LFQService::render_MQSummary_rmd(results$data,
                                        results$config$clone(deep = TRUE),
                                        pep = TRUE,

@@ -16,11 +16,11 @@ library(LFQService)
 data <- sample_analysis
 config <- skylineconfig$clone(deep = TRUE)
 tmp <- plot_NA_heatmap(data, config)
-print(tmp$plot)
+print(tmp)
 xx <- plot_NA_heatmap(data, config,distance = "euclidean")
-print(xx$plot)
+print(xx)
 dev.off()
-print(xx$plot)
+print(xx)
 names(xx)
 
 }

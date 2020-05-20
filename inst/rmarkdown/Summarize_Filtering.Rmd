@@ -36,7 +36,7 @@ We here briefly discuss how your data was pre-processed.
 figpath <- file.path(params$path, "missigness_before_filtering.pdf")
 if(params$HEATMAP){
   pdf(figpath)
-  print(plot_NA_heatmap(params$resDataStart, params$config_resDataStart)$plot)
+  print(plot_NA_heatmap(params$resDataStart, params$config_resDataStart))
   dev.off()
 }
 knitr::include_graphics(figpath)
@@ -90,7 +90,7 @@ knitr::kable(hierarchy_counts(params$filteredPep, params$config_filteredPep),
 
 
 ```{r fig.cap="Missigness patterns for peptides of proteins removed from analysis.", fig.with=7, fig.height=8}
-print(plot_NA_heatmap(params$removed_peptides, results$config_resDataStart)$plot)
+print(plot_NA_heatmap(params$removed_peptides, results$config_resDataStart))
 ```
 
 \newpage
@@ -118,7 +118,7 @@ figpath <- file.path(path,"missigness_after_filtering.pdf")
 if(params$HEATMAP){
   pdf(figpath)
   x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
-  print(x$plot)
+  print(x)
   dev.off()
 }
 knitr::include_graphics(figpath)

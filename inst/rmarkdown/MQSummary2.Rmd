@@ -136,9 +136,18 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 (ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
 
+```{r preparemissingnessHeatmap, include=FALSE}
+pNAmap <- plot_NA_heatmap(data = data_cc, config = local_config)
+```
+
 ```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
-print(plot_NA_heatmap(data = data_cc, config = local_config)$plot)
+print(pNAmap)
+```
+
+
+```{r checktransformation, include = FALSE}
 show_text <- !local_config$parameter$is_intensity_transformed
+
 ```
 
 
@@ -166,7 +175,7 @@ if(!local_config$parameter$is_intensity_transformed){
 ```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
 if (params$plot_density) {
   p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, local_config) + 
-    theme(legend.text=element_text(size=5))
+    theme(legend.text = element_text(size = 5))
   p1
 } else {
   p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed, local_config) 
@@ -176,9 +185,15 @@ if (params$plot_density) {
 
 (ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples.
 
+```{r preparecorrelationHeat, include= FALSE}
+chmap <- plot_heatmap_cor(dataTransformed,
+                       local_config,
+                       R2 = TRUE, 
+                       col = colorRampPalette(c("white", "red"))(1024))
+```
+
 ```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}
-hm <- plot_heatmap_cor(dataTransformed, local_config, R2 = TRUE, col = colorRampPalette(c("white", "red"))(1024))
-print(hm)
+print(chmap)
 ```
 
 
@@ -267,14 +282,13 @@ LFQService::table_facade(sd_quantile_res2,
 
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
 
-```{r overviewHeat, fig.cap="(ref:overviewHeat)"}
-if(params$plot_sd_vs_mean){
-  hm <- plot_heatmap(dataTransformed, local_config)
-  print(hm)
-}
+```{r prepareoverviewHeat, include = FALSE}
+hm <- plot_heatmap(dataTransformed, local_config)
 ```
 
-
+```{r overviewHeat, fig.cap="(ref:overviewHeat)", fig.height=10, fig.width=8}
+print(hm)
+```
 
 # Sample Size Calculation
 
