@@ -382,13 +382,6 @@ application_summarize_compound <- function(data,
 
     if ( do == "plot") {
       quants_write(results$data, results$config, qc_path)
-    } else if (do == "write") {
-      wideFRAME <- LFQService::toWideConfig(results$data,
-                                            results$config)
-
-      lfq_write_table(separate_hierarchy(wideFRAME$data,
-                                         results$config),
-                      path = file.path(qc_path, paste0(prefix, "_intensities.csv")))
     }else if (do == "render") {
       LFQService::render_MQSummary_rmd(results$data,
                                        results$config$clone(deep = TRUE),
