@@ -28,7 +28,7 @@ config$table$factors[["dilution."]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
 
 
-config$table$factorLevel <- 1
+config$table$factorDepth <- 1
 
 config$order_Id = "IonStar"
 config$project_Id = "p3000"

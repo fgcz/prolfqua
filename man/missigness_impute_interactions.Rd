@@ -8,7 +8,7 @@ impute data using mean of lowest 0.1 (default)}
 missigness_impute_interactions(
   mdataTrans,
   config,
-  factors = config$table$fkeysLevel(),
+  factors = config$table$fkeysDepth(),
   probs = 0.1
 )
 }

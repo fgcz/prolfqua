@@ -8,7 +8,7 @@ missigness_histogram(
   x,
   config,
   showempty = TRUE,
-  factors = config$table$fkeysLevel()
+  factors = config$table$fkeysDepth()
 )
 }
 \description{

@@ -23,11 +23,11 @@ formula_randomPeptide <-
    model_name = modelName)
 pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
-config$table$hkeysLevel()
+config$table$hkeysDepth()
 modellingResult <- model_analyse( pepIntensity,
  formula_randomPeptide,
  modelName,
- config$table$hkeysLevel())
+ config$table$hkeysDepth())
 names(modellingResult)
 tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
 names(tmp)

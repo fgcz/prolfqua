@@ -7,7 +7,7 @@
 summarize_hierarchy(
   x,
   configuration,
-  hierarchy = configuration$table$hkeysLevel(),
+  hierarchy = configuration$table$hkeysDepth(),
   factors = character()
 )
 }
@@ -29,17 +29,17 @@ summarize_hierarchy(sample_analysis, configuration)
 summarize_hierarchy(sample_analysis, configuration, factors = character())
 
 summarize_hierarchy(sample_analysis, configuration,
- hierarchy = configuration$table$hkeysLevel() )
+ hierarchy = configuration$table$hkeysDepth() )
 summarize_hierarchy(sample_analysis, configuration,
- hierarchy = NULL, factors = configuration$table$fkeysLevel() )
-configuration$table$hierarchyLevel = 1
+ hierarchy = NULL, factors = configuration$table$fkeysDepth() )
+configuration$table$hierarchyDepth = 1
 summarize_hierarchy(sample_analysis, configuration,
- factors = configuration$table$fkeysLevel())
-configuration$table$hierarchyLevel = 2
+ factors = configuration$table$fkeysDepth())
+configuration$table$hierarchyDepth = 2
 summarize_hierarchy(sample_analysis, configuration)
-configuration$table$hierarchyLevel = 3
+configuration$table$hierarchyDepth = 3
 summarize_hierarchy(sample_analysis, configuration )
-configuration$table$hierarchyLevel = 4
+configuration$table$hierarchyDepth = 4
 summarize_hierarchy(sample_analysis, configuration )
 summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 }

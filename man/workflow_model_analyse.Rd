@@ -23,7 +23,7 @@ formula_randomPeptide <-
 modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
  formula_randomPeptide,
   modelName,
- subject_Id = D$config_pepIntensityNormalized$table$hkeysLevel())
+ subject_Id = D$config_pepIntensityNormalized$table$hkeysDepth())
 reslist <- modellingResult()
 }
 \references{

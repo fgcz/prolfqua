@@ -41,7 +41,7 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 
 
 config <- createMQProteinPeptideConfiguration()
-config$table$factorLevel <- 2
+config$table$factorDepth <- 2
 resPepProtAnnot %>% dplyr::filter(reverse == FALSE) -> resPepProtAnnot
 
 
@@ -57,7 +57,7 @@ resDataStart <- LFQService::make_interaction_column_config(resDataStart, config)
 # rmarkdown::render("MQSummary.Rmd", params=list(data = resDataStart, configuration=config$clone(deep=TRUE)), envir = new.env())
 
 # Start filtering
-config$table$factorLevel <- flevel
+config$table$factorDepth <- flevel
 
 results <- workflow_MQ_protoV1(resDataStart,
                                config,

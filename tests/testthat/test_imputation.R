@@ -15,7 +15,7 @@ createMQSTYConfiguration <- function(ident_qValue = "pep",
   atable$hierarchy[["protein_Id"]] <- c("protein","protein.group.ids")
   #atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
   atable$hierarchy[["peptide_Id"]] <- c("peptide.sequence.prob","charge","multiplicity","site.id")
-  atable$hierarchyLevel <- 2
+  atable$hierarchyDepth <- 2
   #
   atable$ident_qValue = ident_qValue
   atable$setWorkIntensity(intensity)
@@ -23,7 +23,7 @@ createMQSTYConfiguration <- function(ident_qValue = "pep",
   atable$factors[["NASH_"]] = "NASH_"
   atable$factors[["Steatosis_"]] = "Steatosis_"
   atable$factors[["sample_name"]] = "sample_name"
-  atable$factorLevel <- 2
+  atable$factorDepth <- 2
   anaparam <- AnalysisParameters$new()
   configuration <- AnalysisConfiguration$new(atable, anaparam)
 
@@ -43,7 +43,7 @@ resDataStart <- remove_small_intensities( resDataStart, config ) %>%
 
 
 configuration <- config
-config$table$factorLevel <- 2
+config$table$factorDepth <- 2
 
 #rmarkdown::render("MQSummary.Rmd",params = list(configuration = config$clone(deep=TRUE), data = resDataStart))
 

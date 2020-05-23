@@ -20,7 +20,7 @@ annotation <- annotation %>% dplyr::filter(annotation$SCI != "un")
 
 config$table$factors[["drug_"]] = "genotype"
 config$table$factors[["SCI_"]] = "SCI"
-config$table$factorLevel <- 2
+config$table$factorDepth <- 2
 
 config$order_Id = "o5748"
 config$project_Id = "p2558"

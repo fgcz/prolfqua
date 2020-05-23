@@ -22,8 +22,8 @@
 
 # compute contrasts for all factors.
 .compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
-  factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorLevel]
-  subject_Id <- pepConfig$table$hkeysLevel()
+  factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorDepth]
+  subject_Id <- pepConfig$table$hkeysDepth()
 
   for(factor in factors){
     print(factor)
@@ -54,7 +54,7 @@
 #' pepConfig <- D$config_pepIntensityNormalized
 #' modellingResult <- model_analyse( D$pepIntensityNormalized,
 #' formula_randomPeptide,
-#' subject_Id = pepConfig$table$hkeysLevel(),
+#' subject_Id = pepConfig$table$hkeysDepth(),
 #' modelName)
 #' #results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
 #' #modelName,
@@ -74,7 +74,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
   result <- list()
 
   contrasts <- .compute_contrasts_no_interaction(modelProteinF, pepConfig, modelName )
-  modelProteinF<- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hkeysLevel(), "isSingular"))
+  modelProteinF <- modelProteinF %>% dplyr::select_at(c( pepConfig$table$hkeysDepth(), "isSingular"))
   contrasts <- dplyr::inner_join(modelProteinF, contrasts )
 
   #result$contrasts <- contrasts
@@ -92,7 +92,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
                                                          effect = "estimate",
                                                          p.value = "p.value",
                                                          condition = "lhs",
-                                                         label = pepConfig$table$hkeysLevel(),
+                                                         label = pepConfig$table$hkeysDepth(),
                                                          xintercept = c(-1, 1),colour = "isSingular")
   result$contrasts <- contrasts
   return(result)
@@ -178,7 +178,7 @@ deprecated_model_full_lmer <- function(config, factor_level=2, random= NULL){
                         paste(config$table$factorKeys()[1:factor_level], collapse = " + "),
                         " + ",
                         paste(config$table$factorKeys()[1:factor_level], collapse = " * "),
-                        paste0(" + (1|", setdiff(config$table$hierarchyKeys() , config$table$hkeysLevel()),")"))
+                        paste0(" + (1|", setdiff(config$table$hierarchyKeys() , config$table$hkeysDepth()),")"))
   if (!is.null(random)) {
     formula_str <- paste0(formula_str, paste0(" + (1|", random,")"))
   }

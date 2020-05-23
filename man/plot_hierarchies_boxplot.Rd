@@ -20,7 +20,7 @@ library(LFQService)
 library(tidyverse)
 conf <- LFQService::skylineconfig$clone(deep = TRUE)
 xnested <- LFQService::sample_analysis \%>\%
- group_by_at(conf$table$hkeysLevel()) \%>\% tidyr::nest()
+ group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],

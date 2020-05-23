@@ -4,7 +4,7 @@
 \alias{missingness_per_condition}
 \title{Summarize missing in condtion as barplot}
 \usage{
-missingness_per_condition(x, config, factors = config$table$fkeysLevel())
+missingness_per_condition(x, config, factors = config$table$fkeysDepth())
 }
 \description{
 Summarize missing in condtion as barplot

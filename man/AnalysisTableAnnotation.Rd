@@ -23,15 +23,15 @@ Id Columns which must be in the input data frame}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AnalysisTableAnnotation$new()}}
-\item \href{#method-getFactorLevel}{\code{AnalysisTableAnnotation$getFactorLevel()}}
+\item \href{#method-getfactorDepth}{\code{AnalysisTableAnnotation$getfactorDepth()}}
 \item \href{#method-setWorkIntensity}{\code{AnalysisTableAnnotation$setWorkIntensity()}}
 \item \href{#method-getWorkIntensity}{\code{AnalysisTableAnnotation$getWorkIntensity()}}
 \item \href{#method-popWorkIntensity}{\code{AnalysisTableAnnotation$popWorkIntensity()}}
 \item \href{#method-idRequired}{\code{AnalysisTableAnnotation$idRequired()}}
 \item \href{#method-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
-\item \href{#method-hkeysLevel}{\code{AnalysisTableAnnotation$hkeysLevel()}}
+\item \href{#method-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
 \item \href{#method-factorKeys}{\code{AnalysisTableAnnotation$factorKeys()}}
-\item \href{#method-fkeysLevel}{\code{AnalysisTableAnnotation$fkeysLevel()}}
+\item \href{#method-fkeysDepth}{\code{AnalysisTableAnnotation$fkeysDepth()}}
 \item \href{#method-idVars}{\code{AnalysisTableAnnotation$idVars()}}
 \item \href{#method-valueVars}{\code{AnalysisTableAnnotation$valueVars()}}
 \item \href{#method-annotationVars}{\code{AnalysisTableAnnotation$annotationVars()}}
@@ -48,11 +48,11 @@ Id Columns which must be in the input data frame}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getFactorLevel"></a>}}
-\if{latex}{\out{\hypertarget{method-getFactorLevel}{}}}
-\subsection{Method \code{getFactorLevel()}}{
+\if{html}{\out{<a id="method-getfactorDepth"></a>}}
+\if{latex}{\out{\hypertarget{method-getfactorDepth}{}}}
+\subsection{Method \code{getfactorDepth()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getFactorLevel()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getfactorDepth()}\if{html}{\out{</div>}}
 }
 
 }
@@ -102,11 +102,11 @@ Id Columns which must be in the input data frame}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-hkeysLevel"></a>}}
-\if{latex}{\out{\hypertarget{method-hkeysLevel}{}}}
-\subsection{Method \code{hkeysLevel()}}{
+\if{html}{\out{<a id="method-hkeysDepth"></a>}}
+\if{latex}{\out{\hypertarget{method-hkeysDepth}{}}}
+\subsection{Method \code{hkeysDepth()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hkeysLevel(names = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hkeysDepth(names = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -120,11 +120,11 @@ Id Columns which must be in the input data frame}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fkeysLevel"></a>}}
-\if{latex}{\out{\hypertarget{method-fkeysLevel}{}}}
-\subsection{Method \code{fkeysLevel()}}{
+\if{html}{\out{<a id="method-fkeysDepth"></a>}}
+\if{latex}{\out{\hypertarget{method-fkeysDepth}{}}}
+\subsection{Method \code{fkeysDepth()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysLevel()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysDepth()}\if{html}{\out{</div>}}
 }
 
 }

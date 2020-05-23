@@ -78,7 +78,7 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
   atable$setWorkIntensity(intensity)
   atable$isotopeLabel = isotopeLabel
   atable$factors[["FACTOR"]] = "QC"
-  atable$factorLevel <- 1
+  atable$factorDepth <- 1
   anaparam <- AnalysisParameters$new()
   configuration <- AnalysisConfiguration$new(atable, anaparam)
   return(configuration)
@@ -122,7 +122,7 @@ protintensity <- medpolish_protein_quants( results$pepIntensityNormalized, resul
 xx <- protintensity("unnest")
 data <- LFQService::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
 stats_res <- summarize_cv(data, xx$config, all=FALSE)
-data_wide <- inner_join(stats_res,toWideConfig(data, xx$config)$data, by = xx$config$table$hkeysLevel(), suffix =c(".factor",""))
+data_wide <- inner_join(stats_res,toWideConfig(data, xx$config)$data, by = xx$config$table$hkeysDepth(), suffix =c(".factor",""))
 
 
 lfq_write_table(separate_hierarchy(data_wide, config), path=file.path(outputDir, paste0("r_",filename,"_Protein.csv")))

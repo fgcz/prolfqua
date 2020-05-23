@@ -25,7 +25,7 @@ annotation <- readxl::read_xlsx(inputAnntation)
 config$table$factors[["dilution."]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
 
-config$table$factorLevel <- 1
+config$table$factorDepth <- 1
 
 config$order_Id = "IonStar"
 config$project_Id = "p3000"
@@ -100,7 +100,7 @@ data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
 
 
-nested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
+nested <- data %>% group_by_at(config$table$hkeysDepth()) %>% nest()
 
 mdata2 <- nested$data[[2]]
 mdata1 <- nested$data[[1]]
@@ -114,14 +114,14 @@ library(MCMCvis)
 
 res <- ms_brms_model(mdata = mdata2,
               memodel = startmodel,
-              fixef = config$table$fkeysLevel(),
+              fixef = config$table$fkeysDepth(),
               linfct_A = dd$linfct_A)
 
 if (TRUE) {
 res <- nested %>% mutate(summary =
                            purrr::map( data, ms_brms_model,
                                        startmodel,
-                                       config$table$fkeysLevel(),
+                                       config$table$fkeysDepth(),
                                        dd$linfct_A)
                          )
 saveRDS(res, file = "rstandSimpleMixed.RDS")
@@ -133,7 +133,7 @@ if (FALSE) {
   res <- nested %>% mutate(summary =
                              purrr::map( data, ms_brms_model,
                                          startmodel,
-                                         config$table$fkeysLevel(),
+                                         config$table$fkeysDepth(),
                                          dd$linfct_A)
   )
   saveRDS(res, file = "rstandTruncMixed.RDS")

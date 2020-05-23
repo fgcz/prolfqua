@@ -12,6 +12,6 @@ create interaction column from factors
 \examples{
 
 skylineconfig$table$factorKeys()
-skylineconfig$table$factorLevel <- 1
+skylineconfig$table$factorDepth <- 1
 make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
 }

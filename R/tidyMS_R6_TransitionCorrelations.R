@@ -218,27 +218,27 @@ filter_byQValue <- function(data, config){
 #' @examples
 #' library(dplyr)
 #' xnested <- sample_analysis %>%
-#'  group_by_at(skylineconfig$table$hkeysLevel()) %>%
+#'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
 #' x
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysLevel()) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) %>%
 #'  distinct() %>% nrow()
 #'
 #' xx <- extractIntensities(x,skylineconfig)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
-#' # change hierarchyLevel ###################
+#' # change hierarchyDepth ###################
 #' conf <- skylineconfig$clone(deep=TRUE)
-#' conf$table$hierarchyLevel = 1
+#' conf$table$hierarchyDepth = 1
 #'
 #' xnested <- sample_analysis %>%
-#'  group_by_at(conf$table$hkeysLevel()) %>%
+#'  group_by_at(conf$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' head(xnested)
 #'
 #' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysLevel()) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) %>%
 #'  distinct() %>% nrow()
 #'
 #' xx <- extractIntensities(x,conf)
@@ -248,7 +248,7 @@ extractIntensities <- function(x, configuration ){
   table <- configuration$table
   x <- x %>%
     dplyr::select( c( table$sampleName,
-                      setdiff(table$hierarchyKeys(),table$hkeysLevel()),
+                      setdiff(table$hierarchyKeys(),table$hkeysDepth()),
                       table$getWorkIntensity()) ) %>%
     tidyr::spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
   return(x)
@@ -483,7 +483,7 @@ simpleImpute <- function(data){
 #'
 impute_correlationBased <- function(x , config){
   x <- complete_cases(x, config)
-  nestedX <- x %>%  dplyr::group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
+  nestedX <- x %>%  dplyr::group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
   nestedX <- nestedX %>% dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
 
   gatherItback <- function(x,config){
@@ -496,7 +496,7 @@ impute_correlationBased <- function(x , config){
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
-  unnest_res <- nestedX %>% dplyr::select(config$table$hkeysLevel(), "imputed") %>% tidyr::unnest(cols = c(imputed))
+  unnest_res <- nestedX %>% dplyr::select(config$table$hkeysDepth(), "imputed") %>% tidyr::unnest(cols = c(imputed))
   unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
@@ -601,6 +601,7 @@ rankPrecursorsByIntensity <- function(data, config){
 #' res <- rankPrecursorsByIntensity(res,config)
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
 #' mean_na <- function(x){mean(x, na.rm=TRUE)}
+#'
 #' res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
 #'
 #' stopifnot(dim(res$data) == c(10423, 10))
@@ -611,7 +612,7 @@ aggregateTopNIntensities <- function(data , config, func, N){
   newcol <- make.names(glue::glue("srm_{deparse(x$func)}_{x$N}"))
   topInt <- data %>%
     dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
-    dplyr::group_by(!!!syms(c( config$table$hkeysLevel(),
+    dplyr::group_by(!!!syms(c( config$table$hkeysDepth(),
                                config$table$sampleName,
                                config$table$fileName,
                                config$table$isotopeLabel,
@@ -622,7 +623,7 @@ aggregateTopNIntensities <- function(data , config, func, N){
 
   newconfig <- make_reduced_hierarchy_config(config,
                                              workIntensity = newcol,
-                                             hierarchy = config$table$hierarchy[1:config$table$hierarchyLevel])
+                                             hierarchy = config$table$hierarchy[1:config$table$hierarchyDepth])
   return(list(data = sumTopInt, newconfig = newconfig))
 }
 
@@ -683,7 +684,7 @@ filter_factor_levels_by_missing <- function(data,
   data <- complete_cases( data , config)
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- data %>%
-    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysLevel() ))) %>%
+    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysDepth() ))) %>%
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 

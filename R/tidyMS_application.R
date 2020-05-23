@@ -93,7 +93,7 @@ application_run_modelling_V2 <- function(outpath,
   ### make modeling  -----
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
-                                                subject_Id = config$table$hkeysLevel())
+                                                subject_Id = config$table$hkeysDepth())
 
   #################################################
   ### Do missing value imputation
@@ -128,7 +128,7 @@ application_run_modelling_V2 <- function(outpath,
       res <- list(modelFunction = modelFunction,
            imputed = contrasts_xx_imputed,
            remove_imputed = remove_imputed,
-           subject_Id = config$table$hkeysLevel(),
+           subject_Id = config$table$hkeysDepth(),
            modelling_path = modelling_path,
            modellingResult_fun = modellingResult_fun,
            res_contrasts = res_contrasts
@@ -140,7 +140,7 @@ application_run_modelling_V2 <- function(outpath,
       contrast_minimal <- res_contrasts(columns = modelFunction$report_columns)$contrast_minimal
       result_table <- .makeResult_contrasts(contrast_minimal
                                             ,contrasts_xx_imputed,
-                                            config$table$hkeysLevel(),
+                                            config$table$hkeysDepth(),
                                             config,
                                             remove_imputed = remove_imputed)
 
@@ -151,7 +151,7 @@ application_run_modelling_V2 <- function(outpath,
       filtered_dd <- res_contrasts(modelling_path, columns = modelFunction$report_columns)
       result_table <- .makeResult_contrasts(filtered_dd$contrast_minimal
                                             ,contrasts_xx_imputed,
-                                            config$table$hkeysLevel(),
+                                            config$table$hkeysDepth(),
                                             config)
       lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
       return(result_table)

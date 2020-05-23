@@ -12,27 +12,27 @@ Extract intensity column in wide format using lowest hierarchy as key.
 \examples{
 library(dplyr)
 xnested <- sample_analysis \%>\%
- group_by_at(skylineconfig$table$hkeysLevel()) \%>\%
+ group_by_at(skylineconfig$table$hkeysDepth()) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
 x
-nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysLevel()) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,skylineconfig)
 stopifnot(dim(xx)==c(nn,22))
 
-# change hierarchyLevel ###################
+# change hierarchyDepth ###################
 conf <- skylineconfig$clone(deep=TRUE)
-conf$table$hierarchyLevel = 1
+conf$table$hierarchyDepth = 1
 
 xnested <- sample_analysis \%>\%
- group_by_at(conf$table$hkeysLevel()) \%>\%
+ group_by_at(conf$table$hkeysDepth()) \%>\%
  tidyr::nest()
 head(xnested)
 
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysLevel()) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,conf)

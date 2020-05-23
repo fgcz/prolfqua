@@ -46,7 +46,7 @@ compute_roc <- function(data, config){
   nested <- data %>% dplyr::group_by(!!!syms(config$table$hierarchyKeys())) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
                                                 .rocs,
-                                                response = config$table$fkeysLevel(),
+                                                response = config$table$fkeysDepth(),
                                                 predictor = config$table$getWorkIntensity() ))
   nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
     dplyr::filter(cls == FALSE)

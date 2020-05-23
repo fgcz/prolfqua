@@ -23,7 +23,7 @@ res <- plot_hierarchies_boxplot_df(resDataStart, config, hierarchy_level = "pept
 res[[1]]
 config <- config$clone(deep = TRUE)
 #TODO make it work for other hiearachy levels.
-config$table$hierarchyLevel = 2
+config$table$hierarchyDepth = 2
 res <- plot_hierarchies_boxplot_df(resDataStart, config)
 res[[1]]
 }

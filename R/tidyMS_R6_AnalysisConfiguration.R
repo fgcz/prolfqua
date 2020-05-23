@@ -35,12 +35,12 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          #' @field fileName some funny name
                                          fileName = NULL,
                                          factors = list(), # ordering is important - first is considered the main
-                                         factorLevel = 1,
+                                         factorDepth = 1,
 
                                          sampleName = "sampleName",
                                          # measurement levels
                                          hierarchy = list(),
-                                         hierarchyLevel = 1,
+                                         hierarchyDepth = 1,
                                          retentionTime = NULL,
                                          isotopeLabel = character(),
                                          # do you want to model charge sequence etc?
@@ -57,11 +57,11 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          initialize = function(){
                                          },
                                          #' get number of factor Levels
-                                         getFactorLevel = function(){
-                                           if (length(self$factorLevel) == 0) {
+                                         getfactorDepth = function(){
+                                           if (length(self$factorDepth) == 0) {
                                              return(length(self$factors))
                                            }else{
-                                             return(self$factorLevel)
+                                             return(self$factorDepth)
                                            }
                                          },
                                          #' set name of working intensity
@@ -95,8 +95,8 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                              return(names(self$hierarchy))
                                            }
                                          },
-                                         hkeysLevel = function(names = TRUE){
-                                           res <- head( self$hierarchy,n = self$hierarchyLevel)
+                                         hkeysDepth = function(names = TRUE){
+                                           res <- head( self$hierarchy,n = self$hierarchyDepth)
                                            res <- if(names){
                                              names(res)
                                            }else{
@@ -107,8 +107,8 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          factorKeys = function(){
                                            return(names(self$factors))
                                          },
-                                         fkeysLevel = function(){
-                                           res <- head(self$factors, n = self$factorLevel)
+                                         fkeysDepth = function(){
+                                           res <- head(self$factors, n = self$factorDepth)
                                            return(names(res))
                                          },
                                          idVars = function(){
@@ -192,10 +192,10 @@ make_interaction_column <- function(data, columns, sep="."){
 #' @examples
 #'
 #' skylineconfig$table$factorKeys()
-#' skylineconfig$table$factorLevel <- 1
+#' skylineconfig$table$factorDepth <- 1
 #' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
 make_interaction_column_config <- function(data, config, sep="."){
-  columns <- config$table$fkeysLevel()
+  columns <- config$table$fkeysDepth()
   data <- make_interaction_column(data, columns, sep = sep)
   return(data)
 }
@@ -276,7 +276,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' separates hierarchies into starting columns
 #' @export
 separate_hierarchy <- function(data, config){
-  for(hkey in config$table$hkeysLevel()){
+  for(hkey in config$table$hkeysDepth()){
     data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
@@ -370,7 +370,7 @@ plot_hierarchies_line_default <- function(data,
 #' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep = TRUE)
 #' xnested <- LFQService::sample_analysis %>%
-#'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
+#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
@@ -412,14 +412,14 @@ plot_hierarchies_line <- function(res, proteinName,
 #' res[[1]]
 #' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
-#' #config$table$hierarchyLevel = 2
+#' #config$table$hierarchyDepth = 2
 #' #res <- plot_hierarchies_line_df(resDataStart, config)
 #filteredPep <- resDataStart
 plot_hierarchies_line_df <- function(filteredPep, config){
-  factor_level <- config$table$factorLevel
+  factor_level <- config$table$factorDepth
 
   hierarchy_ID <- "hierarchy_ID"
-  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()), remove = FALSE)
+  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()), remove = FALSE)
 
   xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
 
@@ -455,7 +455,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' library(tidyverse)
 #' conf <- LFQService::skylineconfig$clone(deep = TRUE)
 #' xnested <- LFQService::sample_analysis %>%
-#'  group_by_at(conf$table$hkeysLevel()) %>% tidyr::nest()
+#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
 #'  xnested$protein_Id[[3]],
@@ -484,7 +484,7 @@ plot_hierarchies_boxplot <- function(ddd,
                                      beeswarm = TRUE){
 
   isotopeLabel <- config$table$isotopeLabel
-  ddd <- LFQService::make_interaction_column( ddd , config$table$fkeysLevel())
+  ddd <- LFQService::make_interaction_column( ddd , config$table$fkeysDepth())
   p <- ggplot(ddd, aes_string(x = "interaction",
                               y = config$table$getWorkIntensity()
   )) + theme_classic() +
@@ -518,7 +518,7 @@ plot_hierarchies_boxplot <- function(ddd,
 #' res[[1]]
 #' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
-#' config$table$hierarchyLevel = 2
+#' config$table$hierarchyDepth = 2
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 #' res[[1]]
 plot_hierarchies_boxplot_df <- function(filteredPep, config, hierarchy = "protein_Id", hierarchy_level = NULL){
@@ -639,22 +639,22 @@ hierarchy_counts_sample <- function(data,
 #' summarize_hierarchy(sample_analysis, configuration, factors = character())
 #'
 #' summarize_hierarchy(sample_analysis, configuration,
-#'  hierarchy = configuration$table$hkeysLevel() )
+#'  hierarchy = configuration$table$hkeysDepth() )
 #' summarize_hierarchy(sample_analysis, configuration,
-#'  hierarchy = NULL, factors = configuration$table$fkeysLevel() )
-#' configuration$table$hierarchyLevel = 1
+#'  hierarchy = NULL, factors = configuration$table$fkeysDepth() )
+#' configuration$table$hierarchyDepth = 1
 #' summarize_hierarchy(sample_analysis, configuration,
-#'  factors = configuration$table$fkeysLevel())
-#' configuration$table$hierarchyLevel = 2
+#'  factors = configuration$table$fkeysDepth())
+#' configuration$table$hierarchyDepth = 2
 #' summarize_hierarchy(sample_analysis, configuration)
-#' configuration$table$hierarchyLevel = 3
+#' configuration$table$hierarchyDepth = 3
 #' summarize_hierarchy(sample_analysis, configuration )
-#' configuration$table$hierarchyLevel = 4
+#' configuration$table$hierarchyDepth = 4
 #' summarize_hierarchy(sample_analysis, configuration )
 #' summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 summarize_hierarchy <- function(x,
                                 configuration,
-                                hierarchy = configuration$table$hkeysLevel(),
+                                hierarchy = configuration$table$hkeysDepth(),
                                 factors = character())
 {
   all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
@@ -686,7 +686,7 @@ summarize_hierarchy <- function(x,
 #'
 interaction_missing_stats <- function(x,
                                       config,
-                                      factors = config$table$fkeysLevel(),
+                                      factors = config$table$fkeysDepth(),
                                       hierarchy = config$table$hierarchyKeys(),
                                       workIntensity = config$table$getWorkIntensity())
 {
@@ -725,7 +725,7 @@ interaction_missing_stats <- function(x,
 #' head(xxx)
 missigness_impute_interactions <- function(mdataTrans,
                                            config,
-                                           factors = config$table$fkeysLevel(),
+                                           factors = config$table$fkeysDepth(),
                                            probs = 0.1){
   x <- interaction_missing_stats(mdataTrans, config, factors = factors)
   x_summaries <- x$summaries
@@ -763,7 +763,7 @@ missigness_impute_interactions <- function(mdataTrans,
     }else{
       xx <- xx %>% dplyr::select(-one_of(factors))
 
-      pid <- config$table$hkeysLevel()
+      pid <- config$table$hkeysDepth()
       nrReplicates <- xx %>%
         dplyr::select( -one_of(setdiff(x_summaries,"nrReplicates" ))) %>%
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") %>%
@@ -845,8 +845,8 @@ missigness_impute_factors_interactions <-
     fac_fun[["interaction"]] <- missigness_impute_interactions(data,
                                                                config,
                                                                probs = probs)
-    if (config$table$factorLevel > 1 ) { # if 1 only then done
-      for (factor in config$table$fkeysLevel()) {
+    if (config$table$factorDepth > 1 ) { # if 1 only then done
+      for (factor in config$table$fkeysDepth()) {
         fac_fun[[factor]] <- missigness_impute_interactions(data,
                                                             config,
                                                             factors = factor,
@@ -878,7 +878,7 @@ missigness_impute_contrasts <- function(data,
   }
 
   if (!is.null(agg_fun)) {
-    data <- data %>% group_by_at(c("value" , config$table$hkeysLevel())) %>%
+    data <- data %>% group_by_at(c("value" , config$table$hkeysDepth())) %>%
       summarise_if(is.numeric, agg_fun)
   }
   return(data)
@@ -953,7 +953,7 @@ workflow_missigness_impute_contrasts <- function(data,
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' missigness_histogram(sample_analysis, skylineconfig)
 #'
-missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysLevel()){
+missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
@@ -967,7 +967,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 
   }
 
-  factors <- table$fkeysLevel()
+  factors <- table$fkeysDepth()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
@@ -993,7 +993,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' print(res$figure)
 missingness_per_condition_cumsum <- function(x,
                                              config,
-                                             factors = config$table$fkeysLevel()){
+                                             factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config,factors)$data
 
@@ -1030,7 +1030,7 @@ missingness_per_condition_cumsum <- function(x,
 #' config <- skylineconfig$clone(deep = TRUE)
 #' x <- sample_analysis
 #'
-missingness_per_condition <- function(x, config, factors = config$table$fkeysLevel()){
+missingness_per_condition <- function(x, config, factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
@@ -1145,7 +1145,7 @@ medpolishPly <- function(x, name = FALSE){
 #' res <- x("unnest")
 #' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
 #' config <- LFQService::skylineconfig$clone(deep = TRUE)
-#' config$table$hierarchyLevel <- 1
+#' config$table$hierarchyDepth <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' x("unnest")$data
@@ -1156,7 +1156,7 @@ medpolishPly <- function(x, name = FALSE){
 #' # example how to add peptide count information
 #'
 #' tmp <- summarize_hierarchy(data, config)
-#' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysLevel())
+#' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 #' head(tmp)
 intensity_summary_by_hkeys <- function(data, config, func)
 {
@@ -1164,7 +1164,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
   makeName <- make.names(as.character(x$func))
   config <- config$clone(deep = TRUE)
 
-  xnested <- data %>% group_by_at(config$table$hkeysLevel()) %>% nest()
+  xnested <- data %>% group_by_at(config$table$hkeysDepth()) %>% nest()
 
   xnested <- xnested %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
@@ -1183,13 +1183,13 @@ intensity_summary_by_hkeys <- function(data, config, func)
 
     newconfig <- make_reduced_hierarchy_config(config,
                                                workIntensity = func(name = TRUE),
-                                               hierarchy = config$table$hkeysLevel(names = FALSE))
+                                               hierarchy = config$table$hkeysDepth(names = FALSE))
 
     if (value == "nested") {
       return(list(xnested = xnested, config = newconfig))
     }else if (value == "unnest" || value == "wide") {
       unnested <- xnested %>%
-        dplyr::select(config$table$hkeysLevel(), makeName) %>%
+        dplyr::select(config$table$hkeysDepth(), makeName) %>%
         tidyr::unnest(cols = c(medpolishPly)) %>%
         dplyr::ungroup()
 
@@ -1201,11 +1201,11 @@ intensity_summary_by_hkeys <- function(data, config, func)
       return(list(data = unnested, config = newconfig))
     }else if (value == "plot") {
       hierarchy_ID <- "hierarchy_ID"
-      xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysLevel()))
+      xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
       figs <- xnested %>%
         dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
                                   plot_hierarchies_line,
-                                  factor_level = config$table$factorLevel, config ))
+                                  factor_level = config$table$factorDepth, config ))
 
       figs <- figs %>%
         dplyr::mutate(plot = map2(plot, !!sym(makeName) ,
@@ -1321,13 +1321,13 @@ summarize_cv <- function(data, config, all = TRUE){
 
 
   hierarchyFactor <- data %>%
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysLevel()) )) %>%
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
     dplyr::summarize(n = n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym, na.rm = T),
                      mean = mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysLevel(), funs(as.character) )
+  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysDepth(), funs(as.character) )
 
   if (all) {
     hierarchy <- data %>%
@@ -1370,16 +1370,16 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
   q_column <- paste0(stats,"_quantiles")
 
   xx2 <- stats_res %>%
-    dplyr::group_by(!!!syms(config$table$fkeysLevel())) %>%
+    dplyr::group_by(!!!syms(config$table$fkeysDepth())) %>%
     tidyr::nest()
 
 
   sd_quantile_res2 <- xx2 %>%
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  %>%
-    dplyr::select(!!!syms(c(config$table$fkeysLevel(),q_column))) %>%
+    dplyr::select(!!!syms(c(config$table$fkeysDepth(),q_column))) %>%
     tidyr::unnest(cols = c(q_column))
 
-  xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysLevel())
+  xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysDepth())
   wide <- xx %>%  spread("interaction", quantiles)
   return(list(long = sd_quantile_res2, wide = wide))
 }
@@ -1862,7 +1862,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   xx <- inner_join(wide$annotation, xx)
 
 
-  sh <- config$table$fkeysLevel()[2]
+  sh <- config$table$fkeysDepth()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   }else{
@@ -1874,7 +1874,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_y = 0.25 )
 
   x <- ggplot(xx, aes(x = PC1, y = PC2,
-                      color = !!sym(config$table$fkeysLevel()[1]),
+                      color = !!sym(config$table$fkeysDepth()[1]),
                       text = !!sym(config$table$sampleName))) +
     point + if (add_txt) {text}
 

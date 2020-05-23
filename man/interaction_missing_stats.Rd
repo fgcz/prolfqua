@@ -7,7 +7,7 @@
 interaction_missing_stats(
   x,
   config,
-  factors = config$table$fkeysLevel(),
+  factors = config$table$fkeysDepth(),
   hierarchy = config$table$hierarchyKeys(),
   workIntensity = config$table$getWorkIntensity()
 )

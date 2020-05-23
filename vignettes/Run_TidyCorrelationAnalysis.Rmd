@@ -168,7 +168,7 @@ mean(xx$srm_decorelated)
 ```
 
 ```{r shownotcorrelated}
-nested <- xx %>% group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
+nested <- xx %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
 
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
@@ -213,7 +213,7 @@ proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
 
 ```{r doplottingOFProtein}
 # nest transtions
-xnested <- qvalFiltImputed %>% group_by_at(config$table$hkeysLevel()) %>% tidyr::nest()
+xnested <- qvalFiltImputed %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
 
 
 #plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)

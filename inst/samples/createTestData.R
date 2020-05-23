@@ -25,7 +25,7 @@ createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
 }
 
 config <- createMQProteinPeptideConfiguration()
-config$table$factorLevel <- 2
+config$table$factorDepth <- 2
 resPepProtAnnot %>% dplyr::filter(reverse == FALSE) -> resPepProtAnnot
 
 
@@ -35,11 +35,32 @@ resDataStart <- remove_small_intensities(resDataStart, config) %>%
 
 smallData <- resDataStart %>% dplyr::filter(protein_Id %in% sample(resDataStart$protein_Id,20))
 testData2954 <- list(resDataStart = smallData, config = config)
-#usethis::use_data(testData2954)
+usethis::use_data(testData2954, overwrite = TRUE)
+
 resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
                                                  config,
-                                                 path ,
+                                                 path = NULL ,
                                                  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
 
-#usethis::use_data(resultsV12954, overwrite=TRUE)
+usethis::use_data(resultsV12954, overwrite = TRUE)
 
+
+config <- testDataStart2954$config
+
+patchOldConfig <- function(config){
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = config$table$fileName
+  # measurement levels.
+  atable$hierarchy <- config$table$hierarchy
+  #
+  atable$ident_qValue = config$table$ident_qValue
+  atable$workIntensity <- config$table$workIntensity
+  atable$isotopeLabel = config$table$isotopeLabel
+  atable$factors <- config$table$factors
+  anaparam <- AnalysisParameters$new()
+  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  return(configuration)
+}
+
+testDataStart2954$config <- patchOldConfig(testDataStart2954$config)
+usethis::use_data(testDataStart2954, overwrite = TRUE)

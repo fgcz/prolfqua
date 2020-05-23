@@ -117,11 +117,11 @@ isSingular_lm <- function(m){
 #'   model_name = modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
-#' config$table$hkeysLevel()
+#' config$table$hkeysDepth()
 #' mr <- model_analyse( pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName,
-#'  config$table$hkeysLevel())
+#'  config$table$hkeysDepth())
 #' get_complete_model_fit(mr$modelProtein)
 model_analyse <- function(pepIntensity,
                           modelFunction,
@@ -201,11 +201,11 @@ get_complete_model_fit <- function(modelProteinF){
 #'    model_name = modelName)
 #' pepIntensity <- D$pepIntensityNormalized
 #' config <- D$config_pepIntensityNormalized
-#' config$table$hkeysLevel()
+#' config$table$hkeysDepth()
 #' modellingResult <- model_analyse( pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName,
-#'  config$table$hkeysLevel())
+#'  config$table$hkeysDepth())
 #' names(modellingResult)
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein, modelName)
 #' names(tmp)
@@ -286,10 +286,10 @@ model_analyse_summarize_write  <- function(modellingResult, path, all = FALSE){
 #'  D$pepIntensityNormalized,
 #'  formula_randomPeptide,
 #'  modelName,
-#'  D$config_pepIntensityNormalized$table$hkeysLevel())
+#'  D$config_pepIntensityNormalized$table$hkeysDepth())
 #' tmp <- model_analyse_summarize(modellingResult$modelProtein)
 #' res <- model_analyse_summarize_vis(tmp,
-#'  D$config_pepIntensityNormalized$table$hkeysLevel())
+#'  D$config_pepIntensityNormalized$table$hkeysDepth())
 #'
 model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id") {
   Model_Coeff <- tidyr::unite(modellingResult$Model_Coeff, "subject_Id", subject_Id)
@@ -380,7 +380,7 @@ model_analyse_summarize_vis_write <- function(modelling_result,
 #' modellingResult <-  workflow_model_analyse(D$pepIntensityNormalized,
 #'  formula_randomPeptide,
 #'   modelName,
-#'  subject_Id = D$config_pepIntensityNormalized$table$hkeysLevel())
+#'  subject_Id = D$config_pepIntensityNormalized$table$hkeysDepth())
 #' reslist <- modellingResult()
 workflow_model_analyse <- function(data,
                                    modelFunction,
@@ -785,11 +785,11 @@ linfct_factors_contrasts <- function(m){
   ffac <- ffac[!grepl(":",ffac)] # remove interactions
   linfct_factors <- linfct_from_model(m)$linfct_factors
 
-  factorLevels <- rownames(linfct_factors)
+  factorDepths <- rownames(linfct_factors)
   res <- vector(length(ffac), mode = "list")
   for (i in 1:length(ffac)) {
     fac <- ffac[i]
-    idx <- grep(fac, factorLevels)
+    idx <- grep(fac, factorDepths)
     linfct_m <- linfct_factors[idx,]
     res[[i]] <- .linfct_all_possible_contrasts(linfct_m)
   }
@@ -1311,7 +1311,7 @@ workflow_contrasts_linfct <- function(models,
     linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
   }
 
-  subject_Id <- config$table$hkeysLevel()
+  subject_Id <- config$table$hkeysDepth()
   contrast_result <- contrasts_linfct(models,
                                       linfct_A,
                                       subject_Id = subject_Id,
@@ -1403,7 +1403,7 @@ workflow_contrasts_linfct_V2 <- function(models,
   linfct <- unique(linfct) # needed for single factor models
   linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
 
-  subject_Id <- config$table$hkeysLevel()
+  subject_Id <- config$table$hkeysDepth()
   contrast_result <- contrasts_linfct(models,
                                       rbind(linfct, linfct_A),
                                       subject_Id = subject_Id,
@@ -1560,7 +1560,7 @@ contrasts_linfct_write <- function(results,
                                    prefix = "Contrasts",
                                    columns = c("estimate", "p.value", "p.value.adjusted")){
 
-  subject_Id <- config$table$hkeysLevel()
+  subject_Id <- config$table$hkeysDepth()
 
   if (!is.null(path)) {
     fileLong <- file.path(path,paste0(prefix, "_", modelName, ".csv"))
@@ -1601,7 +1601,7 @@ get_model_coefficients <- function(modeldata, config){
     dplyr::mutate(coefficients_values = purrr::map(linear_model, l_coeff)) %>%
     dplyr::mutate(coefficients_names = purrr::map(linear_model, n_coeff))
 
-  xxs <- xx %>% dplyr::select( config$table$hkeysLevel(),
+  xxs <- xx %>% dplyr::select( config$table$hkeysDepth(),
                                coefficients_values,
                                coefficients_names)
   xxxn <- xxs %>% unnest()

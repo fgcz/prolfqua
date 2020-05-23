@@ -15,11 +15,11 @@ hist(na.omit(xx$transformedIntensity))
 tmp <- ims %>% filter(nrReplicates-nrNAs == 2)
 xx <- inner_join( da , tmp )
 xx %>% na.omit() -> xx
-#xx %>% select(config$table$idVars(), config$table$fkeysLevel(), config$table$getWorkIntensity()) %>% tidyr::spread(c(config$table$idVars(), config$table$fkeysLevel()), config$table$getWorkIntensity())
+#xx %>% select(config$table$idVars(), config$table$fkeysDepth(), config$table$getWorkIntensity()) %>% tidyr::spread(c(config$table$idVars(), config$table$fkeysDepth()), config$table$getWorkIntensity())
 
-xxx <- xx %>% group_by_at(c(config$table$hierarchyKeys(), config$table$fkeysLevel())) %>% mutate(index = row_number()) %>% ungroup() #%>%
+xxx <- xx %>% group_by_at(c(config$table$hierarchyKeys(), config$table$fkeysDepth())) %>% mutate(index = row_number()) %>% ungroup() #%>%
 
-xxx <- xxx %>% dplyr::select(c(config$table$hierarchyKeys(), config$table$fkeysLevel(), config$table$getWorkIntensity(),"index"))
+xxx <- xxx %>% dplyr::select(c(config$table$hierarchyKeys(), config$table$fkeysDepth(), config$table$getWorkIntensity(),"index"))
 xxx <- xxx %>% tidyr::spread("index","transformedIntensity")
 plot(xxx$`1`,xxx$`2`)
 

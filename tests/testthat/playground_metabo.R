@@ -6,10 +6,10 @@ library(conflicted)
 VIS_PROT <- FALSE
 
 results <- LFQService::results_MetaboData
-results$config_pepIntensityNormalized$table$factorLevel <- 3
+results$config_pepIntensityNormalized$table$factorDepth <- 3
 
 pepConfig<- results$config_dataTransformed
-pepConfig$table$factorLevel <- 3
+pepConfig$table$factorDepth <- 3
 pepConfig$table$factorKeys()
 
 # first model ----
@@ -20,14 +20,14 @@ modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortali
 modellingResult_A <- model_analyse(results$dataTransformed,
                                    modelFunction,
                                    modelName,
-                                   subject_Id = pepConfig$table$hkeysLevel())
+                                   subject_Id = pepConfig$table$hkeysDepth())
 #usethis::use_data(modellingResult_A, overwrite = TRUE)
 
-modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
+modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysDepth())
 
 
 
-visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())
+visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysDepth())
 model_analyse_summarize_write(modelSummary_A , results$path)
 model_analyse_summarize_vis_write(visualization ,path = results$path)
 
@@ -43,7 +43,7 @@ linfct_A <- rbind(linfct, factor_contrasts)
 
 models_interaction_Averages <- contrasts_linfct( m,
                                                  linfct,
-                                                 subject_Id = pepConfig$table$hkeysLevel(),
+                                                 subject_Id = pepConfig$table$hkeysDepth(),
                                                  contrastfun = modelFunction$contrast_fun
 )
 

@@ -24,10 +24,10 @@ formula_randomPeptide <-
   model_name = modelName)
 pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
-config$table$hkeysLevel()
+config$table$hkeysDepth()
 mr <- model_analyse( pepIntensity,
  formula_randomPeptide,
  modelName,
- config$table$hkeysLevel())
+ config$table$hkeysDepth())
 get_complete_model_fit(mr$modelProtein)
 }

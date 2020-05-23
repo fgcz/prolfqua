@@ -21,7 +21,7 @@ length(unique(results$resDataStart$protein_Id))
 length(unique(results$filteredPep$protein_Id))
 
 
-results$config_pepIntensityNormalized$table$factorLevel <- 1
+results$config_pepIntensityNormalized$table$factorDepth <- 1
 pepConfig<- results$config_pepIntensityNormalized
 
 pepConfig$table$factorKeys()
@@ -95,7 +95,7 @@ lltest <- workflow_likelihood_ratio_test(models_base$modelProtein,
                                          models_base$modelName,
                                          models_interaction$modelProtein,
                                          models_interaction$modelName,
-                                         subject_Id = pepConfig$table$hkeysLevel(),
+                                         subject_Id = pepConfig$table$hkeysDepth(),
                                          path = results$path)
 
 
@@ -105,7 +105,7 @@ m$linfct_interactions
 # Group averages for one of the models
 models_interaction_Averages <- contrasts_linfct(models,
                                                  m$linfct_interactions,
-                                                 subject_Id = pepConfig$table$hkeysLevel() )
+                                                 subject_Id = pepConfig$table$hkeysDepth() )
 
 contrasts_linfct_write(models_interaction_Averages, pepConfig, models_base$modelName ,  path=results$path )
 
@@ -117,7 +117,7 @@ all_linfct <- LFQService:::.linfct_all_possible_contrasts(m$linfct_interactions)
 
 models_allContrasts <- contrasts_linfct( models,
                                          all_linfct,
-                                         subject_Id = pepConfig$table$hkeysLevel() )
+                                         subject_Id = pepConfig$table$hkeysDepth() )
 
 wfs <- contrasts_linfct_vis(models_allContrasts,models_interaction$modelName )
 contrasts_linfct_vis_write(wfs, path=results$path)

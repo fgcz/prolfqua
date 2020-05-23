@@ -20,9 +20,9 @@ modellingResult <-  model_analyse(
  D$pepIntensityNormalized,
  formula_randomPeptide,
  modelName,
- D$config_pepIntensityNormalized$table$hkeysLevel())
+ D$config_pepIntensityNormalized$table$hkeysDepth())
 tmp <- model_analyse_summarize(modellingResult$modelProtein)
 res <- model_analyse_summarize_vis(tmp,
- D$config_pepIntensityNormalized$table$hkeysLevel())
+ D$config_pepIntensityNormalized$table$hkeysDepth())
 
 }

@@ -45,7 +45,7 @@ createMetaboCompoundConfiguration <- function(isotopeLabel="isotope",
   #atable$factors[["AgeAtDeath.Days"]] = "AgeAtDeath_Days"
   atable$factors[["run_ID"]] = "run_ID"
 
-  atable$factorLevel = 2
+  atable$factorDepth = 2
   anaparam <- AnalysisParameters$new()
   anaparam$min_peptides_protein <- 2
   configuration <- AnalysisConfiguration$new(atable, anaparam)

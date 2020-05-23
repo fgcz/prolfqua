@@ -74,7 +74,7 @@ application_run_modelling <- function(outpath,
 
   modellingResult_fun <- workflow_model_analyse(data,
                                                 modelFunction,
-                                                subject_Id = pepConfig$table$hkeysLevel())
+                                                subject_Id = pepConfig$table$hkeysDepth())
 
   modellingResult <- modellingResult_fun()
   modellingResult_fun(modelling_path)
@@ -125,7 +125,7 @@ application_run_modelling <- function(outpath,
   }
 
   contrast_results <- merge_contrasts_results(xx$contrast_minimal, xx_imputed,
-                                              subject_Id = pepConfig$table$hkeysLevel(), modelFunction = modelFunction)
+                                              subject_Id = pepConfig$table$hkeysDepth(), modelFunction = modelFunction)
   separate_hierarchy(contrast_results, config) -> filtered_dd
 
   lfq_write_table(filtered_dd, path = file.path(modelling_path, "foldchange_estimates.csv"))

@@ -62,7 +62,7 @@ create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
   # measurement levels.
   atable$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id")
   atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
-  atable$hierarchyLevel <- 1
+  atable$hierarchyDepth <- 1
   #
   atable$ident_qValue = ident_qValue
   atable$setWorkIntensity(intensity)

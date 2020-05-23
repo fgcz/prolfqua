@@ -7,7 +7,7 @@
 missingness_per_condition_cumsum(
   x,
   config,
-  factors = config$table$fkeysLevel()
+  factors = config$table$fkeysDepth()
 )
 }
 \description{

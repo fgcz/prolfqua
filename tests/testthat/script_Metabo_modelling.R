@@ -7,10 +7,10 @@ library(conflicted)
 VIS_PROT <- FALSE
 
 results <- LFQService::results_MetaboData
-results$config_pepIntensityNormalized$table$factorLevel <- 3
+results$config_pepIntensityNormalized$table$factorDepth <- 3
 
 pepConfig<- results$config_dataTransformed
-pepConfig$table$factorLevel <- 3
+pepConfig$table$factorDepth <- 3
 pepConfig$table$factorKeys()
 
 # first model ----
@@ -21,14 +21,14 @@ modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale  ~ Mortali
 modellingResult_A <- model_analyse(results$dataTransformed,
                                    modelFunction,
                                    modelName,
-                                   subject_Id = pepConfig$table$hkeysLevel())
+                                   subject_Id = pepConfig$table$hkeysDepth())
 #usethis::use_data(modellingResult_A, overwrite = TRUE)
 
-modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysLevel())
+modelSummary_A <- model_analyse_summarize(modellingResult_A$modelProtein,modelName,subject_Id = pepConfig$table$hkeysDepth())
 
 
 
-visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysLevel())
+visualization <- model_analyse_summarize_vis(modelSummary_A,pepConfig$table$hkeysDepth())
 model_analyse_summarize_write(modelSummary_A , results$path)
 model_analyse_summarize_vis_write(visualization ,path = results$path)
 
@@ -41,7 +41,7 @@ factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 
 factor_levelContrasts <- contrasts_linfct( m,
                                            factor_contrasts,
-                                           subject_Id = pepConfig$table$hkeysLevel(),
+                                           subject_Id = pepConfig$table$hkeysDepth(),
                                            contrastfun = LFQService::my_contrast_V2)
 
 
@@ -61,7 +61,7 @@ contrasts_linfct_write(factor_levelContrasts,
 linfct <- linfct_from_model(m$linear_model[[1]])
 models_interaction_Averages <- contrasts_linfct( m,
                                                  linfct$linfct_factors,
-                                                 subject_Id = pepConfig$table$hkeysLevel(),
+                                                 subject_Id = pepConfig$table$hkeysDepth(),
                                                 contrastfun = LFQService::my_contrast_V2
                                                 )
 
@@ -91,7 +91,7 @@ res <- contrastres_fun(path=results$path)
 
 # second model For likelihood ratio test ----
 
-results$config_pepIntensityNormalized$table$factorLevel <- 2
+results$config_pepIntensityNormalized$table$factorDepth <- 2
 
 modelName  <- "f_Mortality_Intervention"
 modelFunction <- make_custom_model_lm("log2_rawIntensity_robust_scale   ~ Mortality + Intervention ", modelName)
@@ -106,7 +106,7 @@ modellingResult_B <- model_analyse(results$dataTransformed,
 res <-workflow_model_analyse(results$dataTransformed,
                              modelFunction,
                              modelName,
-                             subject_Id = pepConfig$table$hkeysLevel())
+                             subject_Id = pepConfig$table$hkeysDepth())
 
 ## rund model comparison ----
 dim(m)
