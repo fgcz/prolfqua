@@ -39,6 +39,8 @@
 }
 
 
+
+
 #' compute all contrasts from non interaction model automatically.
 #'
 #' used p2109
@@ -52,11 +54,11 @@
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #'
 #' pepConfig <- D$config_pepIntensityNormalized
-#' modellingResult <- model_analyse( D$pepIntensityNormalized,
+#' modellingResult <- LFQService:::model_analyse( D$pepIntensityNormalized,
 #' formula_randomPeptide,
 #' subject_Id = pepConfig$table$hkeysDepth(),
 #' modelName)
-#' #results <- deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
+#' #results <- LFQService:::deprecated_model_contrasts_no_interaction(modellingResult$modelProtein,
 #' #modelName,
 #' #D$config_pepIntensityNormalized)
 #'

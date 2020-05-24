@@ -538,14 +538,15 @@ nr_B_in_A <- function(data,
 }
 
 # Summarize Intensities by Intensity or NAs ----
-rankProteinPrecursors <- function(data,
-                                  config,
-                                  column = config$table$getWorkIntensity(),
-                                  fun = function(x){ mean(x, na.rm = TRUE)},
-                                  summaryColumn = "srm_meanInt",
-                                  rankColumn = "srm_meanIntRank",
-                                  rankFunction = function(x){min_rank(desc(x))}
-){
+.rankProteinPrecursors <-
+  function(data,
+           config,
+           column = config$table$getWorkIntensity(),
+           fun = function(x){ mean(x, na.rm = TRUE)},
+           summaryColumn = "srm_meanInt",
+           rankColumn = "srm_meanIntRank",
+           rankFunction = function(x){ min_rank(desc(x)) }
+  ){
   table <- config$table
 
   summaryPerPrecursor <- data %>%
@@ -577,7 +578,7 @@ rankProteinPrecursors <- function(data,
 rankPrecursorsByIntensity <- function(data, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  data <- rankProteinPrecursors(data, config, column = config$table$getWorkIntensity(),
+  data <- .rankProteinPrecursors(data, config, column = config$table$getWorkIntensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
@@ -645,7 +646,7 @@ aggregateTopNIntensities <- function(data , config, func, N){
 rankPrecursorsByNAs <- function(data, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
-  data <- rankProteinPrecursors(data, config,
+  data <- .rankProteinPrecursors(data, config,
                                 column = config$table$getWorkIntensity(),
                                 fun = function(x){sum(!is.na(x))},
                                 summaryColumn = summaryColumn,

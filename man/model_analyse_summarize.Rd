@@ -24,7 +24,7 @@ formula_randomPeptide <-
 pepIntensity <- D$pepIntensityNormalized
 config <- D$config_pepIntensityNormalized
 config$table$hkeysDepth()
-modellingResult <- model_analyse( pepIntensity,
+modellingResult <- LFQService:::model_analyse( pepIntensity,
  formula_randomPeptide,
  modelName,
  config$table$hkeysDepth())

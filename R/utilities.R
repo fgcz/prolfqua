@@ -221,10 +221,10 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 #' @export
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-#' pairs(tmp,log="xy",main="small data")
-#' pairs(tmp,log="xy",main="small data", legend=TRUE)
+#' pairs_w_abline(tmp,log="xy",main="small data")
+#' pairs_w_abline(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-pairs = function(dataframe,
+pairs_w_abline <- function(dataframe,
                    legend = FALSE,
                    pch = ".",
                    ...) {
@@ -251,7 +251,7 @@ pairs = function(dataframe,
     ...
   )
 }
-#' histogram panel for pairs function (used as default in pairsSmooth)
+#' histogram panel for pairs function (used as default in pairs_smooth)
 #' @export
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
@@ -268,7 +268,7 @@ panel.hist <- function(x, ...)
   y <- y / max(y)
   rect(breaks[-nB], 0, breaks[-1], y,  ...)
 }
-#' correlation panel for pairs plot function (used as default in pairsSmooth)
+#' correlation panel for pairs plot function (used as default in pairs_smooth)
 #' @export
 #' @param x numeric data
 #' @param y numeric data
@@ -308,11 +308,11 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' @export
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-#' pairsSmooth(tmp,main="small data", legend=TRUE)
-#' pairsSmooth(tmp,main="small data", diag.panel=panel.hist)
-#' pairsSmooth(tmp,log="xy",main="small data", legend=TRUE)
+#' pairs_smooth(tmp,main="small data", legend=TRUE)
+#' pairs_smooth(tmp,main="small data", diag.panel=panel.hist)
+#' pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-pairsSmooth = function(dataframe, legend = FALSE, ...) {
+pairs_smooth = function(dataframe, legend = FALSE, ...) {
   pairs(
     dataframe,
     upper.panel = function(x, y) {
@@ -332,8 +332,7 @@ pairsSmooth = function(dataframe, legend = FALSE, ...) {
                          text.col = 3)
       }
     }
-    ,
-    lower.panel = panel.cor,
+    , lower.panel = panel.cor ,
     ...
   )
 }

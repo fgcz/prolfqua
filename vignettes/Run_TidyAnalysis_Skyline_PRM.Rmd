@@ -216,11 +216,11 @@ plotProt <- function(data, title) {
     geom_point(fill = "red",
                color = 2,
                size = 2) +
-    stat_summary(fun.y = mean,
+    stat_summary(fun = mean,
                  geom = "line",
                  aes(group = 1),
                  col = "blue") +
-    stat_summary(fun.y = mean,
+    stat_summary(fun = mean,
                  geom = "point",
                  col = "blue") + ggtitle(title) +
     theme_classic() + ylab(expression(log[2](frac(P, CiRT))))
@@ -247,11 +247,11 @@ plotProtMedian <- function(data, title) {
     geom_point(fill = "red",
                color = 2,
                size = 2) +
-    stat_summary(fun.y = median,
+    stat_summary(fun = median,
                  geom = "line",
                  aes(group = 1),
                  col = "blue") +
-    stat_summary(fun.y = median,
+    stat_summary(fun = median,
                  geom = "point",
                  col = "blue") + ggtitle(title) +
     theme_classic() + ylab(expression(log[2](frac(P, CiRT))))

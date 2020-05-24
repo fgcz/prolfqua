@@ -1658,8 +1658,8 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
 
   p <- ggplot(top50, aes_string(x = config$table$factorKeys()[1], y = stat)) +
     geom_violin() +
-    stat_summary(fun.y = median.quartile, geom = 'point', shape = 3) +
-    stat_summary(fun.y = median, geom = 'point', shape = 1) +
+    stat_summary(fun = median.quartile, geom = 'point', shape = 3) +
+    stat_summary(fun = median, geom = 'point', shape = 1) +
     facet_wrap("top")
   return(p)
 }

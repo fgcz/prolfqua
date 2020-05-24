@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{panel.cor}
 \alias{panel.cor}
-\title{correlation panel for pairs plot function (used as default in pairsSmooth)}
+\title{correlation panel for pairs plot function (used as default in pairs_smooth)}
 \usage{
 panel.cor(x, y, digits = 2, ...)
 }
@@ -16,5 +16,5 @@ panel.cor(x, y, digits = 2, ...)
 \item{...}{not used}
 }
 \description{
-correlation panel for pairs plot function (used as default in pairsSmooth)
+correlation panel for pairs plot function (used as default in pairs_smooth)
 }
