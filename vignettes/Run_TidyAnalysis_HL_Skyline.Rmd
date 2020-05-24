@@ -7,8 +7,10 @@ output:
   html_document: default
 vignette: >
   %\VignetteIndexEntry{Example of data preprocessing for HL experiment}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +23,7 @@ fig.height = 10
 )
 ```
 
-```{r}
+```{r loadLibs}
 rm(list = ls())
 library(conflicted)
 library(tidyverse)
@@ -30,13 +32,13 @@ library(LFQService)
 
 
 
-```{r}
+```{r gettmpdir}
 outdir <- tempdir()
 ```
 
 # Setting up the configuration
 
-```{r}
+```{r loadDataCreateConfig}
 allDataM <- LFQService::skylineSRM_HL_data
 
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label",
@@ -52,12 +54,12 @@ resData$Area[resData$Area == 0] <- NA
 tt <- R6extractValues(skylineconfig)
 ```
 
-```{r eval=FALSE}
+```{r writeYaml, eval=FALSE}
 yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 ```
 
 
-```{r fig.cap="transitions in one plot."}
+```{r plotHierarchies, fig.cap="transitions in one plot."}
 proteinIDsymbol <- sym(skylineconfig$table$hierarchyKeys()[1])
 
 xnested <- resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
@@ -68,7 +70,7 @@ plot_hierarchies_line(xnested$data[[2]],
 ```
 
 
-```{r fig.cap="transitions in separate plot."}
+```{r plotHierarchies2, fig.cap="transitions in separate plot."}
 plot_hierarchies_line(xnested$data[[3]],
                       xnested$protein_Id[[3]],
                       skylineconfig,
@@ -80,9 +82,10 @@ plot_hierarchies_line(xnested$data[[3]],
 
 ## Example how to report all proteins.
 
-```{r eval=FALSE}
+```{r  printAllproteins, eval=FALSE}
 figs <- xnested %>%
-  dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig, separate = TRUE))
+  dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol),
+                            plot_hierarchies_line, skylineconfig, separate = TRUE))
 
 pdf(file.path(outdir,"allProteins.pdf"), width = 10, height = 10)
 invisible(lapply(figs$plot[1:3], print))
@@ -91,7 +94,7 @@ dev.off()
 
 # Rendering the SRMReport
 
-```{r eval = FALSE}
+```{r renderReports ,eval = FALSE}
 rmarkdown::render("tr_srm_summary_HL.Rmd",
                   params = list(data=resData, configuration = skylineconfig),
                   envir = new.env(),
@@ -100,7 +103,7 @@ rmarkdown::render("tr_srm_summary_HL.Rmd",
 
 # Computing L to Heavy fold changes
 
-```{r}
+```{r spearateHeavyAndLight}
 HLData <- spreadValueVarsIsotopeLabel(resData, skylineconfig)
 HLData <- HLData %>% dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Area))
 HLData$Isotope.Label <- "L/H"
@@ -117,50 +120,50 @@ skylineconfigHL$table$getWorkIntensity()
 
 ## Plot heavy to light ratio
 
-```{r}
+```{r PlotHierarchiesLight}
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
 HLfigs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 ```
 
 
-```{r eval=FALSE}
+```{r PlotAllProteins, eval=TRUE}
 
-pdf(file.path(outdir,"allHLProteins.pdf"), width = 10, height = 10)
+#pdf(file.path(outdir,"allHLProteins.pdf"), width = 10, height = 10)
 invisible(lapply(HLfigs$plot[1:3], print))
-dev.off()
+#dev.off()
 ```
 
 # Compute a protein level summary
 
-```{r}
+```{r summarizeProteinMedpolish}
 skylineconfigHL$table$hkeysDepth()
 
 HLfigs3 <- LFQService::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolishPly)
-HLfigs3 <- HLfigs3()
+HLfigs3 <- HLfigs3("nested")
+HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hkeysDepth())
 
-HLfigs3 <- dplyr::inner_join(HLfigs3, HLfigs, by = skylineconfigHL$table$hierarchyKeys()[1])
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
   plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
 p
 
 ```
 
-```{r eval=FALSE}
+```{r writeSummaries ,eval=TRUE}
+
 HLfigs3 <- HLfigs3 %>%
   dplyr::mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
-pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)
+#pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
 invisible(lapply(HLfigs3$figsMed[2:5], print))
-dev.off()
+#dev.off()
 ```
 
 # Get Protein intensities
 
-```{r fig.cap="Plot protein intensities"}
+```{r plotProteinIntensities, fig.cap="Plot protein intensities"}
 prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly) %>% 
-  tidyr::unnest()
-write_tsv(prots, path = file.path(outdir,"proteins.tsv"))
+  tidyr::unnest(cols = "medpolishPly")
 
 ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
   geom_point() +
@@ -171,7 +174,7 @@ ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatm
 ```
 
 
-```{r fig.cap="Plot protein intensities"}
+```{r plotProteinIntensitiesFreeY, fig.cap="Plot protein intensities"}
 ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
   geom_point() +
   geom_line() +
