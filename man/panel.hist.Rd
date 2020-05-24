@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{panel.hist}
 \alias{panel.hist}
-\title{histogram panel for pairs function (used as default in mypairsSmooth)}
+\title{histogram panel for pairs function (used as default in pairsSmooth)}
 \usage{
 panel.hist(x, ...)
 }
@@ -12,5 +12,5 @@ panel.hist(x, ...)
 \item{...}{additional parameters passed to rect}
 }
 \description{
-histogram panel for pairs function (used as default in mypairsSmooth)
+histogram panel for pairs function (used as default in pairsSmooth)
 }

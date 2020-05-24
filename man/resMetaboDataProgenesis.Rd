@@ -3,8 +3,7 @@
 \docType{data}
 \name{resMetaboDataProgenesis}
 \alias{resMetaboDataProgenesis}
-\title{resPepProtAnnot <- read_csv(file = "data/annotatedPeptide_PhonixDS_1097969.csv")
-raw Metabolomics data from progenesis}
+\title{raw Metabolomics data from progenesis}
 \format{
 An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 3600 rows and 11 columns.
 }
@@ -12,7 +11,6 @@ An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, 
 resMetaboDataProgenesis
 }
 \description{
-resPepProtAnnot <- read_csv(file = "data/annotatedPeptide_PhonixDS_1097969.csv")
 raw Metabolomics data from progenesis
 }
 \keyword{datasets}

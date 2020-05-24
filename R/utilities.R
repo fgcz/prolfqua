@@ -221,10 +221,10 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 #' @export
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-#' mypairs(tmp,log="xy",main="small data")
-#' mypairs(tmp,log="xy",main="small data", legend=TRUE)
+#' pairs(tmp,log="xy",main="small data")
+#' pairs(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-mypairs = function(dataframe,
+pairs = function(dataframe,
                    legend = FALSE,
                    pch = ".",
                    ...) {
@@ -251,7 +251,7 @@ mypairs = function(dataframe,
     ...
   )
 }
-#' histogram panel for pairs function (used as default in mypairsSmooth)
+#' histogram panel for pairs function (used as default in pairsSmooth)
 #' @export
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
@@ -268,7 +268,7 @@ panel.hist <- function(x, ...)
   y <- y / max(y)
   rect(breaks[-nB], 0, breaks[-1], y,  ...)
 }
-#' correlation panel for pairs plot function (used as default in mypairsSmooth)
+#' correlation panel for pairs plot function (used as default in pairsSmooth)
 #' @export
 #' @param x numeric data
 #' @param y numeric data
@@ -308,11 +308,11 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' @export
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-#' mypairsSmooth(tmp,main="small data", legend=TRUE)
-#' mypairsSmooth(tmp,main="small data", diag.panel=panel.hist)
-#' mypairsSmooth(tmp,log="xy",main="small data", legend=TRUE)
+#' pairsSmooth(tmp,main="small data", legend=TRUE)
+#' pairsSmooth(tmp,main="small data", diag.panel=panel.hist)
+#' pairsSmooth(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-mypairsSmooth = function(dataframe, legend = FALSE, ...) {
+pairsSmooth = function(dataframe, legend = FALSE, ...) {
   pairs(
     dataframe,
     upper.panel = function(x, y) {

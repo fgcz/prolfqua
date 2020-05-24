@@ -13,7 +13,4 @@ resultsV12954
 \description{
 resultsV12954 - contains normalization results
 }
-\examples{
-
-}
 \keyword{datasets}

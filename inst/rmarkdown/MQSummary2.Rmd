@@ -202,9 +202,9 @@ samples <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% dis
 if (length(samples) > 10) {
   limit <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
   ldata <- dataTransformed %>% dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
-  LFQService::mypairsSmooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
+  LFQService::pairsSmooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
 }else{
-  LFQService::mypairsSmooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
+  LFQService::pairsSmooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
 }
 ```
 

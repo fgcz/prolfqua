@@ -124,31 +124,31 @@
 #'
 #' spectronautDIAData250_analysis <- setup_analysis(data,spectronautDIAData250_config)
 #' #usethis::use_data( spectronautDIAData250_analysis , overwrite = TRUE )
+#' @docType data
 "spectronautDIAData250_analysis"
 
 #' resultsV12954 - contains normalization results
-#' @examples
+#' @docType data
 #'
 "resultsV12954"
 
 #' resPepProtAnnot_p2954 - raw data used in script_resultsV1_2954_create
-#'
+#' @docType data
 "resPepProtAnnot_p2954"
 
-#'
-#' resPepProtAnnot <- read_csv(file = "data/annotatedPeptide_PhonixDS_1097969.csv")
-
-
 #' raw Metabolomics data from progenesis
-#'
+#' @docType data
 "resMetaboDataProgenesis"
 
 #' modellingResult_A - output of 'model_analyse_summarize' for lm model
+#' @docType data
 "modellingResult_A"
 
 #' models_interaction - output of 'model_analyse_summarize' for lmer model
+#' @docType data
 "models_interaction"
 #' lm_models_to_test - linear models which can be used for testing
+#' @docType data
 "lm_models_to_test"
 
 
