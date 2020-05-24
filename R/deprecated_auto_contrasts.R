@@ -126,9 +126,9 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- spectronautDIAData250_analysis
 #' data <- transform_work_intensity(data, config, log2)
-#' x1 <- deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
-#' x2 <- deprecated_compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
-#' x3 <- deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
+#' x1 <- LFQService:::deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=1)
+#' x2 <- LFQService:::deprecated_compute_anova_lm(data, config, hierarchy_level = 1, factor_level=2)
+#' x3 <- LFQService:::deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
 #' (head(x1))
 deprecated_compute_anova_lm <- function(data, config, .formula=NULL, hierarchy_level=1, factor_level=1){
   aovmodelfit <- function(x, formula){
