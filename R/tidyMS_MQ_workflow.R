@@ -1,73 +1,16 @@
 # Helper functions -----
 
-#' Filter peptides for NA's first,
-#' and than count how many, have still 2 peptides and keep only those.
-#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
-#' @export
-#' @examples
-#' library(tidyverse)
-#' testDataStart2954 <- LFQService::testDataStart2954
-#'
-#'
-#'
-#' path <- "dummy_test"
-#' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
-#' hierarchy_counts(dd$data, dd$config)
-.workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
-  warning("Deprecated, do not use since it is too strict.")
-  config <- config$clone(deep = TRUE)
-
-  resNACondition <- filter_factor_levels_by_missing(resDataStart,
-                                                    config,
-                                                    percent = percent
-  )
-
-  proteinsWith2Peptides <- summarize_hierarchy(resNACondition, config)
-  proteinsWith2Peptides <- proteinsWith2Peptides %>%
-    dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
-  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
-  return(list(data = filteredPep, config = config))
-}
-
-#' Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
-#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
-#' Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
-#' @export
-#' @examples
-#' library(tidyverse)
-#' testDataStart2954 <- LFQService::testDataStart2954
-#' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
-#' hierarchy_counts(dd$data, dd$config)
-.workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
-                                             config,
-                                             percent = 50,
-                                             nr_peptide_id = 2,
-                                             firstNA = FALSE){
-  warning("Deprecated, do not use since it is too strict.")
-  config <- config$clone(deep = TRUE)
-  # get proteins with more than 1 peptide before NA filtering.
-  summaryH <- summarize_hierarchy(resDataStart, config)
-  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
-  # fitler for missingness
-  resNACondition <- filter_factor_levels_by_missing(resDataStart,
-                                                    config,
-                                                    percent = percent)
-  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by = "protein_Id")
-  return(list(data = filteredPep, config = config))
-}
-
 #' Keep only those proteins with 2 IDENTIFIED peptides
 #' @export
 #'
-.workflow_MQ_filter_peptides_V3 <-  function(resDataStart,
-                                             config,
-                                             percent = 50,
-                                             nr_peptide_id = 2){
+.filter_proteins_by_peptide_count <-  function(resDataStart,
+                                             config){
+  # .filter_proteins_by_peptide_count renamed from .workflow_MQ_filter_peptides_V3
   config <- config$clone(deep = TRUE)
+  nr_peptide_id <- config$parameter$min_peptides_protein
   # get proteins with more than 1 peptide before NA filtering.
   summaryH <- summarize_hierarchy(resDataStart, config)
-  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= 2)
-
+  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= nr_peptide_id)
   filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resDataStart, by = "protein_Id")
   return(list(data = filteredPep, config = config))
 }
@@ -77,10 +20,10 @@
 #' @examples
 #' resDataStart <- LFQService::testDataStart2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
-#' filterPep <- LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
-#' .workflow_MQ_normalize_log2_robscale(filterPep$data, filterPep$config)
-.workflow_MQ_normalize_log2_robscale <- function(filteredPep, config){
-
+#' filterPep <- LFQService:::.filter_proteins_by_peptide_count( resDataStart ,  config )
+#' .normalize_log2_robscale(filterPep$data, filterPep$config)
+#'
+.normalize_log2_robscale <- function(filteredPep, config){
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(filteredPep, pepConfig, log2)
   pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized,
@@ -102,7 +45,7 @@
 #' But mainly also summarizes data filtering (reports which proteins were removed etc.)
 #'
 #' @export
-#' @param peptideFilterFunction can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2
+#' @param peptideFilterFunction can be .filter_proteins_by_peptide_count
 #' @examples
 #' resDataStart <- LFQService::testData2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
@@ -111,10 +54,10 @@
 #' resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
 #'  config,
 #'  path ,
-#'  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
+#'  peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 #'
 #'
-#' LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
+#' LFQService:::.filter_proteins_by_peptide_count( resDataStart ,  config )
 #'
 workflow_MQ_protoV1 <- function(resDataStart,
                                  config,
@@ -135,7 +78,7 @@ workflow_MQ_protoV1 <- function(resDataStart,
   RESULTS$config_filteredPep <- config
   RESULTS$filteredPep <- filteredPep
 
-  pepIntensityNormalized <- .workflow_MQ_normalize_log2_robscale(filteredPep,
+  pepIntensityNormalized <- .normalize_log2_robscale(filteredPep,
                                                                  config)
 
   RESULTS$config_pepIntensityNormalized <- pepIntensityNormalized$config

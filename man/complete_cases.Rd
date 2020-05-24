@@ -15,5 +15,6 @@ Complete cases
  config$table$isotopeLabel <- "Isotope.Label.Type"
  data <- LFQService::sample_analysis
  data
- xx <- complete_cases(sample_analysis,skylineconfig)
+ xx <- complete_cases(sample_analysis, skylineconfig)
+
 }

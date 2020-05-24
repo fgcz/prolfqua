@@ -15,7 +15,7 @@ workflow_MQ_protoV1(
 )
 }
 \arguments{
-\item{peptideFilterFunction}{can be either .workflow_MQ_filter_peptides or .workflow_MQ_filter_peptides_V2}
+\item{peptideFilterFunction}{can be .filter_proteins_by_peptide_count}
 }
 \description{
 runs peptide data preprocessing for peptide level protein modelling
@@ -31,9 +31,9 @@ path <- "dummy_test"
 resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
  config,
  path ,
- peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
+ peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 
 
-LFQService:::.workflow_MQ_filter_peptides_V2( resDataStart ,  config )
+LFQService:::.filter_proteins_by_peptide_count( resDataStart ,  config )
 
 }

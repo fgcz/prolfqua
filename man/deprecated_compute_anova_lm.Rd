@@ -29,3 +29,4 @@ x2 <- deprecated_compute_anova_lm(data, config, hierarchy_level = 1, factor_leve
 x3 <- deprecated_compute_anova_lm(data, config, hierarchy_level= 2, factor_level=2)
 (head(x1))
 }
+\keyword{internal}

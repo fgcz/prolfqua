@@ -40,7 +40,7 @@ usethis::use_data(testData2954, overwrite = TRUE)
 resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
                                                  config,
                                                  path = NULL ,
-                                                 peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
+                                                 peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 
 usethis::use_data(resultsV12954, overwrite = TRUE)
 

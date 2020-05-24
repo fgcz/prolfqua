@@ -45,7 +45,7 @@ res <- application_set_up_MQ_run(
 
 
 dd <-
-  LFQService:::.workflow_MQ_filter_peptides_V3(res$data, res$config)
+  LFQService:::.filter_proteins_by_peptide_count(res$data, res$config)
 pepIntensityNormalized <-
   transform_work_intensity(dd$data, dd$config, log2)
 

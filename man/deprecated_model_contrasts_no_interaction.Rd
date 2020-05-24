@@ -29,3 +29,4 @@ if( FALSE ){
  results$fig$histogram_coeff_p.values
 }
 }
+\keyword{internal}

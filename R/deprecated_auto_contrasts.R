@@ -5,7 +5,7 @@
     model$model <- as.data.frame(unclass(model$model))
   }
 
-  mcpDef <- multcomp::mcp(Dummy="Tukey")
+  mcpDef <- multcomp::mcp(Dummy = "Tukey")
   names(mcpDef) <- factor
   glt <- multcomp::glht(model, mcpDef)
   sglt <- summary(glt)
@@ -14,14 +14,14 @@
   xx <- dplyr::inner_join(
     sglt,
     ciglt,
-    by=c("lhs","rhs")
+    by = c("lhs","rhs")
   )
   return(xx)
 }
 
 
 # compute contrasts for all factors.
-.compute_contrasts_no_interaction <- function( modelProteinF, pepConfig, modelName){
+.compute_contrasts_no_interaction <- function(modelProteinF, pepConfig, modelName){
   factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorDepth]
   subject_Id <- pepConfig$table$hkeysDepth()
 
@@ -42,7 +42,7 @@
 #' compute all contrasts from non interaction model automatically.
 #'
 #' used p2109
-#' @export
+#' @keywords internal
 #' @import tidyverse
 #' @import magrittr
 #' @examples
@@ -113,7 +113,8 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 
 
 #' Perform anova analysis
-#' @export
+#'
+#' @keywords internal
 #' @importFrom glue glue
 #' @importFrom purrr map
 #' @examples
@@ -224,4 +225,63 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
               isSingular = lme4::isSingular,
               contrast_fun = my_contest)
   return(res)
+}
+
+
+
+
+
+#' Filter peptides for NA's first,
+#' and than count how many, have still 2 peptides and keep only those.
+#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
+#' @keywords internal
+#' @examples
+#' library(tidyverse)
+#' testDataStart2954 <- LFQService::testDataStart2954
+#'
+#'
+#'
+#' path <- "dummy_test"
+#' dd <- LFQService:::.workflow_MQ_filter_peptides( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' hierarchy_counts(dd$data, dd$config)
+.workflow_MQ_filter_peptides <- function(resDataStart, config, percent = 50){
+  warning("Deprecated, do not use since it is too strict.")
+  config <- config$clone(deep = TRUE)
+
+  resNACondition <- filter_factor_levels_by_missing(resDataStart,
+                                                    config,
+                                                    percent = percent
+  )
+
+  proteinsWith2Peptides <- summarize_hierarchy(resNACondition, config)
+  proteinsWith2Peptides <- proteinsWith2Peptides %>%
+    dplyr::filter( peptide_Id_n >= config$parameter$min_peptides_protein)
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition)
+  return(list(data = filteredPep, config = config))
+}
+
+#' Keep only those proteins with 2 IDENTIFIED peptides. remove peptides with NA's only in one condition.
+#' This filtering was implemented to prevent models from failing to fit. Now deprecated.
+#' Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
+#' @keywords internal
+#' @examples
+#' library(tidyverse)
+#' testDataStart2954 <- LFQService::testDataStart2954
+#' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
+#' hierarchy_counts(dd$data, dd$config)
+.workflow_MQ_filter_peptides_V2 <-  function(resDataStart,
+                                             config,
+                                             percent = 50){
+  warning("Deprecated, do not use since it is too strict.")
+  config <- config$clone(deep = TRUE)
+  nr_peptide_id <- config$parameter$min_peptides_protein
+  # get proteins with more than 1 peptide before NA filtering.
+  summaryH <- summarize_hierarchy(resDataStart, config)
+  proteinsWith2Peptides <- summaryH %>% dplyr::filter( peptide_Id_n >= nr_peptide_id)
+  # fitler for missingness
+  resNACondition <- filter_factor_levels_by_missing(resDataStart,
+                                                    config,
+                                                    percent = percent)
+  filteredPep <- dplyr::inner_join(proteinsWith2Peptides, resNACondition, by = "protein_Id")
+  return(list(data = filteredPep, config = config))
 }

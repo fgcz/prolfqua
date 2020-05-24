@@ -276,7 +276,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' separates hierarchies into starting columns
 #' @export
 separate_hierarchy <- function(data, config){
-  for(hkey in config$table$hkeysDepth()){
+  for (hkey in config$table$hkeysDepth()) {
     data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
@@ -285,8 +285,8 @@ separate_hierarchy <- function(data, config){
 #' separates hierarchies into starting columns
 #' @export
 separate_factors <- function(data, config){
-  for(fkey in config$table$factorKeys()){
-    data<- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
+  for (fkey in config$table$factorKeys()) {
+    data <- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -301,13 +301,14 @@ separate_factors <- function(data, config){
 #'  config$table$isotopeLabel <- "Isotope.Label.Type"
 #'  data <- LFQService::sample_analysis
 #'  data
-#'  xx <- complete_cases(sample_analysis,skylineconfig)
+#'  xx <- complete_cases(sample_analysis, skylineconfig)
+#'
 complete_cases <- function(data, config){
   message("completing cases")
   fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factorKeys())
   hkeys <- c(config$table$isotopeLabel, config$table$hierarchyKeys())
   res <- tidyr::complete(
-    data ,
+    data,
     tidyr::nesting(!!!syms(fkeys)),
     tidyr::nesting(!!!syms(hkeys))
   )
@@ -666,6 +667,49 @@ summarize_hierarchy <- function(x,
                          list( n = dplyr::n_distinct))
   return(x3)
 }
+
+#' Light only version.
+#' Summarize Protein counts
+#' @export
+#'
+#' @importFrom dplyr group_by_at
+#' @examples
+#' library(LFQService)
+#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#'   ident_qValue="Detection.Q.Value")
+#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+#' data(skylinePRMSampleData)
+#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+#' LFQService:::summarizeProteins(sample_analysis, skylineconfig)
+#'configuration <- skylineconfig$clone(deep=TRUE)
+#'summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
+#'summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
+summarizeProteins <- function(x, configuration ){
+  #warning("DEPRECATED use summarize_hierarchy instead")
+  rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
+
+  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
+    group_by_at(rev_hierarchy[-1]) %>%
+    dplyr::summarize(nrFragments = n())
+
+  peptideSum <- precursorSum %>% group_by_at(rev_hierarchy[-(1:2)]) %>%
+    dplyr::summarize(nrPrecursors = n(),
+                     minNrFragments = min(nrFragments),
+                     maxNrFragments = max(nrFragments))
+
+
+  proteinSum <- peptideSum %>% group_by_at(rev_hierarchy[-(1:3)])  %>%
+    dplyr::summarize(nrpeptides = n(),
+                     minNrPrecursors = min(nrPrecursors),
+                     maxNrPrecursors = max(nrPrecursors),
+                     minNrFragments= min(minNrFragments),
+                     maxNrFragments = max(maxNrFragments)
+    )
+  proteinPeptide <- proteinSum %>% tidyr::unite(Precursors ,minNrPrecursors , maxNrPrecursors, sep="-", remove=FALSE)
+  proteinPeptide <- proteinPeptide %>% tidyr::unite(Fragments ,minNrFragments , maxNrFragments, sep="-", remove=FALSE)
+  return(proteinPeptide)
+}
+
 # Functions - Missigness ----
 #' compute missing statistics
 #' @export

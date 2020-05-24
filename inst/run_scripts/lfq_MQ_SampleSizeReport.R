@@ -114,7 +114,7 @@ path <- ""
 results <- LFQService::workflow_MQ_protoV1(resDataStart,
                                            config,
                                            path,
-                                           peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
+                                           peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())

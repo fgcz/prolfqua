@@ -41,9 +41,9 @@
                                   remove_imputed = TRUE ) {
 
   contrast_results <- dplyr::right_join( contrast_minimal,
-                                  contrasts_xx_imputed,
-                                  by = c(subject_Id,
-                                        "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
+                                         contrasts_xx_imputed,
+                                         by = c(subject_Id,
+                                                "lhs", "c1_name", "c2_name"), suffix = c("","_imputed"))
 
   contrast_results <- dplyr::rename(contrast_results, contrast = lhs) #
   contrast_results <- contrast_results %>%
@@ -76,11 +76,9 @@ application_run_modelling_V2 <- function(outpath,
                                          modelling_dir = "modelling_results_protein" ,
                                          remove_imputed = TRUE,
                                          do_not_report = "",
-                                         DEBUG= FALSE
-
-) {
+                                         DEBUG= FALSE)
+{
   assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
-
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)
   if (!dir.exists(outpath)) {
@@ -102,8 +100,8 @@ application_run_modelling_V2 <- function(outpath,
                                                                 contrasts)
   contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
   contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
-                                contrasts = contrasts[setdiff(names(contrasts) ,
-                                                              do_not_report)])
+                                          contrasts = contrasts[setdiff(names(contrasts) ,
+                                                                        do_not_report)])
 
   #### Compute contrasts from model ####
 
@@ -118,20 +116,20 @@ application_run_modelling_V2 <- function(outpath,
 
   # RESULT FUNCTION
   res_fun <- function(do = c("result",
-                           "write_modelling",
-                           "write_contrasts"),
+                             "write_modelling",
+                             "write_contrasts"),
                       DEBUG = FALSE,
                       remove_imputed = TRUE) {
 
     do <- match.arg(do)
     if (DEBUG) {
       res <- list(modelFunction = modelFunction,
-           imputed = contrasts_xx_imputed,
-           remove_imputed = remove_imputed,
-           subject_Id = config$table$hkeysDepth(),
-           modelling_path = modelling_path,
-           modellingResult_fun = modellingResult_fun,
-           res_contrasts = res_contrasts
+                  imputed = contrasts_xx_imputed,
+                  remove_imputed = remove_imputed,
+                  subject_Id = config$table$hkeysDepth(),
+                  modelling_path = modelling_path,
+                  modellingResult_fun = modellingResult_fun,
+                  res_contrasts = res_contrasts
       )
       return(res)
     }
@@ -265,27 +263,6 @@ application_set_up_MQ_run <- function(outpath,
 }
 
 
-#' preprocess peptide data, compute protein data, store results in qc_path folder
-#' @export
-#'
-application_summarize_data_pep_to_prot <- function(data,
-                                                   config,
-                                                   qc_path,
-                                                   DEBUG= FALSE,
-                                                   WRITE_PROTS=TRUE) {
-
-  message("deprecated use data_pep_to_prot instead")
-  res_fun <- data_pep_to_prot(data,
-                          config,
-                          qc_path)
-
-  if (!DEBUG) {res_fun("render")}
-  if (WRITE_PROTS) {res_fun("plotprot")}
-  res_fun("pepwrite")
-  res_fun("protwrite")
-  return(res_fun(DEBUG = TRUE))
-}
-
 #' data_pep_to_prot
 #' @export
 data_pep_to_prot <- function(data,
@@ -296,7 +273,7 @@ data_pep_to_prot <- function(data,
     data,
     config,
     outpath,
-    peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V3 )
+    peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 
   ### PROTEIN QUANTIFICATION ####
   protintensity_fun <- medpolish_protein_quants( results$pepIntensityNormalized,
@@ -370,11 +347,11 @@ application_summarize_compound <- function(data,
   prefix <- match.arg(prefix)
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
-  results <- LFQService:::.workflow_MQ_normalize_log2_robscale(data, config)
+  results <- LFQService:::.normalize_log2_robscale(data, config)
 
 
   res_fun <- function(do = c("plot", "write", "render", "print_compounds", "data"),
-                             DEBUG = FALSE){
+                      DEBUG = FALSE){
     do <- match.arg(do)
     if (DEBUG) {
       return(list(qc_path = qc_path, prefix = prefix, results = results ))

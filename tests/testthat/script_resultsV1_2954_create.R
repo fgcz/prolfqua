@@ -62,7 +62,7 @@ config$table$factorDepth <- flevel
 results <- workflow_MQ_protoV1(resDataStart,
                                config,
                                path,
-                               peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides_V2 )
+                               peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
 
 protintensity <- LFQService::medpolish_protein_quants( results$pepIntensityNormalized,
                                                          results$config_pepIntensityNormalized )
