@@ -65,8 +65,9 @@
 }
 
 #' run the modelling using lmer and lm models
-#'
+#' @param do_not_report contrasts not to report
 #' @export
+#' @examples
 #'
 application_run_modelling_V2 <- function(outpath,
                                          data,
@@ -93,7 +94,6 @@ application_run_modelling_V2 <- function(outpath,
                                                 modelFunction,
                                                 subject_Id = config$table$hkeysDepth())
 
-  #################################################
   ### Do missing value imputation
   res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
                                                                 config,

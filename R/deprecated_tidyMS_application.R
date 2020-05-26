@@ -46,8 +46,8 @@ application_run_modelling <- function(outpath,
   linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
   linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
 
-  if(DEBUG){
-    pdf(file.path(modelling_path,"Linear_functions.pdf"), width=18, height=10)
+  if (DEBUG) {
+    pdf(file.path(modelling_path,"Linear_functions.pdf"), width = 18, height = 10)
     #quantable::imageWithLabels(t(linfct_A),
     #                           col = quantable::getBlueWhiteRed(),
     #                           marLeft = c(8,10,4.1,2.1))
@@ -70,7 +70,7 @@ application_run_modelling <- function(outpath,
                                       xx_imputed,
                                       subject_Id,
                                       modelFunction){
-    res <- right_join(contrast_minimal, xx_imputed, by=c(subject_Id,"lhs" = "contrast"))
+    res <- right_join(contrast_minimal, xx_imputed, by = c(subject_Id,"lhs" = "contrast"))
     res <- res %>% dplyr::rename(contrast = lhs)
     res <- res %>% dplyr::mutate(pseudo_estimate = case_when(is.na(estimate) ~ imputed, TRUE ~ estimate))
     res <- res %>% dplyr::mutate(is_pseudo_estimate = case_when(is.na(estimate) ~ TRUE, TRUE ~ FALSE))
@@ -145,7 +145,13 @@ workflow_contrasts_linfct <- function(models,
                                           columns = columns
     )
 
-    relevant_columns <- c("lhs", "sigma", "df", "isSingular", "estimate", "conf.low", "conf.high") # other relevant columns.
+    relevant_columns <- c("lhs",
+                          "sigma",
+                          "df",
+                          "isSingular",
+                          "estimate",
+                          "conf.low",
+                          "conf.high") # other relevant columns.
     contrast_minimal <- contrast_result %>% dplyr::select(subject_Id, relevant_columns, columns )
 
     contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,

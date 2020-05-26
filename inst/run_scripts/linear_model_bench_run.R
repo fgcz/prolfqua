@@ -7,7 +7,7 @@ library(LFQService)
 library(tidyverse)
 library(dplyr)
 
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
 inputMQfile <-
   "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
@@ -67,6 +67,7 @@ Contrasts <- c(
 
 
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+
 if (TRUE) {
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
   res <- application_set_up_MQ_run(
@@ -82,21 +83,23 @@ if (TRUE) {
                                  res$qc_path)
 
   summarised <- summarised(DEBUG = TRUE)
+
   data_c <- summarised$results$pepIntensityNormalized
   config_c <-
     summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
+  dataIonstarNormalizedPep <- list(data =  data_c, config = config_c)
 
-  #usethis::use_data(data_c)
+  #usethis::use_data(dataIonstarNormalizedPep)
   #usethis::use_data(config_c)
+
   dataIonstarFilteredPep <- list(data = summarised$results$filteredPep, config = summarised$results$config_filteredPep)
-  usethis::use_data(dataIonstarFilteredPep)
+  #usethis::use_data(dataIonstarFilteredPep)
   prot <- summarised$protintensity_fun("unnest")
 } else {
 }
 
 
 message("######################## fit mixed #######################")
-
 mean(is.na(
   summarised$results$pepIntensityNormalized$transformedIntensity
 ))

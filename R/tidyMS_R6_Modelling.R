@@ -439,7 +439,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
                                                                          .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
     dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>%
-    tidyr::unnest()
+    tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
     dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
 
