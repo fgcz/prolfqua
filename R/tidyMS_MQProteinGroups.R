@@ -376,10 +376,14 @@ tidyMQ_allPeptides <- function(MQPeptides){
 
 #' convert modification specific to peptide level
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
+#' use only if you want to disable MQ default precursor filter
+#' (which is not to use modified peptide sequences for peptide quantification)
+#'
 #' @export
 #' @param mq_modSpecPeptides modeSpecPeptides.txt
 #' @param mq_peptides mq_peptides
 tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
+  warning("use only if you want to disable MQ default precursor filter")
   mq_modSpecPeptides %>% dplyr::filter(unique.groups) -> mq_modSpecPeptides
   relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
 
@@ -402,12 +406,14 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 #' this function selects the protein name mentioned most in association with a protein group id.
 #' @export
 #' @param modSpecData modeSpecPeptides.txt
-tidyMQ_top_protein_name <- function(modSpecData){
+tidyMQ_top_protein_name <- function(modSpecData) {
   modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
   groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% dplyr::distinct()
-  groupIDprotein %>% separate_rows(proteins, sep=";",convert =TRUE) -> groupIDprotein_Separated
-  groupIDprotein_Separated %>% dplyr::group_by(protein.group.id) %>% tidyr::nest() -> groupIDprotein_Separated
+  groupIDprotein %>% separate_rows(proteins, sep = ";",convert = TRUE) -> groupIDprotein_Separated
+  groupIDprotein_Separated %>%
+    dplyr::group_by(protein.group.id) %>%
+    tidyr::nest() -> groupIDprotein_Separated
 
   extractMostFreqNamePerGroup <- function(ff){
     aa <- sort(table(ff),decreasing = TRUE)
@@ -417,7 +423,8 @@ tidyMQ_top_protein_name <- function(modSpecData){
     dplyr::mutate(top_protein = purrr::map_chr(data,  extractMostFreqNamePerGroup)) %>%
     dplyr::select(protein.group.id, top_protein)
   stopifnot(nrow(topProtein) == nrProteinGroups)
-  resPepProtAnnot <- dplyr::inner_join(modSpecData,topProtein )
+  mqData <- dplyr::inner_join(modSpecData,topProtein )
+  return(mqData)
 }
 
 
@@ -461,6 +468,85 @@ tidyMQ_from_Sites <- function(pDat){
 
   res <- inner_join(longish, annotation, by = "site.id")
   return(list(data = res, annotation = annotation))
+}
+
+#' read from folder or zip with the content of the MQ txt folder.
+#' @param MQtxtfolder path to folder
+#' @param use
+#' @export
+tidyMQ_Peptides_Config <- function(MQtxtfolder,
+                                   use = c("peptides", "modificationSpecificPeptides" ),
+                                   id_extractor = function(df) {fgcz.gsea.ora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
+                                   remove_rev = TRUE)
+  {
+
+  # create default config
+  config <- LFQService::create_MQ_peptide_Configuration()
+  peptides <- match.arg(use)
+  mqData <- NULL
+  if (peptides == "modificationSpecificPeptides") {
+    if ("modificationSpecificPeptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name) {
+      mqData <- tidyMQ_modificationSpecificPeptides(MQtxtfolder)
+
+      config$table$workIntensity <- "mod.peptide.intensity"
+      config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
+    }else{
+      stop("modificationSpecificPeptides.txt does not exist")
+    }
+  }else if (peptides ==  "peptides") {
+    if ("peptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name) {
+      mqData <- tidyMQ_Peptides(MQtxtfolder)
+    } else {
+      stop("peptides.txt does not exist")
+    }
+  }
+
+  mqData <- tidyMQ_top_protein_name(mqData)
+
+  if (remove_rev == TRUE) {
+    mqData <- mqData %>% dplyr::filter(reverse !=  TRUE)
+  }
+  mqData$isotope <- "light"
+
+  if (!is.null(id_extractor)) {
+    mqData <- id_extractor(mqData)
+    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
+  }
+  mqData <- remove_small_intensities( mqData, config, threshold = 4 )
+  return(list(data = mqData, config = config))
+}
+
+
+
+
+#' Create retention time plot for MQ
+#' @export
+plot_MQ_intensity_vs_retention_time <- function(MQtxtfolder, qc_path ) {
+
+  mod_peptides_available <- "modificationSpecificPeptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name
+
+  res <- if (mod_peptides_available) {
+    mqData <- tidyMQ_modificationSpecificPeptides(MQtxtfolder)
+
+    {# create visualization for modified peptide sequence
+      height <- length(unique(mqData$raw.file))/2 * 300
+      png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
+      {
+        resPepProtVis <- mqData %>% dplyr::filter(mod.peptide.intensity > 4)
+        tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
+          geom_point(alpha = 1/20, size = 0.3) +
+          facet_wrap(~raw.file, ncol = 2)
+
+        print(tmp)
+      }
+      dev.off()
+    }
+    TRUE
+  }else{
+    FALSE
+  }
+
+  return(res)
 }
 
 
