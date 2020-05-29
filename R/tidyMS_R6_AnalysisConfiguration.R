@@ -206,10 +206,10 @@ make_interaction_column_config <- function(data, config, sep="."){
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)
-  slots <- tmp[! tmp %in% c("environment", "function")]
+  slots <- tmp[ !tmp %in% c("environment", "function")]
   res <- list()
-  for(i in names(slots)){
-    if("R6" %in% class(r6class[[i]])){
+  for (i in names(slots)) {
+    if ("R6" %in% class(r6class[[i]])) {
       res[[i]]  <- R6extractValues(r6class[[i]])
     }else{
       res[[i]] <- r6class[[i]]
@@ -233,32 +233,32 @@ R6extractValues <- function(r6class){
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
-  for(i in 1:length(table$hierarchy))
+  for (i in 1:length(table$hierarchy))
   {
     data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
-  for(i in 1:length(table$factors))
+  for (i in 1:length(table$factors))
   {
-    if( length(table$factors[[i]]) > 1){
+    if ( length(table$factors[[i]]) > 1) {
       data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE, sep = configuration$sep)
-    }else{
-      newname <-table$factorKeys()[i]
+    } else {
+      newname <- table$factorKeys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
     }
   }
 
   sampleName <- table$sampleName
 
-  if(!sampleName  %in% names(data)){
+  if (!sampleName  %in% names(data)) {
     message("creating sampleName")
 
     data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) %>%
       dplyr::select(sampleName, table$fileName) %>% dplyr::distinct() %>%
-      dplyr::mutate_at(sampleName, function(x){ x<- make.unique( x, sep = configuration$sep )}) %>%
+      dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) %>%
       dplyr::inner_join(data, by = table$fileName)
-  } else{
+  } else {
     warning(sampleName, " already exists")
   }
 
@@ -267,7 +267,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   # Make implicit NA's explicit
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
 
-  if(cc){
+  if (cc) {
     data <- complete_cases( data , configuration)
   }
   return( data )
@@ -284,7 +284,7 @@ separate_hierarchy <- function(data, config){
 
 #' separates hierarchies into starting columns
 #' @export
-separate_factors <- function(data, config){
+separate_factors <- function(data, config) {
   for (fkey in config$table$factorKeys()) {
     data <- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
@@ -303,7 +303,7 @@ separate_factors <- function(data, config){
 #'  data
 #'  xx <- complete_cases(sample_analysis, skylineconfig)
 #'
-complete_cases <- function(data, config){
+complete_cases <- function(data, config) {
   message("completing cases")
   fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factorKeys())
   hkeys <- c(config$table$isotopeLabel, config$table$hierarchyKeys())
@@ -328,7 +328,7 @@ plot_hierarchies_line_default <- function(data,
                                           isotopeLabel,
                                           separate = FALSE,
                                           log_y = FALSE
-){
+) {
   if (length(isotopeLabel)) {
     if (separate) {
       formula <- paste(paste( isotopeLabel, collapse = "+"), "~", paste(factor , collapse = "+"))
@@ -1286,6 +1286,7 @@ medpolish_protein_quants <- function(data, config){
 #' @examples
 #'
 #' data <- LFQService::data_c
+#'
 #' config <- config <- LFQService::config_c
 #' path_qc = "."
 #' if(FALSE){
@@ -1294,10 +1295,10 @@ medpolish_protein_quants <- function(data, config){
 quants_write <- function(data,
                          config,
                          path_qc,
-                         suffix="",
+                         suffix = "",
                          prefix = "ms",
                          na_fraction = 0.3,
-                         close_devices = TRUE){
+                         close_devices = FALSE){
   suffix <- paste0("_",suffix)
   prefix <- paste0(prefix,"_")
   message("writing protein intensity data into: ", path_qc)
