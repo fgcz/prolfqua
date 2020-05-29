@@ -1,5 +1,43 @@
 # mixed linear models ----
 
+#' Check if it is a mixed model
+#' It checks if the patter (something | something) is present
+#' @noRd
+#' @keywords internal
+#' @examples
+#' model <- "intensity ~ test + (test|test)"
+#' LFQService:::.is_mixed_model(model)
+#' model <- "intensity ~ test"
+#' stopifnot(LFQService:::.is_mixed_model(model) == FALSE)
+.is_mixed_model <- function(model){
+  res <- grepl("\\(.+\\|.+\\)", model)
+  return(res)
+}
+
+
+Model <- R6::R6Class(
+  "Model",
+  public = list(
+    formula = NULL,
+    contrasts = character(),
+    is_mixed_model = function(){
+      .is_mixed_model(self$formula)
+    }
+  ))
+
+#' create model
+#' @param model
+#' @param contrasts
+#'
+make_model <- function(formula, contrasts) {
+  model <- Model$new()
+  model$formula <- formula
+  model$contrasts <- contrasts
+  return(model)
+}
+
+
+
 # Creating models from configuration ----
 
 
