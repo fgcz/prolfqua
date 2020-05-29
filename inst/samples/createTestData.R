@@ -37,10 +37,8 @@ smallData <- resDataStart %>% dplyr::filter(protein_Id %in% sample(resDataStart$
 testData2954 <- list(resDataStart = smallData, config = config)
 usethis::use_data(testData2954, overwrite = TRUE)
 
-resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
-                                                 config,
-                                                 path = NULL ,
-                                                 peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
+res <- LFQService::filter_proteins_by_peptide_count(resDataStart, config)
+resultsV12954 <- LFQService::normalize_log2_robscale(res$data, res$config)
 
 usethis::use_data(resultsV12954, overwrite = TRUE)
 
