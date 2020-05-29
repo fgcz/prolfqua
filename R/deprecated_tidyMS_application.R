@@ -1,7 +1,7 @@
 #' run the modelling using lmer and lm models - DEPRECATED use version V2
 #'
 #' @keywords internal
-#'
+#' @noRd
 application_run_modelling <- function(outpath,
                                       data,
                                       pepConfig,
@@ -94,7 +94,7 @@ application_run_modelling <- function(outpath,
 #' Do contrast
 #'
 #' @keywords internal
-#'
+#' @noRd
 workflow_contrasts_linfct <- function(models,
                                       contrasts,
                                       config,
@@ -187,7 +187,7 @@ workflow_contrasts_linfct <- function(models,
 #' preprocess peptide data, compute protein data, store results in qc_path folder
 #'
 #' @keywords internal
-#'
+#' @noRd
 application_summarize_data_pep_to_prot <- function(data,
                                                    config,
                                                    qc_path,

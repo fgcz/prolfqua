@@ -45,6 +45,7 @@
 #'
 #' used p2109
 #' @keywords internal
+#' @noRd
 #' @import tidyverse
 #' @import magrittr
 #' @examples
@@ -117,6 +118,7 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 #' Perform anova analysis
 #'
 #' @keywords internal
+#' @noRd
 #' @importFrom glue glue
 #' @importFrom purrr map
 #' @examples
@@ -229,14 +231,11 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
   return(res)
 }
 
-
-
-
-
 #' Filter peptides for NA's first,
 #' and than count how many, have still 2 peptides and keep only those.
 #' This filtering was implemented to prevent models from failing to fit. Now deprecated.
 #' @keywords internal
+#' @noRd
 #' @examples
 #' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
@@ -266,6 +265,7 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
 #' This filtering was implemented to prevent models from failing to fit. Now deprecated.
 #' Will not work with mixed effect models which model peptide level data (and require 2 or more peptides per protein).
 #' @keywords internal
+#' @noRd
 #' @examples
 #' library(tidyverse)
 #' testDataStart2954 <- LFQService::testDataStart2954
