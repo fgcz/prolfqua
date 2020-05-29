@@ -89,6 +89,8 @@ table_facade(pars$annotation, "Sample annotations.")
 ```{r alttext, include=FALSE}
 mixed_txt <- "The following mixed-effects model was fitted [see @lmer2015]: "
 fixed_txt <- "The following linear model was fitted: "
+is_mixed_model <- LFQService:::.is_mixed_model
+
 ```
 
 
@@ -99,9 +101,7 @@ __`r format(formula(pars$model))`__
 Using this model the following contrasts were computed. 
 
 ```{r contrasts}
-
 Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = as.character(pars$Contrasts))
-
 table_facade(Contrasts, "Contrasts (vs - versus, gv - given).")
 
 ```
