@@ -3,7 +3,9 @@
 \name{tidyMQ_from_modSpecific_to_peptide}
 \alias{tidyMQ_from_modSpecific_to_peptide}
 \title{convert modification specific to peptide level
-aggregates mod.peptide.intensity, takes min of pep and max of peptide.score}
+aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
+use only if you want to disable MQ default precursor filter
+(which is not to use modified peptide sequences for peptide quantification)}
 \usage{
 tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
 }
@@ -15,4 +17,6 @@ tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
 \description{
 convert modification specific to peptide level
 aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
+use only if you want to disable MQ default precursor filter
+(which is not to use modified peptide sequences for peptide quantification)
 }

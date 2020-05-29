@@ -11,7 +11,7 @@ quants_write(
   suffix = "",
   prefix = "ms",
   na_fraction = 0.3,
-  close_devices = TRUE
+  close_devices = FALSE
 )
 }
 \arguments{
@@ -23,6 +23,7 @@ write intensites into folder - for the moment protein
 \examples{
 
 data <- LFQService::data_c
+
 config <- config <- LFQService::config_c
 path_qc = "."
 if(FALSE){

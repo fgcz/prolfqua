@@ -7,15 +7,10 @@ first runs peptide filtering
 then it runs data noramlization (log2 transform intensities and apply robust z transformation)
 But mainly also summarizes data filtering (reports which proteins were removed etc.)}
 \usage{
-workflow_MQ_protoV1(
-  resDataStart,
-  config,
-  path,
-  peptideFilterFunction = LFQService:::.workflow_MQ_filter_peptides
-)
+workflow_MQ_protoV1()
 }
 \arguments{
-\item{peptideFilterFunction}{can be .filter_proteins_by_peptide_count}
+\item{peptideFilterFunction}{can be filter_proteins_by_peptide_count}
 }
 \description{
 runs peptide data preprocessing for peptide level protein modelling
@@ -24,16 +19,22 @@ then it runs data noramlization (log2 transform intensities and apply robust z t
 But mainly also summarizes data filtering (reports which proteins were removed etc.)
 }
 \examples{
+library(LFQService)
+library(tidyverse)
 resDataStart <- LFQService::testData2954$resDataStart
 config <-  LFQService::testDataStart2954$config
 summarize_hierarchy(resDataStart, config)
-path <- "dummy_test"
-resultsV12954 <- LFQService::workflow_MQ_protoV1(resDataStart,
- config,
- path ,
- peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
+res <- filter_proteins_by_peptide_count(resDataStart, config)
+res <- normalize_log2_robscale(res$data, res$config)
+summarize_filtering(list(data = resDataStart, config=config), res)
+# resDataStart <- LFQService::skylineSRM_HL_data
+# config <-  LFQService::skylineconfig_HL
+
+# res <- filter_proteins_by_peptide_count(resDataStart, config)
 
 
-LFQService:::.filter_proteins_by_peptide_count( resDataStart ,  config )
+
+
 
 }
+\keyword{internal}

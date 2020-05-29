@@ -16,6 +16,12 @@ application_run_modelling_V2(
   DEBUG = FALSE
 )
 }
+\arguments{
+\item{do_not_report}{contrasts not to report}
+}
 \description{
 run the modelling using lmer and lm models
+}
+\examples{
+
 }
