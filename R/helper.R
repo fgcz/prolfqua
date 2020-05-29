@@ -33,15 +33,3 @@ transitionCorrelationsJack <- function(dataX,
   }
 }
 
-#' Check if it is a mixed model
-#' It checks if the patter (something | something) is present
-#' @export
-#' @examples
-#' model <- "intensity ~ test + (test|test)"
-#' is_mixed_model(model)
-#' model <- "intensity ~ test"
-#' stopifnot(is_mixed_model(model) == FALSE)
-is_mixed_model <- function(model){
-  res <- grepl("\\(.+\\|.+\\)", model)
-  return(res)
-}
