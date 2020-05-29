@@ -58,11 +58,16 @@ knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataS
 ```
 
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
-hcs <- hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)("wide")
-hcs <- hcs %>% tidyr::gather("key", "nr",
-                      -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
-ggplot(hcs, aes(x = sampleName, y = nr)) + geom_bar(stat="identity", position="dodge") + 
-  facet_wrap(~key, scales = "free_y", ncol=1) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+hcs <- hierarchy_counts_sample(params$resDataStart,
+                               params$config_resDataStart)("wide")
+hcs <- hcs %>% tidyr::gather("key",
+                             "nr",
+                             -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
+
+ggplot(hcs, aes(x = sampleName, y = nr)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ key, scales = "free_y", ncol = 1) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
@@ -73,7 +78,7 @@ knitr::kable(params$nrPeptidesPerProtein_start, caption = "nr of proteins with m
 
 
 ```{r, fig.height=3, fig.with=4, fig.cap="Number of proteins with one or more peptides."}
-ggplot(results$nrPeptidesPerProtein_start, aes(x =protein_with , y = n)) + geom_bar(stat="identity")
+ggplot(results$nrPeptidesPerProtein_start, aes(x = protein_with , y = n)) + geom_bar(stat="identity")
 ```
 
 
@@ -96,7 +101,9 @@ print(plot_NA_heatmap(params$removed_peptides, results$config_resDataStart))
 \newpage
 
 ```{r}
-knitr::kable(params$removed_proteins, caption="Proteins removed from analysis.")
+
+knitr::kable(params$removed_proteins, caption = "Proteins removed from analysis.")
+
 ```
 
 
@@ -114,14 +121,15 @@ knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredP
 
 ```{r NA_heatmapAfterFiltering,  out.width = "85%", out.height="\\textheight", fig.cap="Missigness heatmap after NA filtering."}
 
-figpath <- file.path(path,"missigness_after_filtering.pdf")
-if(params$HEATMAP){
+figpath <- file.path(params$path, "missigness_after_filtering.pdf")
+if (params$HEATMAP) {
   pdf(figpath)
-  x <- plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
+  x <-
+    plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
   print(x)
   dev.off()
+  knitr::include_graphics(figpath)
 }
-knitr::include_graphics(figpath)
 
 ```
 
@@ -137,7 +145,7 @@ Figure \@ref(fig:normalizeRob) shows the normalized peptide values. Normalizatio
 
 
 ```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of raw intensities."}
-figpath <- file.path(path, "PEPTIDE_DensityDistributionRAW.pdf")
+figpath <- file.path(params$path, "PEPTIDE_DensityDistributionRAW.pdf")
 
 pdf(figpath, width=22, height=10)
 print(plot_intensity_distribution_density(params$filteredPep,  params$config_filteredPep))
@@ -151,7 +159,7 @@ knitr::include_graphics(figpath)
 
 
 ```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of transformed and scaled intensities."}
-figpath <- file.path(path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
+figpath <- file.path(params$path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
 
 pdf(figpath, width=22, height=10)
 print(plot_intensity_distribution_density(params$pepIntensityNormalized, params$config_pepIntensityNormalized))
@@ -166,14 +174,14 @@ knitr::include_graphics(figpath)
 
 
 ```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
-figpath <- file.path(path,"heatmap_after_filtering.pdf")
+figpath <- file.path(params$path,"heatmap_after_filtering.pdf")
 if(params$HEATMAP){
   pdf(figpath)
   x <- plot_heatmap(params$pepIntensityNormalized, params$config_pepIntensityNormalized)
   print(x)
   dev.off()
+  knitr::include_graphics(figpath)
 }
-knitr::include_graphics(figpath)
 
 ```
 
