@@ -158,108 +158,41 @@ application_run_modelling_V2 <- function(outpath,
   return(res_fun)
 }
 
+
+
+
 #' add Annotation to an MQ output
 #'
 #' for an usage example see run_script lfq_mixed_model_inference
-#'
+#' @param use use either peptide txt or mod specific peptide
 #' @export
 #'
-application_set_up_MQ_run <- function(outpath,
-                                      inputMQfile,
-                                      inputAnnotation,
-                                      config,
-                                      id_extractor = function(df) {fgcz.gsea.ora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
-                                      qcdir = "qc_results",
-                                      use = c("peptides", "modificationSpecificPeptides" )) {
-  peptides <- match.arg(use)
-
+application_add_annotation <- function(intensityData,
+                                       inputAnnotation,
+                                       fileName = "raw.file") {
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
-  # create result structure
-  qc_path <- file.path(outpath, qcdir )
-
-  if (!dir.exists(outpath)) {
-    dir.create(outpath)
-  }
-
-  message(qc_path,"\n")
-  if (!dir.exists(qc_path)) {
-    dir.create(qc_path)
-  }
-
   ## read the data
-
-
-  mod_peptides_available <- "modificationSpecificPeptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
-  resPepProtAnnot <- NULL
-  if (mod_peptides_available) {
-    resPepProtAnnot <- tidyMQ_modificationSpecificPeptides(inputMQfile)
-    {# create visualization for modified peptide sequence
-      height <- length(unique(resPepProtAnnot$raw.file))/2 * 300
-      png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
-      {
-        resPepProtVis <- resPepProtAnnot %>% dplyr::filter(mod.peptide.intensity > 4)
-        tmp <- ggplot(resPepProtVis, aes(x = retention.time, y = log2(mod.peptide.intensity))) +
-          geom_point(alpha = 1/20, size = 0.3) +
-          facet_wrap(~raw.file, ncol = 2)
-
-        print(tmp)
-      }
-      dev.off()
-    }
-  }
-
-  peptides_available <- "peptides.txt" %in% unzip(inputMQfile, list = TRUE)$Name
-  if (peptides_available & peptides == "peptides") {
-    resPepProtAnnot <- tidyMQ_Peptides(inputMQfile)
-  }
-  else if ((peptides_available & mod_peptides_available) & peptides == "modificationSpecificPeptides") {
-    peptidestxt <- tidyMQ_Peptides(inputMQfile)
-    resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProtAnnot, peptidestxt)
-  }else if (!peptides_available & mod_peptides_available) {
-    warning("no peptides.txt found!! working with modificationSpecificPeptides")
-    config$table$workIntensity <- "mod.peptide.intensity"
-    config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
-  }else{
-    warning("peptides_available : " ,peptides_available, "peptides : ", peptides)
-  }
-
-  resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
-  resPepProtAnnot <- resPepProtAnnot %>% dplyr::filter(reverse !=  TRUE)
-  resPepProtAnnot$isotope <- "light"
-
-  if (!is.null(id_extractor)) {
-    resPepProtAnnot <- id_extractor(resPepProtAnnot)
-    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
-
-  }
-
   {# add annotation
-    if (is.character(inputAnnotation)) {
+    if ( is.character(inputAnnotation) ) {
       annotation <- readxl::read_xlsx(inputAnnotation)
-    }else{
+    } else {
       annotation <- inputAnnotation
     }
-    noData <- annotation[!annotation$raw.file %in% resPepProtAnnot$raw.file,]
+    noData <- annotation[!annotation[[fileName]] %in% intensityData[[fileName]],]
     if (nrow(noData)) {
       message("some files in annotation have no measurements")
-      message(paste(noData,collapse = " "))
+      message(paste(noData, collapse = " "))
     }
-    measSamples <- unique(resPepProtAnnot$raw.file)
-    noAnnot <- measSamples[!measSamples %in% annotation$raw.file]
+    measSamples <- unique(intensityData[[fileName]])
+    noAnnot <- measSamples[!measSamples %in% annotation[[fileName]] ]
     if (length(noAnnot) > 0 ) {
       message("some measured samples have no annotation!")
       message(paste(noAnnot,collapse = " "))
     }
-    resPepProtAnnot <- inner_join(annotation, resPepProtAnnot, by = "raw.file")
+    resPepProtAnnot <- inner_join(annotation, intensityData, by = fileName)
     ###  Setup analysis ####
   }
-
-  resDataStart <- setup_analysis(resPepProtAnnot, config)
-  resDataStart <- remove_small_intensities( resDataStart, config, threshold = 4 ) %>%
-    complete_cases(config)
-  return(list(data = resDataStart,
-              config = config,
-              qc_path = qc_path))
+  return(resPepProtAnnot)
 }
 
 
@@ -269,11 +202,11 @@ data_pep_to_prot <- function(data,
                              config,
                              qc_path) {
   qc_path <- qc_path
-  results <- LFQService::workflow_MQ_protoV1(
-    data,
-    config,
-    outpath,
-    peptideFilterFunction = LFQService:::.filter_proteins_by_peptide_count )
+
+  filteredData <- filter_proteins_by_peptide_count(data, config)
+
+  normalizedData <- normalize_log2_robscale(filteredData$data,
+                                                   filteredData$config)
 
   ### PROTEIN QUANTIFICATION ####
   protintensity_fun <- medpolish_protein_quants( results$pepIntensityNormalized,
@@ -347,7 +280,7 @@ application_summarize_compound <- function(data,
   prefix <- match.arg(prefix)
   assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
-  results <- LFQService:::.normalize_log2_robscale(data, config)
+  results <- LFQService:::normalize_log2_robscale(data, config)
 
 
   res_fun <- function(do = c("plot", "write", "render", "print_compounds", "data"),
