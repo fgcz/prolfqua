@@ -2,7 +2,6 @@
 
 rm(list = ls())
 
-
 library(LFQService)
 library(tidyverse)
 library(dplyr)
@@ -12,9 +11,12 @@ conflicted::conflict_prefer("filter", "dplyr")
 inputMQfile <-
   "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
 outpath <- "results_modelling_all"
-#outpath <- "results_modelling_WHO_noSex"
+outpath <- "results_modelling_WHO_noSex"
 
-inputAnntation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
+pStruct <- createProjectStructure(outpath)
+pStruct$create()
+
+inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
 assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
@@ -24,11 +26,10 @@ assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 #         header = TRUE, sep="\t", stringsAsFactors = FALSE)
 
 
+mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+
 # creates default configuration
-config <- LFQService::create_MQ_peptide_Configuration()
-
-annotation <- readxl::read_xlsx(inputAnntation)
-
+config <- mqdata$config
 config$table$factors[["dilution."]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
 
@@ -38,16 +39,13 @@ config$table$factorDepth <- 1
 config$order_Id = "IonStar"
 config$project_Id = "p3000"
 config$workunit_Id = "IonStar"
-
+mqdata$config <- config
 # specify model definition
 
 #modelName  <- "Model"
-memodel <- "~ dilution +  (1|peptide_Id) + (1|sampleName)"
-rlmpep <- "~ dilution. +  peptide_Id"
+memodel <- "~ dilution. +  (1|peptide_Id) + (1|sampleName)"
+#rlmpep <- "~ dilution. +  peptide_Id"
 lmmodel <- "~ dilution."
-
-
-DEBUG <- FALSE
 
 Contrasts <- c(
   "dilution_(9/3)_3" =   "dilution.e - dilution.a",
@@ -65,46 +63,38 @@ Contrasts <- c(
   "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
 )
 
+annotation <- readxl::read_xlsx(inputAnnotation)
 
-assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
+res <- application_add_annotation(
+  mqdata$data,
+  inputAnnotation = annotation,
+  fileName  = mqdata$config$table$fileName
+)
 
-if (TRUE) {
-  #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-  res <- application_set_up_MQ_run(
-    outpath = outpath,
-    inputMQfile = inputMQfile,
-    inputAnnotation = inputAnntation,
-    config = config
-  )
+data <- setup_analysis(res,mqdata$config)
 
+filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config)
+dataIonstarFilteredPep <- filteredData
+#usethis::use_data(dataIonstarFilteredPep)
 
-  summarised <- data_pep_to_prot(res$data,
-                                 res$config,
-                                 res$qc_path)
+filteredData <- filter_proteins_by_peptide_count(data, mqdata$config)
+normalizedData <- normalize_log2_robscale(filteredData$data,
+                                          filteredData$config)
 
-  summarised <- summarised(DEBUG = TRUE)
-
-  data_c <- summarised$results$pepIntensityNormalized
-  config_c <-
-    summarised$results$config_pepIntensityNormalized$clone(deep = TRUE)
-  dataIonstarNormalizedPep <- list(data =  data_c, config = config_c)
-
-  #usethis::use_data(dataIonstarNormalizedPep)
-  #usethis::use_data(config_c)
-
-  dataIonstarFilteredPep <- list(data = summarised$results$filteredPep, config = summarised$results$config_filteredPep)
-  #usethis::use_data(dataIonstarFilteredPep)
-  prot <- summarised$protintensity_fun("unnest")
-} else {
-}
+summarised <- data_pep_to_prot(normalizedData$data,
+                               normalizedData$config,
+                               pStruct$qc_path)
 
 
-message("######################## fit mixed #######################")
-mean(is.na(
-  summarised$results$pepIntensityNormalized$transformedIntensity
-))
+summarised <- summarised(DEBUG = TRUE)
+dataIonstarNormalizedPep <- list(data =  summarised$results$data, config = summarised$results$config$clone(deep = TRUE))
+usethis::use_data(dataIonstarNormalizedPep, overwrite = TRUE)
 
-memodel_full <- paste0(config_c$table$getWorkIntensity() , memodel)
+dataIonstarProtein <- summarised$protintensity_fun("unnest")
+usethis::use_data(dataIonstarProtein, overwrite = TRUE )1
+
+
+memodel_full <- paste0(dataIonstarNormalizedPep$config$table$getWorkIntensity() , memodel)
 modelFunction <-
   make_custom_model_lmer(memodel_full, model_name = "meModel")
 reportColumns <- c("statistic",
@@ -115,9 +105,9 @@ reportColumns <- c("statistic",
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
-    outpath = outpath,
-    data = data_c,
-    config = config_c,
+    outpath = pStruct$outpath,
+    data = dataIonstarNormalizedPep$data,
+    config = dataIonstarNormalizedPep$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -127,14 +117,14 @@ if (TRUE) {
 
 
 message("################## fit medpolish ######################")
-model <- paste0(prot$config$table$getWorkIntensity() , lmmodel)
+model <- paste0(dataIonstarProtein$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm(model, model_name = "Model")
 if (TRUE) {
   resXXmedpolish <- application_run_modelling_V2(
-    outpath = outpath,
-    data = prot$data,
-    config = prot$config,
+    outpath = pStruct$outpath,
+    data = dataIonstarProtein$data,
+    config = dataIonstarProtein$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -146,20 +136,18 @@ if (TRUE) {
 message("###################### fit ROPECA #######################")
 model <-
   paste0(
-    summarised$results$config_pepIntensityNormalized$table$getWorkIntensity()  ,
+    dataIonstarNormalizedPep$config$table$getWorkIntensity()  ,
     lmmodel
   )
-summarised$results$config_pepIntensityNormalized$table$hierarchyDepth <-
-  2
-modelFunction <-
-  make_custom_model_lm(model, model_name = "pepModel")
+  dataIonstarNormalizedPep$config$table$hierarchyDepth <- 2
+  modelFunction <- make_custom_model_lm(model, model_name = "pepModel")
 
 
 if (TRUE) {
   resXXRopeca <- application_run_modelling_V2(
-    outpath = outpath,
-    data = summarised$results$pepIntensityNormalized,
-    config = summarised$results$config_pepIntensityNormalized,
+    outpath = pStruct$outpath,
+    data = dataIonstarNormalizedPep$data,
+    config = dataIonstarNormalizedPep$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = "modelling_results_peptide"
@@ -168,8 +156,8 @@ if (TRUE) {
 }
 
 ropeca_P <-
-  summary_ROPECA_median_p.scaled(resXXRopeca, contrast = "contrast")
-
+  summary_ROPECA_median_p.scaled(resXXRopeca,
+                                 contrast = "contrast")
 
 allresults <-
   list(
@@ -183,7 +171,7 @@ tmp <-
   contrasts_linfct_vis(
     ropeca_P,
     columns = c("beta.based.significance"),
-    estimate = "median.estimate",
+    estimate = "estimate",
     contrast = "contrast",
     modelName = "protModelRopeca"
   )
