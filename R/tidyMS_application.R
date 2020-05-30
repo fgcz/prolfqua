@@ -204,13 +204,12 @@ data_pep_to_prot <- function(data,
   qc_path <- qc_path
 
   filteredData <- filter_proteins_by_peptide_count(data, config)
-
   normalizedData <- normalize_log2_robscale(filteredData$data,
                                                    filteredData$config)
 
   ### PROTEIN QUANTIFICATION ####
-  protintensity_fun <- medpolish_protein_quants( results$pepIntensityNormalized,
-                                                 results$config_pepIntensityNormalized )
+  protintensity_fun <- medpolish_protein_quants( normalizedData$data,
+                                                 normalizedData$config )
 
 
   ### generate return value
@@ -218,7 +217,7 @@ data_pep_to_prot <- function(data,
 
     do <- match.arg(do)
     if (DEBUG) {
-      return(list(qc_path = qc_path, results = results, protintensity_fun = protintensity_fun ))
+      return(list(qc_path = qc_path, results = normalizedData, protintensity_fun = protintensity_fun ))
     }
 
     if (!dir.exists(qc_path)) {
