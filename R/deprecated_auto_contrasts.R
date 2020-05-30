@@ -1,6 +1,6 @@
 # get all comparisons
 .contrast_tukey_multcomp <- function(model, factor){
-  if(class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  if (class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
   {
     model$model <- as.data.frame(unclass(model$model))
   }
@@ -25,7 +25,7 @@
   factors <- pepConfig$table$factorKeys()[1:pepConfig$table$factorDepth]
   subject_Id <- pepConfig$table$hkeysDepth()
 
-  for(factor in factors){
+  for (factor in factors) {
     print(factor)
     modelProteinF <- modelProteinF %>%
       dplyr::mutate(!!paste0("factor_",factor) := purrr::map(!!sym("linear_model"), ~.contrast_tukey_multcomp(.,factor=factor)))
