@@ -108,6 +108,9 @@ LFQDataPlotter <- R6::R6Class(
 
 
 #' LFQData write data decorator
+#'
+#' returns long and wide format for writing
+#' @export
 LFQDataWriter <- R6::R6Class(
   "LFQDataWriter",list(
     lfqdata = NULL,
