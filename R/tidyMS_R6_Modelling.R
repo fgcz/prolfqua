@@ -330,7 +330,8 @@ model_analyse_summarize_write  <- function(modellingResult, path, all = FALSE){
 #' res <- model_analyse_summarize_vis(tmp,
 #'  D$config_pepIntensityNormalized$table$hkeysDepth())
 #'
-model_analyse_summarize_vis <- function(modellingResult, subject_Id ="protein_Id") {
+model_analyse_summarize_vis <- function(modellingResult,
+                                        subject_Id ="protein_Id") {
   Model_Coeff <- tidyr::unite(modellingResult$Model_Coeff, "subject_Id", subject_Id)
   Model_Anova <- tidyr::unite(modellingResult$Model_Anova, "subject_Id", subject_Id)
   modelName <- modellingResult$modelName
