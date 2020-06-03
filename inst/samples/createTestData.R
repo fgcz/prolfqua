@@ -39,8 +39,9 @@ usethis::use_data(testData2954, overwrite = TRUE)
 
 res <- LFQService::filter_proteins_by_peptide_count(resDataStart, config)
 resultsV12954 <- LFQService::normalize_log2_robscale(res$data, res$config)
+names(resultsV12954)
 
-usethis::use_data(resultsV12954, overwrite = TRUE)
+#usethis::use_data(resultsV12954, overwrite = TRUE)
 
 
 config <- testDataStart2954$config
@@ -62,3 +63,4 @@ patchOldConfig <- function(config){
 
 testDataStart2954$config <- patchOldConfig(testDataStart2954$config)
 usethis::use_data(testDataStart2954, overwrite = TRUE)
+

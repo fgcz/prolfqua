@@ -514,16 +514,20 @@ plot_hierarchies_boxplot <- function(ddd,
 #' resDataStart <- LFQService::testDataStart2954$resDataStart
 #' config <-  LFQService::testDataStart2954$config
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
-#' res[[1]]
-#' res <- plot_hierarchies_boxplot_df(resDataStart, config, hierarchy_level = "peptide_Id")
-#' res[[1]]
+#' res$boxplot[[1]]
+#' res <- plot_hierarchies_boxplot_df(resDataStart,
+#'  config,
+#'  hierarchy_level = "peptide_Id")
+#' res$boxplot[[1]]
 #' config <- config$clone(deep = TRUE)
 #' #TODO make it work for other hiearachy levels.
 #' config$table$hierarchyDepth = 2
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
-#' res[[1]]
-plot_hierarchies_boxplot_df <- function(filteredPep, config, hierarchy = "protein_Id", hierarchy_level = NULL){
-
+#' res$boxplot[[1]]
+plot_hierarchies_boxplot_df <- function(filteredPep,
+                                        config,
+                                        hierarchy = "protein_Id",
+                                        hierarchy_level = NULL){
 
   xnested <- filteredPep %>% dplyr::group_by_at(hierarchy) %>% tidyr::nest()
 
@@ -532,7 +536,7 @@ plot_hierarchies_boxplot_df <- function(filteredPep, config, hierarchy = "protei
                                  plot_hierarchies_boxplot,
                                  config ,
                                  hierarchy_level = hierarchy_level))
-  return(figs$boxplot)
+  return(dplyr::select_at(figs, c(hierarchy, "boxplot")))
 }
 
 # Functions - summary ----
@@ -1731,7 +1735,8 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 
   # not showing row dendrogram trick
   res <- pheatmap::pheatmap(resdata,
-                            scale = "row", silent = TRUE)
+                            scale = "row",
+                            silent = TRUE)
 
   res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
                             cluster_rows  = FALSE,

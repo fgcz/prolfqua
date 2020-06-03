@@ -59,7 +59,7 @@ Contrasts <- c(
 if (TRUE) {
   assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-  res <- application_set_up_MQ_run(outpath = outpath,
+  res <- application_add_annotation(outpath = outpath,
                                    inputMQfile = inputMQfile,
                                    inputAnnotation = inputAnntation,
                                    config = config)

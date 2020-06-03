@@ -26,8 +26,10 @@ Model <- R6::R6Class(
   ))
 
 #' create model
-#' @param model
-#' @param contrasts
+#'
+#' @param model model
+#' @param contrasts contrasts
+#' @export
 #'
 make_model <- function(formula, contrasts) {
   model <- Model$new()

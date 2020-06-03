@@ -80,17 +80,19 @@ dataIonstarFilteredPep <- filteredData
 filteredData <- filter_proteins_by_peptide_count(data, mqdata$config)
 normalizedData <- normalize_log2_robscale(filteredData$data,
                                           filteredData$config)
+dataIonstarNormalizedPep <- list(data =  normalizedData$data,
+                                 config = normalizedData$config$clone(deep = TRUE))
 
-summarised <- data_pep_to_prot(normalizedData$data,
-                               normalizedData$config,
-                               pStruct$qc_path)
-
-
-summarised <- summarised(DEBUG = TRUE)
-dataIonstarNormalizedPep <- list(data =  summarised$results$data, config = summarised$results$config$clone(deep = TRUE))
 usethis::use_data(dataIonstarNormalizedPep, overwrite = TRUE)
 
-dataIonstarProtein <- summarised$protintensity_fun("unnest")
+
+protintensity_fun <- medpolish_protein_quants( normalizedData$data,
+                                               normalizedData$config )
+
+
+
+
+dataIonstarProtein <- protintensity_fun("unnest")
 usethis::use_data(dataIonstarProtein, overwrite = TRUE )1
 
 

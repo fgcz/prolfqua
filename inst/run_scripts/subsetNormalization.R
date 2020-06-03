@@ -36,7 +36,7 @@ config$workunit_Id = "IonStar"
 
 # specify model definition
 
-res <- application_set_up_MQ_run(
+res <- application_add_annotation(
   outpath = outpath,
   inputMQfile = inputMQfile,
   inputAnnotation = inputAnntation,
@@ -45,7 +45,7 @@ res <- application_set_up_MQ_run(
 
 
 dd <-
-  LFQService:::.filter_proteins_by_peptide_count(res$data, res$config)
+  LFQService:::filter_proteins_by_peptide_count(res$data, res$config)
 pepIntensityNormalized <-
   transform_work_intensity(dd$data, dd$config, log2)
 
