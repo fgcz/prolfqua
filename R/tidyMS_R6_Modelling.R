@@ -163,6 +163,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' @export
 #'
 #' @examples
+#'
 #' library(tidyverse)
 #' library(LFQService)
 #' D <- LFQService::resultsV12954
@@ -170,8 +171,8 @@ get_complete_model_fit <- function(modelProteinF){
 #' formula_randomPeptide <-
 #'   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
 #'   model_name = modelName)
-#' pepIntensity <- D$pepIntensityNormalized
-#' config <- D$config_pepIntensityNormalized
+#' pepIntensity <- D$data
+#' config <- D$config
 #' config$table$hkeysDepth()
 #' mr <- LFQService:::model_analyse( pepIntensity,
 #'  formula_randomPeptide,

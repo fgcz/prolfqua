@@ -2,15 +2,16 @@
 % Please edit documentation in R/tidyMS_write.R
 \name{lfq_write_table}
 \alias{lfq_write_table}
-\title{Have a hook for the moment to write in different formats}
+\title{Facade to writing data frame into various file formats.}
 \usage{
 lfq_write_table(x, path, lfq_write_format = c("xlsx", "csv", "html"))
 }
 \description{
-Have a hook for the moment to write in different formats
+Facade to writing data frame into various file formats.
 }
 \examples{
-x<- data.frame(a = 1:3, b=4:6)
+x<- data.frame(a = 1:3, b = 4:6 )
 
 lfq_write_table(x, "test.csv", lfq_write_format = c( "csv", "xlsx",  "html"))
+
 }

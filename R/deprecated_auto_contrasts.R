@@ -54,8 +54,8 @@
 #' modelName <- "f_Condition_r_peptide"
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #'
-#' pepConfig <- D$config_pepIntensityNormalized
-#' modellingResult <- LFQService:::model_analyse( D$pepIntensityNormalized,
+#' pepConfig <- D$config
+#' modellingResult <- LFQService:::model_analyse( D$data,
 #' formula_randomPeptide,
 #' subject_Id = pepConfig$table$hkeysDepth(),
 #' modelName)

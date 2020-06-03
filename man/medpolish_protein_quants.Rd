@@ -10,11 +10,14 @@ medpolish_protein_quants(data, config)
 median polish from normalized peptide intensities
 }
 \examples{
-resultsV12954 <- LFQService::resultsV12954
-res <- medpolish_protein_quants(resultsV12954$pepIntensityNormalized,
-resultsV12954$config_pepIntensityNormalized )
+library(tidyverse)
+library(LFQService)
+data <- LFQService::dataIonstarNormalizedPep
 
+data$data <- data$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
+res <- medpolish_protein_quants(data$data,
+data$config )
 
-res("unnest")$data
+head(res("unnest")$data)
 
 }

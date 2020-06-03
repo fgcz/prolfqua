@@ -13,8 +13,8 @@ LFQData R6 class
 data <- LFQService::data_c
 config <- config <- LFQService::config_c
 lfqdata <- LFQData$new(data, config)
-lfqdata$to_wide()
-to wide
+tmp <- lfqdata$to_wide()
+
 }
 \section{Methods}{
 \subsection{Public methods}{

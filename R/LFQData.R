@@ -1,11 +1,13 @@
 #' LFQData R6 class
 #' @export
+#'
 #' @examples
 #'
 #' data <- LFQService::data_c
 #' config <- config <- LFQService::config_c
 #' lfqdata <- LFQData$new(data, config)
-#' lfqdata$to_wide()
+#' tmp <- lfqdata$to_wide()
+#'
 LFQData <- R6::R6Class(
   "LFQData",
 
@@ -34,7 +36,6 @@ LFQData <- R6::R6Class(
 
     },
     to_wide = function(){
-      #' to wide
       wide <- LFQService::toWideConfig(self$data, self$config)
       wide$config <- self$config
       return(wide)
@@ -54,17 +55,23 @@ LFQData <- R6::R6Class(
 #' @export
 #'
 #' @examples
+#' library(LFQService)
+#' data <- LFQService::dataIonstarProtein
+#' LFQService::plot_pca(data$data, data$config, add_txt = FALSE)
 #'
-#' data <- LFQService::data_c
-#' config <- config <- LFQService::config_c
-#' debug(LFQService::plot_pca)
-#' LFQService::plot_pca(data, config, add_txt = FALSE)
+#' dim(data$data)
+#' dataR <- data$data %>% filter(protein_Id %in% sample(data$data$protein_Id,100))
 #'
-#' lfqdata <- LFQData$new(data, config)
+#' lfqdata <- LFQData$new(dataR, data$config)
 #' lfqplotter <- LFQDataPlotter$new(lfqdata)
+#' graphics.off()
 #' lfqplotter$plot_heatmap()
+#' graphics.off()
 #' lfqplotter$plot_heatmap_cor()
+#' graphics.off()
 #' lfqplotter$plot_pca()
+#' tmp <- lfqplotter$plot_prot_boxplots()
+#' tmp$boxplot[[1]]
 LFQDataPlotter <- R6::R6Class(
   "LFQDataPlotter",
   list(

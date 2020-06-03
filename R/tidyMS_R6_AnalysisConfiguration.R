@@ -1268,12 +1268,15 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' median polish from normalized peptide intensities
 #' @export
 #' @examples
-#' resultsV12954 <- LFQService::resultsV12954
-#' res <- medpolish_protein_quants(resultsV12954$pepIntensityNormalized,
-#' resultsV12954$config_pepIntensityNormalized )
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- LFQService::dataIonstarNormalizedPep
 #'
+#' data$data <- data$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' res <- medpolish_protein_quants(data$data,
+#' data$config )
 #'
-#' res("unnest")$data
+#' head(res("unnest")$data)
 #'
 medpolish_protein_quants <- function(data, config){
   protintensity <- LFQService::intensity_summary_by_hkeys(data ,

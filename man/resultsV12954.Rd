@@ -5,7 +5,7 @@
 \alias{resultsV12954}
 \title{resultsV12954 - contains normalization results}
 \format{
-An object of class \code{list} of length 10.
+An object of class \code{list} of length 2.
 }
 \usage{
 resultsV12954
