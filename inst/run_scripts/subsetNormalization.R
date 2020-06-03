@@ -15,7 +15,6 @@ outpath <- "results_modelling_all"
 #outpath <- "results_modelling_WHO_noSex"
 
 inputAnntation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
-assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
 

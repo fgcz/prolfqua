@@ -9,7 +9,6 @@ outpath <- "results_modelling"
 #outpath <- "results_modelling_WHO_noSex"
 
 inputAnntation <- "../samples/annotationIonstar.xlsx"
-assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
 # MQPeptides<- "D:/Dropbox/DataAnalysis/p2109_PEPTIDE_Analysis/data/MQWorkunit.zip"
@@ -57,7 +56,6 @@ Contrasts <- c(
 
 
 if (TRUE) {
-  assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
   res <- application_add_annotation(outpath = outpath,
                                    inputMQfile = inputMQfile,

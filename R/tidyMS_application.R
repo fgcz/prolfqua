@@ -79,7 +79,6 @@ application_run_modelling_V2 <- function(outpath,
                                          do_not_report = "",
                                          DEBUG= FALSE)
 {
-  assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)
   if (!dir.exists(outpath)) {
@@ -170,7 +169,6 @@ application_run_modelling_V2 <- function(outpath,
 application_add_annotation <- function(intensityData,
                                        inputAnnotation,
                                        fileName = "raw.file") {
-  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
   ## read the data
   {# add annotation
     if ( is.character(inputAnnotation) ) {
@@ -207,7 +205,6 @@ application_summarize_compound <- function(data,
                                            prefix = c("ms")) {
   qc_apth <- qc_path
   prefix <- match.arg(prefix)
-  assign("lfq_write_format", c("xlsx"), envir = .GlobalEnv)
 
   results <- LFQService:::normalize_log2_robscale(data, config)
 

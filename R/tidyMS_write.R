@@ -4,7 +4,7 @@
 #' @examples
 #' x<- data.frame(a = 1:3, b = 4:6 )
 #'
-#' lfq_write_table(x, "test.csv", lfq_write_format = c( "csv", "xlsx",  "html"))
+#' # lfq_write_table(x, "test.csv", lfq_write_format = c( "csv", "xlsx",  "html"))
 #'
 lfq_write_table <- function(x, path, lfq_write_format = c("xlsx","csv","html"))
 {

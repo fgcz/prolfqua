@@ -10,7 +10,6 @@ application_run_modelling <- function(outpath,
                                       modelling_dir="modelling_results_protein",
                                       DEBUG = FALSE){
   warning("DEPRECATED application_run_modelling! use application_run_modelling_V2 instead!")
-  assign("lfq_write_format", c("xlsx","html"), envir = .GlobalEnv)
 
   # create result structure
   modelling_path <- file.path(outpath, modelling_dir)

@@ -17,7 +17,6 @@ pStruct <- createProjectStructure(outpath)
 pStruct$create()
 
 inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
-assign("lfq_write_format", "xlsx", envir = .GlobalEnv)
 
 
 # MQPeptides<- "D:/Dropbox/DataAnalysis/p2109_PEPTIDE_Analysis/data/MQWorkunit.zip"
