@@ -29,6 +29,8 @@ lfqplotter$plot_pca()
 \item \href{#method-plot_heatmap_cor}{\code{LFQDataPlotter$plot_heatmap_cor()}}
 \item \href{#method-plot_pca}{\code{LFQDataPlotter$plot_pca()}}
 \item \href{#method-plot_pca_plotly}{\code{LFQDataPlotter$plot_pca_plotly()}}
+\item \href{#method-plot_prot_boxplots}{\code{LFQDataPlotter$plot_prot_boxplots()}}
+\item \href{#method-write_prot_boxplots}{\code{LFQDataPlotter$write_prot_boxplots()}}
 \item \href{#method-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
 \item \href{#method-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
 \item \href{#method-write}{\code{LFQDataPlotter$write()}}
@@ -40,7 +42,7 @@ lfqplotter$plot_pca()
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$new(lfqdata)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$new(lfqdata, prefix = "ms_")}\if{html}{\out{</div>}}
 }
 
 }
@@ -81,11 +83,29 @@ lfqplotter$plot_pca()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot_prot_boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_prot_boxplots}{}}}
+\subsection{Method \code{plot_prot_boxplots()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_prot_boxplots()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_prot_boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-write_prot_boxplots}{}}}
+\subsection{Method \code{write_prot_boxplots()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_prot_boxplots(path_qc, width = 6, height = 6)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_pltly"></a>}}
 \if{latex}{\out{\hypertarget{method-write_pltly}{}}}
 \subsection{Method \code{write_pltly()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, fig_name, prefix = "ms_")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, path_qc, fig_name, prefix = "ms_")}\if{html}{\out{</div>}}
 }
 
 }
@@ -94,14 +114,7 @@ lfqplotter$plot_pca()
 \if{latex}{\out{\hypertarget{method-write_pdf}{}}}
 \subsection{Method \code{write_pdf()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pdf(
-  fig,
-  path_qc,
-  fig_name,
-  prefix = "ms_",
-  width = 7,
-  height = 7
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pdf(fig, path_qc, fig_name, width = 7, height = 7)}\if{html}{\out{</div>}}
 }
 
 }

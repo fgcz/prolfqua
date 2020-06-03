@@ -22,6 +22,8 @@ to wide
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
+\item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
+\item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
 }
@@ -30,7 +32,7 @@ to wide
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE, prefix = "ms_")}\if{html}{\out{</div>}}
 }
 
 }
@@ -49,6 +51,24 @@ to wide
 \subsection{Method \code{to_wide()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\subsection{Method \code{get_Plotter()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Plotter()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Writer"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Writer}{}}}
+\subsection{Method \code{get_Writer()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Writer(format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 }

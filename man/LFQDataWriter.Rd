@@ -2,17 +2,9 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataWriter}
 \alias{LFQDataWriter}
-\title{LFQData write data decorator
-gets data formatted for writing
-gets data formatted for writing}
+\title{LFQData write data decorator}
 \description{
-LFQData write data decorator
-gets data formatted for writing
-gets data formatted for writing
-
-LFQData write data decorator
-gets data formatted for writing
-gets data formatted for writing
+returns long and wide format for writing
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -30,7 +22,7 @@ gets data formatted for writing
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$new(lfqdata, path_qc, prefix = "ms_", format = "xlsx")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$new(lfq, prefix = "ms_", format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 }
@@ -57,7 +49,7 @@ gets data formatted for writing
 \if{latex}{\out{\hypertarget{method-write_long}{}}}
 \subsection{Method \code{write_long()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_long()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_long(path_qc)}\if{html}{\out{</div>}}
 }
 
 }
@@ -66,7 +58,7 @@ gets data formatted for writing
 \if{latex}{\out{\hypertarget{method-write_wide}{}}}
 \subsection{Method \code{write_wide()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_wide()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_wide(path_qc)}\if{html}{\out{</div>}}
 }
 
 }

@@ -7,7 +7,9 @@
 make_model(formula, contrasts)
 }
 \arguments{
-\item{contrasts}{}
+\item{contrasts}{contrasts}
+
+\item{model}{model}
 }
 \description{
 create model
