@@ -1,4 +1,4 @@
-rm(list=ls())
+rm(list = ls())
 library(tidyverse)
 library(LFQService)
 library(lme4)
@@ -10,57 +10,66 @@ Phoenix <- TRUE
 
 results <- LFQService::resultsV12954
 
-results$path <- file.path(tempdir(), results$path)
+temp_dir <- file.path(tempdir())
 
-if(!dir.exists(results$path)){
-  dir.create(results$path)
+if (!dir.exists(temp_dir)) {
+  dir.create(temp_dir)
 }
 
 
-length(unique(results$resDataStart$protein_Id))
-length(unique(results$filteredPep$protein_Id))
 
-
-results$config_pepIntensityNormalized$table$factorDepth <- 1
-pepConfig<- results$config_pepIntensityNormalized
+pepConfig <- results$config
+pepConfig$table$factorDepth <- 1
 
 pepConfig$table$factorKeys()
+pepConfig$table$fkeysDepth()
 
 # Model 1
 modelName  <- "f_Condition_r_peptide"
 
-formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
-models_base <- model_analyse(results$pepIntensityNormalized, formula_randomPeptide, modelName)
-summary_base <- model_analyse_summarize(models_base$modelProtein,models_base$modelName)
+formula_randomPeptide <-
+  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+                         model_name = modelName)
+models_base <-
+  model_analyse(results$data,
+                formula_randomPeptide,
+                modelName)
 
-
-
+summary_base <-
+  model_analyse_summarize(models_base$modelProtein, models_base$modelName)
 
 #model_analyse_write(models_base, modelName, results$path)
 reslist <- model_analyse_summarize_vis(summary_base)
-model_analyse_summarize_vis_write(reslist, path = results$path)
+names(reslist)
+reslist$histogram_coeff_p.values
+reslist$VolcanoPlot
+reslist$Pairsplot_Coef
+
+model_analyse_summarize_vis_write(reslist, path = temp_dir)
 
 
 
 # Model2
 modelName  <- "f_Condition_r_peptid_r_patient"
-formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition +  (1|patient_id) + (1|peptide_Id)", model_name=modelName)
+formula_randomPatient <-
+  make_custom_model_lmer("transformedIntensity  ~ Condition +  (1|patient_id) + (1|peptide_Id)",
+                         model_name = modelName)
 
-models_interaction <- model_analyse(results$pepIntensityNormalized,
+models_interaction <- model_analyse(results$data,
                                     formula_randomPatient,
                                     modelName)
 
 
-if(TRUE){
+if (TRUE) {
   m <- get_complete_model_fit(models_interaction$modelProtein)
   m$linear_model[[1]]
-  factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-  factor_levelContrasts <- contrasts_linfct( m,
-                                             factor_contrasts,
-                                             subject_Id = "protein_Id")
+  factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
+  factor_levelContrasts <- contrasts_linfct(m,
+                                            factor_contrasts,
+                                            subject_Id = "protein_Id")
   head(factor_levelContrasts)
   m$linear_model[[1]]
-  my_contest(m$linear_model[[1]],factor_contrasts )
+  my_contest(m$linear_model[[1]], factor_contrasts)
 }
 
 
