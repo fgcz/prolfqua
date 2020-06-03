@@ -17,12 +17,12 @@ formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
    model_name = modelName)
 modellingResult <-  LFQService:::model_analyse(
- D$pepIntensityNormalized,
+ D$data,
  formula_randomPeptide,
  modelName,
- D$config_pepIntensityNormalized$table$hkeysDepth())
+ D$config$table$hkeysDepth())
 tmp <- model_analyse_summarize(modellingResult$modelProtein)
 res <- model_analyse_summarize_vis(tmp,
- D$config_pepIntensityNormalized$table$hkeysDepth())
+ D$config$table$hkeysDepth())
 
 }
