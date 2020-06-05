@@ -33,9 +33,9 @@ Imports:
     plotly,
     purrr,
     readxl,
+    tidyr,
     tidyverse,
     yaml,
-    tidyr,
     writexl
 Suggests:
     knitr,

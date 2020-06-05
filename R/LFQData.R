@@ -3,9 +3,8 @@
 #'
 #' @examples
 #'
-#' data <- LFQService::data_c
-#' config <- config <- LFQService::config_c
-#' lfqdata <- LFQData$new(data, config)
+#' istar <- LFQService::dataIonstarFilteredPep
+#' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #'
 LFQData <- R6::R6Class(
@@ -45,11 +44,114 @@ LFQData <- R6::R6Class(
     },
     get_Writer = function(format = "xlsx"){
       return(LFQDataWriter$new(self, self$prefix, format = format))
+    },
+    get_Summariser = function(){
+      return(LFQDataSummariser$new(self, self$prefix))
+    },
+    get_Stat = function(){
+      return(LFQDataStats$new(self))
     }
   )
-
 )
 
+#' compute stdv, mean and CV per peptide or protein and condition.
+#' @export
+#' @examples
+#' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' istar <- LFQService::dataIonstarFilteredPep
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' sum <- lfqdata$get_Stat()
+#' sum$cv()
+#' sum$cv_quantiles()
+#' sum$density()
+#' sum$density_median()
+#' sum$violin()
+#' sum$violin_median()
+#' sum$stdv_vs_mean()
+LFQDataStats <- R6::R6Class(
+  "LFQDataStats",
+  public = list(
+    lfq = NULL,
+    stat = "CV",
+    initialize = function(lfqdata){
+      self$lfq = lfqdata
+      is_transformed <- self$lfq$config$parameter$is_intensity_transformed
+      self$stat <- if (is_transformed) {"CV"}else{"sd"}
+    },
+    cv = function(){
+      LFQService::summarize_cv(self$lfq$data, self$lfq$config)
+    },
+    cv_quantiles = function(){
+      LFQService::summarize_cv_quantiles(self$cv(),self$lfq$config)
+    },
+    density = function(){
+      LFQService::plot_stat_density(self$cv(), self$lfq$config, stat = self$stat)
+    },
+    density_median = function(){
+      LFQService::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
+    },
+    violin = function(){
+      LFQService::plot_stat_violin(self$cv(), self$lfq$config, stat = self$stat)
+    },
+    violin_median = function(){
+      LFQService::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
+    },
+    stdv_vs_mean = function(){
+      LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config)
+    }
+
+
+  )
+)
+
+#' generate dataset summaries.
+#' @export
+#' @examples
+#'
+#'
+#' istar <- LFQService::dataIonstarFilteredPep
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' sum <- lfqdata$get_Summariser()
+#' sum$hierarchy_counts()
+#' sum$hierarchy_counts_sample("wide")
+#' sum$hierarchy_counts_sample("long")
+#' sum$hierarchy_counts_sample("plot")
+#' sum$summarize_hierarchy()
+#' sum$interaction_missing_stats()
+#' sum$missingness_per_condition()
+#' sum$missingness_per_condition_cumsum()
+#'
+LFQDataSummariser <- R6::R6Class(
+  "LFQDataSummariser",
+  public = list(
+    lfq = NULL,
+    prefix = character(),
+    initialize = function(lfqdata , prefix = "ms_") {
+      self$lfq <- lfqdata
+      self$prefix <- prefix
+    },
+    hierarchy_counts = function(){
+      hierarchy_counts(self$lfq$data, self$lfq$config)
+    },
+    hierarchy_counts_sample = function(value = c("wide", "long", "plot")){
+      value <- match.arg(value)
+      fun <- LFQService::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
+      return(fun(value))
+    },
+    summarize_hierarchy = function(){
+      LFQService::summarize_hierarchy(self$lfq$data, self$lfq$config)
+    },
+    interaction_missing_stats = function(){
+      LFQService::interaction_missing_stats(self$lfq$data, self$lfq$config)
+    },
+    missingness_per_condition = function(){
+      LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$data
+    },
+    missingness_per_condition_cumsum = function(){
+      LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
+    }
+  )
+)
 
 #' write intensites into folder - for the moment protein
 #' @export
@@ -57,21 +159,27 @@ LFQData <- R6::R6Class(
 #' @examples
 #' library(LFQService)
 #' data <- LFQService::dataIonstarProtein
-#' LFQService::plot_pca(data$data, data$config, add_txt = FALSE)
-#'
-#' dim(data$data)
-#' dataR <- data$data %>% filter(protein_Id %in% sample(data$data$protein_Id,100))
+#' dataR <- data$data %>% dplyr::filter(protein_Id %in% sample(data$data$protein_Id,100))
 #'
 #' lfqdata <- LFQData$new(dataR, data$config)
-#' lfqplotter <- LFQDataPlotter$new(lfqdata)
+#' lfqplotter <- lfqdata$get_Plotter()
 #' graphics.off()
-#' lfqplotter$plot_heatmap()
+#' lfqplotter$heatmap()
 #' graphics.off()
-#' lfqplotter$plot_heatmap_cor()
+#' lfqplotter$heatmap_cor()
 #' graphics.off()
-#' lfqplotter$plot_pca()
-#' tmp <- lfqplotter$plot_prot_boxplots()
+#' lfqplotter$pca()
+#' tmp <- lfqplotter$boxplots()
 #' tmp$boxplot[[1]]
+#' lfqplotter$missigness_histogram()
+#' lfqplotter$missingness_per_condition()
+#' lfqplotter$missingness_per_condition_cumsum()
+#' dev.off()
+#' lfqplotter$NA_heatmap()
+#' lfqplotter$intensity_distribution_density()
+#' lfqplotter$intensity_distribution_violin()
+#' lfqplotter$pairs_smooth()
+#'
 LFQDataPlotter <- R6::R6Class(
   "LFQDataPlotter",
   list(
@@ -81,33 +189,66 @@ LFQDataPlotter <- R6::R6Class(
       self$lfq = lfqdata
       self$prefix = prefix
     },
-    plot_heatmap = function(na_fraction = 0.3){
+    heatmap = function(na_fraction = 0.3){
       fig <- LFQService::plot_heatmap(self$lfq$data,
                                       self$lfq$config,
                                       na_fraction = na_fraction)
       return(fig)
     },
-    plot_heatmap_cor = function(){
+    heatmap_cor = function(){
       fig <- LFQService::plot_heatmap_cor(self$lfq$data, self$lfq$config)
       return(fig)
     },
-    plot_pca = function(){
+    pca = function(){
       fig <- LFQService::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
       return(fig)
     },
-    plot_pca_plotly = function(path_qc){
+    pca_plotly = function(path_qc){
       fig <- plotly::ggplotly(self$plot_pca(), tooltip = self$config$table$sampleName)
       return(fig)
     },
-    plot_prot_boxplots = function(){
+    boxplots = function(){
       bb <- plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
       return(bb)
+    },
+    missigness_histogram = function(){
+      LFQService::missigness_histogram(self$lfq$data, self$lfq$config)
+    },
+    missingness_per_condition = function(){
+      LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
+    },
+    missingness_per_condition_cumsum = function(){
+      LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
+    },
+    NA_heatmap = function(){
+      LFQService::plot_NA_heatmap(self$lfq$data, self$lfq$config)
+    },
+    intensity_distribution_density = function(){
+      LFQService::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
+    },
+    intensity_distribution_violin = function(){
+      LFQService::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
+    },
+    pairs_smooth = function(max=10){
+      dataTransformed <- self$lfq$data
+      config <- self$lfq$config
+      samples <- dplyr::select(self$lfq$data, config$table$sampleName) %>%
+        distinct() %>%
+        pull()
+      if (length(samples) > max) {
+        limit <- samples %>% sample(max)
+        ldata <- dataTransformed %>%
+          dplyr::filter(!!sym(config$table$sampleName) %in% limit)
+        LFQService::pairs_smooth( LFQService::toWideConfig(ldata, config, as.matrix = TRUE)$data )
+      }else{
+        LFQService::pairs_smooth( LFQService::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+      }
     },
     write_prot_boxplots = function(path_qc, width = 6, height = 6){
       fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
       message("writing ", fpath)
       pdf(fpath, width = width, height = height)
-      bb <- self$plot_prot_boxplots()
+      bb <- self$boxplots()
       lapply(bb$boxplot, print)
       dev.off()
     },
@@ -139,28 +280,29 @@ LFQDataPlotter <- R6::R6Class(
       graphics.off()
     },
     write = function(path_qc, prefix = "ms"){
-      self$write_pdf(self$plot_heatmap_cor(),
+      self$write_pdf(self$heatmap_cor(),
                      path_qc,
                      "intensities_heatmap_correlation",
                      width = 10, height = 10)
-      self$write_pdf(self$plot_heatmap(),
+      self$write_pdf(self$heatmap(),
                      path_qc,
                      "intensities_heatmap",
                      width = 10, height = 10)
-      self$write_pdf(self$plot_pca(),
+      self$write_pdf(self$pca(),
                      path_qc,
                      "intensities_PCA")
-      self$write_pltly(self$plot_pca_plotly(),
+      self$write_pltly(self$pca_plotly(),
                        path_qc,
                        "intensities_PCA")
     }
   ))
 
 
-#' LFQData write data decorator
+#' Write LFQ data, or provide outputs for writing.
 #'
 #' returns long and wide format for writing
 #' @export
+#'
 LFQDataWriter <- R6::R6Class(
   "LFQDataWriter",list(
     lfq = NULL,
