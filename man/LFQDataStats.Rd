@@ -19,7 +19,22 @@ sum$density()
 sum$density_median()
 sum$violin()
 sum$violin_median()
-sum$stdv_vs_mean()
+sum$stdv_vs_mean(size = 400)
+sum$power_t_test()
+sum$power_t_test_quantiles()
+istar <- LFQService::dataIonstarNormalizedPep
+lfqdata <- LFQData$new(istar$data, istar$config)
+sum <- lfqdata$get_Stat()
+sum$cv()
+sum$cv_quantiles()
+sum$density()
+sum$density_median()
+sum$violin()
+sum$violin_median()
+sum$stdv_vs_mean(size = 400)
+sum$power_t_test()
+sum$power_t_test_quantiles
+
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -32,6 +47,8 @@ sum$stdv_vs_mean()
 \item \href{#method-violin}{\code{LFQDataStats$violin()}}
 \item \href{#method-violin_median}{\code{LFQDataStats$violin_median()}}
 \item \href{#method-stdv_vs_mean}{\code{LFQDataStats$stdv_vs_mean()}}
+\item \href{#method-power_t_test_quantiles}{\code{LFQDataStats$power_t_test_quantiles()}}
+\item \href{#method-power_t_test}{\code{LFQDataStats$power_t_test()}}
 \item \href{#method-clone}{\code{LFQDataStats$clone()}}
 }
 }
@@ -58,7 +75,7 @@ sum$stdv_vs_mean()
 \if{latex}{\out{\hypertarget{method-cv_quantiles}{}}}
 \subsection{Method \code{cv_quantiles()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv_quantiles()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}\if{html}{\out{</div>}}
 }
 
 }
@@ -67,7 +84,7 @@ sum$stdv_vs_mean()
 \if{latex}{\out{\hypertarget{method-density}{}}}
 \subsection{Method \code{density()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
 }
 
 }
@@ -76,7 +93,7 @@ sum$stdv_vs_mean()
 \if{latex}{\out{\hypertarget{method-density_median}{}}}
 \subsection{Method \code{density_median()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density_median()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density_median(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
 }
 
 }
@@ -103,7 +120,30 @@ sum$stdv_vs_mean()
 \if{latex}{\out{\hypertarget{method-stdv_vs_mean}{}}}
 \subsection{Method \code{stdv_vs_mean()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stdv_vs_mean()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stdv_vs_mean(size = 200)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-power_t_test_quantiles"></a>}}
+\if{latex}{\out{\hypertarget{method-power_t_test_quantiles}{}}}
+\subsection{Method \code{power_t_test_quantiles()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test_quantiles(
+  probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
+  delta = c(0.59, 1, 2),
+  power = 0.8,
+  sig.level = 0.05
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-power_t_test"></a>}}
+\if{latex}{\out{\hypertarget{method-power_t_test}{}}}
+\subsection{Method \code{power_t_test()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test(delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05)}\if{html}{\out{</div>}}
 }
 
 }
