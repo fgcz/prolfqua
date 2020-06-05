@@ -2,11 +2,11 @@
 #' @export
 #'
 #' @examples
-#'
+#' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQService::dataIonstarFilteredPep
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
-#'
+#' lfqdata$factors()
 LFQData <- R6::R6Class(
   "LFQData",
 
@@ -39,6 +39,10 @@ LFQData <- R6::R6Class(
       wide$config <- self$config
       return(wide)
     },
+    factors = function(){
+      LFQService::table_factors(self$data, self$config)
+    },
+
     get_Plotter = function(){
       return(LFQDataPlotter$new(self, self$prefix))
     },
@@ -67,27 +71,43 @@ LFQData <- R6::R6Class(
 #' sum$density_median()
 #' sum$violin()
 #' sum$violin_median()
-#' sum$stdv_vs_mean()
+#' sum$stdv_vs_mean(size = 400)
+#' sum$power_t_test()
+#' sum$power_t_test_quantiles()
+#' istar <- LFQService::dataIonstarNormalizedPep
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' sum <- lfqdata$get_Stat()
+#' sum$cv()
+#' sum$cv_quantiles()
+#' sum$density()
+#' sum$density_median()
+#' sum$violin()
+#' sum$violin_median()
+#' sum$stdv_vs_mean(size = 400)
+#' sum$power_t_test()
+#' sum$power_t_test_quantiles
+#'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
     lfq = NULL,
     stat = "CV",
+    is_transformed = FALSE,
     initialize = function(lfqdata){
       self$lfq = lfqdata
-      is_transformed <- self$lfq$config$parameter$is_intensity_transformed
-      self$stat <- if (is_transformed) {"CV"}else{"sd"}
+      self$is_transformed <- self$lfq$config$parameter$is_intensity_transformed
+      self$stat <- if (!self$is_transformed) {"CV"}else{"sd"}
     },
     cv = function(){
       LFQService::summarize_cv(self$lfq$data, self$lfq$config)
     },
-    cv_quantiles = function(){
-      LFQService::summarize_cv_quantiles(self$cv(),self$lfq$config)
+    cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+      res <- LFQService::summarize_cv_quantiles(self$cv(),self$lfq$config, stats = self$stat, probs = probs)
     },
-    density = function(){
-      LFQService::plot_stat_density(self$cv(), self$lfq$config, stat = self$stat)
+    density = function(ggstat = c("density", "ecdf")){
+      LFQService::plot_stat_density(self$cv(), self$lfq$config, stat = self$stat, ggstat = ggstat)
     },
-    density_median = function(){
+    density_median = function(ggstat = c("density", "ecdf")){
       LFQService::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
     },
     violin = function(){
@@ -96,8 +116,43 @@ LFQDataStats <- R6::R6Class(
     violin_median = function(){
       LFQService::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
     },
-    stdv_vs_mean = function(){
-      LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config)
+    stdv_vs_mean = function(size= 200){
+      LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
+    },
+    power_t_test_quantiles = function(
+      probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
+      delta = c(0.59,1,2),
+      power = 0.8,
+      sig.level = 0.05)
+    {
+      if (!self$is_transformed) {
+        warning("data is not transformed - aborting")
+        return()
+      }
+      res <- self$cv_quantiles(probs)
+      res <- lfq_power_t_test_quantiles_V2(res$long,
+                                           delta = delta,
+                                           power = power,
+                                           sig.level = sig.level )
+      return(res)
+    },
+    power_t_test = function(
+      delta = c(0.59,1,2),
+      power = 0.8,
+      sig.level = 0.05
+    ){
+      if (!self$is_transformed) {
+        warning("data is not transformed - aborting")
+        return()
+      }
+
+      res <- LFQService::lfq_power_t_test_proteins(self$cv(),
+                                delta = delta,
+                                power = power,
+                                sig.level = sig.level,
+                                min.n = 1.5)
+      return(res)
+
     }
 
 
