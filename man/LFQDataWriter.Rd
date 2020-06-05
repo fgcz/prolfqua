@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataWriter}
 \alias{LFQDataWriter}
-\title{LFQData write data decorator}
+\title{Write LFQ data, or provide outputs for writing.}
 \description{
 returns long and wide format for writing
 }

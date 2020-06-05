@@ -20,4 +20,5 @@ sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
 names(res)
 print(res$figure)
+res$data
 }

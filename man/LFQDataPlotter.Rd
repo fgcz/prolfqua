@@ -11,31 +11,44 @@ write intensites into folder - for the moment protein
 \examples{
 library(LFQService)
 data <- LFQService::dataIonstarProtein
-LFQService::plot_pca(data$data, data$config, add_txt = FALSE)
-
-dim(data$data)
-dataR <- data$data \%>\% filter(protein_Id \%in\% sample(data$data$protein_Id,100))
+dataR <- data$data \%>\% dplyr::filter(protein_Id \%in\% sample(data$data$protein_Id,100))
 
 lfqdata <- LFQData$new(dataR, data$config)
-lfqplotter <- LFQDataPlotter$new(lfqdata)
+lfqplotter <- lfqdata$get_Plotter()
 graphics.off()
-lfqplotter$plot_heatmap()
+lfqplotter$heatmap()
 graphics.off()
-lfqplotter$plot_heatmap_cor()
+lfqplotter$heatmap_cor()
 graphics.off()
-lfqplotter$plot_pca()
-tmp <- lfqplotter$plot_prot_boxplots()
+lfqplotter$pca()
+tmp <- lfqplotter$boxplots()
 tmp$boxplot[[1]]
+lfqplotter$missigness_histogram()
+lfqplotter$missingness_per_condition()
+lfqplotter$missingness_per_condition_cumsum()
+dev.off()
+lfqplotter$NA_heatmap()
+lfqplotter$intensity_distribution_density()
+lfqplotter$intensity_distribution_violin()
+lfqplotter$pairs_smooth()
+
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataPlotter$new()}}
-\item \href{#method-plot_heatmap}{\code{LFQDataPlotter$plot_heatmap()}}
-\item \href{#method-plot_heatmap_cor}{\code{LFQDataPlotter$plot_heatmap_cor()}}
-\item \href{#method-plot_pca}{\code{LFQDataPlotter$plot_pca()}}
-\item \href{#method-plot_pca_plotly}{\code{LFQDataPlotter$plot_pca_plotly()}}
-\item \href{#method-plot_prot_boxplots}{\code{LFQDataPlotter$plot_prot_boxplots()}}
+\item \href{#method-heatmap}{\code{LFQDataPlotter$heatmap()}}
+\item \href{#method-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
+\item \href{#method-pca}{\code{LFQDataPlotter$pca()}}
+\item \href{#method-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
+\item \href{#method-boxplots}{\code{LFQDataPlotter$boxplots()}}
+\item \href{#method-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
+\item \href{#method-missingness_per_condition}{\code{LFQDataPlotter$missingness_per_condition()}}
+\item \href{#method-missingness_per_condition_cumsum}{\code{LFQDataPlotter$missingness_per_condition_cumsum()}}
+\item \href{#method-NA_heatmap}{\code{LFQDataPlotter$NA_heatmap()}}
+\item \href{#method-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
+\item \href{#method-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
+\item \href{#method-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
 \item \href{#method-write_prot_boxplots}{\code{LFQDataPlotter$write_prot_boxplots()}}
 \item \href{#method-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
 \item \href{#method-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
@@ -53,47 +66,110 @@ tmp$boxplot[[1]]
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_heatmap"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_heatmap}{}}}
-\subsection{Method \code{plot_heatmap()}}{
+\if{html}{\out{<a id="method-heatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-heatmap}{}}}
+\subsection{Method \code{heatmap()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_heatmap(na_fraction = 0.3)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_heatmap_cor"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_heatmap_cor}{}}}
-\subsection{Method \code{plot_heatmap_cor()}}{
+\if{html}{\out{<a id="method-heatmap_cor"></a>}}
+\if{latex}{\out{\hypertarget{method-heatmap_cor}{}}}
+\subsection{Method \code{heatmap_cor()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_heatmap_cor()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_pca"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_pca}{}}}
-\subsection{Method \code{plot_pca()}}{
+\if{html}{\out{<a id="method-pca"></a>}}
+\if{latex}{\out{\hypertarget{method-pca}{}}}
+\subsection{Method \code{pca()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_pca()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_pca_plotly"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_pca_plotly}{}}}
-\subsection{Method \code{plot_pca_plotly()}}{
+\if{html}{\out{<a id="method-pca_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-pca_plotly}{}}}
+\subsection{Method \code{pca_plotly()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_pca_plotly(path_qc)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(path_qc)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_prot_boxplots"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_prot_boxplots}{}}}
-\subsection{Method \code{plot_prot_boxplots()}}{
+\if{html}{\out{<a id="method-boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-boxplots}{}}}
+\subsection{Method \code{boxplots()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$plot_prot_boxplots()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$boxplots()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-missigness_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-missigness_histogram}{}}}
+\subsection{Method \code{missigness_histogram()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missigness_histogram()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-missingness_per_condition"></a>}}
+\if{latex}{\out{\hypertarget{method-missingness_per_condition}{}}}
+\subsection{Method \code{missingness_per_condition()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-missingness_per_condition_cumsum"></a>}}
+\if{latex}{\out{\hypertarget{method-missingness_per_condition_cumsum}{}}}
+\subsection{Method \code{missingness_per_condition_cumsum()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA_heatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-NA_heatmap}{}}}
+\subsection{Method \code{NA_heatmap()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$NA_heatmap()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-intensity_distribution_density"></a>}}
+\if{latex}{\out{\hypertarget{method-intensity_distribution_density}{}}}
+\subsection{Method \code{intensity_distribution_density()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-intensity_distribution_violin"></a>}}
+\if{latex}{\out{\hypertarget{method-intensity_distribution_violin}{}}}
+\subsection{Method \code{intensity_distribution_violin()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_violin()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-pairs_smooth"></a>}}
+\if{latex}{\out{\hypertarget{method-pairs_smooth}{}}}
+\subsection{Method \code{pairs_smooth()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pairs_smooth(max = 10)}\if{html}{\out{</div>}}
 }
 
 }

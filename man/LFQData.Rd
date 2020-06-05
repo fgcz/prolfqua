@@ -10,9 +10,8 @@ LFQData R6 class
 }
 \examples{
 
-data <- LFQService::data_c
-config <- config <- LFQService::config_c
-lfqdata <- LFQData$new(data, config)
+istar <- LFQService::dataIonstarFilteredPep
+lfqdata <- LFQData$new(istar$data, istar$config)
 tmp <- lfqdata$to_wide()
 
 }
@@ -24,6 +23,8 @@ tmp <- lfqdata$to_wide()
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
+\item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
+\item \href{#method-get_Stat}{\code{LFQData$get_Stat()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
 }
@@ -69,6 +70,24 @@ tmp <- lfqdata$to_wide()
 \subsection{Method \code{get_Writer()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Writer(format = "xlsx")}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Summariser"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Summariser}{}}}
+\subsection{Method \code{get_Summariser()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Summariser()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Stat"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Stat}{}}}
+\subsection{Method \code{get_Stat()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stat()}\if{html}{\out{</div>}}
 }
 
 }
