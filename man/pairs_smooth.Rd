@@ -25,3 +25,4 @@ pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 \seealso{
 also \code{\link{pairs}}
 }
+\keyword{internal}

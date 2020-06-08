@@ -20,3 +20,4 @@ abline(h=.05,col = 2)
 plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 
 }
+\keyword{internal}

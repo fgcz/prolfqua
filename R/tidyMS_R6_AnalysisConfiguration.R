@@ -2,7 +2,8 @@ library(R6)
 
 # AnalysisParameters ----
 #' Analysis parameters
-#' @description Hello world
+#' @description Analysis parameters
+#' @keywords internal
 #' @export
 AnalysisParameters <- R6::R6Class("AnalysisParameters",
                                   public = list(
@@ -28,7 +29,8 @@ AnalysisParameters <- R6::R6Class("AnalysisParameters",
 
 
 #' Create Annotation
-#' @description Hello world
+#' @description Annotates Data Table
+#' @keywords internal
 #' @export
 AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                        public = list(
@@ -50,6 +52,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
 
                                          opt_rt  = character(),
                                          opt_mz = character(),
+                                         is_intensity_transformed = FALSE,
 
                                          #' create a new  AnalysisTableAnnotation
                                          initialize = function(){
@@ -95,7 +98,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
                                          },
                                          hkeysDepth = function(names = TRUE){
                                            res <- head( self$hierarchy,n = self$hierarchyDepth)
-                                           res <- if(names){
+                                           res <- if (names) {
                                              names(res)
                                            }else{
                                              res
@@ -134,6 +137,7 @@ AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
 # AnalysisConfiguration ----
 #' Analysis Configuration
 #' @description Hello world
+#' @keywords internal
 #' @export
 #'
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
@@ -154,8 +158,9 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 
 #' Make reduced hierarchy configuration
 #' @export
+#' @keywords internal
 #' @examples
-#' make_reduced_hierarchy_config(skylineconfig, "testintensity", skylineconfig$table$hierarchy[1:2])
+#' make_reduced_hierarchy_config(LFQServiceData::skylineconfig, "testintensity", LFQServiceData::skylineconfig$table$hierarchy[1:2])
 #'
 make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
   newConfig <- config$clone(deep = TRUE)
@@ -166,6 +171,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 
 #' create interaction column from factors
 #' @export
+#' @keywords internal
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 #' x <- make_interaction_column(xx, c("B","A"))
@@ -187,11 +193,12 @@ make_interaction_column <- function(data, columns, sep="."){
 
 #' create interaction column from factors
 #' @export
+#' @keywords internal
 #' @examples
-#'
+#' skylineconfig <- LFQServiceData::skylineconfig
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$factorDepth <- 1
-#' make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
+#' make_interaction_column_config(LFQServiceData::sample_analysis,skylineconfig)
 make_interaction_column_config <- function(data, config, sep="."){
   columns <- config$table$fkeysDepth()
   data <- make_interaction_column(data, columns, sep = sep)
@@ -201,6 +208,7 @@ make_interaction_column_config <- function(data, config, sep="."){
 # Functions - Configuration ----
 #' Helper function to extract all value slots in an R6 object
 #' @param r6class r6 class
+#' @keywords internal
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)
@@ -220,14 +228,15 @@ R6extractValues <- function(r6class){
 
 #' Extracts columns relevant for a configuration from a data frame
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' data(skylinePRMSampleData)
+#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #'
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+#' sample_analysis <- setup_analysis(skylinePRMSampleData, LFQServiceData::skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
@@ -273,6 +282,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 
 #' separates hierarchies into starting columns
 #' @export
+#' @keywords internal
 separate_hierarchy <- function(data, config){
   for (hkey in config$table$hkeysDepth()) {
     data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
@@ -282,6 +292,7 @@ separate_hierarchy <- function(data, config){
 
 #' separates hierarchies into starting columns
 #' @export
+#' @keywords internal
 separate_factors <- function(data, config) {
   for (fkey in config$table$factorKeys()) {
     data <- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
@@ -293,13 +304,13 @@ separate_factors <- function(data, config) {
 
 #' Complete cases
 #' @export
+#' @keywords internal
 #' @examples
 #'
-#'  config <- skylineconfig
+#'  config <- LFQServiceData::skylineconfig
 #'  config$table$isotopeLabel <- "Isotope.Label.Type"
-#'  data <- LFQService::sample_analysis
-#'  data
-#'  xx <- complete_cases(sample_analysis, skylineconfig)
+#'  data <- LFQServiceData::sample_analysis
+#'  xx <- complete_cases(data, config)
 #'
 complete_cases <- function(data, config) {
   message("completing cases")
@@ -364,11 +375,12 @@ plot_hierarchies_line_default <- function(data,
 
 #' extracts the relevant information from the configuration to make the plot.
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
-#' xnested <- LFQService::sample_analysis %>%
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
@@ -402,11 +414,11 @@ plot_hierarchies_line <- function(res, proteinName,
 
 #' generates peptide level plots for all Proteins
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' resDataStart <- LFQService::testDataStart2954$resDataStart
-#' config <-  LFQService::testDataStart2954$config
+#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
 #' res <- plot_hierarchies_line_df(resDataStart, config)
 #' res[[1]]
 #' config <- config$clone(deep = TRUE)
@@ -433,6 +445,7 @@ plot_hierarchies_line_df <- function(filteredPep, config){
 
 #' add quantline to plot
 #' @export
+#' @keywords internal
 #' @examples
 #'
 plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
@@ -449,11 +462,12 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' plot peptides by factors and its levels.
 #'
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
-#' xnested <- LFQService::sample_analysis %>%
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
@@ -496,7 +510,7 @@ plot_hierarchies_boxplot <- function(ddd,
   p <- p + geom_boxplot()
 
   if ( beeswarm ) {
-    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7)
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7, grouponX = FALSE)
   }
   if (!is.null( hierarchy_level ) && hierarchy_level %in% colnames(ddd)) {
     p <- p + facet_grid( formula(paste0("~", hierarchy_level ) ))
@@ -507,10 +521,10 @@ plot_hierarchies_boxplot <- function(ddd,
 
 #' generates peptide level plots for all Proteins
 #' @export
-#'
+#' @keywords internal
 #' @examples
-#' resDataStart <- LFQService::testDataStart2954$resDataStart
-#' config <-  LFQService::testDataStart2954$config
+#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
 #' res <- plot_hierarchies_boxplot_df(resDataStart, config)
 #' res$boxplot[[1]]
 #' res <- plot_hierarchies_boxplot_df(resDataStart,
@@ -543,11 +557,12 @@ plot_hierarchies_boxplot_df <- function(filteredPep,
 
 #' table factors
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' conf <- LFQService::skylineconfig$clone(deep = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' configuration <- conf
-#' data <- LFQService::sample_analysis
+#' data <- LFQServiceData::sample_analysis
 #' xx <- table_factors(data,configuration )
 #' xx %>% dplyr::group_by(!!sym(configuration$table$factorKeys())) %>% dplyr::summarize(n = n())
 #'
@@ -564,13 +579,14 @@ table_factors <- function(data, configuration){
 #' Count distinct elements for each level of hierarchy
 #'
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
 #' hierarchy_counts(sample_analysis, skylineconfig)
 hierarchy_counts <- function(x, configuration){
   hierarchy <- names( configuration$table$hierarchy )
@@ -581,12 +597,13 @@ hierarchy_counts <- function(x, configuration){
 
 #' Count distinct elements for each level of hierarchy per sample
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' data(skylinePRMSampleData)
+#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' res <- hierarchy_counts_sample(sample_analysis, skylineconfig)
 #' res()
@@ -627,13 +644,14 @@ hierarchy_counts_sample <- function(data,
 
 #' Summarize peptide Counts
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' data(skylinePRMSampleData)
+#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #' configuration <- skylineconfig$clone(deep=TRUE)
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, configuration)
 #'
@@ -673,21 +691,21 @@ summarize_hierarchy <- function(x,
 #' Light only version.
 #' Summarize Protein counts
 #' @export
-#'
+#' @keywords internal
 #' @importFrom dplyr group_by_at
 #' @examples
 #' library(LFQService)
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
 #'   ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' data(skylinePRMSampleData)
+#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' LFQService:::summarizeProteins(sample_analysis, skylineconfig)
 #'configuration <- skylineconfig$clone(deep=TRUE)
 #'summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 #'summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
 summarizeProteins <- function(x, configuration ){
-  #warning("DEPRECATED use summarize_hierarchy instead")
+  warning("DEPRECATED use summarize_hierarchy instead")
   rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
 
   precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
@@ -715,13 +733,15 @@ summarizeProteins <- function(x, configuration ){
 # Functions - Missigness ----
 #' compute missing statistics
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#'
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+#' xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
+#'    skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
 #' interaction_missing_stats(xx, skylineconfig)$data %>% arrange(desc(nrNAs))
 #' tmp <- interaction_missing_stats(xx, skylineconfig,
@@ -755,6 +775,7 @@ interaction_missing_stats <- function(x,
 #'
 #' used in Acetylation project p2916
 #' @export
+#' @keywords internal
 #' @return function
 #' @examples
 #'
@@ -870,6 +891,7 @@ missigness_impute_interactions <- function(mdataTrans,
 #' compute per group averages and impute values
 #' should generalize at some stage
 #' @export
+#' @keywords internal
 #' @examples
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
@@ -911,7 +933,7 @@ missigness_impute_factors_interactions <-
   }
 
 #' Compute fold changes given Contrasts
-#'
+#' @keywords internal
 #' @export
 missigness_impute_contrasts <- function(data,
                                         config,
@@ -931,7 +953,7 @@ missigness_impute_contrasts <- function(data,
 }
 
 #' Compute fold changes given Contrasts 2
-#'
+#' @keywords internal
 #' @export
 #'
 workflow_missigness_impute_contrasts <- function(data,
@@ -984,10 +1006,14 @@ workflow_missigness_impute_contrasts <- function(data,
 }
 #' Histogram summarizing missigness
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' xx <- complete_cases(sample_analysis,skylineconfig)
+#' sample_analysis <- LFQServiceData::sample_analysis
+#' skylineconfig <- LFQServiceData::skylineconfig
+#'
+#' xx <- complete_cases(sample_analysis, skylineconfig)
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
@@ -1030,6 +1056,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 
 #' cumulative sums of missing
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
@@ -1066,6 +1093,7 @@ missingness_per_condition_cumsum <- function(x,
 
 #' Summarize missing in condtion as barplot
 #' @export
+#' @keywords internal
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
@@ -1104,10 +1132,11 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 
 #' spreads isotope label heavy light into two columns
 #' @export
+#' @keywords internal
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' data(sample_analysis)
-#' data(skylineconfig)
+#' sample_analysis <- LFQServiceData::sample_analysis
+#' skylineconfig <- LFQServiceData::skylineconfig
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
 #' head(x)
@@ -1144,6 +1173,8 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 #' @family matrix manipulation
 #' @param name if TRUE returns the name of the summary column
 #' @export
+#' @keywords internal
+#'
 #' @examples
 #' medpolishPly(name = T)
 #' gg <- matrix(runif(20),4,5)
@@ -1178,20 +1209,20 @@ medpolishPly <- function(x, name = FALSE){
 #'
 #' @param func - a function working on a matrix of intensities for each protein.
 #' @return retuns function object
-#'
+#' @keywords internal
 #' @export
 #' @importFrom purrr map
 #' @examples
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQService::skylineconfig$clone(deep = TRUE)
-#' data <- LFQService::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' res <- x("unnest")
 #' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
-#' config <- LFQService::skylineconfig$clone(deep = TRUE)
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
@@ -1266,10 +1297,11 @@ intensity_summary_by_hkeys <- function(data, config, func)
 
 #' median polish from normalized peptide intensities
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQService::dataIonstarNormalizedPep
+#' data <- LFQServiceData::dataIonstarNormalizedPep
 #'
 #' data$data <- data$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' res <- medpolish_protein_quants(data$data,
@@ -1311,6 +1343,7 @@ medpolish_protein_quants <- function(data, config){
 #' plot correlation heatmap with annotations
 #'
 #' @export
+#' @keywords internal
 #' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
@@ -1358,12 +1391,13 @@ plot_heatmap_cor <- function(data,
 #' plot heatmap with annotations
 #'
 #' @export
+#' @keywords internal
 #' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQService::sample_analysis
-#' config <- LFQService::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' graphics.off()
 #' .Device
 #'  p  <- plot_heatmap(data, config)
@@ -1405,6 +1439,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 
 #' plot heatmap of NA values
 #' @export
+#' @keywords internal
 #' @importFrom pheatmap pheatmap
 #' @importFrom heatmap3 heatmap3 showLegend
 #' @examples
@@ -1477,6 +1512,7 @@ plot_NA_heatmap <- function(data,
 
 #' plot PCA
 #' @export
+#' @keywords internal
 #' @import ggfortify
 #' @examples
 #'
@@ -1514,8 +1550,6 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                       color = !!sym(config$table$fkeysDepth()[1]),
                       text = !!sym(config$table$sampleName))) +
     point + if (add_txt) {text}
-
-
   return(x)
 }
 

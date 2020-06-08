@@ -14,9 +14,9 @@ removes measurments with less than percent=60 missing values in factor_level = 1
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
-config <- spectronautDIAData250_config$clone(deep=TRUE)
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
-data <- spectronautDIAData250_analysis
+data <- LFQServiceData::spectronautDIAData250_analysis
 data <- removeLarge_Q_Values(data, config)
 hierarchy_counts(data, config)
 res <- filter_factor_levels_by_missing(data, config,percent = 60)
@@ -26,3 +26,4 @@ summarize_hierarchy(res,config) \%>\%
  dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 
 }
+\keyword{internal}

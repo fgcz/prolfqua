@@ -5,7 +5,6 @@
 \title{run the modelling using lmer and lm models}
 \usage{
 application_run_modelling_V2(
-  outpath,
   data,
   config,
   modelFunction,

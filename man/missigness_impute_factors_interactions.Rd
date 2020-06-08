@@ -28,3 +28,4 @@ dim(fun)
 dim(distinct(fun[,1:6]))
 
 }
+\keyword{internal}

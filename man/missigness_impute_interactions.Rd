@@ -32,3 +32,4 @@ xxx <- (fun("nrReplicates"))
 xxx <- fun("all")
 head(xxx)
 }
+\keyword{internal}

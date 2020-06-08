@@ -9,3 +9,4 @@ decorelatedPly(x, corThreshold = 0.7)
 \description{
 finds decorrelated measues
 }
+\keyword{internal}

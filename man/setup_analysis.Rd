@@ -14,8 +14,9 @@ Extracts columns relevant for a configuration from a data frame
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-data(skylinePRMSampleData)
+skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 
-sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+sample_analysis <- setup_analysis(skylinePRMSampleData, LFQServiceData::skylineconfig)
 
 }
+\keyword{internal}

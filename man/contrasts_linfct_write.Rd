@@ -16,3 +16,4 @@ contrasts_linfct_write(
 \description{
 write results of `contrasts_linfct`
 }
+\keyword{internal}

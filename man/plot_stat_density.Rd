@@ -24,3 +24,4 @@ plot_stat_density(res, config, stat = "mean")
 plot_stat_density(res, config, stat = "sd")
 plot_stat_density(res, config, stat = "CV")
 }
+\keyword{internal}

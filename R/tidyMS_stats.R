@@ -1,7 +1,7 @@
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #'
 #' library(LFQService)
@@ -43,6 +43,7 @@ summarize_cv <- function(data, config, all = TRUE){
 
 #' summarize stats output
 #' @export
+#' @keywords internal
 #' @examples
 #' config <- skylineconfig$clone(deep = TRUE)
 #' data <- sample_analysis
@@ -107,15 +108,15 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' @export
 #' @keywords internal
 #' @examples
-#' config <- skylineconfig$clone(deep = TRUE)
-#' data <- sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' stats_res <- summarize_cv(data2, config)
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- (bind_rows(bbb))
 #' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
-#' View(summary)
+#' #View(summary)
 lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
                                           delta = c(0.59,1,2),
                                           min.n = 1.5,
@@ -139,10 +140,11 @@ lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
 
 #' Compute theoretical sample sizes from factor level standard deviations
 #' @export
+#' @keywords internal
 #' @examples
 #'
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #'
@@ -196,15 +198,16 @@ lfq_power_t_test_quantiles <- function(data,
 
 #' Compute theoretical sample sizes from factor level standard deviations
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' stats_res <- summarize_cv(data2, config, all = FALSE)
-#' bb <- lfq_power_t_test_proteins(stats_res, config)
+#' bb <- lfq_power_t_test_proteins(stats_res)
 #' head(bb)
 lfq_power_t_test_proteins <- function(stats_res,
                                       delta = c(0.59,1,2),
@@ -214,7 +217,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 
 
   stats_res <- na.omit(stats_res)
-  sd_delta <- map_df(delta, function(x){mutate(stats_res, delta = x)} )
+  sd_delta <- purrr::map_df(delta, function(x){mutate(stats_res, delta = x)} )
 
   getSampleSize <- function(sd, delta){
     sd_threshold <- power.t.test(delta = delta,
@@ -234,6 +237,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -250,9 +254,10 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat =
     geom_line(stat = ggstat)
   return(p)
 }
-#'plot_stat_density_median
-#'@export
-#'@examples
+#' plot_stat_density_median
+#' @export
+#' @keywords internal
+#' @examples
 #'
 #' data <- sample_analysis
 #' config <- skylineconfig$clone(deep = TRUE)
@@ -272,6 +277,7 @@ plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), g
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -289,6 +295,7 @@ plot_stat_violin <- function(data, config, stat = c("CV", "mean", "sd")){
 }
 #' plot_stat_violin_median
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -318,6 +325,7 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
 
 #' stddev vs mean
 #' @export
+#' @keywords internal
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)

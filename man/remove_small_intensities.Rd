@@ -11,8 +11,8 @@ sets intensities smaller than threshold to NA
 }
 \examples{
 
-analysis <- LFQService::spectronautDIAData250_analysis
-config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQServiceData::spectronautDIAData250_analysis
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 
 config$table$getWorkIntensity()
 
@@ -26,3 +26,4 @@ Other filter functions:
 \code{\link{removeLarge_Q_Values}()}
 }
 \concept{filter functions}
+\keyword{internal}

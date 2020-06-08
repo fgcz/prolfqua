@@ -19,3 +19,4 @@ tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel desi
 tmp$model_fun(get_formula = TRUE)
 tmp$isSingular
 }
+\keyword{internal}

@@ -16,11 +16,13 @@ marks decorrelated elements
 }
 
 \examples{
-
-data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+library(LFQService)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 data <- complete_cases(data, config)
 mean(is.na(data$Area))
+#debug(markDecorrelated)
 dataI <- markDecorrelated(data, config)
 head(dataI)
 }
+\keyword{internal}

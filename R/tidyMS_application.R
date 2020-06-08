@@ -69,8 +69,7 @@
 #' @export
 #' @examples
 #'
-application_run_modelling_V2 <- function(outpath,
-                                         data,
+application_run_modelling_V2 <- function(data,
                                          config,
                                          modelFunction,
                                          contrasts,
@@ -80,13 +79,7 @@ application_run_modelling_V2 <- function(outpath,
                                          DEBUG= FALSE)
 {
   # create result structure
-  modelling_path <- file.path(outpath, modelling_dir)
-  if (!dir.exists(outpath)) {
-    dir.create(outpath)
-  }
-  if (!dir.exists(modelling_path)) {
-    dir.create(modelling_path)
-  }
+  modelling_path <- modelling_dir
 
   ### make modeling  -----
   modellingResult_fun <- workflow_model_analyse(data,

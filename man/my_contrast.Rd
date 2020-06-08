@@ -17,10 +17,11 @@ compute contrasts for full models
 }
 \examples{
 
-m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
+m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 my_contrast(m, linfct, confint = 0.95)
 my_contrast(m, linfct, confint = 0.99)
 
 }
+\keyword{internal}

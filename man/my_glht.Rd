@@ -11,13 +11,14 @@ apply multcomp::glht method to linfct
 }
 \examples{
 
-mb <- LFQService::basicModel_p1807
+mb <- LFQServiceData::basicModel_p1807
 linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
 
-m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
+m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 
 }
+\keyword{internal}

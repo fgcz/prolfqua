@@ -11,8 +11,8 @@ spreads isotope label heavy light into two columns
 }
 \examples{
 setNa <- function(x){ifelse(x < 100, NA, x)}
-data(sample_analysis)
-data(skylineconfig)
+sample_analysis <- LFQServiceData::sample_analysis
+skylineconfig <- LFQServiceData::skylineconfig
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
 head(x)
@@ -20,3 +20,4 @@ head(x)
 x<-spreadValueVarsIsotopeLabel(sample_analysis_HL,skylineconfig_HL)
 head(x[,5:ncol(x)])
 }
+\keyword{internal}

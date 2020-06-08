@@ -20,3 +20,4 @@ head(res$data)
 res <- scale(res$data)
 
 }
+\keyword{internal}

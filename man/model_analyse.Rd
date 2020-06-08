@@ -7,7 +7,7 @@
 model_analyse(
   pepIntensity,
   modelFunction,
-  modelName,
+  modelName = "Model",
   subject_Id = "protein_Id"
 )
 }
@@ -18,7 +18,7 @@ used in project p2901
 
 library(tidyverse)
 library(LFQService)
-D <- LFQService::resultsV12954
+D <- LFQServiceData::resultsV12954
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
@@ -32,3 +32,4 @@ mr <- LFQService:::model_analyse( pepIntensity,
  config$table$hkeysDepth())
 get_complete_model_fit(mr$modelProtein)
 }
+\keyword{internal}

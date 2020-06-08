@@ -21,8 +21,8 @@ But mainly also summarizes data filtering (reports which proteins were removed e
 \examples{
 library(LFQService)
 library(tidyverse)
-resDataStart <- LFQService::testData2954$resDataStart
-config <-  LFQService::testDataStart2954$config
+resDataStart <- LFQServiceData::testData2954$resDataStart
+config <-  LFQServiceData::testDataStart2954$config
 summarize_hierarchy(resDataStart, config)
 res <- filter_proteins_by_peptide_count(resDataStart, config)
 res <- normalize_log2_robscale(res$data, res$config)
@@ -31,10 +31,5 @@ summarize_filtering(list(data = resDataStart, config=config), res)
 # config <-  LFQService::skylineconfig_HL
 
 # res <- filter_proteins_by_peptide_count(resDataStart, config)
-
-
-
-
-
 }
 \keyword{internal}

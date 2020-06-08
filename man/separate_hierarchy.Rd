@@ -9,3 +9,4 @@ separate_hierarchy(data, config)
 \description{
 separates hierarchies into starting columns
 }
+\keyword{internal}

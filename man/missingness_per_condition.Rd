@@ -21,3 +21,4 @@ config <- skylineconfig$clone(deep = TRUE)
 x <- sample_analysis
 
 }
+\keyword{internal}

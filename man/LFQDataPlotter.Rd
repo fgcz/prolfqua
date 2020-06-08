@@ -9,11 +9,16 @@ write intensites into folder - for the moment protein
 write intensites into folder - for the moment protein
 }
 \examples{
+source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 library(LFQService)
-data <- LFQService::dataIonstarProtein
-dataR <- data$data \%>\% dplyr::filter(protein_Id \%in\% sample(data$data$protein_Id,100))
+istar <- LFQServiceData::dataIonstarProtein
 
-lfqdata <- LFQData$new(dataR, data$config)
+istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
+
+lfqdata <- LFQData$new(
+ istar$data,
+ istar$config)
+#LFQDataPlotter$debug("pca_plotly")
 lfqplotter <- lfqdata$get_Plotter()
 graphics.off()
 lfqplotter$heatmap()
@@ -21,6 +26,8 @@ graphics.off()
 lfqplotter$heatmap_cor()
 graphics.off()
 lfqplotter$pca()
+lfqplotter$pca_plotly()
+
 tmp <- lfqplotter$boxplots()
 tmp$boxplot[[1]]
 lfqplotter$missigness_histogram()
@@ -31,7 +38,27 @@ lfqplotter$NA_heatmap()
 lfqplotter$intensity_distribution_density()
 lfqplotter$intensity_distribution_violin()
 lfqplotter$pairs_smooth()
+lfqplotter$sample_correlation()
+LFQService::plot_sample_correlation(istar$data, istar$config)
 
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{lfq}}{LFQData object}
+
+\item{\code{prefix}}{Prepend prefix when writing figures e.g. protein_}
+
+\item{\code{list}}{with paths to figures}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{list}}{with paths to figures}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -49,7 +76,8 @@ lfqplotter$pairs_smooth()
 \item \href{#method-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
 \item \href{#method-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
 \item \href{#method-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
-\item \href{#method-write_prot_boxplots}{\code{LFQDataPlotter$write_prot_boxplots()}}
+\item \href{#method-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
+\item \href{#method-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
 \item \href{#method-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
 \item \href{#method-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
 \item \href{#method-write}{\code{LFQDataPlotter$write()}}
@@ -97,7 +125,7 @@ lfqplotter$pairs_smooth()
 \if{latex}{\out{\hypertarget{method-pca_plotly}{}}}
 \subsection{Method \code{pca_plotly()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(path_qc)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly()}\if{html}{\out{</div>}}
 }
 
 }
@@ -174,11 +202,20 @@ lfqplotter$pairs_smooth()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_prot_boxplots"></a>}}
-\if{latex}{\out{\hypertarget{method-write_prot_boxplots}{}}}
-\subsection{Method \code{write_prot_boxplots()}}{
+\if{html}{\out{<a id="method-sample_correlation"></a>}}
+\if{latex}{\out{\hypertarget{method-sample_correlation}{}}}
+\subsection{Method \code{sample_correlation()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_prot_boxplots(path_qc, width = 6, height = 6)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$sample_correlation()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-write_boxplots}{}}}
+\subsection{Method \code{write_boxplots()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_boxplots(path_qc, width = 6, height = 6)}\if{html}{\out{</div>}}
 }
 
 }
@@ -187,7 +224,7 @@ lfqplotter$pairs_smooth()
 \if{latex}{\out{\hypertarget{method-write_pltly}{}}}
 \subsection{Method \code{write_pltly()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, path_qc, fig_name, prefix = "ms_")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, path_qc, fig_name)}\if{html}{\out{</div>}}
 }
 
 }

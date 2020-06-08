@@ -4,7 +4,17 @@
 \alias{lfq_write_table}
 \title{Facade to writing data frame into various file formats.}
 \usage{
-lfq_write_table(x, path, lfq_write_format = c("xlsx", "csv", "html"))
+lfq_write_table(x, path, name, lfq_write_format = c("xlsx", "csv", "html"))
+}
+\arguments{
+\item{x}{data.frame}
+
+\item{name}{file name}
+
+\item{lfq_write_format}{formats to write to.}
+}
+\value{
+list with paths to files written
 }
 \description{
 Facade to writing data frame into various file formats.
@@ -12,6 +22,7 @@ Facade to writing data frame into various file formats.
 \examples{
 x<- data.frame(a = 1:3, b = 4:6 )
 
-# lfq_write_table(x, "test.csv", lfq_write_format = c( "csv", "xlsx",  "html"))
+# lfq_write_table(x, "." , "test", lfq_write_format = c( "csv", "xlsx",  "html"))
 
 }
+\keyword{internal}

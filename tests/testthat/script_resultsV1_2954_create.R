@@ -16,8 +16,7 @@ path <- "results_FULL_Phonix_Filter"
 # resPepProtAnnot_p2954 <- resPepProtAnnot
 # usethis::use_data(resPepProtAnnot_p2954, overwrite=TRUE)
 
-resPepProtAnnot <- LFQService::resPepProtAnnot_p2954
-resPepProtAnnot
+resPepProtAnnot <- LFQServiceData::resPepProtAnnot_p2954
 
 resPepProtAnnot$isotope <- "light"
 

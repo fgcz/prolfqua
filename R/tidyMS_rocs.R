@@ -28,9 +28,9 @@
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' x <- sample(data$protein_Id,2)
 #' data <- data %>% dplyr::filter(protein_Id %in% x)
 #' res <- compute_roc(data, config)

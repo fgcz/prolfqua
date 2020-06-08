@@ -27,3 +27,4 @@ stopifnot(all(c(9,10)==dim(x1)))
 x2 = removeNArows(obj, thresh=1)
 stopifnot(all(c(10,10)==dim(x2)))
 }
+\keyword{internal}

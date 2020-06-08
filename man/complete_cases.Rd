@@ -11,10 +11,10 @@ Complete cases
 }
 \examples{
 
- config <- skylineconfig
+ config <- LFQServiceData::skylineconfig
  config$table$isotopeLabel <- "Isotope.Label.Type"
- data <- LFQService::sample_analysis
- data
- xx <- complete_cases(sample_analysis, skylineconfig)
+ data <- LFQServiceData::sample_analysis
+ xx <- complete_cases(data, config)
 
 }
+\keyword{internal}

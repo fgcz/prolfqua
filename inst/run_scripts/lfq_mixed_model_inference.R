@@ -60,27 +60,34 @@ protintensity_fun <- medpolish_protein_quants( normalizedData$data,
 protdata <- protintensity_fun("unnest")
 xx <- protintensity_fun("plot")
 
-pdf(file.path(projectstruct$qc_path,"protein_inferences.pdf"))
-lapply(xx$plot, print)
-dev.off()
+if (FALSE) {
+  pdf(file.path(projectstruct$qc_path,"protein_inferences.pdf"))
+  lapply(xx$plot, print)
+  dev.off()
+}
 
 
-source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 
 pep <- LFQData$new(filteredData$data,filteredData$config,is_pep = TRUE, prefix = "peptide_")
 prot <- LFQData$new(protdata$data,protdata$config, is_pep = FALSE, prefix = "protein_")
 
 protplotter <- prot$get_Plotter()
+
+
 protplotter$write(path_qc = projectstruct$qc_path)
-protplotter$plot_prot_boxplots()
-protplotter$write_prot_boxplots(path_qc = projectstruct$qc_path)
+
+#dd <- protplotter$boxplots()
+#protplotter$write_boxplots(path_qc = projectstruct$qc_path)
 
 
 protwriter <- prot$get_Writer()
 protwriter$write_long(projectstruct$qc_path)
 protwriter$write_wide(projectstruct$qc_path)
+protwriter$file_paths
 pepwriter <- pep$get_Writer()
 pepwriter$write_wide(projectstruct$qc_path)
+pepwriter$file_paths
 
 
 message("######################## fit mixed #######################")
@@ -90,32 +97,37 @@ reportColumns <- c("p.value",
                    "p.value.adjusted")
 
 
+
+
+
+
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
+  undebug(application_run_modelling_V2)
   resXXmixmodel <- application_run_modelling_V2(
-    outpath = outpath,
     data = normalizedData$data,
     config = normalizedData$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
-    modelling_dir = "modelling_results_peptide")
+    modelling_dir = projectstruct$modelling_path )
 
   resXXmixmodel(do = "write_modelling")
+
   resXXmixmodel(do = "write_contrasts")
 }
 
 
-relevantParameters <- list(outpath = outpath,
+relevantParameters <- list(outpath = projectstruct$outpath,
                            inputMQfile = inputMQfile,
                            modelling_dir = "modelling_results_peptide",
-                           workunit_Id = config$workunit_Id,
+                           workunit_Id = mqdata$config$workunit_Id,
                            annotation = annotation,
                            reportColumns = reportColumns,
-                           config = config,
+                           config = mqdata$config,
                            model = memodel,
                            Contrasts = Contrasts,
-                           project_Id = config$project_Id,
-                           order_Id = config$order_Id,
+                           project_Id = mqdata$config$project_Id,
+                           order_Id = mqdata$config$order_Id,
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
 

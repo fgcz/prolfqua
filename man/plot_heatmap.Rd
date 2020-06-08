@@ -12,8 +12,8 @@ plot heatmap with annotations
 \examples{
 library(tidyverse)
 library(LFQService)
-data <- LFQService::sample_analysis
-config <- LFQService::skylineconfig$clone(deep = TRUE)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 graphics.off()
 .Device
  p  <- plot_heatmap(data, config)
@@ -24,3 +24,4 @@ graphics.off()
 
  print(p)
 }
+\keyword{internal}

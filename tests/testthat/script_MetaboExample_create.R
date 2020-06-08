@@ -22,7 +22,7 @@ path <- "."
 
 #resMetaboDataProgenesis <- readRDS(file="c:/Users/wewol/prog/LFQService/inst/samples/resMetabo.rda")
 #usethis::use_data(resMetaboDataProgenesis, overwrite = TRUE)
-resMetabo <- LFQService::resMetaboDataProgenesis
+resMetabo <- LFQServiceData::resMetaboDataProgenesis
 resMetabo <- resMetabo  %>% mutate(NRS = gsub("NRS", "NRS_", NRS))
 resMetabo %>% dplyr::rename(Mortality = Outcome, Intervention = Treatment) -> resMetabo
 

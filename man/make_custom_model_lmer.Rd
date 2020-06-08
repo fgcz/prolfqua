@@ -21,3 +21,4 @@ tmp$model_fun(get_formula = TRUE)
 tmp$isSingular
 
 }
+\keyword{internal}

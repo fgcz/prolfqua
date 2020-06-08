@@ -96,7 +96,7 @@ if (FALSE) {
     tmpMMMedianEstimate %>%  dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
   plot(xx$FPR, xx$TPR, xlim = c(0.694 , 0.6944))
   xx <- xx %>%  dplyr::filter(FPR > 0.694 &  FPR < 0.6944)
-  View(inner_join(tmp, xx))
+  #View(inner_join(tmp, xx))
 }
 
 # Collect all results

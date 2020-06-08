@@ -7,7 +7,7 @@
 createProjectStructure(
   outpath,
   qc_path = "qc_results",
-  modelling_path = "modelling_path"
+  modelling_path = "modelling_results"
 )
 }
 \description{

@@ -10,8 +10,9 @@ make_interaction_column_config(data, config, sep = ".")
 create interaction column from factors
 }
 \examples{
-
+skylineconfig <- LFQServiceData::skylineconfig
 skylineconfig$table$factorKeys()
 skylineconfig$table$factorDepth <- 1
-make_interaction_column_config(LFQService::sample_analysis,skylineconfig)
+make_interaction_column_config(LFQServiceData::sample_analysis,skylineconfig)
 }
+\keyword{internal}

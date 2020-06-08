@@ -26,3 +26,4 @@ head(res)
 hist(unique(res$srm_QValueMin))
 hist(unique(res$srm_QValueNR))
 }
+\keyword{internal}

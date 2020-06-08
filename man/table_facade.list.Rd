@@ -9,3 +9,4 @@ table_facade.list(parlist, kable = TRUE)
 \description{
 table facade to easily switch implementations
 }
+\keyword{internal}

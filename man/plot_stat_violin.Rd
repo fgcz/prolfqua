@@ -19,3 +19,4 @@ plot_stat_violin(res, config, stat = "mean")
 plot_stat_violin(res, config, stat = "sd")
 plot_stat_violin(res, config, stat = "CV")
 }
+\keyword{internal}

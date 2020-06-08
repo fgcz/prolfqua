@@ -4,8 +4,9 @@
 \alias{AnalysisTableAnnotation}
 \title{Create Annotation}
 \description{
-Hello world
+Annotates Data Table
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

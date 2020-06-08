@@ -9,10 +9,13 @@ LFQData R6 class
 LFQData R6 class
 }
 \examples{
-
-istar <- LFQService::dataIonstarFilteredPep
+#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+istar <- LFQServiceData::dataIonstarFilteredPep
+istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 tmp <- lfqdata$to_wide()
+lfqdata$factors()
+
 
 }
 \section{Methods}{
@@ -21,10 +24,11 @@ tmp <- lfqdata$to_wide()
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
+\item \href{#method-factors}{\code{LFQData$factors()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
-\item \href{#method-get_Stat}{\code{LFQData$get_Stat()}}
+\item \href{#method-get_Stats}{\code{LFQData$get_Stats()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
 }
@@ -56,40 +60,69 @@ tmp <- lfqdata$to_wide()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-factors"></a>}}
+\if{latex}{\out{\hypertarget{method-factors}{}}}
+\subsection{Method \code{factors()}}{
+Annotation table.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$factors()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
+getter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Plotter()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+LFQDataPlotter
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Writer"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Writer}{}}}
 \subsection{Method \code{get_Writer()}}{
+getter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Writer(format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+LFQDataPlotter
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Summariser"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Summariser}{}}}
 \subsection{Method \code{get_Summariser()}}{
+getter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Summariser()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+LFQDataSummarizer
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Stat"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Stat}{}}}
-\subsection{Method \code{get_Stat()}}{
+\if{html}{\out{<a id="method-get_Stats"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Stats}{}}}
+\subsection{Method \code{get_Stats()}}{
+getter
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stat()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+LFQDataStats
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

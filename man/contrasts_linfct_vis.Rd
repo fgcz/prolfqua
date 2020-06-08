@@ -18,3 +18,4 @@ contrasts_linfct_vis(
 \description{
 visualize output of `contrasts_linfct``
 }
+\keyword{internal}

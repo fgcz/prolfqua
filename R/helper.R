@@ -2,7 +2,7 @@
 #' @param dataX data.frame with transition intensities per peptide
 #' @export
 #' @examples
-#' data(correlatedPeptideList)
+#' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
 #' transitionCorrelations(correlatedPeptideList[[1]])
 transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
@@ -19,7 +19,7 @@ transitionCorrelations <- function(dataX) {
 #' @export
 #' @importFrom stats cor
 #' @examples
-#' data(correlatedPeptideList)
+#' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
 #' transitionCorrelationsJack(correlatedPeptideList[[1]])
 transitionCorrelationsJack <- function(dataX,
                                        distmethod =

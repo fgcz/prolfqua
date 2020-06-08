@@ -25,3 +25,4 @@ cortest <- function(x){print(dim(x));cor(x)}
 my_jackknife(xx, cortest)
 my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
 }
+\keyword{internal}

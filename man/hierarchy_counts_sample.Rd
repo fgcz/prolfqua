@@ -14,10 +14,11 @@ library(LFQService)
 library(tidyverse)
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-data(skylinePRMSampleData)
+skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 res <- hierarchy_counts_sample(sample_analysis, skylineconfig)
 res()
 res("long")
 res("plot")
 }
+\keyword{internal}

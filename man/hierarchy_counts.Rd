@@ -15,6 +15,7 @@ library(LFQService)
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 
-sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
+sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
 hierarchy_counts(sample_analysis, skylineconfig)
 }
+\keyword{internal}

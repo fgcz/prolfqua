@@ -2,10 +2,11 @@
 
 #' sets intensities to NA if qVal_individual_threshold exceeded
 #' @export
+#' @keywords internal
 #' @family filter functions
 #' @examples
-#' analysis <- LFQService::spectronautDIAData250_analysis
-#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQServiceData::spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(analysis, config)
 removeLarge_Q_Values <- function(data, config){
   data <- data %>%
@@ -15,11 +16,12 @@ removeLarge_Q_Values <- function(data, config){
 
 #' sets intensities smaller than threshold to NA
 #' @export
+#' @keywords internal
 #' @family filter functions
 #' @examples
 #'
-#' analysis <- LFQService::spectronautDIAData250_analysis
-#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQServiceData::spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #'
 #' config$table$getWorkIntensity()
 #'
@@ -33,14 +35,15 @@ remove_small_intensities <- function(data, config, threshold = 1){
 }
 #' Transform intensity
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- LFQService::spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQServiceData::spectronautDIAData250_analysis
 #' x <- transform_work_intensity(analysis, config, transform = log2)
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
-#' config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- LFQService::spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' analysis <- LFQServiceData::spectronautDIAData250_analysis
 #' x <- transform_work_intensity(analysis, config, transform = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 transform_work_intensity <- function(data,
@@ -62,80 +65,6 @@ transform_work_intensity <- function(data,
   return(data)
 }
 
-#' visualize intensity distributions
-#' @export
-#' @import ggplot2
-#' @family plotting
-#' @examples
-#' config <- skylineconfig$clone(deep=TRUE)
-#' plot_intensity_distribution_violin(sample_analysis, config)
-#' analysis <- transform_work_intensity(sample_analysis, config, log2)
-#' plot_intensity_distribution_violin(analysis, config)
-plot_intensity_distribution_violin <- function(data, config){
-  p <- ggplot(data, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
-    geom_violin() +
-    theme(axis.text.x = element_text(angle = ))
-  if (!config$parameter$is_intensity_transformed) {
-    p <- p + scale_y_continuous(trans = 'log10')
-  }
-  return(p)
-}
-
-#' visualize intensity distributions
-#' @export
-#' @import ggplot2
-#' @family plotting
-#' @rdname plot_intensity_distribution_violin
-#' @examples
-#'
-#' config <- skylineconfig$clone(deep=TRUE)
-#' plot_intensity_distribution_density(sample_analysis, config)
-#' analysis <- transform_work_intensity(sample_analysis, config, log2)
-#' plot_intensity_distribution_density(analysis, config)
-plot_intensity_distribution_density <- function(data, config){
-  p <- ggplot(data, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
-    geom_line(stat = "density")
-  if (!config$parameter$is_intensity_transformed) {
-    p <- p + scale_x_continuous(trans = 'log10')
-  }
-  return(p)
-}
-
-#' visualize correlation among samples
-#' @export
-#' @family plotting
-#' @rdname plot_sample_correlation
-#' @examples
-#' config <- skylineconfig$clone(deep=TRUE)
-#' analysis <- remove_small_intensities(sample_analysis, config)
-#' analysis <- transform_work_intensity(analysis, config, log2)
-#' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
-#' plot_sample_correlation(analysis, config)
-plot_sample_correlation <- function(data, config){
-  matrix <- toWideConfig(data, config, as.matrix = TRUE)$data
-  M <- cor(matrix, use = "pairwise.complete.obs")
-  if (nrow(M) > 12) {
-    corrplot::corrplot.mixed(M,upper = "ellipse",
-                             lower = "pie",
-                             diag = "u",
-                             tl.cex = .6,
-                             tl.pos = "lt",
-                             tl.col = "black",
-                             mar = c(2,5,5,2))
-  } else{
-    corrplot::corrplot.mixed(M,upper = "ellipse",
-                             lower = "number",
-                             lower.col = "black",
-                             tl.cex = .6,
-                             number.cex = .7,
-                             diag = "u",
-                             tl.pos = "lt",
-                             tl.col = "black",
-                             mar = c(2,5,5,2))
-
-  }
-  invisible(M)
-}
 
 
 # Summarize Q Values ----
@@ -144,6 +73,7 @@ plot_sample_correlation <- function(data, config){
 #' adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 #' srm_QValueNR - nr of precursors passing the threshold
 #' @export
+#' @keywords internal
 #' @param data data
 #' @param config configuration
 #' @examples
@@ -184,13 +114,15 @@ summariseQValues <- function(data,
 #' employs parameters ident_qValue, qVal_minNumber_below_experiment_threshold,
 #' qVal_individual_threshold and qVal_experiment_threshold
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- skylineconfig$clone(deep=TRUE)
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #'
-#' summarize_hierarchy(sample_analysis, config)
-#' res <- filter_byQValue(sample_analysis, config)
+#' summarize_hierarchy(LFQServiceData::sample_analysis, config)
+#' res <- filter_byQValue(LFQServiceData::sample_analysis, config)
 #' summarize_hierarchy(res, config)
+#'
 filter_byQValue <- function(data, config){
   data_NA <- removeLarge_Q_Values(data, config)
   data_NA <- summariseQValues(data_NA, config)
@@ -215,9 +147,11 @@ filter_byQValue <- function(data, config){
 
 #' Extract intensity column in wide format using lowest hierarchy as key.
 #' @export
+#' @keywords internal
 #' @examples
 #' library(dplyr)
-#' xnested <- sample_analysis %>%
+#' skylineconfig <-  LFQServiceData::skylineconfig
+#' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
@@ -232,7 +166,7 @@ filter_byQValue <- function(data, config){
 #' conf <- skylineconfig$clone(deep=TRUE)
 #' conf$table$hierarchyDepth = 1
 #'
-#' xnested <- sample_analysis %>%
+#' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' head(xnested)
@@ -256,6 +190,7 @@ extractIntensities <- function(x, configuration ){
 
 #' transform long to wide
 #' @export
+#' @keywords internal
 toWide <- function(data,
                    rowIDs ,
                    columnLabels ,
@@ -270,6 +205,7 @@ toWide <- function(data,
 
 #' transform long to wide
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' config <- skylineconfig$clone(deep=TRUE)
@@ -306,13 +242,14 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 
 #' make it long
 #' @export
+#' @keywords internal
 #' @examples
-#' conf <- skylineconfig$clone(deep = TRUE)
-#' res <- toWideConfig(sample_analysis, conf, as.matrix = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
 #' res <- scale(res$data)
 #'
 #' xx <- gatherItBack(res,"srm_intensityScaled", conf)
-#' xx <- gatherItBack(res,"srm_intensityScaled", conf, sample_analysis)
+#' xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
 #'
 gatherItBack <- function(x, value, config, data = NULL, sep = "~lfq~"){
@@ -354,6 +291,7 @@ robustscale <- function(data,
 
 # Functions working on Matrices go Here ----
 #' robust scale warpper
+#' @keywords internal
 #' @export
 robust_scale <- function(data){
   return(robustscale(data)$data)
@@ -362,18 +300,19 @@ robust_scale <- function(data){
 
 #' apply Function To matrix
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' library(tidyverse)
-#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' #conf$table$popWorkIntensity()
-#' res <- applyToIntensityMatrix(sample_analysis, conf, .func = base::scale)
+#' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf, .func = base::scale)
 #'
 #' stopifnot("Area_base..scale" %in% colnames(res))
 #' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
-#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' #conf$table$popWorkIntensity()
-#' res <- applyToIntensityMatrix(sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
+#' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 applyToIntensityMatrix <- function(data, config, .func){
   x <- as.list( match.call() )
@@ -386,6 +325,7 @@ applyToIntensityMatrix <- function(data, config, .func){
 
 #' scale_with_subset
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' conf <- skylineconfig$clone(deep = TRUE)
@@ -417,6 +357,7 @@ scale_with_subset <- function(data, subset, config){
 }
 
 #' finds decorrelated measues
+#' @keywords internal
 #' @export
 decorelatedPly <- function(x, corThreshold = 0.7){
   res <- LFQService::transitionCorrelationsJack(x)
@@ -426,15 +367,17 @@ decorelatedPly <- function(x, corThreshold = 0.7){
 
 #' marks decorrelated elements
 #' @export
+#' @keywords internal
 #' @importFrom purrr map
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
-#'
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' library(LFQService)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' data <- complete_cases(data, config)
 #' mean(is.na(data$Area))
+#' #debug(markDecorrelated)
 #' dataI <- markDecorrelated(data, config)
 #' head(dataI)
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
@@ -445,8 +388,11 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
     dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
-  unnest_res <- unnest_res %>% tidyr::separate("row", config$table$hierarchyKeys()[-1], sep = "~lfq~")
-  qvalFiltX <- dplyr::inner_join(data, unnest_res, by = c(config$table$hierarchyKeys(), config$table$hierarchyKeys(TRUE)[1]) )
+  unnest_res <- unnest_res %>%
+    tidyr::separate(col = "row",
+                    into = config$table$hierarchyKeys()[-1],
+                    sep = "~lfq~")
+  qvalFiltX <- dplyr::inner_join(x = data, y = unnest_res, by = c(config$table$hierarchyKeys()) )
   return(qvalFiltX)
 }
 
@@ -467,13 +413,14 @@ simpleImpute <- function(data){
 }
 #' imputation based on correlation assumption
 #' @export
+#' @keywords internal
 #' @importFrom purrr map
 #' @importFrom tidyr nest
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep=TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' data <- complete_cases(data, config)
 #' dim(data)
 #' mean(is.na(data$Area))
@@ -513,6 +460,7 @@ make_name <- function(levelA, levelB, prefix="nr_"){
 
 #' Compute nr of B per A
 #' @export
+#' @keywords internal
 #' @examples
 #' config <- skylineconfig$clone(deep=TRUE)
 #' data <- sample_analysis
@@ -567,10 +515,11 @@ nr_B_in_A <- function(data,
 #'
 #' @section TODO
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' X <-res %>% dplyr::select(c(config$table$hierarchyKeys(),
 #'  srm_meanInt, srm_meanIntRank)) %>% distinct()
@@ -593,12 +542,13 @@ rankPrecursorsByIntensity <- function(data, config){
 #'
 #' run \link{rankPrecursorsByIntensity} first
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
 #' mean_na <- function(x){mean(x, na.rm=TRUE)}
@@ -632,10 +582,11 @@ aggregateTopNIntensities <- function(data , config, func, N){
 
 #' Ranks precursors by NAs (adds new column .NARank)
 #' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
 #' res <- rankPrecursorsByNAs(res,config)
 #' colnames(res)
 #' x <- res %>%
@@ -659,14 +610,15 @@ rankPrecursorsByNAs <- function(data, config){
 
 #' removes measurments with less than percent=60 missing values in factor_level = 1
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' rm(list=ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchy_counts(data, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)

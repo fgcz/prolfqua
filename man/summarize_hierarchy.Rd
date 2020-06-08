@@ -20,7 +20,7 @@ library(tidyverse)
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-data(skylinePRMSampleData)
+skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 configuration <- skylineconfig$clone(deep=TRUE)
 sample_analysis <- setup_analysis(skylinePRMSampleData, configuration)
 
@@ -43,3 +43,4 @@ configuration$table$hierarchyDepth = 4
 summarize_hierarchy(sample_analysis, configuration )
 summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
 }
+\keyword{internal}

@@ -17,3 +17,4 @@ conf <- skylineconfig$clone(deep = TRUE)
 res <- scale_with_subset(sample_analysis, sample_analysis, conf)
 head(res)
 }
+\keyword{internal}

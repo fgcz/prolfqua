@@ -15,7 +15,7 @@ config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
 
 
-PAnnotated <- LFQService::spectronautDIAData250
+PAnnotated <- LFQServiceData::spectronautDIAData250
 PAnnotated$Isotope.Label <- "light"
 PAnnotated <- PAnnotated %>% dplyr::filter(!grepl("_Decoy$",PG.ProteinAccessions ))
 resData <- setup_analysis(PAnnotated, config)

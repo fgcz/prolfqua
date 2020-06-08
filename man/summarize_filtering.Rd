@@ -10,9 +10,10 @@ summarize_filtering(startData, endData, rm_one_hit = TRUE)
 Compare a dataset before and after filtering.
 }
 \examples{
-resDataStart <- LFQService::testData2954$resDataStart
-config <-  LFQService::testDataStart2954$config
+resDataStart <- LFQServiceData::testData2954$resDataStart
+config <-  LFQServiceData::testDataStart2954$config
 res <- filter_proteins_by_peptide_count(resDataStart, config)
 summarize_filtering(list(data = resDataStart, config=config), res)
 summarize_filtering(list(data = resDataStart, config=config), res, rm_one_hit=FALSE)
 }
+\keyword{internal}

@@ -12,3 +12,4 @@ add quantline to plot
 \examples{
 
 }
+\keyword{internal}

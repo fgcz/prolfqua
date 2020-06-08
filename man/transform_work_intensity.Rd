@@ -11,12 +11,13 @@ Transform intensity
 }
 \examples{
 library(tidyverse)
-config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
-analysis <- LFQService::spectronautDIAData250_analysis
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQServiceData::spectronautDIAData250_analysis
 x <- transform_work_intensity(analysis, config, transform = log2)
 stopifnot("log2_FG.Quantity" \%in\% colnames(x))
-config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
-analysis <- LFQService::spectronautDIAData250_analysis
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQServiceData::spectronautDIAData250_analysis
 x <- transform_work_intensity(analysis, config, transform = asinh)
 stopifnot("asinh_FG.Quantity" \%in\% colnames(x))
 }
+\keyword{internal}

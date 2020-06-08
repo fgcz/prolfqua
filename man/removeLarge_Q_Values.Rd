@@ -10,8 +10,8 @@ removeLarge_Q_Values(data, config)
 sets intensities to NA if qVal_individual_threshold exceeded
 }
 \examples{
-analysis <- LFQService::spectronautDIAData250_analysis
-config <- LFQService::spectronautDIAData250_config$clone(deep=TRUE)
+analysis <- LFQServiceData::spectronautDIAData250_analysis
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(analysis, config)
 }
 \seealso{
@@ -19,3 +19,4 @@ Other filter functions:
 \code{\link{remove_small_intensities}()}
 }
 \concept{filter functions}
+\keyword{internal}

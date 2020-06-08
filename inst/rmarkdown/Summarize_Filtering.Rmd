@@ -161,7 +161,7 @@ knitr::include_graphics(figpath)
 ```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of transformed and scaled intensities."}
 figpath <- file.path(params$path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
 
-pdf(figpath, width=22, height=10)
+pdf(figpath, width = 22, height=10)
 print(plot_intensity_distribution_density(params$pepIntensityNormalized, params$config_pepIntensityNormalized))
 dev.off()
 

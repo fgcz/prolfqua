@@ -8,7 +8,7 @@ library(conflicted)
 VIS_PROT <- FALSE
 Phoenix <- TRUE
 
-results <- LFQService::resultsV12954
+results <- LFQServiceData::resultsV12954
 
 temp_dir <- file.path(tempdir())
 

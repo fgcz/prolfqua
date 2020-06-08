@@ -10,9 +10,10 @@ normalize_log2_robscale(filteredPep, config)
 normlize data by log2 and robust scaling
 }
 \examples{
-resDataStart <- LFQService::testDataStart2954$resDataStart
-config <-  LFQService::testDataStart2954$config
+resDataStart <- LFQServiceData::testDataStart2954$resDataStart
+config <-  LFQServiceData::testDataStart2954$config
 filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
 normalize_log2_robscale(filterPep$data, filterPep$config)
 
 }
+\keyword{internal}

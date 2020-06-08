@@ -50,7 +50,7 @@
 #' @import magrittr
 #' @examples
 #' library(tidyverse)
-#' D <- LFQService::resultsV12954
+#' D <- LFQServiceData::resultsV12954
 #' modelName <- "f_Condition_r_peptide"
 #' formula_randomPeptide <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)", model_name = modelName)
 #'
@@ -238,7 +238,7 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
 #' @noRd
 #' @examples
 #' library(tidyverse)
-#' testDataStart2954 <- LFQService::testDataStart2954
+#' testDataStart2954 <- LFQServiceData::testDataStart2954
 #'
 #'
 #'
@@ -268,7 +268,7 @@ deprecated_model_no_interaction_lmer <- function(config, factor_level=2, random 
 #' @noRd
 #' @examples
 #' library(tidyverse)
-#' testDataStart2954 <- LFQService::testDataStart2954
+#' testDataStart2954 <- LFQServiceData::testDataStart2954
 #' dd <- LFQService:::.workflow_MQ_filter_peptides_V2( testDataStart2954$resDataStart ,  testDataStart2954$config )
 #' hierarchy_counts(dd$data, dd$config)
 .workflow_MQ_filter_peptides_V2 <-  function(resDataStart,

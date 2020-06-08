@@ -10,12 +10,13 @@ gatherItBack(x, value, config, data = NULL, sep = "~lfq~")
 make it long
 }
 \examples{
-conf <- skylineconfig$clone(deep = TRUE)
-res <- toWideConfig(sample_analysis, conf, as.matrix = TRUE)
+conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
 res <- scale(res$data)
 
 xx <- gatherItBack(res,"srm_intensityScaled", conf)
-xx <- gatherItBack(res,"srm_intensityScaled", conf, sample_analysis)
+xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
 conf$table$getWorkIntensity() == "srm_intensityScaled"
 
 }
+\keyword{internal}

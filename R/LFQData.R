@@ -1,12 +1,16 @@
+#LFQData ----
 #' LFQData R6 class
 #' @export
 #'
 #' @examples
-#' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-#' istar <- LFQService::dataIonstarFilteredPep
+#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' lfqdata$factors()
+#'
+#'
 LFQData <- R6::R6Class(
   "LFQData",
 
@@ -39,32 +43,50 @@ LFQData <- R6::R6Class(
       wide$config <- self$config
       return(wide)
     },
+    #' @description
+    #' Annotation table.
+    #' @return data.frame
     factors = function(){
       LFQService::table_factors(self$data, self$config)
     },
-
+    #' @description
+    #' getter
+    #' @return LFQDataPlotter
     get_Plotter = function(){
       return(LFQDataPlotter$new(self, self$prefix))
     },
+    #' @description
+    #' getter
+    #' @return LFQDataPlotter
     get_Writer = function(format = "xlsx"){
       return(LFQDataWriter$new(self, self$prefix, format = format))
     },
+    #' @description
+    #' getter
+    #' @return LFQDataSummarizer
     get_Summariser = function(){
       return(LFQDataSummariser$new(self, self$prefix))
     },
-    get_Stat = function(){
+    #' @description
+    #' getter
+    #' @return LFQDataStats
+    get_Stats = function(){
       return(LFQDataStats$new(self))
     }
   )
 )
 
+# LFQDataStats-----
 #' compute stdv, mean and CV per peptide or protein and condition.
 #' @export
 #' @examples
-#' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-#' istar <- LFQService::dataIonstarFilteredPep
+#'
+#' # study variance of not normalized data
+#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' sum <- lfqdata$get_Stat()
+#' sum <- lfqdata$get_Stats()
 #' sum$cv()
 #' sum$cv_quantiles()
 #' sum$density()
@@ -74,9 +96,12 @@ LFQData <- R6::R6Class(
 #' sum$stdv_vs_mean(size = 400)
 #' sum$power_t_test()
 #' sum$power_t_test_quantiles()
-#' istar <- LFQService::dataIonstarNormalizedPep
+#'
+#' #study variance of normalized data
+#' istar <- LFQServiceData::dataIonstarNormalizedPep
+#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' sum <- lfqdata$get_Stat()
+#' sum <- lfqdata$get_Stats()
 #' sum$cv()
 #' sum$cv_quantiles()
 #' sum$density()
@@ -86,6 +111,7 @@ LFQData <- R6::R6Class(
 #' sum$stdv_vs_mean(size = 400)
 #' sum$power_t_test()
 #' sum$power_t_test_quantiles
+#'
 #'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
@@ -102,10 +128,23 @@ LFQDataStats <- R6::R6Class(
       LFQService::summarize_cv(self$lfq$data, self$lfq$config)
     },
     cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
-      res <- LFQService::summarize_cv_quantiles(self$cv(),self$lfq$config, stats = self$stat, probs = probs)
+      res <- LFQService::summarize_cv_quantiles(
+        self$cv(),
+        self$lfq$config,
+        stats = self$stat,
+        probs = probs)
+      return(res)
     },
+    #' @description
+    #' plots density or ecdf
+    #' @param ggstat
+    #' @return ggplot
     density = function(ggstat = c("density", "ecdf")){
-      LFQService::plot_stat_density(self$cv(), self$lfq$config, stat = self$stat, ggstat = ggstat)
+      LFQService::plot_stat_density(
+        self$cv(),
+        self$lfq$config,
+        stat = self$stat,
+        ggstat = ggstat)
     },
     density_median = function(ggstat = c("density", "ecdf")){
       LFQService::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
@@ -152,19 +191,18 @@ LFQDataStats <- R6::R6Class(
                                 sig.level = sig.level,
                                 min.n = 1.5)
       return(res)
-
     }
-
-
   )
 )
 
+# LFQDataSummariser ----
 #' generate dataset summaries.
 #' @export
 #' @examples
+#' library(tidyverse)
 #'
-#'
-#' istar <- LFQService::dataIonstarFilteredPep
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' sum <- lfqdata$get_Summariser()
 #' sum$hierarchy_counts()
@@ -208,15 +246,21 @@ LFQDataSummariser <- R6::R6Class(
   )
 )
 
+# LFQDataPlotter ----
 #' write intensites into folder - for the moment protein
 #' @export
 #'
 #' @examples
+#' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' library(LFQService)
-#' data <- LFQService::dataIonstarProtein
-#' dataR <- data$data %>% dplyr::filter(protein_Id %in% sample(data$data$protein_Id,100))
+#' istar <- LFQServiceData::dataIonstarProtein
 #'
-#' lfqdata <- LFQData$new(dataR, data$config)
+#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#'
+#' lfqdata <- LFQData$new(
+#'  istar$data,
+#'  istar$config)
+#' #LFQDataPlotter$debug("pca_plotly")
 #' lfqplotter <- lfqdata$get_Plotter()
 #' graphics.off()
 #' lfqplotter$heatmap()
@@ -224,6 +268,8 @@ LFQDataSummariser <- R6::R6Class(
 #' lfqplotter$heatmap_cor()
 #' graphics.off()
 #' lfqplotter$pca()
+#' lfqplotter$pca_plotly()
+#'
 #' tmp <- lfqplotter$boxplots()
 #' tmp$boxplot[[1]]
 #' lfqplotter$missigness_histogram()
@@ -234,12 +280,18 @@ LFQDataSummariser <- R6::R6Class(
 #' lfqplotter$intensity_distribution_density()
 #' lfqplotter$intensity_distribution_violin()
 #' lfqplotter$pairs_smooth()
+#' lfqplotter$sample_correlation()
+#' LFQService::plot_sample_correlation(istar$data, istar$config)
 #'
 LFQDataPlotter <- R6::R6Class(
   "LFQDataPlotter",
   list(
+    #' @field lfq LFQData object
     lfq = NULL,
+    #' @field prefix Prepend prefix when writing figures e.g. protein_
     prefix = "",
+    #' @field list with paths to figures
+    file_paths = list(),
     initialize = function(lfqdata, prefix = "ms_"){
       self$lfq = lfqdata
       self$prefix = prefix
@@ -258,8 +310,8 @@ LFQDataPlotter <- R6::R6Class(
       fig <- LFQService::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
       return(fig)
     },
-    pca_plotly = function(path_qc){
-      fig <- plotly::ggplotly(self$plot_pca(), tooltip = self$config$table$sampleName)
+    pca_plotly = function(){
+      fig <- plotly::ggplotly(self$pca(), tooltip = self$lfq$config$table$sampleName)
       return(fig)
     },
     boxplots = function(){
@@ -299,24 +351,29 @@ LFQDataPlotter <- R6::R6Class(
         LFQService::pairs_smooth( LFQService::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
       }
     },
-    write_prot_boxplots = function(path_qc, width = 6, height = 6){
+    sample_correlation = function(){
+      LFQService::plot_sample_correlation(self$lfq$data, self$lfq$config)
+    },
+    write_boxplots = function(path_qc, width = 6, height = 6){
       fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
       message("writing ", fpath)
-      pdf(fpath, width = width, height = height)
       bb <- self$boxplots()
+
+      pdf(fpath, width = width, height = height)
       lapply(bb$boxplot, print)
       dev.off()
     },
     write_pltly = function(fig,
                            path_qc,
-                           fig_name,
-                           prefix = "ms_"){
+                           fig_name){
       fname <- paste0(self$prefix, fig_name,".html")
       html_path <- file.path(".", path_qc, fname)
       message("writing ", html_path)
       htmlwidgets::saveWidget(widget = fig,
                               file = fname )
       file.rename(fname, html_path)
+      self$file_paths[[fig_name]] <- html_path
+      invisible(html_path)
     },
     write_pdf = function(fig,
                          path_qc,
@@ -333,8 +390,11 @@ LFQDataPlotter <- R6::R6Class(
         print(fig)
       #}
       graphics.off()
+      self$file_paths[[fig_name]] <- fpath
+      invisible(fpath)
     },
     write = function(path_qc, prefix = "ms"){
+
       self$write_pdf(self$heatmap_cor(),
                      path_qc,
                      "intensities_heatmap_correlation",
@@ -349,10 +409,11 @@ LFQDataPlotter <- R6::R6Class(
       self$write_pltly(self$pca_plotly(),
                        path_qc,
                        "intensities_PCA")
+
     }
   ))
 
-
+# LFQDataWriter -----
 #' Write LFQ data, or provide outputs for writing.
 #'
 #' returns long and wide format for writing
@@ -363,7 +424,7 @@ LFQDataWriter <- R6::R6Class(
     lfq = NULL,
     format = "",
     prefix = "",
-
+    file_paths = list(),
     initialize = function(lfq,  prefix = "ms_", format="xlsx"){
       self$lfq = lfq
       self$format = format
@@ -381,23 +442,30 @@ LFQDataWriter <- R6::R6Class(
       res <- list(data = separate_hierarchy(wide$data, self$lfq$config), annotation = wide$annotation)
       return(res)
     },
-    write_long = function(path_qc){
-      path <- file.path(path_qc,paste0(self$prefix,"intensities_long",".csv"))
-      message("writing ",path)
-      lfq_write_table(self$get_long(),
-                      path = path, lfq_write_format = self$format)
+    write_long = function(path_qc) {
+      fname <- paste0(self$prefix,"intensities_long")
+      self$file_paths[[fname]] <-
+        lfq_write_table(self$get_long(),
+                        path = path_qc,
+                        name = fname,
+                        lfq_write_format = self$format)
     },
-    write_wide = function(path_qc){
+    write_wide = function(path_qc) {
 
       wide <- self$get_wide()
-      path <- file.path(path_qc,paste0(self$prefix,"intensities_wide",".csv"))
-      message("writing ",path)
-      lfq_write_table(wide$data,
-                      path = path, lfq_write_format = self$format)
-      path <- file.path(path_qc,paste0(self$prefix,"intensities_file_annotation",".csv"))
-      message("writing ",path)
+      fname <- paste0(self$prefix,"intensities_wide")
+      self$file_paths[[fname]] <-
+        lfq_write_table(wide$data,
+                        path = path_qc,
+                        name = fname,
+                        lfq_write_format = self$format)
+
+      fname <- paste0(self$prefix,"intensities_file_annotation")
+      self$file_paths[[fname]] <-
       lfq_write_table(wide$annotation,
-                      path = path, lfq_write_format = self$format)
+                      path = path_qc,
+                      name = fname,
+                      lfq_write_format = self$format)
     }
   ))
 

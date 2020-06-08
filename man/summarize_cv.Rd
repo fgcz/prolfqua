@@ -19,3 +19,4 @@ config <- skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
 res$CV <- res$sd/res$mean
 }
+\keyword{internal}

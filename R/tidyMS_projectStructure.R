@@ -3,6 +3,11 @@ ProjectStructure <-
     outpath = "",
     qc_path = "",
     modelling_path = "",
+    #' @description
+    #' create ProjectStructure
+    #' @param outpath directory
+    #' @param qc_path qc folder
+    #' @param modelling_path modelling results folder
     initialize = function(outpath ,
                           qc_path = "qc_results",
                           modelling_path = "modelling_results"){
@@ -45,7 +50,7 @@ ProjectStructure <-
 #'
 createProjectStructure <- function(outpath,
                                    qc_path = "qc_results",
-                                   modelling_path = "modelling_path"){
+                                   modelling_path = "modelling_results"){
   res <- ProjectStructure$new(outpath, qc_path, modelling_path)
   return(res)
 }

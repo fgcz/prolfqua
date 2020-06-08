@@ -11,8 +11,8 @@ Ranks precursors by NAs (adds new column .NARank)
 }
 \examples{
 library(tidyverse)
-config <- spectronautDIAData250_config$clone(deep=TRUE)
-res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByNAs(res,config)
 colnames(res)
 x <- res \%>\%
@@ -21,3 +21,4 @@ x <- res \%>\%
 stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 res \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) \%>\% distinct() \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 }
+\keyword{internal}

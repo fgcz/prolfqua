@@ -29,3 +29,4 @@ xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
 
 }
+\keyword{internal}

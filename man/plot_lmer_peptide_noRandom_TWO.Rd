@@ -12,6 +12,7 @@ plot intensities per interaction with Two
  independent random effects removed (1|A) + (1|B)
 }
 \examples{
-m <- LFQService::interactionModel_p1807
+m <- LFQServiceData::interactionModel_p1807
 #plot_lmer_peptide_noRandom_TWO(m)
 }
+\keyword{internal}

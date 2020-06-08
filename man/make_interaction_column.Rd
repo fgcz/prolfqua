@@ -14,3 +14,4 @@ xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 }
+\keyword{internal}

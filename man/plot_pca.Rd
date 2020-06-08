@@ -23,3 +23,4 @@ print(tmp)
 plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 
 }
+\keyword{internal}

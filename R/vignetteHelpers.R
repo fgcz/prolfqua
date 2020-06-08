@@ -79,8 +79,8 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' render MQ Summary.
 #' @export
 #' @examples
-#' render_MQSummary_rmd(LFQService::sample_analysis,
-#'   LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#' render_MQSummary_rmd(LFQServiceData::sample_analysis,
+#'   LFQServiceData::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <-
   function(data,
@@ -110,7 +110,7 @@ render_MQSummary_rmd <-
 #' render MQ Summary.
 #' @export
 #' @examples
-#' #render_MQSummary_rmd(LFQService::sample_analysis,LFQService::skylineconfig, workdir=tempdir(check = FALSE))
+#' #render_MQSummary_rmd(LFQServiceData::sample_analysis,LFQServiceData::skylineconfig, workdir=tempdir(check = FALSE))
 #'
 render_METABO_Summary_rmd <-
   function(data,

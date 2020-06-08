@@ -34,3 +34,4 @@ matplot(xx, type = "l")
 
 }
 \concept{matrix manipulation}
+\keyword{internal}

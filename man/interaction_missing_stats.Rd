@@ -19,9 +19,10 @@ compute missing statistics
 library(tidyverse)
 library(LFQService)
 
-
+skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
+xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
+   skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
 interaction_missing_stats(xx, skylineconfig)$data \%>\% arrange(desc(nrNAs))
 tmp <- interaction_missing_stats(xx, skylineconfig,
@@ -31,3 +32,4 @@ tmp \%>\% mutate(perc = nrNAs/nrReplicates )
 summarize_hierarchy(xx , skylineconfig)
 
 }
+\keyword{internal}

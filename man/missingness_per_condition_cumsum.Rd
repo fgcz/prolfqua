@@ -22,3 +22,4 @@ names(res)
 print(res$figure)
 res$data
 }
+\keyword{internal}

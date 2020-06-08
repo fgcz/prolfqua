@@ -12,3 +12,4 @@ R6extractValues(r6class)
 \description{
 Helper function to extract all value slots in an R6 object
 }
+\keyword{internal}

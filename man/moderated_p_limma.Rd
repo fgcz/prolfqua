@@ -9,3 +9,4 @@ moderated_p_limma(mm, df = "df", robust = FALSE)
 \description{
 Moderate p-values - limma approach
 }
+\keyword{internal}

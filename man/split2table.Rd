@@ -21,3 +21,4 @@ splits names and creates a matrix
 dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
 split2table(dat,split="\\\\_|\\\\/")
 }
+\keyword{internal}

@@ -9,3 +9,4 @@ get_complete_model_fit(modelProteinF)
 \description{
 retrieve complete model.
 }
+\keyword{internal}

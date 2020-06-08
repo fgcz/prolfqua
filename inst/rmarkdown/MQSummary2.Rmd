@@ -10,8 +10,8 @@ output:
     toc: yes
     toc_depth: 2
 params:
-  configuration:  !r quote(LFQService::skylineconfig)
-  data: !r quote(LFQService::sample_analysis)
+  configuration:  !r quote(LFQServiceData::skylineconfig)
+  data: !r quote(LFQServiceData::sample_analysis)
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
   pep: TRUE

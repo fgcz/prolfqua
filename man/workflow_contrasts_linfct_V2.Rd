@@ -19,3 +19,4 @@ Do contrast
 \examples{
 
 }
+\keyword{internal}

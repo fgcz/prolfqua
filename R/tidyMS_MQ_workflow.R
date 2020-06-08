@@ -1,8 +1,9 @@
 # Helper functions -----
 
 #' Keep only those proteins with 2 IDENTIFIED peptides
-#' @export
 #'
+#' @export
+#' @keywords internal
 filter_proteins_by_peptide_count <-  function(resDataStart,
                                              config){
   # filter_proteins_by_peptide_count renamed from .workflow_MQ_filter_peptides_V3
@@ -17,9 +18,10 @@ filter_proteins_by_peptide_count <-  function(resDataStart,
 
 #' normlize data by log2 and robust scaling
 #' @export
+#' @keywords internal
 #' @examples
-#' resDataStart <- LFQService::testDataStart2954$resDataStart
-#' config <-  LFQService::testDataStart2954$config
+#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
 #' normalize_log2_robscale(filterPep$data, filterPep$config)
 #'
@@ -41,9 +43,10 @@ normalize_log2_robscale <- function(filteredPep, config){
 #' Compare a dataset before and after filtering.
 #'
 #' @export
+#' @keywords internal
 #' @examples
-#' resDataStart <- LFQService::testData2954$resDataStart
-#' config <-  LFQService::testDataStart2954$config
+#' resDataStart <- LFQServiceData::testData2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
 #' res <- filter_proteins_by_peptide_count(resDataStart, config)
 #' summarize_filtering(list(data = resDataStart, config=config), res)
 #' summarize_filtering(list(data = resDataStart, config=config), res, rm_one_hit=FALSE)
@@ -91,8 +94,8 @@ summarize_filtering <- function(startData,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' resDataStart <- LFQService::testData2954$resDataStart
-#' config <-  LFQService::testDataStart2954$config
+#' resDataStart <- LFQServiceData::testData2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
 #' summarize_hierarchy(resDataStart, config)
 #' res <- filter_proteins_by_peptide_count(resDataStart, config)
 #' res <- normalize_log2_robscale(res$data, res$config)
@@ -101,12 +104,6 @@ summarize_filtering <- function(startData,
 #' # config <-  LFQService::skylineconfig_HL
 #'
 #' # res <- filter_proteins_by_peptide_count(resDataStart, config)
-
-#'
-#'
-#'
-#'
-#'
 workflow_MQ_protoV1 <- function(){
   error("Replace by call to:
         filter_proteins_by_peptide_count and

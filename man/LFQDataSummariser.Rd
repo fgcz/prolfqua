@@ -9,9 +9,10 @@ generate dataset summaries.
 generate dataset summaries.
 }
 \examples{
+library(tidyverse)
 
-
-istar <- LFQService::dataIonstarFilteredPep
+istar <- LFQServiceData::dataIonstarFilteredPep
+istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 sum <- lfqdata$get_Summariser()
 sum$hierarchy_counts()

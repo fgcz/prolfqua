@@ -12,14 +12,14 @@ get linfct from model
 \examples{
 #if(FALSE){
 
-m <- LFQService::basicModel_p1807
+m <- LFQServiceData::basicModel_p1807
 m
 linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
 linfct$linfct_interactions
 
-m <- LFQService::interactionModel_p1807
+m <- LFQServiceData::interactionModel_p1807
 linfct <- linfct_from_model(m)
 all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
@@ -39,3 +39,4 @@ m <- lm(Y ~ Condition, data = xx)
 linfct_from_model(m)
 
 }
+\keyword{internal}

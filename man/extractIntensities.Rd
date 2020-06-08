@@ -11,7 +11,8 @@ Extract intensity column in wide format using lowest hierarchy as key.
 }
 \examples{
 library(dplyr)
-xnested <- sample_analysis \%>\%
+skylineconfig <-  LFQServiceData::skylineconfig
+xnested <- LFQServiceData::sample_analysis \%>\%
  group_by_at(skylineconfig$table$hkeysDepth()) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
@@ -26,7 +27,7 @@ stopifnot(dim(xx)==c(nn,22))
 conf <- skylineconfig$clone(deep=TRUE)
 conf$table$hierarchyDepth = 1
 
-xnested <- sample_analysis \%>\%
+xnested <- LFQServiceData::sample_analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\%
  tidyr::nest()
 head(xnested)
@@ -39,3 +40,4 @@ xx <- extractIntensities(x,conf)
 stopifnot(dim(xx)==c(nn,22))
 
 }
+\keyword{internal}

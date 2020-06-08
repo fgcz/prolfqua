@@ -9,3 +9,4 @@ toWide(data, rowIDs, columnLabels, value)
 \description{
 transform long to wide
 }
+\keyword{internal}

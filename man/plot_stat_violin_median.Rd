@@ -17,3 +17,4 @@ config <- skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
 plot_stat_violin_median(res, config, stat = "mean")
 }
+\keyword{internal}

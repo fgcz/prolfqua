@@ -5,9 +5,9 @@
 #' @examples
 #' library(LFQService)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' res <- workflow_correlation_preprocessing(data,config)
 #' names(res)
 #'
@@ -69,9 +69,9 @@ workflow_correlation_preprocessing <-function(data, config, minCorrelation = 0.7
 #' rm(list=ls())
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- spectronautDIAData250_analysis
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' res <- workflow_corr_filter_impute(data,config)
 workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
   stat_input <- hierarchy_counts(data, config)
@@ -120,8 +120,8 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' data <- spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' hierarchy_counts(data, config)
 #' tmp <-workflow_DIA_NA_preprocessing(data, config)
 #' hierarchy_counts(tmp$data, config)
@@ -174,11 +174,11 @@ workflow_DIA_NA_preprocessing <- function(data,
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
-#' data <- spectronautDIAData250_analysis
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' tmp <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=2)
 #' nrow(tmp$data)
-#' config <- spectronautDIAData250_config$clone(deep=TRUE)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' res <-workflow_DIA_Q_NA_filtered_medpolish_protein_intensities(data, config, hierarchy_level=1)
 #' nrow(res$data)
 #' hierarchy_counts(res$data, res$config)

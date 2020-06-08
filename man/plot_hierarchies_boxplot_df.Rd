@@ -15,8 +15,8 @@ plot_hierarchies_boxplot_df(
 generates peptide level plots for all Proteins
 }
 \examples{
-resDataStart <- LFQService::testDataStart2954$resDataStart
-config <-  LFQService::testDataStart2954$config
+resDataStart <- LFQServiceData::testDataStart2954$resDataStart
+config <-  LFQServiceData::testDataStart2954$config
 res <- plot_hierarchies_boxplot_df(resDataStart, config)
 res$boxplot[[1]]
 res <- plot_hierarchies_boxplot_df(resDataStart,
@@ -29,3 +29,4 @@ config$table$hierarchyDepth = 2
 res <- plot_hierarchies_boxplot_df(resDataStart, config)
 res$boxplot[[1]]
 }
+\keyword{internal}

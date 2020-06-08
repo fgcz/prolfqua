@@ -15,10 +15,11 @@ NA
 
 \examples{
 library(tidyverse)
-config <- spectronautDIAData250_config$clone(deep=TRUE)
-res <- removeLarge_Q_Values(spectronautDIAData250_analysis, config)
+config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
 res <- rankPrecursorsByIntensity(res,config)
 X <-res \%>\% dplyr::select(c(config$table$hierarchyKeys(),
  srm_meanInt, srm_meanIntRank)) \%>\% distinct()
 X \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
 }
+\keyword{internal}

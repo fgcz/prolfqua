@@ -23,3 +23,4 @@ matrix_to_tibble(x)
 !(is.matrix(x) || is.data.frame(x))
 
 }
+\keyword{internal}

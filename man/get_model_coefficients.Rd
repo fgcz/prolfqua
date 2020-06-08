@@ -9,3 +9,4 @@ get_model_coefficients(modeldata, config)
 \description{
 get coefficients from all models
 }
+\keyword{internal}

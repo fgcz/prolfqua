@@ -9,3 +9,4 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 \description{
 table facade to easily switch implementations
 }
+\keyword{internal}

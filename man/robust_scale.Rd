@@ -9,3 +9,4 @@ robust_scale(data)
 \description{
 robust scale warpper
 }
+\keyword{internal}

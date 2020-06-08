@@ -9,3 +9,4 @@ filter_proteins_by_peptide_count(resDataStart, config)
 \description{
 Keep only those proteins with 2 IDENTIFIED peptides
 }
+\keyword{internal}

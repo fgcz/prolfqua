@@ -28,3 +28,4 @@ tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
 jackknifeMatrix(dataX, cor)
 jackknifeMatrix(dataX, cor, method="spearman")
 }
+\keyword{internal}

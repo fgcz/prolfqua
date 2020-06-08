@@ -18,3 +18,4 @@ panel.cor(x, y, digits = 2, ...)
 \description{
 correlation panel for pairs plot function (used as default in pairs_smooth)
 }
+\keyword{internal}

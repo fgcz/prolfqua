@@ -11,7 +11,7 @@ used in p2901
 }
 \examples{
 
-D <- LFQService::resultsV12954
+D <- LFQServiceData::resultsV12954
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
@@ -26,3 +26,4 @@ res <- model_analyse_summarize_vis(tmp,
  D$config$table$hkeysDepth())
 
 }
+\keyword{internal}

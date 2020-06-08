@@ -14,3 +14,4 @@ make_model(formula, contrasts)
 \description{
 create model
 }
+\keyword{internal}

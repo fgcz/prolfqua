@@ -9,10 +9,13 @@ compute stdv, mean and CV per peptide or protein and condition.
 compute stdv, mean and CV per peptide or protein and condition.
 }
 \examples{
-source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-istar <- LFQService::dataIonstarFilteredPep
+
+# study variance of not normalized data
+#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+istar <- LFQServiceData::dataIonstarFilteredPep
+istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
-sum <- lfqdata$get_Stat()
+sum <- lfqdata$get_Stats()
 sum$cv()
 sum$cv_quantiles()
 sum$density()
@@ -22,9 +25,12 @@ sum$violin_median()
 sum$stdv_vs_mean(size = 400)
 sum$power_t_test()
 sum$power_t_test_quantiles()
-istar <- LFQService::dataIonstarNormalizedPep
+
+#study variance of normalized data
+istar <- LFQServiceData::dataIonstarNormalizedPep
+istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
-sum <- lfqdata$get_Stat()
+sum <- lfqdata$get_Stats()
 sum$cv()
 sum$cv_quantiles()
 sum$density()
@@ -34,6 +40,7 @@ sum$violin_median()
 sum$stdv_vs_mean(size = 400)
 sum$power_t_test()
 sum$power_t_test_quantiles
+
 
 }
 \section{Methods}{
@@ -83,10 +90,14 @@ sum$power_t_test_quantiles
 \if{html}{\out{<a id="method-density"></a>}}
 \if{latex}{\out{\hypertarget{method-density}{}}}
 \subsection{Method \code{density()}}{
+plots density or ecdf
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-density_median"></a>}}

@@ -9,3 +9,4 @@ separate_factors(data, config)
 \description{
 separates hierarchies into starting columns
 }
+\keyword{internal}

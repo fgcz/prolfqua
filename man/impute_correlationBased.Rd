@@ -12,8 +12,8 @@ imputation based on correlation assumption
 \examples{
 library(LFQService)
 library(tidyverse)
-data <- sample_analysis
-config <- skylineconfig$clone(deep=TRUE)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 data <- complete_cases(data, config)
 dim(data)
 mean(is.na(data$Area))
@@ -22,3 +22,4 @@ stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
 mean(is.na(dataI$srm_ImputedIntensity)) == 0
 
 }
+\keyword{internal}

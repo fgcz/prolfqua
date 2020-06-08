@@ -1,5 +1,6 @@
 #' Removes rows with more than thresh NA's from matrix
 #' @export
+#' @keywords internal
 #' @return matrix
 #' @param obj matrix or dataframe
 #' @param thresh - maximum number of NA's / row - if more the row will be removed
@@ -20,6 +21,7 @@ removeNArows <- function(obj, thresh=0 )
 
 #' splits names and creates a matrix
 #' @export
+#' @keywords internal
 #' @param names vector with names
 #' @param split patter to use to split
 #' @return matrix
@@ -52,11 +54,12 @@ split2table <- function(names,split="\\||\\_")
 #' @importFrom stats as.formula
 #' @import ggplot2
 #' @export
+#' @keywords internal
 #' @examples
 #' library(ggplot2)
 #' library(tidyverse)
 #' library(ggrepel)
-#' multigroupVolcano(LFQService::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
+#' multigroupVolcano(LFQServiceData::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
 multigroupVolcano <- function(misspX,
                               effect = "fc",
                               p.value = "p.adjust",
@@ -110,13 +113,14 @@ multigroupVolcano <- function(misspX,
 #' @importFrom dplyr bind_cols
 #' @importFrom tibble tibble as_tibble
 #' @export
+#' @keywords internal
 #' @examples
 #' x <- matrix(rnorm(20), ncol=4)
 #' rownames(x) <- LETTERS[1:nrow(x)]
 #' matrix_to_tibble(x)
 #' !(is.matrix(x) || is.data.frame(x))
 #'
-matrix_to_tibble <- function(x, preserve_row_names = "row.names",...)
+matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 {
   if (!(is.matrix(x) || is.data.frame(x))) stop("Error: `x` is not a matrix or data.frame object.")
   if (!is.null(preserve_row_names)) {
@@ -150,12 +154,13 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names",...)
 #' @param ... further parameters to .method
 #' @return list with all jackknife matrices
 #' @export
+#' @keywords internal
 #' @examples
 #' xx <- matrix(rnorm(20), ncol=4)
 #' cortest <- function(x){print(dim(x));cor(x)}
 #' my_jackknife(xx, cortest)
 #' my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
-my_jackknife <- function ( xdata, .method, ...) {
+my_jackknife <- function(xdata, .method, ... ) {
   x <- 1:nrow(xdata)
   call <- match.call()
   n <- length(x)
@@ -174,6 +179,7 @@ my_jackknife <- function ( xdata, .method, ...) {
 #' @param distmethod dist or correlation method working with matrix i.e. cor
 #' @param ... further parameters to method
 #' @export
+#' @keywords internal
 #' @importFrom tidyr gather spread
 #' @importFrom plyr ldply
 #' @importFrom dplyr group_by summarize_at vars
@@ -188,24 +194,24 @@ my_jackknife <- function ( xdata, .method, ...) {
 #' jackknifeMatrix(dataX, cor)
 #' jackknifeMatrix(dataX, cor, method="spearman")
 jackknifeMatrix <- function(dataX, distmethod , ... ){
-  if(is.null(colnames(dataX))){
-    colnames(dataX)<- paste("C",1:ncol(dataX),sep="")
+  if (is.null(colnames(dataX))) {
+    colnames(dataX) <- paste("C", 1:ncol(dataX), sep = "")
   }
-  if(is.null(rownames(dataX))){
-    rownames(dataX)<- paste("R",1:nrow(dataX),sep="")
+  if (is.null(rownames(dataX))) {
+    rownames(dataX) <- paste("R", 1:nrow(dataX), sep = "")
   }
 
-  if(nrow(dataX) > 1 & ncol(dataX) > 1){
+  if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- my_jackknife( dataX, distmethod, ... )
     x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
     dd <- tidyr::gather(x, "col.names" , "correlation" , 3:ncol(x))
     ddd <- dd %>%
       group_by(UQ(sym("row.names")), UQ(sym("col.names"))) %>%
-      summarize_at(c("jcor" = "correlation"), function(x){max(x, na.rm=TRUE)})
+      summarize_at(c("jcor" = "correlation"), function(x){max(x, na.rm = TRUE)})
 
     dddd <- tidyr::spread(ddd, UQ(sym("col.names")), UQ(sym("jcor"))  )
     dddd <- as.data.frame(dddd)
-    rownames(dddd) <-dddd$row.names
+    rownames(dddd) <- dddd$row.names
     dddd <- dddd[,-1]
     return(dddd)
   }else{
@@ -219,6 +225,7 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 #' @param legend  add legend to plots
 #' @param pch point type default "."
 #' @export
+#' @keywords internal
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
 #' pairs_w_abline(tmp,log="xy",main="small data")
@@ -253,6 +260,7 @@ pairs_w_abline <- function(dataframe,
 }
 #' histogram panel for pairs function (used as default in pairs_smooth)
 #' @export
+#' @keywords internal
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
 #' @importFrom graphics par rect hist
@@ -270,6 +278,7 @@ panel.hist <- function(x, ...)
 }
 #' correlation panel for pairs plot function (used as default in pairs_smooth)
 #' @export
+#' @keywords internal
 #' @param x numeric data
 #' @param y numeric data
 #' @param ... not used
@@ -306,6 +315,7 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' @param legend  add legend to plots
 #' @param ... params usually passed to pairs
 #' @export
+#' @keywords internal
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
 #' pairs_smooth(tmp,main="small data", legend=TRUE)
@@ -341,6 +351,7 @@ pairs_smooth = function(dataframe, legend = FALSE, ...) {
 
 #' table facade to easily switch implementations
 #' @export
+#' @keywords internal
 table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
   if (kable) {
     knitr::kable(df, digits = digits, caption = caption )
@@ -348,6 +359,7 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
 }
 #' table facade to easily switch implementations
 #' @export
+#' @keywords internal
 table_facade.list <- function(parlist, kable=TRUE){
   table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
 }

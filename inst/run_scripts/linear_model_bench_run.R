@@ -74,7 +74,7 @@ data <- setup_analysis(res,mqdata$config)
 
 filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config)
 dataIonstarFilteredPep <- filteredData
-#usethis::use_data(dataIonstarFilteredPep)
+usethis::use_data(dataIonstarFilteredPep, overwrite = TRUE)
 
 filteredData <- filter_proteins_by_peptide_count(data, mqdata$config)
 normalizedData <- normalize_log2_robscale(filteredData$data,
@@ -92,12 +92,11 @@ protintensity_fun <- medpolish_protein_quants( normalizedData$data,
 
 
 dataIonstarProtein <- protintensity_fun("unnest")
-usethis::use_data(dataIonstarProtein, overwrite = TRUE )1
+usethis::use_data(dataIonstarProtein, overwrite = TRUE )
 
 
 memodel_full <- paste0(dataIonstarNormalizedPep$config$table$getWorkIntensity() , memodel)
-modelFunction <-
-  make_custom_model_lmer(memodel_full, model_name = "meModel")
+modelFunction <- make_custom_model_lmer(memodel_full, model_name = "meModel")
 reportColumns <- c("statistic",
                    "p.value",
                    "p.value.adjusted")

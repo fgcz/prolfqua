@@ -18,10 +18,11 @@ Compute theoretical sample sizes from factor level standard deviations
 \examples{
 library(LFQService)
 library(tidyverse)
-data <- sample_analysis
-config <- skylineconfig$clone(deep = TRUE)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 data2 <- transform_work_intensity(data, config, transformation = log2)
 stats_res <- summarize_cv(data2, config, all = FALSE)
-bb <- lfq_power_t_test_proteins(stats_res, config)
+bb <- lfq_power_t_test_proteins(stats_res)
 head(bb)
 }
+\keyword{internal}

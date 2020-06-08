@@ -12,9 +12,11 @@ qVal_individual_threshold and qVal_experiment_threshold
 }
 \examples{
 library(tidyverse)
-config <- skylineconfig$clone(deep=TRUE)
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 
-summarize_hierarchy(sample_analysis, config)
-res <- filter_byQValue(sample_analysis, config)
+summarize_hierarchy(LFQServiceData::sample_analysis, config)
+res <- filter_byQValue(LFQServiceData::sample_analysis, config)
 summarize_hierarchy(res, config)
+
 }
+\keyword{internal}

@@ -9,3 +9,4 @@ isSingular_lm(m)
 \description{
 check if lm model is singular
 }
+\keyword{internal}

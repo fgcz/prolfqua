@@ -84,7 +84,7 @@ if(0){
 Given a sample dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
-longFormat <- LFQService::spectronautDIAData250
+longFormat <- LFQServiceData::spectronautDIAData250
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 

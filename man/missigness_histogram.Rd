@@ -17,7 +17,10 @@ Histogram summarizing missigness
 \examples{
 library(tidyverse)
 library(LFQService)
-xx <- complete_cases(sample_analysis,skylineconfig)
+sample_analysis <- LFQServiceData::sample_analysis
+skylineconfig <- LFQServiceData::skylineconfig
+
+xx <- complete_cases(sample_analysis, skylineconfig)
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
@@ -30,3 +33,4 @@ sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 missigness_histogram(sample_analysis, skylineconfig)
 
 }
+\keyword{internal}

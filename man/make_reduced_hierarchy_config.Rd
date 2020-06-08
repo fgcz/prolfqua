@@ -10,6 +10,7 @@ make_reduced_hierarchy_config(config, workIntensity, hierarchy)
 Make reduced hierarchy configuration
 }
 \examples{
-make_reduced_hierarchy_config(skylineconfig, "testintensity", skylineconfig$table$hierarchy[1:2])
+make_reduced_hierarchy_config(LFQServiceData::skylineconfig, "testintensity", LFQServiceData::skylineconfig$table$hierarchy[1:2])
 
 }
+\keyword{internal}

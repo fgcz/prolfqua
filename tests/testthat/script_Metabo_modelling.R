@@ -6,7 +6,7 @@ library("conflicted")
 
 VIS_PROT <- FALSE
 
-results <- LFQService::results_MetaboData
+results <- LFQServiceData::results_MetaboData
 results$config_pepIntensityNormalized$table$factorDepth <- 3
 
 pepConfig <- results$config_dataTransformed

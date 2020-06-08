@@ -38,7 +38,7 @@ library(LFQService)
 
 ```{r prepData}
 outdir <- tempdir()
-data(skylinePRMSampleData)
+skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 
 skylineconfig <-
   createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",

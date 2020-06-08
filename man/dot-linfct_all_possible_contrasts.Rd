@@ -10,7 +10,7 @@
 create all possible contrasts
 }
 \examples{
-m <- LFQService::basicModel_p1807
+m <- LFQServiceData::basicModel_p1807
 m
 linfct <- linfct_from_model(m)
 
@@ -18,3 +18,4 @@ xl <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_interactions)
 
 }
+\keyword{internal}

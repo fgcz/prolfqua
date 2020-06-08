@@ -14,3 +14,4 @@ panel.hist(x, ...)
 \description{
 histogram panel for pairs function (used as default in pairs_smooth)
 }
+\keyword{internal}
