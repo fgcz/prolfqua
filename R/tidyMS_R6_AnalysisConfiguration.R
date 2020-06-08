@@ -672,7 +672,8 @@ hierarchy_counts_sample <- function(data,
 #' summarize_hierarchy(sample_analysis, configuration )
 #' configuration$table$hierarchyDepth = 4
 #' summarize_hierarchy(sample_analysis, configuration )
-#' summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
+#' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart,
+#'  LFQServiceData::testDataStart2954$config)
 summarize_hierarchy <- function(x,
                                 configuration,
                                 hierarchy = configuration$table$hkeysDepth(),
@@ -700,11 +701,12 @@ summarize_hierarchy <- function(x,
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' LFQService:::summarizeProteins(sample_analysis, skylineconfig)
-#'configuration <- skylineconfig$clone(deep=TRUE)
-#'summarize_hierarchy(testDataStart2954$resDataStart, testDataStart2954$config)
-#'summarizeProteins(testDataStart2954$resDataStart, testDataStart2954$config)
-summarizeProteins <- function(x, configuration ){
+#' LFQService:::summarize_protein(sample_analysis, skylineconfig)
+#' configuration <- skylineconfig$clone(deep=TRUE)
+#' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
+#' summarize_protein(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
+#'
+summarize_protein <- function(x, configuration ){
   warning("DEPRECATED use summarize_hierarchy instead")
   rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
 
@@ -1141,8 +1143,9 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
 #' head(x)
 #'
-#' x<-spreadValueVarsIsotopeLabel(sample_analysis_HL,skylineconfig_HL)
+#' x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL,LFQServiceData::skylineconfig_HL)
 #' head(x[,5:ncol(x)])
+#'
 spreadValueVarsIsotopeLabel <- function(resData, config){
   table <- config$table
   idVars <- table$idVars()

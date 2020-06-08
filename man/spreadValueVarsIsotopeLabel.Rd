@@ -17,7 +17,8 @@ sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
 head(x)
 
-x<-spreadValueVarsIsotopeLabel(sample_analysis_HL,skylineconfig_HL)
+x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL,LFQServiceData::skylineconfig_HL)
 head(x[,5:ncol(x)])
+
 }
 \keyword{internal}

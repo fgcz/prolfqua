@@ -234,6 +234,9 @@ LFQDataSummariser <- R6::R6Class(
     summarize_hierarchy = function(){
       LFQService::summarize_hierarchy(self$lfq$data, self$lfq$config)
     },
+    summarize_protein = function(){
+      LFQService::summarize_protein(self$lfq$data, self$lfq$config)
+    },
     interaction_missing_stats = function(){
       LFQService::interaction_missing_stats(self$lfq$data, self$lfq$config)
     },

@@ -32,6 +32,7 @@ sum$missingness_per_condition_cumsum()
 \item \href{#method-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
 \item \href{#method-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
 \item \href{#method-summarize_hierarchy}{\code{LFQDataSummariser$summarize_hierarchy()}}
+\item \href{#method-summarize_protein}{\code{LFQDataSummariser$summarize_protein()}}
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
 \item \href{#method-missingness_per_condition_cumsum}{\code{LFQDataSummariser$missingness_per_condition_cumsum()}}
@@ -71,6 +72,15 @@ sum$missingness_per_condition_cumsum()
 \subsection{Method \code{summarize_hierarchy()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$summarize_hierarchy()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-summarize_protein"></a>}}
+\if{latex}{\out{\hypertarget{method-summarize_protein}{}}}
+\subsection{Method \code{summarize_protein()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$summarize_protein()}\if{html}{\out{</div>}}
 }
 
 }

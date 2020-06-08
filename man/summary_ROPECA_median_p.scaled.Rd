@@ -54,7 +54,7 @@ hist(xx$median.p, breaks = 20)
 hist(xx$beta.based.significance, breaks = 20)
 
 
-summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
+summary_ROPECA_median_p.scaled(LFQServiceData::exampleDataForRopeca, contrast = "contrast")
 
 }
 \keyword{internal}
