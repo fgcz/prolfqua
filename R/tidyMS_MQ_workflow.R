@@ -4,6 +4,24 @@
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#'
+#' resDataStart <- LFQServiceData::testData2954$resDataStart
+#' config <-  LFQServiceData::testDataStart2954$config
+#' summarize_hierarchy(resDataStart, config)
+#' res <- filter_proteins_by_peptide_count(resDataStart, config)
+#' res <- normalize_log2_robscale(res$data, res$config)
+#' summarize_filtering(list(data = resDataStart, config=config), res)
+#'
+#' resDataStart <- LFQServiceData::skylineSRM_HL_data
+#' config <-  LFQServiceData::skylineconfig_HL
+#' resDataStart <- setup_analysis(resDataStart , config)
+#' res <- filter_proteins_by_peptide_count(resDataStart, config)
+#' summaryH <- summarize_hierarchy(resDataStart, config)
+#'
 filter_proteins_by_peptide_count <-  function(resDataStart,
                                              config){
   # filter_proteins_by_peptide_count renamed from .workflow_MQ_filter_peptides_V3
@@ -16,7 +34,8 @@ filter_proteins_by_peptide_count <-  function(resDataStart,
   return(list(data = filteredPep, config = config))
 }
 
-#' normlize data by log2 and robust scaling
+#' normalize data by log2 and robust scaling
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -82,32 +101,3 @@ summarize_filtering <- function(startData,
   SUMMARY$removed_peptides <- dplyr::inner_join(SUMMARY$removed_proteins, startData$data, by = "protein_Id")
   return(SUMMARY)
 }
-
-# Workflow function ----
-
-#' runs peptide data preprocessing for peptide level protein modelling
-#' first runs peptide filtering
-#' then it runs data noramlization (log2 transform intensities and apply robust z transformation)
-#' But mainly also summarizes data filtering (reports which proteins were removed etc.)
-#' @keywords internal
-#' @param peptideFilterFunction can be filter_proteins_by_peptide_count
-#' @examples
-#' library(LFQService)
-#' library(tidyverse)
-#' resDataStart <- LFQServiceData::testData2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
-#' summarize_hierarchy(resDataStart, config)
-#' res <- filter_proteins_by_peptide_count(resDataStart, config)
-#' res <- normalize_log2_robscale(res$data, res$config)
-#' summarize_filtering(list(data = resDataStart, config=config), res)
-#' # resDataStart <- LFQService::skylineSRM_HL_data
-#' # config <-  LFQService::skylineconfig_HL
-#'
-#' # res <- filter_proteins_by_peptide_count(resDataStart, config)
-workflow_MQ_protoV1 <- function(){
-  error("Replace by call to:
-        filter_proteins_by_peptide_count and
-        normalize_log2_robscale
-        ")
-}
-

@@ -9,4 +9,23 @@ filter_proteins_by_peptide_count(resDataStart, config)
 \description{
 Keep only those proteins with 2 IDENTIFIED peptides
 }
+\examples{
+
+library(LFQService)
+library(tidyverse)
+
+resDataStart <- LFQServiceData::testData2954$resDataStart
+config <-  LFQServiceData::testDataStart2954$config
+summarize_hierarchy(resDataStart, config)
+res <- filter_proteins_by_peptide_count(resDataStart, config)
+res <- normalize_log2_robscale(res$data, res$config)
+summarize_filtering(list(data = resDataStart, config=config), res)
+
+resDataStart <- LFQServiceData::skylineSRM_HL_data
+config <-  LFQServiceData::skylineconfig_HL
+resDataStart <- setup_analysis(resDataStart , config)
+res <- filter_proteins_by_peptide_count(resDataStart, config)
+summaryH <- summarize_hierarchy(resDataStart, config)
+
+}
 \keyword{internal}

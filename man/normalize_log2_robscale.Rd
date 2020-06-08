@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{normalize_log2_robscale}
 \alias{normalize_log2_robscale}
-\title{normlize data by log2 and robust scaling}
+\title{normalize data by log2 and robust scaling}
 \usage{
 normalize_log2_robscale(filteredPep, config)
 }
 \description{
-normlize data by log2 and robust scaling
+normalize data by log2 and robust scaling
 }
 \examples{
 resDataStart <- LFQServiceData::testDataStart2954$resDataStart

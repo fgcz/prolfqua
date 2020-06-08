@@ -682,7 +682,7 @@ summarize_hierarchy <- function(x,
   all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
   #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
 
-  precursor <- x %>% dplyr::select(factors,all_hierarchy) %>% dplyr::distinct()
+  precursor <- x %>% dplyr::select(factors, all_hierarchy) %>% dplyr::distinct()
   x3 <- precursor %>% dplyr::group_by_at(c(factors,hierarchy)) %>%
     dplyr::summarize_at( setdiff(all_hierarchy,hierarchy),
                          list( n = dplyr::n_distinct))
