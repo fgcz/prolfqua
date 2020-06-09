@@ -15,8 +15,8 @@ summarize_cv_quantiles(
 summarize stats output
 }
 \examples{
-config <- skylineconfig$clone(deep = TRUE)
-data <- sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+data <- LFQServiceData::sample_analysis
 stats_res <- summarize_cv(data, config)
 head(stats_res)
 summarize_cv_quantiles(stats_res, config)

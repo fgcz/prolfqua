@@ -18,6 +18,9 @@ compute per group averages and impute values
 should generalize at some stage
 }
 \examples{
+
+skylineconfig <- LFQServiceData::skylineconfig
+sample_analysis <- LFQServiceData::sample_analysis
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- complete_cases(xx, skylineconfig)

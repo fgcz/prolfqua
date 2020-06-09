@@ -112,6 +112,10 @@ LFQData <- R6::R6Class(
 #' sum$power_t_test()
 #' sum$power_t_test_quantiles
 #'
+#' #Slightly different dataset
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#'
 #'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
@@ -254,6 +258,7 @@ LFQDataSummariser <- R6::R6Class(
 #' @export
 #'
 #' @examples
+#'
 #' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' library(LFQService)
 #' istar <- LFQServiceData::dataIonstarProtein

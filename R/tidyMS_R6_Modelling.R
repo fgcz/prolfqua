@@ -43,6 +43,12 @@ make_model <- function(formula, contrasts) {
 
 # Creating models from configuration ----
 
+.ehandler = function(e){
+  warning("WARN :", e)
+  # return string here
+  as.character(e)
+}
+
 
 #' Create custom lmer model
 #'
@@ -68,7 +74,7 @@ make_custom_model_lmer <- function(modelstr,
       return(formula)
     }
     modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
-                          error = function(e){warning(e) ; return = NULL})
+                          error = .ehandler)
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -99,8 +105,9 @@ make_custom_model_lm <- function(modelstr,
     if (get_formula) {
       return(formula)
     }
+
     modelTest <- tryCatch(lm( formula , data = x ),
-                          error = function(e){warning(e) ; return = NULL})
+                          error = .ehandler)
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -195,7 +202,7 @@ model_analyse <- function(pepIntensity,
 
   lmermodel <- "linear_model"
 
-  if (FALSE) { # added because this errors after package update on 6.6.2020
+  if (TRUE) { # added because this errors after package update on 6.6.2020
     modelProtein <- nestProtein %>%
       dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun))
   } else {
@@ -203,13 +210,17 @@ model_analyse <- function(pepIntensity,
     modelProtein <- nestProtein
     modelProtein[[lmermodel]] <- resModel
   }
+  # TODO check for string here.
+  modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
 
-  modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.null(x)}))
-
-  modelProteinF <- modelProtein %>% dplyr::filter( !!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
-  modelProteinF <- modelProteinF %>% dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
+  modelProteinF <- modelProtein %>%
+    dplyr::filter( !!sym("exists_lmer") == TRUE)
+  modelProteinF <- modelProteinF %>%
+    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
+  modelProteinF <- modelProteinF %>%
+    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
+  modelProteinF <- modelProteinF %>%
+    dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
 
   nrcoeff <- function(x) {
     cc <- coefficients(x)
@@ -304,9 +315,9 @@ model_analyse_summarize <- function(modelProteinF,
   return(list(
     modelName = modelName,
     Model_Coeff = Model_Coeff,
-    fname_Model_Coeff =  paste0("Coef_",modelName, ".csv"),
+    fname_Model_Coeff =  paste0("Coef_",modelName),
     Model_Anova = Model_Anova,
-    fname_Model_Anova =  paste0("ANOVA_",modelName,".csv" )
+    fname_Model_Anova =  paste0("ANOVA_",modelName)
   ))
 }
 
@@ -321,10 +332,12 @@ model_analyse_summarize_write  <- function(
   message("writing tables into :", path)
   if (all) {
     lfq_write_table(modellingResult$Model_Coeff,
-                    path = file.path( path,modellingResult$fname_Model_Coeff ))
+                    path = path,
+                    name  = modellingResult$fname_Model_Coeff )
   }
   lfq_write_table(modellingResult$Model_Anova,
-                  path = file.path( path , modellingResult$fname_Model_Anova ))
+                  path = path ,
+                  name = modellingResult$fname_Model_Anova )
 }
 
 
@@ -1568,15 +1581,15 @@ contrasts_linfct_write <- function(results,
   subject_Id <- config$table$hkeysDepth()
 
   if (!is.null(path)) {
-    fileLong <- file.path(path,paste0(prefix, "_", modelName, ".csv"))
+    fileLong <- paste0(prefix, "_", modelName)
     message("Writing: ", fileLong, "\n")
-    lfq_write_table(separate_hierarchy(results, config) , path = fileLong)
-    fileWide <- file.path(path,paste0(prefix, "_", modelName, "_PIVOT.csv"))
+    lfq_write_table(separate_hierarchy(results, config) , path = path , name = fileLong)
+    fileWide <- paste0(prefix, "_", modelName, "_PIVOT")
     message("Writing: ", fileWide, "\n")
     resultswide <- pivot_model_contrasts_2_Wide(results,
                                                 subject_Id = subject_Id,
                                                 columns = columns)
-    lfq_write_table(separate_hierarchy(resultswide, config), path = fileWide)
+    lfq_write_table(separate_hierarchy(resultswide, config), path = path, name = fileWide)
   }
 }
 

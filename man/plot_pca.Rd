@@ -13,8 +13,8 @@ plot PCA
 
 library(tidyverse)
 library(LFQService)
-data <- sample_analysis
-config <- skylineconfig$clone(deep = TRUE)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
 tmp <- plot_pca(data, config, add_txt= TRUE)
 print(tmp)

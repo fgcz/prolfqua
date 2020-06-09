@@ -6,8 +6,8 @@
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
 #' res <- summarize_cv(data, config)
 #' res$CV <- res$sd/res$mean
@@ -45,8 +45,8 @@ summarize_cv <- function(data, config, all = TRUE){
 #' @export
 #' @keywords internal
 #' @examples
-#' config <- skylineconfig$clone(deep = TRUE)
-#' data <- sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
 #' stats_res <- summarize_cv(data, config)
 #' head(stats_res)
 #' summarize_cv_quantiles(stats_res, config)
@@ -241,8 +241,8 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_density(res, config, stat = "mean")
 #' plot_stat_density(res, config, stat = "sd")
@@ -259,8 +259,8 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat =
 #' @keywords internal
 #' @examples
 #'
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
@@ -281,8 +281,8 @@ plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), g
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
@@ -299,8 +299,8 @@ plot_stat_violin <- function(data, config, stat = c("CV", "mean", "sd")){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin_median(res, config, stat = "mean")
 plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd")){

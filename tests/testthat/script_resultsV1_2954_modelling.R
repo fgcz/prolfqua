@@ -72,23 +72,14 @@ if (TRUE) {
   my_contest(m$linear_model[[1]], factor_contrasts)
 }
 
-
-
-
-
-
-
-
-
-
 # usethis::use_data(models_interaction, overwrite = TRUE)
 
 summary_interaction <- model_analyse_summarize(models_interaction$modelProtein,
                                                models_interaction$modelName)
 
-model_analyse_summarize_write(summary_interaction,  results$path)
+model_analyse_summarize_write(summary_interaction,  ".")
 reslist <- model_analyse_summarize_vis(summary_interaction)
-model_analyse_summarize_vis_write(reslist,  path = results$path)
+model_analyse_summarize_vis_write(reslist,  path = ".")
 
 # saveRDS(models_interaction, file="models_interaction.rda")
 # saveRDS(res_cond_r_pep_r_pat,file=paste0(modelName,".rda"))
@@ -116,10 +107,10 @@ models_interaction_Averages <- contrasts_linfct(models,
                                                  m$linfct_interactions,
                                                  subject_Id = pepConfig$table$hkeysDepth() )
 
-contrasts_linfct_write(models_interaction_Averages, pepConfig, models_base$modelName ,  path=results$path )
+contrasts_linfct_write(models_interaction_Averages, pepConfig, models_base$modelName ,  path = "." )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
-contrasts_linfct_vis_write(wfs, path=results$path)
+contrasts_linfct_vis_write(wfs, path = ".")
 
 
 all_linfct <- LFQService:::.linfct_all_possible_contrasts(m$linfct_interactions)
@@ -129,6 +120,6 @@ models_allContrasts <- contrasts_linfct( models,
                                          subject_Id = pepConfig$table$hkeysDepth() )
 
 wfs <- contrasts_linfct_vis(models_allContrasts,models_interaction$modelName )
-contrasts_linfct_vis_write(wfs, path=results$path)
+contrasts_linfct_vis_write(wfs, path = ".")
 pivot_model_contrasts_2_Wide(models_allContrasts)
 

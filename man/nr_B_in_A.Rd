@@ -10,8 +10,8 @@ nr_B_in_A(data, levelA, levelB, merge = TRUE)
 Compute nr of B per A
 }
 \examples{
-config <- skylineconfig$clone(deep=TRUE)
-data <- sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+data <- LFQServiceData::sample_analysis
 hierarchy <- config$table$hierarchyKeys()
 res <- nr_B_in_A(data, hierarchy[1], hierarchy[2])
 res \%>\% dplyr::select(hierarchy[1],  nr_peptide_Id_by_protein_Id) \%>\%

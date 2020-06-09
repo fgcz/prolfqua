@@ -198,7 +198,8 @@ make_interaction_column <- function(data, columns, sep="."){
 #' skylineconfig <- LFQServiceData::skylineconfig
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$factorDepth <- 1
-#' make_interaction_column_config(LFQServiceData::sample_analysis,skylineconfig)
+#' make_interaction_column_config(LFQServiceData::sample_analysis,
+#'    skylineconfig)
 make_interaction_column_config <- function(data, config, sep="."){
   columns <- config$table$fkeysDepth()
   data <- make_interaction_column(data, columns, sep = sep)
@@ -780,7 +781,8 @@ interaction_missing_stats <- function(x,
 #' @keywords internal
 #' @return function
 #' @examples
-#'
+#' skylineconfig <- LFQServiceData::skylineconfig
+#' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
@@ -1065,6 +1067,8 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' @examples
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
+#' sample_analysis <- LFQServiceData::sample_analysis
+#' skylineconfig <- LFQServiceData::skylineconfig
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
 #' names(res)
@@ -1101,14 +1105,12 @@ missingness_per_condition_cumsum <- function(x,
 #' @keywords internal
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' res <- missingness_per_condition(sample_analysis,skylineconfig)
+#' LFQServiceData::sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
+#' res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig)
 #' names(res)
 #' res$data
 #' res$figure
 #' print(res$figure)
-#' config <- skylineconfig$clone(deep = TRUE)
-#' x <- sample_analysis
 #'
 missingness_per_condition <- function(x, config, factors = config$table$fkeysDepth()){
   table <- config$table
@@ -1139,7 +1141,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' @export
 #' @keywords internal
 #' @examples
-#' setNa <- function(x){ifelse(x < 100, NA, x)}
+#' setNa <- function(x){ifelse(x < 100, NA, x)}++
 #' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig <- LFQServiceData::skylineconfig
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
@@ -1353,8 +1355,8 @@ medpolish_protein_quants <- function(data, config){
 #' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone( deep = TRUE )
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone( deep = TRUE )
 #' LFQService::plot_heatmap_cor( data, config )
 #' plot_heatmap_cor( data, config, R2 = TRUE )
 #'
@@ -1452,8 +1454,8 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' tmp <- plot_NA_heatmap(data, config)
 #' print(tmp)
 #' xx <- plot_NA_heatmap(data, config,distance = "euclidean")
@@ -1524,8 +1526,8 @@ plot_NA_heatmap <- function(data,
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
 #' tmp <- plot_pca(data, config, add_txt= TRUE)
 #' print(tmp)

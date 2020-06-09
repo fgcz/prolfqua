@@ -106,8 +106,8 @@ rmarkdown::render("Summarize_Filtering.Rmd",
                   envir = new.env(), output_format = "html_document")
 
 #rmarkdown::render("Summarize_Filtering.Rmd", params=results)
-
 #render_SummarizeFiltering_rmd(results, dest_path=path, dest_file_name = "SummarizeFiltering.pdf",workdir = getwd())
+
 
 #params <- results
 #rmarkdown::render("RunAnalysis_WithParams.Rmd", params = results)

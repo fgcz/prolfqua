@@ -16,8 +16,8 @@ plot_stat_density_median
 }
 \examples{
 
-data <- sample_analysis
-config <- skylineconfig$clone(deep = TRUE)
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 res <- summarize_cv(data, config)
 plot_stat_density_median(res, config,"CV")
 plot_stat_density_median(res, config,"mean")
