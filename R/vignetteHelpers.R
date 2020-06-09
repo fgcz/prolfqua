@@ -7,9 +7,15 @@
       src_script <- file.path(find.package(packagename) , scripts)
       dest_script <- file.path(workdir , basename(scripts))
       message("copy ", src_script, " to ", dest_script)
+      if (!file.exists(src_script)) {
+        src_script <- file.path(find.package(packagename) , "inst" , scripts)
+        if (!file.exists(src_script)) {
+          warning(paste("could not copy script file.", dest_script, sep = " "))
+        }
+      }
 
       if (!file.copy(src_script , dest_script, overwrite = TRUE)) {
-        warning(paste("could not copy script file.", dest_script, sep = " "))
+        warning(paste("could not copy script file.", src_script, " to ", dest_script, sep = " "))
       } else{
         res <- c(res, dest_script)
       }
