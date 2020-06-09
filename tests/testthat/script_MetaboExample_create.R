@@ -10,7 +10,7 @@ library(conflicted)
 
 HEATMAP <- TRUE
 ALLPROTEINPLOTS <- FALSE
-MQSUMMARY <- FALSE
+MQSUMMARY <- TRUE
 path <- "."
 
 
@@ -68,14 +68,6 @@ resDataStart <-
 #readr::write_csv(resDataStart, path = file.path(path, "annotatedTable_Peptide_RAW_Data.csv"))
 #saveRDS(config,file.path(path,"config.Rdata"))
 
-if (MQSUMMARY) {
-  LFQService::render_METABO_Summary_rmd(resDataStart,
-                                        config ,
-                                        dest_path = ".",
-                                        workdir = ".")
-}
-
-
 x3 <- summarize_hierarchy(resDataStart, config)
 x3 %>% inner_join(resDataStart, by = "Compound") -> resDataStart
 
@@ -117,12 +109,4 @@ results_MetaboData <- results
 #usethis::use_data(results_MetaboData, overwrite = TRUE)
 
 #saveRDS(results, file="allData.rds")
-
-if (MQSUMMARY) {
-  #rmarkdown::render("METABO_Summarize_Filtering.Rmd",params=results,  envir = new.env())
-  #file.copy("METABO_Summarize_Filtering.pdf", file.path(path,"METABO_Summarize_Filtering.pdf" ), overwrite = TRUE)
-
-  LFQService::render_METABO_SummarizeFiltering_rmd(results , dest_path = ".",  workdir =
-                                                     ".")
-}
 

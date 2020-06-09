@@ -1,11 +1,12 @@
 #LFQData ----
+#'
 #' LFQData R6 class
 #' @export
 #'
 #' @examples
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQServiceData::dataIonstarFilteredPep
-#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' lfqdata$factors()
@@ -77,6 +78,19 @@ LFQData <- R6::R6Class(
     #' @return LFQDataStats
     get_Stats = function(){
       return(LFQDataStats$new(self))
+    },
+    #' @description
+    #' get difference of this with other
+    #'
+    #' @details
+    #' Use to compare filtering results obtained from self, e.g. which proteins and peptides were removed (other)
+    #'
+    #' @param other a filtered LFQData set
+    #' @return LFQData
+    difference = function(other){
+      diffdata <- LFQService::difference(self$data,other$data,self$config )
+      res <- LFQData$new(diffdata , self$config$clone(deep = TRUE))
+      return(res)
     }
   )
 )
@@ -104,16 +118,17 @@ LFQData <- R6::R6Class(
 #' }
 #'
 #' istar <- LFQServiceData::dataIonstarFilteredPep
-#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
 #'
 #' #study variance of normalized data
 #' istar <- LFQServiceData::dataIonstarNormalizedPep
-#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
+#'
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
@@ -242,7 +257,7 @@ LFQDataStats <- R6::R6Class(
 #' library(tidyverse)
 #'
 #' istar <- LFQServiceData::dataIonstarFilteredPep
-#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' sum <- lfqdata$get_Summariser()
 #' sum$hierarchy_counts()
@@ -299,7 +314,7 @@ LFQDataSummariser <- R6::R6Class(
 #' library(LFQService)
 #' istar <- LFQServiceData::dataIonstarProtein
 #'
-#' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
 #' lfqdata <- LFQData$new(
 #'  istar$data,

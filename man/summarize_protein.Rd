@@ -5,7 +5,7 @@
 \title{Light only version.
 Summarize Protein counts}
 \usage{
-summarize_protein(x, configuration)
+summarize_protein(x, config)
 }
 \description{
 Light only version.

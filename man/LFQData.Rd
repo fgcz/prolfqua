@@ -11,7 +11,7 @@ LFQData R6 class
 \examples{
 #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 istar <- LFQServiceData::dataIonstarFilteredPep
-istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
+istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 tmp <- lfqdata$to_wide()
 lfqdata$factors()
@@ -30,6 +30,7 @@ lfqdata$factors()
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
 \item \href{#method-get_Stats}{\code{LFQData$get_Stats()}}
+\item \href{#method-difference}{\code{LFQData$difference()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
 }
@@ -128,6 +129,30 @@ getter
 
 \subsection{Returns}{
 LFQDataStats
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-difference"></a>}}
+\if{latex}{\out{\hypertarget{method-difference}{}}}
+\subsection{Method \code{difference()}}{
+get difference of this with other
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$difference(other)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{other}}{a filtered LFQData set}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Use to compare filtering results obtained from self, e.g. which proteins and peptides were removed (other)
+}
+
+\subsection{Returns}{
+LFQData
 }
 }
 \if{html}{\out{<hr>}}

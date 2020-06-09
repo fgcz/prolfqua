@@ -14,7 +14,7 @@ source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 library(LFQService)
 istar <- LFQServiceData::dataIonstarProtein
 
-istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
+istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
 lfqdata <- LFQData$new(
  istar$data,

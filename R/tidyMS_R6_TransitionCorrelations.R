@@ -452,38 +452,62 @@ impute_correlationBased <- function(x , config){
   return(qvalFiltX)
 }
 
-#' @export
-make_name <- function(levelA, levelB, prefix="nr_"){
-  c_name <- paste(prefix, levelB, "_by_", levelA, sep = "")
+
+.make_name_AinB <- function(levelA, levelB, prefix="nr_"){
+  c_name <- paste(prefix, levelB, "_IN_", levelA, sep = "")
   return(c_name)
 }
 
-#' Compute nr of B per A
-#' @export
-#' @keywords internal
-#' @examples
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' data <- LFQServiceData::sample_analysis
-#' hierarchy <- config$table$hierarchyKeys()
-#' res <- nr_B_in_A(data, hierarchy[1], hierarchy[2])
-#' res %>% dplyr::select(hierarchy[1],  nr_peptide_Id_by_protein_Id) %>%
-#' distinct() %>% dplyr::pull() %>% table()
-nr_B_in_A <- function(data,
+.nr_B_in_A <- function(data,
                       levelA,
-                      levelB, merge=TRUE){
-  c_name <- make_name(levelA, levelB)
+                      levelB,
+                      merge = TRUE){
+  namA <- paste(levelA, collapse = "_")
+  namB <- paste(levelB, collapse = "_")
+  c_name <- .make_name_AinB(namA, namB)
   tmp <- data %>%
     dplyr::select_at(c(levelA, levelB)) %>%
     dplyr::distinct() %>%
     dplyr::group_by_at(levelA) %>%
-     dplyr::summarize(!!c_name := n())
+    dplyr::summarize(!!c_name := n())
   if (!merge) {
     return(tmp)
   }
   data <- dplyr::inner_join(data, tmp, by = levelA )
   message("Column added : ", c_name)
-  return(data)
+  return(list(data = data, name = c_name))
 }
+
+
+#' Compute nr of B per A
+#' @export
+#' @keywords internal
+#' @examples
+#' library(LFQService)
+#' library(tidyverse)
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' hierarchy <- config$table$hierarchyKeys()
+#' res <- nr_B_in_A(data, config)
+#' res$data %>% dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) %>% distinct() %>%
+#'   dplyr::pull() %>% table()
+#'
+#'
+#'
+#' resDataStart <- LFQServiceData::skylineSRM_HL_data
+#' config <-  LFQServiceData::skylineconfig_HL
+#' resDataStart <- setup_analysis(resDataStart , config)
+#' nr_B_in_A(resDataStart, config)
+#' nr_B_in_A(resDataStart, config, merge=FALSE)
+#' config$table$hierarchyDepth <- 2
+#' nr_B_in_A(resDataStart, config, merge=FALSE)
+#'
+nr_B_in_A <- function(data, config , merge = TRUE){
+  levelA <- config$table$hkeysDepth()
+  levelB <- config$table$hierarchyKeys()[length(levelA) + 1]
+  .nr_B_in_A(data, levelA, levelB , merge = merge)
+}
+
 
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <-

@@ -4,17 +4,30 @@
 \alias{nr_B_in_A}
 \title{Compute nr of B per A}
 \usage{
-nr_B_in_A(data, levelA, levelB, merge = TRUE)
+nr_B_in_A(data, config, merge = TRUE)
 }
 \description{
 Compute nr of B per A
 }
 \examples{
+library(LFQService)
+library(tidyverse)
 config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 data <- LFQServiceData::sample_analysis
 hierarchy <- config$table$hierarchyKeys()
-res <- nr_B_in_A(data, hierarchy[1], hierarchy[2])
-res \%>\% dplyr::select(hierarchy[1],  nr_peptide_Id_by_protein_Id) \%>\%
-distinct() \%>\% dplyr::pull() \%>\% table()
+res <- nr_B_in_A(data, config)
+res$data \%>\% dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) \%>\% distinct() \%>\%
+  dplyr::pull() \%>\% table()
+
+
+
+resDataStart <- LFQServiceData::skylineSRM_HL_data
+config <-  LFQServiceData::skylineconfig_HL
+resDataStart <- setup_analysis(resDataStart , config)
+nr_B_in_A(resDataStart, config)
+nr_B_in_A(resDataStart, config, merge=FALSE)
+config$table$hierarchyDepth <- 2
+nr_B_in_A(resDataStart, config, merge=FALSE)
+
 }
 \keyword{internal}

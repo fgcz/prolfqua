@@ -6,79 +6,46 @@ output: pdf_document
 editor_options: 
   chunk_output_type: console
 params:
-  HEATMAP: TRUE
-  path: ""
-  resDataStart: NULL
-  config_resDataStart: NULL 
-  filteredPep: NULL
-  config_filteredPep: NULL
-  pepIntensityNormalized: NULL
-  config_pepIntensityNormalized: NULL
-  config: NULL
-  nrPeptidesPerProtein_start: NULL
-  nrPeptidesPerProtein_filtered: NULL
-  removed_proteins: NULL
-  removed_peptides: NULL
+  dataStart: NULL
+  dataEnd: NULL
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 # Filter missigness
 
-We here briefly discuss how your data was pre-processed.
 
+```{r naHeatmap}
+ph <- dataStart$get_Plotter()$NA_heatmap()
+```
 
-```{r heatmapAllNAs, out.width = "85%", out.height="\\textheight", fig.cap="before NA filtering"}
-
-figpath <- file.path(params$path, "missigness_before_filtering.pdf")
-if(params$HEATMAP){
-  pdf(figpath)
-  print(plot_NA_heatmap(params$resDataStart, params$config_resDataStart))
-  dev.off()
-}
-knitr::include_graphics(figpath)
-
+```{r heatmapAllNAs, out.width = "85%",  fig.cap="before NA filtering"}
+print(ph)
 ```
 
 
 
 ```{r}
-knitr::kable(hierarchy_counts(params$resDataStart, params$config_resDataStart),
+sumarStart <- dataStart$get_Summariser()
+sumarStart$hierarchy_counts()
+
+LFQService::table_facade(sumarStart$hierarchy_counts(),
              caption = "Nr Proteins and peptides before missigness filtering.")
 ```
 
 
 
 ```{r}
-knitr::kable(hierarchy_counts_sample(params$resDataStart, params$config_resDataStart)("wide"),
-             catpion = "NR Proteins and peptides by sample.")
+LFQService::table_facade( sumarStart$hierarchy_counts_sample("wide"),
+             caption = "NR Proteins and peptides by sample.")
+
 ```
 
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
-hcs <- hierarchy_counts_sample(params$resDataStart,
-                               params$config_resDataStart)("wide")
-hcs <- hcs %>% tidyr::gather("key",
-                             "nr",
-                             -dplyr::one_of(config$table$isotopeLabel, config$table$sampleName))
-
-ggplot(hcs, aes(x = sampleName, y = nr)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(~ key, scales = "free_y", ncol = 1) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-```
-
-
-```{r proteinSummaries}
-knitr::kable(params$nrPeptidesPerProtein_start, caption = "nr of proteins with more than on peptide.")
-```
-
-
-```{r, fig.height=3, fig.with=4, fig.cap="Number of proteins with one or more peptides."}
-ggplot(results$nrPeptidesPerProtein_start, aes(x = protein_with , y = n)) + geom_bar(stat="identity")
+sumarStart$hierarchy_counts_sample("plot")
 ```
 
 
@@ -89,29 +56,33 @@ ggplot(results$nrPeptidesPerProtein_start, aes(x = protein_with , y = n)) + geom
 # Filtered data
 
 ```{r}
-knitr::kable(hierarchy_counts(params$filteredPep, params$config_filteredPep),
+dataRemoved <- dataStart$difference( dataEnd )
+remSum <- dataRemoved$get_Summariser()
+LFQService::table_facade(remSum$hierarchy_counts(),
              caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
 ```
 
+```{r removedHeatmap}
+p <- dataRemoved$get_Plotter()$NA_heatmap()
+```
 
 ```{r fig.cap="Missigness patterns for peptides of proteins removed from analysis.", fig.with=7, fig.height=8}
-print(plot_NA_heatmap(params$removed_peptides, results$config_resDataStart))
-```
-
-\newpage
-
-```{r}
-
-knitr::kable(params$removed_proteins, caption = "Proteins removed from analysis.")
-
+print(p)
 ```
 
 
 
+# Left Proteins
+
+```{r}
+LFQService::table_facade(dataEnd$get_Summariser()$hierarchy_counts(),
+             caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein")
+
+```
 
 
 ```{r}
-knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredPep)("wide"),
+LFQService::table_facade(dataEnd$get_Summariser()$hierarchy_counts_sample("wide"),
              caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample")
 
 ```
@@ -119,72 +90,14 @@ knitr::kable(hierarchy_counts_sample(params$filteredPep, params$config_filteredP
 
 \newpage
 
-```{r NA_heatmapAfterFiltering,  out.width = "85%", out.height="\\textheight", fig.cap="Missigness heatmap after NA filtering."}
+```{r createHetmap}
+x <-  dataEnd$get_Plotter()$NA_heatmap()
+```
 
-figpath <- file.path(params$path, "missigness_after_filtering.pdf")
-if (params$HEATMAP) {
-  pdf(figpath)
-  x <-
-    plot_NA_heatmap(params$filteredPep,  params$config_filteredPep)
-  print(x)
-  dev.off()
-  knitr::include_graphics(figpath)
-}
 
+```{r NA_heatmapAfterFiltering,  fig.cap="Missigness heatmap after NA filtering."}
+print(x)
 ```
 
 \clearpage
-
-
-
-# Normalized intensities
-
-
-Figure \@ref(fig:normalizeRob) shows the normalized peptide values. Normalization is applied to remove systematic differences in peptide abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed peptides and proteins can be detected. To do this the z-score of the $log_2$ transformed intensities is computed, which is updated by the average of the original standard deviation of the $log_2$ transformed intensities in all samples. After normalization all samples have a similar distribution.
-
-
-
-```{r rawIntensity, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of raw intensities."}
-figpath <- file.path(params$path, "PEPTIDE_DensityDistributionRAW.pdf")
-
-pdf(figpath, width=22, height=10)
-print(plot_intensity_distribution_density(params$filteredPep,  params$config_filteredPep))
-dev.off()
-
-knitr::include_graphics(figpath)
-
-```
-
-
-
-
-```{r normalizeRob, eval=TRUE, out.width = "85%", out.height="85%", fig.cap="Density of transformed and scaled intensities."}
-figpath <- file.path(params$path, "PEPTIDE_DensityDistributionROBSCALE.pdf")
-
-pdf(figpath, width = 22, height=10)
-print(plot_intensity_distribution_density(params$pepIntensityNormalized, params$config_pepIntensityNormalized))
-dev.off()
-
-knitr::include_graphics(figpath)
-
-```
-
-
-\newpage
-
-
-```{r heatmapAfterFiltering_AndNormalization,  out.width = "85%", out.height="\\textheight", fig.cap="Heatmap after NA filtering and normalization."}
-figpath <- file.path(params$path,"heatmap_after_filtering.pdf")
-if(params$HEATMAP){
-  pdf(figpath)
-  x <- plot_heatmap(params$pepIntensityNormalized, params$config_pepIntensityNormalized)
-  print(x)
-  dev.off()
-  knitr::include_graphics(figpath)
-}
-
-```
-
-
-
 

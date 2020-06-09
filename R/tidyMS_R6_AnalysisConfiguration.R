@@ -646,6 +646,8 @@ hierarchy_counts_sample <- function(data,
 #' Summarize peptide Counts
 #' @export
 #' @keywords internal
+#' @param x data.frame
+#' @param
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -676,16 +678,15 @@ hierarchy_counts_sample <- function(data,
 #' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart,
 #'  LFQServiceData::testDataStart2954$config)
 summarize_hierarchy <- function(x,
-                                configuration,
-                                hierarchy = configuration$table$hkeysDepth(),
+                                config,
+                                hierarchy = config$table$hkeysDepth(),
                                 factors = character())
 {
-  all_hierarchy <- c(configuration$table$isotopeLabel, configuration$table$hierarchyKeys() )
-  #factors <- configuration$table$factorKeys()[ifelse(factor_level < 1, 0, 1): factor_level]
+  all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchyKeys() )
 
   precursor <- x %>% dplyr::select(factors, all_hierarchy) %>% dplyr::distinct()
-  x3 <- precursor %>% dplyr::group_by_at(c(factors,hierarchy)) %>%
-    dplyr::summarize_at( setdiff(all_hierarchy,hierarchy),
+  x3 <- precursor %>% dplyr::group_by_at(c(factors, hierarchy)) %>%
+    dplyr::summarize_at( setdiff(all_hierarchy, hierarchy),
                          list( n = dplyr::n_distinct))
   return(x3)
 }
@@ -707,9 +708,9 @@ summarize_hierarchy <- function(x,
 #' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 #' summarize_protein(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 #'
-summarize_protein <- function(x, configuration ){
+summarize_protein <- function(x, config ){
   warning("DEPRECATED use summarize_hierarchy instead")
-  rev_hierarchy <- configuration$table$hierarchyKeys(TRUE)
+  rev_hierarchy <- config$table$hierarchyKeys(TRUE)
 
   precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
     group_by_at(rev_hierarchy[-1]) %>%
@@ -1165,9 +1166,9 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 
 .reestablish_condition <- function(data,
                                    medpolishRes,
-                                   configuration
+                                   config
 ){
-  table <- configuration$table
+  table <- config$table
   xx <- data %>%  dplyr::select(c(table$sampleName,
                                   table$factorKeys(),
                                   table$fileName,

@@ -67,7 +67,6 @@ config$table$factorDepth <- flevel
 resFilt <-
   LFQService::filter_proteins_by_peptide_count(resDataStart, config)
 
-resFilt$data
 
 results <- LFQService::normalize_log2_robscale(resFilt$data, resFilt$config)
 
@@ -76,30 +75,16 @@ protintensity <- LFQService::medpolish_protein_quants(results$data,
 protintensity <- protintensity("unnest")
 LFQService::toWideConfig(protintensity$data, protintensity$config)
 
-#debug(LFQService::summarize_filtering)
-summary <- LFQService::summarize_filtering(list(data = resDataStart, config = config), resFilt , rm_one_hit = FALSE)
-
-#readr::write_csv(protintensity$data,
-#                 path = file.path(path,"transformed_ProteinIntensities.csv"))
 
 results <- list(
-  resDataStart = resDataStart,
-  config_resDataStart = config,
-  filteredPep = resFilt$data,
-  config_filteredPep = resFilt$config,
-  pepIntensityNormalized = results$data,
-  config_pepIntensityNormalized = results$config,
-  config = NULL,
-  nrPeptidesPerProtein_start = summary$nrPeptidesPerProtein_start,
-  nrPeptidesPerProtein_filtered = summary$nrPeptidesPerProtein_filtered,
-  removed_proteins = summary$removed_proteins,
-  removed_peptides = summary$removed_peptides,
-  HEATMAP = TRUE
+  dataStart = LFQData$new(resDataStart, config),
+  dataEnd = LFQData$new(resFilt$data, resFilt$config)
 )
 
-results$path = "."
 
-#render_SummarizeFiltering_rmd(results, workdir = ".")
+render_SummarizeFiltering_rmd(results, workdir = ".")
+#dataStart = LFQData$new(resDataStart, config)
+#dataEnd = LFQData$new(resFilt$data, resFilt$config)
 
 rmarkdown::render("Summarize_Filtering.Rmd",
                   params = results,

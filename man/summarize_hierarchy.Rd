@@ -6,10 +6,13 @@
 \usage{
 summarize_hierarchy(
   x,
-  configuration,
-  hierarchy = configuration$table$hkeysDepth(),
+  config,
+  hierarchy = config$table$hkeysDepth(),
   factors = character()
 )
+}
+\arguments{
+\item{x}{data.frame}
 }
 \description{
 Summarize peptide Counts
