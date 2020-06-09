@@ -25,7 +25,9 @@ LFQData <- R6::R6Class(
       self$is_pep <- is_pep
       self$prefix <- prefix
     },
-
+    #' @description
+    #' Render a QC document
+    #' @keywords todo
     render = function(qc_path) {
       LFQService::render_MQSummary_rmd(
         self$data,
@@ -38,6 +40,9 @@ LFQData <- R6::R6Class(
       )
 
     },
+    #' @description
+    #' converts the data to wide
+    #' @return data and annotation
     to_wide = function(){
       wide <- LFQService::toWideConfig(self$data, self$config)
       wide$config <- self$config
@@ -83,39 +88,41 @@ LFQData <- R6::R6Class(
 #'
 #' # study variance of not normalized data
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' runallfuncs <- function(x){
+#'
+#'   x$cv()
+#'   x$cv_quantiles()
+#'   x$density()
+#'   x$density_median()
+#'   x$density("ecdf")
+#'   x$density_median("ecdf")
+#'   x$violin()
+#'   x$violin_median()
+#'   x$stdv_vs_mean(size = 400)
+#'   x$power_t_test()
+#'   x$power_t_test_quantiles()
+#' }
+#'
 #' istar <- LFQServiceData::dataIonstarFilteredPep
 #' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' sum <- lfqdata$get_Stats()
-#' sum$cv()
-#' sum$cv_quantiles()
-#' sum$density()
-#' sum$density_median()
-#' sum$violin()
-#' sum$violin_median()
-#' sum$stdv_vs_mean(size = 400)
-#' sum$power_t_test()
-#' sum$power_t_test_quantiles()
+#' lfqstats <- lfqdata$get_Stats()
+#' runallfuncs(lfqstats)
 #'
 #' #study variance of normalized data
 #' istar <- LFQServiceData::dataIonstarNormalizedPep
 #' istar$data <- istar$data %>% filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' sum <- lfqdata$get_Stats()
-#' sum$cv()
-#' sum$cv_quantiles()
-#' sum$density()
-#' sum$density_median()
-#' sum$violin()
-#' sum$violin_median()
-#' sum$stdv_vs_mean(size = 400)
-#' sum$power_t_test()
-#' sum$power_t_test_quantiles
+#' lfqstats <- lfqdata$get_Stats()
+#' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqstats <- lfqdata$get_Stats()
+#' runallfuncs(lfqstats)
 #'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
@@ -150,18 +157,42 @@ LFQDataStats <- R6::R6Class(
         stat = self$stat,
         ggstat = ggstat)
     },
+    #' @description
+    #' plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
+    #' @param ggstat either density of ecdf
+    #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")){
       LFQService::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
     },
+    #' @description
+    #' plot violinplot of CV or sd
+    #' @param ggstat either density of ecdf
+    #' @return ggplot
     violin = function(){
       LFQService::plot_stat_violin(self$cv(), self$lfq$config, stat = self$stat)
     },
+    #' @description
+    #' plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
+    #'
+    #' @return ggplot
+    #'
     violin_median = function(){
       LFQService::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
     },
+    #' @description
+    #' plot sd vs mean
+    #'
+    #' @return ggplot
+    #'
     stdv_vs_mean = function(size= 200){
       LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
     },
+    #' @describtion
+    #' compute sample size for entire dataset
+    #' @param probs quantiles of sd for which sample size should be computed
+    #' @param delta effect size
+    #' @param power power of test
+    #' @param sig.level significance level.
     power_t_test_quantiles = function(
       probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
       delta = c(0.59,1,2),
@@ -179,6 +210,11 @@ LFQDataStats <- R6::R6Class(
                                            sig.level = sig.level )
       return(res)
     },
+    #' @describtion
+    #' compute sample for each protein
+    #' @param delta effect size
+    #' @param power power of test
+    #' @param sig.level significance level.
     power_t_test = function(
       delta = c(0.59,1,2),
       power = 0.8,
