@@ -38,6 +38,7 @@ istar <- LFQServiceData::dataIonstarNormalizedPep
 istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqstats <- lfqdata$get_Stats()
+
 runallfuncs(lfqstats)
 
 #Slightly different dataset

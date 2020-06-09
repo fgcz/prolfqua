@@ -18,6 +18,7 @@ lfqdata$factors()
 
 
 }
+\keyword{todo}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -45,6 +46,7 @@ lfqdata$factors()
 \if{html}{\out{<a id="method-render"></a>}}
 \if{latex}{\out{\hypertarget{method-render}{}}}
 \subsection{Method \code{render()}}{
+Render a QC document
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$render(qc_path)}\if{html}{\out{</div>}}
 }
@@ -54,10 +56,14 @@ lfqdata$factors()
 \if{html}{\out{<a id="method-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
+converts the data to wide
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data and annotation
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-factors"></a>}}
