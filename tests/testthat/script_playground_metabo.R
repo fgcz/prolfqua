@@ -1,4 +1,4 @@
-rm(list=ls())
+rm(list = ls())
 library(tidyverse)
 library(LFQService)
 library(conflicted)
@@ -8,7 +8,7 @@ VIS_PROT <- FALSE
 results <- LFQServiceData::results_MetaboData
 results$config_pepIntensityNormalized$table$factorDepth <- 3
 
-pepConfig<- results$config_dataTransformed
+pepConfig <- results$config_dataTransformed
 pepConfig$table$factorDepth <- 3
 pepConfig$table$factorKeys()
 
@@ -52,13 +52,13 @@ head(models_interaction_Averages)
 
 modelProteinF <- modellingResult_A$modelProtein %>%
   dplyr::filter(exists_lmer == TRUE)
-res_contrasts <- workflow_contrasts_linfct(modelProteinF,
+res_contrasts <- LFQService:::workflow_contrasts_linfct(modelProteinF,
                                            linfct_A,
                                            pepConfig,
                                            prefix =  "Contrasts",
-                                           contrastfun = modelFunction$contrast_fun)
-tmp <- res_contrasts()$contrast_result
+                                           contrastfun = modelFunction$contrast_fun )
 
+tmp <- res_contrasts()$contrast_result
 xx <- tmp %>% dplyr::select(pepConfig$table$hierarchyKeys(), "lhs", "estimate")
 xx <- xx %>% pivot_wider(names_from = "lhs", values_from = "estimate")
 

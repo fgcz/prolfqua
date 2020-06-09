@@ -8,25 +8,28 @@ test_that("check config", {
 })
 
 test_that("run script_MetaboExample_create.R",{
-  source("script_MetaboExample_create.R", echo=FALSE)
+  source("script_MetaboExample_create.R", echo = FALSE)
 })
 
 test_that("run script_Metabo_modelling.R",{
-  source("script_Metabo_modelling.R", echo=FALSE)
+  source("script_Metabo_modelling.R", echo = FALSE)
 })
 
 test_that("run test_resultsV1_2954_modelling.R",{
-  source("script_resultsV1_2954_modelling.R", echo=FALSE)
+  source("script_resultsV1_2954_modelling.R", echo = FALSE)
 })
 
 test_that("run script_resultsV1_2954_create.R",{
-  source("script_resultsV1_2954_create.R", echo=FALSE)
+  source("script_resultsV1_2954_create.R", echo = FALSE)
 })
 
 test_that("run test_imputation.R",{
-  source("test_imputation.R", echo=FALSE)
+  source("test_imputation.R", echo = FALSE)
 })
 
+test_that("run script_playground_metabo.R",{
+  source("script_playground_metabo.R", echo = FALSE)
+})
 
 test_that("my_contrast_V2 works",{
   lm_models_to_test <- LFQServiceData::lm_models_to_test
