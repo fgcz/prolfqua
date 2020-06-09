@@ -77,8 +77,8 @@ transform_work_intensity <- function(data,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' config <- skylineconfig$clone(deep=TRUE)
-#' res <- summariseQValues(sample_analysis, config)
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' res <- summariseQValues(LFQServiceData::sample_analysis, config)
 #' stopifnot(c("srm_QValueMin", "srm_QValueNR") %in% colnames(res))
 #' head(res)
 #' hist(unique(res$srm_QValueMin))
@@ -208,11 +208,11 @@ toWide <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- skylineconfig$clone(deep=TRUE)
-#' res <- toWideConfig(sample_analysis, skylineconfig)
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' res <- toWideConfig(LFQServiceData::sample_analysis, config)
 #' res$data
 #' res$annotation
-#' res <- toWideConfig(sample_analysis, config, as.matrix = TRUE)
+#' res <- toWideConfig(LFQServiceData::sample_analysis, config, as.matrix = TRUE)
 #' head(res$data)
 #' res <- scale(res$data)
 #'
@@ -328,8 +328,8 @@ applyToIntensityMatrix <- function(data, config, .func){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' conf <- skylineconfig$clone(deep = TRUE)
-#'
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' sample_analysis <- LFQServiceData::sample_analysis
 #'
 #' res <- scale_with_subset(sample_analysis, sample_analysis, conf)
 #' head(res)

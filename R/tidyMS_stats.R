@@ -329,8 +329,8 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- sample_analysis
-#' config <- skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #'
 #' plot_stdv_vs_mean(res, config)

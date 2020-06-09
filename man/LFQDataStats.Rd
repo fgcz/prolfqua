@@ -12,35 +12,41 @@ compute stdv, mean and CV per peptide or protein and condition.
 
 # study variance of not normalized data
 #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+runallfuncs <- function(x){
+
+  x$cv()
+  x$cv_quantiles()
+  x$density()
+  x$density_median()
+  x$density("ecdf")
+  x$density_median("ecdf")
+  x$violin()
+  x$violin_median()
+  x$stdv_vs_mean(size = 400)
+  x$power_t_test()
+  x$power_t_test_quantiles()
+}
+
 istar <- LFQServiceData::dataIonstarFilteredPep
 istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
-sum <- lfqdata$get_Stats()
-sum$cv()
-sum$cv_quantiles()
-sum$density()
-sum$density_median()
-sum$violin()
-sum$violin_median()
-sum$stdv_vs_mean(size = 400)
-sum$power_t_test()
-sum$power_t_test_quantiles()
+lfqstats <- lfqdata$get_Stats()
+runallfuncs(lfqstats)
 
 #study variance of normalized data
 istar <- LFQServiceData::dataIonstarNormalizedPep
 istar$data <- istar$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
-sum <- lfqdata$get_Stats()
-sum$cv()
-sum$cv_quantiles()
-sum$density()
-sum$density_median()
-sum$violin()
-sum$violin_median()
-sum$stdv_vs_mean(size = 400)
-sum$power_t_test()
-sum$power_t_test_quantiles
+lfqstats <- lfqdata$get_Stats()
+runallfuncs(lfqstats)
 
+#Slightly different dataset
+data <- LFQServiceData::sample_analysis
+config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqstats <- lfqdata$get_Stats()
+runallfuncs(lfqstats)
 
 }
 \section{Methods}{
@@ -103,37 +109,67 @@ ggplot
 \if{html}{\out{<a id="method-density_median"></a>}}
 \if{latex}{\out{\hypertarget{method-density_median}{}}}
 \subsection{Method \code{density_median()}}{
+plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density_median(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ggstat}}{either density of ecdf}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-violin"></a>}}
 \if{latex}{\out{\hypertarget{method-violin}{}}}
 \subsection{Method \code{violin()}}{
+plot violinplot of CV or sd
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$violin()}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ggstat}}{either density of ecdf}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-violin_median"></a>}}
 \if{latex}{\out{\hypertarget{method-violin_median}{}}}
 \subsection{Method \code{violin_median()}}{
+plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$violin_median()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-stdv_vs_mean"></a>}}
 \if{latex}{\out{\hypertarget{method-stdv_vs_mean}{}}}
 \subsection{Method \code{stdv_vs_mean()}}{
+plot sd vs mean
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stdv_vs_mean(size = 200)}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-power_t_test_quantiles"></a>}}
@@ -148,6 +184,19 @@ ggplot
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{probs}}{quantiles of sd for which sample size should be computed}
+
+\item{\code{delta}}{effect size}
+
+\item{\code{power}}{power of test}
+
+\item{\code{sig.level}}{significance level.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-power_t_test"></a>}}
@@ -157,6 +206,17 @@ ggplot
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test(delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{delta}}{effect size}
+
+\item{\code{power}}{power of test}
+
+\item{\code{sig.level}}{significance level.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

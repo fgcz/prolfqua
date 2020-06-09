@@ -11,11 +11,11 @@ transform long to wide
 }
 \examples{
 library(tidyverse)
-config <- skylineconfig$clone(deep=TRUE)
-res <- toWideConfig(sample_analysis, skylineconfig)
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+res <- toWideConfig(LFQServiceData::sample_analysis, config)
 res$data
 res$annotation
-res <- toWideConfig(sample_analysis, config, as.matrix = TRUE)
+res <- toWideConfig(LFQServiceData::sample_analysis, config, as.matrix = TRUE)
 head(res$data)
 res <- scale(res$data)
 

@@ -10,7 +10,7 @@ spreadValueVarsIsotopeLabel(resData, config)
 spreads isotope label heavy light into two columns
 }
 \examples{
-setNa <- function(x){ifelse(x < 100, NA, x)}++
+setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis <- LFQServiceData::sample_analysis
 skylineconfig <- LFQServiceData::skylineconfig
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis

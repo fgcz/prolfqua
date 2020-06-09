@@ -11,8 +11,8 @@ scale_with_subset
 }
 \examples{
 library(tidyverse)
-conf <- skylineconfig$clone(deep = TRUE)
-
+conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+sample_analysis <- LFQServiceData::sample_analysis
 
 res <- scale_with_subset(sample_analysis, sample_analysis, conf)
 head(res)

@@ -19,8 +19,8 @@ adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 srm_QValueNR - nr of precursors passing the threshold
 }
 \examples{
-config <- skylineconfig$clone(deep=TRUE)
-res <- summariseQValues(sample_analysis, config)
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+res <- summariseQValues(LFQServiceData::sample_analysis, config)
 stopifnot(c("srm_QValueMin", "srm_QValueNR") \%in\% colnames(res))
 head(res)
 hist(unique(res$srm_QValueMin))
