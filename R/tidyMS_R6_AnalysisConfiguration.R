@@ -510,7 +510,7 @@ plot_hierarchies_boxplot <- function(ddd,
   p <- p + geom_boxplot()
 
   if ( beeswarm ) {
-    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7, grouponX = FALSE)
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7, groupOnX = FALSE)
   }
   if (!is.null( hierarchy_level ) && hierarchy_level %in% colnames(ddd)) {
     p <- p + facet_grid( formula(paste0("~", hierarchy_level ) ))
@@ -895,6 +895,9 @@ missigness_impute_interactions <- function(mdataTrans,
 #' @export
 #' @keywords internal
 #' @examples
+#'
+#' skylineconfig <- LFQServiceData::skylineconfig
+#' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
