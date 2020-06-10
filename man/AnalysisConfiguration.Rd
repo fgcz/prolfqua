@@ -11,6 +11,16 @@ Hello world
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{project_Id}}{the project Id}
+
+\item{\code{order_Id}}{the project order ID}
+
+\item{\code{workunit_Id}}{parent workunit}
+
+\item{\code{sep}}{separator to use when uniting columns is necessary}
+
+\item{\code{table}}{AnalysisTableAnnotation}
+
+\item{\code{parameter}}{AnalysisParameter}
 }
 \if{html}{\out{</div>}}
 }

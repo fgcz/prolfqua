@@ -10,11 +10,15 @@ scale_with_subset(data, subset, config)
 scale_with_subset
 }
 \examples{
+library(LFQService)
 library(tidyverse)
 conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-sample_analysis <- LFQServiceData::sample_analysis
+conf$table$workIntensity <- "Area"
 
-res <- scale_with_subset(sample_analysis, sample_analysis, conf)
-head(res)
+sample_analysis <- LFQServiceData::sample_analysis
+res <- transform_work_intensity(sample_analysis, conf, log2)
+res <- scale_with_subset(res, res, conf)
+
+
 }
 \keyword{internal}

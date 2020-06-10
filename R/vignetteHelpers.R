@@ -85,8 +85,9 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' render MQ Summary.
 #' @export
 #' @examples
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' render_MQSummary_rmd(LFQServiceData::sample_analysis,
-#'   LFQServiceData::skylineconfig, workdir=tempdir(check = FALSE))
+#'   config , workdir=tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <-
   function(data,

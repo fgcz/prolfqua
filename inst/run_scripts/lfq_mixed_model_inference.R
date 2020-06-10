@@ -49,6 +49,7 @@ mqdata$data <- setup_analysis(annotated_data, mqdata$config )
 
 filteredData <- filter_proteins_by_peptide_count(mqdata$data,
                                                  mqdata$config)
+
 normalizedData <- normalize_log2_robscale(filteredData$data,
                                           filteredData$config)
 

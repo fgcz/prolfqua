@@ -18,7 +18,7 @@ Histogram summarizing missigness
 library(tidyverse)
 library(LFQService)
 sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig <- LFQServiceData::skylineconfig
+skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 
 xx <- complete_cases(sample_analysis, skylineconfig)
 skylineconfig$parameter$qVal_individual_threshold <- 0.01

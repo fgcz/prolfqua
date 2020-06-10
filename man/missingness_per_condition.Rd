@@ -12,7 +12,7 @@ Summarize missing in condtion as barplot
 \examples{
 setNa <- function(x){ifelse(x < 100, NA, x)}
 LFQServiceData::sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig)
+res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig$clone(deep=TRUE))
 names(res)
 res$data
 res$figure

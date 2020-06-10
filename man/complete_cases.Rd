@@ -6,12 +6,17 @@
 \usage{
 complete_cases(data, config)
 }
+\arguments{
+\item{data}{data.frame}
+
+\item{config}{AnlalysisConfiguration}
+}
 \description{
 Complete cases
 }
 \examples{
 
- config <- LFQServiceData::skylineconfig
+ config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
  config$table$isotopeLabel <- "Isotope.Label.Type"
  data <- LFQServiceData::sample_analysis
  xx <- complete_cases(data, config)

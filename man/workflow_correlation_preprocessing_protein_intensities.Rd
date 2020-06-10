@@ -19,7 +19,7 @@ rm(list=ls())
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- LFQServiceData::spectronautDIAData250_analysis
-res <- workflow_correlation_preprocessing(data,config)
+res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 names(res)
 
 }

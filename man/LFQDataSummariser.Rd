@@ -25,6 +25,13 @@ sum$missingness_per_condition()
 sum$missingness_per_condition_cumsum()
 
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{lfq}}{LFQData}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -43,15 +50,24 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$new(lfqdata, prefix = "ms_")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$new(lfqdata)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-hierarchy_counts"></a>}}
 \if{latex}{\out{\hypertarget{method-hierarchy_counts}{}}}
 \subsection{Method \code{hierarchy_counts()}}{
+number of elements at each level
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts()}\if{html}{\out{</div>}}
 }
@@ -61,15 +77,24 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-hierarchy_counts_sample"></a>}}
 \if{latex}{\out{\hypertarget{method-hierarchy_counts_sample}{}}}
 \subsection{Method \code{hierarchy_counts_sample()}}{
+number of elements at each level in every sample
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(value = c("wide", "long", "plot"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-summarize_hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-summarize_hierarchy}{}}}
 \subsection{Method \code{summarize_hierarchy()}}{
+e.g. number of peptides per protein etc
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$summarize_hierarchy()}\if{html}{\out{</div>}}
 }
@@ -79,6 +104,7 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-summarize_protein"></a>}}
 \if{latex}{\out{\hypertarget{method-summarize_protein}{}}}
 \subsection{Method \code{summarize_protein()}}{
+e.g. number of peptides per protein overall
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$summarize_protein()}\if{html}{\out{</div>}}
 }
@@ -88,6 +114,7 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-interaction_missing_stats"></a>}}
 \if{latex}{\out{\hypertarget{method-interaction_missing_stats}{}}}
 \subsection{Method \code{interaction_missing_stats()}}{
+missing per condition and protein
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$interaction_missing_stats()}\if{html}{\out{</div>}}
 }
@@ -97,6 +124,7 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-missingness_per_condition"></a>}}
 \if{latex}{\out{\hypertarget{method-missingness_per_condition}{}}}
 \subsection{Method \code{missingness_per_condition()}}{
+missing stats per condition
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$missingness_per_condition()}\if{html}{\out{</div>}}
 }
@@ -106,6 +134,7 @@ sum$missingness_per_condition_cumsum()
 \if{html}{\out{<a id="method-missingness_per_condition_cumsum"></a>}}
 \if{latex}{\out{\hypertarget{method-missingness_per_condition_cumsum}{}}}
 \subsection{Method \code{missingness_per_condition_cumsum()}}{
+missing stats per condition as cumulative sum
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
 }

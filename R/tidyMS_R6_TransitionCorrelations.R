@@ -150,12 +150,13 @@ filter_byQValue <- function(data, config){
 #' @keywords internal
 #' @examples
 #' library(dplyr)
-#' skylineconfig <-  LFQServiceData::skylineconfig
+#'
+#' skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' skylineconfig$table$workIntensity <- "Area"
 #' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
-#' x
 #' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) %>%
 #'  distinct() %>% nrow()
 #'
@@ -305,13 +306,13 @@ robust_scale <- function(data){
 #'
 #' library(tidyverse)
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' #conf$table$popWorkIntensity()
+#' conf$table$workIntensity <- "Area"
 #' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf, .func = base::scale)
 #'
 #' stopifnot("Area_base..scale" %in% colnames(res))
 #' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' #conf$table$popWorkIntensity()
+#' conf$table$workIntensity <- "Area"
 #' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 applyToIntensityMatrix <- function(data, config, .func){
@@ -327,12 +328,16 @@ applyToIntensityMatrix <- function(data, config, .func){
 #' @export
 #' @keywords internal
 #' @examples
+#' library(LFQService)
 #' library(tidyverse)
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' sample_analysis <- LFQServiceData::sample_analysis
+#' conf$table$workIntensity <- "Area"
 #'
-#' res <- scale_with_subset(sample_analysis, sample_analysis, conf)
-#' head(res)
+#' sample_analysis <- LFQServiceData::sample_analysis
+#' res <- transform_work_intensity(sample_analysis, conf, log2)
+#' res <- scale_with_subset(res, res, conf)
+#'
+#'
 scale_with_subset <- function(data, subset, config){
   colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
   subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
@@ -495,7 +500,7 @@ impute_correlationBased <- function(x , config){
 #'
 #'
 #' resDataStart <- LFQServiceData::skylineSRM_HL_data
-#' config <-  LFQServiceData::skylineconfig_HL
+#' config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 #' resDataStart <- setup_analysis(resDataStart , config)
 #' nr_B_in_A(resDataStart, config)
 #' nr_B_in_A(resDataStart, config, merge=FALSE)

@@ -8,7 +8,7 @@
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- LFQServiceData::spectronautDIAData250_analysis
-#' res <- workflow_correlation_preprocessing(data,config)
+#' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 #' names(res)
 #'
 workflow_correlation_preprocessing_protein_intensities <- function(data, config, minCorrelation = 0.7){
@@ -41,7 +41,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(data, config,
   keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
   mean_na <- function(x){mean(x, na.rm = TRUE)}
-  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, func = mean_na,N=3)
+  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, func = mean_na, N = 3)
 
   # collect stats
   stats <- list(stat_input = stat_input,
@@ -56,12 +56,6 @@ workflow_correlation_preprocessing_protein_intensities <- function(data, config,
 
   return(list(data = proteinIntensities$data, stats = stats, newconfig = proteinIntensities$newconfig))
 }
-#' Deprectated
-#' @export
-workflow_correlation_preprocessing <-function(data, config, minCorrelation = 0.7){
-  warning("this function name is deprecated, use workflow_correlation_preprocessing_protein_intensities instead.")
-  workflow_correlation_preprocessing_protein_intensities(data, config, minCorrelation)
-}
 
 #' apply correlation filtering and impute missing values
 #' @export
@@ -73,6 +67,7 @@ workflow_correlation_preprocessing <-function(data, config, minCorrelation = 0.7
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- LFQServiceData::spectronautDIAData250_analysis
 #' res <- workflow_corr_filter_impute(data,config)
+#'
 workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
   stat_input <- hierarchy_counts(data, config)
 
@@ -85,9 +80,7 @@ workflow_corr_filter_impute <- function(data,config, minCorrelation =0.6){
   stat_min_nr_of_notNA <- hierarchy_counts(data_NA_QVal, config)
 
   # remove single hit wonders
-  data_NA_QVal <- nr_B_in_A(data_NA_QVal,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
-  c_name <- make_name(config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
-  data_NA_QVal <- dplyr::filter(data_NA_QVal, !!sym(c_name) >= config$parameter$min_peptides_protein )
+  data_NA_QVal <- filter_proteins_by_peptide_count(data_NA_QVal, config)$data
 
   stat_min_peptides_protein  <- hierarchy_counts(data_NA_QVal, config)
 

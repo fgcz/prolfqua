@@ -11,12 +11,13 @@ Extract intensity column in wide format using lowest hierarchy as key.
 }
 \examples{
 library(dplyr)
-skylineconfig <-  LFQServiceData::skylineconfig
+
+skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
+skylineconfig$table$workIntensity <- "Area"
 xnested <- LFQServiceData::sample_analysis \%>\%
  group_by_at(skylineconfig$table$hkeysDepth()) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
-x
 nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 

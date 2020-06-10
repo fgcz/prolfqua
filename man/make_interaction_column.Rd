@@ -13,5 +13,12 @@ create interaction column from factors
 xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
+
+config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+config$table$factorKeys()
+config$table$factorDepth <- 1
+make_interaction_column(LFQServiceData::sample_analysis,
+   config$table$fkeysDepth())
+
 }
 \keyword{internal}

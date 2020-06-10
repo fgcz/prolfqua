@@ -2,21 +2,29 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{setup_analysis}
 \alias{setup_analysis}
-\title{Extracts columns relevant for a configuration from a data frame}
+\title{Extracts columns relevant for a configuration from a data frame
+and create new columns i sampleName column etc.}
 \usage{
 setup_analysis(data, configuration, cc = TRUE)
 }
+\arguments{
+\item{data}{data.frame}
+
+\item{cc}{complete cases default TRUE}
+
+\item{config}{AnlalysisConfiguration}
+}
 \description{
 Extracts columns relevant for a configuration from a data frame
+and create new columns i sampleName column etc.
 }
 \examples{
 
 skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 
-sample_analysis <- setup_analysis(skylinePRMSampleData, LFQServiceData::skylineconfig)
+sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
 
 }
 \keyword{internal}

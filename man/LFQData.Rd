@@ -19,6 +19,17 @@ lfqdata$factors()
 
 }
 \keyword{todo}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{config}}{AnalysisConfiguration}
+
+\item{\code{data}}{data.frame or tibble matching AnalysisConfiguration.}
+
+\item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -38,10 +49,22 @@ lfqdata$factors()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE, prefix = "ms_")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{data.frame}
+
+\item{\code{config}}{configuration}
+
+\item{\code{prefix}}{will be use as output prefix}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-render"></a>}}
@@ -83,7 +106,7 @@ data.frame
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-getter
+get Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Plotter()}\if{html}{\out{</div>}}
 }
@@ -96,11 +119,18 @@ LFQDataPlotter
 \if{html}{\out{<a id="method-get_Writer"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Writer}{}}}
 \subsection{Method \code{get_Writer()}}{
-getter
+get Writer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Writer(format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{format}}{array of formats to write to supported are xlsx, csv and html}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 LFQDataPlotter
 }
@@ -109,7 +139,7 @@ LFQDataPlotter
 \if{html}{\out{<a id="method-get_Summariser"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Summariser}{}}}
 \subsection{Method \code{get_Summariser()}}{
-getter
+get Summariser
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Summariser()}\if{html}{\out{</div>}}
 }
@@ -122,7 +152,7 @@ LFQDataSummarizer
 \if{html}{\out{<a id="method-get_Stats"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Stats}{}}}
 \subsection{Method \code{get_Stats()}}{
-getter
+get Stats
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats()}\if{html}{\out{</div>}}
 }

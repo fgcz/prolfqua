@@ -2,11 +2,16 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{separate_hierarchy}
 \alias{separate_hierarchy}
-\title{separates hierarchies into starting columns}
+\title{separates hierarchy columns into starting columns}
 \usage{
 separate_hierarchy(data, config)
 }
+\arguments{
+\item{data}{data.frame}
+
+\item{config}{AnlalysisConfiguration}
+}
 \description{
-separates hierarchies into starting columns
+separates hierarchy columns into starting columns
 }
 \keyword{internal}

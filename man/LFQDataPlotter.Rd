@@ -43,21 +43,15 @@ lfqplotter$sample_correlation()
 LFQService::plot_sample_correlation(istar$data, istar$config)
 
 }
+\keyword{static}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{lfq}}{LFQData object}
 
-\item{\code{prefix}}{Prepend prefix when writing figures e.g. protein_}
+\item{\code{prefix}}{prefix to figure names when writing, e.g. protein_}
 
-\item{\code{list}}{with paths to figures}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{list}}{with paths to figures}
+\item{\code{file_paths}}{with paths to figures}
 }
 \if{html}{\out{</div>}}
 }
@@ -89,82 +83,124 @@ LFQService::plot_sample_correlation(istar$data, istar$config)
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create LFQDataPlotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$new(lfqdata, prefix = "ms_")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData}
+
+\item{\code{prefix}}{will be prepended to outputs written}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-heatmap"></a>}}
 \if{latex}{\out{\hypertarget{method-heatmap}{}}}
 \subsection{Method \code{heatmap()}}{
+heatmap of intensities
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3)}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+pheatmap
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-heatmap_cor"></a>}}
 \if{latex}{\out{\hypertarget{method-heatmap_cor}{}}}
 \subsection{Method \code{heatmap_cor()}}{
+heatmap of sample correlations
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+pheatmap
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pca"></a>}}
 \if{latex}{\out{\hypertarget{method-pca}{}}}
 \subsection{Method \code{pca()}}{
+pca plot
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pca_plotly"></a>}}
 \if{latex}{\out{\hypertarget{method-pca_plotly}{}}}
 \subsection{Method \code{pca_plotly()}}{
+pca plot
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+plotly
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-boxplots"></a>}}
 \if{latex}{\out{\hypertarget{method-boxplots}{}}}
 \subsection{Method \code{boxplots()}}{
+boxplots for all proteins
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$boxplots()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+tibble with column boxplots containing ggplot objects
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-missigness_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-missigness_histogram}{}}}
 \subsection{Method \code{missigness_histogram()}}{
+histogram of intensities given number of missing in conditions
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missigness_histogram()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-missingness_per_condition"></a>}}
 \if{latex}{\out{\hypertarget{method-missingness_per_condition}{}}}
 \subsection{Method \code{missingness_per_condition()}}{
+barplot with number of features with 1,2, etc missing in condition
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-missingness_per_condition_cumsum"></a>}}
 \if{latex}{\out{\hypertarget{method-missingness_per_condition_cumsum}{}}}
 \subsection{Method \code{missingness_per_condition_cumsum()}}{
+barplot with cumulative sum of features with 1,2, etc missing in condition
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA_heatmap"></a>}}
@@ -174,6 +210,9 @@ LFQService::plot_sample_correlation(istar$data, istar$config)
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$NA_heatmap()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-intensity_distribution_density"></a>}}
@@ -183,6 +222,9 @@ LFQService::plot_sample_correlation(istar$data, istar$config)
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-intensity_distribution_violin"></a>}}
@@ -192,60 +234,128 @@ LFQService::plot_sample_correlation(istar$data, istar$config)
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_violin()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pairs_smooth"></a>}}
 \if{latex}{\out{\hypertarget{method-pairs_smooth}{}}}
 \subsection{Method \code{pairs_smooth()}}{
+pairsplot of intensities
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pairs_smooth(max = 10)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{max}}{maximal number of samples to show}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+NULL
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sample_correlation"></a>}}
 \if{latex}{\out{\hypertarget{method-sample_correlation}{}}}
 \subsection{Method \code{sample_correlation()}}{
+plot of sample correlations
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$sample_correlation()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+NULL
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_boxplots"></a>}}
 \if{latex}{\out{\hypertarget{method-write_boxplots}{}}}
 \subsection{Method \code{write_boxplots()}}{
+write boxplots to file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_boxplots(path_qc, width = 6, height = 6)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path_qc}}{path to write to}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_pltly"></a>}}
 \if{latex}{\out{\hypertarget{method-write_pltly}{}}}
 \subsection{Method \code{write_pltly()}}{
+write pltly figures to path_qc
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, path_qc, fig_name)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fig}}{pltly figure}
+
+\item{\code{path_qc}}{path to write to}
+
+\item{\code{fig_name}}{file name (without extension)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+path the file was written to.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_pdf"></a>}}
 \if{latex}{\out{\hypertarget{method-write_pdf}{}}}
 \subsection{Method \code{write_pdf()}}{
+write figure to pdf
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pdf(fig, path_qc, fig_name, width = 7, height = 7)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fig}}{ggplot or pheatmap}
+
+\item{\code{path_qc}}{path to write to}
+
+\item{\code{fig_name}}{name of figure (no extension)}
+
+\item{\code{width}}{figure width}
+
+\item{\code{height}}{figure height}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+path the file was written to
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write"></a>}}
 \if{latex}{\out{\hypertarget{method-write}{}}}
 \subsection{Method \code{write()}}{
+write heatmaps and pca plots to files
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write(path_qc, prefix = "ms")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write(path_qc)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path_qc}}{path to write to}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

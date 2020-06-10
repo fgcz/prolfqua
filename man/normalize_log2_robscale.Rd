@@ -13,7 +13,7 @@ normalize data by log2 and robust scaling
 resDataStart <- LFQServiceData::testDataStart2954$resDataStart
 config <-  LFQServiceData::testDataStart2954$config
 filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
-normalize_log2_robscale(filterPep$data, filterPep$config)
+normalize_log2_robscale(filterPep$data, config)
 
 }
 \keyword{internal}

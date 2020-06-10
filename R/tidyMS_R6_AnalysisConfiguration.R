@@ -5,23 +5,24 @@ library(R6)
 #' @description Analysis parameters
 #' @keywords internal
 #' @export
-AnalysisParameters <- R6::R6Class("AnalysisParameters",
-                                  public = list(
-                                    #' @field qVal_individual_threshold qValue threshold for sample
-                                    qVal_individual_threshold  = 0.05,
-                                    #' @field qVal_experiment_threshold qValue threshold for dataset
-                                    qVal_experiment_threshold = 0.01,
-                                    #' @field qVal_minNumber_below_experiment_threshold how many samples need to meet qVal_experiment_threshold
-                                    qVal_minNumber_below_experiment_threshold = 3,
-                                    #' @field is_intensity_transformed is the intensity transformed (typically log2)
-                                    is_intensity_transformed = FALSE, # important for some plotting functions
-                                    #' @field min_nr_of_notNA minimum number of not NA's in all samples default 1
-                                    min_nr_of_notNA = 1, # how many values per transition total
-                                    #' @field min_nr_of_notNA_condition minimum number of not NA's in interaction
-                                    min_nr_of_notNA_condition = 0, # how many not missing in condition
-                                    #' @field min_peptides_protein minimum number of peptides per protein
-                                    min_peptides_protein = 2
-                                  )
+AnalysisParameters <- R6::R6Class(
+  "AnalysisParameters",
+  public = list(
+    #' @field qVal_individual_threshold qValue threshold for sample
+    qVal_individual_threshold  = 0.05,
+    #' @field qVal_experiment_threshold qValue threshold for dataset
+    qVal_experiment_threshold = 0.01,
+    #' @field qVal_minNumber_below_experiment_threshold how many samples need to meet qVal_experiment_threshold
+    qVal_minNumber_below_experiment_threshold = 3,
+    #' @field is_intensity_transformed is the intensity transformed (typically log2)
+    is_intensity_transformed = FALSE, # important for some plotting functions
+    #' @field min_nr_of_notNA minimum number of not NA's in all samples default 1
+    min_nr_of_notNA = 1, # how many values per transition total
+    #' @field min_nr_of_notNA_condition minimum number of not NA's in interaction
+    min_nr_of_notNA_condition = 0, # how many not missing in condition
+    #' @field min_peptides_protein minimum number of peptides per protein
+    min_peptides_protein = 2
+  )
 )
 
 # AnalysisTableAnnotation ----
@@ -32,106 +33,143 @@ AnalysisParameters <- R6::R6Class("AnalysisParameters",
 #' @description Annotates Data Table
 #' @keywords internal
 #' @export
-AnalysisTableAnnotation <- R6::R6Class("AnalysisTableAnnotation",
-                                       public = list(
-                                         #' @field fileName some funny name
-                                         fileName = NULL,
-                                         factors = list(), # ordering is important - first is considered the main
-                                         factorDepth = 1,
+AnalysisTableAnnotation <- R6::R6Class(
+  "AnalysisTableAnnotation",
+  public = list(
+    #'  @description
+    #'  create a new  AnalysisTableAnnotation
+    initialize = function(){
+    },
 
-                                         sampleName = "sampleName",
-                                         # measurement levels
-                                         hierarchy = list(),
-                                         hierarchyDepth = 1,
-                                         isotopeLabel = character(),
-                                         # do you want to model charge sequence etc?
+    #' @field column name of column containing raw file names
+    fileName = NULL,
+    #' @field sampleName (will be generated from factors)
+    sampleName = "sampleName",
 
-                                         ident_qValue = character(), # smaller better
-                                         ident_Score = character(), # larger better
-                                         workIntensity = NULL, # could be list with names and functions
+    #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), or light only if LFQ.
+    isotopeLabel = character(),
+    # do you want to model charge sequence etc?
+    #' @field ident_qValue column name with identification QValues (smaller better)
+    ident_qValue = character(),
+    #' @field ident_Score column with identification score (lager better)
+    ident_Score = character(),
 
-                                         opt_rt  = character(),
-                                         opt_mz = character(),
-                                         is_intensity_transformed = FALSE,
+    #' @field opt_rt optional column with rt information
+    opt_rt  = character(),
+    #' @field opt_mz optional column with mz information
+    opt_mz = character(),
 
-                                         #' create a new  AnalysisTableAnnotation
-                                         initialize = function(){
-                                         },
-                                         #' get number of factor Levels
-                                         getfactorDepth = function(){
-                                           if (length(self$factorDepth) == 0) {
-                                             return(length(self$factors))
-                                           }else{
-                                             return(self$factorDepth)
-                                           }
-                                         },
-                                         #' set name of working intensity
-                                         setWorkIntensity = function(colName){
-                                           self$workIntensity <- c(self$workIntensity, colName)
-                                         },
-                                         #' get name of working intensity column
-                                         getWorkIntensity = function(){
-                                           return(tail(self$workIntensity, n = 1))
-                                         },
-                                         #' remove working intensity column
-                                         popWorkIntensity = function(){
-                                           res <- self$workIntensity[length(self$workIntensity)]
-                                           self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
-                                           return(res)
-                                         },
-                                         #' Id Columns which must be in the input data frame
-                                         idRequired = function(){
-                                           idVars <- c(
-                                             self$fileName,
-                                             purrr::map_chr(self$factors,"colnames"),
-                                             unlist(self$hierarchy),
-                                             self$isotopeLabel
-                                           )
-                                           return(idVars)
-                                         },
-                                         hierarchyKeys = function(rev = FALSE){
-                                           if (rev) {
-                                             return(rev(names(self$hierarchy)))
-                                           }else{
-                                             return(names(self$hierarchy))
-                                           }
-                                         },
-                                         hkeysDepth = function(names = TRUE){
-                                           res <- head( self$hierarchy,n = self$hierarchyDepth)
-                                           res <- if (names) {
-                                             names(res)
-                                           }else{
-                                             res
-                                           }
-                                           return(res)
-                                         },
-                                         factorKeys = function(){
-                                           return(names(self$factors))
-                                         },
-                                         fkeysDepth = function(){
-                                           res <- head(self$factors, n = self$factorDepth)
-                                           return(names(res))
-                                         },
-                                         idVars = function(){
-                                           "Id Columns which must be in the output data frame"
-                                           idVars <- c(
-                                             self$fileName,
-                                             names(self$factors),
-                                             names(self$hierarchy),
-                                             self$isotopeLabel,
-                                             self$sampleName)
-                                           return(idVars)
-                                         },
-                                         valueVars = function(){
-                                           "Columns containing values"
-                                           valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
-                                           return(valueVars)
-                                         },
-                                         annotationVars = function(){
-                                           annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
-                                           return(annotationVars)
-                                         }
-                                       )
+
+    #' @field workIntensity column which contains the intensities
+    workIntensity = NULL, # could be list with names and functions
+    #' @is_intensity_transformed are the intensities transformed for constant variance
+    is_intensity_transformed = FALSE,
+    #' @description
+    #' add name of intensity column
+    #' @param colName name of intensity column
+    setWorkIntensity = function(colName){
+      self$workIntensity <- c(self$workIntensity, colName)
+    },
+    #' @description
+    #' get name of working intensity column
+    getWorkIntensity = function(){
+      return(tail(self$workIntensity, n = 1))
+    },
+    #' @description
+    #' remove last name in array of working intensity column names
+    popWorkIntensity = function(){
+      res <- self$workIntensity[length(self$workIntensity)]
+      self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
+      return(res)
+    },
+
+
+    #' @field factors names of columns containing factors (annotions)
+    factors = list(), # ordering is important - first is considered the main
+    #' @field facet plot according to the first or the first two factors (factorDepth can be 1 or 2)
+    factorDepth = 1,
+    #' @description
+    #' get factor keys
+    #' @return array with keys
+    factorKeys = function(){
+      return(names(self$factors))
+    },
+    #' @description
+    #' get factor keys till factorDepth
+    fkeysDepth = function(){
+      res <- head(self$factors, n = self$factorDepth)
+      return(names(res))
+    },
+
+
+    #' @field hierarchy list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)
+    hierarchy = list(),
+    #' @field hierarchyDepth At which depth do you want to model i.e. i.e. protein than 1
+    hierarchyDepth = 1,
+    #' @description
+    #' get hierarchy keys
+    #' @param rev return in reverse order
+    #' @return array of column names
+    hierarchyKeys = function(rev = FALSE){
+      if (rev) {
+        return(rev(names(self$hierarchy)))
+      }else{
+        return(names(self$hierarchy))
+      }
+    },
+    #' @description
+    #' get hierarchy keys up to depth
+    #' @param names if TRUE names only if FALSE key value pairs
+    #' @return array of column names
+    hkeysDepth = function(names = TRUE){
+      res <- head( self$hierarchy,n = self$hierarchyDepth)
+      res <- if (names) {
+        names(res)
+      }else{
+        res
+      }
+      return(res)
+    },
+
+
+    #' Id Columns which must be in the input data frame
+    idRequired = function(){
+      idVars <- c(
+        self$fileName,
+        purrr::map_chr(self$factors,"colnames"),
+        unlist(self$hierarchy),
+        self$isotopeLabel
+      )
+      return(idVars)
+    },
+    #' @description
+    #' get names of columns annotating values (e.g. intensities)
+    #' @return character array
+    idVars = function(){
+      "Id Columns which must be in the output data frame"
+      idVars <- c(
+        self$fileName,
+        names(self$factors),
+        names(self$hierarchy),
+        self$isotopeLabel,
+        self$sampleName)
+      return(idVars)
+    },
+    #' @description
+    #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
+    valueVars = function(){
+      "Columns containing values"
+      valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+      return(valueVars)
+    },
+    #' @description
+    #' get names of columns with sample annotations
+    #'
+    annotationVars = function(){
+      annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
+      return(annotationVars)
+    }
+  )
 )
 
 # AnalysisConfiguration ----
@@ -144,11 +182,19 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                      public = list(
                                        #' @field project_Id the project Id
                                        project_Id = "",
+                                       #' @field order_Id the project order ID
                                        order_Id = "",
+                                       #' @field workunit_Id parent workunit
                                        workunit_Id = "",
+                                       #' @field sep separator to use when uniting columns is necessary
                                        sep = "~",
+                                       #' @field table AnalysisTableAnnotation
                                        table = NULL,
+                                       #' @field parameter AnalysisParameter
                                        parameter = NULL,
+                                       #' @description
+                                       #' @param analysisTableAnnotation
+                                       #' @param analysisParameter
                                        initialize = function(analysisTableAnnotation, analysisParameter){
                                          self$table <- analysisTableAnnotation
                                          self$parameter <- analysisParameter
@@ -159,8 +205,16 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' Make reduced hierarchy configuration
 #' @export
 #' @keywords internal
+#' @param config
+#' @param workIntensity work intensity column
+#' @param hierarchy new reduced hierarchy
+#'
+#' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
-#' make_reduced_hierarchy_config(LFQServiceData::skylineconfig, "testintensity", LFQServiceData::skylineconfig$table$hierarchy[1:2])
+#' conf <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' make_reduced_hierarchy_config(conf,
+#'  "testintensity",
+#'  conf$table$hierarchy[1:2])
 #'
 make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
   newConfig <- config$clone(deep = TRUE)
@@ -176,6 +230,13 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
+#'
+#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' config$table$factorKeys()
+#' config$table$factorDepth <- 1
+#' make_interaction_column(LFQServiceData::sample_analysis,
+#'    config$table$fkeysDepth())
+#'
 make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
   intr <- purrr::map_dfc(intr, factor)
@@ -191,25 +252,11 @@ make_interaction_column <- function(data, columns, sep="."){
 }
 
 
-#' create interaction column from factors
-#' @export
-#' @keywords internal
-#' @examples
-#' skylineconfig <- LFQServiceData::skylineconfig
-#' skylineconfig$table$factorKeys()
-#' skylineconfig$table$factorDepth <- 1
-#' make_interaction_column_config(LFQServiceData::sample_analysis,
-#'    skylineconfig)
-make_interaction_column_config <- function(data, config, sep="."){
-  columns <- config$table$fkeysDepth()
-  data <- make_interaction_column(data, columns, sep = sep)
-  return(data)
-}
-
 # Functions - Configuration ----
-#' Helper function to extract all value slots in an R6 object
+#' Extract all value slots in an R6 object
 #' @param r6class r6 class
 #' @keywords internal
+#' @param r6class
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)
@@ -228,6 +275,10 @@ R6extractValues <- function(r6class){
 
 
 #' Extracts columns relevant for a configuration from a data frame
+#' and create new columns i sampleName column etc.
+#' @param data data.frame
+#' @param config AnlalysisConfiguration
+#' @param cc complete cases default TRUE
 #' @export
 #' @keywords internal
 #' @examples
@@ -235,9 +286,8 @@ R6extractValues <- function(r6class){
 #' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #'
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, LFQServiceData::skylineconfig)
+#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
@@ -281,8 +331,10 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   return( data )
 }
 
-#' separates hierarchies into starting columns
+#' separates hierarchy columns into starting columns
 #' @export
+#' @param data data.frame
+#' @param config AnlalysisConfiguration
 #' @keywords internal
 separate_hierarchy <- function(data, config){
   for (hkey in config$table$hkeysDepth()) {
@@ -291,7 +343,9 @@ separate_hierarchy <- function(data, config){
   return(data)
 }
 
-#' separates hierarchies into starting columns
+#' separates factor columns into starting columns
+#' @param data data.frame
+#' @param config AnlalysisConfiguration
 #' @export
 #' @keywords internal
 separate_factors <- function(data, config) {
@@ -305,10 +359,12 @@ separate_factors <- function(data, config) {
 
 #' Complete cases
 #' @export
+#' @param data data.frame
+#' @param config AnlalysisConfiguration
 #' @keywords internal
 #' @examples
 #'
-#'  config <- LFQServiceData::skylineconfig
+#'  config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #'  config$table$isotopeLabel <- "Isotope.Label.Type"
 #'  data <- LFQServiceData::sample_analysis
 #'  xx <- complete_cases(data, config)
@@ -460,64 +516,6 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
                aes_string(x = table$sampleName , y = aes_y, group = 1), color = "black", shape = 10)
 }
 
-#' plot peptides by factors and its levels.
-#'
-#' @export
-#' @keywords internal
-#' @examples
-#' library(LFQService)
-#' library(tidyverse)
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' xnested <- LFQServiceData::sample_analysis %>%
-#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
-#'
-#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf ,
-#'    hierarchy_level = NULL)
-#' p
-#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf )
-#' p
-#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf,
-#'   hierarchy_level =  conf$table$hierarchyKeys()[3])
-#' p
-#' #ddd <- xnested$data[[3]]
-#' #proteinName <- xnested$protein_Id[[3]]
-#' #config <- conf
-#' #boxplot = TRUE
-#' #factor_level = 1
-#' plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]],conf, beeswarm = FALSE )
-plot_hierarchies_boxplot <- function(ddd,
-                                     proteinName,
-                                     config,
-                                     hierarchy_level = tail(config$table$hierarchyKeys(),1),
-                                     beeswarm = TRUE){
-
-  isotopeLabel <- config$table$isotopeLabel
-  ddd <- LFQService::make_interaction_column( ddd , config$table$fkeysDepth())
-  p <- ggplot(ddd, aes_string(x = "interaction",
-                              y = config$table$getWorkIntensity()
-  )) + theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-    ggtitle(proteinName)
-
-  if (!config$parameter$is_intensity_transformed) {
-    p <- p + scale_y_continuous(trans = "log10")
-  }
-  p <- p + geom_boxplot()
-
-  if ( beeswarm ) {
-    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7, groupOnX = FALSE)
-  }
-  if (!is.null( hierarchy_level ) && hierarchy_level %in% colnames(ddd)) {
-    p <- p + facet_grid( formula(paste0("~", hierarchy_level ) ))
-  }
-  return(p)
-}
 
 
 #' generates peptide level plots for all Proteins
@@ -782,7 +780,7 @@ interaction_missing_stats <- function(x,
 #' @keywords internal
 #' @return function
 #' @examples
-#' skylineconfig <- LFQServiceData::skylineconfig
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
@@ -899,7 +897,7 @@ missigness_impute_interactions <- function(mdataTrans,
 #' @keywords internal
 #' @examples
 #'
-#' skylineconfig <- LFQServiceData::skylineconfig
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
@@ -1019,7 +1017,7 @@ workflow_missigness_impute_contrasts <- function(data,
 #' library(tidyverse)
 #' library(LFQService)
 #' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #'
 #' xx <- complete_cases(sample_analysis, skylineconfig)
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
@@ -1069,7 +1067,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
 #' names(res)
@@ -1107,7 +1105,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' LFQServiceData::sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig)
+#' res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig$clone(deep=TRUE))
 #' names(res)
 #' res$data
 #' res$figure
@@ -1144,12 +1142,12 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig
+#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 #' x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
 #' head(x)
-#'
-#' x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL,LFQServiceData::skylineconfig_HL)
+#' conf <- LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
+#' x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL, conf)
 #' head(x[,5:ncol(x)])
 #'
 spreadValueVarsIsotopeLabel <- function(resData, config){
@@ -1312,7 +1310,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' library(LFQService)
 #' data <- LFQServiceData::dataIonstarNormalizedPep
 #'
-#' data$data <- data$data %>% filter(protein_Id %in% sample(protein_Id, 100))
+#' data$data <- data$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' res <- medpolish_protein_quants(data$data,
 #' data$config )
 #'
@@ -1357,7 +1355,7 @@ medpolish_protein_quants <- function(data, config){
 #' @examples
 #' library(tidyverse)
 #' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone( deep = TRUE )
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE )
 #' LFQService::plot_heatmap_cor( data, config )
 #' plot_heatmap_cor( data, config, R2 = TRUE )
 #'

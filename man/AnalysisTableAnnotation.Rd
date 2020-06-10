@@ -10,13 +10,38 @@ Annotates Data Table
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{fileName}}{some funny name
-create a new  AnalysisTableAnnotation
-get number of factor Levels
-set name of working intensity
-get name of working intensity column
-remove working intensity column
-Id Columns which must be in the input data frame}
+\item{\code{column}}{name of column containing raw file names}
+
+\item{\code{sampleName}}{(will be generated from factors)}
+
+\item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
+
+\item{\code{ident_qValue}}{column name with identification QValues (smaller better)}
+
+\item{\code{ident_Score}}{column with identification score (lager better)}
+
+\item{\code{opt_rt}}{optional column with rt information}
+
+\item{\code{opt_mz}}{optional column with mz information}
+
+\item{\code{workIntensity}}{column which contains the intensities}
+
+\item{\code{factors}}{names of columns containing factors (annotions)}
+
+\item{\code{facet}}{plot according to the first or the first two factors (factorDepth can be 1 or 2)}
+
+\item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
+
+\item{\code{hierarchyDepth}}{At which depth do you want to model i.e. i.e. protein than 1}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{column}}{name of column containing raw file names}
+
+\item{\code{facet}}{plot according to the first or the first two factors (factorDepth can be 1 or 2)}
 }
 \if{html}{\out{</div>}}
 }
@@ -24,15 +49,14 @@ Id Columns which must be in the input data frame}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AnalysisTableAnnotation$new()}}
-\item \href{#method-getfactorDepth}{\code{AnalysisTableAnnotation$getfactorDepth()}}
 \item \href{#method-setWorkIntensity}{\code{AnalysisTableAnnotation$setWorkIntensity()}}
 \item \href{#method-getWorkIntensity}{\code{AnalysisTableAnnotation$getWorkIntensity()}}
 \item \href{#method-popWorkIntensity}{\code{AnalysisTableAnnotation$popWorkIntensity()}}
-\item \href{#method-idRequired}{\code{AnalysisTableAnnotation$idRequired()}}
-\item \href{#method-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
-\item \href{#method-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
 \item \href{#method-factorKeys}{\code{AnalysisTableAnnotation$factorKeys()}}
 \item \href{#method-fkeysDepth}{\code{AnalysisTableAnnotation$fkeysDepth()}}
+\item \href{#method-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
+\item \href{#method-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
+\item \href{#method-idRequired}{\code{AnalysisTableAnnotation$idRequired()}}
 \item \href{#method-idVars}{\code{AnalysisTableAnnotation$idVars()}}
 \item \href{#method-valueVars}{\code{AnalysisTableAnnotation$valueVars()}}
 \item \href{#method-annotationVars}{\code{AnalysisTableAnnotation$annotationVars()}}
@@ -49,27 +73,27 @@ Id Columns which must be in the input data frame}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getfactorDepth"></a>}}
-\if{latex}{\out{\hypertarget{method-getfactorDepth}{}}}
-\subsection{Method \code{getfactorDepth()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getfactorDepth()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setWorkIntensity"></a>}}
 \if{latex}{\out{\hypertarget{method-setWorkIntensity}{}}}
 \subsection{Method \code{setWorkIntensity()}}{
+add name of intensity column
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$setWorkIntensity(colName)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colName}}{name of intensity column}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-getWorkIntensity"></a>}}
 \if{latex}{\out{\hypertarget{method-getWorkIntensity}{}}}
 \subsection{Method \code{getWorkIntensity()}}{
+get name of working intensity column
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getWorkIntensity()}\if{html}{\out{</div>}}
 }
@@ -79,10 +103,75 @@ Id Columns which must be in the input data frame}
 \if{html}{\out{<a id="method-popWorkIntensity"></a>}}
 \if{latex}{\out{\hypertarget{method-popWorkIntensity}{}}}
 \subsection{Method \code{popWorkIntensity()}}{
+remove last name in array of working intensity column names
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$popWorkIntensity()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-factorKeys"></a>}}
+\if{latex}{\out{\hypertarget{method-factorKeys}{}}}
+\subsection{Method \code{factorKeys()}}{
+get factor keys
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factorKeys()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+array with keys
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-fkeysDepth"></a>}}
+\if{latex}{\out{\hypertarget{method-fkeysDepth}{}}}
+\subsection{Method \code{fkeysDepth()}}{
+get factor keys till factorDepth
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysDepth()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-hierarchyKeys"></a>}}
+\if{latex}{\out{\hypertarget{method-hierarchyKeys}{}}}
+\subsection{Method \code{hierarchyKeys()}}{
+get hierarchy keys
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hierarchyKeys(rev = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rev}}{return in reverse order}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+array of column names
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-hkeysDepth"></a>}}
+\if{latex}{\out{\hypertarget{method-hkeysDepth}{}}}
+\subsection{Method \code{hkeysDepth()}}{
+get hierarchy keys up to depth
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hkeysDepth(names = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{names}}{if TRUE names only if FALSE key value pairs}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+array of column names
+Id Columns which must be in the input data frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idRequired"></a>}}
@@ -94,54 +183,23 @@ Id Columns which must be in the input data frame}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-hierarchyKeys"></a>}}
-\if{latex}{\out{\hypertarget{method-hierarchyKeys}{}}}
-\subsection{Method \code{hierarchyKeys()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hierarchyKeys(rev = FALSE)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-hkeysDepth"></a>}}
-\if{latex}{\out{\hypertarget{method-hkeysDepth}{}}}
-\subsection{Method \code{hkeysDepth()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hkeysDepth(names = TRUE)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-factorKeys"></a>}}
-\if{latex}{\out{\hypertarget{method-factorKeys}{}}}
-\subsection{Method \code{factorKeys()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factorKeys()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fkeysDepth"></a>}}
-\if{latex}{\out{\hypertarget{method-fkeysDepth}{}}}
-\subsection{Method \code{fkeysDepth()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysDepth()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idVars"></a>}}
 \if{latex}{\out{\hypertarget{method-idVars}{}}}
 \subsection{Method \code{idVars()}}{
+get names of columns annotating values (e.g. intensities)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idVars()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+character array
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-valueVars"></a>}}
 \if{latex}{\out{\hypertarget{method-valueVars}{}}}
 \subsection{Method \code{valueVars()}}{
+get names of columns containing observations e.g. (intensity, qValue, mz or rt)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$valueVars()}\if{html}{\out{</div>}}
 }
@@ -151,6 +209,7 @@ Id Columns which must be in the input data frame}
 \if{html}{\out{<a id="method-annotationVars"></a>}}
 \if{latex}{\out{\hypertarget{method-annotationVars}{}}}
 \subsection{Method \code{annotationVars()}}{
+get names of columns with sample annotations
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$annotationVars()}\if{html}{\out{</div>}}
 }

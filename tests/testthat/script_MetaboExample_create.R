@@ -63,7 +63,7 @@ hierarchy_counts(precursorData, config)
 # This code should be the same for maxquant ----
 
 resDataStart <-
-  LFQService::make_interaction_column_config(precursorData, config)
+  LFQService::make_interaction_column(precursorData, config$table$fkeysDepth())
 
 #readr::write_csv(resDataStart, path = file.path(path, "annotatedTable_Peptide_RAW_Data.csv"))
 #saveRDS(config,file.path(path,"config.Rdata"))

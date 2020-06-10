@@ -21,7 +21,7 @@ undebug(filter_proteins_by_peptide_count)
 res <- filter_proteins_by_peptide_count(resDataStart, config)
 
 resDataStart <- LFQServiceData::skylineSRM_HL_data
-config <-  LFQServiceData::skylineconfig_HL
+config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 
 resDataStart <- setup_analysis(resDataStart , config)
 res <- filter_proteins_by_peptide_count(resDataStart, config)

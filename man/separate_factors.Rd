@@ -2,11 +2,16 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{separate_factors}
 \alias{separate_factors}
-\title{separates hierarchies into starting columns}
+\title{separates factor columns into starting columns}
 \usage{
 separate_factors(data, config)
 }
+\arguments{
+\item{data}{data.frame}
+
+\item{config}{AnlalysisConfiguration}
+}
 \description{
-separates hierarchies into starting columns
+separates factor columns into starting columns
 }
 \keyword{internal}

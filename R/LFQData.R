@@ -16,10 +16,19 @@ LFQData <- R6::R6Class(
   "LFQData",
 
   public = list(
+    #' @field config AnalysisConfiguration
+    #' @field data data.frame or tibble matching AnalysisConfiguration.
+    #' @field prefix e.g. "peptide_", "protein_", "compound_"
     config = NULL,
     data = NULL,
     is_pep = FALSE,
     prefix = "",
+    #' @description
+    #' initialize
+    #' @param data data.frame
+    #' @param config configuration
+    #' @param is_pep
+    #' @param prefix will be use as output prefix
     initialize = function(data, config, is_pep=TRUE, prefix = "ms_") {
       self$data <- data
       self$config <- config
@@ -56,25 +65,26 @@ LFQData <- R6::R6Class(
       LFQService::table_factors(self$data, self$config)
     },
     #' @description
-    #' getter
+    #' get Plotter
     #' @return LFQDataPlotter
     get_Plotter = function(){
       return(LFQDataPlotter$new(self, self$prefix))
     },
     #' @description
-    #' getter
+    #' get Writer
+    #' @param format array of formats to write to supported are xlsx, csv and html
     #' @return LFQDataPlotter
     get_Writer = function(format = "xlsx"){
       return(LFQDataWriter$new(self, self$prefix, format = format))
     },
     #' @description
-    #' getter
+    #' get Summariser
     #' @return LFQDataSummarizer
     get_Summariser = function(){
-      return(LFQDataSummariser$new(self, self$prefix))
+      return(LFQDataSummariser$new(self))
     },
     #' @description
-    #' getter
+    #' get Stats
     #' @return LFQDataStats
     get_Stats = function(){
       return(LFQDataStats$new(self))
@@ -135,24 +145,36 @@ LFQData <- R6::R6Class(
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- LFQData$new(data, config)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
 #'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
+    #' @field lfq LFQData
+    #' @field stat either CV or sd (if is_transformed)
+    #' @field is_transformed if TRUE data was transformed for stable variance
     lfq = NULL,
     stat = "CV",
     is_transformed = FALSE,
+    #' @description
+    #' create analyse variances and CV
+    #' @param lfqdata LFQData object
     initialize = function(lfqdata){
       self$lfq = lfqdata
       self$is_transformed <- self$lfq$config$parameter$is_intensity_transformed
       self$stat <- if (!self$is_transformed) {"CV"}else{"sd"}
     },
+    #' @description
+    #' compute CV sd and mean of data
+    #' @return data.frame
     cv = function(){
       LFQService::summarize_cv(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' Determine CV or sd for the quantiles
+    #' @param probs for which quantile to determine CV or sd
     cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
       res <- LFQService::summarize_cv_quantiles(
         self$cv(),
@@ -272,32 +294,49 @@ LFQDataStats <- R6::R6Class(
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
+    #' @field lfq LFQData
     lfq = NULL,
-    prefix = character(),
-    initialize = function(lfqdata , prefix = "ms_") {
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData
+    initialize = function(lfqdata ) {
       self$lfq <- lfqdata
-      self$prefix <- prefix
     },
+    #' @description
+    #' number of elements at each level
     hierarchy_counts = function(){
       hierarchy_counts(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' number of elements at each level in every sample
+    #' @param value wide - wide format, long - long format, plot - ggplot
     hierarchy_counts_sample = function(value = c("wide", "long", "plot")){
       value <- match.arg(value)
       fun <- LFQService::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
       return(fun(value))
     },
+    #' @description
+    #' e.g. number of peptides per protein etc
     summarize_hierarchy = function(){
       LFQService::summarize_hierarchy(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' e.g. number of peptides per protein overall
     summarize_protein = function(){
       LFQService::summarize_protein(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' missing per condition and protein
     interaction_missing_stats = function(){
       LFQService::interaction_missing_stats(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' missing stats per condition
     missingness_per_condition = function(){
       LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$data
     },
+    #' @description
+    #' missing stats per condition as cumulative sum
     missingness_per_condition_cumsum = function(){
       LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
     }
@@ -346,55 +385,96 @@ LFQDataPlotter <- R6::R6Class(
   "LFQDataPlotter",
   list(
     #' @field lfq LFQData object
+    #' @field prefix prefix to figure names when writing, e.g. protein_
+    #' @field file_paths with paths to figures
     lfq = NULL,
-    #' @field prefix Prepend prefix when writing figures e.g. protein_
     prefix = "",
-    #' @field list with paths to figures
     file_paths = list(),
+    #' @description
+    #' create LFQDataPlotter
+    #' @param lfqdata LFQData
+    #' @param prefix will be prepended to outputs written
     initialize = function(lfqdata, prefix = "ms_"){
       self$lfq = lfqdata
       self$prefix = prefix
     },
+    #' @description
+    #' heatmap of intensities
+    #' @return pheatmap
     heatmap = function(na_fraction = 0.3){
       fig <- LFQService::plot_heatmap(self$lfq$data,
                                       self$lfq$config,
                                       na_fraction = na_fraction)
       return(fig)
     },
+    #' @description
+    #' heatmap of sample correlations
+    #' @return pheatmap
     heatmap_cor = function(){
       fig <- LFQService::plot_heatmap_cor(self$lfq$data, self$lfq$config)
       return(fig)
     },
+    #' @description
+    #' pca plot
+    #' @return ggplot
     pca = function(){
       fig <- LFQService::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
       return(fig)
     },
+    #' @description
+    #' pca plot
+    #' @return plotly
     pca_plotly = function(){
       fig <- plotly::ggplotly(self$pca(), tooltip = self$lfq$config$table$sampleName)
       return(fig)
     },
+    #' @description
+    #' boxplots for all proteins
+    #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(){
       bb <- plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
       return(bb)
     },
+    #' @description
+    #' histogram of intensities given number of missing in conditions
+    #' @return ggplot
     missigness_histogram = function(){
       LFQService::missigness_histogram(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' barplot with number of features with 1,2, etc missing in condition
+    #' @return ggplot
     missingness_per_condition = function(){
       LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
     },
+    #' @description
+    #' barplot with cumulative sum of features with 1,2, etc missing in condition
+    #' @return ggplot
     missingness_per_condition_cumsum = function(){
       LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
     },
+    #' @describtion
+    #' heatmap of features with missing values
+    #' @return ggplot
     NA_heatmap = function(){
       LFQService::plot_NA_heatmap(self$lfq$data, self$lfq$config)
     },
+    #' @describtion
+    #' density distribution of intensities
+    #' @return ggplot
     intensity_distribution_density = function(){
       LFQService::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
     },
+    #' @describtion
+    #' Violinplot showing distribution of intensities in all samples
+    #' @return ggplot
     intensity_distribution_violin = function(){
       LFQService::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' pairsplot of intensities
+    #' @param max maximal number of samples to show
+    #' @return NULL
     pairs_smooth = function(max=10){
       dataTransformed <- self$lfq$data
       config <- self$lfq$config
@@ -409,10 +489,17 @@ LFQDataPlotter <- R6::R6Class(
       }else{
         LFQService::pairs_smooth( LFQService::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
       }
+      NULL
     },
+    #' @description
+    #' plot of sample correlations
+    #' @return NULL
     sample_correlation = function(){
       LFQService::plot_sample_correlation(self$lfq$data, self$lfq$config)
     },
+    #' @description
+    #' write boxplots to file
+    #' @param path_qc path to write to
     write_boxplots = function(path_qc, width = 6, height = 6){
       fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
       message("writing ", fpath)
@@ -422,6 +509,13 @@ LFQDataPlotter <- R6::R6Class(
       lapply(bb$boxplot, print)
       dev.off()
     },
+    #' @description
+    #' write pltly figures to path_qc
+    #' @keywords static
+    #' @param fig pltly figure
+    #' @param path_qc path to write to
+    #' @param fig_name file name (without extension)
+    #' @return path the file was written to.
     write_pltly = function(fig,
                            path_qc,
                            fig_name){
@@ -434,6 +528,14 @@ LFQDataPlotter <- R6::R6Class(
       self$file_paths[[fig_name]] <- html_path
       invisible(html_path)
     },
+    #' @description
+    #' write figure to pdf
+    #' @param fig ggplot or pheatmap
+    #' @param path_qc path to write to
+    #' @param fig_name name of figure (no extension)
+    #' @param width figure width
+    #' @param height figure height
+    #' @return path the file was written to
     write_pdf = function(fig,
                          path_qc,
                          fig_name,
@@ -452,7 +554,11 @@ LFQDataPlotter <- R6::R6Class(
       self$file_paths[[fig_name]] <- fpath
       invisible(fpath)
     },
-    write = function(path_qc, prefix = "ms"){
+    #' @description
+    #' write heatmaps and pca plots to files
+    #' @param path_qc path to write to
+    #'
+    write = function(path_qc){
 
       self$write_pdf(self$heatmap_cor(),
                      path_qc,
@@ -484,23 +590,37 @@ LFQDataWriter <- R6::R6Class(
     format = "",
     prefix = "",
     file_paths = list(),
-    initialize = function(lfq,  prefix = "ms_", format="xlsx"){
-      self$lfq = lfq
+    #' @description
+    #' initialize class
+    #' @param lfqdata LFQData
+    #' @param prefix prefix files with
+    #' @param format which format to write to ("xlsx", "csv", "html")
+    initialize = function(lfqdata,  prefix = "ms_", format="xlsx"){
+      self$lfq = lfqdata
       self$format = format
       self$prefix = prefix
     },
+    #' @description
+    #' get Data in long format for writing
+    #' @return tibble
     get_long = function(){
       #' gets data formatted for writing
       separate_factors(
         separate_hierarchy(self$lfq$data, self$lfq$config),
         self$lfq$config)
     },
+    #' @description
+    #' get Data in Wide format for writing
+    #' @return list with data and annotation
     get_wide = function(){
       #' gets data formatted for writing
       wide <- self$lfq$to_wide()
       res <- list(data = separate_hierarchy(wide$data, self$lfq$config), annotation = wide$annotation)
       return(res)
     },
+    #' @description
+    #' write data to file
+    #' @param path_qc path to write to
     write_long = function(path_qc) {
       fname <- paste0(self$prefix,"intensities_long")
       self$file_paths[[fname]] <-
@@ -509,6 +629,9 @@ LFQDataWriter <- R6::R6Class(
                         name = fname,
                         lfq_write_format = self$format)
     },
+    #' @description
+    #' write data to file
+    #' @param path_qc path to write to
     write_wide = function(path_qc) {
 
       wide <- self$get_wide()

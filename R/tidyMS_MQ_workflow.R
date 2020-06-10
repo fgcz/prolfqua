@@ -16,7 +16,7 @@
 #' res <- filter_proteins_by_peptide_count(resDataStart, config)
 #'
 #' resDataStart <- LFQServiceData::skylineSRM_HL_data
-#' config <-  LFQServiceData::skylineconfig_HL
+#' config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 #'
 #' resDataStart <- setup_analysis(resDataStart , config)
 #' res <- filter_proteins_by_peptide_count(resDataStart, config)
@@ -28,7 +28,7 @@ filter_proteins_by_peptide_count <- function(resDataStart,
   resDataStart <- nr_B_in_A(resDataStart,config)
   filteredPep <- dplyr::filter(resDataStart$data, !!sym(resDataStart$name) >= config$parameter$min_peptides_protein )
 
-  return(list(data = filteredPep, config = config, name = resDataStart$data))
+  return(list(data = filteredPep, name = resDataStart$name))
 }
 
 #' normalize data by log2 and robust scaling
@@ -39,7 +39,7 @@ filter_proteins_by_peptide_count <- function(resDataStart,
 #' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
 #' config <-  LFQServiceData::testDataStart2954$config
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
-#' normalize_log2_robscale(filterPep$data, filterPep$config)
+#' normalize_log2_robscale(filterPep$data, config)
 #'
 normalize_log2_robscale <- function(filteredPep, config){
   pepConfig <- config$clone(deep = TRUE)

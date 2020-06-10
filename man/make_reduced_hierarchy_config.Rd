@@ -6,11 +6,22 @@
 \usage{
 make_reduced_hierarchy_config(config, workIntensity, hierarchy)
 }
+\arguments{
+\item{workIntensity}{work intensity column}
+
+\item{hierarchy}{new reduced hierarchy}
+}
+\value{
+AnalysisConfiguration with reduced hieararchy
+}
 \description{
 Make reduced hierarchy configuration
 }
 \examples{
-make_reduced_hierarchy_config(LFQServiceData::skylineconfig, "testintensity", LFQServiceData::skylineconfig$table$hierarchy[1:2])
+conf <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+make_reduced_hierarchy_config(conf,
+ "testintensity",
+ conf$table$hierarchy[1:2])
 
 }
 \keyword{internal}

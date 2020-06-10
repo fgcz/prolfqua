@@ -14,7 +14,7 @@ library(tidyverse)
 library(LFQService)
 data <- LFQServiceData::dataIonstarNormalizedPep
 
-data$data <- data$data \%>\% filter(protein_Id \%in\% sample(protein_Id, 100))
+data$data <- data$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 res <- medpolish_protein_quants(data$data,
 data$config )
 

@@ -45,10 +45,21 @@ runallfuncs(lfqstats)
 data <- LFQServiceData::sample_analysis
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
-lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata <- LFQData$new(data, config)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{lfq}}{LFQData}
+
+\item{\code{stat}}{either CV or sd (if is_transformed)}
+
+\item{\code{is_transformed}}{if TRUE data was transformed for stable variance}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -70,28 +81,48 @@ runallfuncs(lfqstats)
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create analyse variances and CV
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData object}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-cv"></a>}}
 \if{latex}{\out{\hypertarget{method-cv}{}}}
 \subsection{Method \code{cv()}}{
+compute CV sd and mean of data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-cv_quantiles"></a>}}
 \if{latex}{\out{\hypertarget{method-cv_quantiles}{}}}
 \subsection{Method \code{cv_quantiles()}}{
+Determine CV or sd for the quantiles
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{probs}}{for which quantile to determine CV or sd}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-density"></a>}}

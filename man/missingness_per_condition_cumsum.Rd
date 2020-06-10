@@ -17,7 +17,7 @@ cumulative sums of missing
 
 setNa <- function(x){ifelse(x < 100, NA, x)}
 sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig <- LFQServiceData::skylineconfig
+skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
 names(res)

@@ -4,6 +4,11 @@
 \alias{LFQDataWriter}
 \title{Write LFQ data, or provide outputs for writing.}
 \description{
+Write LFQ data, or provide outputs for writing.
+
+Write LFQ data, or provide outputs for writing.
+}
+\details{
 returns long and wide format for writing
 }
 \section{Methods}{
@@ -21,46 +26,84 @@ returns long and wide format for writing
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize class
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$new(lfq, prefix = "ms_", format = "xlsx")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$new(lfqdata, prefix = "ms_", format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData}
+
+\item{\code{prefix}}{prefix files with}
+
+\item{\code{format}}{which format to write to ("xlsx", "csv", "html")}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_long"></a>}}
 \if{latex}{\out{\hypertarget{method-get_long}{}}}
 \subsection{Method \code{get_long()}}{
+get Data in long format for writing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$get_long()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+tibble
+gets data formatted for writing
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-get_wide}{}}}
 \subsection{Method \code{get_wide()}}{
+get Data in Wide format for writing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$get_wide()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+list with data and annotation
+gets data formatted for writing
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_long"></a>}}
 \if{latex}{\out{\hypertarget{method-write_long}{}}}
 \subsection{Method \code{write_long()}}{
+write data to file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_long(path_qc)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path_qc}}{path to write to}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-write_wide}{}}}
 \subsection{Method \code{write_wide()}}{
+write data to file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_wide(path_qc)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path_qc}}{path to write to}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

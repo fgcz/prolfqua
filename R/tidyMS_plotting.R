@@ -75,3 +75,68 @@ plot_sample_correlation <- function(data, config){
   }
   invisible(M)
 }
+
+
+#' plot peptides by factors and its levels.
+#'
+#' @param xdata data.frame
+#' @param proteinName name of protein
+#' @param confAnalysisConfiguration
+#' @param beeswarm use beeswarm default FALSE
+#'
+#' @export
+#' @keywords internal
+#' @examples
+#' library(LFQService)
+#' library(tidyverse)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
+#'
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf ,
+#'    hierarchy_level = NULL)
+#' p
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf )
+#' p
+#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
+#'  xnested$protein_Id[[3]],
+#'   conf,
+#'   hierarchy_level =  conf$table$hierarchyKeys()[3])
+#' p
+#' #xdata <- xnested$data[[3]]
+#' #proteinName <- xnested$protein_Id[[3]]
+#' #config <- conf
+#' #boxplot = TRUE
+#' #factor_level = 1
+#' plot_hierarchies_boxplot(xdata$data[[3]], xdata$protein_Id[[3]],conf, beeswarm = FALSE )
+plot_hierarchies_boxplot <- function(xdata,
+                                     proteinName,
+                                     config,
+                                     hierarchy_level = tail(config$table$hierarchyKeys(),1),
+                                     beeswarm = TRUE){
+
+  isotopeLabel <- config$table$isotopeLabel
+  xdata <- LFQService::make_interaction_column( xdata , config$table$fkeysDepth())
+  p <- ggplot(xdata, aes_string(x = "interaction",
+                              y = config$table$getWorkIntensity()
+  )) + theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
+    ggtitle(proteinName)
+
+  if (!config$parameter$is_intensity_transformed) {
+    p <- p + scale_y_continuous(trans = "log10")
+  }
+  p <- p + geom_boxplot()
+
+  if ( beeswarm ) {
+    p <- p + ggbeeswarm::geom_quasirandom(dodge.width = 0.7, groupOnX = FALSE)
+  }
+  if (!is.null( hierarchy_level ) && hierarchy_level %in% colnames(xdata)) {
+    p <- p + facet_grid( formula(paste0("~", hierarchy_level ) ))
+  }
+  return(p)
+}

@@ -17,4 +17,5 @@ config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- LFQServiceData::spectronautDIAData250_analysis
 res <- workflow_corr_filter_impute(data,config)
+
 }

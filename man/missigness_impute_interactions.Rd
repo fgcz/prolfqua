@@ -19,7 +19,7 @@ function
 used in Acetylation project p2916
 }
 \examples{
-skylineconfig <- LFQServiceData::skylineconfig
+skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 sample_analysis <- LFQServiceData::sample_analysis
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)

@@ -54,7 +54,7 @@ resDataStart <- setup_analysis(resPepProtAnnot, config)
 resDataStart <- remove_small_intensities(resDataStart, config) %>%
   complete_cases(config)
 resDataStart <-
-  LFQService::make_interaction_column_config(resDataStart, config)
+  LFQService::make_interaction_column(resDataStart, config$table$fkeysDepth())
 
 # LFQService::render_MQSummary_rmd(resDataStart, config , dest_path = path,  workdir=".")
 # rmarkdown::render("MQSummary.Rmd", params = list(data = resDataStart, configuration=config))
