@@ -1,11 +1,15 @@
 #' This function sets up an example configuration
+#' @param isotopeLabel Isotope.Label
+#' @param ident_qValue annotation_QValue
 #' @export
+#' @family configuration
 #' @examples
 #' skylineconfig <- createSkylineConfiguration()
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$hierarchyKeys()
-createSkylineConfiguration <- function(isotopeLabel="Isotope.Label", ident_qValue="annotation_QValue"){
+create_config_Skyline <- function(isotopeLabel="Isotope.Label",
+                                  ident_qValue="annotation_QValue"){
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "Replicate.Name"
 
@@ -24,16 +28,19 @@ createSkylineConfiguration <- function(isotopeLabel="Isotope.Label", ident_qValu
 }
 
 #' This function sets up an example spectronaut configuration
+#' @param isotopeLabel Isotope.Label
+#' @param ident_qValue EG.Qvalue
 #' @export
+#' @family configuration
 #' @examples
-#' spectronautconfig <- createSpectronautPeptideConfiguration()
-#' config <- createSpectronautPeptideConfiguration()
+#' spectronautconfig <- create_config_Spectronaut_Peptide()
+#' config <- create_config_Spectronaut_Peptide()
 #' config$table$factors[["coding"]] = "coding"
 #' config$table$factors[["sex"]] = "sex"
 #' config$table$factors[["age"]] = "age"
 #' config$table$factors[["Sample_id"]] = "Sample.Name"
 #'
-createSpectronautPeptideConfiguration <- function(isotopeLabel="Isotope.Label",
+create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
                                                   ident_qValue="EG.Qvalue"){
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "R.FileName"
@@ -53,8 +60,13 @@ createSpectronautPeptideConfiguration <- function(isotopeLabel="Isotope.Label",
 }
 
 #' MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
+#' @param ident_qValue pep
+#' @param intensity peptide.intensity
+#' @param isotopeLabel isotope
 #' @export
-create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
+#' @family configuration
+#'
+create_config_MQ_peptide <- function(ident_qValue = "pep",
                                   intensity = "peptide.intensity",
                                   isotopeLabel = "isotope"){
   atable <- AnalysisTableAnnotation$new()
@@ -76,8 +88,10 @@ create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
 }
 
 #' Create configuration for MSFragger output
+#' @param min_peptides_protein min peptides per protein
+#' @family configuration
 #' @export
-create_MSFragger_MSstats_config <- function(min_peptides_protein = 2){
+create_config_MSFragger_MSstats <- function(){
   ## Tell LFQ Service what column is what.
   atable <- AnalysisTableAnnotation$new()
   # measurement levels.

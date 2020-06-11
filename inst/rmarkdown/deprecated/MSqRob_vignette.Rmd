@@ -8,7 +8,7 @@ library(tidyverse)
 
 
 ```{r}
-config <- createSpectronautPeptideConfiguration()
+config <- create_config_Spectronaut_Peptide()
 config$table$factors[["coding"]] = "coding"
 config$table$factors[["sex"]] = "sex"
 config$table$factors[["age"]] = "age"

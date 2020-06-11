@@ -19,7 +19,7 @@ inputAnntation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\
 
 
 # creates default configuration
-config <- LFQService::create_MQ_peptide_Configuration()
+config <- LFQService::create_config_MQ_peptide()
 
 annotation <- readxl::read_xlsx(inputAnntation)
 

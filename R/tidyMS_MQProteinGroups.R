@@ -506,7 +506,7 @@ tidyMQ_Peptides_Config <- function(MQtxtfolder,
   {
 
   # create default config
-  config <- LFQService::create_MQ_peptide_Configuration()
+  config <- LFQService::create_config_MQ_peptide()
   peptides <- match.arg(use)
   mqData <- NULL
   if (peptides == "modificationSpecificPeptides") {
