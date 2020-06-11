@@ -2,11 +2,40 @@
 % Please edit documentation in R/tidyMS_benchmark.R
 \name{Benchmark}
 \alias{Benchmark}
-\title{Benchmark}
+\title{Benchmark R6 class}
 \description{
-Benchmark
+Benchmark R6 class
 
-Benchmark
+Benchmark R6 class
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{.data}}{data.frame}
+
+\item{\code{is_complete}}{todo}
+
+\item{\code{contrast}}{column name}
+
+\item{\code{toscale}}{which columns to scale}
+
+\item{\code{benchmark}}{todo}
+
+\item{\code{model_description}}{describe model}
+
+\item{\code{model_name}}{model description}
+
+\item{\code{hierarchy}}{todo}
+
+\item{\code{smc}}{summarize missing contrasts}
+
+\item{\code{confusion}}{todo}
+
+\item{\code{species}}{todo}
+
+\item{\code{FDRvsFDP}}{todo}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -29,6 +58,7 @@ Benchmark
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create Benchmark
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$new(
   data,
@@ -46,38 +76,84 @@ Benchmark
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{data.frame}
+
+\item{\code{toscale}}{columns ot scale}
+
+\item{\code{benchmark}}{columns to benchmark}
+
+\item{\code{FDRvsFDP}}{score for which to generate FDR vs FDP}
+
+\item{\code{model_description}}{describe model}
+
+\item{\code{model_name}}{model name}
+
+\item{\code{contrast}}{contrast}
+
+\item{\code{species}}{species (todo rename)}
+
+\item{\code{hierarchy}}{e.g. protein_Id}
+
+\item{\code{columns}}{to create FPR vs FDP analysis for}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-data"></a>}}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
+get data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$data()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-complete"></a>}}
 \if{latex}{\out{\hypertarget{method-complete}{}}}
 \subsection{Method \code{complete()}}{
+set or get complete
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$complete(value)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{value}}{TRUE if data should be complete (no missing contrasts)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_confusion"></a>}}
 \if{latex}{\out{\hypertarget{method-get_confusion}{}}}
 \subsection{Method \code{get_confusion()}}{
+get confusion data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion(arrange)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{arrange}}{todo}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_FDR_summaries"></a>}}
 \if{latex}{\out{\hypertarget{method-get_FDR_summaries}{}}}
 \subsection{Method \code{get_FDR_summaries()}}{
+get FDR summaries
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDR_summaries()}\if{html}{\out{</div>}}
 }
@@ -87,15 +163,27 @@ Benchmark
 \if{html}{\out{<a id="method-plot_FDR_summaries"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_FDR_summaries}{}}}
 \subsection{Method \code{plot_FDR_summaries()}}{
+plot FDR summaries
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDR_summaries(xlim = 0.5)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xlim}}{limit x axis}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pAUC_summaries"></a>}}
 \if{latex}{\out{\hypertarget{method-pAUC_summaries}{}}}
 \subsection{Method \code{pAUC_summaries()}}{
+AUC summaries
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$pAUC_summaries()}\if{html}{\out{</div>}}
 }
@@ -105,6 +193,7 @@ Benchmark
 \if{html}{\out{<a id="method-get_FDRvsFDP"></a>}}
 \if{latex}{\out{\hypertarget{method-get_FDRvsFDP}{}}}
 \subsection{Method \code{get_FDRvsFDP()}}{
+FDR vs FDP data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDRvsFDP()}\if{html}{\out{</div>}}
 }
@@ -114,15 +203,20 @@ Benchmark
 \if{html}{\out{<a id="method-plot_FDRvsFDP"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_FDRvsFDP}{}}}
 \subsection{Method \code{plot_FDRvsFDP()}}{
+plot FDR vs FDP data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDRvsFDP()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot_score_distribution"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_score_distribution}{}}}
 \subsection{Method \code{plot_score_distribution()}}{
+plot distributions of scores
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_score_distribution(
   score = list(list(score = "estimate", xlim = c(-1, 2)), list(score = "statistic",
@@ -130,11 +224,22 @@ Benchmark
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{score}}{the distribution of which scores to plot (list)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot_scatter"></a>}}
 \if{latex}{\out{\hypertarget{method-plot_scatter}{}}}
 \subsection{Method \code{plot_scatter()}}{
+plot intensity vs scores
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_scatter(
   score = list(list(score = "estimate", ylim = c(-1, 2)), list(score = "statistic",
@@ -142,6 +247,16 @@ Benchmark
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{score}}{the distribution of which scores to plot (list)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

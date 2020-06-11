@@ -2,12 +2,17 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{table_factors}
 \alias{table_factors}
-\title{table factors}
+\title{table of distinct factors (sample annotation)}
 \usage{
-table_factors(data, configuration)
+table_factors(pdata, configuration)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
-table factors
+table of distinct factors (sample annotation)
 }
 \examples{
 library(tidyverse)

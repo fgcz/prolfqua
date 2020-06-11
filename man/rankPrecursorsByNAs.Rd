@@ -4,7 +4,15 @@
 \alias{rankPrecursorsByNAs}
 \title{Ranks precursors by NAs (adds new column .NARank)}
 \usage{
-rankPrecursorsByNAs(data, config)
+rankPrecursorsByNAs(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+data.frame
 }
 \description{
 Ranks precursors by NAs (adds new column .NARank)

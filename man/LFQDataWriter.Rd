@@ -11,6 +11,19 @@ Write LFQ data, or provide outputs for writing.
 \details{
 returns long and wide format for writing
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{lfq}}{LFQData}
+
+\item{\code{format}}{format to write to}
+
+\item{\code{prefix}}{prefix of filename}
+
+\item{\code{file_paths}}{list with paths were data was written to.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

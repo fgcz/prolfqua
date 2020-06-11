@@ -14,7 +14,28 @@ tidyMQ_Peptides_Config(
 }
 \arguments{
 \item{MQtxtfolder}{path to folder}
+
+\item{use}{either peptides.txt or modificationSpecificPeptides.txt}
+
+\item{id_extractor}{function to parse id's}
+
+\item{remove_rev}{should reverse sequences be removed}
 }
 \description{
 read from folder or zip with the content of the MQ txt folder.
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}

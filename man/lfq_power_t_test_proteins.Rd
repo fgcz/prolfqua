@@ -12,6 +12,17 @@ lfq_power_t_test_proteins(
   min.n = 1.5
 )
 }
+\arguments{
+\item{stats_res}{data.frame `summarize_cv` output}
+
+\item{delta}{effect size you are interested in}
+
+\item{power}{of test}
+
+\item{min.n}{smallest n to determine}
+
+\item{sigma.level}{P-Value}
+}
 \description{
 Compute theoretical sample sizes from factor level standard deviations
 }

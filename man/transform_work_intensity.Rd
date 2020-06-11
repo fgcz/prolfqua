@@ -4,7 +4,25 @@
 \alias{transform_work_intensity}
 \title{Transform intensity}
 \usage{
-transform_work_intensity(data, config, transformation, intesityNewName = NULL)
+transform_work_intensity(
+  pdata,
+  config,
+  transformation,
+  intesityNewName = NULL,
+  deep = FALSE
+)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{transformation}{function to transform intensities e.g. log2}
+
+\item{intesityNewName}{column name for new intensity, default NULL - generates new name from name of transformation and old working intensity column name.}
+}
+\value{
+data.frame
 }
 \description{
 Transform intensity
@@ -19,5 +37,6 @@ config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 analysis <- LFQServiceData::spectronautDIAData250_analysis
 x <- transform_work_intensity(analysis, config, transform = asinh)
 stopifnot("asinh_FG.Quantity" \%in\% colnames(x))
+
 }
 \keyword{internal}

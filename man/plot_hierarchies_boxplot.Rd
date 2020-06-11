@@ -2,52 +2,76 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_hierarchies_boxplot}
 \alias{plot_hierarchies_boxplot}
-\title{plot peptides by factors and its levels.}
+\title{plot peptides by factors and it's levels.}
 \usage{
 plot_hierarchies_boxplot(
-  xdata,
-  proteinName,
+  pdata,
+  title,
   config,
-  hierarchy_level = tail(config$table$hierarchyKeys(), 1),
+  facet_grid_on = NULL,
   beeswarm = TRUE
 )
 }
 \arguments{
-\item{xdata}{data.frame}
+\item{pdata}{data.frame}
 
-\item{proteinName}{name of protein}
+\item{title}{name to show}
+
+\item{config}{AnalysisConfiguration}
+
+\item{facet_grid_on}{on which variable to run facet_grid}
 
 \item{beeswarm}{use beeswarm default FALSE}
 }
 \description{
-plot peptides by factors and its levels.
+plot peptides by factors and it's levels.
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
+
 conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+conf$table$hierarchyDepth
+conf$table$hkeysDepth()
+
 xnested <- LFQServiceData::sample_analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
+
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],
-  conf ,
-   hierarchy_level = NULL)
+  conf,
+  facet_grid_on =  tail(conf$table$hierarchyKeys(),1))
 p
+
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf )
 p
-p <- plot_hierarchies_boxplot(xnested$data[[3]],
+
+plot_hierarchies_boxplot(
+ xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf,
-  hierarchy_level =  conf$table$hierarchyKeys()[3])
+   beeswarm = FALSE )
+
+
+config <- LFQServiceData::skylineconfig_HL$clone(deep = TRUE)
+data <- LFQServiceData::skylineSRM_HL_data
+data <- setup_analysis(data,config)
+data <- LFQService::transform_work_intensity(data, config, log2)
+res <- plot_hierarchies_boxplot_df(data, config)
+res$boxplot[[1]]
+
+hierarchy = config$table$hkeysDepth()
+xnested <- data \%>\% dplyr::group_by_at(hierarchy) \%>\% tidyr::nest()
+p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
 p
-#xdata <- xnested$data[[3]]
-#proteinName <- xnested$protein_Id[[3]]
-#config <- conf
-#boxplot = TRUE
-#factor_level = 1
-plot_hierarchies_boxplot(xdata$data[[3]], xdata$protein_Id[[3]],conf, beeswarm = FALSE )
+p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
+p
+p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
+p
+
 }
 \keyword{internal}

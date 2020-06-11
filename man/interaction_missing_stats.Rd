@@ -2,18 +2,29 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{interaction_missing_stats}
 \alias{interaction_missing_stats}
-\title{compute missing statistics}
+\title{compute missingness statistics per hierarchy and factor level}
 \usage{
 interaction_missing_stats(
-  x,
+  pdata,
   config,
   factors = config$table$fkeysDepth(),
   hierarchy = config$table$hierarchyKeys(),
   workIntensity = config$table$getWorkIntensity()
 )
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{factors}{factor to include (default up to factor depth)}
+
+\item{hierarchy}{hierarchy to include (default up to hierarchy depth)}
+
+\item{workIntensity}{work intensity column}
+}
 \description{
-compute missing statistics
+compute missingness statistics per hierarchy and factor level
 }
 \examples{
 library(tidyverse)

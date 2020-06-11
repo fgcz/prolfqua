@@ -107,6 +107,13 @@ heatmap of intensities
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{na_fraction}}{max fraction of NA's per row}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 pheatmap
 }
@@ -206,6 +213,7 @@ ggplot
 \if{html}{\out{<a id="method-NA_heatmap"></a>}}
 \if{latex}{\out{\hypertarget{method-NA_heatmap}{}}}
 \subsection{Method \code{NA_heatmap()}}{
+heatmap of features with missing values
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$NA_heatmap()}\if{html}{\out{</div>}}
 }
@@ -218,6 +226,7 @@ ggplot
 \if{html}{\out{<a id="method-intensity_distribution_density"></a>}}
 \if{latex}{\out{\hypertarget{method-intensity_distribution_density}{}}}
 \subsection{Method \code{intensity_distribution_density()}}{
+density distribution of intensities
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density()}\if{html}{\out{</div>}}
 }
@@ -230,6 +239,7 @@ ggplot
 \if{html}{\out{<a id="method-intensity_distribution_violin"></a>}}
 \if{latex}{\out{\hypertarget{method-intensity_distribution_violin}{}}}
 \subsection{Method \code{intensity_distribution_violin()}}{
+Violinplot showing distribution of intensities in all samples
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_violin()}\if{html}{\out{</div>}}
 }
@@ -284,6 +294,10 @@ write boxplots to file
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{path_qc}}{path to write to}
+
+\item{\code{width}}{fig width}
+
+\item{\code{height}}{fig height}
 }
 \if{html}{\out{</div>}}
 }

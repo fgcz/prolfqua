@@ -4,15 +4,19 @@
 \alias{rankPrecursorsByIntensity}
 \title{ranks precursor - peptide by intensity.}
 \usage{
-rankPrecursorsByIntensity(data, config)
+rankPrecursorsByIntensity(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+data.frame
 }
 \description{
 ranks precursor - peptide by intensity.
 }
-\section{TODO}{
-NA
-}
-
 \examples{
 library(tidyverse)
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)

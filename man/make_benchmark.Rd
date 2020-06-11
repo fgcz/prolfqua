@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_benchmark.R
 \name{make_benchmark}
 \alias{make_benchmark}
-\title{Benchmark}
+\title{make Benchmark}
 \usage{
 make_benchmark(
   prpr,
@@ -18,6 +18,26 @@ make_benchmark(
   hierarchy = c("protein_Id")
 )
 }
-\description{
+\arguments{
+\item{prpr}{todo}
+
+\item{contrast}{todo}
+
+\item{toscale}{todo}
+
+\item{benchmark}{todo}
+
+\item{FDRvsFDP}{todo}
+
+\item{model_description}{todo}
+
+\item{model_name}{todo}
+
+\item{hierarchy}{todo}
+}
+\value{
 Benchmark
+}
+\description{
+make Benchmark
 }

@@ -19,6 +19,7 @@ LFQData <- R6::R6Class(
     #' @field config AnalysisConfiguration
     #' @field data data.frame or tibble matching AnalysisConfiguration.
     #' @field prefix e.g. "peptide_", "protein_", "compound_"
+    #' @field is_pep todo
     config = NULL,
     data = NULL,
     is_pep = FALSE,
@@ -27,7 +28,7 @@ LFQData <- R6::R6Class(
     #' initialize
     #' @param data data.frame
     #' @param config configuration
-    #' @param is_pep
+    #' @param is_pep todo
     #' @param prefix will be use as output prefix
     initialize = function(data, config, is_pep=TRUE, prefix = "ms_") {
       self$data <- data
@@ -36,7 +37,10 @@ LFQData <- R6::R6Class(
       self$prefix <- prefix
     },
     #' @description
+    #'
     #' Render a QC document
+    #'
+    #' @param qc_path path to render to
     #' @keywords todo
     render = function(qc_path) {
       LFQService::render_MQSummary_rmd(
@@ -185,7 +189,7 @@ LFQDataStats <- R6::R6Class(
     },
     #' @description
     #' plots density or ecdf
-    #' @param ggstat
+    #' @param ggstat either density or ecdf
     #' @return ggplot
     density = function(ggstat = c("density", "ecdf")){
       LFQService::plot_stat_density(
@@ -218,13 +222,13 @@ LFQDataStats <- R6::R6Class(
     },
     #' @description
     #' plot sd vs mean
-    #'
+    #' @param size number of points to sample (default 200)
     #' @return ggplot
     #'
     stdv_vs_mean = function(size= 200){
       LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
     },
-    #' @describtion
+    #' @description
     #' compute sample size for entire dataset
     #' @param probs quantiles of sd for which sample size should be computed
     #' @param delta effect size
@@ -247,7 +251,7 @@ LFQDataStats <- R6::R6Class(
                                            sig.level = sig.level )
       return(res)
     },
-    #' @describtion
+    #' @description
     #' compute sample for each protein
     #' @param delta effect size
     #' @param power power of test
@@ -400,6 +404,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' heatmap of intensities
+    #' @param na_fraction max fraction of NA's per row
     #' @return pheatmap
     heatmap = function(na_fraction = 0.3){
       fig <- LFQService::plot_heatmap(self$lfq$data,
@@ -453,19 +458,19 @@ LFQDataPlotter <- R6::R6Class(
     missingness_per_condition_cumsum = function(){
       LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
     },
-    #' @describtion
+    #' @description
     #' heatmap of features with missing values
     #' @return ggplot
     NA_heatmap = function(){
       LFQService::plot_NA_heatmap(self$lfq$data, self$lfq$config)
     },
-    #' @describtion
+    #' @description
     #' density distribution of intensities
     #' @return ggplot
     intensity_distribution_density = function(){
       LFQService::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
     },
-    #' @describtion
+    #' @description
     #' Violinplot showing distribution of intensities in all samples
     #' @return ggplot
     intensity_distribution_violin = function(){
@@ -500,6 +505,9 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' write boxplots to file
     #' @param path_qc path to write to
+    #' @param width fig width
+    #' @param height fig height
+    #'
     write_boxplots = function(path_qc, width = 6, height = 6){
       fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
       message("writing ", fpath)
@@ -586,6 +594,11 @@ LFQDataPlotter <- R6::R6Class(
 #'
 LFQDataWriter <- R6::R6Class(
   "LFQDataWriter",list(
+    #' @field lfq LFQData
+    #' @field format format to write to
+    #' @field prefix prefix of filename
+    #' @field file_paths list with paths were data was written to.
+    #'
     lfq = NULL,
     format = "",
     prefix = "",

@@ -9,6 +9,8 @@ lfq_write_table(x, path, name, lfq_write_format = c("xlsx", "csv", "html"))
 \arguments{
 \item{x}{data.frame}
 
+\item{path}{path to write to}
+
 \item{name}{file name}
 
 \item{lfq_write_format}{formats to write to.}

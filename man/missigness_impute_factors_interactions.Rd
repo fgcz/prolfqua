@@ -6,12 +6,23 @@
 should generalize at some stage}
 \usage{
 missigness_impute_factors_interactions(
-  data,
+  pdata,
   config,
-  value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
   probs = 0.1,
+  value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
   add.prefix = FALSE
 )
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{probs}{quantile to take average from (default 0.1)}
+
+\item{value}{use default}
+
+\item{add.prefix}{use default}
 }
 \description{
 compute per group averages and impute values

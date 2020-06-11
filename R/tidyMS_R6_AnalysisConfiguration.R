@@ -29,24 +29,26 @@ AnalysisParameters <- R6::R6Class(
 
 
 
+#'
 #' Create Annotation
 #' @description Annotates Data Table
 #' @keywords internal
 #' @export
+#'
 AnalysisTableAnnotation <- R6::R6Class(
   "AnalysisTableAnnotation",
   public = list(
-    #'  @description
-    #'  create a new  AnalysisTableAnnotation
+    #' @description
+    #' create a new  AnalysisTableAnnotationG
     initialize = function(){
     },
 
-    #' @field column name of column containing raw file names
+    #' @field fileName column name of column containing raw file names
     fileName = NULL,
     #' @field sampleName (will be generated from factors)
     sampleName = "sampleName",
 
-    #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), or light only if LFQ.
+    #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.
     isotopeLabel = character(),
     # do you want to model charge sequence etc?
     #' @field ident_qValue column name with identification QValues (smaller better)
@@ -62,7 +64,7 @@ AnalysisTableAnnotation <- R6::R6Class(
 
     #' @field workIntensity column which contains the intensities
     workIntensity = NULL, # could be list with names and functions
-    #' @is_intensity_transformed are the intensities transformed for constant variance
+    #' @field is_intensity_transformed are the intensities transformed for constant variance
     is_intensity_transformed = FALSE,
     #' @description
     #' add name of intensity column
@@ -86,7 +88,7 @@ AnalysisTableAnnotation <- R6::R6Class(
 
     #' @field factors names of columns containing factors (annotions)
     factors = list(), # ordering is important - first is considered the main
-    #' @field facet plot according to the first or the first two factors (factorDepth can be 1 or 2)
+    #' @field factorDepth facet plot according to the first or the first two factors (factorDepth can be 1 or 2)
     factorDepth = 1,
     #' @description
     #' get factor keys
@@ -131,8 +133,9 @@ AnalysisTableAnnotation <- R6::R6Class(
       return(res)
     },
 
-
+    #' @description
     #' Id Columns which must be in the input data frame
+    #' @return character array
     idRequired = function(){
       idVars <- c(
         self$fileName,
@@ -193,8 +196,9 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                        #' @field parameter AnalysisParameter
                                        parameter = NULL,
                                        #' @description
-                                       #' @param analysisTableAnnotation
-                                       #' @param analysisParameter
+                                       #' create AnalysisConfiguration
+                                       #' @param analysisTableAnnotation instance of AnalysisTableAnnotation
+                                       #' @param analysisParameter instance of AnalysisParameter
                                        initialize = function(analysisTableAnnotation, analysisParameter){
                                          self$table <- analysisTableAnnotation
                                          self$parameter <- analysisParameter
@@ -205,7 +209,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' Make reduced hierarchy configuration
 #' @export
 #' @keywords internal
-#' @param config
+#' @param config AnalysisConfiguration
 #' @param workIntensity work intensity column
 #' @param hierarchy new reduced hierarchy
 #'
@@ -256,7 +260,6 @@ make_interaction_column <- function(data, columns, sep="."){
 #' Extract all value slots in an R6 object
 #' @param r6class r6 class
 #' @keywords internal
-#' @param r6class
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)
@@ -359,7 +362,7 @@ separate_factors <- function(data, config) {
 
 #' Complete cases
 #' @export
-#' @param data data.frame
+#' @param pdata data.frame
 #' @param config AnlalysisConfiguration
 #' @keywords internal
 #' @examples
@@ -369,12 +372,12 @@ separate_factors <- function(data, config) {
 #'  data <- LFQServiceData::sample_analysis
 #'  xx <- complete_cases(data, config)
 #'
-complete_cases <- function(data, config) {
+complete_cases <- function(pdata, config) {
   message("completing cases")
   fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factorKeys())
   hkeys <- c(config$table$isotopeLabel, config$table$hierarchyKeys())
   res <- tidyr::complete(
-    data,
+    pdata,
     tidyr::nesting(!!!syms(fkeys)),
     tidyr::nesting(!!!syms(hkeys))
   )
@@ -382,179 +385,15 @@ complete_cases <- function(data, config) {
 }
 
 
-# Functions - Plotting ----
-#' Plot peptide and fragments
-plot_hierarchies_line_default <- function(data,
-                                          proteinName,
-                                          sample,
-                                          intensity,
-                                          peptide,
-                                          fragment,
-                                          factor,
-                                          isotopeLabel,
-                                          separate = FALSE,
-                                          log_y = FALSE
-) {
-  if (length(isotopeLabel)) {
-    if (separate) {
-      formula <- paste(paste( isotopeLabel, collapse = "+"), "~", paste(factor , collapse = "+"))
-      p <- ggplot(data, aes_string(x = sample,
-                                   y = intensity,
-                                   group = fragment,
-                                   color = peptide
-      ))
-    }else{
-      formula <- sprintf("~%s",paste(factor, collapse = " + "))
-      data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
-      p <- ggplot(data, aes_string(x = sample,
-                                   y = intensity,
-                                   group = "fragment_label",
-                                   color = peptide
-      ))
-    }
-    p <- p +  geom_point(aes_string(shape = isotopeLabel)) +
-      geom_line(aes_string(linetype = isotopeLabel))
-  }else{
-    formula <- sprintf("~%s", paste(factor, collapse = " + "))
-    p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color = peptide))
-    p <- p +  geom_point() + geom_line()
-  }
-
-  #p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color= peptide, linetype = isotopeLabel))
-  p <- p + facet_grid(as.formula(formula), scales = "free_x"   )
-  p <- p + ggtitle(proteinName) + theme_classic()
-  p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
-  if (log_y) {
-    p <- p + scale_y_continuous(trans = 'log10')
-  }
-  return(p)
-}
-
-#' extracts the relevant information from the configuration to make the plot.
-#' @export
-#' @keywords internal
-#' @examples
-#' library(LFQService)
-#' library(tidyverse)
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' xnested <- LFQServiceData::sample_analysis %>%
-#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
-#'
-#' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
-#'
-plot_hierarchies_line <- function(res, proteinName,
-                                  configuration,
-                                  factor_level = 1,
-                                  separate = FALSE){
-
-  rev_hnames <- configuration$table$hierarchyKeys(TRUE)
-  fragment <- rev_hnames[1]
-  peptide <- rev_hnames[1]
-
-  if(length(rev_hnames) > 2){
-    peptide <- rev_hnames[2]
-  }
-  res <- LFQService:::plot_hierarchies_line_default(res,
-                                                    proteinName = proteinName,
-                                                    sample = configuration$table$sampleName,
-                                                    intensity = configuration$table$getWorkIntensity(),
-                                                    peptide = peptide,
-                                                    fragment = fragment,
-                                                    factor = configuration$table$factorKeys()[1:factor_level],
-                                                    isotopeLabel = configuration$table$isotopeLabel,
-                                                    separate = separate,
-                                                    log_y = !configuration$parameter$is_intensity_transformed
-  )
-  return(res)
-}
-
-
-#' generates peptide level plots for all Proteins
-#' @export
-#' @keywords internal
-#' @examples
-#' library(tidyverse)
-#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
-#' res <- plot_hierarchies_line_df(resDataStart, config)
-#' res[[1]]
-#' config <- config$clone(deep = TRUE)
-#' #TODO make it work for other hiearachy levels.
-#' #config$table$hierarchyDepth = 2
-#' #res <- plot_hierarchies_line_df(resDataStart, config)
-#filteredPep <- resDataStart
-plot_hierarchies_line_df <- function(filteredPep, config){
-  factor_level <- config$table$factorDepth
-
-  hierarchy_ID <- "hierarchy_ID"
-  filteredPep <- filteredPep %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()), remove = FALSE)
-
-  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy_ID) %>% tidyr::nest()
-
-  figs <- xnested %>%
-    dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
-                              plot_hierarchies_line,
-                              factor_level = factor_level, config ))
-  return(figs$plot)
-}
-
-
-
-#' add quantline to plot
-#' @export
-#' @keywords internal
-#' @examples
-#'
-plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
-  table <- configuration$table
-  p + geom_line(data = data,
-                aes_string(x = table$sampleName , y = aes_y, group = 1),
-                size = 1.3,
-                color = "black",
-                linetype = "dashed") +
-    geom_point(data = data,
-               aes_string(x = table$sampleName , y = aes_y, group = 1), color = "black", shape = 10)
-}
-
-
-
-#' generates peptide level plots for all Proteins
-#' @export
-#' @keywords internal
-#' @examples
-#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
-#' res <- plot_hierarchies_boxplot_df(resDataStart, config)
-#' res$boxplot[[1]]
-#' res <- plot_hierarchies_boxplot_df(resDataStart,
-#'  config,
-#'  hierarchy_level = "peptide_Id")
-#' res$boxplot[[1]]
-#' config <- config$clone(deep = TRUE)
-#' #TODO make it work for other hiearachy levels.
-#' config$table$hierarchyDepth = 2
-#' res <- plot_hierarchies_boxplot_df(resDataStart, config)
-#' res$boxplot[[1]]
-plot_hierarchies_boxplot_df <- function(filteredPep,
-                                        config,
-                                        hierarchy = "protein_Id",
-                                        hierarchy_level = NULL){
-
-  xnested <- filteredPep %>% dplyr::group_by_at(hierarchy) %>% tidyr::nest()
-
-  figs <- xnested %>%
-    dplyr::mutate(boxplot = map2(data, !!sym(hierarchy),
-                                 plot_hierarchies_boxplot,
-                                 config ,
-                                 hierarchy_level = hierarchy_level))
-  return(dplyr::select_at(figs, c(hierarchy, "boxplot")))
-}
 
 # Functions - summary ----
 
 # Functions - summarize factors ----
 
-#' table factors
+#' table of distinct factors (sample annotation)
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -565,8 +404,8 @@ plot_hierarchies_boxplot_df <- function(filteredPep,
 #' xx <- table_factors(data,configuration )
 #' xx %>% dplyr::group_by(!!sym(configuration$table$factorKeys())) %>% dplyr::summarize(n = n())
 #'
-table_factors <- function(data, configuration){
-  factorsTab <- data %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
+table_factors <- function(pdata, configuration){
+  factorsTab <- pdata %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
     dplyr::distinct() %>%
     arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
@@ -576,6 +415,9 @@ table_factors <- function(data, configuration){
 # Functions - summarize hierarchies
 
 #' Count distinct elements for each level of hierarchy
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
 #'
 #' @export
 #' @keywords internal
@@ -587,15 +429,19 @@ table_factors <- function(data, configuration){
 #'
 #' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
 #' hierarchy_counts(sample_analysis, skylineconfig)
-hierarchy_counts <- function(x, configuration){
-  hierarchy <- names( configuration$table$hierarchy )
-  res <- x %>% dplyr::group_by_at(configuration$table$isotopeLabel) %>%
+hierarchy_counts <- function(pdata, config){
+  hierarchy <- config$table$hierarchyKeys()
+  res <- pdata %>%
+    dplyr::group_by_at(config$table$isotopeLabel) %>%
     dplyr::summarise_at( hierarchy, n_distinct )
   return(res)
 }
 
 #' Count distinct elements for each level of hierarchy per sample
 #' @export
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
 #' @keywords internal
 #' @examples
 #' library(LFQService)
@@ -608,11 +454,11 @@ hierarchy_counts <- function(x, configuration){
 #' res()
 #' res("long")
 #' res("plot")
-hierarchy_counts_sample <- function(data,
+hierarchy_counts_sample <- function(pdata,
                                     configuration)
 {
   hierarchy <- configuration$table$hierarchyKeys()
-  summary <- data %>% dplyr::filter(!is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
+  summary <- pdata %>% dplyr::filter(!is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
     dplyr::summarise_at( hierarchy, n_distinct )
 
@@ -641,11 +487,13 @@ hierarchy_counts_sample <- function(data,
 
 
 
-#' Summarize peptide Counts
+#' Summarize hierarchy counts
 #' @export
 #' @keywords internal
-#' @param x data.frame
-#' @param
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param hierarchy for which hierarchy level (default up to hierarchy depth)
+#' @param factors which factors to include
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -675,22 +523,25 @@ hierarchy_counts_sample <- function(data,
 #' summarize_hierarchy(sample_analysis, configuration )
 #' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart,
 #'  LFQServiceData::testDataStart2954$config)
-summarize_hierarchy <- function(x,
+summarize_hierarchy <- function(pdata,
                                 config,
                                 hierarchy = config$table$hkeysDepth(),
                                 factors = character())
 {
   all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchyKeys() )
 
-  precursor <- x %>% dplyr::select(factors, all_hierarchy) %>% dplyr::distinct()
+  precursor <- pdata %>% dplyr::select(factors, all_hierarchy) %>% dplyr::distinct()
   x3 <- precursor %>% dplyr::group_by_at(c(factors, hierarchy)) %>%
     dplyr::summarize_at( setdiff(all_hierarchy, hierarchy),
                          list( n = dplyr::n_distinct))
   return(x3)
 }
 
-#' Light only version.
+
 #' Summarize Protein counts
+#' Works for one isotope label level only
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
 #' @export
 #' @keywords internal
 #' @importFrom dplyr group_by_at
@@ -706,11 +557,11 @@ summarize_hierarchy <- function(x,
 #' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 #' summarize_protein(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 #'
-summarize_protein <- function(x, config ){
+summarize_protein <- function(pdata, config ){
   warning("DEPRECATED use summarize_hierarchy instead")
   rev_hierarchy <- config$table$hierarchyKeys(TRUE)
 
-  precursorSum <- x %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
+  precursorSum <- pdata %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
     group_by_at(rev_hierarchy[-1]) %>%
     dplyr::summarize(nrFragments = n())
 
@@ -733,7 +584,13 @@ summarize_protein <- function(x, config ){
 }
 
 # Functions - Missigness ----
-#' compute missing statistics
+
+#' compute missingness statistics per hierarchy and factor level
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param factors factor to include (default up to factor depth)
+#' @param hierarchy hierarchy to include (default up to hierarchy depth)
+#' @param workIntensity work intensity column
 #' @export
 #' @keywords internal
 #' @examples
@@ -752,15 +609,15 @@ summarize_protein <- function(x, config ){
 #' tmp %>% mutate(perc = nrNAs/nrReplicates )
 #' summarize_hierarchy(xx , skylineconfig)
 #'
-interaction_missing_stats <- function(x,
+interaction_missing_stats <- function(pdata,
                                       config,
                                       factors = config$table$fkeysDepth(),
                                       hierarchy = config$table$hierarchyKeys(),
                                       workIntensity = config$table$getWorkIntensity())
 {
-  x <- complete_cases(x, config)
+  pdata <- complete_cases(pdata, config)
   table <- config$table
-  missingPrec <- x %>% group_by_at(c(factors,
+  missingPrec <- pdata %>% group_by_at(c(factors,
                                      hierarchy,
                                      table$isotopeLabel
   ))
@@ -768,14 +625,22 @@ interaction_missing_stats <- function(x,
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanArea = mean(!!sym(workIntensity), na.rm = TRUE)) %>%
-    mutate(nrMeasured = nrReplicates-nrNAs) %>% dplyr::ungroup()
+    mutate(nrMeasured = nrReplicates - nrNAs) %>% dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea")))
 }
+
 #' Compute interaction averages and
 #' impute data using mean of lowest 0.1 (default)
 #'
 #' used in Acetylation project p2916
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param factors factor to include (default up to factor depth)
+#' @param probs quantile to take average from (default 0.1)
+#' @return function with parameter `value`
+#' `c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all")`
 #' @export
 #' @keywords internal
 #' @return function
@@ -793,13 +658,14 @@ interaction_missing_stats <- function(x,
 #' xxx <- (fun("nrReplicates"))
 #' xxx <- fun("all")
 #' head(xxx)
-missigness_impute_interactions <- function(mdataTrans,
+#'
+missigness_impute_interactions <- function(pdata,
                                            config,
                                            factors = config$table$fkeysDepth(),
                                            probs = 0.1){
-  x <- interaction_missing_stats(mdataTrans, config, factors = factors)
-  x_summaries <- x$summaries
-  xx <- x$data
+  mstats <- interaction_missing_stats(pdata, config, factors = factors)
+  x_summaries <- mstats$summaries
+  xx <- mstats$data
   xx <- make_interaction_column(xx, factors, sep = ":")
 
 
@@ -893,6 +759,13 @@ missigness_impute_interactions <- function(mdataTrans,
 
 #' compute per group averages and impute values
 #' should generalize at some stage
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param probs quantile to take average from (default 0.1)
+#' @param value use default
+#' @param add.prefix use default
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -909,19 +782,19 @@ missigness_impute_interactions <- function(mdataTrans,
 #' dim(distinct(fun[,1:6]))
 #'
 missigness_impute_factors_interactions <-
-  function(data,
+  function(pdata,
            config,
-           value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
            probs = 0.1,
+           value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
            add.prefix = FALSE){
     value <- match.arg(value)
     fac_fun <- list()
-    fac_fun[["interaction"]] <- missigness_impute_interactions(data,
+    fac_fun[["interaction"]] <- missigness_impute_interactions(pdata,
                                                                config,
                                                                probs = probs)
     if (config$table$factorDepth > 1 ) { # if 1 only then done
       for (factor in config$table$fkeysDepth()) {
-        fac_fun[[factor]] <- missigness_impute_interactions(data,
+        fac_fun[[factor]] <- missigness_impute_interactions(pdata,
                                                             config,
                                                             factors = factor,
                                                             probs = probs)

@@ -6,6 +6,16 @@
 \usage{
 difference(x, y, config)
 }
+\arguments{
+\item{x}{data.frame}
+
+\item{y}{data.frame}
+
+\item{config}{AnlysisConfiguration}
+}
+\value{
+data.frame
+}
 \description{
 get the difference of two dataset
 }

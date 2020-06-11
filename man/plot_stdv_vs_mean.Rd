@@ -2,14 +2,22 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stdv_vs_mean}
 \alias{plot_stdv_vs_mean}
-\title{stddev vs mean}
+\title{plot stddev vs mean to asses stability of variance}
 \usage{
-plot_stdv_vs_mean(data, config, size = 200)
+plot_stdv_vs_mean(pdata, config, size = 200)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{size}{how many points to sample (since scatter plot to slow for all)}
 }
 \description{
-stddev vs mean
+plot stddev vs mean to asses stability of variance
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
 data <- LFQServiceData::sample_analysis
@@ -25,5 +33,6 @@ config$table$popWorkIntensity()
 datasqrt <- transform_work_intensity(data, config, transformation = sqrt)
 ressqrt <- summarize_cv(datasqrt, config)
 plot_stdv_vs_mean(ressqrt, config)
+
 }
 \keyword{internal}

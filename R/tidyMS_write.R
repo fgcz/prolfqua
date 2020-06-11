@@ -3,7 +3,7 @@
 #' @export
 #' @keywords internal
 #' @param x data.frame
-#' @param path
+#' @param path path to write to
 #' @param name file name
 #' @param lfq_write_format formats to write to.
 #' @return list with paths to files written

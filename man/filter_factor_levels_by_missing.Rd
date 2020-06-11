@@ -4,7 +4,15 @@
 \alias{filter_factor_levels_by_missing}
 \title{removes measurments with less than percent=60 missing values in factor_level = 1}
 \usage{
-filter_factor_levels_by_missing(data, config, percent = 60)
+filter_factor_levels_by_missing(pdata, config, percent = 60)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+data.frame
 }
 \description{
 removes measurments with less than percent=60 missing values in factor_level = 1

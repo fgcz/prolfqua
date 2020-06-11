@@ -5,9 +5,14 @@
 \alias{plot_intensity_distribution_density}
 \title{visualize intensity distributions}
 \usage{
-plot_intensity_distribution_violin(data, config)
+plot_intensity_distribution_violin(pdata, config)
 
-plot_intensity_distribution_density(data, config)
+plot_intensity_distribution_density(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
 visualize intensity distributions

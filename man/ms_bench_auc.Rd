@@ -7,6 +7,13 @@ using trapez rule}
 \usage{
 ms_bench_auc(FPR, TPR, fpr_threshold = 1)
 }
+\arguments{
+\item{FPR}{array of FPR}
+
+\item{TPR}{array of corresponding TPR}
+
+\item{fpr_threshold}{default = 1}
+}
 \description{
 computes auc and pauc given output from ms_bench_add_FPRTPR
 using trapez rule

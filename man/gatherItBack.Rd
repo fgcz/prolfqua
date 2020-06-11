@@ -4,7 +4,7 @@
 \alias{gatherItBack}
 \title{make it long}
 \usage{
-gatherItBack(x, value, config, data = NULL, sep = "~lfq~")
+gatherItBack(pdata, value, config, data = NULL, sep = "~lfq~")
 }
 \description{
 make it long

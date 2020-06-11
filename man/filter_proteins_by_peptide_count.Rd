@@ -4,7 +4,15 @@
 \alias{filter_proteins_by_peptide_count}
 \title{Keep only those proteins with 2 IDENTIFIED peptides}
 \usage{
-filter_proteins_by_peptide_count(resDataStart, config)
+filter_proteins_by_peptide_count(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+list with data.frame (data) and name of new column (name)
 }
 \description{
 Keep only those proteins with 2 IDENTIFIED peptides

@@ -6,12 +6,17 @@
 adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 srm_QValueNR - nr of precursors passing the threshold}
 \usage{
-summariseQValues(data, config)
+summariseQValues(pdata, config)
 }
 \arguments{
-\item{data}{data}
+\item{pdata}{data.frame}
 
 \item{config}{configuration}
+
+\item{data}{data}
+}
+\value{
+data.frame
 }
 \description{
 Compute QValue summaries for each precursor

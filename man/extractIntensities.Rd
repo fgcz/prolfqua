@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{extractIntensities}
 \alias{extractIntensities}
-\title{Extract intensity column in wide format using lowest hierarchy as key.}
+\title{Extract intensity column in wide format}
 \usage{
-extractIntensities(x, configuration)
+extractIntensities(pdata, config)
 }
 \description{
-Extract intensity column in wide format using lowest hierarchy as key.
+Extract intensity column in wide format
 }
 \examples{
 library(dplyr)

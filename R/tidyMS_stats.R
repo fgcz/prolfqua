@@ -1,5 +1,9 @@
 
 #' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
 #' @keywords internal
 #' @examples
@@ -9,13 +13,17 @@
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
-#' res <- summarize_cv(data, config)
-#' res$CV <- res$sd/res$mean
-summarize_cv <- function(data, config, all = TRUE){
+#' res1 <- summarize_cv(data, config, all=FALSE)
+#' head(res1)
+#' dim(res1)
+#' res2 <- summarize_cv(data, config, all=TRUE)
+#' head(res2)
+#' dim(res2)
+summarize_cv <- function(pdata, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
 
 
-  hierarchyFactor <- data %>%
+  hierarchyFactor <- pdata %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
     dplyr::summarize(n = n(),
                      not_na = sum(!is.na(!!intsym)),
@@ -25,7 +33,7 @@ summarize_cv <- function(data, config, all = TRUE){
   hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysDepth(), funs(as.character) )
 
   if (all) {
-    hierarchy <- data %>%
+    hierarchy <- pdata %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       dplyr::summarize(n = n(),
                        not_na = sum(!is.na(!!intsym)),
@@ -41,7 +49,11 @@ summarize_cv <- function(data, config, all = TRUE){
   return(hierarchyFactor)
 }
 
-#' summarize stats output
+#' summarize stats output (compute quantiles)
+#' @param stats_res result of running `summarize_cv`
+#' @param config AnalysisConfiguration
+#' @param stats summarize either sd or CV
+#' @param probs for which quantiles 10, 20 etc.
 #' @export
 #' @keywords internal
 #' @examples
@@ -58,7 +70,10 @@ summarize_cv <- function(data, config, all = TRUE){
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 #' ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
 #'
-summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+summarize_cv_quantiles <- function(stats_res,
+                                   config,
+                                   stats = c("sd","CV"),
+                                   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
   stats <- match.arg(stats)
   toQuantiles <- function(x, probs_i = probs) {
     tibble(probs = probs, quantiles = quantile(x, probs_i , na.rm = T))
@@ -105,6 +120,12 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
   return(sampleSizes)
 }
 #' estimate sample sizes
+#' @param quantile_sd output of `summarize_cv_quantiles`
+#' @param delta effect size you are interested in
+#' @param power of test
+#' @param sigma.level P-Value
+#' @param min.n smallest n to determine
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -117,28 +138,35 @@ summarize_cv_quantiles <- function(stats_res ,config, stats = c("sd","CV"), prob
 #' bbb <- (bind_rows(bbb))
 #' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
 #' #View(summary)
-lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
-                                          delta = c(0.59,1,2),
-                                          min.n = 1.5,
-                                          power = 0.8,
-                                          sig.level = 0.05){
+lfq_power_t_test_quantiles_V2 <-
+  function(quantile_sd,
+           delta = c(0.59,1,2),
+           power = 0.8,
+           sig.level = 0.05,
+           min.n = 1.5){
 
-  res <- vector(mode = "list", length = length(delta))
-  for (i in 1:length(delta)) {
-    cat("i", i , "delta_i", delta[i], "\n")
-    res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
-                                            delta = delta[i],
-                                            min.n = min.n,
-                                            power = power,
-                                            sig.level = sig.level)
-    res[[i]]$delta = delta[i]
+    res <- vector(mode = "list", length = length(delta))
+    for (i in 1:length(delta)) {
+      cat("i", i , "delta_i", delta[i], "\n")
+      res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
+                                              delta = delta[i],
+                                              min.n = min.n,
+                                              power = power,
+                                              sig.level = sig.level)
+      res[[i]]$delta = delta[i]
+    }
+    res <- bind_rows(res)
+    return(res)
   }
-  res <- bind_rows(res)
-  return(res)
-}
 
 
 #' Compute theoretical sample sizes from factor level standard deviations
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param delta effect size you are interested in
+#' @param power of test
+#' @param sigma.level P-Value
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -157,7 +185,7 @@ lfq_power_t_test_quantiles_V2 <- function(quantile_sd,
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
 #' res
 #'
-lfq_power_t_test_quantiles <- function(data,
+lfq_power_t_test_quantiles <- function(pdata,
                                        config,
                                        delta = 1,
                                        power = 0.8,
@@ -168,7 +196,7 @@ lfq_power_t_test_quantiles <- function(data,
     warning("Intensities are not transformed yet.")
   }
 
-  stats_res <- summarize_cv(data, config, all = FALSE)
+  stats_res <- summarize_cv(pdata, config, all = FALSE)
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
@@ -197,6 +225,12 @@ lfq_power_t_test_quantiles <- function(data,
 }
 
 #' Compute theoretical sample sizes from factor level standard deviations
+#' @param stats_res data.frame `summarize_cv` output
+#' @param delta effect size you are interested in
+#' @param power of test
+#' @param sigma.level P-Value
+#' @param min.n smallest n to determine
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -235,7 +269,12 @@ lfq_power_t_test_proteins <- function(stats_res,
 }
 
 
-#' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+#' plot density distribution or ecdf of sd, mean or CV
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param stat sd, mean or CV
+#' @param ggstat either density of ecdf
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -247,14 +286,22 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' plot_stat_density(res, config, stat = "mean")
 #' plot_stat_density(res, config, stat = "sd")
 #' plot_stat_density(res, config, stat = "CV")
-plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
+plot_stat_density <- function(pdata,
+                              config,
+                              stat = c("CV","mean","sd"),
+                              ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(data, aes_string(x = stat, colour = config$table$factorKeys()[1] )) +
+  p <- ggplot(pdata, aes_string(x = stat, colour = config$table$factorKeys()[1] )) +
     geom_line(stat = ggstat)
   return(p)
 }
-#' plot_stat_density_median
+#' plot density distribution or ecdf of sd, mean or cv given intensity below and above median
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param stat sd, mean or CV
+#' @param ggstat either density of ecdf
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -265,17 +312,21 @@ plot_stat_density <- function(data, config, stat = c("CV","mean","sd"), ggstat =
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
 #' plot_stat_density_median(res, config,"sd")
-plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
+plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
-  res <- data %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
+  pdata <- pdata %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
+  res <- pdata %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = config$table$factorKeys()[1])) +
     geom_line(stat = ggstat) + facet_wrap("top")
   return(p)
 }
 
-#' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+#' plot Violin plot of sd CV or mean
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param stat either CV, mean or sd
 #' @export
 #' @keywords internal
 #' @examples
@@ -287,13 +338,17 @@ plot_stat_density_median <- function(data, config, stat = c("CV","mean","sd"), g
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
 #' plot_stat_violin(res, config, stat = "CV")
-plot_stat_violin <- function(data, config, stat = c("CV", "mean", "sd")){
+plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
   stat <- match.arg(stat)
-  p <- ggplot(data, aes_string(x = config$table$factorKeys()[1], y = stat  )) +
+  p <- ggplot(pdata, aes_string(x = config$table$factorKeys()[1], y = stat  )) +
     geom_violin()
   return(p)
 }
-#' plot_stat_violin_median
+#' plot Violin plot of sd CV or mean given intensity lower or above median
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param stat either CV, mean or sd
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -303,15 +358,15 @@ plot_stat_violin <- function(data, config, stat = c("CV", "mean", "sd")){
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin_median(res, config, stat = "mean")
-plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd")){
+plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")){
   median.quartile <- function(x){
     out <- quantile(x, probs = c(0.25,0.5,0.75))
     names(out) <- c("ymin","y","ymax")
     return(out)
   }
-  data <- data %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
+  pdata <- pdata %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
 
-  res <- data %>%
+  res <- pdata %>%
     dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
@@ -323,10 +378,15 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
   return(p)
 }
 
-#' stddev vs mean
+#' plot stddev vs mean to asses stability of variance
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param size how many points to sample (since scatter plot to slow for all)
+#'
 #' @export
 #' @keywords internal
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #' data <- LFQServiceData::sample_analysis
@@ -342,18 +402,19 @@ plot_stat_violin_median <- function(data, config , stat = c("CV", "mean", "sd"))
 #' datasqrt <- transform_work_intensity(data, config, transformation = sqrt)
 #' ressqrt <- summarize_cv(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
-plot_stdv_vs_mean <- function(data, config, size=200){
-  summary <- data %>%
+#'
+plot_stdv_vs_mean <- function(pdata, config, size=200){
+  summary <- pdata %>%
     group_by_at(config$table$fkeysDepth()) %>%
-    dplyr::summarize(n = n(),.groups="drop")
+    dplyr::summarize(n = n(),.groups = "drop")
   size <- min(size, min(summary$n))
 
-  data <- data %>%
+  pdata <- pdata %>%
     group_by_at(config$table$fkeysDepth()) %>%
     sample_n(size = size) %>%
     ungroup()
 
-  p <- ggplot(data, aes(x = mean, y = abs(sd))) +
+  p <- ggplot(pdata, aes(x = mean, y = abs(sd))) +
     geom_point() +
     geom_smooth(method = "loess") +
     facet_wrap(config$table$fkeysDepth(), nrow = 1) +

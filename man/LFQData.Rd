@@ -27,6 +27,8 @@ lfqdata$factors()
 \item{\code{data}}{data.frame or tibble matching AnalysisConfiguration.}
 
 \item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
+
+\item{\code{is_pep}}{todo}
 }
 \if{html}{\out{</div>}}
 }
@@ -61,6 +63,8 @@ initialize
 
 \item{\code{config}}{configuration}
 
+\item{\code{is_pep}}{todo}
+
 \item{\code{prefix}}{will be use as output prefix}
 }
 \if{html}{\out{</div>}}
@@ -75,6 +79,13 @@ Render a QC document
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$render(qc_path)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{qc_path}}{path to render to}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}

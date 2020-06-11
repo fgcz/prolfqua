@@ -4,12 +4,25 @@
 \alias{aggregateTopNIntensities}
 \title{aggregates top N intensities}
 \usage{
-aggregateTopNIntensities(data, config, func, N)
+aggregateTopNIntensities(pdata, config, func, N)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{func}{function to use for aggregation}
+
+\item{N}{default 3 top intensities.}
+}
+\value{
+list with data and new reduced configuration (config)
 }
 \description{
 run \link{rankPrecursorsByIntensity} first
 }
 \examples{
+
 
 library(LFQService)
 library(tidyverse)
@@ -22,7 +35,7 @@ mean_na <- function(x){mean(x, na.rm=TRUE)}
 res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
 
 stopifnot(dim(res$data) == c(10423, 10))
-stopifnot(names(res) \%in\% c("data", "newconfig"))
+stopifnot(names(res) \%in\% c("data", "config"))
 
 }
 \keyword{internal}

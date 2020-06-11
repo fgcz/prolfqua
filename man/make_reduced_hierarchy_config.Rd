@@ -7,6 +7,8 @@
 make_reduced_hierarchy_config(config, workIntensity, hierarchy)
 }
 \arguments{
+\item{config}{AnalysisConfiguration}
+
 \item{workIntensity}{work intensity column}
 
 \item{hierarchy}{new reduced hierarchy}

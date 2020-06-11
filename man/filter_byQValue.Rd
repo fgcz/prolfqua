@@ -4,7 +4,7 @@
 \alias{filter_byQValue}
 \title{filter data by max and min Q Value threshold}
 \usage{
-filter_byQValue(data, config)
+filter_byQValue(pdata, config)
 }
 \description{
 employs parameters ident_qValue, qVal_minNumber_below_experiment_threshold,

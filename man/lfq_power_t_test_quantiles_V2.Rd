@@ -7,10 +7,21 @@
 lfq_power_t_test_quantiles_V2(
   quantile_sd,
   delta = c(0.59, 1, 2),
-  min.n = 1.5,
   power = 0.8,
-  sig.level = 0.05
+  sig.level = 0.05,
+  min.n = 1.5
 )
+}
+\arguments{
+\item{quantile_sd}{output of `summarize_cv_quantiles`}
+
+\item{delta}{effect size you are interested in}
+
+\item{power}{of test}
+
+\item{min.n}{smallest n to determine}
+
+\item{sigma.level}{P-Value}
 }
 \description{
 estimate sample sizes

@@ -4,7 +4,12 @@
 \alias{nr_B_in_A}
 \title{Compute nr of B per A}
 \usage{
-nr_B_in_A(data, config, merge = TRUE)
+nr_B_in_A(pdata, config, merge = TRUE)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
 Compute nr of B per A
@@ -25,9 +30,9 @@ resDataStart <- LFQServiceData::skylineSRM_HL_data
 config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 resDataStart <- setup_analysis(resDataStart , config)
 nr_B_in_A(resDataStart, config)
-nr_B_in_A(resDataStart, config, merge=FALSE)
+nr_B_in_A(resDataStart, config, merge = FALSE)
 config$table$hierarchyDepth <- 2
-nr_B_in_A(resDataStart, config, merge=FALSE)
+nr_B_in_A(resDataStart, config, merge = FALSE)
 
 }
 \keyword{internal}

@@ -2,17 +2,26 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_density_median}
 \alias{plot_stat_density_median}
-\title{plot_stat_density_median}
+\title{plot density distribution or ecdf of sd, mean or cv given intensity below and above median}
 \usage{
 plot_stat_density_median(
-  data,
+  pdata,
   config,
   stat = c("CV", "mean", "sd"),
   ggstat = c("density", "ecdf")
 )
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{stat}{sd, mean or CV}
+
+\item{ggstat}{either density of ecdf}
+}
 \description{
-plot_stat_density_median
+plot density distribution or ecdf of sd, mean or cv given intensity below and above median
 }
 \examples{
 

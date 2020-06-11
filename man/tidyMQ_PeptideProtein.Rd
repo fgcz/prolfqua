@@ -2,12 +2,15 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_PeptideProtein}
 \alias{tidyMQ_PeptideProtein}
-\title{Generating mq all level file.}
+\title{Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence}
 \usage{
 tidyMQ_PeptideProtein(txt_directory, .all = FALSE)
 }
+\arguments{
+\item{txt_directory}{or zip}
+}
 \description{
-Generating mq all level file.
+Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence
 }
 \examples{
 
@@ -17,3 +20,19 @@ Generating mq all level file.
 #res <- tidyMQ_PeptideProtein(zip_archive)
 
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}
+\keyword{internal}

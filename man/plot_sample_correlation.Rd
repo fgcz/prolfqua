@@ -4,7 +4,12 @@
 \alias{plot_sample_correlation}
 \title{visualize correlation among samples}
 \usage{
-plot_sample_correlation(data, config)
+plot_sample_correlation(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
 visualize correlation among samples

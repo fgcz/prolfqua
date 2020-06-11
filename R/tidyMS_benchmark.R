@@ -1,6 +1,6 @@
-#' preprocess
+#' prepare benchmark data
 #' @export
-#'
+#' @param data analysis results
 ms_bench_preprocess <- function(data) {
   tmp <- data %>%
     ungroup() %>%
@@ -60,6 +60,10 @@ ms_bench_preprocess <- function(data) {
 #' computes auc and pauc given output from ms_bench_add_FPRTPR
 #' using trapez rule
 #' @export
+#' @param FPR array of FPR
+#' @param TPR array of corresponding TPR
+#' @param fpr_threshold default = 1
+#'
 ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
   # make sure that sorted.
   oFPR <- order(FPR)
@@ -240,12 +244,24 @@ do_confusion_c <- function(
 }
 
 
-#' Benchmark
+#' Benchmark R6 class
 #' @export
 Benchmark <-
   R6::R6Class(
     "Benchmark",
     public = list(
+      #' @field .data data.frame
+      #' @field is_complete todo
+      #' @field contrast column name
+      #' @field toscale which columns to scale
+      #' @field benchmark todo
+      #' @field model_description describe model
+      #' @field model_name model description
+      #' @field hierarchy todo
+      #' @field smc summarize missing contrasts
+      #' @field confusion todo
+      #' @field species todo
+      #' @field FDRvsFDP todo
       .data = NULL,
       is_complete = FALSE,
       contrast = "",
@@ -254,10 +270,22 @@ Benchmark <-
       model_description = "",
       model_name = "",
       hierarchy = "",
-      smc = NULL, # summarize missing contrasts
+      smc = NULL,
       confusion = NULL,
       species = "",
       FDRvsFDP = NULL,
+      #' @description
+      #' create Benchmark
+      #' @param data data.frame
+      #' @param toscale columns ot scale
+      #' @param benchmark columns to benchmark
+      #' @param FDRvsFDP score for which to generate FDR vs FDP
+      #' @param columns to create FPR vs FDP analysis for
+      #' @param model_description describe model
+      #' @param model_name model name
+      #' @param contrast contrast
+      #' @param species species (todo rename)
+      #' @param hierarchy e.g. protein_Id
       initialize = function(data,
                             toscale = c("p.value", "moderated.p.value"),
                             benchmark = list(
@@ -287,6 +315,9 @@ Benchmark <-
         self$.data <- .scale_probabilities(self$.data, toscale = toscale)
 
       },
+      #' @description
+      #' get data
+      #' @return data.frame
       data = function(){
         if (self$is_complete) {
           nr_na <- self$smc$nr_na %>% filter(n == n - nr_na)
@@ -295,6 +326,10 @@ Benchmark <-
           return(self$.data)
         }
       },
+      #' @description
+      #' set or get complete
+      #' @param value TRUE if data should be complete (no missing contrasts)
+      #'
       complete = function(value){
         if (missing(value)) {
           return(self$is_complete);
@@ -302,22 +337,36 @@ Benchmark <-
           self$is_complete = value
         }
       },
+      #' @description
+      #' get confusion data
+      #' @param arrange todo
       get_confusion = function(arrange){
+        if (missing(arrange)) {
+          arrange = self$FDRvsFDP
+        }
         confusion <- do_confusion_c(self$data(),
                                     contrast = self$contrast,
                                     arrangeby = arrange)
         confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)
         return(confusion)
       },
+      #' @description
+      #' get FDR summaries
       get_FDR_summaries = function(){
         self$get_confusion(arrange = self$benchmark)
       },
+      #' @description
+      #' plot FDR summaries
+      #' @param xlim limit x axis
+      #' @return ggplot
       plot_FDR_summaries = function(xlim = 0.5){
         confusion <- self$get_FDR_summaries()
         vissum <- .plot_FDR_summaries(confusion,
                                       fpr_lim = xlim)
         return(vissum)
       },
+      #' @description
+      #' AUC summaries
       pAUC_summaries = function(){
         confusion <- self$get_FDR_summaries()
         pauc <- .partial_AUC_summary(
@@ -325,10 +374,15 @@ Benchmark <-
           model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_description))
         return(pauc)
       },
+      #' @description
+      #' FDR vs FDP data
       get_FDRvsFDP = function(){
         xx <- self$get_confusion(arrange = self$FDRvsFDP)
         return(xx)
       },
+      #' @description
+      #' plot FDR vs FDP data
+      #' @return ggplot
       plot_FDRvsFDP = function(){
         xx <- self$get_FDRvsFDP()
         #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
@@ -338,6 +392,10 @@ Benchmark <-
           facet_wrap(~what)
         return(p)
       },
+      #' @description
+      #' plot distributions of scores
+      #' @param score the distribution of which scores to plot (list)
+      #' @return ggplot
       plot_score_distribution = function(score =list(list(score = "estimate", xlim = c(-1,2) ),
                                                      list(score = "statistic", xlim = c(-3,10) ))){
         .plot_score_distribution(self$data(),
@@ -346,6 +404,10 @@ Benchmark <-
                                  species = self$species,
                                  annot = paste0("statistics density of ", self$model_description ) )
       },
+      #' @description
+      #' plot intensity vs scores
+      #' @param score the distribution of which scores to plot (list)
+      #' @return ggplot
       plot_scatter = function(score =list(list(score = "estimate", ylim = c(-1,2) ),
                                           list(score = "statistic", ylim = c(-3,10) ))){
         x <- self$data()
@@ -374,9 +436,18 @@ Benchmark <-
     ))
 
 
-#' Benchmark
-#' @export
+#' make Benchmark
 #'
+#' @export
+#' @param prpr todo
+#' @param contrast todo
+#' @param toscale todo
+#' @param benchmark todo
+#' @param FDRvsFDP todo
+#' @param model_description todo
+#' @param model_name todo
+#' @param hierarchy todo
+#' @return Benchmark
 make_benchmark <- function(prpr,
                            contrast = "contrast",
                            toscale = c("p.value", "moderated.p.value"),

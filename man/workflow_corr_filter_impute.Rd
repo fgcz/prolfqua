@@ -2,12 +2,19 @@
 % Please edit documentation in R/tidyMS_R6_workflowFunctions.R
 \name{workflow_corr_filter_impute}
 \alias{workflow_corr_filter_impute}
-\title{apply correlation filtering and impute missing values}
+\title{Apply correlation filtering and impute missing values}
 \usage{
-workflow_corr_filter_impute(data, config, minCorrelation = 0.6)
+workflow_corr_filter_impute(pdata, config, minCorrelation = 0.6)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{minCorrelation}{correlation threshold default 0.7}
 }
 \description{
-apply correlation filtering and impute missing values
+Apply correlation filtering and impute missing values
 }
 \examples{
 rm(list=ls())

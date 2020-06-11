@@ -5,10 +5,17 @@
 \title{correlation preprocessing}
 \usage{
 workflow_correlation_preprocessing_protein_intensities(
-  data,
+  pdata,
   config,
   minCorrelation = 0.7
 )
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{minCorrelation}{correlation threshold default 0.7}
 }
 \description{
 correlation preprocessing
@@ -19,13 +26,13 @@ rm(list=ls())
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 config$parameter$min_nr_of_notNA  <- 20
 data <- LFQServiceData::spectronautDIAData250_analysis
+#undebug(workflow_correlation_preprocessing_protein_intensities)
 res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 names(res)
 
 }
 \seealso{
 Other workflow functions: 
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}()}
+\code{\link{workflow_DIA_NA_preprocessing}()}
 }
 \concept{workflow functions}

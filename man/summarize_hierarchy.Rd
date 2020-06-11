@@ -2,20 +2,26 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{summarize_hierarchy}
 \alias{summarize_hierarchy}
-\title{Summarize peptide Counts}
+\title{Summarize hierarchy counts}
 \usage{
 summarize_hierarchy(
-  x,
+  pdata,
   config,
   hierarchy = config$table$hkeysDepth(),
   factors = character()
 )
 }
 \arguments{
-\item{x}{data.frame}
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{hierarchy}{for which hierarchy level (default up to hierarchy depth)}
+
+\item{factors}{which factors to include}
 }
 \description{
-Summarize peptide Counts
+Summarize hierarchy counts
 }
 \examples{
 library(LFQService)

@@ -5,13 +5,20 @@
 \title{filter QVAlues and NA's and factor information}
 \usage{
 workflow_DIA_NA_preprocessing(
-  data,
+  pdata,
   config,
   percent = 60,
   hierarchy_level = 2,
   factor_level = 1,
   min_peptides_protein = config$parameter$min_peptides_protein
 )
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{minCorrelation}{correlation threshold default 0.7}
 }
 \description{
 filter QVAlues and NA's and factor information
@@ -28,10 +35,10 @@ hierarchy_counts(tmp$data, config)
 tmp <-workflow_DIA_NA_preprocessing(data, config, percent=70)
 hierarchy_counts(tmp$data, config)
 stopifnot(FALSE==(is.grouped_df(tmp$data)))
+
 }
 \seealso{
 Other workflow functions: 
-\code{\link{workflow_DIA_Q_NA_filtered_medpolish_protein_intensities}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{workflow functions}

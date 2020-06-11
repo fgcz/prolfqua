@@ -4,19 +4,35 @@
 \alias{tidyMQ_from_modSpecific_to_peptide}
 \title{convert modification specific to peptide level
 aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
-use only if you want to disable MQ default precursor filter
+use if you want to disable MQ default precursor filter
 (which is not to use modified peptide sequences for peptide quantification)}
 \usage{
 tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
 }
 \arguments{
-\item{mq_modSpecPeptides}{modeSpecPeptides.txt}
+\item{mq_modSpecPeptides}{ouput of tidyMQ_modificationSpecificPeptides}
 
-\item{mq_peptides}{mq_peptides}
+\item{mq_peptides}{output of tidyMQ_Peptides}
 }
 \description{
 convert modification specific to peptide level
 aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
-use only if you want to disable MQ default precursor filter
+use if you want to disable MQ default precursor filter
 (which is not to use modified peptide sequences for peptide quantification)
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}
+\keyword{internal}

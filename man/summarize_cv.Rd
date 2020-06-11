@@ -4,7 +4,14 @@
 \alias{summarize_cv}
 \title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
 \usage{
-summarize_cv(data, config, all = TRUE)
+summarize_cv(pdata, config, all = TRUE)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{all}{also compute for all samples (default), or only of conditions (set to FALSE)}
 }
 \description{
 applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
@@ -16,7 +23,11 @@ library(tidyverse)
 data <- LFQServiceData::sample_analysis
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
-res <- summarize_cv(data, config)
-res$CV <- res$sd/res$mean
+res1 <- summarize_cv(data, config, all=FALSE)
+head(res1)
+dim(res1)
+res2 <- summarize_cv(data, config, all=TRUE)
+head(res2)
+dim(res2)
 }
 \keyword{internal}

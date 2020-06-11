@@ -2,10 +2,13 @@
 % Please edit documentation in R/tidyMS_benchmark.R
 \name{ms_bench_preprocess}
 \alias{ms_bench_preprocess}
-\title{preprocess}
+\title{prepare benchmark data}
 \usage{
 ms_bench_preprocess(data)
 }
+\arguments{
+\item{data}{analysis results}
+}
 \description{
-preprocess
+prepare benchmark data
 }

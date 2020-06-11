@@ -1,6 +1,8 @@
 #' extract intensities and annotations from MQ proteinGroups.txt
 #' @export
+#' @keywords internal
 #' @param MQProteinGroups data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
+#' @family MaxQuant
 #' @examples
 #' protein_txt <- system.file("samples/maxquant_txt/MSQC1/proteinGroups.txt",package = "LFQService")
 #' protein_txt <- read.csv(protein_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
@@ -45,15 +47,18 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
 
 
 #' read evidence file
+#' @param Evidence MQ evidence file or zip archive with evidence file
 #' @export
+#' @keywords internal
+#' @family MaxQuant
 #' @examples
 #' library(tidyverse)
 #' evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = "LFQService")
 #' evidence_txt <- read.csv(evidence_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
 tidyMQ_Evidence <- function(Evidence){
-  if(is.character(Evidence)){
-    if(grepl("\\.zip$",Evidence)){
+  if (is.character(Evidence)) {
+    if (grepl("\\.zip$",Evidence)) {
       message(Evidence)
       Evidence <- read.csv(unz(Evidence,"evidence.txt"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE)
@@ -91,17 +96,20 @@ tidyMQ_Evidence <- function(Evidence){
   res <- res %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
-#' Generating mq all level file incuding evidence - modseqPeptide still missing.
-#'
+#' Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
+#' @param txt_directory or zip
+#' @family MaxQuant
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' allData <- tidyMQ_merged(txt_directory)
 #' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package = "LFQService")
 #' res <- tidyMQ_merged(zip_archive)
+#'
 tidyMQ_merged <- function(txt_directory){
-  if(grepl("\\.zip$",txt_directory)){
+  if (grepl("\\.zip$",txt_directory)) {
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
                              header = TRUE, sep = "\t", stringsAsFactors  =  FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
@@ -122,15 +130,12 @@ tidyMQ_merged <- function(txt_directory){
   return(resProt_Pep_Evidence)
 }
 
-#' Generating mq all level file incuding evidence - modseqPeptide still missing.
-tidyMQ_All <- function(txt_directory){
-  warning("Deprecated : use tidyMQ_merged.")
-  return( tidyMQ_merged(txt_directory) )
-}
-
-#' Generating mq all level file.
+#' Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence
+#' @param txt_directory or zip
 #'
+#' @family MaxQuant
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' #txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
@@ -139,7 +144,7 @@ tidyMQ_All <- function(txt_directory){
 #' #res <- tidyMQ_PeptideProtein(zip_archive)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
-  if(grepl("\\.zip$",tolower(txt_directory))){
+  if (grepl("\\.zip$",tolower(txt_directory))) {
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
@@ -169,8 +174,10 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 }
 
 #' parse MQ modificationSpecificPeptides.txt
-#' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
+#' @family MaxQuant
+#' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' if(FALSE){
@@ -265,8 +272,10 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 }
 
 #' parse MQ peptides.txt
-#' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
+#' @family MaxQuant
+#' @export
+#' @keywords internal
 #' @examples
 #' library(tidyverse)
 #'
@@ -283,8 +292,8 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
 #' head(mq_peptides)
 tidyMQ_Peptides <- function(MQPeptides){
-  if(is.character(MQPeptides)){
-    if(grepl("\\.zip$",tolower(MQPeptides))){
+  if (is.character(MQPeptides)) {
+    if (grepl("\\.zip$",tolower(MQPeptides))) {
       MQPeptides <- read.csv(unz(MQPeptides,"peptides.txt"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE)
     }else{
@@ -298,7 +307,7 @@ tidyMQ_Peptides <- function(MQPeptides){
                         "sequence",
                         "proteins",
                         "leading.razor.protein",
-                        "protein.group.id"="protein.group.ids",
+                        "protein.group.id" = "protein.group.ids",
                         "peptide.score"  = "score",
                         "pep",
                         dplyr::one_of("missed.cleavages"),
@@ -334,8 +343,10 @@ tidyMQ_Peptides <- function(MQPeptides){
 }
 
 #' parse MQ allPeptides.txt
-#' @export
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)
+#' @family MaxQuant
+#' @export
+#' @keywords internal
 #' @examples
 #' if(FALSE){
 #' peptides_txt <- "c:/Users/wewol/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/allPeptides.txt"
@@ -376,12 +387,15 @@ tidyMQ_allPeptides <- function(MQPeptides){
 
 #' convert modification specific to peptide level
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
-#' use only if you want to disable MQ default precursor filter
+#' use if you want to disable MQ default precursor filter
 #' (which is not to use modified peptide sequences for peptide quantification)
 #'
+#' @family MaxQuant
+#' @param mq_modSpecPeptides ouput of tidyMQ_modificationSpecificPeptides
+#' @param mq_peptides  output of tidyMQ_Peptides
 #' @export
-#' @param mq_modSpecPeptides modeSpecPeptides.txt
-#' @param mq_peptides mq_peptides
+#' @keywords internal
+#'
 tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
   warning("use only if you want to disable MQ default precursor filter")
   mq_modSpecPeptides %>% dplyr::filter(unique.groups) -> mq_modSpecPeptides
@@ -404,8 +418,12 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 
 #' Same protein group id might have different names in the protein field.
 #' this function selects the protein name mentioned most in association with a protein group id.
+#'
+#' @param modSpecData obtained by either colling tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
+#' @family MaxQuant
 #' @export
-#' @param modSpecData modeSpecPeptides.txt
+#' @keywords internal
+#'
 tidyMQ_top_protein_name <- function(modSpecData) {
   modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
@@ -429,7 +447,11 @@ tidyMQ_top_protein_name <- function(modSpecData) {
 
 
 #' Read Sites.txt and convert into longish format
+#' @param dPat sitespecific file read by read.csv()
+#'
+#' @family MaxQuant
 #' @export
+#' @keywords internal
 tidyMQ_from_Sites <- function(pDat){
   colnames(pDat) <- tolower(colnames(pDat) )
   # Cut PhosphoSTY down to useful columns
@@ -472,7 +494,10 @@ tidyMQ_from_Sites <- function(pDat){
 
 #' read from folder or zip with the content of the MQ txt folder.
 #' @param MQtxtfolder path to folder
-#' @param use
+#' @param use either peptides.txt or modificationSpecificPeptides.txt
+#' @param id_extractor function to parse id's
+#' @param remove_rev should reverse sequences be removed
+#' @family MaxQuant
 #' @export
 tidyMQ_Peptides_Config <- function(MQtxtfolder,
                                    use = c("peptides", "modificationSpecificPeptides" ),
@@ -520,6 +545,10 @@ tidyMQ_Peptides_Config <- function(MQtxtfolder,
 
 
 #' Create retention time plot for MQ
+#' @param MQtxtfolder txt folder
+#' @param qc_path output folder
+#' @family MaxQuant
+#' @keywords internal
 #' @export
 plot_MQ_intensity_vs_retention_time <- function(MQtxtfolder, qc_path ) {
 

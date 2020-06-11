@@ -6,6 +6,9 @@
 \usage{
 tidyMQ_Evidence(Evidence)
 }
+\arguments{
+\item{Evidence}{MQ evidence file or zip archive with evidence file}
+}
 \description{
 read evidence file
 }
@@ -15,3 +18,19 @@ evidence_txt <- system.file("samples/maxquant_txt/MSQC1/evidence.txt",package = 
 evidence_txt <- read.csv(evidence_txt, header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}
+\keyword{internal}

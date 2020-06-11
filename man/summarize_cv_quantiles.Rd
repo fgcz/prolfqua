@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{summarize_cv_quantiles}
 \alias{summarize_cv_quantiles}
-\title{summarize stats output}
+\title{summarize stats output (compute quantiles)}
 \usage{
 summarize_cv_quantiles(
   stats_res,
@@ -11,8 +11,17 @@ summarize_cv_quantiles(
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
 )
 }
+\arguments{
+\item{stats_res}{result of running `summarize_cv`}
+
+\item{config}{AnalysisConfiguration}
+
+\item{stats}{summarize either sd or CV}
+
+\item{probs}{for which quantiles 10, 20 etc.}
+}
 \description{
-summarize stats output
+summarize stats output (compute quantiles)
 }
 \examples{
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)

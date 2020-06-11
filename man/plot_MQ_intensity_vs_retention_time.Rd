@@ -6,6 +6,27 @@
 \usage{
 plot_MQ_intensity_vs_retention_time(MQtxtfolder, qc_path)
 }
+\arguments{
+\item{MQtxtfolder}{txt folder}
+
+\item{qc_path}{output folder}
+}
 \description{
 Create retention time plot for MQ
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}
+\keyword{internal}

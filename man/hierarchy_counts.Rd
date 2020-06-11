@@ -4,7 +4,12 @@
 \alias{hierarchy_counts}
 \title{Count distinct elements for each level of hierarchy}
 \usage{
-hierarchy_counts(x, configuration)
+hierarchy_counts(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
 Count distinct elements for each level of hierarchy

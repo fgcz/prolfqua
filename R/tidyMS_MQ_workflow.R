@@ -1,7 +1,9 @@
 # Helper functions -----
 
 #' Keep only those proteins with 2 IDENTIFIED peptides
-#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return list with data.frame (data) and name of new column (name)
 #' @export
 #' @keywords internal
 #' @examples
@@ -21,18 +23,22 @@
 #' resDataStart <- setup_analysis(resDataStart , config)
 #' res <- filter_proteins_by_peptide_count(resDataStart, config)
 #'
-filter_proteins_by_peptide_count <- function(resDataStart,
-                                             config){
+filter_proteins_by_peptide_count <-
+  function(pdata,
+           config){
 
-  # remove single hit wonders
-  resDataStart <- nr_B_in_A(resDataStart,config)
-  filteredPep <- dplyr::filter(resDataStart$data, !!sym(resDataStart$name) >= config$parameter$min_peptides_protein )
+    # remove single hit wonders
+    pdata <- nr_B_in_A(pdata,config)
+    pdata <- dplyr::filter(pdata$data, !!sym(pdata$name) >= config$parameter$min_peptides_protein )
 
-  return(list(data = filteredPep, name = resDataStart$name))
-}
+    return(list(data = pdata, name = pdata$name))
+  }
 
 #' normalize data by log2 and robust scaling
 #'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return list with data.frame (data) and updated config (config)
 #' @export
 #' @keywords internal
 #' @examples
@@ -41,9 +47,9 @@ filter_proteins_by_peptide_count <- function(resDataStart,
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
 #' normalize_log2_robscale(filterPep$data, config)
 #'
-normalize_log2_robscale <- function(filteredPep, config){
+normalize_log2_robscale <- function(pdata, config){
   pepConfig <- config$clone(deep = TRUE)
-  pepIntensityNormalized <- transform_work_intensity(filteredPep, pepConfig, log2)
+  pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
   pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized,
                                                    pepConfig,
                                                    .func = robust_scale)
@@ -57,7 +63,10 @@ normalize_log2_robscale <- function(filteredPep, config){
 
 
 #' get the difference of two dataset
-#'
+#' @param x data.frame
+#' @param y data.frame
+#' @param config AnlysisConfiguration
+#' @return data.frame
 #' @export
 #' @keywords internal
 #'

@@ -10,6 +10,13 @@ createProjectStructure(
   modelling_path = "modelling_results"
 )
 }
+\arguments{
+\item{outpath}{directory}
+
+\item{qc_path}{qc folder}
+
+\item{modelling_path}{modelling results folder}
+}
 \description{
 Create Project structure
 }

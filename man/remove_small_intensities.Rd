@@ -2,12 +2,20 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{remove_small_intensities}
 \alias{remove_small_intensities}
-\title{sets intensities smaller than threshold to NA}
+\title{remove rows where intensity lower then threshold}
 \usage{
-remove_small_intensities(data, config, threshold = 1)
+remove_small_intensities(pdata, config, threshold = 1)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+data.frame
 }
 \description{
-sets intensities smaller than threshold to NA
+remove rows where intensity lower then threshold
 }
 \examples{
 
@@ -20,6 +28,7 @@ config2 <- config$clone(deep=TRUE)
 res1 <- remove_small_intensities(analysis, config, threshold=1 )
 res1000 <- remove_small_intensities(analysis, config2, threshold=1000 )
 stopifnot(nrow(res1) >  nrow(res1000))
+
 }
 \seealso{
 Other filter functions: 

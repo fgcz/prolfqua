@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{markDecorrelated}
 \alias{markDecorrelated}
-\title{marks decorrelated elements}
+\title{marks uncorrelated elements}
 \usage{
 markDecorrelated(data, config, minCorrelation = 0.7)
 }
 \description{
-marks decorrelated elements
+marks uncorrelated elements
 }
 \section{TODO}{
  do something with warnings of type "the standard deviation is zero".

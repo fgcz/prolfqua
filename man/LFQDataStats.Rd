@@ -133,6 +133,13 @@ plots density or ecdf
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ggstat}}{either density or ecdf}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 ggplot
 }
@@ -199,6 +206,13 @@ plot sd vs mean
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stdv_vs_mean(size = 200)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{number of points to sample (default 200)}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 ggplot
 }
@@ -207,6 +221,7 @@ ggplot
 \if{html}{\out{<a id="method-power_t_test_quantiles"></a>}}
 \if{latex}{\out{\hypertarget{method-power_t_test_quantiles}{}}}
 \subsection{Method \code{power_t_test_quantiles()}}{
+compute sample size for entire dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test_quantiles(
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
@@ -234,6 +249,7 @@ ggplot
 \if{html}{\out{<a id="method-power_t_test"></a>}}
 \if{latex}{\out{\hypertarget{method-power_t_test}{}}}
 \subsection{Method \code{power_t_test()}}{
+compute sample for each protein
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test(delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05)}\if{html}{\out{</div>}}
 }

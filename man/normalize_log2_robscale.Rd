@@ -4,7 +4,15 @@
 \alias{normalize_log2_robscale}
 \title{normalize data by log2 and robust scaling}
 \usage{
-normalize_log2_robscale(filteredPep, config)
+normalize_log2_robscale(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
+\value{
+list with data.frame (data) and updated config (config)
 }
 \description{
 normalize data by log2 and robust scaling

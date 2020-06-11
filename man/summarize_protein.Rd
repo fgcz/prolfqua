@@ -2,14 +2,19 @@
 % Please edit documentation in R/tidyMS_R6_AnalysisConfiguration.R
 \name{summarize_protein}
 \alias{summarize_protein}
-\title{Light only version.
-Summarize Protein counts}
+\title{Summarize Protein counts
+Works for one isotope label level only}
 \usage{
-summarize_protein(x, config)
+summarize_protein(pdata, config)
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
-Light only version.
 Summarize Protein counts
+Works for one isotope label level only
 }
 \examples{
 library(LFQService)

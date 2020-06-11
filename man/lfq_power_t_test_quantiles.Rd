@@ -5,13 +5,24 @@
 \title{Compute theoretical sample sizes from factor level standard deviations}
 \usage{
 lfq_power_t_test_quantiles(
-  data,
+  pdata,
   config,
   delta = 1,
   power = 0.8,
   sig.level = 0.05,
   probs = seq(0.5, 0.9, by = 0.1)
 )
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{delta}{effect size you are interested in}
+
+\item{power}{of test}
+
+\item{sigma.level}{P-Value}
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

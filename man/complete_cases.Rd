@@ -4,10 +4,10 @@
 \alias{complete_cases}
 \title{Complete cases}
 \usage{
-complete_cases(data, config)
+complete_cases(pdata, config)
 }
 \arguments{
-\item{data}{data.frame}
+\item{pdata}{data.frame}
 
 \item{config}{AnlalysisConfiguration}
 }

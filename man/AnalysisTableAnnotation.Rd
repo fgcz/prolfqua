@@ -10,11 +10,11 @@ Annotates Data Table
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{column}}{name of column containing raw file names}
+\item{\code{fileName}}{column name of column containing raw file names}
 
 \item{\code{sampleName}}{(will be generated from factors)}
 
-\item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
+\item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.}
 
 \item{\code{ident_qValue}}{column name with identification QValues (smaller better)}
 
@@ -26,22 +26,15 @@ Annotates Data Table
 
 \item{\code{workIntensity}}{column which contains the intensities}
 
+\item{\code{is_intensity_transformed}}{are the intensities transformed for constant variance}
+
 \item{\code{factors}}{names of columns containing factors (annotions)}
 
-\item{\code{facet}}{plot according to the first or the first two factors (factorDepth can be 1 or 2)}
+\item{\code{factorDepth}}{facet plot according to the first or the first two factors (factorDepth can be 1 or 2)}
 
 \item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
 
 \item{\code{hierarchyDepth}}{At which depth do you want to model i.e. i.e. protein than 1}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{column}}{name of column containing raw file names}
-
-\item{\code{facet}}{plot according to the first or the first two factors (factorDepth can be 1 or 2)}
 }
 \if{html}{\out{</div>}}
 }
@@ -67,6 +60,7 @@ Annotates Data Table
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create a new  AnalysisTableAnnotationG
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$new()}\if{html}{\out{</div>}}
 }
@@ -170,17 +164,20 @@ get hierarchy keys up to depth
 }
 \subsection{Returns}{
 array of column names
-Id Columns which must be in the input data frame
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idRequired"></a>}}
 \if{latex}{\out{\hypertarget{method-idRequired}{}}}
 \subsection{Method \code{idRequired()}}{
+Id Columns which must be in the input data frame
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idRequired()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+character array
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-idVars"></a>}}

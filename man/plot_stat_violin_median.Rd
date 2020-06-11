@@ -2,12 +2,19 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_violin_median}
 \alias{plot_stat_violin_median}
-\title{plot_stat_violin_median}
+\title{plot Violin plot of sd CV or mean given intensity lower or above median}
 \usage{
-plot_stat_violin_median(data, config, stat = c("CV", "mean", "sd"))
+plot_stat_violin_median(pdata, config, stat = c("CV", "mean", "sd"))
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{stat}{either CV, mean or sd}
 }
 \description{
-plot_stat_violin_median
+plot Violin plot of sd CV or mean given intensity lower or above median
 }
 \examples{
 library(LFQService)

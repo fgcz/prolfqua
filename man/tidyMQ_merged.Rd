@@ -2,12 +2,15 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_merged}
 \alias{tidyMQ_merged}
-\title{Generating mq all level file incuding evidence - modseqPeptide still missing.}
+\title{Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence}
 \usage{
 tidyMQ_merged(txt_directory)
 }
+\arguments{
+\item{txt_directory}{or zip}
+}
 \description{
-Generating mq all level file incuding evidence - modseqPeptide still missing.
+Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
 }
 \examples{
 
@@ -15,4 +18,21 @@ txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService
 allData <- tidyMQ_merged(txt_directory)
 zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package = "LFQService")
 res <- tidyMQ_merged(zip_archive)
+
 }
+\seealso{
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
+}
+\concept{MaxQuant}
+\keyword{internal}

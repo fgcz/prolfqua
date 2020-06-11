@@ -6,13 +6,25 @@
 impute data using mean of lowest 0.1 (default)}
 \usage{
 missigness_impute_interactions(
-  mdataTrans,
+  pdata,
   config,
   factors = config$table$fkeysDepth(),
   probs = 0.1
 )
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{factors}{factor to include (default up to factor depth)}
+
+\item{probs}{quantile to take average from (default 0.1)}
+}
 \value{
+function with parameter `value`
+`c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all")`
+
 function
 }
 \description{
@@ -32,5 +44,6 @@ undebug(fun)
 xxx <- (fun("nrReplicates"))
 xxx <- fun("all")
 head(xxx)
+
 }
 \keyword{internal}

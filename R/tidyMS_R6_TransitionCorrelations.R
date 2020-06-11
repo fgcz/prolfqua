@@ -1,6 +1,10 @@
 # Direct intensity manipulation ----
 
-#' sets intensities to NA if qVal_individual_threshold exceeded
+#' remove rows were qVal_individual_threshold exceeded
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @family filter functions
@@ -8,13 +12,16 @@
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(analysis, config)
-removeLarge_Q_Values <- function(data, config){
-  data <- data %>%
+removeLarge_Q_Values <- function(pdata, config){
+  pdata <- pdata %>%
     dplyr::filter(!!sym(config$table$ident_qValue) < config$parameter$qVal_individual_threshold)
-  return(data)
+  return(pdata)
 }
 
-#' sets intensities smaller than threshold to NA
+#' remove rows where intensity lower then threshold
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @family filter functions
@@ -29,11 +36,17 @@ removeLarge_Q_Values <- function(data, config){
 #' res1 <- remove_small_intensities(analysis, config, threshold=1 )
 #' res1000 <- remove_small_intensities(analysis, config2, threshold=1000 )
 #' stopifnot(nrow(res1) >  nrow(res1000))
-remove_small_intensities <- function(data, config, threshold = 1){
-  resData <- data %>% dplyr::filter(!!sym(config$table$getWorkIntensity()) >= threshold)
+#'
+remove_small_intensities <- function(pdata, config, threshold = 1){
+  resData <- pdata %>% dplyr::filter(!!sym(config$table$getWorkIntensity()) >= threshold)
   return(resData)
 }
 #' Transform intensity
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param transformation function to transform intensities e.g. log2
+#' @param intesityNewName column name for new intensity, default NULL - generates new name from name of transformation and old working intensity column name.
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
@@ -46,10 +59,15 @@ remove_small_intensities <- function(data, config, threshold = 1){
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis
 #' x <- transform_work_intensity(analysis, config, transform = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
-transform_work_intensity <- function(data,
+#'
+transform_work_intensity <- function(pdata,
                                      config,
                                      transformation,
-                                     intesityNewName = NULL){
+                                     intesityNewName = NULL,
+                                     deep = FALSE){
+  if (deep) {
+    config <- config$clone(deep = TRUE)
+  }
   x <- as.list( match.call() )
   if (is.null(intesityNewName)) {
     newcol <- paste(as.character(x$transformation), config$table$getWorkIntensity(), sep = "_")
@@ -57,12 +75,16 @@ transform_work_intensity <- function(data,
     newcol <- intesityNewName
   }
 
-  data <- data %>% dplyr::mutate_at(config$table$getWorkIntensity(), .funs = funs(!!sym(newcol) := transformation(.)))
+  pdata <- pdata %>% dplyr::mutate_at(config$table$getWorkIntensity(), .funs = funs(!!sym(newcol) := transformation(.)))
   config$table$setWorkIntensity(newcol)
   message("Column added : ", newcol)
   config$parameter$is_intensity_transformed = TRUE
 
-  return(data)
+  if (deep) {
+    return( list(data = pdata, config = config) )
+  } else {
+    return( pdata)
+  }
 }
 
 
@@ -72,6 +94,11 @@ transform_work_intensity <- function(data,
 #' Compute QValue summaries for each precursor
 #' adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 #' srm_QValueNR - nr of precursors passing the threshold
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @return data.frame
+#'
 #' @export
 #' @keywords internal
 #' @param data data
@@ -83,7 +110,7 @@ transform_work_intensity <- function(data,
 #' head(res)
 #' hist(unique(res$srm_QValueMin))
 #' hist(unique(res$srm_QValueNR))
-summariseQValues <- function(data,
+summariseQValues <- function(pdata,
                              config
 ){
   QValueMin <- "srm_QValueMin"
@@ -98,15 +125,15 @@ summariseQValues <- function(data,
   nthbestQValue <-  function(x,qVal_minNumber_below_experiment_threshold){sort(x)[qVal_minNumber_below_experiment_threshold]}
   npass <-  function(x,thresh = qVal_experiment_threshold){sum(x < thresh)}
 
-  qValueSummaries <- data %>%
+  qValueSummaries <- pdata %>%
     dplyr::select(!!!syms(c(fileName, precursorIDs, config$table$ident_qValue))) %>%
     dplyr::group_by_at(precursorIDs) %>%
     dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,qVal_minNumber_below_experiment_threshold ),
                                                     !!QValueNR  := npass(., qVal_experiment_threshold)
     ))
-  data <- dplyr::inner_join(data, qValueSummaries, by=c(precursorIDs))
+  pdata <- dplyr::inner_join(pdata, qValueSummaries, by = c(precursorIDs))
   message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
-  return(data)
+  return(pdata)
 }
 
 #' filter data by max and min Q Value threshold
@@ -123,8 +150,8 @@ summariseQValues <- function(data,
 #' res <- filter_byQValue(LFQServiceData::sample_analysis, config)
 #' summarize_hierarchy(res, config)
 #'
-filter_byQValue <- function(data, config){
-  data_NA <- removeLarge_Q_Values(data, config)
+filter_byQValue <- function(pdata, config){
+  data_NA <- removeLarge_Q_Values(pdata, config)
   data_NA <- summariseQValues(data_NA, config)
   data_NA_QVal <- data_NA %>%
     dplyr::filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
@@ -133,19 +160,19 @@ filter_byQValue <- function(data, config){
 
 # Intensities to wide ----
 
-.ExtractMatrix <- function(x){
+.ExtractMatrix <- function(x, sep = "~lfq~"){
   idx <- sapply(x,is.numeric)
   xmat <- as.matrix(x[,idx])
-  idcols <- x %>% dplyr::select(which(!idx==TRUE))
-  if(ncol(idcols) > 0){
-    rownames(xmat) <- x %>% dplyr::select(which(!idx==TRUE)) %>%
-      tidyr::unite(x, sep="~lfq~") %>% dplyr::pull(x)
+  idcols <- x %>% dplyr::select(which(!idx == TRUE))
+  if (ncol(idcols) > 0) {
+    rownames(xmat) <- x %>% dplyr::select(which(!idx == TRUE)) %>%
+      tidyr::unite(x, sep = sep) %>% dplyr::pull(x)
   }
   xmat
 }
 
 
-#' Extract intensity column in wide format using lowest hierarchy as key.
+#' Extract intensity column in wide format
 #' @export
 #' @keywords internal
 #' @examples
@@ -179,14 +206,14 @@ filter_byQValue <- function(data, config){
 #' xx <- extractIntensities(x,conf)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
-extractIntensities <- function(x, configuration ){
-  table <- configuration$table
-  x <- x %>%
+extractIntensities <- function(pdata, config ){
+  table <- config$table
+  pdata <- pdata %>%
     dplyr::select( c( table$sampleName,
                       setdiff(table$hierarchyKeys(),table$hkeysDepth()),
                       table$getWorkIntensity()) ) %>%
     tidyr::spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
-  return(x)
+  return(pdata)
 }
 
 #' transform long to wide
@@ -231,7 +258,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
   res <- toWide( data, c(config$table$hierarchyKeys()) ,
                  newcolname,
                  value = config$table$getWorkIntensity() )
-  if(as.matrix){
+  if (as.matrix) {
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
     names <- res %>% dplyr::select_at(config$table$hierarchyKeys()) %>%
       tidyr::unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep=sep) %>% dplyr::pull()
@@ -253,18 +280,18 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #' xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
 #'
-gatherItBack <- function(x, value, config, data = NULL, sep = "~lfq~"){
-  x <- dplyr::bind_cols(
-    tibble::tibble("row.names" := rownames(x)),
-    tibble::as_tibble(x)
+gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
+  pdata <- dplyr::bind_cols(
+    tibble::tibble("row.names" := rownames(pdata)),
+    tibble::as_tibble(pdata)
   )
-  x <- tidyr::gather(x,key = !!config$table$sampleName, value = !!value, 2:ncol(x))
-  x <- tidyr::separate(x, "row.names",  config$table$hierarchyKeys(), sep = "~lfq~")
+  pdata <- tidyr::gather(pdata,key = !!config$table$sampleName, value = !!value, 2:ncol(pdata))
+  pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchyKeys(), sep = sep)
   if (!is.null(data)) {
-    x <- dplyr::inner_join(data, x)
+    pdata <- dplyr::inner_join(data, pdata)
     config$table$setWorkIntensity(value)
   }
-  return(x)
+  return(pdata)
 }
 
 robustscale <- function(data,
@@ -316,8 +343,8 @@ robust_scale <- function(data){
 #' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 applyToIntensityMatrix <- function(data, config, .func){
-  x <- as.list( match.call() )
-  colname <- make.names( paste( config$table$getWorkIntensity(), deparse(x$.func), sep = "_"))
+  xcall <- as.list( match.call() )
+  colname <- make.names( paste( config$table$getWorkIntensity(), deparse(xcall$.func), sep = "_"))
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
   data <- gatherItBack(mat, colname, config, data)
@@ -352,7 +379,7 @@ scale_with_subset <- function(data, subset, config){
 
 
 
-# Decorrelation analysis ----
+# uncorrelation analysis ----
 .findDecorrelated <- function(res, threshold = 0.65){
   if (is.null(res))
     return(NULL)
@@ -361,16 +388,13 @@ scale_with_subset <- function(data, subset, config){
   names(which((nrtrans - 1) == ids))
 }
 
-#' finds decorrelated measues
-#' @keywords internal
-#' @export
-decorelatedPly <- function(x, corThreshold = 0.7){
-  res <- LFQService::transitionCorrelationsJack(x)
+.decorelatedPly <- function(pdata, corThreshold = 0.7){
+  res <- LFQService::transitionCorrelationsJack(pdata)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
   tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
-#' marks decorrelated elements
+#' marks uncorrelated elements
 #' @export
 #' @keywords internal
 #' @importFrom purrr map
@@ -390,7 +414,7 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- qvalFiltX %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
   HLfigs2 <- qvalFiltX %>%
-    dplyr::mutate(srmDecor = map(spreadMatrix, decorelatedPly,  minCorrelation))
+    dplyr::mutate(srmDecor = map(spreadMatrix, .decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
   unnest_res <- unnest_res %>%
@@ -485,6 +509,8 @@ impute_correlationBased <- function(x , config){
 
 
 #' Compute nr of B per A
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
 #' @export
 #' @keywords internal
 #' @examples
@@ -503,14 +529,14 @@ impute_correlationBased <- function(x , config){
 #' config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 #' resDataStart <- setup_analysis(resDataStart , config)
 #' nr_B_in_A(resDataStart, config)
-#' nr_B_in_A(resDataStart, config, merge=FALSE)
+#' nr_B_in_A(resDataStart, config, merge = FALSE)
 #' config$table$hierarchyDepth <- 2
-#' nr_B_in_A(resDataStart, config, merge=FALSE)
+#' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-nr_B_in_A <- function(data, config , merge = TRUE){
+nr_B_in_A <- function(pdata, config , merge = TRUE){
   levelA <- config$table$hkeysDepth()
   levelB <- config$table$hierarchyKeys()[length(levelA) + 1]
-  .nr_B_in_A(data, levelA, levelB , merge = merge)
+  .nr_B_in_A(pdata, levelA, levelB , merge = merge)
 }
 
 
@@ -541,8 +567,9 @@ nr_B_in_A <- function(data, config , merge = TRUE){
 }
 
 #' ranks precursor - peptide by intensity.
-#'
-#' @section TODO
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
@@ -553,10 +580,10 @@ nr_B_in_A <- function(data, config , merge = TRUE){
 #' X <-res %>% dplyr::select(c(config$table$hierarchyKeys(),
 #'  srm_meanInt, srm_meanIntRank)) %>% distinct()
 #' X %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
-rankPrecursorsByIntensity <- function(data, config){
+rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  data <- .rankProteinPrecursors(data, config, column = config$table$getWorkIntensity(),
+  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
@@ -564,15 +591,21 @@ rankPrecursorsByIntensity <- function(data, config){
   )
 
   message("Columns added : ", summaryColumn, " ",  rankColumn)
-  return(data)
+  return(pdata)
 }
 
 #' aggregates top N intensities
 #'
 #' run \link{rankPrecursorsByIntensity} first
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param func function to use for aggregation
+#' @param N default 3 top intensities.
+#' @return list with data and new reduced configuration (config)
 #' @export
 #' @keywords internal
 #' @examples
+#'
 #'
 #' library(LFQService)
 #' library(tidyverse)
@@ -585,18 +618,18 @@ rankPrecursorsByIntensity <- function(data, config){
 #' res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
 #'
 #' stopifnot(dim(res$data) == c(10423, 10))
-#' stopifnot(names(res) %in% c("data", "newconfig"))
+#' stopifnot(names(res) %in% c("data", "config"))
 #'
-aggregateTopNIntensities <- function(data , config, func, N){
-  x <- as.list( match.call() )
-  newcol <- make.names(glue::glue("srm_{deparse(x$func)}_{x$N}"))
-  topInt <- data %>%
+aggregateTopNIntensities <- function(pdata , config, func, N){
+  xcall <- as.list( match.call() )
+  newcol <- make.names(glue::glue("srm_{deparse(xcall$func)}_{xcall$N}"))
+  topInt <- pdata %>%
     dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
-    dplyr::group_by(!!!syms(c( config$table$hkeysDepth(),
+    dplyr::group_by_at(c( config$table$hkeysDepth(),
                                config$table$sampleName,
                                config$table$fileName,
                                config$table$isotopeLabel,
-                               config$table$factorKeys())))
+                               config$table$factorKeys()))
   sumTopInt <- topInt %>%
     dplyr::summarize( !!newcol := func(!!sym(config$table$getWorkIntensity())),
                       ident_qValue = min(!!sym(config$table$ident_qValue)))
@@ -604,12 +637,16 @@ aggregateTopNIntensities <- function(data , config, func, N){
   newconfig <- make_reduced_hierarchy_config(config,
                                              workIntensity = newcol,
                                              hierarchy = config$table$hierarchy[1:config$table$hierarchyDepth])
-  return(list(data = sumTopInt, newconfig = newconfig))
+  return(list(data = sumTopInt, config = newconfig))
 }
 
 # Summarise NAs on lowest hierarchy ----
 
 #' Ranks precursors by NAs (adds new column .NARank)
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
@@ -623,10 +660,10 @@ aggregateTopNIntensities <- function(data , config, func, N){
 #'   distinct() %>% dplyr::summarize(sum(srm_NrNotNAs)) %>% dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 #' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
-rankPrecursorsByNAs <- function(data, config){
+rankPrecursorsByNAs <- function(pdata, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
-  data <- .rankProteinPrecursors(data, config,
+  pdata <- .rankProteinPrecursors(pdata, config,
                                 column = config$table$getWorkIntensity(),
                                 fun = function(x){sum(!is.na(x))},
                                 summaryColumn = summaryColumn,
@@ -634,10 +671,14 @@ rankPrecursorsByNAs <- function(data, config){
                                 rankFunction = function(x){min_rank(desc(x))}
   )
   message("Columns added : ", summaryColumn, " ",  rankColumn)
-  return(data)
+  return(pdata)
 }
 
 #' removes measurments with less than percent=60 missing values in factor_level = 1
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
@@ -656,16 +697,16 @@ rankPrecursorsByNAs <- function(data, config){
 #' summarize_hierarchy(res,config) %>%
 #'  dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
-filter_factor_levels_by_missing <- function(data,
+filter_factor_levels_by_missing <- function(pdata,
                                             config,
                                             percent = 60){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
   column <- table$getWorkIntensity()
 
-  data <- complete_cases( data , config)
+  pdata <- complete_cases( pdata , config)
   nrNA = function(x){sum(!is.na(x))}
-  summaryPerPrecursor <- data %>%
+  summaryPerPrecursor <- pdata %>%
     dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysDepth() ))) %>%
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
@@ -674,7 +715,7 @@ filter_factor_levels_by_missing <- function(data,
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>%
     dplyr::select(c(table$hierarchyKeys())) %>% dplyr::distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
-  res <- summaryPerPrecursorFiltered %>% left_join(data)
+  res <- summaryPerPrecursorFiltered %>% left_join(pdata)
   return( dplyr::ungroup(res))
 }
 

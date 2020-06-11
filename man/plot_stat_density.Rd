@@ -2,17 +2,26 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_density}
 \alias{plot_stat_density}
-\title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
+\title{plot density distribution or ecdf of sd, mean or CV}
 \usage{
 plot_stat_density(
-  data,
+  pdata,
   config,
   stat = c("CV", "mean", "sd"),
   ggstat = c("density", "ecdf")
 )
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{stat}{sd, mean or CV}
+
+\item{ggstat}{either density of ecdf}
+}
 \description{
-applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+plot density distribution or ecdf of sd, mean or CV
 }
 \examples{
 library(LFQService)

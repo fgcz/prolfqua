@@ -2,12 +2,19 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_violin}
 \alias{plot_stat_violin}
-\title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
+\title{plot Violin plot of sd CV or mean}
 \usage{
-plot_stat_violin(data, config, stat = c("CV", "mean", "sd"))
+plot_stat_violin(pdata, config, stat = c("CV", "mean", "sd"))
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{stat}{either CV, mean or sd}
 }
 \description{
-applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+plot Violin plot of sd CV or mean
 }
 \examples{
 library(LFQService)

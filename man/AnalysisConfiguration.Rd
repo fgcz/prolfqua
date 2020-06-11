@@ -35,10 +35,20 @@ Hello world
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create AnalysisConfiguration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new(analysisTableAnnotation, analysisParameter)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{analysisTableAnnotation}}{instance of AnalysisTableAnnotation}
+
+\item{\code{analysisParameter}}{instance of AnalysisParameter}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
