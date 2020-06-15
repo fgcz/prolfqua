@@ -61,36 +61,31 @@ protintensity_fun <- medpolish_protein_quants( normalizedData$data,
 protdata <- protintensity_fun("unnest")
 xx <- protintensity_fun("plot")
 
+prefix <- "protein_"
 if (FALSE) {
-  pdf(file.path(projectstruct$qc_path,"protein_inferences.pdf"))
+  pdf(file.path(projectstruct$qc_path,paste0(prefix ,"inference_figures.pdf")))
   lapply(xx$plot, print)
   dev.off()
 }
 
 
-#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-
 pep <- LFQData$new(filteredData$data,mqdata$config,is_pep = TRUE, prefix = "peptide_")
 prot <- LFQData$new(protdata$data,protdata$config, is_pep = FALSE, prefix = "protein_")
-
+pep$render(qc_path = projectstruct$qc_path)
+prot$render(qc_path = projectstruct$qc_path)
 
 protplotter <- prot$get_Plotter()
-
-
 protplotter$write(path_qc = projectstruct$qc_path)
-
-#dd <- protplotter$boxplots()
-#protplotter$write_boxplots(path_qc = projectstruct$qc_path)
+dd <- protplotter$boxplots()
+protplotter$write_boxplots(path_qc = projectstruct$qc_path)
 
 
 protwriter <- prot$get_Writer()
 protwriter$write_long(projectstruct$qc_path)
 protwriter$write_wide(projectstruct$qc_path)
-protwriter$file_paths
-LFQDataWriter$undebug("write_wide")
+#LFQDataWriter$undebug("write_wide")
 pepwriter <- pep$get_Writer()
 pepwriter$write_wide(projectstruct$qc_path)
-pepwriter$file_paths
 
 
 message("######################## fit mixed #######################")
@@ -104,7 +99,7 @@ reportColumns <- c("p.value",
 if (TRUE) {
 
   ### Do missing value imputation
-  #res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
+  # res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
   #                                                              normalizedData$config,
   #                                                              Contrasts)
   #debug(res_contrasts_imputed)
@@ -112,7 +107,7 @@ if (TRUE) {
   #contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
 
 
-  debug(application_run_modelling_V2)
+
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
     config = normalizedData$config,
@@ -121,29 +116,28 @@ if (TRUE) {
     modelling_dir = projectstruct$modelling_path )
 
 
-
   resXXmixmodel(do = "write_modelling")
-
   resXXmixmodel(do = "write_contrasts")
 }
 
+relevantParameters <- list(ps = projectstruct,
 
-relevantParameters <- list(outpath = projectstruct$outpath,
-                           inputMQfile = inputMQfile,
-                           modelling_dir = "modelling_results_peptide",
-                           workunit_Id = mqdata$config$workunit_Id,
+                           prefix = prefix,
                            annotation = annotation,
-                           reportColumns = reportColumns,
-                           config = mqdata$config,
+
                            model = memodel,
                            Contrasts = Contrasts,
+
+                           workunit_Id = mqdata$config$workunit_Id,
                            project_Id = mqdata$config$project_Id,
                            order_Id = mqdata$config$order_Id,
+                           inputMQfile = inputMQfile,
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
 
 
-LFQService::copy_mixed_model_analysis_script()
+#LFQService::copy_mixed_model_analysis_script()
+file.copy("../rmarkdown/mixed_model_analysis_script_Report.Rmd",".",overwrite = TRUE)
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   params = list(pars = relevantParameters),
                   output_format = "html_document",

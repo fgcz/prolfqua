@@ -352,7 +352,7 @@ pairs_smooth = function(dataframe, legend = FALSE, ...) {
                          text.col = 3)
       }
     }
-    , lower.panel = panel.cor ,
+    , lower.panel = panel.cor,
     ...
   )
 }

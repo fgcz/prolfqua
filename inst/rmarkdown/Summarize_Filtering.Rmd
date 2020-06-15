@@ -13,6 +13,10 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+dataStart <- params$dataStart
+dataEnd <- params$dataEnd
+
 ```
 
 # Filter missigness
@@ -34,6 +38,7 @@ sumarStart$hierarchy_counts()
 
 LFQService::table_facade(sumarStart$hierarchy_counts(),
              caption = "Nr Proteins and peptides before missigness filtering.")
+
 ```
 
 

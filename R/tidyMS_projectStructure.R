@@ -21,6 +21,12 @@ ProjectStructure <-
       self$qc_path = file.path(outpath, qc_path )
       self$modelling_path = file.path(outpath, modelling_path )
     },
+    qc_folder = function(){
+      basename(self$qc_path)
+    },
+    modelling_folder = function(){
+      basename(self$modelling_path)
+    },
     #' @description
     #' create
     create_outpath = function(){
@@ -49,6 +55,16 @@ ProjectStructure <-
     create = function(){
       self$creat_qc_dir()
       self$create_modelling_path()
+    },
+    #' @description
+    #' empty modelling_path and qc_path
+    reset = function(){
+      if (unlink(self$modelling_path) != 0 ) {
+        message("could not clean ",self$modelling_path)
+      }
+      if (unlink(self$qc_path) != 0) {
+        message("could not clean ",self$modelling_path)
+      }
     }
 
   )

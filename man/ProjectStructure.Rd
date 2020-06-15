@@ -23,10 +23,13 @@ keep track of folder paths and create them if needed
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ProjectStructure$new()}}
+\item \href{#method-qc_folder}{\code{ProjectStructure$qc_folder()}}
+\item \href{#method-modelling_folder}{\code{ProjectStructure$modelling_folder()}}
 \item \href{#method-create_outpath}{\code{ProjectStructure$create_outpath()}}
 \item \href{#method-creat_qc_dir}{\code{ProjectStructure$creat_qc_dir()}}
 \item \href{#method-create_modelling_path}{\code{ProjectStructure$create_modelling_path()}}
 \item \href{#method-create}{\code{ProjectStructure$create()}}
+\item \href{#method-reset}{\code{ProjectStructure$reset()}}
 \item \href{#method-clone}{\code{ProjectStructure$clone()}}
 }
 }
@@ -54,6 +57,24 @@ create ProjectStructure
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-qc_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-qc_folder}{}}}
+\subsection{Method \code{qc_folder()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$qc_folder()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-modelling_folder"></a>}}
+\if{latex}{\out{\hypertarget{method-modelling_folder}{}}}
+\subsection{Method \code{modelling_folder()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$modelling_folder()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create_outpath"></a>}}
@@ -92,6 +113,16 @@ create
 create all directories
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$create()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-reset}{}}}
+\subsection{Method \code{reset()}}{
+empty modelling_path and qc_path
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$reset()}\if{html}{\out{</div>}}
 }
 
 }

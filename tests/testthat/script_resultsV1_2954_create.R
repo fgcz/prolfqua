@@ -68,7 +68,7 @@ resFilt <-
   LFQService::filter_proteins_by_peptide_count(resDataStart, config)
 
 
-results <- LFQService::normalize_log2_robscale(resFilt$data, resFilt$config)
+results <- LFQService::normalize_log2_robscale(resFilt$data, config)
 
 protintensity <- LFQService::medpolish_protein_quants(results$data,
                                                       results$config)
@@ -78,19 +78,21 @@ LFQService::toWideConfig(protintensity$data, protintensity$config)
 
 results <- list(
   dataStart = LFQData$new(resDataStart, config),
-  dataEnd = LFQData$new(resFilt$data, resFilt$config)
+  dataEnd = LFQData$new(resFilt$data, config)
 )
 
-
 render_SummarizeFiltering_rmd(results, workdir = ".")
-#dataStart = LFQData$new(resDataStart, config)
-#dataEnd = LFQData$new(resFilt$data, resFilt$config)
+
+# dataStart = LFQData$new(resDataStart, config)
+# dataEnd = LFQData$new(resFilt$data, resFilt$config)
 
 rmarkdown::render("Summarize_Filtering.Rmd",
                   params = results,
-                  envir = new.env(), output_format = "html_document")
+                  envir = new.env(),
+                  output_format = "html_document")
 
-#rmarkdown::render("Summarize_Filtering.Rmd", params=results)
+
+rmarkdown::render("Summarize_Filtering.Rmd", params = results)
 #render_SummarizeFiltering_rmd(results, dest_path=path, dest_file_name = "SummarizeFiltering.pdf",workdir = getwd())
 
 
@@ -101,16 +103,16 @@ results$HEATMAP <- TRUE
 resultsV12954 <- results
 #usethis::use_data(resultsV12954, overwrite=TRUE)
 #saveRDS(results, file = "allData_PhonixDS_1097969.Rds")
-names(results)
-results$path
-
-res <-
-  plot_hierarchies_line_df(results$pepIntensityNormalized,
-                           results$config_pepIntensityNormalized)
-res[[1]]
-
-res <-
-  plot_hierarchies_boxplot_df(results$pepIntensityNormalized,
-                              results$config_pepIntensityNormalized)
-res[[1]]
-
+# names(results)
+# results$path
+#
+# res <-
+#   plot_hierarchies_line_df(results$pepIntensityNormalized,
+#                            results$config_pepIntensityNormalized)
+# res[[1]]
+#
+# res <-
+#   plot_hierarchies_boxplot_df(results$pepIntensityNormalized,
+#                               results$config_pepIntensityNormalized)
+# res[[1]]
+#

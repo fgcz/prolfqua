@@ -144,7 +144,10 @@ application_run_modelling_V2 <- function(data,
                                             ,contrasts_xx_imputed,
                                             config$table$hkeysDepth(),
                                             config)
-      lfq_write_table(result_table, path = file.path(modelling_path, "foldchange_estimates.csv"))
+      lfq_write_table(result_table,
+                      path = modelling_path,
+                      name = "foldchange_estimates")
+
       return(result_table)
     }
   }

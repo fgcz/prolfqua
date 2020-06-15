@@ -311,7 +311,7 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function(){
-      hierarchy_counts(self$lfq$data, self$lfq$config)
+      LFQService::hierarchy_counts(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' number of elements at each level in every sample
@@ -396,7 +396,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @field file_paths with paths to figures
     lfq = NULL,
     prefix = "",
-    file_paths = list(),
+    file_paths_pdf = list(),
+    file_paths_html = list(),
     #' @description
     #' create LFQDataPlotter
     #' @param lfqdata LFQData
@@ -536,7 +537,7 @@ LFQDataPlotter <- R6::R6Class(
       htmlwidgets::saveWidget(widget = fig,
                               file = fname )
       file.rename(fname, html_path)
-      self$file_paths[[fig_name]] <- html_path
+      self$file_paths_html[[fig_name]] <- html_path
       invisible(html_path)
     },
     #' @description
@@ -562,7 +563,7 @@ LFQDataPlotter <- R6::R6Class(
         print(fig)
       #}
       graphics.off()
-      self$file_paths[[fig_name]] <- fpath
+      self$file_paths_pdf[[fig_name]] <- fpath
       invisible(fpath)
     },
     #' @description
