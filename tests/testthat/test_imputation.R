@@ -58,7 +58,7 @@ config$table$workIntensity
 filteredPep <- LFQService::transform_work_intensity(resDataStart, config, log2)
 
 #
-impfac_int <- missigness_impute_factors_interactions(filteredPep, config,"imputed")
+impfac_int <- missigness_impute_factors_interactions(filteredPep, config, value = "imputed")
 
 
 

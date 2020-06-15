@@ -100,12 +100,18 @@ reportColumns <- c("p.value",
                    "p.value.adjusted")
 
 
-
-
-
-
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
+
+  ### Do missing value imputation
+  #res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
+  #                                                              normalizedData$config,
+  #                                                              Contrasts)
+  #debug(res_contrasts_imputed)
+  #xx <- res_contrasts_imputed(DEBUG = TRUE)
+  #contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
+
+
   debug(application_run_modelling_V2)
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
@@ -114,12 +120,6 @@ if (TRUE) {
     contrasts = Contrasts,
     modelling_dir = projectstruct$modelling_path )
 
-  ### Do missing value imputation
-  res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
-                                                                normalizedData$config,
-                                                                Contrasts)
-  debug(res_contrasts_imputed)
-  contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
 
 
   resXXmixmodel(do = "write_modelling")

@@ -880,10 +880,10 @@ workflow_missigness_impute_contrasts <- function(data,
                                                  config,
                                                  contrasts){
 
-  xx <- missigness_impute_factors_interactions(data, config, "imputed" )
+  xx <- missigness_impute_factors_interactions(data, config, value = "imputed" )
   message("missigness_impute_factors_interactions : imputed")
   imputed <- missigness_impute_contrasts(xx, config, contrasts)
-  xx <- missigness_impute_factors_interactions(data, config, "meanArea" )
+  xx <- missigness_impute_factors_interactions(data, config, value = "meanArea" )
   message("missigness_impute_factors_interactions : meanArea")
   mean <- missigness_impute_contrasts(xx, config, contrasts)
 
