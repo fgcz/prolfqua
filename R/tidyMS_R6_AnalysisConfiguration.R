@@ -286,7 +286,7 @@ R6extractValues <- function(r6class){
 #' @keywords internal
 #' @examples
 #'
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
@@ -424,7 +424,7 @@ table_factors <- function(pdata, configuration){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
+#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
 #' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
@@ -446,7 +446,7 @@ hierarchy_counts <- function(pdata, config){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
+#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
@@ -497,7 +497,7 @@ hierarchy_counts_sample <- function(pdata,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
@@ -547,7 +547,7 @@ summarize_hierarchy <- function(pdata,
 #' @importFrom dplyr group_by_at
 #' @examples
 #' library(LFQService)
-#' skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+#' skylineconfig <- create_config_Skyline(isotopeLabel="Isotope.Label.Type",
 #'   ident_qValue="Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
@@ -602,12 +602,20 @@ summarize_protein <- function(pdata, config ){
 #' xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
 #'    skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
-#' interaction_missing_stats(xx, skylineconfig)$data %>% arrange(desc(nrNAs))
+#' nrow(xx)
+#' x <- interaction_missing_stats(xx, skylineconfig)$data %>% arrange(desc(nrNAs))
+#' stopifnot(nrow(x) == 7416)
+#' stopifnot(sum(is.na(x$meanArea)) == 249)
+#' stopifnot(length(unique(x$protein_Id)) == 37)
+#'
 #' tmp <- interaction_missing_stats(xx, skylineconfig,
 #'  factors= character(),
 #'   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
-#' tmp %>% mutate(perc = nrNAs/nrReplicates )
-#' summarize_hierarchy(xx , skylineconfig)
+#' stopifnot(nrow(tmp) == 37)
+#'
+#' tmp <- interaction_missing_stats(xx, skylineconfig,
+#'   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+#' stopifnot(sum(is.na(tmp$nrMeasured))==0)
 #'
 interaction_missing_stats <- function(pdata,
                                       config,
@@ -648,14 +656,21 @@ interaction_missing_stats <- function(pdata,
 #' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' sample_analysis <- LFQServiceData::sample_analysis
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
+#'
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
+#'
 #' tmp <- interaction_missing_stats(xx, skylineconfig)
+#' head(tmp)
 #' fun <- missigness_impute_interactions(xx, skylineconfig)
 #' dd <- fun("long")
 #' head(dd)
 #' undebug(fun)
+#' xx <- fun(DEBUG=TRUE)
+#' sum(is.na(xx$long$nrReplicates))
 #' xxx <- (fun("nrReplicates"))
+#' head(xxx)
+#'
 #' xxx <- fun("all")
 #' head(xxx)
 #'
@@ -701,15 +716,15 @@ missigness_impute_interactions <- function(pdata,
 
       pid <- config$table$hkeysDepth()
       nrReplicates <- xx %>%
-        dplyr::select( -one_of(setdiff(x_summaries,"nrReplicates" ))) %>%
+        dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) %>%
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
         dplyr::ungroup()
-      nrMeasured <- xx%>% dplyr::select(-one_of(setdiff(x_summaries,"nrMeasured" ) )) %>%
+      nrMeasured <- xx %>% dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) %>%
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanArea <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"meanArea" ) )) %>%
+      meanArea <- xx %>% dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) %>%
         tidyr::spread(interaction, meanArea, sep = ".meanArea.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
@@ -775,12 +790,14 @@ missigness_impute_interactions <- function(pdata,
 #' skylineconfig$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 #' xx <- complete_cases(xx, skylineconfig)
+#' #undebug(missigness_impute_factors_interactions)
 #' fun <- missigness_impute_factors_interactions(xx, skylineconfig)
+#' head(fun)
 #' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 #' head(fun)
 #' dim(fun)
 #' dim(distinct(fun[,1:6]))
-#'
+#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "nrMeasured")
 missigness_impute_factors_interactions <-
   function(pdata,
            config,
@@ -811,9 +828,33 @@ missigness_impute_factors_interactions <-
     return(intfact)
   }
 
+
+
 #' Compute fold changes given Contrasts
 #' @keywords internal
 #' @export
+#'
+#' @examples
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#' config <- LFQServiceData::skylineconfig$clone( deep=TRUE )
+#' sample_analysis <- LFQServiceData::sample_analysis
+#' config$parameter$qVal_individual_threshold <- 0.01
+#' data <- LFQService::removeLarge_Q_Values(sample_analysis, config)
+#' data <- complete_cases(data, config)
+#'
+#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' message("missigness_impute_factors_interactions : imputed")
+#' xx <- missigness_impute_factors_interactions(data, config, value = "nrMeasured" )
+#' imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+#'
+#' xx <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+#' imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+#' xx <- missigness_impute_factors_interactions(data, config, value = "meanArea" )
+#' message("missigness_impute_factors_interactions : meanArea")
+#' mean <- missigness_impute_contrasts(xx, config, Contrasts)
+#'
 missigness_impute_contrasts <- function(data,
                                         config,
                                         contrasts,
@@ -866,7 +907,7 @@ workflow_missigness_impute_contrasts <- function(data,
     if (what == "contrasts") {
       dd_long <- dplyr::filter(dd_long, contrast %in% names(contrasts))
     }else if (what == "factors") {
-      dd_long <- dplyr::filter(dd_long, ! contrast %in% names(contrasts))
+      dd_long <- dplyr::filter(dd_long, !contrast %in% names(contrasts))
     }else if (what == "all") {
     }
 

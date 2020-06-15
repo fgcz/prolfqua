@@ -25,4 +25,19 @@ cortest <- function(x){print(dim(x));cor(x)}
 my_jackknife(xx, cortest)
 my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

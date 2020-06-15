@@ -6,6 +6,13 @@
 \usage{
 my_contest(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 }
+\arguments{
+\item{linfct}{linear function}
+
+\item{ddf}{method to determine denominator degrees of freedom}
+
+\item{m}{mixed effects model}
+}
 \description{
 applies contrast computation using lmerTest::contest function
 }

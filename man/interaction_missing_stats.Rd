@@ -35,12 +35,20 @@ skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
    skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
-interaction_missing_stats(xx, skylineconfig)$data \%>\% arrange(desc(nrNAs))
+nrow(xx)
+x <- interaction_missing_stats(xx, skylineconfig)$data \%>\% arrange(desc(nrNAs))
+stopifnot(nrow(x) == 7416)
+stopifnot(sum(is.na(x$meanArea)) == 249)
+stopifnot(length(unique(x$protein_Id)) == 37)
+
 tmp <- interaction_missing_stats(xx, skylineconfig,
  factors= character(),
   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
-tmp \%>\% mutate(perc = nrNAs/nrReplicates )
-summarize_hierarchy(xx , skylineconfig)
+stopifnot(nrow(tmp) == 37)
+
+tmp <- interaction_missing_stats(xx, skylineconfig,
+  hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+stopifnot(sum(is.na(tmp$nrMeasured))==0)
 
 }
 \keyword{internal}

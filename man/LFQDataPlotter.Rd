@@ -43,6 +43,13 @@ lfqplotter$sample_correlation()
 LFQService::plot_sample_correlation(istar$data, istar$config)
 
 }
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataStats}},
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQData}}
+}
+\concept{LFQData}
 \keyword{static}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

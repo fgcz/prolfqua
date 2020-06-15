@@ -1,10 +1,11 @@
 #' This function sets up an example configuration
+#'
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue annotation_QValue
 #' @export
-#' @family configuration
+#' @family concrete_configuration
 #' @examples
-#' skylineconfig <- createSkylineConfiguration()
+#' skylineconfig <- create_config_Skyline()
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylineconfig$table$factorKeys()
 #' skylineconfig$table$hierarchyKeys()
@@ -24,14 +25,14 @@ create_config_Skyline <- function(isotopeLabel="Isotope.Label",
   atable$setWorkIntensity("Area")
   atable$isotopeLabel = isotopeLabel
   anaparam <- AnalysisParameters$new()
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  AnalysisConfiguration$new(atable, anaparam)
 }
 
 #' This function sets up an example spectronaut configuration
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue EG.Qvalue
 #' @export
-#' @family configuration
+#' @family concrete_configuration
 #' @examples
 #' spectronautconfig <- create_config_Spectronaut_Peptide()
 #' config <- create_config_Spectronaut_Peptide()
@@ -56,7 +57,7 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
   atable$workIntensity = "FG.Quantity"
   atable$isotopeLabel = isotopeLabel
   anaparam <- AnalysisParameters$new()
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  AnalysisConfiguration$new(atable, anaparam)
 }
 
 #' MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
@@ -64,7 +65,7 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
 #' @param intensity peptide.intensity
 #' @param isotopeLabel isotope
 #' @export
-#' @family configuration
+#' @family concrete_configuration
 #'
 create_config_MQ_peptide <- function(ident_qValue = "pep",
                                   intensity = "peptide.intensity",
@@ -89,7 +90,7 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
 
 #' Create configuration for MSFragger output
 #' @param min_peptides_protein min peptides per protein
-#' @family configuration
+#' @family concrete_configuration
 #' @export
 create_config_MSFragger_MSstats <- function(){
   ## Tell LFQ Service what column is what.

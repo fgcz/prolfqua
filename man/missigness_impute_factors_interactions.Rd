@@ -35,11 +35,13 @@ sample_analysis <- LFQServiceData::sample_analysis
 skylineconfig$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
 xx <- complete_cases(xx, skylineconfig)
+#undebug(missigness_impute_factors_interactions)
 fun <- missigness_impute_factors_interactions(xx, skylineconfig)
+head(fun)
 fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 head(fun)
 dim(fun)
 dim(distinct(fun[,1:6]))
-
+fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "nrMeasured")
 }
 \keyword{internal}

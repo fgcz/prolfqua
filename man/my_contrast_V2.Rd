@@ -6,6 +6,13 @@
 \usage{
 my_contrast_V2(m, linfct, confint = 0.95)
 }
+\arguments{
+\item{m}{linear model generated using lm}
+
+\item{linfct}{linear function}
+
+\item{confint}{confidence interval default 0.95}
+}
 \description{
 only keeps non NA coefficients.
 }

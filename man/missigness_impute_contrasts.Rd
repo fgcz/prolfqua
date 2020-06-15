@@ -14,4 +14,26 @@ missigness_impute_contrasts(
 \description{
 Compute fold changes given Contrasts
 }
+\examples{
+
+library(LFQService)
+library(tidyverse)
+config <- LFQServiceData::skylineconfig$clone( deep=TRUE )
+sample_analysis <- LFQServiceData::sample_analysis
+config$parameter$qVal_individual_threshold <- 0.01
+data <- LFQService::removeLarge_Q_Values(sample_analysis, config)
+data <- complete_cases(data, config)
+
+Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+message("missigness_impute_factors_interactions : imputed")
+xx <- missigness_impute_factors_interactions(data, config, value = "nrMeasured" )
+imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+
+xx <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+xx <- missigness_impute_factors_interactions(data, config, value = "meanArea" )
+message("missigness_impute_factors_interactions : meanArea")
+mean <- missigness_impute_contrasts(xx, config, Contrasts)
+
+}
 \keyword{internal}

@@ -6,6 +6,13 @@
 \usage{
 my_contrast_V1(incomplete, linfct, confint = 0.95)
 }
+\arguments{
+\item{linfct}{linear function}
+
+\item{confint}{confidence interval default 0.95}
+
+\item{m}{linear model generated using lm}
+}
 \description{
 handles incomplete models by setting coefficients to 0
 }
@@ -13,7 +20,6 @@ handles incomplete models by setting coefficients to 0
 m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 m
-my_glht(m, linfct)
 my_contrast_V1(m, linfct, confint = 0.95)
 my_contrast_V1(m, linfct, confint = 0.99)
 }

@@ -16,3 +16,9 @@ Compute correlation matrix
 correlatedPeptideList <- LFQServiceData::correlatedPeptideList
 transitionCorrelations(correlatedPeptideList[[1]])
 }
+\seealso{
+Other transitionCorrelations: 
+\code{\link{transitionCorrelationsJack}()}
+}
+\concept{transitionCorrelations}
+\keyword{internal}

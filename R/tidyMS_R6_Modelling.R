@@ -559,12 +559,15 @@ plot_lmer_peptide_predictions <- function(m){
 
 
 #' plot peptide intensities per interaction with random effects removed
+#'
+#' @param m model
+#' @param legend.position none
 #' @export
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' m <-LFQServiceData::basicModel_p1807
+#' m <- LFQServiceData::basicModel_p1807
 #' plot_lmer_peptide_noRandom(m)
 #'
 #' m <- LFQServiceData::interactionModel_p1807
@@ -597,11 +600,14 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
 
 #' plot intensities per interaction with Two
 #'  independent random effects removed (1|A) + (1|B)
+#'  @param m model
+#'  @param legend.position none
+#'  @param firstlast todo
 #' @export
 #' @keywords internal
 #' @examples
-#' m <- LFQServiceData::interactionModel_p1807
-#' #plot_lmer_peptide_noRandom_TWO(m)
+#' #todo look up example
+#'
 plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
 
   updateDataWithRandom <- function(data, m, i, randeffect){
@@ -670,6 +676,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' @export
 #' @keywords internal
 #' @examples
+#' library(LFQService)
 #' m <- LFQServiceData::interactionModel_p1807
 #' plot_lmer_model_and_data(m,"dumm")
 #'
@@ -683,8 +690,13 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 
 #' Plotting two independent random effects
 #' @export
+#' @examples
+#' #todo
 #'
-plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" , firstlast= TRUE){
+plot_lmer_model_and_data_TWO <- function(m,
+                                         proteinID,
+                                         legend.position = "none" ,
+                                         firstlast= TRUE){
   gg <- plot_lmer_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
   gg <- plot_lmer_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
@@ -724,7 +736,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 
 
 .get_match_idx <- function(mm, factor_level){
-  ddd <- split2table(rownames(mm), split=":")
+  ddd <- split2table(rownames(mm), split = ":")
   xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
   idx <- which(apply(xd,1, sum) > 0)
   return(idx)
@@ -743,6 +755,7 @@ plot_lmer_model_and_data_TWO <- function(m, proteinID, legend.position = "none" 
 }
 
 #' get linfct from model
+#' @param m linear model
 #' @export
 #' @keywords internal
 #' @examples
@@ -807,6 +820,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 #' linfct_matrix_contrasts(linfct, Contrasts )
+#'
 linfct_matrix_contrasts <- function(linfct , contrasts){
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
@@ -937,6 +951,11 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 }
 
 #' compute contrasts for full models
+#' @param m linear model generated using lm
+#' @param linfct linear function
+#' @param coef use default
+#' @param use default
+#' @param confint which confidence interval to determine
 #'
 #' @export
 #' @keywords internal
@@ -951,7 +970,8 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 my_contrast <- function(m,
                         linfct,
                         coef = coefficients(m),
-                        Sigma.hat = vcov(m), confint = 0.95){
+                        Sigma.hat = vcov(m),
+                        confint = 0.95){
 
   df <- df.residual(m)
   sigma <- sigma(m)
@@ -991,13 +1011,16 @@ my_contrast <- function(m,
 }
 
 #' handles incomplete models by setting coefficients to 0
+#' @param m linear model generated using lm
+#' @param linfct linear function
+#' @param confint confidence interval default 0.95
+#'
 #' @export
 #' @keywords internal
 #' @examples
 #' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' m
-#' my_glht(m, linfct)
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
 my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
@@ -1015,6 +1038,10 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' handles incomplete models
 #'
 #' only keeps non NA coefficients.
+#'
+#' @param m linear model generated using lm
+#' @param linfct linear function
+#' @param confint confidence interval default 0.95
 #'
 #' @export
 #' @keywords internal
@@ -1060,6 +1087,9 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 }
 
 #' applies contrast computation using lmerTest::contest function
+#' @param m mixed effects model
+#' @param linfct linear function
+#' @param ddf method to determine denominator degrees of freedom
 #' @export
 #' @keywords internal
 #' @examples
@@ -1088,10 +1118,6 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
   if (length(lme4::fixef(model)) != ncol(linfct) ) {
     warning("Model is rank deficient!")
     return(NA) # catch rank defficient
-    #res <- lmerTest::contest(model,
-    #                         linfct[,names(lme4::fixef(model))],
-    #                         joint = FALSE,
-    #                         confint = TRUE)
   }else{
     res <- lmerTest::contest(model,
                              linfct,
@@ -1118,7 +1144,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' dd <- LFQServiceData::factor_levelContrasts
 #' head(dd)
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
-#' colnames(tmp)
+#' tmp
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
                                          columns = c("estimate", "p.value","p.value.adjusted")){

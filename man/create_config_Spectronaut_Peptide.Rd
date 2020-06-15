@@ -27,9 +27,9 @@ config$table$factors[["Sample_id"]] = "Sample.Name"
 
 }
 \seealso{
-Other configuration: 
+Other concrete_configuration: 
 \code{\link{create_config_MQ_peptide}()},
 \code{\link{create_config_MSFragger_MSstats}()},
 \code{\link{create_config_Skyline}()}
 }
-\concept{configuration}
+\concept{concrete_configuration}

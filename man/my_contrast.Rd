@@ -12,6 +12,17 @@ my_contrast(
   confint = 0.95
 )
 }
+\arguments{
+\item{m}{linear model generated using lm}
+
+\item{linfct}{linear function}
+
+\item{coef}{use default}
+
+\item{confint}{which confidence interval to determine}
+
+\item{use}{default}
+}
 \description{
 compute contrasts for full models
 }

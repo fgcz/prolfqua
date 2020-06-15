@@ -8,9 +8,9 @@ Write LFQ data, or provide outputs for writing.
 
 Write LFQ data, or provide outputs for writing.
 }
-\details{
-returns long and wide format for writing
-}
+\concept{LFQData
+
+returns long and wide format for writing}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

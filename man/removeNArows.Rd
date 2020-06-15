@@ -27,4 +27,19 @@ stopifnot(all(c(9,10)==dim(x1)))
 x2 = removeNArows(obj, thresh=1)
 stopifnot(all(c(10,10)==dim(x2)))
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

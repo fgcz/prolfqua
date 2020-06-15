@@ -18,15 +18,15 @@ create_config_Skyline(
 This function sets up an example configuration
 }
 \examples{
-skylineconfig <- createSkylineConfiguration()
+skylineconfig <- create_config_Skyline()
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 skylineconfig$table$factorKeys()
 skylineconfig$table$hierarchyKeys()
 }
 \seealso{
-Other configuration: 
+Other concrete_configuration: 
 \code{\link{create_config_MQ_peptide}()},
 \code{\link{create_config_MSFragger_MSstats}()},
 \code{\link{create_config_Spectronaut_Peptide}()}
 }
-\concept{configuration}
+\concept{concrete_configuration}

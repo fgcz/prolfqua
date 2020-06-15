@@ -13,9 +13,9 @@ create_config_MSFragger_MSstats()
 Create configuration for MSFragger output
 }
 \seealso{
-Other configuration: 
+Other concrete_configuration: 
 \code{\link{create_config_MQ_peptide}()},
 \code{\link{create_config_Skyline}()},
 \code{\link{create_config_Spectronaut_Peptide}()}
 }
-\concept{configuration}
+\concept{concrete_configuration}

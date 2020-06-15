@@ -14,3 +14,7 @@ plot_lmer_model_and_data_TWO(
 \description{
 Plotting two independent random effects
 }
+\examples{
+#todo
+
+}

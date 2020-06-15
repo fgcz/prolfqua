@@ -9,3 +9,8 @@ application_summarize_compound(data, config, qc_path, prefix = c("ms"))
 \description{
 Used for metabolomics data analysis.
 }
+\examples{
+#todo
+
+}
+\keyword{internal}

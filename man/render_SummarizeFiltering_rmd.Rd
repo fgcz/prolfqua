@@ -11,9 +11,20 @@ render_SummarizeFiltering_rmd(
   workdir = tempdir()
 )
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
 \description{
 render Filtering Summary.
 }
 \examples{
 
 }
+\seealso{
+Other vignetteHelpers: 
+\code{\link{render_MQSummary_rmd}()}
+}
+\concept{vignetteHelpers}
+\keyword{internal}

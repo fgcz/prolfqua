@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_application.R
 \name{application_run_modelling_V2}
 \alias{application_run_modelling_V2}
-\title{run the modelling using lmer and lm models}
+\title{run the modelling using lmer or lm models}
 \usage{
 application_run_modelling_V2(
   data,
@@ -19,7 +19,7 @@ application_run_modelling_V2(
 \item{do_not_report}{contrasts not to report}
 }
 \description{
-run the modelling using lmer and lm models
+run the modelling using lmer or lm models
 }
 \examples{
 

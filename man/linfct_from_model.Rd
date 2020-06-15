@@ -6,6 +6,9 @@
 \usage{
 linfct_from_model(m, as_list = TRUE)
 }
+\arguments{
+\item{m}{linear model}
+}
 \description{
 get linfct from model
 }

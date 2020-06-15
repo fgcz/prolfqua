@@ -1,6 +1,6 @@
 
 # Functions - Plotting ----
-#' Plot peptide and fragments
+# Plot peptide and fragments
 plot_hierarchies_line_default <- function(data,
                                           proteinName,
                                           sample,

@@ -5,7 +5,7 @@
 \title{render MQ Summary.}
 \usage{
 render_MQSummary_rmd(
-  data,
+  pdata,
   config,
   pep = TRUE,
   dest_path = ".",
@@ -13,6 +13,11 @@ render_MQSummary_rmd(
   workdir = tempdir(),
   format = c("pdf", "html")
 )
+}
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
 }
 \description{
 render MQ Summary.
@@ -23,3 +28,9 @@ render_MQSummary_rmd(LFQServiceData::sample_analysis,
   config , workdir=tempdir(check = FALSE))
 
 }
+\seealso{
+Other vignetteHelpers: 
+\code{\link{render_SummarizeFiltering_rmd}()}
+}
+\concept{vignetteHelpers}
+\keyword{internal}

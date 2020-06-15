@@ -18,7 +18,7 @@ Works for one isotope label level only
 }
 \examples{
 library(LFQService)
-skylineconfig <- createSkylineConfiguration(isotopeLabel="Isotope.Label.Type",
+skylineconfig <- create_config_Skyline(isotopeLabel="Isotope.Label.Type",
   ident_qValue="Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData

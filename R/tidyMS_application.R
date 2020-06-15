@@ -64,7 +64,8 @@
   return(filtered_dd)
 }
 
-#' run the modelling using lmer and lm models
+#' run the modelling using lmer or lm models
+#'
 #' @param do_not_report contrasts not to report
 #' @export
 #' @examples
@@ -76,7 +77,7 @@ application_run_modelling_V2 <- function(data,
                                          modelling_dir = "modelling_results_protein" ,
                                          remove_imputed = TRUE,
                                          do_not_report = "",
-                                         DEBUG= FALSE)
+                                         DEBUG = FALSE)
 {
   # create result structure
   modelling_path <- modelling_dir
@@ -153,10 +154,13 @@ application_run_modelling_V2 <- function(data,
 
 
 
-#' add Annotation to an MQ output
+#' Add Annotation to a data.frame in long format
+#' @family setup
 #'
 #' for an usage example see run_script lfq_mixed_model_inference
-#' @param use use either peptide txt or mod specific peptide
+#' @param intensityData data imported using ``
+#' @param inputAnnotation annotation
+#' @param fileName column name to join on.
 #' @export
 #'
 application_add_annotation <- function(intensityData,
@@ -189,8 +193,10 @@ application_add_annotation <- function(intensityData,
 
 
 #' Used for metabolomics data analysis.
-#'
+#' @keywords internal
 #' @export
+#' @examples
+#' #todo
 #'
 application_summarize_compound <- function(data,
                                            config,

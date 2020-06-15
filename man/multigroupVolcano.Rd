@@ -57,4 +57,19 @@ library(tidyverse)
 library(ggrepel)
 multigroupVolcano(LFQServiceData::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

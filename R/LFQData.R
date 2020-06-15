@@ -2,7 +2,7 @@
 #'
 #' LFQData R6 class
 #' @export
-#'
+#' @family LFQData
 #' @examples
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQServiceData::dataIonstarFilteredPep
@@ -112,6 +112,7 @@ LFQData <- R6::R6Class(
 # LFQDataStats-----
 #' compute stdv, mean and CV per peptide or protein and condition.
 #' @export
+#' @family LFQData
 #' @examples
 #'
 #' # study variance of not normalized data
@@ -279,6 +280,7 @@ LFQDataStats <- R6::R6Class(
 # LFQDataSummariser ----
 #' generate dataset summaries.
 #' @export
+#' @family LFQData
 #' @examples
 #' library(tidyverse)
 #'
@@ -351,6 +353,7 @@ LFQDataSummariser <- R6::R6Class(
 #' write intensites into folder - for the moment protein
 #' @export
 #'
+#' @family LFQData
 #' @examples
 #'
 #' source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
@@ -588,6 +591,7 @@ LFQDataPlotter <- R6::R6Class(
 
 # LFQDataWriter -----
 #' Write LFQ data, or provide outputs for writing.
+#' @family LFQData
 #'
 #' returns long and wide format for writing
 #' @export

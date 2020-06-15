@@ -23,4 +23,19 @@ matrix_to_tibble(x)
 !(is.matrix(x) || is.data.frame(x))
 
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

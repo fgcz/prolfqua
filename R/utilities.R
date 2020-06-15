@@ -1,6 +1,7 @@
 #' Removes rows with more than thresh NA's from matrix
 #' @export
 #' @keywords internal
+#' @family utilities
 #' @return matrix
 #' @param obj matrix or dataframe
 #' @param thresh - maximum number of NA's / row - if more the row will be removed
@@ -22,6 +23,7 @@ removeNArows <- function(obj, thresh=0 )
 #' splits names and creates a matrix
 #' @export
 #' @keywords internal
+#' @family utilities
 #' @param names vector with names
 #' @param split patter to use to split
 #' @return matrix
@@ -55,6 +57,7 @@ split2table <- function(names,split="\\||\\_")
 #' @import ggplot2
 #' @export
 #' @keywords internal
+#' @family utilities
 #' @examples
 #' library(ggplot2)
 #' library(tidyverse)
@@ -113,6 +116,7 @@ multigroupVolcano <- function(misspX,
 #' @importFrom dplyr bind_cols
 #' @importFrom tibble tibble as_tibble
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @examples
 #' x <- matrix(rnorm(20), ncol=4)
@@ -154,6 +158,7 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 #' @param ... further parameters to .method
 #' @return list with all jackknife matrices
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @examples
 #' xx <- matrix(rnorm(20), ncol=4)
@@ -179,6 +184,7 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' @param distmethod dist or correlation method working with matrix i.e. cor
 #' @param ... further parameters to method
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @importFrom tidyr gather spread
 #' @importFrom plyr ldply
@@ -225,6 +231,7 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 #' @param legend  add legend to plots
 #' @param pch point type default "."
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
@@ -260,6 +267,7 @@ pairs_w_abline <- function(dataframe,
 }
 #' histogram panel for pairs function (used as default in pairs_smooth)
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
@@ -278,6 +286,7 @@ panel.hist <- function(x, ...)
 }
 #' correlation panel for pairs plot function (used as default in pairs_smooth)
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @param x numeric data
 #' @param y numeric data
@@ -315,6 +324,7 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' @param legend  add legend to plots
 #' @param ... params usually passed to pairs
 #' @export
+#' @family utilities
 #' @keywords internal
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
@@ -351,14 +361,17 @@ pairs_smooth = function(dataframe, legend = FALSE, ...) {
 
 #' table facade to easily switch implementations
 #' @export
+#' @family utilities
 #' @keywords internal
 table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
   if (kable) {
     knitr::kable(df, digits = digits, caption = caption )
   }
 }
+
 #' table facade to easily switch implementations
 #' @export
+#' @family utilities
 #' @keywords internal
 table_facade.list <- function(parlist, kable=TRUE){
   table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )

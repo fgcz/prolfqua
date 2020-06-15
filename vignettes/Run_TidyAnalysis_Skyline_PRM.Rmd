@@ -41,7 +41,7 @@ outdir <- tempdir()
 skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 
 skylineconfig <-
-  createSkylineConfiguration(isotopeLabel = "Isotope.Label.Type",
+  create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
                              ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 resData <- setup_analysis(skylinePRMSampleData, skylineconfig)

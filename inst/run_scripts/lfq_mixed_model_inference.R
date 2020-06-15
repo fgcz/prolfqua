@@ -51,7 +51,7 @@ filteredData <- filter_proteins_by_peptide_count(mqdata$data,
                                                  mqdata$config)
 
 normalizedData <- normalize_log2_robscale(filteredData$data,
-                                          filteredData$config)
+                                          mqdata$config)
 
 
 
@@ -70,8 +70,9 @@ if (FALSE) {
 
 #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 
-pep <- LFQData$new(filteredData$data,filteredData$config,is_pep = TRUE, prefix = "peptide_")
+pep <- LFQData$new(filteredData$data,mqdata$config,is_pep = TRUE, prefix = "peptide_")
 prot <- LFQData$new(protdata$data,protdata$config, is_pep = FALSE, prefix = "protein_")
+
 
 protplotter <- prot$get_Plotter()
 
@@ -86,6 +87,7 @@ protwriter <- prot$get_Writer()
 protwriter$write_long(projectstruct$qc_path)
 protwriter$write_wide(projectstruct$qc_path)
 protwriter$file_paths
+LFQDataWriter$undebug("write_wide")
 pepwriter <- pep$get_Writer()
 pepwriter$write_wide(projectstruct$qc_path)
 pepwriter$file_paths
@@ -104,13 +106,21 @@ reportColumns <- c("p.value",
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
-  undebug(application_run_modelling_V2)
+  debug(application_run_modelling_V2)
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
     config = normalizedData$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
     modelling_dir = projectstruct$modelling_path )
+
+  ### Do missing value imputation
+  res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
+                                                                normalizedData$config,
+                                                                Contrasts)
+  debug(res_contrasts_imputed)
+  contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
+
 
   resXXmixmodel(do = "write_modelling")
 

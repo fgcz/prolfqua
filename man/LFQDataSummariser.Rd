@@ -25,6 +25,13 @@ sum$missingness_per_condition()
 sum$missingness_per_condition_cumsum()
 
 }
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataStats}},
+\code{\link{LFQData}}
+}
+\concept{LFQData}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_application.R
 \name{application_add_annotation}
 \alias{application_add_annotation}
-\title{add Annotation to an MQ output}
+\title{Add Annotation to a data.frame in long format}
 \usage{
 application_add_annotation(
   intensityData,
@@ -11,8 +11,15 @@ application_add_annotation(
 )
 }
 \arguments{
-\item{use}{use either peptide txt or mod specific peptide}
+\item{intensityData}{data imported using ``}
+
+\item{inputAnnotation}{annotation}
+
+\item{fileName}{column name to join on.}
 }
 \description{
-for an usage example see run_script lfq_mixed_model_inference
+Add Annotation to a data.frame in long format
 }
+\concept{setup
+
+for an usage example see run_script lfq_mixed_model_inference}

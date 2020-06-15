@@ -14,4 +14,19 @@ panel.hist(x, ...)
 \description{
 histogram panel for pairs function (used as default in pairs_smooth)
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

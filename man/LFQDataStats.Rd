@@ -50,6 +50,13 @@ lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
 }
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQData}}
+}
+\concept{LFQData}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

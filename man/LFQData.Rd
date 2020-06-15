@@ -18,6 +18,13 @@ lfqdata$factors()
 
 
 }
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataStats}},
+\code{\link{LFQDataSummariser}}
+}
+\concept{LFQData}
 \keyword{todo}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

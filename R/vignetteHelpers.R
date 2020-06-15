@@ -83,6 +83,11 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
   }
 
 #' render MQ Summary.
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @family vignetteHelpers
+#' @keywords internal
 #' @export
 #' @examples
 #' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
@@ -90,7 +95,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #'   config , workdir=tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <-
-  function(data,
+  function(pdata,
            config,
            pep = TRUE,
            dest_path = ".",
@@ -100,7 +105,7 @@ render_MQSummary_rmd <-
   {
     dist_file_path <- .run_markdown_with_params(
       list(
-        data = data,
+        data = pdata,
         configuration = config,
         pep = pep
       ),
@@ -117,6 +122,12 @@ render_MQSummary_rmd <-
 
 
 #' render Filtering Summary.
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @family vignetteHelpers
+#' @keywords internal
+#'
 #' @export
 #' @examples
 #'

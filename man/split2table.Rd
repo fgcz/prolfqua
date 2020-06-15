@@ -21,4 +21,19 @@ splits names and creates a matrix
 dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
 split2table(dat,split="\\\\_|\\\\/")
 }
+\seealso{
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+}
+\concept{utilities}
 \keyword{internal}

@@ -41,7 +41,7 @@ outdir <- tempdir()
 ```{r loadDataCreateConfig}
 allDataM <- LFQServiceData::skylineSRM_HL_data
 
-skylineconfig <- createSkylineConfiguration(isotopeLabel = "Isotope.Label",
+skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label",
                                             ident_qValue = "annotation_QValue")
 skylineconfig$table$factors[["treatment_c"]] <- "Condition2"
 skylineconfig$table$factors[["time_c"]] <- "time"

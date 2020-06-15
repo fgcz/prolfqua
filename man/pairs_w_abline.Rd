@@ -25,5 +25,19 @@ pairs_w_abline(tmp,log="xy",main="small data", legend=TRUE)
 }
 \seealso{
 also \code{\link{pairs}}
+
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
 }
+\concept{utilities}
 \keyword{internal}

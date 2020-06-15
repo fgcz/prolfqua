@@ -3,16 +3,22 @@
 \name{plot_lmer_peptide_noRandom_TWO}
 \alias{plot_lmer_peptide_noRandom_TWO}
 \title{plot intensities per interaction with Two
- independent random effects removed (1|A) + (1|B)}
+ independent random effects removed (1|A) + (1|B)
+ @param m model
+ @param legend.position none
+ @param firstlast todo}
 \usage{
 plot_lmer_peptide_noRandom_TWO(m, legend.position = "none", firstlast = TRUE)
 }
 \description{
 plot intensities per interaction with Two
  independent random effects removed (1|A) + (1|B)
+ @param m model
+ @param legend.position none
+ @param firstlast todo
 }
 \examples{
-m <- LFQServiceData::interactionModel_p1807
-#plot_lmer_peptide_noRandom_TWO(m)
+#todo look up example
+
 }
 \keyword{internal}

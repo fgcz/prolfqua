@@ -1,6 +1,8 @@
 #' Compute correlation matrix
 #' @param dataX data.frame with transition intensities per peptide
 #' @export
+#' @keywords internal
+#' @family transitionCorrelations
 #' @examples
 #' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
 #' transitionCorrelations(correlatedPeptideList[[1]])
@@ -17,6 +19,8 @@ transitionCorrelations <- function(dataX) {
 #' Compute correlation matrix with jack
 #' @param dataX data.frame with transition intensities per peptide
 #' @export
+#' @keywords internal
+#' @family transitionCorrelations
 #' @importFrom stats cor
 #' @examples
 #' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
