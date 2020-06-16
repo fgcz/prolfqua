@@ -70,6 +70,7 @@ Moreover, the design decision allowed us to integrate Bayesian regression models
 Last but not least `prolfqua` supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, it can be used for sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc.
 It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed.
 
+
 To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface,  we provide an  MSstats emulator, where the model specification is performed based on the annotation file structure.
 
 
