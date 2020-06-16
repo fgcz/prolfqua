@@ -1,46 +1,3 @@
-# mixed linear models ----
-
-#' Check if it is a mixed model
-#' It checks if the patter (something | something) is present
-#' @noRd
-#' @keywords internal
-#' @examples
-#' model <- "intensity ~ test + (test|test)"
-#' LFQService:::.is_mixed_model(model)
-#' model <- "intensity ~ test"
-#' stopifnot(LFQService:::.is_mixed_model(model) == FALSE)
-.is_mixed_model <- function(model){
-  res <- grepl("\\(.+\\|.+\\)", model)
-  return(res)
-}
-
-
-Model <- R6::R6Class(
-  "Model",
-  public = list(
-    formula = NULL,
-    contrasts = character(),
-    is_mixed_model = function(){
-      .is_mixed_model(self$formula)
-    }
-  ))
-
-#' create model
-#'
-#' @param model model
-#' @param contrasts contrasts
-#' @export
-#' @keywords internal
-#'
-make_model <- function(formula, contrasts) {
-  model <- Model$new()
-  model$formula <- formula
-  model$contrasts <- contrasts
-  return(model)
-}
-
-
-
 # Creating models from configuration ----
 
 .ehandler = function(e){
@@ -81,7 +38,8 @@ make_custom_model_lmer <- function(modelstr,
               isSingular = lme4::isSingular,
               contrast_fun = my_contest,
               model_name = model_name,
-              report_columns = report_columns )
+              report_columns = report_columns,
+              is_mixed = TRUE)
   return(res)
 }
 
@@ -114,7 +72,8 @@ make_custom_model_lm <- function(modelstr,
               isSingular = isSingular_lm,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
-              report_columns = report_columns )
+              report_columns = report_columns,
+              is_mixed = FALSE)
   return(res)
 }
 

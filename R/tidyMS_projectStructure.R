@@ -6,9 +6,19 @@ ProjectStructure <-
     #' @field outpath path
     #' @field qc_path path for qc results
     #' @field modelling_path path for modeling results
+    #' @field project_Id project_Id
+    #' @field order_Id order_Id
+    #' @field workunit_Id workunit_Id
+    #' @field inputFile inputFile
+    #' @field inputAnnotation inputAnnotation xlsx
     outpath = "",
     qc_path = "",
     modelling_path = "",
+    project_Id = NULL,
+    order_Id = NULL,
+    workunit_Id = NULL,
+    inputFile = "",
+    inputAnnotation = "",
     #' @description
     #' create ProjectStructure
     #' @param outpath directory
@@ -59,10 +69,10 @@ ProjectStructure <-
     #' @description
     #' empty modelling_path and qc_path
     reset = function(){
-      if (unlink(self$modelling_path) != 0 ) {
+      if (unlink(self$modelling_path, recursive = TRUE) != 0 ) {
         message("could not clean ",self$modelling_path)
       }
-      if (unlink(self$qc_path) != 0) {
+      if (unlink(self$qc_path, recursive = TRUE) != 0) {
         message("could not clean ",self$modelling_path)
       }
     }

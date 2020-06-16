@@ -128,8 +128,10 @@ The next code snipped computes the number of observed values for each precursor,
 
 ```{r}
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
-longQNASummaries <- longQNASummaries %>% dplyr::filter(srm_NrNotNAs > 20)
+longQNASummaries <- longQNASummaries %>%
+  dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(LFQService::hierarchy_counts(longQNASummaries, config))
+
 ```
 
 
@@ -145,12 +147,9 @@ print(res)
 
 
 ```{r}
-xx <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2], FALSE)
-longQNASummaries <- nr_B_in_A(longQNASummaries,config$table$hierarchyKeys()[1], config$table$hierarchyKeys()[2])
 
-qvalFiltV <- dplyr::filter(longQNASummaries, nr_peptide_Id_by_protein_Id > 1)
-knitr::kable(hierarchy_counts(qvalFiltV,config))
-
+qvalFiltV <- LFQService::filter_proteins_by_peptide_count(longQNASummaries,config)
+qvalFiltV
 ```
 
 
@@ -161,7 +160,7 @@ First mark de-correlated transitions using `markDecorrelated`.
 
 ```{r markdecorellated}
 #config$table$popWorkIntensity()
-qvalFiltV <- transform_work_intensity(qvalFiltV, config, log2)
+qvalFiltV <- transform_work_intensity(qvalFiltV$data, config, log2)
 xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
 
@@ -216,27 +215,29 @@ proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
 xnested <- qvalFiltImputed %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
 
 
-#plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
-#plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
+plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
+plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
 #plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
 figs3 <- xnested %>% dplyr::mutate(plotlog = map2(data, UQ(sym(config$table$hierarchyKeys()[1])),plot_hierarchies_line, config))
+figs3
 
 ff <- proteinIntensities %>% 
   group_by_at(config$table$hierarchyKeys()[1]) %>% 
   tidyr::nest(.key = "topNIntensity")
-figs4 <- dplyr::inner_join(figs3,ff)
+
+figs4 <- dplyr::inner_join(figs3,ff, by = config$table$hierarchyKeys()[1])
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
 plot_hierarchies_add_quantline(figs4$plotlog[[2]], figs4$topNIntensity[[2]], "srm_mean_na_3", config)
 plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "srm_mean_na_3", config)
 
 
-proteinsWide <- tidyr::spread(proteinIntensities, sampleName,srm_mean_na_3)
+nrPep <- qvalFiltImputed %>% 
+  select_at(c(config$table$hierarchyKeys()[1], "nr_peptide_Id_IN_protein_Id")) %>% 
+  distinct()
 
-nrPep <- qvalFiltImputed %>% select(config$table$hierarchyKeys()[1], nr_peptide_Id_by_protein_Id) %>% distinct()
-xx <- dplyr::inner_join(nrPep,proteinsWide)
-#readr::write_csv(xx, path="output/proteinQuantsTidy.txt")
+nrPep
 
 ```
 

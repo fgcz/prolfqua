@@ -1,3 +1,19 @@
+.find.package.file <- function(packagename, file){
+
+  src_script <- file.path(find.package(packagename) , file )
+  if (!file.exists(src_script)) {
+    src_script <- file.path(find.package(packagename) , "inst" , file)
+  }
+
+  if (file.exists(src_script)) {
+    return(src_script)
+  }else{
+    return(NULL)
+  }
+
+}
+
+
 .scriptCopyHelperVec <-
   function(runscripts,
            workdir = getwd(),

@@ -5,17 +5,19 @@ library(tidyverse)
 
 outpath <- "results_test"
 projectstruct <- createProjectStructure(outpath = outpath)
+projectstruct$reset()
 projectstruct$create()
 
-inputMQfile <-  "../samples/p2558_05748_modspec.zip"
-inputMQfile <-  "../samples/p2558_o5748_peptides.zip"
-
+projectstruct$order_Id = "o5748"
+projectstruct$project_Id = "p2558"
+projectstruct$workunit_Id = "20191120_MQ_repack.zip"
+projectstruct$inputFile = "../samples/p2558_o5748_peptides.zip"
 
 inputAnnotation <- "../samples/p2558_05748_annotation.xlsx"
 
 source("c:/Users/wewol/prog/LFQService/R/tidyMS_MQProteinGroups.R")
 
-mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+mqdata <- tidyMQ_Peptides_Config(projectstruct$inputFile)
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 # creates default configuration
@@ -25,9 +27,6 @@ mqdata$config$table$factors[["drug_"]] = "genotype"
 mqdata$config$table$factors[["SCI_"]] = "SCI"
 mqdata$config$table$factorDepth <- 2
 
-mqdata$config$order_Id = "o5748"
-mqdata$config$project_Id = "p2558"
-mqdata$config$workunit_Id = "20191120_MQ_repack.zip"
 
 
 # specify model definition
@@ -40,29 +39,23 @@ Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
 )
 
 
-model <- LFQService:::make_model(formula = memodel, contrasts = Contrasts)
+
 annotated_data <- application_add_annotation( mqdata$data,
                                               annotation,
                                               fileName = mqdata$config$table$fileName )
 
 mqdata$data <- setup_analysis(annotated_data, mqdata$config )
-
 filteredData <- filter_proteins_by_peptide_count(mqdata$data,
                                                  mqdata$config)
-
 normalizedData <- normalize_log2_robscale(filteredData$data,
                                           mqdata$config)
-
-
-
 protintensity_fun <- medpolish_protein_quants( normalizedData$data,
                                                normalizedData$config )
 
 protdata <- protintensity_fun("unnest")
 xx <- protintensity_fun("plot")
-
 prefix <- "protein_"
-if (FALSE) {
+if (TRUE) {
   pdf(file.path(projectstruct$qc_path,paste0(prefix ,"inference_figures.pdf")))
   lapply(xx$plot, print)
   dev.off()
@@ -71,6 +64,10 @@ if (FALSE) {
 
 pep <- LFQData$new(filteredData$data,mqdata$config,is_pep = TRUE, prefix = "peptide_")
 prot <- LFQData$new(protdata$data,protdata$config, is_pep = FALSE, prefix = "protein_")
+
+
+
+
 pep$render(qc_path = projectstruct$qc_path)
 prot$render(qc_path = projectstruct$qc_path)
 
@@ -90,24 +87,12 @@ pepwriter$write_wide(projectstruct$qc_path)
 
 message("######################## fit mixed #######################")
 memodel <- paste0(normalizedData$config$table$getWorkIntensity() , memodel)
-modelFunction <- make_custom_model_lmer( memodel, model_name = "Model")
-reportColumns <- c("p.value",
-                   "p.value.adjusted")
+modelFunction <- make_custom_model_lmer( memodel, report_columns = c("p.value", "p.value.adjusted"))
+
 
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
-
-  ### Do missing value imputation
-  # res_contrasts_imputed <- workflow_missigness_impute_contrasts(normalizedData$data,
-  #                                                              normalizedData$config,
-  #                                                              Contrasts)
-  #debug(res_contrasts_imputed)
-  #xx <- res_contrasts_imputed(DEBUG = TRUE)
-  #contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
-
-
-
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
     config = normalizedData$config,
@@ -120,18 +105,17 @@ if (TRUE) {
   resXXmixmodel(do = "write_contrasts")
 }
 
+
+
 relevantParameters <- list(ps = projectstruct,
 
                            prefix = prefix,
-                           annotation = annotation,
+                           annotation = prot$factors(),
 
-                           model = memodel,
+                           model = modelFunction,
                            Contrasts = Contrasts,
 
-                           workunit_Id = mqdata$config$workunit_Id,
-                           project_Id = mqdata$config$project_Id,
-                           order_Id = mqdata$config$order_Id,
-                           inputMQfile = inputMQfile,
+
                            author = "Witold Wolski <wew@fgcz.ethz.ch>"
 )
 

@@ -47,30 +47,22 @@ modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_fo
 ```
 
 
-- project Id : `r pars$project_Id`
-- order Id : `r pars$order_Id`
-- parent work-unit Id : `r pars$workunit_Id`
-- modelling implemented by : `r pars$author`
-- input file : `r pars$inputMQfile`
+- project Id : `r pars$ps$project_Id`
+- order Id : `r pars$ps$order_Id`
+- parent work-unit Id : `r pars$ps$workunit_Id`
+- input file : `r pars$ps$inputMQfile`
+- modeling implemented by : `r pars$author`
 
 
-# Method [^0]
-
-
-Protein fold changes were computed based on peptide intensity values reported in the MaxQuant generated `peptides.txt` file, using linear mixed-effects models [@lmer2015].
-We preprocess the peptide intensities reported in the peptides.txt file as follows: we removed all proteins with only one identified peptide, we remove intensities equal zero, non zero intensities are $\log_2$ transformed and modified using robust z-score transformation (using the median and median average deviation). For each protein, we fitted a mixed-effects model to the peptide intensities. Fold changes and p-values for each contrast (see table below) are computed based on this model [@lmerTest2017]. For a contrast, all the protein p-values are adjusted for multiple testing using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [see @BenjaminiHochberg1995].
-
-To estimate fold-changes for proteins for which we could not fit a mixed-effects model because of an excess in missing measurements, we proceed as follows: First, we compute the mean intensity for all peptides for each condition. For the proteins with no measurements in that condition, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. Afterwards, we compute contrasts (differences between conditions) for each peptide and finally, the median of the peptide estimates is used to provide a per protein fold change estimate.  
-
-[^0]: This section can be used in the material and methods section alongside the model formula and the contrast specifications given below.
 
 # Data preprocessing and diagnostic plots
 
-A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated from transformed, normalized protein intensities [^1].
+We preprocess the _peptide intensities reported in the MaxQuant generated`peptides.txt` file_ as follows: we removed all proteins with only one identified peptide, we remove intensities equal zero, non zero intensities are $\log_2$ transformed and modified using robust z-score transformation (using the median and median average deviation). 
+
+A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated based on transformed and normalized protein intensities [^1].
 
 
 [^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
-
 
 
 The raw files are annotated with the following factors and factor levels:
@@ -91,19 +83,30 @@ table_facade(pars$annotation, "Sample annotations.")
 - A quality control report of estimated protein intensities [html](`r qcfile("intensities_qc.html")`){target="_blank"}.
 
 
-# Satistical Modelling
+# Statistical Modelling
+
 
 ```{r alttext, include=FALSE}
-mixed_txt <- "The following mixed-effects model was fitted [see @lmer2015]: "
-fixed_txt <- "The following linear model was fitted: "
-is_mixed_model <- LFQService:::.is_mixed_model
+mixed_txt <- "mixed-effects model [see @lmer2015]: "
+fixed_txt <- "linear model: "
+mixed_contrast_txt <- "To compute the p-values and contrasts we used the method `contest` from the the package lmerTest [@lmerTest2017]"
 
 ```
 
 
-`r if(is_mixed_model(pars$model)) {mixed_txt} else {fixed_txt}`
+For each protein, we fitted a `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}` to the peptide intensities. Fold changes and p-Values for each contrast ( differences among conditions ,see table \@ref(tab:contrasts) ) are computed based on the parameter estimates of the model model.  `r if(pars$model$is_mixed) {mixed_contrast_txt}`. All the protein p-Values are adjusted for multiple testing using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [see @BenjaminiHochberg1995].
 
-__`r format(formula(pars$model))`__
+To estimate fold-changes for proteins for which we could not fit a mixed-effects model because of an excess in missing measurements, we proceed as follows: First, we compute the mean intensity for all peptides for each condition. For the proteins with no measurements in that condition, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. Afterwards, we compute contrasts (differences between conditions) for each peptide and finally, the median of the peptide estimates is used to provide a per protein fold change estimate.  
+
+
+[^0]: This section can be used in the material and methods section alongside the model formula and the contrast specifications given below.
+
+
+
+
+The following `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}`  was fitted :
+
+__`r format(pars$model$model_fun(get_formula = TRUE))`__
 
 Using this model the following contrasts were computed. 
 
@@ -140,7 +143,7 @@ t4 <- modfile(volcanoPVal,".html")
 t5 <- "){target='_blank'}) which on the vertical axis shows the protein $-\\log_{10}(p~values)$ versus the the log2 fold changes on the horizontal axis."
 volcanoPValue <- paste(c(t1,t2,t3,t4,t5), collapse = "")
 
-if (!is_mixed_model(pars$model)) {
+if (!pars$model$is_mixed) {
   t1 <- "- __Volcano plot of adjusted moderated p-Values vs fold change estimate__ ([pdf]("
   t2 <- modfile(volcanoAdjModPval,".pdf")
   t3 <- "){target='_blank'}; [html]("
@@ -160,7 +163,7 @@ if (!is_mixed_model(pars$model)) {
     - __Histogram of adjusted p-Values__ ([pdf](`r modfile(histogramPValAdj,".pdf")`){target="_blank"}) shows the distribution of the false discovery rates (FDR - p values adjusted using the Benjamin and Hochberg method [see @BenjaminiHochberg1995]).
     `r if(FALSE){volcanoPValue}`
     - __Volcano plot of adjusted p-Values vs fold change estimate__ ([pdf](`r modfile(volcanoPValAdj,".pdf")`){target="_blank"}; [html](`r modfile(volcanoPValAdj, ".html")`){target="_blank"})  which on the vertical axis shows the $-\log_{10}(FDR)$ versus the the _log2_ fold changes on the horizontal axis.
-    `r if(!is_mixed_model(pars$model)){volcanoModeratedAdjustedPValue}`
+    `r if(!pars$model$is_mixed){volcanoModeratedAdjustedPValue}`
     - [__MA plot__](https://en.wikipedia.org/wiki/MA_plot) ([pdf](`r modfile(maPlot,".pdf")`){target="_blank"}; [html](`r modfile(maPlot, ".html")`){target="_blank"}). The vertical axis shows the contrast estimate (_log2 FC_) while the horizontal axis shows the mean of the measurments (this is also known as mean difference plot MD).
     - ANOVA results ([excel xlsx format](`r modfile(anovaXLSX,".xlsx")`);[html](`r modfile(anovaXLSX,".html")`){target="_blank"} and histogram of p-Values [pdf](`r modfile(anovaPDF)`){target="_blank"}) which show which factors included in the model are significant.
 

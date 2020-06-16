@@ -29,9 +29,9 @@ filter_proteins_by_peptide_count <-
 
     # remove single hit wonders
     pdata <- nr_B_in_A(pdata,config)
-    pdata <- dplyr::filter(pdata$data, !!sym(pdata$name) >= config$parameter$min_peptides_protein )
+    res <- dplyr::filter(pdata$data, !!sym(pdata$name) >= config$parameter$min_peptides_protein )
 
-    return(list(data = pdata, name = pdata$name))
+    return(list(data = res, name = pdata$name))
   }
 
 #' normalize data by log2 and robust scaling

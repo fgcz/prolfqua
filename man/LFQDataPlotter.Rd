@@ -58,14 +58,9 @@ Other LFQData:
 
 \item{\code{prefix}}{prefix to figure names when writing, e.g. protein_}
 
-\item{\code{file_paths}}{with paths to figures}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{file_paths}}{with paths to figures}
+\item{\code{file_paths_pdf}}{with paths to figures}
+
+\item{\code{file_paths_html}}{with paths to figures}
 }
 \if{html}{\out{</div>}}
 }

@@ -16,6 +16,16 @@ keep track of folder paths and create them if needed
 \item{\code{qc_path}}{path for qc results}
 
 \item{\code{modelling_path}}{path for modeling results}
+
+\item{\code{project_Id}}{project_Id}
+
+\item{\code{order_Id}}{order_Id}
+
+\item{\code{workunit_Id}}{workunit_Id}
+
+\item{\code{inputFile}}{inputFile}
+
+\item{\code{inputAnnotation}}{inputAnnotation xlsx}
 }
 \if{html}{\out{</div>}}
 }

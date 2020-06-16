@@ -183,12 +183,6 @@ AnalysisTableAnnotation <- R6::R6Class(
 #'
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                      public = list(
-                                       #' @field project_Id the project Id
-                                       project_Id = "",
-                                       #' @field order_Id the project order ID
-                                       order_Id = "",
-                                       #' @field workunit_Id parent workunit
-                                       workunit_Id = "",
                                        #' @field sep separator to use when uniting columns is necessary
                                        sep = "~",
                                        #' @field table AnalysisTableAnnotation
@@ -1362,7 +1356,6 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' @export
 #' @keywords internal
 #' @importFrom pheatmap pheatmap
-#' @importFrom heatmap3 heatmap3 showLegend
 #' @examples
 #'
 #' library(tidyverse)

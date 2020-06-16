@@ -4,6 +4,8 @@
 #' @export
 #' @family LFQData
 #' @examples
+#' library(tidyverse)
+#' library(LFQService)
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQServiceData::dataIonstarFilteredPep
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -393,7 +395,8 @@ LFQDataPlotter <- R6::R6Class(
   list(
     #' @field lfq LFQData object
     #' @field prefix prefix to figure names when writing, e.g. protein_
-    #' @field file_paths with paths to figures
+    #' @field file_paths_pdf with paths to figures
+    #' @field file_paths_html with paths to figures
     lfq = NULL,
     prefix = "",
     file_paths_pdf = list(),
