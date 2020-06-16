@@ -11,7 +11,7 @@ sticker(imgurl,
         h_fill = "green", h_color = "darkgreen",
         filename = "inst/figures/imgfile.png",
         white_around_sticker = TRUE,
-        url	= "github.com/wolski/prolfqa",
+        url	= "github.com/wolski/prolfqua",
         u_size = 5.2,
         u_color = "white")
 
