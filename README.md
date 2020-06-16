@@ -71,7 +71,7 @@ Last but not least `prolfqua` supports the LFQ data analysis workflow, e.g. comp
 It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed.
 
 
-To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface,  we provide an  MSstats emulator, where the model specification is performed based on the annotation file structure.
+To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface, we provide an  MSstats emulator, where the model specification is inferred from the annotation file structure.
 
 
 # How to get started
