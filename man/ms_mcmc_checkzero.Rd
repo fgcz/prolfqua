@@ -2,10 +2,12 @@
 % Please edit documentation in R/tidyMS_stanr.R
 \name{ms_mcmc_checkzero}
 \alias{ms_mcmc_checkzero}
-\title{plugin method for MCMCsummary. can be passed to MCMCsummary func and func_name argument.}
+\title{plugin method for MCMCsummary.
+can be passed to MCMCsummary func and func_name argument.}
 \usage{
 ms_mcmc_checkzero(x = NULL)
 }
 \description{
-plugin method for MCMCsummary. can be passed to MCMCsummary func and func_name argument.
+plugin method for MCMCsummary.
+can be passed to MCMCsummary func and func_name argument.
 }

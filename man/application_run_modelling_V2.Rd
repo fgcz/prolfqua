@@ -16,7 +16,19 @@ application_run_modelling_V2(
 )
 }
 \arguments{
+\item{data}{data}
+
+\item{config}{AnalysisConfiguration}
+
+\item{modelFunction}{modelling function}
+
+\item{contrasts}{contrasts}
+
+\item{modelling_dir}{directory to store modelling results}
+
 \item{do_not_report}{contrasts not to report}
+
+\item{DEBUG}{default FALSE}
 }
 \description{
 run the modelling using lmer or lm models

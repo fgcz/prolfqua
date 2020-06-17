@@ -17,3 +17,6 @@ ms_brms_model(
 \description{
 fits brms model and computes summary.
 }
+\examples{
+# todo
+}

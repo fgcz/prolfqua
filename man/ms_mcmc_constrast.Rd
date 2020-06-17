@@ -8,6 +8,11 @@ to code mcmc.list}
 \usage{
 ms_mcmc_constrast(model, linfct_A)
 }
+\arguments{
+\item{model}{brms model}
+
+\item{linfct_A}{linear function}
+}
 \description{
 Compute contrasts an
 covert brms output

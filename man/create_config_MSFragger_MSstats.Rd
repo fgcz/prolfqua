@@ -6,9 +6,6 @@
 \usage{
 create_config_MSFragger_MSstats()
 }
-\arguments{
-\item{min_peptides_protein}{min peptides per protein}
-}
 \description{
 Create configuration for MSFragger output
 }

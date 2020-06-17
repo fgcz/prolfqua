@@ -3,13 +3,13 @@
 \name{compute_roc}
 \alias{compute_roc}
 \title{Apply roc analysis on main factor on lowest hierarchy level
-probably deprecate function.}
+deprecate function.}
 \usage{
 compute_roc(data, config)
 }
 \description{
 Apply roc analysis on main factor on lowest hierarchy level
-probably deprecate function.
+deprecate function.
 }
 \examples{
 
