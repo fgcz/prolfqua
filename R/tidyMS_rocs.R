@@ -4,12 +4,12 @@
   responseX <- data %>% dplyr::pull(!!sym(response))
   predictorX <- data %>% dplyr::pull(!!sym(predictor))
   levels = levels(as.factor(responseX))
-  if(length(levels) < 2){
+  if (length(levels) < 2) {
     return(NULL)
   }
   res <- list()
   comparisons <- combn(levels, 2)
-  for(i in 1:ncol(comparisons)){
+  for (i in 1:ncol(comparisons)) {
     comp <- comparisons[,i]
     res[[i]] <-  tryCatch(pROC::roc(response = responseX,
                                     predictor = predictorX,
@@ -20,10 +20,9 @@
 }
 
 #' Apply roc analysis on main factor on lowest hierarchy level
-#' probably deprecate function.
+#' deprecate function.
 #'
 #' @export
-#' @importFrom purrr map
 #' @examples
 #'
 #' library(tidyverse)

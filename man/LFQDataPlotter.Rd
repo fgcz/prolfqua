@@ -10,7 +10,6 @@ write intensites into folder - for the moment protein
 }
 \examples{
 
-source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 library(LFQService)
 istar <- LFQServiceData::dataIonstarProtein
 
@@ -29,12 +28,12 @@ graphics.off()
 lfqplotter$pca()
 lfqplotter$pca_plotly()
 
-tmp <- lfqplotter$boxplots()
-tmp$boxplot[[1]]
+#tmp <- lfqplotter$boxplots()
+#tmp$boxplot[[1]]
 lfqplotter$missigness_histogram()
 lfqplotter$missingness_per_condition()
 lfqplotter$missingness_per_condition_cumsum()
-dev.off()
+
 lfqplotter$NA_heatmap()
 lfqplotter$intensity_distribution_density()
 lfqplotter$intensity_distribution_violin()

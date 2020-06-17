@@ -52,9 +52,6 @@ split2table <- function(names,split="\\||\\_")
 #' @param segment.alpha controls visibility of lines
 #' @param ablines adds ablines horizontal and vertical
 #' @param scales parameter to ggplot2::facet_wrap
-#' @importFrom ggrepel geom_text_repel
-#' @importFrom stats as.formula
-#' @import ggplot2
 #' @export
 #' @keywords internal
 #' @family utilities
@@ -113,8 +110,6 @@ multigroupVolcano <- function(misspX,
 #' @param x a matrix
 #' @param preserve_row_names give name to rownames column, if NULL discard rownames
 #' @param ... further parameters passed to as_tibble
-#' @importFrom dplyr bind_cols
-#' @importFrom tibble tibble as_tibble
 #' @export
 #' @family utilities
 #' @keywords internal
@@ -186,10 +181,6 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' @export
 #' @family utilities
 #' @keywords internal
-#' @importFrom tidyr gather spread
-#' @importFrom plyr ldply
-#' @importFrom dplyr group_by summarize_at vars
-#' @importFrom rlang UQ sym
 #' @return summarizes results producced with my_jackknife
 #' @examples
 #' dataX <- matrix(rnorm(20), ncol=4)
@@ -271,7 +262,6 @@ pairs_w_abline <- function(dataframe,
 #' @keywords internal
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
-#' @importFrom graphics par rect hist
 panel.hist <- function(x, ...)
 {
   usr <- par("usr")
@@ -292,7 +282,6 @@ panel.hist <- function(x, ...)
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
-#' @importFrom stats cor
 panel.cor <- function(x, y, digits = 2, ...)
 {
   usr <- par("usr")
@@ -332,7 +321,7 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' pairs_smooth(tmp,main="small data", diag.panel=panel.hist)
 #' pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-pairs_smooth = function(dataframe, legend = FALSE, ...) {
+pairs_smooth <- function(dataframe, legend = FALSE, ...) {
   pairs(
     dataframe,
     upper.panel = function(x, y) {

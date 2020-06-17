@@ -241,7 +241,7 @@ make_interaction_column <- function(data, columns, sep="."){
 
   newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
   intr <- purrr::map2_dfc(columns, intr, paste0)
-  intr <- purrr::map2_dfc(intr , newlev, fct_relevel)
+  intr <- purrr::map2_dfc(intr , newlev, forcats::fct_relevel)
 
   colnames(intr) <- paste0("interaction_",columns)
   colname <- "interaction"
@@ -538,7 +538,6 @@ summarize_hierarchy <- function(pdata,
 #' @param config AnalysisConfiguration
 #' @export
 #' @keywords internal
-#' @importFrom dplyr group_by_at
 #' @examples
 #' library(LFQService)
 #' skylineconfig <- create_config_Skyline(isotopeLabel="Isotope.Label.Type",
@@ -1126,7 +1125,6 @@ medpolishPly <- function(x, name = FALSE){
 #' @return retuns function object
 #' @keywords internal
 #' @export
-#' @importFrom purrr map
 #' @examples
 #'
 #' library(LFQService)
@@ -1259,7 +1257,6 @@ medpolish_protein_quants <- function(data, config){
 #'
 #' @export
 #' @keywords internal
-#' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
 #' data <- LFQServiceData::sample_analysis
@@ -1307,7 +1304,6 @@ plot_heatmap_cor <- function(data,
 #'
 #' @export
 #' @keywords internal
-#' @importFrom pheatmap pheatmap
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
@@ -1355,7 +1351,6 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' plot heatmap of NA values
 #' @export
 #' @keywords internal
-#' @importFrom pheatmap pheatmap
 #' @examples
 #'
 #' library(tidyverse)

@@ -89,7 +89,6 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
 }
 
 #' Create configuration for MSFragger output
-#' @param min_peptides_protein min peptides per protein
 #' @family concrete_configuration
 #' @export
 create_config_MSFragger_MSstats <- function(){

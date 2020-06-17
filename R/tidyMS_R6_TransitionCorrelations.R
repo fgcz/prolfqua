@@ -397,7 +397,6 @@ scale_with_subset <- function(data, subset, config){
 #' marks uncorrelated elements
 #' @export
 #' @keywords internal
-#' @importFrom purrr map
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
@@ -443,8 +442,6 @@ simpleImpute <- function(data){
 #' imputation based on correlation assumption
 #' @export
 #' @keywords internal
-#' @importFrom purrr map
-#' @importFrom tidyr nest
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)

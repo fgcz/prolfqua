@@ -3,7 +3,10 @@
 #' Compute contrasts an
 #' covert brms output
 #' to code mcmc.list
+#' @param model brms model
+#' @param linfct_A linear function
 #' @export
+#'
 #'
 ms_mcmc_constrast <- function(model, linfct_A){
   colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(linfct_A)))
@@ -17,7 +20,8 @@ ms_mcmc_constrast <- function(model, linfct_A){
   return(res)
 }
 
-#' plugin method for MCMCsummary. can be passed to MCMCsummary func and func_name argument.
+#' plugin method for MCMCsummary.
+#' can be passed to MCMCsummary func and func_name argument.
 #' @export
 #'
 #'
@@ -49,11 +53,13 @@ check_factors_level_coverage <- function(mdata26, fixeff){
 ### Model with stan
 #' fits brms model and computes summary.
 #' @export
+#' @examples
+#' # todo
 ms_brms_model <- function(mdata,
                           memodel,
                           fixef,
                           linfct_A,
-                          func=ms_mcmc_checkzero,
+                          func =ms_mcmc_checkzero,
                           summarize=TRUE,
                           cores = parallel::detectCores()){
 

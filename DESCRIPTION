@@ -19,6 +19,7 @@ Imports:
     corrplot,
     dplyr,
     flextable,
+    forcats,
     ggplot2,
     ggbeeswarm,
     ggfortify,
@@ -46,7 +47,8 @@ Suggests:
     knitr,
     fgcz.gsea.ora,
     rmarkdown,
-    testthat
+    testthat,
+    KernSmooth
 Remotes:
     bioc::3.9/limma
 RoxygenNote: 7.1.0
