@@ -21,8 +21,9 @@
       next;
     }
 
-    tmp <- all %>% dplyr::filter( contrast %in% c(cname,cc) )
-    tmp <- tmp %>% dplyr::select(-meanArea) %>% tidyr::spread(contrast , imputed)
+    tmp <- all %>% dplyr::filter( .data$contrast %in% c(cname,cc) )
+    tmp <- tmp %>% dplyr::select(-.data$meanArea) %>%
+      tidyr::spread(.data$contrast , .data$imputed)
 
     tmp <- tmp %>% add_column(lhs = cname,.after = 1)
     tmp <- tmp %>% add_column(c1_name = cc[1],.after = 2)

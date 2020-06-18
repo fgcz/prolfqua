@@ -119,8 +119,6 @@ deprecated_model_contrasts_no_interaction <- function(modelProteinF,
 #'
 #' @keywords internal
 #' @noRd
-#' @importFrom glue glue
-#' @importFrom purrr map
 #' @examples
 #'
 #' library(LFQService)

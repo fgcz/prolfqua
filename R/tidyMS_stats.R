@@ -107,7 +107,8 @@ summarize_cv_quantiles <- function(stats_res,
                          sd = NULL,
                          power = power,
                          sig.level = sig.level)$sd
-  quantile_sd <- quantile_sd %>% mutate(sdtrimmed = case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
+  quantile_sd <- quantile_sd %>%
+    mutate(sdtrimmed = case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
 
   #, delta = delta, power = power, sig.level = sig.level
   getSampleSize <- function(sd){
@@ -129,14 +130,17 @@ summarize_cv_quantiles <- function(stats_res,
 #' @export
 #' @keywords internal
 #' @examples
+#' library(tidyverse)
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' data <- LFQServiceData::sample_analysis
 #' data2 <- transform_work_intensity(data, config, transformation = log2)
 #' stats_res <- summarize_cv(data2, config)
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
-#' bbb <- (bind_rows(bbb))
-#' summary <- bbb %>% dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>% spread(delta, N, sep="=")
+#' bbb <- dplyr::bind_rows(bbb)
+#' summary <- bbb %>%
+#'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>%
+#'  spread(delta, N, sep="=")
 #' #View(summary)
 lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd,

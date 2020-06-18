@@ -21,7 +21,6 @@ transitionCorrelations <- function(dataX) {
 #' @export
 #' @keywords internal
 #' @family transitionCorrelations
-#' @importFrom stats cor
 #' @examples
 #' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
 #' transitionCorrelationsJack(correlatedPeptideList[[1]])

@@ -1,14 +1,15 @@
-#' @importFrom dplyr inner_join group_by group_by_at bind_cols group_by summarize_at vars
+#' @importFrom dplyr arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
+#' @importFrom dplyr inner_join mutate one_of rename select summarize_at ungroup vars
 #' @import ggplot2
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom glue glue
 #' @importFrom graphics par rect hist
 #' @importFrom pheatmap pheatmap
 #' @importFrom plyr ldply
-#' @importFrom purrr map map2
-#' @importFrom rlang UQ sym
+#' @importFrom purrr map map2 map2_dbl map_lgl map_chr reduce map_if map_dfc map_int map_df
+#' @importFrom rlang UQ sym syms .data
 #' @importFrom stats as.formula cor
-#' @importFrom tidyr gather nest spread
-#' @importFrom tibble tibble as_tibble
+#' @importFrom tidyr gather nest nesting spread unite unnest
+#' @importFrom tibble add_column tibble as_tibble
 #' @importFrom forcats fct_relevel
 NULL
