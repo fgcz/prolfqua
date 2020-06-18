@@ -4,20 +4,17 @@ library(tidyverse)
 
 
 outpath <- "results_test"
-projectstruct <- createProjectStructure(outpath = outpath)
-projectstruct$reset()
-projectstruct$create()
+ps <- ProjectStructure$new(outpath = outpath,
+                                      order_Id = "o5748",
+                                      project_Id = "p2558",
+                                      workunit_Id = "20191120_MQ_repack.zip",
+                                      inputData = "../samples/p2558_o5748_peptides.zip",
+                                      inputAnnotation <- "../samples/p2558_05748_annotation.xlsx")
 
-projectstruct$order_Id = "o5748"
-projectstruct$project_Id = "p2558"
-projectstruct$workunit_Id = "20191120_MQ_repack.zip"
-projectstruct$inputFile = "../samples/p2558_o5748_peptides.zip"
 
-inputAnnotation <- "../samples/p2558_05748_annotation.xlsx"
 
-source("c:/Users/wewol/prog/LFQService/R/tidyMS_MQProteinGroups.R")
 
-mqdata <- tidyMQ_Peptides_Config(projectstruct$inputFile)
+mqdata <- tidyMQ_Peptides_Config(ps$inputData)
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 # creates default configuration
@@ -56,7 +53,7 @@ protdata <- protintensity_fun("unnest")
 xx <- protintensity_fun("plot")
 prefix <- "protein_"
 if (TRUE) {
-  pdf(file.path(projectstruct$qc_path,paste0(prefix ,"inference_figures.pdf")))
+  pdf(file.path(ps$qc_path,paste0(prefix ,"inference_figures.pdf")))
   lapply(xx$plot, print)
   dev.off()
 }
@@ -68,21 +65,21 @@ prot <- LFQData$new(protdata$data,protdata$config, is_pep = FALSE, prefix = "pro
 
 
 
-pep$render(qc_path = projectstruct$qc_path)
-prot$render(qc_path = projectstruct$qc_path)
+pep$render(qc_path = ps$qc_path)
+prot$render(qc_path = ps$qc_path)
 
 protplotter <- prot$get_Plotter()
-protplotter$write(path_qc = projectstruct$qc_path)
+protplotter$write(path_qc = ps$qc_path)
 dd <- protplotter$boxplots()
-protplotter$write_boxplots(path_qc = projectstruct$qc_path)
+protplotter$write_boxplots(path_qc = ps$qc_path)
 
 
 protwriter <- prot$get_Writer()
-protwriter$write_long(projectstruct$qc_path)
-protwriter$write_wide(projectstruct$qc_path)
+protwriter$write_long(ps$qc_path)
+protwriter$write_wide(ps$qc_path)
 #LFQDataWriter$undebug("write_wide")
 pepwriter <- pep$get_Writer()
-pepwriter$write_wide(projectstruct$qc_path)
+pepwriter$write_wide(ps$qc_path)
 
 
 message("######################## fit mixed #######################")
@@ -98,7 +95,7 @@ if (TRUE) {
     config = normalizedData$config,
     modelFunction = modelFunction,
     contrasts = Contrasts,
-    modelling_dir = projectstruct$modelling_path )
+    modelling_dir = ps$modelling_path )
 
 
   resXXmixmodel(do = "write_modelling")
@@ -107,7 +104,7 @@ if (TRUE) {
 
 
 
-relevantParameters <- list(ps = projectstruct,
+relevantParameters <- list(ps = ps,
 
                            prefix = prefix,
                            annotation = prot$factors(),
