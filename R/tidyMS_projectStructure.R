@@ -1,6 +1,13 @@
 #' keep track of folder paths and create them if needed
 #' @export
 #'
+#' @examples
+#' tmp <- ProjectStructure$new("./test_project")
+#' tmp$qc_path
+#' tmp$modelling_path
+#' if(FALSE){tmp$create()}
+#'
+
 ProjectStructure <-
   R6::R6Class("ProjectStructure", public = list(
     #' @field outpath path
@@ -14,20 +21,36 @@ ProjectStructure <-
     outpath = "",
     qc_path = "",
     modelling_path = "",
-    project_Id = NULL,
-    order_Id = NULL,
-    workunit_Id = NULL,
-    inputFile = "",
-    inputAnnotation = "",
+    project_Id = integer(),
+    order_Id = integer(),
+    workunit_Id = integer(),
+    inputData = character(),
+    inputAnnotation = character(),
     #' @description
     #' create ProjectStructure
     #' @param outpath directory
+    #' @param project_Id bfabric project ID
+    #' @param workunit_Id bfabric workunit_Id
+    #' @param order_Id bfabric order_Id
+    #' @param inputAnnotation input annotation path
+    #' @param inputFile input data path
     #' @param qc_path qc folder
     #' @param modelling_path modelling results folder
-    initialize = function(outpath ,
+
+    initialize = function(outpath,
+                          project_Id,
+                          order_Id,
+                          workunit_Id,
+                          inputAnnotation,
+                          inputData,
                           qc_path = "qc_results",
                           modelling_path = "modelling_results"){
       self$outpath = outpath
+      self$project_Id = project_Id
+      self$order_Id = order_Id
+      self$workunit_Id = workunit_Id
+      self$inputData = inputData
+      self$inputAnnotation = inputAnnotation
       self$qc_path = file.path(outpath, qc_path )
       self$modelling_path = file.path(outpath, modelling_path )
     },
@@ -80,20 +103,3 @@ ProjectStructure <-
   )
   )
 
-#' Create Project structure
-#' @param outpath directory
-#' @param qc_path qc folder
-#' @param modelling_path modelling results folder
-#' @export
-#' @examples
-#' tmp <- createProjectStructure("./test_project")
-#' tmp$qc_path
-#' tmp$modelling_path
-#' if(FALSE){tmp$create()}
-#'
-createProjectStructure <- function(outpath,
-                                   qc_path = "qc_results",
-                                   modelling_path = "modelling_results"){
-  res <- ProjectStructure$new(outpath, qc_path, modelling_path)
-  return(res)
-}

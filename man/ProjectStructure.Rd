@@ -8,6 +8,13 @@ keep track of folder paths and create them if needed
 
 keep track of folder paths and create them if needed
 }
+\examples{
+tmp <- ProjectStructure$new("./test_project")
+tmp$qc_path
+tmp$modelling_path
+if(FALSE){tmp$create()}
+
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -26,6 +33,13 @@ keep track of folder paths and create them if needed
 \item{\code{inputFile}}{inputFile}
 
 \item{\code{inputAnnotation}}{inputAnnotation xlsx}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{inputFile}}{inputFile}
 }
 \if{html}{\out{</div>}}
 }
@@ -51,6 +65,11 @@ create ProjectStructure
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$new(
   outpath,
+  project_Id,
+  order_Id,
+  workunit_Id,
+  inputAnnotation,
+  inputData,
   qc_path = "qc_results",
   modelling_path = "modelling_results"
 )}\if{html}{\out{</div>}}
@@ -61,9 +80,19 @@ create ProjectStructure
 \describe{
 \item{\code{outpath}}{directory}
 
+\item{\code{project_Id}}{bfabric project ID}
+
+\item{\code{order_Id}}{bfabric order_Id}
+
+\item{\code{workunit_Id}}{bfabric workunit_Id}
+
+\item{\code{inputAnnotation}}{input annotation path}
+
 \item{\code{qc_path}}{qc folder}
 
 \item{\code{modelling_path}}{modelling results folder}
+
+\item{\code{inputFile}}{input data path}
 }
 \if{html}{\out{</div>}}
 }
