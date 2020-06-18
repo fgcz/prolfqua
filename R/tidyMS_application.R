@@ -71,6 +71,7 @@
 #' @param modelFunction modelling function
 #' @param contrasts contrasts
 #' @param modelling_dir directory to store modelling results
+#' @param remove_imputed todo
 #' @param do_not_report contrasts not to report
 #' @param DEBUG default FALSE
 #' @export

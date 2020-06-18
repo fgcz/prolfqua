@@ -10,7 +10,7 @@
   glt <- multcomp::glht(model, mcpDef)
   sglt <- summary(glt)
   sglt <- broom::tidy(sglt)
-  ciglt <- broom::tidy(confint(glt)) %>% dplyr::select(-estimate)
+  ciglt <- broom::tidy(multcomp::confint(glt)) %>% dplyr::select(-.data$estimate)
   xx <- dplyr::inner_join(
     sglt,
     ciglt,
@@ -31,9 +31,9 @@
       dplyr::mutate(!!paste0("factor_",factor) := purrr::map(!!sym("linear_model"), ~.contrast_tukey_multcomp(.,factor=factor)))
   }
   dd <- modelProteinF %>% dplyr::select(subject_Id, starts_with("factor_"))
-  contrasts <- dd %>% tidyr::gather("factor", "contrasts", - c(!!!(syms( subject_Id)))) %>%
+  contrasts <- dd %>% tidyr::gather("factor", "contrasts", -c(!!!(syms( subject_Id)))) %>%
     tidyr::unnest() %>% arrange(!!!syms(subject_Id)) %>%
-    dplyr::select(-rhs)
+    dplyr::select(-.data$rhs)
 
   return(contrasts)
 }
