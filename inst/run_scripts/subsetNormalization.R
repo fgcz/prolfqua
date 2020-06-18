@@ -9,67 +9,70 @@ library(dplyr)
 
 conflict_prefer("filter", "dplyr")
 
+
+
 inputMQfile <-
   "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
 outpath <- "results_modelling_all"
 #outpath <- "results_modelling_WHO_noSex"
 
-inputAnntation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
+inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
+
+ps <- ProjectStructure$new(outpath = ".",
+                     project_Id = 3000,
+                     order_Id = "IonStar" ,
+                     workunit_Id = "IonStar",
+                     inputData = inputMQfile,
+                     inputAnnotation = inputAnnotation)
+
+mqdata <- tidyMQ_Peptides_Config(ps$inputData)
+
+annotation <- readxl::read_xlsx(ps$inputAnnotation)
+
+mqdata$config$table$factors[["dilution."]] = "sample"
+mqdata$config$table$factors[["run_ID"]] = "run_ID"
+mqdata$config$table$factorDepth <- 1
 
 
 
-# creates default configuration
-config <- LFQService::create_config_MQ_peptide()
-
-annotation <- readxl::read_xlsx(inputAnntation)
-
-config$table$factors[["dilution."]] = "sample"
-config$table$factors[["run_ID"]] = "run_ID"
-
-
-config$table$factorDepth <- 1
-
-config$order_Id = "IonStar"
-config$project_Id = "p3000"
-config$workunit_Id = "IonStar"
 
 # specify model definition
 
 res <- application_add_annotation(
-  outpath = outpath,
-  inputMQfile = inputMQfile,
-  inputAnnotation = inputAnntation,
-  config = config$clone(deep = TRUE)
+  mqdata$data,
+  annotation
 )
 
+mqdata$data <- setup_analysis(res, mqdata$config)
 
 dd <-
-  LFQService:::filter_proteins_by_peptide_count(res$data, res$config)
-pepIntensityNormalized <-
-  transform_work_intensity(dd$data, dd$config, log2)
+  LFQService:::filter_proteins_by_peptide_count(mqdata$data, mqdata$config )
 
+pepIntensityNormalized <-
+  transform_work_intensity(dd$data, mqdata$config, log2)
 
 subset <-
   pepIntensityNormalized %>% dplyr::filter(grepl("HUMAN", pepIntensityNormalized$protein_Id))
+
 pepIntensityNormalized <-
-  scale_with_subset(pepIntensityNormalized, subset, dd$config)
+  scale_with_subset(pepIntensityNormalized, subset, mqdata$config)
 
 hist(pepIntensityNormalized$log2_peptide.intensity)
 hist(pepIntensityNormalized$log2_peptide.intensity_subset_scaled)
 
 pepIntensityNormalized <- pepIntensityNormalized %>%
-  dplyr::rename(transformedIntensity = dd$config$table$getWorkIntensity())
-dd$config$table$popWorkIntensity()
-dd$config$table$setWorkIntensity("transformedIntensity")
+  dplyr::rename(transformedIntensity = mqdata$config$table$getWorkIntensity())
+mqdata$config$table$popWorkIntensity()
+mqdata$config$table$setWorkIntensity("transformedIntensity")
 
 res <-
   list(
     pepIntensityNormalized = pepIntensityNormalized,
-    config_pepIntensityNormalized = dd$config
+    config_pepIntensityNormalized = mqdata$config
   )
 
 protL <- medpolish_protein_quants(res$pepIntensityNormalized, res$config_pepIntensityNormalized)
-protL("plot")
+#protL("plot")
 
 resProt <- list(
   protIntensities = protL("unnest")$data,
