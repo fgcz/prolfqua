@@ -1,8 +1,22 @@
+.checkForFile <- function(inputData){
+  if ( file.exists(inputData) ) {
+    inputData
+  } else {
+    stop("File does not exist : ", inputData)
+  }
+}
+
 #' keep track of folder paths and create them if needed
 #' @export
 #'
 #' @examples
-#' tmp <- ProjectStructure$new("./test_project")
+#' tmp <- ProjectStructure$new("./test_project",
+#' project_Id  = 3000,
+#' order_Id = 6200,
+#' workunit_Id = 23000,
+#' inputAnnotation = ".",
+#' inputData = "."
+#' )
 #' tmp$qc_path
 #' tmp$modelling_path
 #' if(FALSE){tmp$create()}
@@ -49,8 +63,8 @@ ProjectStructure <-
       self$project_Id = project_Id
       self$order_Id = order_Id
       self$workunit_Id = workunit_Id
-      self$inputData = inputData
-      self$inputAnnotation = inputAnnotation
+      self$inputData = .checkForFile(inputData)
+      self$inputAnnotation = .checkForFile(inputAnnotation)
       self$qc_path = file.path(outpath, qc_path )
       self$modelling_path = file.path(outpath, modelling_path )
     },
