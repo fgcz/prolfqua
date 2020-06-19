@@ -28,7 +28,6 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #'
 #' @export
 #' @keywords internal
-#' @import ggplot2
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples

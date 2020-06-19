@@ -5,7 +5,7 @@ suppressMessages(library(tidyverse))
 suppressMessages(library(LFQService))
 suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
-library(docopt)
+suppressMessages(library(docopt))
 
 doc <- "Sample Size Report from MQ file
 
@@ -22,7 +22,13 @@ Arguments:
   mqzip input file
 "
 
-opt <- docopt(doc)
+if (TRUE) {
+  dummyargs <- c( "c:/Users/wewol/prog/LFQServiceTestDataExtern/1675194.zip" )
+  opt <- docopt(doc, args = dummyargs)
+
+}else{
+  opt <- docopt(doc)
+}
 
 cat("\nParameters used:\n\t",
     "     mqzip:", mqzip <- opt$mqzip, "\n\t",
@@ -43,54 +49,41 @@ summarize_cv_raw_transformed <- function(resDataStart, config){
   config_tmp <- config$clone(deep = TRUE)
   stats_res <- summarize_cv(resDataStart, config_tmp)
   wide <- toWideConfig( resDataStart,config_tmp)
-  stats_raw <- inner_join(stats_res, wide$data, by=config_tmp$table$hierarchyKeys())
+  stats_raw <- inner_join(stats_res,
+                          wide$data,
+                          by = config_tmp$table$hierarchyKeys())
 
   resDataStart <- transform_work_intensity(resDataStart, config_tmp, log2)
   data <- LFQService::applyToIntensityMatrix(resDataStart, config_tmp, .func = robust_scale)
 
   stats_res_transformed <- summarize_cv(data, config_tmp)
   wide <- toWideConfig( data,config_tmp)
-  stats_transformed <- inner_join(stats_res_transformed, wide$data, by=config_tmp$table$hierarchyKeys())
-  peptideStats <- inner_join(stats_raw, stats_transformed, by=c( config_tmp$table$factorKeys(),config_tmp$table$hierarchyKeys() ), suffix =c(".raw",".transformed") )
+  stats_transformed <- inner_join(stats_res_transformed,
+                                  wide$data,
+                                  by = config_tmp$table$hierarchyKeys())
+  peptideStats <- inner_join(stats_raw, stats_transformed,
+                             by = c( config_tmp$table$factorKeys(),config_tmp$table$hierarchyKeys() ),
+                             suffix = c(".raw",".transformed") )
   return(peptideStats)
 }
 
 
+resPep <- tidyMQ_Peptides_Config(mqzip)
+resPep$config$table$factors[["FACTOR"]] = "QC"
+resPep$config$table$factorDepth <- 1
 
-resPepProt <- tidyMQ_PeptideProtein(mqzip,.all = TRUE)
-resPepProtAnnot <- tidyMQ_from_modSpecific_to_peptide(resPepProt$mq_modSpecPeptides, resPepProt$mq_peptides)
-resPepProtAnnot <- tidyMQ_top_protein_name(resPepProtAnnot)
+resPep$data$QC <- "QC"
+resPep$data$isotope <- "light"
 
-resPepProtAnnot$QC <- "QC"
-resPepProtAnnot$isotope <- "light"
 
-createMQProteinPeptideConfiguration <- function(ident_qValue = "pep",
-                                                intensity = "peptide.intensity",
-                                                isotopeLabel = "isotope"){
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "raw.file"
-  # measurement levels.
-  atable$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id")
-  atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
-  atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity(intensity)
-  atable$isotopeLabel = isotopeLabel
-  atable$factors[["FACTOR"]] = "QC"
-  atable$factorDepth <- 1
-  anaparam <- AnalysisParameters$new()
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
-  return(configuration)
-}
-
-config <- createMQProteinPeptideConfiguration()
 config$project_Id <- project_Id
 config$order_Id <- order_Id
 config$workunit_Id <- workunit
 
 
-resDataStart <- setup_analysis(resPepProtAnnot, config)
-resDataStart <- remove_small_intensities(resDataStart, config) %>%
-  complete_cases(config)
+resPep$data <- setup_analysis(resPep$data, resPep$config)
+resPep$data <- remove_small_intensities(resPep$data, resPep$config) %>%
+  complete_cases(resPep$config)
 
 
 filename <- basename(tools::file_path_sans_ext(mqzip))
@@ -140,6 +133,7 @@ lfq_write_table(
   path = file.path(outputDir, paste0("r_", filename, "_Protein.csv")),
   lfq_write_format = "xlsx"
 )
+
 lfq_write_table(
   toWideConfig(data, xx$config)$annotation,
   path = file.path(outputDir, paste0("r_", filename, "_annotation.csv")),

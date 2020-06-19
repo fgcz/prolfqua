@@ -30,7 +30,7 @@ ProjectStructure <-
     #' @field project_Id project_Id
     #' @field order_Id order_Id
     #' @field workunit_Id workunit_Id
-    #' @field inputFile inputFile
+    #' @field inputData inputFile
     #' @field inputAnnotation inputAnnotation xlsx
     outpath = "",
     qc_path = "",
@@ -47,7 +47,7 @@ ProjectStructure <-
     #' @param workunit_Id bfabric workunit_Id
     #' @param order_Id bfabric order_Id
     #' @param inputAnnotation input annotation path
-    #' @param inputFile input data path
+    #' @param inputData input data path
     #' @param qc_path qc folder
     #' @param modelling_path modelling results folder
 
@@ -68,21 +68,25 @@ ProjectStructure <-
       self$qc_path = file.path(outpath, qc_path )
       self$modelling_path = file.path(outpath, modelling_path )
     },
+    #' @description
+    #' qc folder name
     qc_folder = function(){
       basename(self$qc_path)
     },
+    #' @description
+    #' modelling folder name
     modelling_folder = function(){
       basename(self$modelling_path)
     },
     #' @description
-    #' create
+    #' create outpath
     create_outpath = function(){
       if (!dir.exists(self$outpath)) {
         dir.create(self$outpath)
       }
     },
     #' @description
-    #' create
+    #' create qc dir
     creat_qc_dir = function(){
       self$create_outpath()
       if (!dir.exists(self$qc_path)) {
@@ -90,7 +94,7 @@ ProjectStructure <-
       }
     },
     #' @description
-    #' create
+    #' create modelling path
     create_modelling_path = function(){
       self$create_outpath()
       if (!dir.exists(self$modelling_path)) {
@@ -104,7 +108,7 @@ ProjectStructure <-
       self$create_modelling_path()
     },
     #' @description
-    #' empty modelling_path and qc_path
+    #' empty modelling_path and qc_path folder.
     reset = function(){
       if (unlink(self$modelling_path, recursive = TRUE) != 0 ) {
         message("could not clean ",self$modelling_path)

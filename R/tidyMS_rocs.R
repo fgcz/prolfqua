@@ -14,14 +14,16 @@
     res[[i]] <-  tryCatch(pROC::roc(response = responseX,
                                     predictor = predictorX,
                                     direction = "<",
-                                    levels=comp), error = function(e) warning(e))
+                                    levels = comp),
+                          error = function(e) warning(e))
   }
   return(res)
 }
 
 #' Apply roc analysis on main factor on lowest hierarchy level
 #' deprecate function.
-#'
+#' @param data data
+#' @param config AnalysisConfiguration
 #' @export
 #' @examples
 #'

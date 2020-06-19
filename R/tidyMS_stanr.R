@@ -52,6 +52,13 @@ check_factors_level_coverage <- function(mdata26, fixeff){
 
 ### Model with stan
 #' fits brms model and computes summary.
+#' @param mdata todo
+#' @param memodel todo
+#' @param fixef todo
+#' @param linfct_A todo
+#' @param func todo
+#' @param summarize todo
+#' @param cores todo
 #' @export
 #' @examples
 #' # todo

@@ -41,7 +41,7 @@ head(fun)
 fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 head(fun)
 dim(fun)
-dim(distinct(fun[,1:6]))
+dim(dplyr::distinct(fun[,1:6]))
 fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "nrMeasured")
 }
 \keyword{internal}

@@ -24,6 +24,7 @@ summarize_cv_quantiles(
 summarize stats output (compute quantiles)
 }
 \examples{
+library(ggplot2)
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 data <- LFQServiceData::sample_analysis
 stats_res <- summarize_cv(data, config)
@@ -35,7 +36,7 @@ summarize_cv_quantiles(stats_res, config, stats = "CV")
 data2 <- transform_work_intensity(data, config, transformation = log2)
 stats_res <- summarize_cv(data2, config)
 xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
-ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
+ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
 
 }
 \keyword{internal}

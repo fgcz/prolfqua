@@ -36,16 +36,9 @@ if(FALSE){tmp$create()}
 
 \item{\code{workunit_Id}}{workunit_Id}
 
-\item{\code{inputFile}}{inputFile}
+\item{\code{inputData}}{inputFile}
 
 \item{\code{inputAnnotation}}{inputAnnotation xlsx}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{inputFile}}{inputFile}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,11 +87,11 @@ create ProjectStructure
 
 \item{\code{inputAnnotation}}{input annotation path}
 
+\item{\code{inputData}}{input data path}
+
 \item{\code{qc_path}}{qc folder}
 
 \item{\code{modelling_path}}{modelling results folder}
-
-\item{\code{inputFile}}{input data path}
 }
 \if{html}{\out{</div>}}
 }
@@ -107,6 +100,7 @@ create ProjectStructure
 \if{html}{\out{<a id="method-qc_folder"></a>}}
 \if{latex}{\out{\hypertarget{method-qc_folder}{}}}
 \subsection{Method \code{qc_folder()}}{
+qc folder name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$qc_folder()}\if{html}{\out{</div>}}
 }
@@ -116,6 +110,7 @@ create ProjectStructure
 \if{html}{\out{<a id="method-modelling_folder"></a>}}
 \if{latex}{\out{\hypertarget{method-modelling_folder}{}}}
 \subsection{Method \code{modelling_folder()}}{
+modelling folder name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$modelling_folder()}\if{html}{\out{</div>}}
 }
@@ -125,7 +120,7 @@ create ProjectStructure
 \if{html}{\out{<a id="method-create_outpath"></a>}}
 \if{latex}{\out{\hypertarget{method-create_outpath}{}}}
 \subsection{Method \code{create_outpath()}}{
-create
+create outpath
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$create_outpath()}\if{html}{\out{</div>}}
 }
@@ -135,7 +130,7 @@ create
 \if{html}{\out{<a id="method-creat_qc_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-creat_qc_dir}{}}}
 \subsection{Method \code{creat_qc_dir()}}{
-create
+create qc dir
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$creat_qc_dir()}\if{html}{\out{</div>}}
 }
@@ -145,7 +140,7 @@ create
 \if{html}{\out{<a id="method-create_modelling_path"></a>}}
 \if{latex}{\out{\hypertarget{method-create_modelling_path}{}}}
 \subsection{Method \code{create_modelling_path()}}{
-create
+create modelling path
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$create_modelling_path()}\if{html}{\out{</div>}}
 }
@@ -165,7 +160,7 @@ create all directories
 \if{html}{\out{<a id="method-reset"></a>}}
 \if{latex}{\out{\hypertarget{method-reset}{}}}
 \subsection{Method \code{reset()}}{
-empty modelling_path and qc_path
+empty modelling_path and qc_path folder.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$reset()}\if{html}{\out{</div>}}
 }

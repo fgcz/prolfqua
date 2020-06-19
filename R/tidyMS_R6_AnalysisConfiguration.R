@@ -789,7 +789,7 @@ missigness_impute_interactions <- function(pdata,
 #' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
 #' head(fun)
 #' dim(fun)
-#' dim(distinct(fun[,1:6]))
+#' dim(dplyr::distinct(fun[,1:6]))
 #' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "nrMeasured")
 missigness_impute_factors_interactions <-
   function(pdata,
@@ -1090,14 +1090,15 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
 #' @keywords internal
 #'
 #' @examples
-#' medpolishPly(name = T)
+#' library(tidyverse)
+#' medpolishPly(name = TRUE)
 #' gg <- matrix(runif(20),4,5)
 #' rownames(gg) <- make.names(1:4)
 #' colnames(gg) <- make.names(1:5)
 #' mx <- medpolishPly(gg)
 #'
 #' # compare it with other methods of protein inference
-#' dd <- tidyr::gather(as_tibble(gg))
+#' dd <- tidyr::gather(tibble::as_tibble(gg))
 #' #x <- robust::lmRob(value ~ key, data = dd )
 #' #pred_lmRob <- c(coef(x)[1] , coef(x)[1] + coef(x)[-1])
 #' xl <- lm(value ~ key , data = dd)

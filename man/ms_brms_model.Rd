@@ -14,6 +14,21 @@ ms_brms_model(
   cores = parallel::detectCores()
 )
 }
+\arguments{
+\item{mdata}{todo}
+
+\item{memodel}{todo}
+
+\item{fixef}{todo}
+
+\item{linfct_A}{todo}
+
+\item{func}{todo}
+
+\item{summarize}{todo}
+
+\item{cores}{todo}
+}
 \description{
 fits brms model and computes summary.
 }

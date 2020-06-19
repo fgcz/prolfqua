@@ -13,14 +13,15 @@ medpolishPly(x, name = FALSE)
 compute tukeys median polish from peptide or precursor intensities
 }
 \examples{
-medpolishPly(name = T)
+library(tidyverse)
+medpolishPly(name = TRUE)
 gg <- matrix(runif(20),4,5)
 rownames(gg) <- make.names(1:4)
 colnames(gg) <- make.names(1:5)
 mx <- medpolishPly(gg)
 
 # compare it with other methods of protein inference
-dd <- tidyr::gather(as_tibble(gg))
+dd <- tidyr::gather(tibble::as_tibble(gg))
 #x <- robust::lmRob(value ~ key, data = dd )
 #pred_lmRob <- c(coef(x)[1] , coef(x)[1] + coef(x)[-1])
 xl <- lm(value ~ key , data = dd)

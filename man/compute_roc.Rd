@@ -7,6 +7,11 @@ deprecate function.}
 \usage{
 compute_roc(data, config)
 }
+\arguments{
+\item{data}{data}
+
+\item{config}{AnalysisConfiguration}
+}
 \description{
 Apply roc analysis on main factor on lowest hierarchy level
 deprecate function.
