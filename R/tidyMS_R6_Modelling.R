@@ -253,8 +253,16 @@ model_analyse_summarize <- function(modelProteinF,
     dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
 
   Model_Coeff <- Model_Coeff %>%
-    dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef) %>%
-    tidyr::unnest(cols = "Coeffs_model")
+    dplyr::select(!!!syms(subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
+
+  # Problem with new version of tidyr.
+  if(FALSE){
+    Model_Coeff <-  tidyr::unnest(Model_Coeff, cols = "Coeffs_model")
+  } else {
+    Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
+  }
+
+
 
   # ANOVA
   .anova_df <- function(x){
