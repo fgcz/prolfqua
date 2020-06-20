@@ -1,6 +1,6 @@
 Package: LFQService
 Type: Package
-Title: Analysing complex LFQ experiments.
+Title: Proteomics Label Free Quantification
 Version: 0.1.5
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
@@ -22,13 +22,15 @@ Imports:
     DT,
     flextable,
     forcats,
+    GGally,
     ggplot2,
     ggbeeswarm,
     ggfortify,
     ggrepel,
     ggridges,
+    ggpubr
     glue,
-    GGally,
+    htmlwidgets,
     LFQServiceData,
     limma,
     lme4,
@@ -41,8 +43,10 @@ Imports:
     plyr,
     pROC,
     purrr,
+    readr,
     readxl,
     rlang,
+    stringr,
     tidyverse,
     tidyr,
     tibble,
