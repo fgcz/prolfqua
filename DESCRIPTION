@@ -28,7 +28,7 @@ Imports:
     ggfortify,
     ggrepel,
     ggridges,
-    ggpubr
+    ggpubr,
     glue,
     htmlwidgets,
     LFQServiceData,
