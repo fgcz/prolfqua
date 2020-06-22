@@ -7,8 +7,8 @@
 model_analyse(
   pepIntensity,
   modelFunction,
-  modelName = "Model",
-  subject_Id = "protein_Id"
+  subject_Id = "protein_Id",
+  modelName = "Model"
 )
 }
 \description{
@@ -18,18 +18,14 @@ used in project p2901
 
 library(tidyverse)
 library(LFQService)
-D <- LFQServiceData::resultsV12954
-modelName <- "f_condtion_r_peptide"
+ionstar <- LFQServiceData::dataIonstarNormalizedPep
+ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
+LFQService::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
-  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
-  model_name = modelName)
-pepIntensity <- D$data
-config <- D$config
-config$table$hkeysDepth()
-mr <- LFQService:::model_analyse( pepIntensity,
+  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
+mr <- LFQService:::model_analyse( ionstar$data,
  formula_randomPeptide,
- modelName,
- config$table$hkeysDepth())
+ subject_Id = ionstar$config$table$hkeysDepth())
 get_complete_model_fit(mr$modelProtein)
 }
 \keyword{internal}

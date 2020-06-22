@@ -24,22 +24,33 @@ plot_hierarchies_boxplot_df(
 generates peptide level plots for all Proteins
 }
 \examples{
-resDataStart <- LFQServiceData::testDataStart2954$resDataStart
-config <-  LFQServiceData::testDataStart2954$config
-res <- plot_hierarchies_boxplot_df(resDataStart, config)
-res$boxplot[[1]]
+ iostar <- LFQServiceData::dataIonstarFilteredPep
+ iostar$data <- iostar$data \%>\%
+   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+ unique(iostar$data$protein_Id)
 
-res <- plot_hierarchies_boxplot_df(resDataStart,
- config,
- facet_grid_on = "peptide_Id")
-res$boxplot[[1]]
-config <- config$clone(deep = TRUE)
-#TODO plot on peptide level.
-config$table$hierarchyDepth = 2
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
+ res$boxplot[[1]]
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchyKeys()[1])
+ res$boxplot[[1]]
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
+                                    iostar$config$table$hierarchyKeys()[1],
+                                    facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+ res$boxplot[[1]]
 
-res <- plot_hierarchies_boxplot_df(resDataStart, config)
+ iostar <- LFQServiceData::dataIonstarProtein
+ iostar$data <- iostar$data \%>\%
+   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+ unique(iostar$data$protein_Id)
 
-res$boxplot[[1]]
-
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
+ res$boxplot[[1]]
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
+                                    iostar$config$table$hierarchyKeys()[1])
+ res$boxplot[[1]]
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
+                                    iostar$config$table$hierarchyKeys()[1],
+                                    facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+ res$boxplot[[1]]
 }
 \keyword{internal}
