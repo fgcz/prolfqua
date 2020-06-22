@@ -124,35 +124,32 @@ LFQData <- R6::R6Class(
 #' library(tidyverse)
 #' library(LFQService)
 #'
-if (FALSE) {
-  rm(list = ls())
-  source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-  istar <- LFQServiceData::dataIonstarFilteredPep
-
-  istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-  lfqdata <- LFQData$new(istar$data, istar$config)
-
-  lfqcopy <- lfqdata$clone_d()
-  lfqTrans <- lfqcopy$get_Transformer()
-
-  x <- lfqTrans$intensity_array(log2)
-  x$lfq$data
-  x$lfq$config$table$workIntensity
-  x$lfq$config$table$is_intensity_transformed
-
-  lfqdata$config$table$workIntensity
-
-  x$lfq$config$table$workIntensity
-
-  x <- lfqTrans$log2_robscale()
-  x$lfq$config$table$workIntensity
-  x$lfq$config$table$is_intensity_transformed
-
-
-  lfqTrans$lfq$config$table$workIntensity
-
-}
-
+#'
+#' rm(list = ls())
+#' library(LFQService)
+#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#'
+#' lfqcopy <- lfqdata$clone_d()
+#' lfqTrans <- lfqcopy$get_Transformer()
+#'
+#' x <- lfqTrans$intensity_array(log2)
+#' x$lfq$config$table$is_intensity_transformed
+#' x <- x$intensity_matrix(robust_scale)
+#' plotter <- x$lfq$get_Plotter()
+#' plotter$intensity_distribution_density()
+#'
+#' # transform by asinh root and scale
+#' lfqcopy <- lfqdata$clone_d()
+#' lfqTrans <- lfqcopy$get_Transformer()
+#' x <- lfqTrans$intensity_array(asinh)
+#' x$lfq$config$table$is_intensity_transformed
+#' x <- lfqTrans$intensity_matrix(robust_scale)
+#' plotter <- x$lfq$get_Plotter()
+#' plotter$intensity_distribution_density()
+#'
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
@@ -178,6 +175,7 @@ LFQDataTransformer <- R6::R6Class(
     log2_robscale_subset = function(lfqsubset){
       self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      self$lfq$config$table$is_intensity_transformed <- TRUE
       return(self)
     },
     #' @description
