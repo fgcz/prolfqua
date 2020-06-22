@@ -1,4 +1,4 @@
-#' @importFrom dplyr arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
+#' @importFrom dplyr anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
 #' @importFrom dplyr inner_join mutate one_of rename select summarize_at ungroup vars
 #' @import ggplot2
 #' @importFrom ggrepel geom_text_repel

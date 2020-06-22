@@ -38,6 +38,9 @@ LFQData <- R6::R6Class(
       self$is_pep <- is_pep
       self$prefix <- prefix
     },
+    clone_d = function(){
+      self$clone(deep = TRUE)
+    },
     #' @description
     #'
     #' Render a QC document
@@ -54,7 +57,6 @@ LFQData <- R6::R6Class(
         dest_file_name = if (self$is_pep) {"peptide_intensities_qc"} else {"protein_intensities_qc"},
         format = "html"
       )
-
     },
     #' @description
     #' converts the data to wide
@@ -95,18 +97,124 @@ LFQData <- R6::R6Class(
     get_Stats = function(){
       return(LFQDataStats$new(self))
     },
+    get_Transformer = function(){
+      return(LFQDataTransformer$new(self))
+    },
     #' @description
-    #' get difference of this with other
+    #' get difference of self with other if other is subset of self
     #'
     #' @details
     #' Use to compare filtering results obtained from self, e.g. which proteins and peptides were removed (other)
     #'
     #' @param other a filtered LFQData set
     #' @return LFQData
-    difference = function(other){
-      diffdata <- LFQService::difference(self$data,other$data,self$config )
+    filter_difference = function(other){
+      diffdata <- LFQService::filter_difference(self$data,other$data,self$config )
       res <- LFQData$new(diffdata , self$config$clone(deep = TRUE))
       return(res)
+    }
+  )
+)
+
+# LFQDataTransformer ----
+#' methods for transforming Intensities
+#' @export
+#'
+#' @examples
+#' library(tidyverse)
+#' library(LFQService)
+#'
+if (FALSE) {
+  rm(list = ls())
+  source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+  istar <- LFQServiceData::dataIonstarFilteredPep
+
+  istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+  lfqdata <- LFQData$new(istar$data, istar$config)
+
+  lfqcopy <- lfqdata$clone_d()
+  lfqTrans <- lfqcopy$get_Transformer()
+
+  x <- lfqTrans$intensity_array(log2)
+  x$lfq$data
+  x$lfq$config$table$workIntensity
+  x$lfq$config$table$is_intensity_transformed
+
+  lfqdata$config$table$workIntensity
+
+  x$lfq$config$table$workIntensity
+
+  x <- lfqTrans$log2_robscale()
+  x$lfq$config$table$workIntensity
+  x$lfq$config$table$is_intensity_transformed
+
+
+  lfqTrans$lfq$config$table$workIntensity
+
+}
+
+LFQDataTransformer <- R6::R6Class(
+  "LFQDataTransformer",
+  public = list(
+    lfq = NULL,
+
+    initialize = function(lfqdata){
+      self$lfq = lfqdata
+    },
+    #' @description
+    #' log2 transform and robust scale datas
+    #' @return LFQDataTransformer (self)
+    log2_robscale = function(){
+      r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
+      self$lfq$data <- r$data
+      self$lfq$config <- r$config
+      return(self)
+    },
+    #' @description
+    #' log2 transform and robust scale data based on subset
+    #' @param LFQData
+    #' @return LFQDataTransformer (self)
+    #'
+    log2_robscale_subset = function(lfqsubset){
+      self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
+      self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      return(self)
+    },
+    #' @description
+    #' Transforms intensities
+    #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
+    #' @return LFQDataTransformer (self)
+    #'
+    intensity_array = function(.func = log2) {
+      .call <- as.list( match.call() )
+      r <- LFQService::transform_work_intensity(
+        self$lfq$data,
+        self$lfq$config,
+        .func = .func,
+        .funcname = deparse(.call$.func))
+      self$lfq$data <- r
+      return(self)
+    },
+    is_transformed = function(is_transformed){
+      if (missing(is_transformed)) {
+         self$lfq$config$is_intensity_transformed
+      }else{
+        self$lfq$config$is_intensity_transformed = is_transformed
+      }
+    },
+    #' @description
+    #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
+    #' @return LFQDataTransformer (self)
+    #'
+    intensity_matrix = function(.func = robust_scale){
+      .call <- as.list( match.call() )
+      r <- LFQService::applyToIntensityMatrix(
+        self$lfq$data,
+        self$lfq$config,
+        .func = .func,
+        .funcname = deparse(.call$.func))
+      self$lfq$data <- r
+      return(self)
     }
   )
 )

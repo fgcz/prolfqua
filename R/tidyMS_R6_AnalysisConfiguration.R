@@ -1142,7 +1142,7 @@ medpolishPly <- function(x, name = FALSE){
 #'
 #' x("unnest")$data
 #' xnested<-x()
-#' dd <- x("plot")
+#' dd <- x(value = "plot")
 #' dd$medpolishPly[[1]]
 #' dd$plot[[2]]
 #' # example how to add peptide count information
@@ -1196,8 +1196,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
       xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
       figs <- xnested %>%
         dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
-                                  plot_hierarchies_line,
-                                  factor_level = config$table$factorDepth, config ))
+                                  plot_hierarchies_line, config = config ))
 
       figs <- figs %>%
         dplyr::mutate(plot = map2(plot, !!sym(makeName) ,

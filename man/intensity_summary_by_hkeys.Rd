@@ -31,7 +31,7 @@ x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 x("unnest")$data
 xnested<-x()
-dd <- x("plot")
+dd <- x(value = "plot")
 dd$medpolishPly[[1]]
 dd$plot[[2]]
 # example how to add peptide count information

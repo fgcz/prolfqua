@@ -1,7 +1,6 @@
 # Run mixed models on benchmark dataset.
 
 rm(list = ls())
-
 library(LFQService)
 library(tidyverse)
 library(dplyr)
@@ -12,11 +11,16 @@ inputMQfile <-
   "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
 outpath <- "results_modelling_all"
 outpath <- "results_modelling_WHO_noSex"
+inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
 
-pStruct <- createProjectStructure(outpath)
+pStruct <- ProjectStructure$new(outpath,
+                                project_Id = 1,
+                                order_Id = 1,
+                                workunit_Id = 1,
+                                inputAnnotation = inputAnnotation,
+                                inputData = inputMQfile)
 pStruct$create()
 
-inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
 
 
 # MQPeptides<- "D:/Dropbox/DataAnalysis/p2109_PEPTIDE_Analysis/data/MQWorkunit.zip"
@@ -25,20 +29,15 @@ inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\
 #         header = TRUE, sep="\t", stringsAsFactors = FALSE)
 
 
-mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+mqdata <- tidyMQ_Peptides_Config(pStruct$inputData)
 
 # creates default configuration
 config <- mqdata$config
 config$table$factors[["dilution."]] = "sample"
 config$table$factors[["run_ID"]] = "run_ID"
-
-
 config$table$factorDepth <- 1
-
-config$order_Id = "IonStar"
-config$project_Id = "p3000"
-config$workunit_Id = "IonStar"
 mqdata$config <- config
+
 # specify model definition
 
 #modelName  <- "Model"
@@ -72,7 +71,13 @@ res <- application_add_annotation(
 
 data <- setup_analysis(res,mqdata$config)
 
+names(data)
+dataIonstarPep <- list(data = data, config = mqdata$config)
+usethis::use_data(dataIonstarPep)
+
 filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config)
+
+
 dataIonstarFilteredPep <- filteredData
 usethis::use_data(dataIonstarFilteredPep, overwrite = TRUE)
 

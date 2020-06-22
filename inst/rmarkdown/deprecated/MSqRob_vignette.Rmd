@@ -28,7 +28,7 @@ resData <- removeLarge_Q_Values(resData, config)
 resData <- remove_small_intensities(resData, config,threshold = 100)
 
 sum(is.na(select(resData, config$table$getWorkIntensity())))
-resDataLog <- transform_work_intensity(resData,config, transformation = log2)
+resDataLog <- transform_work_intensity(resData,config, .func =  log2)
 ```
 
 # normalize data ----
@@ -38,11 +38,11 @@ resDataLog <- applyToIntensityMatrix(resDataLog, config, robust_scale)
 
 
 ggplot(resDataLog, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
-  geom_line(stat="density")
+  geom_line(stat = "density")
 head(resDataLog$coding)
 
 first20 <- unique(resDataLog$protein_Id)[1:20]
-resDataLog20 <-resDataLog %>% dplyr::filter(protein_Id %in% first20)
+resDataLog20 <- resDataLog %>% dplyr::filter(protein_Id %in% first20)
 
 proteins <- MSqRob::df2protdata(data.frame(resDataLog20),
                                 acc_col = config$table$hierarchyKeys()[1],

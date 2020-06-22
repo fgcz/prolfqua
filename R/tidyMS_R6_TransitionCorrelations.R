@@ -44,8 +44,9 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' Transform intensity
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param transformation function to transform intensities e.g. log2
-#' @param intesityNewName column name for new intensity, default NULL - generates new name from name of transformation and old working intensity column name.
+#' @param .func function to transform intensities e.g. log2
+#' @param .funcname generates new name from name of transformation and old working intensity column name.
+#' @param intesityNewName column name for new intensity, default NULL
 #' @return data.frame
 #' @export
 #' @keywords internal
@@ -53,29 +54,37 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' library(tidyverse)
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis
-#' x <- transform_work_intensity(analysis, config, transform = log2)
+#' x <- transform_work_intensity(analysis, config, .func = log2)
+#'
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis
-#' x <- transform_work_intensity(analysis, config, transform = asinh)
+#' x <- transform_work_intensity(analysis, config, .func = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 #'
 transform_work_intensity <- function(pdata,
                                      config,
-                                     transformation,
+                                     .func,
+                                     .funcname = NULL,
                                      intesityNewName = NULL,
                                      deep = FALSE){
   if (deep) {
     config <- config$clone(deep = TRUE)
   }
-  x <- as.list( match.call() )
+  .call <- as.list( match.call() )
+
+
+
   if (is.null(intesityNewName)) {
-    newcol <- paste(as.character(x$transformation), config$table$getWorkIntensity(), sep = "_")
+    .funcname <- if (is.null(.funcname)) {deparse(.call$.func)}else{.funcname}
+    newcol <- paste(.funcname, config$table$getWorkIntensity(), sep = "_")
   }else{
     newcol <- intesityNewName
   }
 
-  pdata <- pdata %>% dplyr::mutate_at(config$table$getWorkIntensity(), .funs = funs(!!sym(newcol) := transformation(.)))
+  pdata <- pdata %>% dplyr::mutate_at(config$table$getWorkIntensity(),
+                                      .funs = funs(!!sym(newcol) := .func(.)))
+
   config$table$setWorkIntensity(newcol)
   message("Column added : ", newcol)
   config$parameter$is_intensity_transformed = TRUE
@@ -269,13 +278,19 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 }
 
 #' make it long
+#'
+#' @param pdata (matrix)
+#' @param value name of column to store values in. (see `gather`)
+#' @param AnalysisConfiguration
+#' @param data lfqdata
+#' @param sep separater to unite the hierarchy keys.
 #' @export
+#'
 #' @keywords internal
 #' @examples
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
 #' res <- scale(res$data)
-#'
 #' xx <- gatherItBack(res,"srm_intensityScaled", conf)
 #' xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
@@ -327,6 +342,10 @@ robust_scale <- function(data){
 
 
 #' apply Function To matrix
+#' @param data data.frame
+#' @param config AnalysisConfiguration
+#' @param .func function
+#' @param .funcname name of function (used for creating new column)
 #' @export
 #' @keywords internal
 #' @examples
@@ -334,6 +353,7 @@ robust_scale <- function(data){
 #' library(tidyverse)
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' conf$table$workIntensity <- "Area"
+#' #debug(applyToIntensityMatrix)
 #' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf, .func = base::scale)
 #'
 #' stopifnot("Area_base..scale" %in% colnames(res))
@@ -342,9 +362,10 @@ robust_scale <- function(data){
 #' conf$table$workIntensity <- "Area"
 #' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
 #'
-applyToIntensityMatrix <- function(data, config, .func){
-  xcall <- as.list( match.call() )
-  colname <- make.names( paste( config$table$getWorkIntensity(), deparse(xcall$.func), sep = "_"))
+applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
+  .call <- as.list( match.call() )
+  .funcname <- if (is.null(.funcname)) { deparse(.call$.func) } else {.funcname}
+  colname <- make.names( paste( config$table$getWorkIntensity(), .funcname, sep = "_"))
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
   data <- gatherItBack(mat, colname, config, data)

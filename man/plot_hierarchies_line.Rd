@@ -4,18 +4,13 @@
 \alias{plot_hierarchies_line}
 \title{extracts the relevant information from the configuration to make the plot.}
 \usage{
-plot_hierarchies_line(
-  res,
-  proteinName,
-  configuration,
-  factor_level = 1,
-  separate = FALSE
-)
+plot_hierarchies_line(res, proteinName, config, separate = FALSE)
 }
 \description{
 extracts the relevant information from the configuration to make the plot.
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
 conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)

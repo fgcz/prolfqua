@@ -11,17 +11,12 @@
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' resDataStart <- LFQServiceData::testData2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
+#' istar <- LFQServiceData::dataIonstarPep
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+#'  x <- LFQService::summarize_hierarchy(filterPep$data , istar$config)
+#' stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
 #'
-#' undebug(filter_proteins_by_peptide_count)
-#' res <- filter_proteins_by_peptide_count(resDataStart, config)
-#'
-#' resDataStart <- LFQServiceData::skylineSRM_HL_data
-#' config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
-#'
-#' resDataStart <- setup_analysis(resDataStart , config)
-#' res <- filter_proteins_by_peptide_count(resDataStart, config)
 #'
 filter_proteins_by_peptide_count <-
   function(pdata,
@@ -42,14 +37,19 @@ filter_proteins_by_peptide_count <-
 #' @export
 #' @keywords internal
 #' @examples
-#' resDataStart <- LFQServiceData::testDataStart2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
-#' filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
-#' normalize_log2_robscale(filterPep$data, config)
+#'
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+#' xx <- normalize_log2_robscale(istar$data, istar$config)
+#' names(xx)
+#' xx$config$table$workIntensity
 #'
 normalize_log2_robscale <- function(pdata, config){
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
+  pepConfig$table$is_intensity_transformed = TRUE
+
   pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized,
                                                    pepConfig,
                                                    .func = robust_scale)
@@ -58,11 +58,12 @@ normalize_log2_robscale <- function(pdata, config){
     dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
   pepConfig$table$popWorkIntensity()
   pepConfig$table$setWorkIntensity("transformedIntensity")
+
   return(list(data = pepIntensityNormalized, config = pepConfig))
 }
 
 
-#' get the difference of two dataset
+#' get the difference of two dataset where one is a subset of the other.
 #' @param x data.frame
 #' @param y data.frame
 #' @param config AnlysisConfiguration
@@ -72,13 +73,21 @@ normalize_log2_robscale <- function(pdata, config){
 #'
 #' @examples
 #'
-#' resDataStart <- LFQServiceData::testData2954$resDataStart
-#' config <-  LFQServiceData::testDataStart2954$config
+#' library(LFQService)
+#' library(tidyverse)
 #'
-#' res <- filter_proteins_by_peptide_count(resDataStart, config)
+#' istar <- LFQServiceData::dataIonstarPep
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+#' tmp <- filter_difference(istar$data, filterPep$data, istar$config)
+#' stopifnot(nrow(istar$data )  - nrow(filterPep$data) == nrow(tmp))
+#' tmp <- filter_difference(filterPep$data, istar$data , istar$config)
+#' stopifnot(nrow(istar$data )  - nrow(filterPep$data) == nrow(tmp))
 #'
-#' resDiff  <- difference(resDataStart, res$data, config)
-#'
-difference <- function(x, y, config){
-  anti_join(x, y, by = config$table$idVars())
+filter_difference <- function(x, y, config){
+  if (nrow(y) > nrow(x)) {
+    dplyr::anti_join(y, x, by = config$table$idVars())
+  }else{
+    dplyr::anti_join(x, y, by = config$table$idVars())
+  }
 }

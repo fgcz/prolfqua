@@ -4,7 +4,16 @@
 \alias{applyToIntensityMatrix}
 \title{apply Function To matrix}
 \usage{
-applyToIntensityMatrix(data, config, .func)
+applyToIntensityMatrix(data, config, .func, .funcname = NULL)
+}
+\arguments{
+\item{data}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+
+\item{.func}{function}
+
+\item{.funcname}{name of function (used for creating new column)}
 }
 \description{
 apply Function To matrix
@@ -14,6 +23,7 @@ apply Function To matrix
 library(tidyverse)
 conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 conf$table$workIntensity <- "Area"
+#debug(applyToIntensityMatrix)
 res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf, .func = base::scale)
 
 stopifnot("Area_base..scale" \%in\% colnames(res))

@@ -45,6 +45,7 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQData$new()}}
+\item \href{#method-clone_d}{\code{LFQData$clone_d()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
@@ -52,7 +53,8 @@ Other LFQData:
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
 \item \href{#method-get_Stats}{\code{LFQData$get_Stats()}}
-\item \href{#method-difference}{\code{LFQData$difference()}}
+\item \href{#method-get_Transformer}{\code{LFQData$get_Transformer()}}
+\item \href{#method-filter_difference}{\code{LFQData$filter_difference()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
 }
@@ -78,6 +80,15 @@ initialize
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone_d"></a>}}
+\if{latex}{\out{\hypertarget{method-clone_d}{}}}
+\subsection{Method \code{clone_d()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$clone_d()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-render"></a>}}
@@ -182,12 +193,21 @@ LFQDataStats
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-difference"></a>}}
-\if{latex}{\out{\hypertarget{method-difference}{}}}
-\subsection{Method \code{difference()}}{
-get difference of this with other
+\if{html}{\out{<a id="method-get_Transformer"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Transformer}{}}}
+\subsection{Method \code{get_Transformer()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$difference(other)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Transformer()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-filter_difference"></a>}}
+\if{latex}{\out{\hypertarget{method-filter_difference}{}}}
+\subsection{Method \code{filter_difference()}}{
+get difference of self with other if other is subset of self
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$filter_difference(other)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

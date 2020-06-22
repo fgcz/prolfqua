@@ -7,7 +7,8 @@
 transform_work_intensity(
   pdata,
   config,
-  transformation,
+  .func,
+  .funcname = NULL,
   intesityNewName = NULL,
   deep = FALSE
 )
@@ -17,9 +18,11 @@ transform_work_intensity(
 
 \item{config}{AnalysisConfiguration}
 
-\item{transformation}{function to transform intensities e.g. log2}
+\item{.func}{function to transform intensities e.g. log2}
 
-\item{intesityNewName}{column name for new intensity, default NULL - generates new name from name of transformation and old working intensity column name.}
+\item{.funcname}{generates new name from name of transformation and old working intensity column name.}
+
+\item{intesityNewName}{column name for new intensity, default NULL}
 }
 \value{
 data.frame
@@ -31,11 +34,12 @@ Transform intensity
 library(tidyverse)
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 analysis <- LFQServiceData::spectronautDIAData250_analysis
-x <- transform_work_intensity(analysis, config, transform = log2)
+x <- transform_work_intensity(analysis, config, .func = log2)
+
 stopifnot("log2_FG.Quantity" \%in\% colnames(x))
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 analysis <- LFQServiceData::spectronautDIAData250_analysis
-x <- transform_work_intensity(analysis, config, transform = asinh)
+x <- transform_work_intensity(analysis, config, .func = asinh)
 stopifnot("asinh_FG.Quantity" \%in\% colnames(x))
 
 }

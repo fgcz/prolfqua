@@ -85,14 +85,14 @@ LFQService::table_facade(
 (ref:hierarchyCountsSampleBarplot) Number of quantified `r  whatsThat$plural` per sample.
 
 ```{r hierarchyCountsSampleBarplot, fig.cap="(ref:hierarchyCountsSampleBarplot)", fig.width=8, fig.height=6}
-hcs <- lfqData$hierarchy_counts_sample()
-hcs("plot")
-
+lfqSum <- lfqData$get_Summariser()
+hcs <- lfqSum$hierarchy_counts_sample("plot")
+hcs
 ```
 
 
 ```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
-x3 <- lfqData$summarize_hierarchy()
+x3 <- lfqSum$summarize_hierarchy()
 
 if (FALSE) {
   if (ncol(x3) >= 4) {
@@ -116,21 +116,21 @@ if (FALSE) {
 
 Ideally, we identify each `r  whatsThat$singular` in all of the samples. However, because of the limit of detection (LOD) low-intensity `r  whatsThat$plural` might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data.
 
-(ref:missingFigIntensityHistorgram) Top - intensity distribution of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1 etc. missing values. B - number of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1, 2 etc. missing value.
+(ref:missingFigIntensityHistorgram) Top - intensity distribution of `r whatsThat$plural` with 0, 1 etc. missing values. B - number of `r whatsThat$plural` with 0, 1, 2 etc. missing value.
 
 ```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="(ref:missingFigIntensityHistorgram)"}
-data_cc <- data
-p <- lfqData$missigness_histogram()
-xx3 <- lfqData$missingness_per_condition()
-xx4 <- lfqData$missingness_per_condition_cumsum()
+lfqplot <- lfqData$get_Plotter()
+p <- lfqplot$missigness_histogram()
+xx3 <- lfqplot$missingness_per_condition()
+xx4 <- lfqplot$missingness_per_condition_cumsum()
 gridExtra::grid.arrange( p, xx3$figure, xx4$figure, ncol = 1)
 
 ```
 
-(ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
+(ref:missingnessHeatmap) Heatmap of missing `r whatsThat$singular` quantifications clustered by sample.
 
 ```{r preparemissingnessHeatmap, include=FALSE}
-pNAmap <- plot_NA_heatmap(data = data_cc, config = local_config)
+pNAmap <- lfqplot$NA_heatmap()
 ```
 
 ```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
@@ -139,7 +139,7 @@ print(pNAmap)
 
 
 ```{r checktransformation, include = FALSE}
-show_text <- !local_config$parameter$is_intensity_transformed
+show_text <- !lfqData$config$parameter$is_intensity_transformed
 
 ```
 
@@ -149,7 +149,7 @@ show_text <- !local_config$parameter$is_intensity_transformed
 
 ## Variability of transformed intensities
 
-We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the `r if(params$pep){"peptide"}else{"protein"}` standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
+We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the `r whatsThat$singular` standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
 
 
 ```{r transformIntensities}
@@ -167,7 +167,7 @@ if (!local_config$parameter$is_intensity_transformed) {
 ```
 
 
-(ref:plotTransformedIntensityDistributions) `r if(params$pep){"Peptide"}else{"Protein"}` intensity distribution after transformation.
+(ref:plotTransformedIntensityDistributions) `r whatsThat$singular` intensity distribution after transformation.
 
 ```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
 if (params$plot_density) {
@@ -180,13 +180,10 @@ if (params$plot_density) {
 }
 ```
 
-(ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples.
+(ref:correlationHeat) Heatmap of `r whatsThat$singular` intensity correlation between samples.
 
 ```{r preparecorrelationHeat, include= FALSE}
-chmap <- plot_heatmap_cor(dataTransformed,
-                       local_config,
-                       R2 = TRUE, 
-                       col = colorRampPalette(c("white", "red"))(1024))
+chmap <- lfqplot$heatmap_cor()
 ```
 
 ```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}

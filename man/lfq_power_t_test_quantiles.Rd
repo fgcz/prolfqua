@@ -32,7 +32,7 @@ Compute theoretical sample sizes from factor level standard deviations
 data <- LFQServiceData::sample_analysis
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
-data2 <- transform_work_intensity(data, config, transformation = log2)
+data2 <- transform_work_intensity(data, config, log2)
 
 res <- lfq_power_t_test_quantiles(data2, config)
 res

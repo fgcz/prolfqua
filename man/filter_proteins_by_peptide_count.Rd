@@ -22,17 +22,12 @@ Keep only those proteins with 2 IDENTIFIED peptides
 library(LFQService)
 library(tidyverse)
 
-resDataStart <- LFQServiceData::testData2954$resDataStart
-config <-  LFQServiceData::testDataStart2954$config
+istar <- LFQServiceData::dataIonstarPep
+istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+ x <- LFQService::summarize_hierarchy(filterPep$data , istar$config)
+stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
 
-undebug(filter_proteins_by_peptide_count)
-res <- filter_proteins_by_peptide_count(resDataStart, config)
-
-resDataStart <- LFQServiceData::skylineSRM_HL_data
-config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
-
-resDataStart <- setup_analysis(resDataStart , config)
-res <- filter_proteins_by_peptide_count(resDataStart, config)
 
 }
 \keyword{internal}

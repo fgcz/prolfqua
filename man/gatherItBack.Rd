@@ -6,6 +6,15 @@
 \usage{
 gatherItBack(pdata, value, config, data = NULL, sep = "~lfq~")
 }
+\arguments{
+\item{pdata}{(matrix)}
+
+\item{value}{name of column to store values in. (see `gather`)}
+
+\item{data}{lfqdata}
+
+\item{sep}{separater to unite the hierarchy keys.}
+}
 \description{
 make it long
 }
@@ -13,7 +22,6 @@ make it long
 conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
 res <- scale(res$data)
-
 xx <- gatherItBack(res,"srm_intensityScaled", conf)
 xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
 conf$table$getWorkIntensity() == "srm_intensityScaled"

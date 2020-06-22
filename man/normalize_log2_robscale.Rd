@@ -18,10 +18,13 @@ list with data.frame (data) and updated config (config)
 normalize data by log2 and robust scaling
 }
 \examples{
-resDataStart <- LFQServiceData::testDataStart2954$resDataStart
-config <-  LFQServiceData::testDataStart2954$config
-filterPep <- LFQService:::filter_proteins_by_peptide_count( resDataStart ,  config )
-normalize_log2_robscale(filterPep$data, config)
+
+istar <- LFQServiceData::dataIonstarFilteredPep
+istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+xx <- normalize_log2_robscale(istar$data, istar$config)
+names(xx)
+xx$config$table$workIntensity
 
 }
 \keyword{internal}

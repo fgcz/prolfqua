@@ -66,7 +66,7 @@ summarize_cv <- function(pdata, config, all = TRUE){
 #' summarize_cv_quantiles(stats_res, config, stats = "CV")
 #'
 #'
-#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' data2 <- transform_work_intensity(data, config, .func = log2)
 #' stats_res <- summarize_cv(data2, config)
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 #' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
@@ -134,7 +134,7 @@ summarize_cv_quantiles <- function(stats_res,
 #' library(tidyverse)
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' data <- LFQServiceData::sample_analysis
-#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' data2 <- transform_work_intensity(data, config, log2)
 #' stats_res <- summarize_cv(data2, config)
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
@@ -179,7 +179,7 @@ lfq_power_t_test_quantiles_V2 <-
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
-#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' data2 <- transform_work_intensity(data, config, log2)
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res
@@ -244,7 +244,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
-#' data2 <- transform_work_intensity(data, config, transformation = log2)
+#' data2 <- transform_work_intensity(data, config, log2)
 #' stats_res <- summarize_cv(data2, config, all = FALSE)
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #' head(bb)
@@ -399,12 +399,12 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' res <- summarize_cv(data, config)
 #'
 #' plot_stdv_vs_mean(res, config)
-#' datalog2 <- transform_work_intensity(data, config, transformation = log2)
+#' datalog2 <- transform_work_intensity(data, config, log2)
 #' statlog2 <- summarize_cv(datalog2, config)
 #' plot_stdv_vs_mean(statlog2, config)
 #' config$table$getWorkIntensity()
 #' config$table$popWorkIntensity()
-#' datasqrt <- transform_work_intensity(data, config, transformation = sqrt)
+#' datasqrt <- transform_work_intensity(data, config, sqrt)
 #' ressqrt <- summarize_cv(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
