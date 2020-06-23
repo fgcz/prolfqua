@@ -11,19 +11,25 @@ used in p2901
 }
 \examples{
 
-D <- LFQServiceData::resultsV12954
+D <- LFQServiceData::dataIonstarNormalizedPep
+D$data <- dplyr::filter(D$data, protein_Id \%in\% sample(protein_Id, 10))
+D$config$table$getWorkIntensity()
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
-  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
    model_name = modelName)
 modellingResult <-  LFQService:::model_analyse(
  D$data,
  formula_randomPeptide,
- modelName,
- D$config$table$hkeysDepth())
+ D$config$table$hkeysDepth(),modelName)
 tmp <- model_analyse_summarize(modellingResult$modelProtein)
 res <- model_analyse_summarize_vis(tmp,
  D$config$table$hkeysDepth())
+
+res$histogram_coeff_p.values
+res$VolcanoPlot
+res$Pairsplot_Coef
+res$histogram_anova_p.values
 
 }
 \keyword{internal}

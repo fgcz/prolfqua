@@ -30,10 +30,9 @@ mqdata <- tidyMQ_Peptides_Config(ps$inputData)
 annotation <- readxl::read_xlsx(ps$inputAnnotation)
 
 mqdata$config$table$factors[["dilution."]] = "sample"
-mqdata$config$table$factors[["run_ID"]] = "run_ID"
+mqdata$config$table$factors[["fPairing."]] = "fakePair_Id"
+mqdata$config$table$factors[["run_Id"]] = "run_Id"
 mqdata$config$table$factorDepth <- 1
-
-
 
 
 # specify model definition
@@ -67,16 +66,16 @@ mqdata$config$table$setWorkIntensity("transformedIntensity")
 
 res <-
   list(
-    pepIntensityNormalized = pepIntensityNormalized,
-    config_pepIntensityNormalized = mqdata$config
+    data = pepIntensityNormalized,
+    config = mqdata$config
   )
 
 protL <- medpolish_protein_quants(res$pepIntensityNormalized, res$config_pepIntensityNormalized)
 #protL("plot")
 
 resProt <- list(
-  protIntensities = protL("unnest")$data,
-  config_protIntensities = protL("unnest")$config
+  data = protL("unnest")$data,
+  config = protL("unnest")$config
 )
 
 dataIonstarSubsetNorm_V2 <- list()

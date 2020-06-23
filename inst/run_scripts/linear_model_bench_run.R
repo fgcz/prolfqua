@@ -30,11 +30,22 @@ pStruct$create()
 
 
 mqdata <- tidyMQ_Peptides_Config(pStruct$inputData)
+annotation <- readxl::read_xlsx(inputAnnotation)
+head(annotation)
+
+res <- application_add_annotation(
+  mqdata$data,
+  inputAnnotation = annotation,
+  fileName  = mqdata$config$table$fileName
+)
+
+
 
 # creates default configuration
 config <- mqdata$config
 config$table$factors[["dilution."]] = "sample"
-config$table$factors[["run_ID"]] = "run_ID"
+config$table$factors[["fPairing."]] = "fakePair_Id"
+config$table$factors[["run_Id"]] = "run_Id"
 config$table$factorDepth <- 1
 mqdata$config <- config
 
@@ -61,19 +72,13 @@ Contrasts <- c(
   "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
 )
 
-annotation <- readxl::read_xlsx(inputAnnotation)
 
-res <- application_add_annotation(
-  mqdata$data,
-  inputAnnotation = annotation,
-  fileName  = mqdata$config$table$fileName
-)
+
 
 data <- setup_analysis(res,mqdata$config)
 
-names(data)
 dataIonstarPep <- list(data = data, config = mqdata$config)
-usethis::use_data(dataIonstarPep)
+usethis::use_data(dataIonstarPep, overwrite = TRUE)
 
 filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config)
 
@@ -81,9 +86,9 @@ filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config
 dataIonstarFilteredPep <- filteredData
 usethis::use_data(dataIonstarFilteredPep, overwrite = TRUE)
 
-filteredData <- filter_proteins_by_peptide_count(data, mqdata$config)
 normalizedData <- normalize_log2_robscale(filteredData$data,
-                                          filteredData$config)
+                                          mqdata$config)
+
 dataIonstarNormalizedPep <- list(data =  normalizedData$data,
                                  config = normalizedData$config$clone(deep = TRUE))
 
@@ -110,7 +115,6 @@ reportColumns <- c("statistic",
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
   resXXmixmodel <- application_run_modelling_V2(
-    outpath = pStruct$outpath,
     data = dataIonstarNormalizedPep$data,
     config = dataIonstarNormalizedPep$config,
     modelFunction = modelFunction,
@@ -127,7 +131,6 @@ model <- paste0(dataIonstarProtein$config$table$getWorkIntensity() , lmmodel)
 modelFunction <- make_custom_model_lm(model, model_name = "Model")
 if (TRUE) {
   resXXmedpolish <- application_run_modelling_V2(
-    outpath = pStruct$outpath,
     data = dataIonstarProtein$data,
     config = dataIonstarProtein$config,
     modelFunction = modelFunction,
@@ -150,7 +153,6 @@ model <-
 
 if (TRUE) {
   resXXRopeca <- application_run_modelling_V2(
-    outpath = pStruct$outpath,
     data = dataIonstarNormalizedPep$data,
     config = dataIonstarNormalizedPep$config,
     modelFunction = modelFunction,

@@ -9,14 +9,12 @@ library(dplyr)
 flevel <- 1
 path <- "results_FULL_Phonix_Filter"
 
-# resPepProtAnnot <- read_csv(file = "c:/Users/wewol/Dropbox/DataAnalysis/p2954_MSC_IVD_Christina/data/annotatedPeptide_PhonixDS_1097969.csv")
-# resPepProtAnnot %>% dplyr::select(top_protein, protein.group.id) %>%
-#   distinct() %>% dplyr::sample_n(size=20) -> proteinSel
-# resPepProtAnnot <-  dplyr::inner_join(proteinSel, resPepProtAnnot)
-# resPepProtAnnot_p2954 <- resPepProtAnnot
-# usethis::use_data(resPepProtAnnot_p2954, overwrite=TRUE)
 
-resPepProtAnnot <- LFQServiceData::resPepProtAnnot_p2954
+fp <- file.path( find.package("LFQService"),"samples/testdata/annotatedPeptide_PhonixDS_1097969.csv")
+resPepProtAnnot <- read_csv(file = fp)
+
+
+#resPepProtAnnot <- LFQServiceData::resPepProtAnnot_p2954
 
 resPepProtAnnot$isotope <- "light"
 
@@ -70,8 +68,9 @@ resFilt <-
 
 results <- LFQService::normalize_log2_robscale(resFilt$data, config)
 
-protintensity <- LFQService::medpolish_protein_quants(results$data,
-                                                      results$config)
+protintensity <- LFQService::medpolish_protein_quants(
+  results$data,results$config)
+
 protintensity <- protintensity("unnest")
 LFQService::toWideConfig(protintensity$data, protintensity$config)
 

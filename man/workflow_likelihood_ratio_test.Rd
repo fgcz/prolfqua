@@ -18,4 +18,7 @@ workflow_likelihood_ratio_test(
 p2621 workflow likelihood ratio test
 TODO: deprecate
 }
+\examples{
+#todo add example
+}
 \keyword{internal}

@@ -50,7 +50,6 @@ configuration$table$hierarchyDepth = 3
 summarize_hierarchy(sample_analysis, configuration )
 configuration$table$hierarchyDepth = 4
 summarize_hierarchy(sample_analysis, configuration )
-summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart,
- LFQServiceData::testDataStart2954$config)
+summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,LFQServiceData::dataIonstarFilteredPep$config)
 }
 \keyword{internal}

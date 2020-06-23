@@ -61,7 +61,7 @@ sumarStart$hierarchy_counts_sample("plot")
 # Filtered data
 
 ```{r}
-dataRemoved <- dataStart$difference( dataEnd )
+dataRemoved <- dataStart$filter_difference( dataEnd )
 remSum <- dataRemoved$get_Summariser()
 LFQService::table_facade(remSum$hierarchy_counts(),
              caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )

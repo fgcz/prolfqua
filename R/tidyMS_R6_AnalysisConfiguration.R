@@ -515,8 +515,7 @@ hierarchy_counts_sample <- function(pdata,
 #' summarize_hierarchy(sample_analysis, configuration )
 #' configuration$table$hierarchyDepth = 4
 #' summarize_hierarchy(sample_analysis, configuration )
-#' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart,
-#'  LFQServiceData::testDataStart2954$config)
+#' summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,LFQServiceData::dataIonstarFilteredPep$config)
 summarize_hierarchy <- function(pdata,
                                 config,
                                 hierarchy = config$table$hkeysDepth(),
@@ -547,12 +546,14 @@ summarize_hierarchy <- function(pdata,
 #' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 #' LFQService:::summarize_protein(sample_analysis, skylineconfig)
 #' configuration <- skylineconfig$clone(deep=TRUE)
-#' summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
-#' summarize_protein(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 #'
 summarize_protein <- function(pdata, config ){
   warning("DEPRECATED use summarize_hierarchy instead")
   rev_hierarchy <- config$table$hierarchyKeys(TRUE)
+  if (length(rev_hierarchy) < 4) {
+    warning("only usable for 4 level hierarchies : protein_Id, peptide_Id, precursor_Id, fragment_Id")
+    warning("your data has only: ", paste(config$table$hierarchyKeys(), collapse = ", ") )
+  }
 
   precursorSum <- pdata %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
     group_by_at(rev_hierarchy[-1]) %>%
@@ -568,7 +569,7 @@ summarize_protein <- function(pdata, config ){
     dplyr::summarize(nrpeptides = n(),
                      minNrPrecursors = min(nrPrecursors),
                      maxNrPrecursors = max(nrPrecursors),
-                     minNrFragments= min(minNrFragments),
+                     minNrFragments = min(minNrFragments),
                      maxNrFragments = max(maxNrFragments)
     )
   proteinPeptide <- proteinSum %>% tidyr::unite(Precursors ,minNrPrecursors , maxNrPrecursors, sep="-", remove=FALSE)

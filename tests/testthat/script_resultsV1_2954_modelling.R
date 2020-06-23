@@ -33,10 +33,10 @@ formula_randomPeptide <-
 models_base <-
   model_analyse(results$data,
                 formula_randomPeptide,
-                modelName)
+                modelName = modelName)
 
 summary_base <-
-  model_analyse_summarize(models_base$modelProtein, models_base$modelName)
+  model_analyse_summarize(models_base$modelProtein, modelName = models_base$modelName)
 
 #model_analyse_write(models_base, modelName, results$path)
 reslist <- model_analyse_summarize_vis(summary_base)
@@ -57,7 +57,7 @@ formula_randomPatient <-
 
 models_interaction <- model_analyse(results$data,
                                     formula_randomPatient,
-                                    modelName)
+                                    modelName = modelName)
 
 
 if (TRUE) {
@@ -75,21 +75,11 @@ if (TRUE) {
 # usethis::use_data(models_interaction, overwrite = TRUE)
 
 summary_interaction <- model_analyse_summarize(models_interaction$modelProtein,
-                                               models_interaction$modelName)
+                                               modelName = models_interaction$modelName)
 
 model_analyse_summarize_write(summary_interaction,  ".")
 reslist <- model_analyse_summarize_vis(summary_interaction)
 model_analyse_summarize_vis_write(reslist,  path = ".")
-
-# saveRDS(models_interaction, file="models_interaction.rda")
-# saveRDS(res_cond_r_pep_r_pat,file=paste0(modelName,".rda"))
-# res_cond_r_pep_r_pat <- readRDS(paste0(modelName,".rda"))
-
-# modelName  <- "f_Condition_r_patient.peptpid"
-# formula_randomPatient <- make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | patient_id/peptide_Id)", model_name = modelName)
-# names(rres_cond_r_pat.pep)
-# saveRDS(rres_cond_r_pat.pep,file=paste0(modelName,".rda"))
-
 
 lltest <- workflow_likelihood_ratio_test(models_base$modelProtein,
                                          models_base$modelName,

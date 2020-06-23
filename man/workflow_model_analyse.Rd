@@ -15,10 +15,11 @@ workflow_model_analyse(
 workflow_model_analyse
 }
 \examples{
-D <- LFQServiceData::resultsV12954
+D <- LFQServiceData::dataIonstarNormalizedPep
+D$data <- dplyr::filter(D$data, protein_Id \%in\% sample(protein_Id,12))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
-  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
   model_name = modelName)
 modellingResult <-  workflow_model_analyse(D$data,
  formula_randomPeptide,

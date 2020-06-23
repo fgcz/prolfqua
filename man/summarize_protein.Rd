@@ -25,8 +25,6 @@ skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
 sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
 LFQService:::summarize_protein(sample_analysis, skylineconfig)
 configuration <- skylineconfig$clone(deep=TRUE)
-summarize_hierarchy(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
-summarize_protein(LFQServiceData::testDataStart2954$resDataStart, LFQServiceData::testDataStart2954$config)
 
 }
 \keyword{internal}
