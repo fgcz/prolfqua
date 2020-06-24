@@ -627,7 +627,8 @@ LFQDataPlotter <- R6::R6Class(
       bb <- self$boxplots()
 
       pdf(fpath, width = width, height = height)
-      lapply(bb$boxplot, print)
+      pb <- progress_bar$new(total = length(bb$boxplot))
+      lapply(bb$boxplot, function(x){pb$tick(); print(x)})
       dev.off()
     },
     #' @description
