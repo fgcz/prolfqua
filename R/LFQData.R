@@ -623,11 +623,13 @@ LFQDataPlotter <- R6::R6Class(
     #'
     write_boxplots = function(path_qc, width = 6, height = 6){
       fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
-      message("writing ", fpath)
+      message("generating boxplots")
       bb <- self$boxplots()
 
+      message("writing ", fpath)
+      pb <- progress::progress_bar$new(total = length(bb$boxplot))
+
       pdf(fpath, width = width, height = height)
-      pb <- progress_bar$new(total = length(bb$boxplot))
       lapply(bb$boxplot, function(x){pb$tick(); print(x)})
       dev.off()
     },
