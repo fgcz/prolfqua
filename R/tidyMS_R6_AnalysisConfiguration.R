@@ -226,6 +226,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' @keywords internal
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
+#' # debug(make_interaction_column)
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #'
@@ -238,7 +239,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 make_interaction_column <- function(data, columns, sep="."){
   intr <- dplyr::select(data, columns)
   intr <- purrr::map_dfc(intr, factor)
-
+  names(columns) <- columns
   newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
   intr <- purrr::map2_dfc(columns, intr, paste0)
   intr <- purrr::map2_dfc(intr , newlev, forcats::fct_relevel)
@@ -1161,8 +1162,10 @@ intensity_summary_by_hkeys <- function(data, config, func)
 
   xnested <- xnested %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
+  pb <- progress::progress_bar$new(total = nrow(xnested))
+  message("starting aggregation")
   xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map(spreadMatrix, func))
+    dplyr::mutate(!!makeName := map(spreadMatrix, function(x){pb$tick(); func(x)}))
   xnested <- xnested %>%
     dplyr::mutate(!!makeName := map2(data,!!sym(makeName),.reestablish_condition, config ))
 
