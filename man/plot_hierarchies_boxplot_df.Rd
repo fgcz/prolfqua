@@ -40,7 +40,7 @@ generates peptide level plots for all Proteins
 
  iostar <- LFQServiceData::dataIonstarProtein
  iostar$data <- iostar$data \%>\%
-   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+   dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
  unique(iostar$data$protein_Id)
 
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)

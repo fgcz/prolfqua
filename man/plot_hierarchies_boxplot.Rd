@@ -9,7 +9,8 @@ plot_hierarchies_boxplot(
   title,
   config,
   facet_grid_on = NULL,
-  beeswarm = TRUE
+  beeswarm = TRUE,
+  pb
 )
 }
 \arguments{
@@ -38,7 +39,7 @@ conf$table$hkeysDepth()
 xnested <- LFQServiceData::sample_analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
-
+debug(plot_hierarchies_boxplot)
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf,
