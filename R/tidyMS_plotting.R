@@ -107,7 +107,7 @@ plot_sample_correlation <- function(pdata, config){
 #' xnested <- LFQServiceData::sample_analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
-#'
+#' #debug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
 #'  xnested$protein_Id[[3]],
 #'   conf,
@@ -146,7 +146,9 @@ plot_hierarchies_boxplot <- function(pdata,
                                      title,
                                      config,
                                      facet_grid_on = NULL ,
-                                     beeswarm = TRUE){
+                                     beeswarm = TRUE,
+                                     pb){
+  if (!missing(pb)) { pb$tick() }
 
   isotopeLabel <- config$table$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
@@ -171,7 +173,6 @@ plot_hierarchies_boxplot <- function(pdata,
   if (!is.null( facet_grid_on ) && (facet_grid_on %in% colnames(pdata))) {
     p <- p + facet_grid( formula(paste0("~", facet_grid_on ) ))
   }
-  p
   return(p)
 }
 
@@ -201,7 +202,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'
 #'  iostar <- LFQServiceData::dataIonstarProtein
 #'  iostar$data <- iostar$data %>%
-#'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
+#'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
 #'
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
@@ -213,7 +214,6 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     iostar$config$table$hierarchyKeys()[1],
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
-
 plot_hierarchies_boxplot_df <- function(pdata,
                                         config,
                                         hierarchy = config$table$hkeysDepth(),
@@ -223,10 +223,12 @@ plot_hierarchies_boxplot_df <- function(pdata,
   newcol <- paste(hierarchy, collapse = "+")
   xnested <- xnested %>% tidyr::unite(!!sym(newcol), one_of(hierarchy))
 
+  pb <- progress::progress_bar$new(total = nrow(xnested))
+
   figs <- xnested %>%
     dplyr::mutate(boxplot = map2(data, !!sym(newcol),
                                  plot_hierarchies_boxplot,
                                  config ,
-                                 facet_grid_on = facet_grid_on))
+                                 facet_grid_on = facet_grid_on, pb = pb))
   return(dplyr::select_at(figs, c(newcol, "boxplot")))
 }
