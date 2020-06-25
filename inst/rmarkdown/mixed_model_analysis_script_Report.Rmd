@@ -41,8 +41,8 @@ makefunction <- function(outpath, subdir,  prefix ) {
   return(res)
 }
 
-qcfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$qc_folder() , prefix = pars$prefix )
-modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_folder() , prefix = "" )
+qcfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$qc_dir , prefix = pars$prefix )
+modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_dir , prefix = "" )
 
 ```
 
