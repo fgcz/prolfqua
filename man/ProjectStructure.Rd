@@ -16,9 +16,14 @@ workunit_Id = 23000,
 inputAnnotation = ".",
 inputData = "."
 )
-tmp$qc_path
-tmp$modelling_path
-if(FALSE){tmp$create()}
+tmp$qc_path()
+tmp$modelling_path()
+
+tmp$modelling_path()
+tmp$modelling_dir
+tmp$modelling_path("second_model")
+tmp$create()
+tmp$reset()
 
 }
 \section{Public fields}{
@@ -26,9 +31,9 @@ if(FALSE){tmp$create()}
 \describe{
 \item{\code{outpath}}{path}
 
-\item{\code{qc_path}}{path for qc results}
+\item{\code{qc_dir}}{qc results directory name}
 
-\item{\code{modelling_path}}{path for modeling results}
+\item{\code{modelling_dir}}{modeling results directory name}
 
 \item{\code{project_Id}}{project_Id}
 
@@ -46,11 +51,9 @@ if(FALSE){tmp$create()}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ProjectStructure$new()}}
-\item \href{#method-qc_folder}{\code{ProjectStructure$qc_folder()}}
-\item \href{#method-modelling_folder}{\code{ProjectStructure$modelling_folder()}}
 \item \href{#method-create_outpath}{\code{ProjectStructure$create_outpath()}}
-\item \href{#method-creat_qc_dir}{\code{ProjectStructure$creat_qc_dir()}}
-\item \href{#method-create_modelling_path}{\code{ProjectStructure$create_modelling_path()}}
+\item \href{#method-qc_path}{\code{ProjectStructure$qc_path()}}
+\item \href{#method-modelling_path}{\code{ProjectStructure$modelling_path()}}
 \item \href{#method-create}{\code{ProjectStructure$create()}}
 \item \href{#method-reset}{\code{ProjectStructure$reset()}}
 \item \href{#method-clone}{\code{ProjectStructure$clone()}}
@@ -69,8 +72,8 @@ create ProjectStructure
   workunit_Id,
   inputAnnotation,
   inputData,
-  qc_path = "qc_results",
-  modelling_path = "modelling_results"
+  qc_dir = "qc_results",
+  modelling_dir = "modelling_results"
 )}\if{html}{\out{</div>}}
 }
 
@@ -97,26 +100,6 @@ create ProjectStructure
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-qc_folder"></a>}}
-\if{latex}{\out{\hypertarget{method-qc_folder}{}}}
-\subsection{Method \code{qc_folder()}}{
-qc folder name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$qc_folder()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-modelling_folder"></a>}}
-\if{latex}{\out{\hypertarget{method-modelling_folder}{}}}
-\subsection{Method \code{modelling_folder()}}{
-modelling folder name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$modelling_folder()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create_outpath"></a>}}
 \if{latex}{\out{\hypertarget{method-create_outpath}{}}}
 \subsection{Method \code{create_outpath()}}{
@@ -127,22 +110,22 @@ create outpath
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-creat_qc_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-creat_qc_dir}{}}}
-\subsection{Method \code{creat_qc_dir()}}{
+\if{html}{\out{<a id="method-qc_path"></a>}}
+\if{latex}{\out{\hypertarget{method-qc_path}{}}}
+\subsection{Method \code{qc_path()}}{
 create qc dir
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$creat_qc_dir()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$qc_path(qc_dir)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_modelling_path"></a>}}
-\if{latex}{\out{\hypertarget{method-create_modelling_path}{}}}
-\subsection{Method \code{create_modelling_path()}}{
+\if{html}{\out{<a id="method-modelling_path"></a>}}
+\if{latex}{\out{\hypertarget{method-modelling_path}{}}}
+\subsection{Method \code{modelling_path()}}{
 create modelling path
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$create_modelling_path()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$modelling_path(modelling_dir)}\if{html}{\out{</div>}}
 }
 
 }
