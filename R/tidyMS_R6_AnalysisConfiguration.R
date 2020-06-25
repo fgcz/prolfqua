@@ -1160,14 +1160,15 @@ intensity_summary_by_hkeys <- function(data, config, func)
 
   xnested <- data %>% group_by_at(config$table$hkeysDepth()) %>% nest()
 
-  xnested <- xnested %>%
-    dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
-  pb <- progress::progress_bar$new(total = nrow(xnested))
+  pb <- progress::progress_bar$new(total = 3 * nrow(xnested))
   message("starting aggregation")
+
   xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map(spreadMatrix, function(x){pb$tick(); func(x)}))
+    dplyr::mutate(spreadMatrix = map(data, function(x,config){pb$tick(); extractIntensities(x, config)}, config))
   xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map2(data,!!sym(makeName),.reestablish_condition, config ))
+    dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
+  xnested <- xnested %>%
+    dplyr::mutate(!!makeName := map2(data, !!sym(makeName), function(x, y, config){pb$tick(); .reestablish_condition(x,y, config) }, config ))
 
 
   res_fun <- function(value = c("nested", "unnest", "wide", "plot"), DEBUG = FALSE){
