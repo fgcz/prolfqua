@@ -6,6 +6,20 @@
   }
 }
 
+.dirmaker <- function(path){
+  if (!dir.exists(path)) {
+    dir.create(path)
+  }
+  NULL
+}
+
+.dircleaner <- function(path){
+  if (unlink(path , recursive = TRUE) != 0 ) {
+    message("could not clean : ", path)
+  }
+  NULL
+}
+
 #' keep track of folder paths and create them if needed
 #' @export
 #'
@@ -17,24 +31,28 @@
 #' inputAnnotation = ".",
 #' inputData = "."
 #' )
-#' tmp$qc_path
-#' tmp$modelling_path
-#' if(FALSE){tmp$create()}
+#' tmp$qc_path()
+#' tmp$modelling_path()
 #'
-
+#' tmp$modelling_path()
+#' tmp$modelling_dir
+#' tmp$modelling_path("second_model")
+#' tmp$create()
+#' tmp$reset()
+#'
 ProjectStructure <-
   R6::R6Class("ProjectStructure", public = list(
     #' @field outpath path
-    #' @field qc_path path for qc results
-    #' @field modelling_path path for modeling results
+    #' @field qc_dir qc results directory name
+    #' @field modelling_dir modeling results directory name
     #' @field project_Id project_Id
     #' @field order_Id order_Id
     #' @field workunit_Id workunit_Id
     #' @field inputData inputFile
     #' @field inputAnnotation inputAnnotation xlsx
     outpath = "",
-    qc_path = "",
-    modelling_path = "",
+    qc_dir = "",
+    modelling_dir = "",
     project_Id = integer(),
     order_Id = integer(),
     workunit_Id = integer(),
@@ -57,65 +75,54 @@ ProjectStructure <-
                           workunit_Id,
                           inputAnnotation,
                           inputData,
-                          qc_path = "qc_results",
-                          modelling_path = "modelling_results"){
+                          qc_dir = "qc_results",
+                          modelling_dir = "modelling_results"){
       self$outpath = outpath
       self$project_Id = project_Id
       self$order_Id = order_Id
       self$workunit_Id = workunit_Id
       self$inputData = .checkForFile(inputData)
       self$inputAnnotation = .checkForFile(inputAnnotation)
-      self$qc_path = file.path(outpath, qc_path )
-      self$modelling_path = file.path(outpath, modelling_path )
-    },
-    #' @description
-    #' qc folder name
-    qc_folder = function(){
-      basename(self$qc_path)
-    },
-    #' @description
-    #' modelling folder name
-    modelling_folder = function(){
-      basename(self$modelling_path)
+      self$qc_dir = qc_dir
+      self$modelling_dir = modelling_dir
     },
     #' @description
     #' create outpath
     create_outpath = function(){
-      if (!dir.exists(self$outpath)) {
-        dir.create(self$outpath)
-      }
+      .dirmaker(self$outpath)
     },
     #' @description
     #' create qc dir
-    creat_qc_dir = function(){
-      self$create_outpath()
-      if (!dir.exists(self$qc_path)) {
-        dir.create(self$qc_path)
+    qc_path = function(qc_dir){
+      if (!missing(qc_dir)) {
+        self$qc_dir <- c(self$qc_dir, qc_dir)
       }
+      qcpath <- file.path(self$outpath, self$qc_dir)
+      qcpath
     },
     #' @description
     #' create modelling path
-    create_modelling_path = function(){
-      self$create_outpath()
-      if (!dir.exists(self$modelling_path)) {
-        dir.create(self$modelling_path)
+    modelling_path = function(modelling_dir){
+      if (!missing(modelling_dir)) {
+        self$modelling_dir <- c(self$modelling_dir, modelling_dir)
       }
+      modellingpath <- file.path(self$outpath, self$modelling_dir)
+      modellingpath
     },
     #' @description
     #' create all directories
     create = function(){
-      self$creat_qc_dir()
-      self$create_modelling_path()
+      .dirmaker(self$outpath)
+      sapply(self$qc_path(),.dirmaker)
+      sapply(self$modelling_path(),.dirmaker)
+      NULL
     },
     #' @description
     #' empty modelling_path and qc_path folder.
     reset = function(){
-      if (unlink(self$modelling_path, recursive = TRUE) != 0 ) {
-        message("could not clean ",self$modelling_path)
-      }
-      if (unlink(self$qc_path, recursive = TRUE) != 0) {
-        message("could not clean ",self$modelling_path)
-      }
+      sapply(self$qc_path(), .dircleaner)
+      sapply(self$modelling_path(), .dircleaner)
+      NULL
     }
 
   )
