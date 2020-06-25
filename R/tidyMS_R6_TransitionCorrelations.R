@@ -466,6 +466,7 @@ simpleImpute <- function(data){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
+#'
 #' data <- LFQServiceData::sample_analysis
 #' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
 #' data <- complete_cases(data, config)
@@ -487,6 +488,7 @@ impute_correlationBased <- function(x , config){
     )
     tidyr::gather(x,key = !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
+
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))

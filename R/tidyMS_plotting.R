@@ -232,3 +232,215 @@ plot_hierarchies_boxplot_df <- function(pdata,
                                  facet_grid_on = facet_grid_on, pb = pb))
   return(dplyr::select_at(figs, c(newcol, "boxplot")))
 }
+
+
+
+#' plot correlation heatmap with annotations
+#'
+#' @export
+#' @keywords internal
+#' @examples
+#' library(tidyverse)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE )
+#' LFQService::plot_heatmap_cor( data, config )
+#' plot_heatmap_cor( data, config, R2 = TRUE )
+#'
+plot_heatmap_cor <- function(data,
+                             config,
+                             R2 = FALSE,
+                             color = colorRampPalette(c("white", "red"))(1024),
+                             ...){
+
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- res$annotation
+  res <- res$data
+
+
+  cres <- cor(res, use = "pa")
+  if (R2) {
+    cres <- cres^2
+  }
+
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
+  res <- pheatmap::pheatmap(cres,
+                            scale = "none",
+                            silent = TRUE)
+
+  res <- pheatmap::pheatmap(cres[res$tree_row$order,],
+                            scale = "none",
+                            cluster_rows  = FALSE,
+                            annotation_col = factors,
+                            show_rownames = F,
+                            border_color = NA,
+                            main = ifelse(R2, "R^2", "correlation"),
+                            silent = TRUE,
+                            color = color,
+                            ... = ...)
+  invisible(res)
+}
+#' plot heatmap with annotations
+#'
+#' @export
+#' @keywords internal
+#' @examples
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' graphics.off()
+#' .Device
+#'  p  <- plot_heatmap(data, config)
+#' .Device
+#'  print(p)
+#'  .Device
+#'  plot(1)
+#'
+#'  print(p)
+
+plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- res$annotation
+  resdata <- res$data
+
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
+  resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+
+
+  # not showing row dendrogram trick
+  res <- pheatmap::pheatmap(resdata,
+                            scale = "row",
+                            silent = TRUE)
+
+  res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
+                            cluster_rows  = FALSE,
+                            scale = "row",
+                            annotation_col = factors,
+                            show_rownames = F,
+                            border_color = NA,
+                            silent = TRUE,
+                            ... = ...)
+
+  invisible(res)
+}
+
+#' plot heatmap of NA values
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' tmp <- plot_NA_heatmap(data, config)
+#' print(tmp)
+#' xx <- plot_NA_heatmap(data, config,distance = "euclidean")
+#' print(xx)
+#' dev.off()
+#' print(xx)
+#' names(xx)
+#'
+plot_NA_heatmap <- function(data,
+                            config,
+                            limitrows = 10000,
+                            distance = "binary"){
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- res$annotation
+  res <- res$data
+  stopifnot(annot$sampleName == colnames(res))
+
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
+  res[!is.na(res)] <- 0
+  res[is.na(res)] <- 1
+  allrows <- nrow(res)
+  res <- res[apply(res,1, sum) > 0,]
+
+  message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
+
+  if (nrow(res) > 0) {
+    res <- if (nrow(res) > limitrows ) {
+      message("limiting nr of rows to:", limitrows,"\n")
+      res[sample( 1:nrow(res),limitrows),]
+    }else{
+      res
+    }
+
+    # not showing row dendrogram trick
+    resclust <- pheatmap::pheatmap(res,
+                                   scale = "none",
+                                   silent = TRUE,
+                                   clustering_distance_cols = distance,
+                                   clustering_distance_rows = distance)
+
+    resclust <- pheatmap::pheatmap(res[resclust$tree_row$order,],
+                                   cluster_rows  = FALSE,
+                                   clustering_distance_cols = distance,
+                                   scale = "none",
+                                   annotation_col = factors,
+                                   color = c("white","black"),
+                                   show_rownames = FALSE,
+                                   border_color = NA,
+                                   legend = FALSE,
+                                   silent = TRUE
+    )
+    return(resclust)
+  } else {
+    return(NULL)
+  }
+}
+
+
+
+#' plot PCA
+#' @export
+#' @keywords internal
+#' @import ggfortify
+#' @examples
+#'
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- LFQServiceData::sample_analysis
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#'
+#' tmp <- plot_pca(data, config, add_txt= TRUE)
+#' print(tmp)
+#' tmp <- plot_pca(data, config, add_txt= FALSE)
+#' print(tmp)
+#' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
+#'
+plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
+  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  ff <- na.omit(wide$data)
+  ff <- t(ff)
+  xx <- as_tibble(prcomp(ff)$x, rownames = "sampleName")
+  xx <- inner_join(wide$annotation, xx)
+
+
+  sh <- config$table$fkeysDepth()[2]
+  point <- (if (!is.na(sh)) {
+    geom_point(aes(shape = !!sym(sh)))
+  }else{
+    geom_point()
+  })
+
+  text <- geom_text(aes(label = !!sym(config$table$sampleName)),check_overlap = TRUE,
+                    nudge_x = 0.25,
+                    nudge_y = 0.25 )
+
+  x <- ggplot(xx, aes(x = PC1, y = PC2,
+                      color = !!sym(config$table$fkeysDepth()[1]),
+                      text = !!sym(config$table$sampleName))) +
+    point + if (add_txt) {text}
+  return(x)
+}
+
