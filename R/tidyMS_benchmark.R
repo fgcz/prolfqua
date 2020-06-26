@@ -1,3 +1,4 @@
+conflict_prefer("filter", "dplyr")
 #' prepare benchmark data
 #' @export
 #' @param data analysis results
@@ -245,7 +246,9 @@ do_confusion_c <- function(
 
 
 #' Benchmark R6 class
+#'
 #' @export
+#'
 Benchmark <-
   R6::R6Class(
     "Benchmark",

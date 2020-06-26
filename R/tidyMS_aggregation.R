@@ -195,6 +195,134 @@ medpolish_protein_quants <- function(data, config){
   return(protintensity)
 }
 
+#' compute Tukeys median polish from peptide or precursor intensities
+#' @family matrix manipulation
+#' @param x a matrix
+#' @param name if TRUE returns the name of the summary column
+#' @return data.frame with number of rows equal to number of columns of input matrix.
+#' @export
+#' @keywords internal
+#'
+#' @examples
+#' library(tidyverse)
+#' medpolishPly(name = TRUE)
+#' gg <- matrix(runif(20),4,5)
+#' rownames(gg) <- paste0("A",1:4)
+#' colnames(gg) <- make.names(1:5)
+#' gg
+#' mx <- medpolishPly(gg)
+#'
+medpolishPly <- function(x, name = FALSE){
+  if (name) {
+    return("medpolish")
+  }
+  X <- medpolish(x,na.rm = TRUE, trace.iter = FALSE, maxiter = 10);
+  res <- tibble("sampleName" = names(X$col) , medpolish = X$col + X$overall)
+  res
+}
+
+
+#' summarize proteins using MASS:rlm
+#' @param pdata data
+#' @param expression intensities
+#' @param feature e.g. peptideIDs.
+#' @param sample e.g. sampleName
+#' @importFrom MASS rlm
+#'
+#' @examples
+#' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+#'
+#' bb <- summarizeRobust2(xx , "expression", "feature", "samples", maxIt = 20)
+#' bb
+#'
+#' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
+#' summarizeRobust2(xx2, "log2Area", "peptide_Id", "sampleName")
+#'
+#' summarizeRobust2(checksummarizerobust87,"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust2(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
+#' res <- vector(100,mode = "list")
+#' for (i in 1:100) {
+#'   xx3 <- xx2
+#'   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
+#'   res[[i]] <- list(data = xx3, summary = summarizeRobust2(xx3, "log2Area", "peptide_Id", "sampleName"))
+#' }
+#' summarizeRobust2(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust2(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+#'
+#'
+summarizeRobust <- function(pdata, expression = "expression", feature ="feature", samples = "samples", maxIt = 20) {
+  data <- pdata %>% select_at(c(samples, feature, expression)) %>% na.omit
+  ##If there is only one 1 peptide for all samples return expression of that peptide
+  expname <- paste0("mean.",expression)
+
+  if (length(unique(data[[feature]])) == 1L) {
+    data$sumrob <- data[[expression]]
+    data$weights <- 1
+    data <- rename(data,  !!expname := !!sym(expression))
+    data <- data %>% select(-!!sym(feature))
+    return(data)
+  }
+
+  ## modelmatrix breaks on factors with 1 level so make vector of ones (will be intercept)
+  if (length(unique(data[[samples]])) == 1L) {
+    data <- data %>% group_by_at(samples) %>%
+      summarize(sumrob = mean(!!sym(expression)),
+                !!expname := mean(!!sym(expression)), .groups = "drop")
+    data$weights <- 1
+    return(data)
+  }
+
+  ## sum contrast on peptide level so sample effect will be mean over all peptides instead of reference level
+  formula <- as.formula(paste0("~ -1 + " , samples, " + ", feature ))
+  contr.arg <- list('contr.sum')
+  names(contr.arg) <- feature
+  X = model.matrix(formula , data = data, contrasts.arg = contr.arg)
+  ## MASS::rlm breaks on singular values.
+  ## check with base lm if singular values are present.
+  ## if so, these coefficients will be zero, remove this column from model matrix
+  ## rinse and repeat on reduced modelmatrix untill no singular values are present
+  y <- data[[expression]]
+  repeat {
+    fit = .lm.fit(X,y)
+    id = fit$coefficients != 0
+    X = X[ , id, drop = FALSE]
+    if (!any(!id)) break
+  }
+  ## Last step is always rlm if X > has some columns left
+  if (ncol(X) > 0) {
+    fit = MASS::rlm(X, y, maxit = maxIt)
+    data$residuals <- fit$residuals
+    usamples <- unique(data[[samples]])
+    coefNames <- paste0(samples, usamples)
+    sumrob <- tibble(!!samples := usamples, sumrob = fit$coefficients[coefNames])
+
+    sumdata <- data %>%
+      select(-!!sym(feature)) %>%
+      group_by_at(samples) %>%
+      dplyr::summarize(!!expname := mean(!!sym(expression)),
+                       weights = 1 / mean(residuals^2), .groups = "drop")
+    if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
+      sumdata$weights = 1
+    }
+
+    res <- inner_join(sumdata, sumrob, by = samples)
+    if (sum(is.na(res[[meancolname]])) < sum(is.na(res$sumrob))) {
+      res$sumrob <- res[[meancolname]]
+    }
+  } else {
+    sumdata <- data %>%
+      select(-!!sym(feature)) %>%
+      group_by_at(samples) %>%
+      dplyr::summarize(!!expname := mean(!!sym(expression)),
+                       sumrob = mean(!!sym(expression)),
+                       .groups = "drop")
+    sumdata$weights <- 1
+    res <- sumdata
+  }
+  pdata <- pdata %>% dplyr::select_at(samples) %>% distinct()
+  res <- left_join(pdata, res, by=samples)
+  return(res)
+}
 
 #' Summarizes the intensities within hierarchy
 #'
@@ -285,43 +413,6 @@ intensity_summary_by_hkeys <- function(data, config, func)
   }
   return(res_fun)
 }
-
-#' compute tukeys median polish from peptide or precursor intensities
-#' @family matrix manipulation
-#' @param name if TRUE returns the name of the summary column
-#' @export
-#' @keywords internal
-#'
-#' @examples
-#' library(tidyverse)
-#' medpolishPly(name = TRUE)
-#' gg <- matrix(runif(20),4,5)
-#' rownames(gg) <- make.names(1:4)
-#' colnames(gg) <- make.names(1:5)
-#' mx <- medpolishPly(gg)
-#'
-#' # compare it with other methods of protein inference
-#' dd <- tidyr::gather(tibble::as_tibble(gg))
-#' #x <- robust::lmRob(value ~ key, data = dd )
-#' #pred_lmRob <- c(coef(x)[1] , coef(x)[1] + coef(x)[-1])
-#' xl <- lm(value ~ key , data = dd)
-#' pred_lm <- c(coef(xl)[1] , coef(xl)[1] + coef(xl)[-1])
-#' xr <- MASS::rlm(value ~ key , data = dd)
-#' pred_rlm <- c(coef(xr)[1] , coef(xr)[1] + coef(xr)[-1])
-#'
-#' xx <- cbind(medpolish = mx$medpolish, pred_lm = pred_lm,pred_rlm = pred_rlm )
-#' head(xx)
-#' matplot(xx, type = "l")
-#'
-medpolishPly <- function(x, name = FALSE){
-  if (name) {
-    return("medpolish")
-  }
-  X <- medpolish(x,na.rm = TRUE, trace.iter = FALSE, maxiter = 10);
-  res <- tibble("sampleName" = names(X$col) , medpolish = X$col + X$overall)
-  res
-}
-
 
 
 
