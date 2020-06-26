@@ -4,13 +4,7 @@
 \alias{summarizeRobust}
 \title{summarize proteins using MASS:rlm}
 \usage{
-summarizeRobust(
-  pdata,
-  expression = "expression",
-  feature = "feature",
-  samples = "samples",
-  maxIt = 20
-)
+summarizeRobust(pdata, expression, feature, samples, maxIt = 20)
 }
 \arguments{
 \item{pdata}{data}
@@ -27,22 +21,36 @@ summarize proteins using MASS:rlm
 \examples{
 xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 
-bb <- summarizeRobust2(xx , "expression", "feature", "samples", maxIt = 20)
+bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)
 bb
 
 xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
-summarizeRobust2(xx2, "log2Area", "peptide_Id", "sampleName")
+summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
 
-summarizeRobust2(checksummarizerobust87,"log2Area", "peptide_Id", "sampleName")
-summarizeRobust2(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
 res <- vector(100,mode = "list")
 for (i in 1:100) {
   xx3 <- xx2
   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
-  res[[i]] <- list(data = xx3, summary = summarizeRobust2(xx3, "log2Area", "peptide_Id", "sampleName"))
+  res[[i]] <- list(data = xx3, summary = summarizeRobust(xx3, "log2Area", "peptide_Id", "sampleName"))
 }
-summarizeRobust2(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
-summarizeRobust2(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
+
+conf <- skylineconfig$clone(deep = TRUE)
+conf$table$hierarchyDepth = 1
+xnested <- LFQServiceData::sample_analysis \%>\%
+  group_by_at(conf$table$hkeysDepth()) \%>\% nest()
+
+feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+x <- xnested$data[[1]]
+bb <- summarizeRobust(x,
+ expression = conf$table$getWorkIntensity(),
+  feature = feature,
+   samples = conf$table$sampleName)
+
+LFQService:::.reestablish_condition(x,bb, conf)
 
 }

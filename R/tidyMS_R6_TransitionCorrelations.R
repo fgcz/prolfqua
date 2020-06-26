@@ -181,49 +181,6 @@ filter_byQValue <- function(pdata, config){
 }
 
 
-#' Extract intensity column in wide format
-#' @export
-#' @keywords internal
-#' @examples
-#' library(dplyr)
-#'
-#' skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' skylineconfig$table$workIntensity <- "Area"
-#' xnested <- LFQServiceData::sample_analysis %>%
-#'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
-#'  tidyr::nest()
-#' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) %>%
-#'  distinct() %>% nrow()
-#'
-#' xx <- extractIntensities(x,skylineconfig)
-#' stopifnot(dim(xx)==c(nn,22))
-#'
-#' # change hierarchyDepth ###################
-#' conf <- skylineconfig$clone(deep=TRUE)
-#' conf$table$hierarchyDepth = 1
-#'
-#' xnested <- LFQServiceData::sample_analysis %>%
-#'  group_by_at(conf$table$hkeysDepth()) %>%
-#'  tidyr::nest()
-#' head(xnested)
-#'
-#' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) %>%
-#'  distinct() %>% nrow()
-#'
-#' xx <- extractIntensities(x,conf)
-#' stopifnot(dim(xx)==c(nn,22))
-#'
-extractIntensities <- function(pdata, config ){
-  table <- config$table
-  pdata <- pdata %>%
-    dplyr::select( c( table$sampleName,
-                      setdiff(table$hierarchyKeys(),table$hkeysDepth()),
-                      table$getWorkIntensity()) ) %>%
-    tidyr::spread(table$sampleName, table$getWorkIntensity()) %>% .ExtractMatrix()
-  return(pdata)
-}
 
 #' transform long to wide
 #' @export

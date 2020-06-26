@@ -1,4 +1,3 @@
-conflict_prefer("filter", "dplyr")
 #' prepare benchmark data
 #' @export
 #' @param data analysis results

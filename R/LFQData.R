@@ -38,6 +38,8 @@ LFQData <- R6::R6Class(
       self$is_pep <- is_pep
       self$prefix <- prefix
     },
+    #' @description
+    #' get deep copy
     clone_d = function(){
       self$clone(deep = TRUE)
     },

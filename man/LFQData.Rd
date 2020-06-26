@@ -85,6 +85,7 @@ initialize
 \if{html}{\out{<a id="method-clone_d"></a>}}
 \if{latex}{\out{\hypertarget{method-clone_d}{}}}
 \subsection{Method \code{clone_d()}}{
+get deep copy
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$clone_d()}\if{html}{\out{</div>}}
 }

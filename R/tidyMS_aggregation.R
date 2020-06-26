@@ -174,26 +174,6 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 }
 
 
-#' median polish from normalized peptide intensities
-#' @export
-#' @keywords internal
-#' @examples
-#' library(tidyverse)
-#' library(LFQService)
-#' data <- LFQServiceData::dataIonstarNormalizedPep
-#'
-#' data$data <- data$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' res <- medpolish_protein_quants(data$data,
-#' data$config )
-#'
-#' head(res("unnest")$data)
-#'
-medpolish_protein_quants <- function(data, config){
-  protintensity <- LFQService::intensity_summary_by_hkeys(data ,
-                                                          config,
-                                                          medpolishPly)
-  return(protintensity)
-}
 
 #' compute Tukeys median polish from peptide or precursor intensities
 #' @family matrix manipulation
@@ -221,36 +201,84 @@ medpolishPly <- function(x, name = FALSE){
   res
 }
 
+.extractInt <- function(pdata, expression, feature, samples ){
+  pdata <- pdata %>%
+    dplyr::select_at( c( samples,
+                         feature,
+                         expression) ) %>%
+    tidyr::spread(key = samples , value = expression) %>% LFQService:::.ExtractMatrix()
+  return(pdata)
+}
 
-#' summarize proteins using MASS:rlm
-#' @param pdata data
-#' @param expression intensities
-#' @param feature e.g. peptideIDs.
-#' @param sample e.g. sampleName
-#' @importFrom MASS rlm
-#'
+#' Extract intensity column in wide format
+#' @export
+#' @keywords internal
 #' @examples
-#' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+#' library(dplyr)
 #'
-#' bb <- summarizeRobust2(xx , "expression", "feature", "samples", maxIt = 20)
-#' bb
+#' skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' skylineconfig$table$workIntensity <- "Area"
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
+#'  tidyr::nest()
+#' x <- xnested$data[[1]]
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) %>%
+#'  distinct() %>% nrow()
 #'
-#' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
-#' summarizeRobust2(xx2, "log2Area", "peptide_Id", "sampleName")
+#' xx <- extractIntensities(x,skylineconfig)
+#' stopifnot(dim(xx)==c(nn,22))
 #'
-#' summarizeRobust2(checksummarizerobust87,"log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust2(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
-#' res <- vector(100,mode = "list")
-#' for (i in 1:100) {
-#'   xx3 <- xx2
-#'   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
-#'   res[[i]] <- list(data = xx3, summary = summarizeRobust2(xx3, "log2Area", "peptide_Id", "sampleName"))
-#' }
-#' summarizeRobust2(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust2(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+#' # change hierarchyDepth ###################
+#' conf <- skylineconfig$clone(deep=TRUE)
+#' conf$table$hierarchyDepth = 1
 #'
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'  group_by_at(conf$table$hkeysDepth()) %>%
+#'  tidyr::nest()
+#' head(xnested)
 #'
-summarizeRobust <- function(pdata, expression = "expression", feature ="feature", samples = "samples", maxIt = 20) {
+#' x <- xnested$data[[1]]
+#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) %>%
+#'  distinct() %>% nrow()
+#'
+#' xx <- extractIntensities(x,conf)
+#' stopifnot(dim(xx)==c(nn,22))
+#'
+extractIntensities <- function(pdata, config ){
+  table <- config$table
+  .extractInt(pdata, table$getWorkIntensity(),
+              setdiff(table$hierarchyKeys(), table$hkeysDepth()),
+              table$sampleName)
+}
+#' medpolish dataframe
+#' @export
+#' @examples
+#'
+#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf$table$hierarchyDepth = 1
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'
+#' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+#' x <- xnested$data[[1]]
+#' bb <- medpolishPlydf(x,
+#'  expression = conf$table$getWorkIntensity(),
+#'   feature = feature,
+#'    samples = conf$table$sampleName)
+#' LFQService:::.reestablish_condition(x,bb, conf)
+#'
+medpolishPlydf <- function(pdata, expression, feature, samples  ){
+  bb <- .extractInt(x,
+    expression = expression,
+     feature = feature,
+      samples = samples)
+   medpolishPly(bb)
+
+}
+
+
+
+.summarizeRobust <- function(pdata, expression, feature , samples = "samples", maxIt = 20) {
   data <- pdata %>% select_at(c(samples, feature, expression)) %>% na.omit
   ##If there is only one 1 peptide for all samples return expression of that peptide
   expname <- paste0("mean.",expression)
@@ -306,8 +334,8 @@ summarizeRobust <- function(pdata, expression = "expression", feature ="feature"
     }
 
     res <- inner_join(sumdata, sumrob, by = samples)
-    if (sum(is.na(res[[meancolname]])) < sum(is.na(res$sumrob))) {
-      res$sumrob <- res[[meancolname]]
+    if (sum(is.na(res[[expname]])) < sum(is.na(res$sumrob))) {
+      res$sumrob <- res[[expname]]
     }
   } else {
     sumdata <- data %>%
@@ -320,9 +348,61 @@ summarizeRobust <- function(pdata, expression = "expression", feature ="feature"
     res <- sumdata
   }
   pdata <- pdata %>% dplyr::select_at(samples) %>% distinct()
-  res <- left_join(pdata, res, by=samples)
+  res <- left_join(pdata, res, by = samples)
   return(res)
 }
+
+
+
+#' summarize proteins using MASS:rlm
+#' @param pdata data
+#' @param expression intensities
+#' @param feature e.g. peptideIDs.
+#' @param sample e.g. sampleName
+#' @importFrom MASS rlm
+#'
+#' @examples
+#' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+#'
+#' bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)
+#' bb
+#'
+#' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
+#' summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
+#'
+#' summarizeRobust(checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
+#' res <- vector(100,mode = "list")
+#' for (i in 1:100) {
+#'   xx3 <- xx2
+#'   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
+#'   res[[i]] <- list(data = xx3, summary = summarizeRobust(xx3, "log2Area", "peptide_Id", "sampleName"))
+#' }
+#' summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+#'
+#'
+#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf$table$hierarchyDepth = 1
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'
+#' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+#' x <- xnested$data[[1]]
+#' bb <- summarizeRobust(x,
+#'  expression = conf$table$getWorkIntensity(),
+#'   feature = feature,
+#'    samples = conf$table$sampleName)
+#'
+#' LFQService:::.reestablish_condition(x,bb, conf)
+#'
+summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
+  pdata <- unite(pdata, "feature", feature)
+
+  res <- .summarizeRobust(pdata, expression, feature = "feature", samples, maxIt = maxIt)
+  return(res)
+}
+
 
 #' Summarizes the intensities within hierarchy
 #'
@@ -412,6 +492,27 @@ intensity_summary_by_hkeys <- function(data, config, func)
     }
   }
   return(res_fun)
+}
+
+#' median polish from normalized peptide intensities
+#' @export
+#' @keywords internal
+#' @examples
+#' library(tidyverse)
+#' library(LFQService)
+#' data <- LFQServiceData::dataIonstarNormalizedPep
+#'
+#' data$data <- data$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' res <- medpolish_protein_quants(data$data,
+#' data$config )
+#'
+#' head(res("unnest")$data)
+#'
+medpolish_protein_quants <- function(data, config){
+  protintensity <- LFQService::intensity_summary_by_hkeys(data ,
+                                                          config,
+                                                          medpolishPly)
+  return(protintensity)
 }
 
 
