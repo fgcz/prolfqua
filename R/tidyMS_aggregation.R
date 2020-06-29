@@ -275,7 +275,32 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
    medpolishPly(bb)
 
 }
+#' medpolishPlydf2
+#' @export
+#' @examples
+#'
+#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf$table$hierarchyDepth = 1
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'
+#' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+#' x <- xnested$data[[1]]
+#' bb <- medpolishPlydf2(x,conf)
+#' LFQService:::.reestablish_condition(x,bb, conf)
+#'
+medpolishPlydf_config <- function(pdata, config, name=FALSE){
+  if (name) {
+    return("medpolish")
+  }
 
+  feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
+  res <- medpolishPlydf(pdata,
+                 expression = config$table$getWorkIntensity(),
+                 feature = feature,
+                 samples = config$table$sampleName)
+  return(res)
+}
 
 
 .summarizeRobust <- function(pdata, expression, feature , samples = "samples", maxIt = 20) {
@@ -284,7 +309,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
   expname <- paste0("mean.",expression)
 
   if (length(unique(data[[feature]])) == 1L) {
-    data$sumrob <- data[[expression]]
+    data$lmrob <- data[[expression]]
     data$weights <- 1
     data <- rename(data,  !!expname := !!sym(expression))
     data <- data %>% select(-!!sym(feature))
@@ -294,7 +319,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
   ## modelmatrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
     data <- data %>% group_by_at(samples) %>%
-      summarize(sumrob = mean(!!sym(expression)),
+      summarize(lmrob = mean(!!sym(expression)),
                 !!expname := mean(!!sym(expression)), .groups = "drop")
     data$weights <- 1
     return(data)
@@ -322,7 +347,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
     data$residuals <- fit$residuals
     usamples <- unique(data[[samples]])
     coefNames <- paste0(samples, usamples)
-    sumrob <- tibble(!!samples := usamples, sumrob = fit$coefficients[coefNames])
+    lmrob <- tibble(!!samples := usamples, lmrob = fit$coefficients[coefNames])
 
     sumdata <- data %>%
       select(-!!sym(feature)) %>%
@@ -333,16 +358,16 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
       sumdata$weights = 1
     }
 
-    res <- inner_join(sumdata, sumrob, by = samples)
-    if (sum(is.na(res[[expname]])) < sum(is.na(res$sumrob))) {
-      res$sumrob <- res[[expname]]
+    res <- inner_join(sumdata, lmrob, by = samples)
+    if (sum(is.na(res[[expname]])) < sum(is.na(res$lmrob))) {
+      res$lmrob <- res[[expname]]
     }
   } else {
     sumdata <- data %>%
       select(-!!sym(feature)) %>%
       group_by_at(samples) %>%
       dplyr::summarize(!!expname := mean(!!sym(expression)),
-                       sumrob = mean(!!sym(expression)),
+                       lmrob = mean(!!sym(expression)),
                        .groups = "drop")
     sumdata$weights <- 1
     res <- sumdata
@@ -355,6 +380,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 
 
 #' summarize proteins using MASS:rlm
+#' @keywords internal
 #' @param pdata data
 #' @param expression intensities
 #' @param feature e.g. peptideIDs.
@@ -397,11 +423,106 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' LFQService:::.reestablish_condition(x,bb, conf)
 #'
 summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
-  pdata <- unite(pdata, "feature", feature)
+  pdata <- unite(pdata, "feature", all_of(feature))
 
   res <- .summarizeRobust(pdata, expression, feature = "feature", samples, maxIt = maxIt)
   return(res)
 }
+
+#' same as summarize robust but with config
+#' @export
+#' @param pdata data.frame
+#' @param config AnalysisConfiguraton
+#'
+#' @keywords inernal
+#' @example
+#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf$table$hierarchyDepth = 1
+#' xnested <- LFQServiceData::sample_analysis %>%
+#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'
+#' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+#' x <- xnested$data[[1]]
+#' bb <- summarizeRobust2(x, conf)
+#'
+#' LFQService:::.reestablish_condition(x,bb, conf)
+summarizeRobust_config <- function(pdata, config, name= FALSE){
+  if (name) {return("lmRob")}
+
+  feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
+  summarizeRobust(pdata, expression = config$table$getWorkIntensity(),
+                  feature = feature,
+                  samples = config$table$sampleName
+                  , maxIt = 20)
+}
+
+
+
+
+#' Summarizes the intensities within hierarchy
+#'
+#' @param func - a function working on a matrix of intensities for each protein.
+#' @return retuns function object
+#' @keywords internal
+#' @export
+#' @examples
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#'
+#' res <- x("unnest")
+#' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' config$table$hierarchyDepth <- 1
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#'
+#' x("unnest")$data
+#' xnested<-x()
+#' dd <- x(value = "plot")
+#' dd$medpolishPly[[1]]
+#' dd$plot[[2]]
+#' # example how to add peptide count information
+#'
+#' tmp <- summarize_hierarchy(data, config)
+#' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
+#' head(tmp)
+aggregate_intensity <- function(data, config, .func)
+{
+  x <- as.list( match.call() )
+  makeName <- make.names(as.character(x$func))
+  config <- config$clone(deep = TRUE)
+
+  xnested <- data %>% group_by_at(config$table$hkeysDepth()) %>% nest()
+
+  pb <- progress::progress_bar$new(total = 3 * nrow(xnested))
+  message("starting aggregation")
+
+  xnested <- xnested %>%
+    dplyr::mutate(!!makeName := map( .data$data , function(x, config){pb$tick(); .func(x, config)}, config))
+
+  xnested <- xnested %>%
+    dplyr::mutate(!!makeName := map2(data,
+                                     !!sym(makeName),
+                                     function(x, y, config){pb$tick(); .reestablish_condition(x,y, config) }, config ))
+
+
+
+  newconfig <- make_reduced_hierarchy_config(config,
+                                             workIntensity = func(name = TRUE),
+                                             hierarchy = config$table$hkeysDepth(names = FALSE))
+
+  unnested <- xnested %>%
+    dplyr::select(config$table$hkeysDepth(), makeName) %>%
+    tidyr::unnest(cols = c(medpolishPly)) %>%
+    dplyr::ungroup()
+
+  return(list(data = unnested, config = newconfig))
+}
+
+
 
 
 #' Summarizes the intensities within hierarchy

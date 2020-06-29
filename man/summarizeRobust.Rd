@@ -54,3 +54,4 @@ bb <- summarizeRobust(x,
 LFQService:::.reestablish_condition(x,bb, conf)
 
 }
+\keyword{internal}
