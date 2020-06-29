@@ -4,7 +4,22 @@
 \alias{plot_hierarchies_line}
 \title{extracts the relevant information from the configuration to make the plot.}
 \usage{
-plot_hierarchies_line(res, proteinName, config, separate = FALSE)
+plot_hierarchies_line(
+  res,
+  proteinName,
+  config,
+  separate = FALSE,
+  show.legend = FALSE
+)
+}
+\arguments{
+\item{res}{data.frame}
+
+\item{proteinName}{title of plot}
+
+\item{config}{AnalysisConfiguration}
+
+\item{separate}{if heavy and light show in one plot or with separate y axis?}
 }
 \description{
 extracts the relevant information from the configuration to make the plot.
@@ -19,5 +34,23 @@ xnested <- LFQServiceData::sample_analysis \%>\%
 
 LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
+bb <- setup_analysis(LFQServiceData::skylineSRM_HL_data,LFQServiceData::skylineconfig_HL )
+nest <- bb \%>\% group_by(LFQServiceData::skylineconfig_HL$table$hkeysDepth()) \%>\% nest()
+LFQService::plot_hierarchies_line(nest$data[[1]],
+                                  "DUM",
+                                  LFQServiceData::skylineconfig_HL,
+                                  separate = TRUE)
+LFQService::plot_hierarchies_line(nest$data[[1]],
+"DUM",
+LFQServiceData::skylineconfig_HL,
+separate = TRUE,
+show.legend = TRUE)
 }
+\seealso{
+Other aggregation, plotting: 
+\code{\link{medpolishPlydf}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()}
+}
+\concept{aggregation, plotting}
 \keyword{internal}

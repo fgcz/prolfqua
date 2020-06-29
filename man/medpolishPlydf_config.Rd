@@ -6,12 +6,17 @@
 \usage{
 medpolishPlydf_config(pdata, config, name = FALSE)
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
 \description{
 medpolishPlydf2
 }
 \examples{
 
-conf <- skylineconfig$clone(deep = TRUE)
+conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 conf$table$hierarchyDepth = 1
 xnested <- LFQServiceData::sample_analysis \%>\%
   group_by_at(conf$table$hkeysDepth()) \%>\% nest()
@@ -22,3 +27,11 @@ bb <- medpolishPlydf2(x,conf)
 LFQService:::.reestablish_condition(x,bb, conf)
 
 }
+\seealso{
+Other aggregation: 
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPly}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+}
+\concept{aggregation}

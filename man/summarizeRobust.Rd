@@ -54,4 +54,12 @@ bb <- summarizeRobust(x,
 LFQService:::.reestablish_condition(x,bb, conf)
 
 }
+\seealso{
+Other aggregation: 
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPly}()},
+\code{\link{summarizeRobust_config}()}
+}
+\concept{aggregation}
 \keyword{internal}

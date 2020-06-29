@@ -6,12 +6,24 @@
 \usage{
 medpolishPlydf(pdata, expression, feature, samples)
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{expression}{column name with intensities}
+
+\item{feature}{column name e.g. peptide ids}
+
+\item{samples}{column name e.g. sampleName}
+}
+\value{
+data.frame
+}
 \description{
 medpolish dataframe
 }
 \examples{
 
-conf <- skylineconfig$clone(deep = TRUE)
+conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 conf$table$hierarchyDepth = 1
 xnested <- LFQServiceData::sample_analysis \%>\%
   group_by_at(conf$table$hkeysDepth()) \%>\% nest()
@@ -25,3 +37,10 @@ bb <- medpolishPlydf(x,
 LFQService:::.reestablish_condition(x,bb, conf)
 
 }
+\seealso{
+Other aggregation, plotting: 
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()}
+}
+\concept{aggregation, plotting}

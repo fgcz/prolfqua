@@ -1,5 +1,6 @@
 #' @importFrom dplyr all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
-#' @importFrom dplyr inner_join left_join mutate one_of rename select select_at summarize_at summarize ungroup vars
+#' @importFrom dplyr inner_join left_join mutate nest_by
+#' @importFrom dplyr one_of rename select select_at summarize_at summarize ungroup vars
 #'
 #' @importFrom ggplot2 aes_string element_text facet_grid ggplot ggtitle geom_boxplot geom_line geom_violin
 #' @importFrom ggplot2 scale_x_continuous scale_y_continuous theme

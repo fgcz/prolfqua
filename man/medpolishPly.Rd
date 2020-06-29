@@ -27,5 +27,12 @@ gg
 mx <- medpolishPly(gg)
 
 }
-\concept{matrix manipulation}
+\seealso{
+Other aggregation: 
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+}
+\concept{aggregation}
 \keyword{internal}

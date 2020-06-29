@@ -14,4 +14,12 @@ summarizeRobust_config(pdata, config, name = FALSE)
 \description{
 same as summarize robust but with config
 }
+\seealso{
+Other aggregation: 
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPly}()},
+\code{\link{summarizeRobust}()}
+}
+\concept{aggregation}
 \keyword{inernal}

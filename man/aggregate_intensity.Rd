@@ -4,40 +4,45 @@
 \alias{aggregate_intensity}
 \title{Summarizes the intensities within hierarchy}
 \usage{
-aggregate_intensity(data, config, func)
+aggregate_intensity(data, config, .func)
 }
 \arguments{
 \item{func}{- a function working on a matrix of intensities for each protein.}
 }
 \value{
-retuns function object
+returns list with data (data.frame) and config (AnalysisConfiguration)
 }
 \description{
 Summarizes the intensities within hierarchy
 }
 \examples{
 
-library(LFQService)
+library( LFQService )
 library(tidyverse)
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 data <- LFQServiceData::sample_analysis
-x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
-res <- x("unnest")
-x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") \%>\% tidyr::unnest()
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-config$table$hierarchyDepth <- 1
-x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+undebug( aggregate_intensity )
+data <- LFQService::transform_work_intensity(data, config, log2)
+bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 
-x("unnest")$data
-xnested<-x()
-dd <- x(value = "plot")
-dd$medpolishPly[[1]]
-dd$plot[[2]]
-# example how to add peptide count information
+bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
+names(bbMed$data)
+names(bbRob$data)
+length(bbMed$data$medpolish)
+length(bbRob$data$lmrob)
+plot(bbMed$data$medpolish, bbRob$data$lmrob, log="xy", pch=".")
+abline(0,1, col=2)
+plot(bbMed$data$medpolish[1:100], bbRob$data$lmrob[1:100])
+abline(0,1)
 
-tmp <- summarize_hierarchy(data, config)
-tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-head(tmp)
 }
+\seealso{
+Other aggregation: 
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPly}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+}
+\concept{aggregation}
 \keyword{internal}

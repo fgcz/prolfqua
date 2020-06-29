@@ -4,7 +4,7 @@
 \alias{plot_hierarchies_line_df}
 \title{generates peptide level plots for all Proteins}
 \usage{
-plot_hierarchies_line_df(pdata, config)
+plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -41,10 +41,16 @@ res <- plot_hierarchies_line_df(istar$data, config)
 config$table$is_intensity_transformed
 res[[1]]
 
-debug(LFQService:::plot_hierarchies_line_default)
 #TODO make it work for other hiearachy levels.
 config$table$hierarchyDepth = 2
 #res <- plot_hierarchies_line_df(resDataStart, config)
 
 }
+\seealso{
+Other aggregation, plotting: 
+\code{\link{medpolishPlydf}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line}()}
+}
+\concept{aggregation, plotting}
 \keyword{internal}

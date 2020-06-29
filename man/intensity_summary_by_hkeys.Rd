@@ -24,7 +24,7 @@ data <- LFQServiceData::sample_analysis
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 res <- x("unnest")
-x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") \%>\% tidyr::unnest()
+x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 config$table$hierarchyDepth <- 1
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
@@ -32,12 +32,16 @@ x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 x("unnest")$data
 xnested<-x()
 dd <- x(value = "plot")
+
 dd$medpolishPly[[1]]
+
 dd$plot[[2]]
 # example how to add peptide count information
 
 tmp <- summarize_hierarchy(data, config)
 tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-head(tmp)
+
+
 }
+\concept{aggregation deprecated}
 \keyword{internal}

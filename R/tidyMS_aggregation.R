@@ -10,7 +10,8 @@ plot_hierarchies_line_default <- function(data,
                                           factor,
                                           isotopeLabel,
                                           separate = FALSE,
-                                          log_y = FALSE
+                                          log_y = FALSE,
+                                          show.legend = FALSE
 ) {
   if (length(isotopeLabel)) {
     if (separate) {
@@ -29,12 +30,12 @@ plot_hierarchies_line_default <- function(data,
                                    color = peptide
       ))
     }
-    p <- p +  geom_point(aes_string(shape = isotopeLabel)) +
-      geom_line(aes_string(linetype = isotopeLabel))
+    p <- p +  geom_point(aes_string(shape = isotopeLabel), show.legend = show.legend) +
+      geom_line(aes_string(linetype = isotopeLabel), show.legend = show.legend)
   }else{
     formula <- sprintf("~%s", paste(factor, collapse = " + "))
     p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color = peptide))
-    p <- p +  geom_point() + geom_line()
+    p <- p +  geom_point(show.legend = show.legend) + geom_line(show.legend = show.legend)
   }
 
   #p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color= peptide, linetype = isotopeLabel))
@@ -49,6 +50,12 @@ plot_hierarchies_line_default <- function(data,
 
 #' extracts the relevant information from the configuration to make the plot.
 #' @export
+#' @param res data.frame
+#' @param proteinName title of plot
+#' @param config AnalysisConfiguration
+#' @param separate if heavy and light show in one plot or with separate y axis?
+#' @family aggregation, plotting
+#'
 #' @keywords internal
 #' @examples
 #'
@@ -60,10 +67,22 @@ plot_hierarchies_line_default <- function(data,
 #'
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
+#' bb <- setup_analysis(LFQServiceData::skylineSRM_HL_data,LFQServiceData::skylineconfig_HL )
+#' nest <- bb %>% group_by(LFQServiceData::skylineconfig_HL$table$hkeysDepth()) %>% nest()
+#' LFQService::plot_hierarchies_line(nest$data[[1]],
+#'                                   "DUM",
+#'                                   LFQServiceData::skylineconfig_HL,
+#'                                   separate = TRUE)
+#' LFQService::plot_hierarchies_line(nest$data[[1]],
+#' "DUM",
+#' LFQServiceData::skylineconfig_HL,
+#' separate = TRUE,
+#' show.legend = TRUE)
 plot_hierarchies_line <- function(res,
                                   proteinName,
                                   config,
-                                  separate = FALSE){
+                                  separate = FALSE,
+                                  show.legend = FALSE){
 
   rev_hnames <- config$table$hierarchyKeys(TRUE)
   fragment <- rev_hnames[1]
@@ -82,7 +101,8 @@ plot_hierarchies_line <- function(res,
     factor = config$table$fkeysDepth(),
     isotopeLabel = config$table$isotopeLabel,
     separate = separate,
-    log_y = !config$parameter$is_intensity_transformed
+    log_y = !config$parameter$is_intensity_transformed,
+    show.legend = show.legend
   )
   return(res)
 }
@@ -92,7 +112,7 @@ plot_hierarchies_line <- function(res,
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
+#' @family aggregation, plotting
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
@@ -121,12 +141,11 @@ plot_hierarchies_line <- function(res,
 #' config$table$is_intensity_transformed
 #' res[[1]]
 #'
-#' debug(LFQService:::plot_hierarchies_line_default)
 #' #TODO make it work for other hiearachy levels.
 #' config$table$hierarchyDepth = 2
 #' #res <- plot_hierarchies_line_df(resDataStart, config)
 #'
-plot_hierarchies_line_df <- function(pdata, config){
+plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE){
   factor_level <- config$table$factorDepth
 
   hierarchy_ID <- "hierarchy_ID"
@@ -137,7 +156,7 @@ plot_hierarchies_line_df <- function(pdata, config){
   figs <- xnested %>%
     dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
                               plot_hierarchies_line,
-                              config = config ) )
+                              config = config, show.legend = show.legend ) )
   return(figs$plot)
 }
 
@@ -145,9 +164,10 @@ plot_hierarchies_line_df <- function(pdata, config){
 
 #' add quantline to plot
 #' @export
+#' @family aggregation, plotting
 #' @keywords internal
 #' @examples
-#'
+#' #todo
 plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
   table <- configuration$table
   p + geom_line(data = data,
@@ -176,7 +196,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 
 
 #' compute Tukeys median polish from peptide or precursor intensities
-#' @family matrix manipulation
+#' @family aggregation
 #' @param x a matrix
 #' @param name if TRUE returns the name of the summary column
 #' @return data.frame with number of rows equal to number of columns of input matrix.
@@ -251,10 +271,16 @@ extractIntensities <- function(pdata, config ){
               table$sampleName)
 }
 #' medpolish dataframe
+#' @param pdata data.frame
+#' @param expression column name with intensities
+#' @param feature column name e.g. peptide ids
+#' @param samples column name e.g. sampleName
+#' @return data.frame
 #' @export
+#' @family aggregation, plotting
 #' @examples
 #'
-#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' conf$table$hierarchyDepth = 1
 #' xnested <- LFQServiceData::sample_analysis %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
@@ -268,7 +294,7 @@ extractIntensities <- function(pdata, config ){
 #' LFQService:::.reestablish_condition(x,bb, conf)
 #'
 medpolishPlydf <- function(pdata, expression, feature, samples  ){
-  bb <- .extractInt(x,
+  bb <- .extractInt(pdata,
     expression = expression,
      feature = feature,
       samples = samples)
@@ -276,10 +302,13 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 
 }
 #' medpolishPlydf2
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @family aggregation
 #' @export
 #' @examples
 #'
-#' conf <- skylineconfig$clone(deep = TRUE)
+#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' conf$table$hierarchyDepth = 1
 #' xnested <- LFQServiceData::sample_analysis %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
@@ -381,6 +410,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 
 #' summarize proteins using MASS:rlm
 #' @keywords internal
+#' @family aggregation
 #' @param pdata data
 #' @param expression intensities
 #' @param feature e.g. peptideIDs.
@@ -433,7 +463,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguraton
-#'
+#' @family aggregation
 #' @keywords inernal
 #' @example
 #' conf <- skylineconfig$clone(deep = TRUE)
@@ -447,7 +477,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #'
 #' LFQService:::.reestablish_condition(x,bb, conf)
 summarizeRobust_config <- function(pdata, config, name= FALSE){
-  if (name) {return("lmRob")}
+  if (name) {return("lmrob")}
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
   summarizeRobust(pdata, expression = config$table$getWorkIntensity(),
@@ -462,74 +492,120 @@ summarizeRobust_config <- function(pdata, config, name= FALSE){
 #' Summarizes the intensities within hierarchy
 #'
 #' @param func - a function working on a matrix of intensities for each protein.
-#' @return retuns function object
+#' @return returns list with data (data.frame) and config (AnalysisConfiguration)
+#' @family aggregation
 #' @keywords internal
 #' @export
 #' @examples
 #'
-#' library(LFQService)
+#' library( LFQService )
 #' library(tidyverse)
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' data <- LFQServiceData::sample_analysis
-#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
-#' res <- x("unnest")
-#' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' config$table$hierarchyDepth <- 1
-#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#' undebug( aggregate_intensity )
+#' data <- LFQService::transform_work_intensity(data, config, log2)
+#' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #'
-#' x("unnest")$data
-#' xnested<-x()
-#' dd <- x(value = "plot")
-#' dd$medpolishPly[[1]]
-#' dd$plot[[2]]
-#' # example how to add peptide count information
+#' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
+#' names(bbMed$data)
+#' names(bbRob$data)
+#' length(bbMed$data$medpolish)
+#' length(bbRob$data$lmrob)
+#' plot(bbMed$data$medpolish, bbRob$data$lmrob, log="xy", pch=".")
+#' abline(0,1, col=2)
+#' plot(bbMed$data$medpolish[1:100], bbRob$data$lmrob[1:100])
+#' abline(0,1)
 #'
-#' tmp <- summarize_hierarchy(data, config)
-#' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-#' head(tmp)
 aggregate_intensity <- function(data, config, .func)
 {
-  x <- as.list( match.call() )
-  makeName <- make.names(as.character(x$func))
+  makeName <- .func(name = TRUE)
   config <- config$clone(deep = TRUE)
 
   xnested <- data %>% group_by_at(config$table$hkeysDepth()) %>% nest()
 
-  pb <- progress::progress_bar$new(total = 3 * nrow(xnested))
+  pb <- progress::progress_bar$new(total = nrow(xnested))
   message("starting aggregation")
 
-  xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map( .data$data , function(x, config){pb$tick(); .func(x, config)}, config))
-
-  xnested <- xnested %>%
-    dplyr::mutate(!!makeName := map2(data,
-                                     !!sym(makeName),
-                                     function(x, y, config){pb$tick(); .reestablish_condition(x,y, config) }, config ))
-
-
+  res <- vector( mode = "list" , length = nrow(xnested) )
+  for (i in 1:nrow(xnested)) {
+    pb$tick()
+    aggr <- .func(xnested$data[[i]], config)
+    res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
+  }
+  xnested[[makeName]] <- res
+  #xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,
+  #                                   !!sym(makeName),
+  #                                   function(x, y, config){pb$tick(); }, config ))
 
   newconfig <- make_reduced_hierarchy_config(config,
-                                             workIntensity = func(name = TRUE),
+                                             workIntensity = .func(name = TRUE),
                                              hierarchy = config$table$hkeysDepth(names = FALSE))
 
   unnested <- xnested %>%
     dplyr::select(config$table$hkeysDepth(), makeName) %>%
-    tidyr::unnest(cols = c(medpolishPly)) %>%
+    tidyr::unnest(cols = makeName) %>%
     dplyr::ungroup()
 
   return(list(data = unnested, config = newconfig))
 }
 
+#' Plot feature data and result of aggretation
+#' @param data data.frame before aggregation
+#' @param config AnalyisConfiguration
+#' @param data_aggr data.frame after aggregation
+#' @param config_aggr AnalysisConfiguration of aggregated data
+#' @family plotting aggregation
+#' @examples
+#' library( LFQService )
+#' library(tidyverse)
+#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' data <- LFQServiceData::sample_analysis
+#'
+#' undebug( aggregate_intensity )
+#' data <- LFQService::transform_work_intensity(data, config, log2)
+#' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
+#' tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
+#' tmpMed$plot[[1]]
+#' tmpMed$plot[[2]]
+#' tmpMed$plot[[3]]
+#'
+#' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
+#' tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
+#' tmpRob$plot[[1]]
+#' tmpRob$plot[[2]]
+#' tmpRob$plot[[3]]
+#'
+#'
+plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
+  hierarchy_ID <- "hierarchy_ID"
+  xnested <- data %>% group_by(!!!sym(config$table$hkeysDepth())) %>% nest()
+  xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
+  xnested_aggr <- data_aggr %>% group_by(!!!syms(config_reduced$table$hkeysDepth())) %>% nest_by(.key = "other")
+  xnested_aggr <- xnested_aggr %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
+  xnested_all <- inner_join(xnested, xnested_aggr , by = hierarchy_ID )
 
 
+  figs <- xnested_all %>% dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
+                              plot_hierarchies_line,
+                              config = config,
+                              show.legend = show.legend ))
+
+  figs <- figs %>%
+    dplyr::mutate(plot = map2(plot, other,
+                              plot_hierarchies_add_quantline,
+                              config_reduced$table$getWorkIntensity(), config ))
+  figs$plot[[1]]
+  return(figs)
+}
 
 #' Summarizes the intensities within hierarchy
 #'
 #' @param func - a function working on a matrix of intensities for each protein.
 #' @return retuns function object
 #' @keywords internal
+#'
+#' @family aggregation deprecated
 #' @export
 #' @examples
 #'
@@ -540,7 +616,7 @@ aggregate_intensity <- function(data, config, .func)
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' res <- x("unnest")
-#' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish") %>% tidyr::unnest()
+#' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
@@ -548,13 +624,16 @@ aggregate_intensity <- function(data, config, .func)
 #' x("unnest")$data
 #' xnested<-x()
 #' dd <- x(value = "plot")
+#'
 #' dd$medpolishPly[[1]]
+#'
 #' dd$plot[[2]]
 #' # example how to add peptide count information
 #'
 #' tmp <- summarize_hierarchy(data, config)
 #' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-#' head(tmp)
+#'
+#'
 intensity_summary_by_hkeys <- function(data, config, func)
 {
   x <- as.list( match.call() )

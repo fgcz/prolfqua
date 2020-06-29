@@ -10,6 +10,13 @@ plot_hierarchies_add_quantline(p, data, aes_y, configuration)
 add quantline to plot
 }
 \examples{
-
+#todo
 }
+\seealso{
+Other aggregation, plotting: 
+\code{\link{medpolishPlydf}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()}
+}
+\concept{aggregation, plotting}
 \keyword{internal}
