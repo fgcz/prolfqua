@@ -460,7 +460,7 @@ LFQDataSummariser <- R6::R6Class(
 )
 
 # LFQDataPlotter ----
-#' write intensites into folder - for the moment protein
+#' Create various visualization of the data
 #' @export
 #'
 #' @family LFQData

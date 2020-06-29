@@ -22,3 +22,10 @@
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom utils combn data head read.csv tail unzip
 NULL
+#' Internal Functions by category
+#' @family aggregation
+#' @family plotting
+#' @name INTERNAL_FUNCTIONS_BY_FAMILY
+#'
+NULL
+

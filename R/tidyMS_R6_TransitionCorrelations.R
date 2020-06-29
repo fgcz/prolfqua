@@ -571,51 +571,6 @@ rankPrecursorsByIntensity <- function(pdata, config){
   return(pdata)
 }
 
-#' aggregates top N intensities
-#'
-#' run \link{rankPrecursorsByIntensity} first
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @param func function to use for aggregation
-#' @param N default 3 top intensities.
-#' @return list with data and new reduced configuration (config)
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#'
-#' library(LFQService)
-#' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
-#' res <- rankPrecursorsByIntensity(res,config)
-#' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>% distinct() %>% arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_meanIntRank")))
-#' mean_na <- function(x){mean(x, na.rm=TRUE)}
-#'
-#' res <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
-#'
-#' stopifnot(dim(res$data) == c(10423, 10))
-#' stopifnot(names(res) %in% c("data", "config"))
-#'
-aggregateTopNIntensities <- function(pdata , config, func, N){
-  xcall <- as.list( match.call() )
-  newcol <- make.names(glue::glue("srm_{deparse(xcall$func)}_{xcall$N}"))
-  topInt <- pdata %>%
-    dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
-    dplyr::group_by_at(c( config$table$hkeysDepth(),
-                               config$table$sampleName,
-                               config$table$fileName,
-                               config$table$isotopeLabel,
-                               config$table$factorKeys()))
-  sumTopInt <- topInt %>%
-    dplyr::summarize( !!newcol := func(!!sym(config$table$getWorkIntensity())),
-                      ident_qValue = min(!!sym(config$table$ident_qValue)))
-
-  newconfig <- make_reduced_hierarchy_config(config,
-                                             workIntensity = newcol,
-                                             hierarchy = config$table$hierarchy[1:config$table$hierarchyDepth])
-  return(list(data = sumTopInt, config = newconfig))
-}
 
 # Summarise NAs on lowest hierarchy ----
 

@@ -922,6 +922,7 @@ workflow_missigness_impute_contrasts <- function(data,
 #' Histogram summarizing missigness
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
@@ -972,6 +973,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' cumulative sums of missing
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
@@ -1011,6 +1013,7 @@ missingness_per_condition_cumsum <- function(x,
 #' Summarize missing in condtion as barplot
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' LFQServiceData::sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis

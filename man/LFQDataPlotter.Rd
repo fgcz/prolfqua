@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataPlotter}
 \alias{LFQDataPlotter}
-\title{write intensites into folder - for the moment protein}
+\title{Create various visualization of the data}
 \description{
-write intensites into folder - for the moment protein
+Create various visualization of the data
 
-write intensites into folder - for the moment protein
+Create various visualization of the data
 }
 \examples{
 

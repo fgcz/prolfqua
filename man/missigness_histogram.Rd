@@ -33,4 +33,17 @@ sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
 missigness_histogram(sample_analysis, skylineconfig)
 
 }
+\seealso{
+Other plotting: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{medpolishPlydf}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_sample_correlation}()}
+}
+\concept{plotting}
 \keyword{internal}

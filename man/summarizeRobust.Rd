@@ -56,9 +56,14 @@ LFQService:::.reestablish_condition(x,bb, conf)
 }
 \seealso{
 Other aggregation: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity}()},
 \code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPlydf}()},
 \code{\link{medpolishPly}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
 \code{\link{summarizeRobust_config}()}
 }
 \concept{aggregation}

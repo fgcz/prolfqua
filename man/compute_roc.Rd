@@ -2,8 +2,7 @@
 % Please edit documentation in R/tidyMS_rocs.R
 \name{compute_roc}
 \alias{compute_roc}
-\title{Apply roc analysis on main factor on lowest hierarchy level
-deprecate function.}
+\title{Apply roc analysis on main factor on lowest hierarchy level}
 \usage{
 compute_roc(data, config)
 }
@@ -13,7 +12,6 @@ compute_roc(data, config)
 \item{config}{AnalysisConfiguration}
 }
 \description{
-Apply roc analysis on main factor on lowest hierarchy level
 deprecate function.
 }
 \examples{

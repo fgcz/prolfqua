@@ -47,10 +47,28 @@ config$table$hierarchyDepth = 2
 
 }
 \seealso{
-Other aggregation, plotting: 
+Other aggregation: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
+\code{\link{medpolishPly}()},
 \code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line}()}
+\code{\link{plot_hierarchies_line}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+
+Other plotting: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{medpolishPlydf}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_sample_correlation}()}
 }
-\concept{aggregation, plotting}
+\concept{aggregation}
+\concept{plotting}
 \keyword{internal}

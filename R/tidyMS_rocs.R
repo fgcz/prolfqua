@@ -21,6 +21,7 @@
 }
 
 #' Apply roc analysis on main factor on lowest hierarchy level
+#'
 #' deprecate function.
 #' @param data data
 #' @param config AnalysisConfiguration

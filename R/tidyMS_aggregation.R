@@ -54,7 +54,8 @@ plot_hierarchies_line_default <- function(data,
 #' @param proteinName title of plot
 #' @param config AnalysisConfiguration
 #' @param separate if heavy and light show in one plot or with separate y axis?
-#' @family aggregation, plotting
+#' @family aggregation
+#' @family plotting
 #'
 #' @keywords internal
 #' @examples
@@ -112,7 +113,8 @@ plot_hierarchies_line <- function(res,
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @family aggregation, plotting
+#' @family aggregation
+#' @family plotting
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
@@ -164,7 +166,8 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE){
 
 #' add quantline to plot
 #' @export
-#' @family aggregation, plotting
+#' @family aggregation
+#' @family plotting
 #' @keywords internal
 #' @examples
 #' #todo
@@ -277,7 +280,8 @@ extractIntensities <- function(pdata, config ){
 #' @param samples column name e.g. sampleName
 #' @return data.frame
 #' @export
-#' @family aggregation, plotting
+#' @family aggregation
+#' @family plotting
 #' @examples
 #'
 #' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
@@ -599,6 +603,67 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
   return(figs)
 }
 
+
+#' aggregates top N intensities
+#'
+#' run \link{rankPrecursorsByIntensity} first
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param func function to use for aggregation
+#' @param N default 3 top intensities.
+#' @return list with data and new reduced configuration (config)
+#' @family aggregation
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+#' res <- rankPrecursorsByIntensity(res,config)
+#' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>%
+#' distinct() %>%
+#' arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
+#'
+#' mean <- function(x){mean(x, na.rm=TRUE)}
+#' sum <- function(x){sum(x, na.rm = TRUE)}
+#'
+#' resTOPN <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
+#'
+#' stopifnot(dim(resTOPN$data) == c(10423, 10))
+#' stopifnot( names(resTOPN) %in% c("data", "config") )
+#' config$table$getWorkIntensity()
+#' debug(plot_aggregation)
+#' tmpRob <- plot_aggregation(res, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
+#' tmpRob$plot[[4]]
+#'
+aggregateTopNIntensities <- function(pdata , config, func, N = 3){
+
+  xcall <- as.list( match.call() )
+  newcol <- make.names(glue::glue("srm_{deparse(xcall$func)}_{xcall$N}"))
+  topInt <- pdata %>%
+    dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
+    dplyr::group_by_at(c( config$table$hkeysDepth(),
+                          config$table$sampleName,
+                          config$table$fileName,
+                          config$table$isotopeLabel,
+                          config$table$factorKeys()))
+  sumTopInt <- topInt %>%
+    dplyr::summarize( !!newcol := func(!!sym(config$table$getWorkIntensity())),
+                      ident_qValue = min(!!sym(config$table$ident_qValue))) %>%
+    ungroup()
+
+  newconfig <- make_reduced_hierarchy_config(
+    config,
+    workIntensity = newcol,
+    hierarchy = config$table$hierarchy[1:config$table$hierarchyDepth])
+  return(list(data = sumTopInt, config = newconfig))
+}
+
+
+
 #' Summarizes the intensities within hierarchy
 #'
 #' @param func - a function working on a matrix of intensities for each protein.
@@ -714,6 +779,7 @@ medpolish_protein_quants <- function(data, config){
                                                           medpolishPly)
   return(protintensity)
 }
+
 
 
 
