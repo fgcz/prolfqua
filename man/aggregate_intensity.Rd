@@ -40,6 +40,7 @@ abline(0,1)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregateTopNIntensities}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{medpolishPly}()},

@@ -40,6 +40,7 @@ LFQService:::.reestablish_condition(x,bb, conf)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregateTopNIntensities}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPly}()},

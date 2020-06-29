@@ -8,6 +8,7 @@ Internal Functions by category
 }
 \seealso{
 Other aggregation: 
+\code{\link{aggregateTopNIntensities}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
