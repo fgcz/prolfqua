@@ -43,7 +43,7 @@ summarize_cv <- function(pdata, config, all = TRUE){
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
     hierarchyFactor <- dplyr::bind_rows(hierarchyFactor,hierarchy)
   }
-  if (config$parameter$is_intensity_transformed == FALSE) {
+  if (config$table$is_intensity_transformed == FALSE) {
     hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
   return(hierarchyFactor)
@@ -197,7 +197,7 @@ lfq_power_t_test_quantiles <- function(pdata,
                                        sig.level = 0.05,
                                        probs = seq(0.5,0.9, by = 0.1)){
 
-  if (!config$parameter$is_intensity_transformed) {
+  if (!config$table$is_intensity_transformed) {
     warning("Intensities are not transformed yet.")
   }
 

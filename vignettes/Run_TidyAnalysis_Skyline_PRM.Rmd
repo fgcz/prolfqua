@@ -67,6 +67,8 @@ resData$Area[resData$Area == 0] <- NA
 proteinIDsymbol <- sym(names(skylineconfig$table$hierarchy)[1])
 xnested <-
   resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
+xnested
+
 figs <-
   xnested %>% dplyr::mutate(plot = map2(
     data,
@@ -74,6 +76,10 @@ figs <-
     plot_hierarchies_line,
     skylineconfig
   ))
+
+for (i in 1:nrow(xnested)) {
+  plot_hierarchies_line(xnested$data[[i]],xnested[[proteinIDsymbol]][i],skylineconfig)
+}
 
 print(figs$plot[[1]])
 

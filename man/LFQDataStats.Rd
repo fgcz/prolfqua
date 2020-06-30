@@ -32,13 +32,15 @@ istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
+x<-lfqstats
 
 #study variance of normalized data
 istar <- LFQServiceData::dataIonstarNormalizedPep
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+names(istar)
+istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 200))
 lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
-
 runallfuncs(lfqstats)
 
 #Slightly different dataset
@@ -46,6 +48,7 @@ data <- LFQServiceData::sample_analysis
 config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
 lfqdata <- LFQData$new(data, config)
+
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 

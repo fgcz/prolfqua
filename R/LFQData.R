@@ -47,7 +47,7 @@ LFQData <- R6::R6Class(
       self$clone(deep = TRUE)
     },
     is_transformed = function(is_transformed){
-      if(missing(is_transformed)) {
+      if (missing(is_transformed)) {
         return(self$config$table$is_intensity_transformed)
       }else{
         self$config$table$is_intensity_transformed = is_transformed
@@ -251,13 +251,15 @@ LFQDataTransformer <- R6::R6Class(
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
+#' x<-lfqstats
 #'
 #' #study variance of normalized data
 #' istar <- LFQServiceData::dataIonstarNormalizedPep
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' names(istar)
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 200))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
-#'
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
@@ -265,6 +267,7 @@ LFQDataTransformer <- R6::R6Class(
 #' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
 #' lfqdata <- LFQData$new(data, config)
+#'
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
 #'
@@ -825,6 +828,7 @@ LFQDataWriter <- R6::R6Class(
 #' pMean <- lfqAggregator$plot()
 #' pMean$plots[[2]]
 #' lfqAggregator$write_plots("inst")
+#' protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 #'
 LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",

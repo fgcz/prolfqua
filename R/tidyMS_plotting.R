@@ -16,7 +16,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
   p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = ))
-  if (!config$parameter$is_intensity_transformed) {
+  if (!config$table$is_intensity_transformed) {
     p <- p + scale_y_continuous(trans = 'log10')
   }
   return(p)
@@ -39,7 +39,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 plot_intensity_distribution_density <- function(pdata, config){
   p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
     geom_line(stat = "density")
-  if (!config$parameter$is_intensity_transformed) {
+  if (!config$table$is_intensity_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
   }
   return(p)
@@ -162,7 +162,7 @@ plot_hierarchies_boxplot <- function(pdata,
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
 
-  if (!config$parameter$is_intensity_transformed) {
+  if (!config$table$is_intensity_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   p <- p + geom_boxplot()

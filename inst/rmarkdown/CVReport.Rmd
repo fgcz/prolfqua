@@ -23,7 +23,7 @@ if (params$plot_density) {
 ```
 
 ```{r}
-if(!local_config$parameter$is_intensity_transformed){
+if(!local_config$table$is_intensity_transformed){
   if (params$plot_sd_vs_mean) {
     p0 <- plot_stdv_vs_mean(stats_res, local_config)  + labs(tag='A') # takes to long to plot.
   }

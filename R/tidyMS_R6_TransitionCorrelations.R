@@ -87,7 +87,7 @@ transform_work_intensity <- function(pdata,
 
   config$table$setWorkIntensity(newcol)
   message("Column added : ", newcol)
-  config$parameter$is_intensity_transformed = TRUE
+  config$table$is_intensity_transformed = TRUE
 
   if (deep) {
     return( list(data = pdata, config = config) )

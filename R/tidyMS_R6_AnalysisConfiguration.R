@@ -945,7 +945,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
   missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
 
   if (showempty) {
-    if (config$parameter$is_intensity_transformed) {
+    if (config$table$is_intensity_transformed) {
       missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),1,meanArea))
     }else{
       missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),-20,meanArea))
@@ -962,7 +962,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
     facet_grid(as.formula(formula)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if (!config$parameter$is_intensity_transformed) {
+  if (!config$table$is_intensity_transformed) {
     p <- p + scale_x_log10()
   }
   p

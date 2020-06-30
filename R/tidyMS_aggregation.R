@@ -102,7 +102,7 @@ plot_hierarchies_line <- function(res,
     factor = config$table$fkeysDepth(),
     isotopeLabel = config$table$isotopeLabel,
     separate = separate,
-    log_y = !config$parameter$is_intensity_transformed,
+    log_y = !config$table$is_intensity_transformed,
     show.legend = show.legend
   )
   return(res)

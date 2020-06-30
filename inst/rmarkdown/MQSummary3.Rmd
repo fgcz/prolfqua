@@ -139,7 +139,7 @@ print(pNAmap)
 
 
 ```{r checktransformation, include = FALSE}
-show_text <- !lfqData$config$parameter$is_intensity_transformed
+show_text <- !lfqData$config$table$is_intensity_transformed
 
 ```
 
@@ -153,13 +153,13 @@ We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformat
 
 
 ```{r transformIntensities}
-if (!local_config$parameter$is_intensity_transformed) {
+if (!local_config$table$is_intensity_transformed) {
   data_tf <- LFQService::transform_work_intensity(data_cc,
                                                   local_config,
                                                   log2)
   dataTransformed <-
     LFQService::applyToIntensityMatrix(data_tf, local_config, robust_scale)
-  local_config$parameter$is_intensity_transformed = TRUE
+  local_config$table$is_intensity_transformed = TRUE
 } else{
   dataTransformed <- data_cc
 }
