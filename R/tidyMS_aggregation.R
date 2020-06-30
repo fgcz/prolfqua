@@ -305,7 +305,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
    medpolishPly(bb)
 
 }
-#' medpolishPlydf2
+#' medpolish Ply df config
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @family aggregation
@@ -319,7 +319,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- medpolishPlydf2(x,conf)
+#' bb <- medpolishPlydf_config(x,conf)
 #' LFQService:::.reestablish_condition(x,bb, conf)
 #'
 medpolishPlydf_config <- function(pdata, config, name=FALSE){
@@ -538,16 +538,12 @@ aggregate_intensity <- function(data, config, .func)
     res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
   }
   xnested[[makeName]] <- res
-  #xnested <- xnested %>% dplyr::mutate(!!makeName := map2(data,
-  #                                   !!sym(makeName),
-  #                                   function(x, y, config){pb$tick(); }, config ))
-
   newconfig <- make_reduced_hierarchy_config(config,
                                              workIntensity = .func(name = TRUE),
                                              hierarchy = config$table$hkeysDepth(names = FALSE))
 
   unnested <- xnested %>%
-    dplyr::select(config$table$hkeysDepth(), makeName) %>%
+    dplyr::select_at(c(config$table$hkeysDepth(), makeName)) %>%
     tidyr::unnest(cols = makeName) %>%
     dplyr::ungroup()
 
@@ -561,6 +557,7 @@ aggregate_intensity <- function(data, config, .func)
 #' @param config_aggr AnalysisConfiguration of aggregated data
 #' @family plotting
 #' @family aggregation
+#' @export
 #' @examples
 #' library( LFQService )
 #' library(tidyverse)
@@ -571,37 +568,56 @@ aggregate_intensity <- function(data, config, .func)
 #' data <- LFQService::transform_work_intensity(data, config, log2)
 #' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #' tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
-#' tmpMed$plot[[1]]
-#' tmpMed$plot[[2]]
-#' tmpMed$plot[[3]]
+#' tmpMed$plots[[1]]
+#' tmpMed$plots[[2]]
+#' tmpMed$plots[[3]]
 #'
 #' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
 #' tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
-#' tmpRob$plot[[1]]
-#' tmpRob$plot[[2]]
-#' tmpRob$plot[[3]]
+#' tmpRob$plots[[1]]
+#' tmpRob$plots[[2]]
+#' tmpRob$plots[[3]]
 #'
 #'
 plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
   hierarchy_ID <- "hierarchy_ID"
-  xnested <- data %>% group_by(!!!sym(config$table$hkeysDepth())) %>% nest()
+  xnested <- data %>% group_by(!!!syms(config$table$hkeysDepth())) %>% nest()
   xnested <- xnested %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
   xnested_aggr <- data_aggr %>% group_by(!!!syms(config_reduced$table$hkeysDepth())) %>% nest_by(.key = "other")
   xnested_aggr <- xnested_aggr %>% tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
   xnested_all <- inner_join(xnested, xnested_aggr , by = hierarchy_ID )
 
 
-  figs <- xnested_all %>% dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID) ,
-                              plot_hierarchies_line,
-                              config = config,
-                              show.legend = show.legend ))
+  plots <- vector(mode = "list", length = nrow(xnested_all))
 
-  figs <- figs %>%
-    dplyr::mutate(plot = map2(plot, other,
-                              plot_hierarchies_add_quantline,
-                              config_reduced$table$getWorkIntensity(), config ))
-  figs$plot[[1]]
-  return(figs)
+  pb <- progress::progress_bar$new(total = nrow(xnested_all))
+  for (i in 1:nrow(xnested_all)) {
+    p1 <- plot_hierarchies_line(xnested_all$data[[i]],
+                                xnested_all[[hierarchy_ID]][i],
+                                config = config, show.legend = show.legend)
+    p2 <- plot_hierarchies_add_quantline(p1,
+                                         xnested_all$other[[i]],
+                                         config_reduced$table$getWorkIntensity(),
+                                         config)
+    plots[[i]] <- p2
+    pb$tick()
+  }
+  xnested_all$plots <- plots
+
+  # original version
+  if (FALSE) {
+    xnested_all <- xnested_all %>%
+      dplyr::mutate(plots = map2(data, !!sym(hierarchy_ID) ,
+                                 plot_hierarchies_line,
+                                 config = config,
+                                 show.legend = show.legend ))
+
+    xnested_all <- xnested_all %>%
+      dplyr::mutate(plots = map2(plots, other,
+                                plot_hierarchies_add_quantline,
+                                config_reduced$table$getWorkIntensity(), config ))
+  }
+  return(xnested_all)
 }
 
 
@@ -623,27 +639,27 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' library(tidyverse)
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 #' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
-#' res <- rankPrecursorsByIntensity(res,config)
-#' res %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>%
+#' ranked <- rankPrecursorsByIntensity(res,config)
+#' ranked %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>%
 #' distinct() %>%
 #' arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
 #'
-#' mean <- function(x){mean(x, na.rm=TRUE)}
-#' sum <- function(x){sum(x, na.rm = TRUE)}
+#' mean_f <- function(x, name = FALSE){ if(name){return("mean")};mean(x, na.rm=TRUE)}
+#' sum_f <- function(x, name =FALSE){ if(name){return("sum")};sum(x, na.rm = TRUE)}
 #'
-#' resTOPN <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
+#' resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
 #'
 #' stopifnot(dim(resTOPN$data) == c(10423, 10))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
 #' config$table$getWorkIntensity()
 #' #debug(plot_aggregation)
-#' tmpRob <- plot_aggregation(res, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
+#' tmpRob <- plot_aggregation(ranked, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
 #' tmpRob$plot[[4]]
 #'
-aggregateTopNIntensities <- function(pdata , config, func, N = 3){
+aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 
   xcall <- as.list( match.call() )
-  newcol <- make.names(glue::glue("srm_{deparse(xcall$func)}_{xcall$N}"))
+  newcol <- make.names(glue::glue("srm_{.func(name=TRUE)}_{xcall$N}"))
   topInt <- pdata %>%
     dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
     dplyr::group_by_at(c( config$table$hkeysDepth(),
@@ -652,9 +668,8 @@ aggregateTopNIntensities <- function(pdata , config, func, N = 3){
                           config$table$isotopeLabel,
                           config$table$factorKeys()))
   sumTopInt <- topInt %>%
-    dplyr::summarize( !!newcol := func(!!sym(config$table$getWorkIntensity())),
-                      ident_qValue = min(!!sym(config$table$ident_qValue))) %>%
-    ungroup()
+    dplyr::summarize( !!newcol := .func(!!sym(config$table$getWorkIntensity())),
+                      ident_qValue = min(!!sym(config$table$ident_qValue)), .groups = "drop")
 
   newconfig <- make_reduced_hierarchy_config(
     config,

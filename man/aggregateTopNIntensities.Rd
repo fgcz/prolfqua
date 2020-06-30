@@ -4,16 +4,16 @@
 \alias{aggregateTopNIntensities}
 \title{aggregates top N intensities}
 \usage{
-aggregateTopNIntensities(pdata, config, func, N = 3)
+aggregateTopNIntensities(pdata, config, .func, N = 3)
 }
 \arguments{
 \item{pdata}{data.frame}
 
 \item{config}{AnalysisConfiguration}
 
-\item{func}{function to use for aggregation}
-
 \item{N}{default 3 top intensities.}
+
+\item{func}{function to use for aggregation}
 }
 \value{
 list with data and new reduced configuration (config)
@@ -28,21 +28,21 @@ library(LFQService)
 library(tidyverse)
 config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
 res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
-res <- rankPrecursorsByIntensity(res,config)
-res \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
+ranked <- rankPrecursorsByIntensity(res,config)
+ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
 distinct() \%>\%
 arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
 
-mean <- function(x){mean(x, na.rm=TRUE)}
-sum <- function(x){sum(x, na.rm = TRUE)}
+mean_f <- function(x, name = FALSE){ if(name){return("mean")};mean(x, na.rm=TRUE)}
+sum_f <- function(x, name =FALSE){ if(name){return("sum")};sum(x, na.rm = TRUE)}
 
-resTOPN <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
+resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
 
 stopifnot(dim(resTOPN$data) == c(10423, 10))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
 #debug(plot_aggregation)
-tmpRob <- plot_aggregation(res, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
+tmpRob <- plot_aggregation(ranked, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
 tmpRob$plot[[4]]
 
 }

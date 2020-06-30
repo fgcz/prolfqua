@@ -46,7 +46,6 @@ plotter$intensity_distribution_density()
 \item \href{#method-log2_robscale}{\code{LFQDataTransformer$log2_robscale()}}
 \item \href{#method-log2_robscale_subset}{\code{LFQDataTransformer$log2_robscale_subset()}}
 \item \href{#method-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
-\item \href{#method-is_transformed}{\code{LFQDataTransformer$is_transformed()}}
 \item \href{#method-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
 \item \href{#method-clone}{\code{LFQDataTransformer$clone()}}
 }
@@ -105,15 +104,6 @@ Transforms intensities
 \subsection{Returns}{
 LFQDataTransformer (self)
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-is_transformed"></a>}}
-\if{latex}{\out{\hypertarget{method-is_transformed}{}}}
-\subsection{Method \code{is_transformed()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$is_transformed(is_transformed)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-intensity_matrix"></a>}}

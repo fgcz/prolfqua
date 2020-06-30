@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{medpolishPlydf_config}
 \alias{medpolishPlydf_config}
-\title{medpolishPlydf2}
+\title{medpolish Ply df config}
 \usage{
 medpolishPlydf_config(pdata, config, name = FALSE)
 }
@@ -12,7 +12,7 @@ medpolishPlydf_config(pdata, config, name = FALSE)
 \item{config}{AnalysisConfiguration}
 }
 \description{
-medpolishPlydf2
+medpolish Ply df config
 }
 \examples{
 
@@ -23,7 +23,7 @@ xnested <- LFQServiceData::sample_analysis \%>\%
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
-bb <- medpolishPlydf2(x,conf)
+bb <- medpolishPlydf_config(x,conf)
 LFQService:::.reestablish_condition(x,bb, conf)
 
 }

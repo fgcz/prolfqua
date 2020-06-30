@@ -16,8 +16,6 @@ Analysis parameters
 
 \item{\code{qVal_minNumber_below_experiment_threshold}}{how many samples need to meet qVal_experiment_threshold}
 
-\item{\code{is_intensity_transformed}}{is the intensity transformed (typically log2)}
-
 \item{\code{min_nr_of_notNA}}{minimum number of not NA's in all samples default 1}
 
 \item{\code{min_nr_of_notNA_condition}}{minimum number of not NA's in interaction}

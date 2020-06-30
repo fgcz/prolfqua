@@ -14,8 +14,6 @@ AnalysisParameters <- R6::R6Class(
     qVal_experiment_threshold = 0.01,
     #' @field qVal_minNumber_below_experiment_threshold how many samples need to meet qVal_experiment_threshold
     qVal_minNumber_below_experiment_threshold = 3,
-    #' @field is_intensity_transformed is the intensity transformed (typically log2)
-    is_intensity_transformed = FALSE, # important for some plotting functions
     #' @field min_nr_of_notNA minimum number of not NA's in all samples default 1
     min_nr_of_notNA = 1, # how many values per transition total
     #' @field min_nr_of_notNA_condition minimum number of not NA's in interaction

@@ -28,15 +28,15 @@ undebug( aggregate_intensity )
 data <- LFQService::transform_work_intensity(data, config, log2)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
-tmpMed$plot[[1]]
-tmpMed$plot[[2]]
-tmpMed$plot[[3]]
+tmpMed$plots[[1]]
+tmpMed$plots[[2]]
+tmpMed$plots[[3]]
 
 bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
 tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
-tmpRob$plot[[1]]
-tmpRob$plot[[2]]
-tmpRob$plot[[3]]
+tmpRob$plots[[1]]
+tmpRob$plots[[2]]
+tmpRob$plots[[3]]
 
 
 }

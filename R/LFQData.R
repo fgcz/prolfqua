@@ -8,10 +8,13 @@
 #' library(LFQService)
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$config$table$is_intensity_transformed
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' lfqdata$factors()
+#'
+#' lfqdata$is_transformed()
 #'
 #'
 LFQData <- R6::R6Class(
@@ -42,6 +45,13 @@ LFQData <- R6::R6Class(
     #' get deep copy
     clone_d = function(){
       self$clone(deep = TRUE)
+    },
+    is_transformed = function(is_transformed){
+      if(missing(is_transformed)) {
+        return(self$config$table$is_intensity_transformed)
+      }else{
+        self$config$table$is_intensity_transformed = is_transformed
+      }
     },
     #' @description
     #'
@@ -110,6 +120,7 @@ LFQData <- R6::R6Class(
     #'
     #' @param other a filtered LFQData set
     #' @return LFQData
+    #'
     filter_difference = function(other){
       diffdata <- LFQService::filter_difference(self$data,other$data,self$config )
       res <- LFQData$new(diffdata , self$config$clone(deep = TRUE))
@@ -177,7 +188,7 @@ LFQDataTransformer <- R6::R6Class(
     log2_robscale_subset = function(lfqsubset){
       self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
-      self$lfq$config$table$is_intensity_transformed <- TRUE
+      self$lfq$is_transformed(TRUE)
       return(self)
     },
     #' @description
@@ -194,13 +205,6 @@ LFQDataTransformer <- R6::R6Class(
         .funcname = deparse(.call$.func))
       self$lfq$data <- r
       return(self)
-    },
-    is_transformed = function(is_transformed){
-      if (missing(is_transformed)) {
-         self$lfq$config$is_intensity_transformed
-      }else{
-        self$lfq$config$is_intensity_transformed = is_transformed
-      }
     },
     #' @description
     #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
@@ -272,14 +276,12 @@ LFQDataStats <- R6::R6Class(
     #' @field is_transformed if TRUE data was transformed for stable variance
     lfq = NULL,
     stat = "CV",
-    is_transformed = FALSE,
     #' @description
     #' create analyse variances and CV
     #' @param lfqdata LFQData object
     initialize = function(lfqdata){
       self$lfq = lfqdata
-      self$is_transformed <- self$lfq$config$parameter$is_intensity_transformed
-      self$stat <- if (!self$is_transformed) {"CV"}else{"sd"}
+      self$stat <- if (!self$lfq$is_transformed()) {"CV"}else{"sd"}
     },
     #' @description
     #' compute CV sd and mean of data
@@ -351,7 +353,7 @@ LFQDataStats <- R6::R6Class(
       power = 0.8,
       sig.level = 0.05)
     {
-      if (!self$is_transformed) {
+      if (!self$lfq$is_transformed()) {
         warning("data is not transformed - aborting")
         return()
       }
@@ -372,7 +374,7 @@ LFQDataStats <- R6::R6Class(
       power = 0.8,
       sig.level = 0.05
     ){
-      if (!self$is_transformed) {
+      if (!self$lfq$is_transformed()) {
         warning("data is not transformed - aborting")
         return()
       }
@@ -783,3 +785,175 @@ LFQDataWriter <- R6::R6Class(
     }
   ))
 
+# LFQDataAggregator ----
+#' LFQAggregator
+#'
+#' aggregates intensities
+#'
+#' @export
+#' @family LFQData
+#'
+#' Aggregate LFQ data
+#' @examples
+#' library(tidyverse)
+#' library(LFQService)
+#'
+#'
+#' rm(list = ls())
+#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#'
+#' lfqTrans <- lfqdata$clone_d()$get_Transformer()$log2_robscale()
+#' lfqAggregator <- LFQDataAggregator$new(lfqTrans$lfq, "protein")
+#'
+#' lfqAggregator$medpolish()
+#' pmed <- lfqAggregator$plot()
+#' pmed$plots[[2]]
+#' lfqAggregator$lmrob()
+#' prob <- lfqAggregator$plot()
+#' prob$plots[[2]]
+#'
+#' lfqCopy <- lfqdata$clone_d()
+#' lfqCopy$is_transformed()
+#' lfqAggregator <- LFQDataAggregator$new(lfqCopy, "protein")
+#' lfqAggregator$sum_topN()
+#' pSum <- lfqAggregator$plot()
+#' pSum$plots[[2]]
+#'
+#' lfqAggregator$mean_topN()
+#' pMean <- lfqAggregator$plot()
+#' pMean$plots[[2]]
+#' lfqAggregator$write_plots("inst")
+#'
+LFQDataAggregator <- R6::R6Class(
+  "LFQDataAggregator",
+  public = list(
+    #' @field lfq LFQData
+    #' @field lfq_agg aggregation result
+    #' @field prefix to use for aggregation results e.g. protein
+    lfq = NULL,
+    lfq_agg = NULL,
+    prefix = character(),
+    filepath = character(),
+    initialize = function(lfq, prefix = "protein"){
+      if ( length(lfq$config$table$hierarchyKeys()) == 1 ) {
+        stop("no hierarchies to aggregate from: ",  lfq$config$table$hierarchyKeys())
+      }
+      if (length(lfq$config$table$hierarchyKeys()) == lfq$config$table$hierarchyDepth) {
+        stop("no hierarchies to aggregate from: ",
+             lfq$config$table$hierarchyKeys(),
+             ", hierarchyDepth :",
+             lfq$config$table$hierarchyDepth)
+      }
+      self$lfq = lfq
+      self$prefix = prefix
+    },
+    #' @description
+    #' aggregate using median polish
+    #' @param N top N by intensity
+    #' @return LFQData
+    medpolish = function(){
+      if (!self$lfq$is_transformed()) {
+        warning("You did not transform the intensities.",
+                "medpolish works best with already variance stabilized intensities.",
+                "Use LFQData$get_Transformer to transform the data.",
+                lfq$config$table$workIntensity,)
+      }
+      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = medpolishPlydf_config)
+      self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
+      invisible(self$lfq_agg)
+    },
+    #' @description
+    #' aggregate using robust regression
+    #' @param N top N by intensity
+    #' @return LFQData
+    lmrob = function(){
+      if (!self$lfq$is_transformed()) {
+        warning("You did not transform the intensities.",
+                "Robust regression works best with already variance stabilized intensities.",
+                "Use LFQData$get_Transformer to transform the data.",
+                lfq$config$table$workIntensity,)
+      }
+
+      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = summarizeRobust_config)
+      self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
+      invisible(self$lfq_agg)
+    },
+    #' @description
+    #' aggregate topN using mean
+    #' @param N top N by intensity
+    #' @return LFQData
+    mean_topN = function(N = 3){
+      mean_f <- function(x, name = FALSE){
+        if (name) {return("mean")}
+        return(mean(x, na.rm = TRUE))
+      }
+      private$.topN(N = N, .func = mean_f)
+    },
+    #' @description
+    #' aggregate topN using sum
+    #' @param N top N by intensity
+    #' @return LFQData
+    sum_topN = function(N = 3){
+      sum_f <- function(x, name = FALSE){
+        if (name) { return("sum") }
+        sum(x, na.rm = TRUE)}
+
+      private$.topN(N = N, .func = sum_f)
+    }
+      ,
+    #' @description
+    #' creates aggreation plots
+    #' @param show.legend default FALSE
+    #' @return data.frame
+    #'
+    plot = function(show.legend = FALSE){
+      if (is.null(self$lfq_agg)) {
+        stop("please aggregate the data first")
+      }
+      df <- LFQService::plot_aggregation(
+        self$lfq$data,
+        self$lfq$config,
+        self$lfq_agg$data,
+        self$lfq_agg$config,
+        show.legend = show.legend)
+      invisible(df)
+    },
+    #' @description
+    #' Writes plots to folder
+    #' @param qcpath qcpath
+    #' @param legend legend
+    #' @param width figure width
+    #' @param height figure height
+    #' @return file path
+    write_plots = function(qcpath, show.legend = FALSE, width = 6, height = 6){
+      pl <- self$plot()
+      pb <- progress::progress_bar$new(total = nrow(pl))
+      filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
+      pdf(filepath , width = width, height = height)
+      for (i in 1:nrow(pl)) {
+        print(pl$plots[[i]])
+        pb$tick()
+      }
+      dev.off()
+      self$filepath = filepath
+      invisible(filepath)
+    }
+
+  ),
+  private = list(
+    .topN = function(.func, N = 3){
+      if (self$lfq$is_transformed()) {
+        warning("You did transform the intensities.",
+                "top N works with raw data.",
+                self$lfq$config$table$workIntensity)
+      }
+
+      ranked <- rankPrecursorsByIntensity(self$lfq$data , self$lfq$config)
+      resTOPN <- aggregateTopNIntensities(ranked, self$lfq$config, .func = .func, N = N)
+      self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)
+      invisible(self$lfq_agg)
+    }
+  )
+)

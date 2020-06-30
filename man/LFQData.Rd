@@ -13,10 +13,13 @@ library(tidyverse)
 library(LFQService)
 #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 istar <- LFQServiceData::dataIonstarFilteredPep
+istar$config$table$is_intensity_transformed
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 tmp <- lfqdata$to_wide()
 lfqdata$factors()
+
+lfqdata$is_transformed()
 
 
 }
@@ -46,6 +49,7 @@ Other LFQData:
 \itemize{
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-clone_d}{\code{LFQData$clone_d()}}
+\item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
@@ -88,6 +92,15 @@ initialize
 get deep copy
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$clone_d()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-is_transformed"></a>}}
+\if{latex}{\out{\hypertarget{method-is_transformed}{}}}
+\subsection{Method \code{is_transformed()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$is_transformed(is_transformed)}\if{html}{\out{</div>}}
 }
 
 }
