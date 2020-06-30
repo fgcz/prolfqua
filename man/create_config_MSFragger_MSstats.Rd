@@ -11,6 +11,7 @@ Create configuration for MSFragger output
 }
 \seealso{
 Other concrete_configuration: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{create_config_MQ_peptide}()},
 \code{\link{create_config_Skyline}()},
 \code{\link{create_config_Spectronaut_Peptide}()}

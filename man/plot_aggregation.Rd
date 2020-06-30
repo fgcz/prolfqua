@@ -40,4 +40,33 @@ tmpRob$plot[[3]]
 
 
 }
-\concept{plotting aggregation}
+\seealso{
+Other plotting: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{medpolishPlydf}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_sample_correlation}()}
+
+Other aggregation: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity}()},
+\code{\link{intensity_summary_by_hkeys}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPlydf}()},
+\code{\link{medpolishPly}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+}
+\concept{aggregation}
+\concept{plotting}

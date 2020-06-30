@@ -30,6 +30,7 @@ render_MQSummary_rmd(LFQServiceData::sample_analysis,
 }
 \seealso{
 Other vignetteHelpers: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{render_SummarizeFiltering_rmd}()}
 }
 \concept{vignetteHelpers}

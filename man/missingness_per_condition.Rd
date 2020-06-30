@@ -25,6 +25,7 @@ Other plotting:
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
+\code{\link{plot_aggregation}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},

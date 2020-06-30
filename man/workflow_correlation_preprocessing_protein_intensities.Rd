@@ -32,7 +32,10 @@ names(res)
 
 }
 \seealso{
-Other workflow functions: 
-\code{\link{workflow_DIA_NA_preprocessing}()}
+Other workflows: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_corr_filter_impute}()}
 }
-\concept{workflow functions}
+\concept{workflows}
+\keyword{internal}

@@ -10,9 +10,12 @@ Internal Functions by category
 Other aggregation: 
 \code{\link{aggregateTopNIntensities}()},
 \code{\link{aggregate_intensity}()},
+\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{medpolishPly}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{plot_aggregation}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
@@ -24,11 +27,62 @@ Other plotting:
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
+\code{\link{plot_aggregation}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_sample_correlation}()}
+
+Other deprecated: 
+\code{\link{intensity_summary_by_hkeys}()},
+\code{\link{medpolish_protein_quants}()}
+
+Other plotting: 
+\code{\link{medpolishPlydf}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()},
+\code{\link{plot_aggregation}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_sample_correlation}()}
+
+Other concrete_configuration: 
+\code{\link{create_config_MQ_peptide}()},
+\code{\link{create_config_MSFragger_MSstats}()},
+\code{\link{create_config_Skyline}()},
+\code{\link{create_config_Spectronaut_Peptide}()}
+
+Other workflows: 
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_corr_filter_impute}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+
+Other utilities: 
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+
+Other vignetteHelpers: 
+\code{\link{render_MQSummary_rmd}()},
+\code{\link{render_SummarizeFiltering_rmd}()}
 }
 \concept{aggregation}
+\concept{concrete_configuration}
+\concept{deprecated}
 \concept{plotting}
+\concept{utilities}
+\concept{vignetteHelpers}
+\concept{workflows}

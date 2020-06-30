@@ -21,4 +21,26 @@ data$config )
 head(res("unnest")$data)
 
 }
+\seealso{
+Other aggregation: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity}()},
+\code{\link{intensity_summary_by_hkeys}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPlydf}()},
+\code{\link{medpolishPly}()},
+\code{\link{plot_aggregation}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+
+Other deprecated: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{intensity_summary_by_hkeys}()}
+}
+\concept{aggregation}
+\concept{deprecated}
 \keyword{internal}

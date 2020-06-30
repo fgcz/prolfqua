@@ -26,3 +26,11 @@ data <- LFQServiceData::spectronautDIAData250_analysis
 res <- workflow_corr_filter_impute(data,config)
 
 }
+\seealso{
+Other workflows: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+}
+\concept{workflows}
+\keyword{internal}

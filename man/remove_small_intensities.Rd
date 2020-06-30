@@ -31,8 +31,8 @@ stopifnot(nrow(res1) >  nrow(res1000))
 
 }
 \seealso{
-Other filter functions: 
+Other filtering: 
 \code{\link{removeLarge_Q_Values}()}
 }
-\concept{filter functions}
+\concept{filtering}
 \keyword{internal}

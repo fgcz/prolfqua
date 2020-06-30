@@ -559,7 +559,8 @@ aggregate_intensity <- function(data, config, .func)
 #' @param config AnalyisConfiguration
 #' @param data_aggr data.frame after aggregation
 #' @param config_aggr AnalysisConfiguration of aggregated data
-#' @family plotting aggregation
+#' @family plotting
+#' @family aggregation
 #' @examples
 #' library( LFQService )
 #' library(tidyverse)
@@ -635,7 +636,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' stopifnot(dim(resTOPN$data) == c(10423, 10))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
 #' config$table$getWorkIntensity()
-#' debug(plot_aggregation)
+#' #debug(plot_aggregation)
 #' tmpRob <- plot_aggregation(res, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
 #' tmpRob$plot[[4]]
 #'
@@ -670,7 +671,8 @@ aggregateTopNIntensities <- function(pdata , config, func, N = 3){
 #' @return retuns function object
 #' @keywords internal
 #'
-#' @family aggregation deprecated
+#' @family aggregation
+#' @family deprecated
 #' @export
 #' @examples
 #'
@@ -762,6 +764,8 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' median polish from normalized peptide intensities
 #' @export
 #' @keywords internal
+#' @family aggregation
+#' @family deprecated
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)

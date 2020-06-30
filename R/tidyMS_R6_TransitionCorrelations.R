@@ -7,7 +7,7 @@
 #' @return data.frame
 #' @export
 #' @keywords internal
-#' @family filter functions
+#' @family filtering
 #' @examples
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis
 #' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
@@ -24,7 +24,7 @@ removeLarge_Q_Values <- function(pdata, config){
 #' @return data.frame
 #' @export
 #' @keywords internal
-#' @family filter functions
+#' @family filtering
 #' @examples
 #'
 #' analysis <- LFQServiceData::spectronautDIAData250_analysis

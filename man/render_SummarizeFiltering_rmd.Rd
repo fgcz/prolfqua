@@ -24,6 +24,7 @@ render Filtering Summary.
 }
 \seealso{
 Other vignetteHelpers: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{render_MQSummary_rmd}()}
 }
 \concept{vignetteHelpers}

@@ -59,6 +59,7 @@ multigroupVolcano(LFQServiceData::multigroupFCDATA,effect="logFC",p.value="adj.P
 }
 \seealso{
 Other utilities: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{my_jackknife}()},

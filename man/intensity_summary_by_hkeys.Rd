@@ -43,5 +43,26 @@ tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 
 
 }
-\concept{aggregation deprecated}
+\seealso{
+Other aggregation: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity}()},
+\code{\link{medpolishPlydf_config}()},
+\code{\link{medpolishPlydf}()},
+\code{\link{medpolishPly}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{plot_aggregation}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{summarizeRobust_config}()},
+\code{\link{summarizeRobust}()}
+
+Other deprecated: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{medpolish_protein_quants}()}
+}
+\concept{aggregation}
+\concept{deprecated}
 \keyword{internal}

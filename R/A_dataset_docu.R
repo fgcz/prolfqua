@@ -25,6 +25,13 @@ NULL
 #' Internal Functions by category
 #' @family aggregation
 #' @family plotting
+#' @family deprecated
+#' @family plotting
+#' @family concrete_configuration
+#' @family workflows
+#' @family utilities
+#' @family vignetteHelpers
+#'
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

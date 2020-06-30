@@ -38,7 +38,10 @@ stopifnot(FALSE==(is.grouped_df(tmp$data)))
 
 }
 \seealso{
-Other workflow functions: 
+Other workflows: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{workflow_corr_filter_impute}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
-\concept{workflow functions}
+\concept{workflows}
+\keyword{internal}

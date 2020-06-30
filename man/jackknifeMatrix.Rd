@@ -30,6 +30,7 @@ jackknifeMatrix(dataX, cor, method="spearman")
 }
 \seealso{
 Other utilities: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroupVolcano}()},
 \code{\link{my_jackknife}()},

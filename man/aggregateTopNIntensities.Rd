@@ -41,7 +41,7 @@ resTOPN <- aggregateTopNIntensities(res, config, func = mean_na, N=3)
 stopifnot(dim(resTOPN$data) == c(10423, 10))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
-debug(plot_aggregation)
+#debug(plot_aggregation)
 tmpRob <- plot_aggregation(res, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
 tmpRob$plot[[4]]
 
@@ -50,9 +50,12 @@ tmpRob$plot[[4]]
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity}()},
+\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{medpolishPly}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{plot_aggregation}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},

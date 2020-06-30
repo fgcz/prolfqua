@@ -22,6 +22,7 @@ MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ
 }
 \seealso{
 Other concrete_configuration: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{create_config_MSFragger_MSstats}()},
 \code{\link{create_config_Skyline}()},
 \code{\link{create_config_Spectronaut_Peptide}()}

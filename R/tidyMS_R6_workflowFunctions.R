@@ -3,7 +3,8 @@
 #' @param config AnalysisConfiguration
 #' @param minCorrelation correlation threshold default 0.7
 #' @export
-#' @family workflow functions
+#' @keywords internal
+#' @family workflows
 #' @examples
 #' library(LFQService)
 #' rm(list=ls())
@@ -62,6 +63,8 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @param minCorrelation correlation threshold default 0.7
+#' @keywords internal
+#' @family workflows
 #' @export
 #' @examples
 #' rm(list=ls())
@@ -115,7 +118,8 @@ workflow_corr_filter_impute <- function(pdata,config, minCorrelation =0.6){
 #' @param config AnalysisConfiguration
 #' @param minCorrelation correlation threshold default 0.7
 #' @export
-#' @family workflow functions
+#' @keywords internal
+#' @family workflows
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)

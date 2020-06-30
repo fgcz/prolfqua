@@ -25,6 +25,7 @@ matrix_to_tibble(x)
 }
 \seealso{
 Other utilities: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{jackknifeMatrix}()},
 \code{\link{multigroupVolcano}()},
 \code{\link{my_jackknife}()},

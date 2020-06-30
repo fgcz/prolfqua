@@ -41,9 +41,12 @@ abline(0,1)
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregateTopNIntensities}()},
+\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{medpolishPly}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{plot_aggregation}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
