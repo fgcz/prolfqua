@@ -30,24 +30,27 @@ compute missingness statistics per hierarchy and factor level
 library(tidyverse)
 library(LFQService)
 
-skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-skylineconfig$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
-   skylineconfig)
-xx <- complete_cases(xx, skylineconfig)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+
+configur$parameter$qVal_individual_threshold <- 0.01
+xx <- LFQService::removeLarge_Q_Values(data,
+   configur)
+xx <- complete_cases(xx, configur)
 nrow(xx)
-x <- interaction_missing_stats(xx, skylineconfig)$data \%>\% arrange(desc(nrNAs))
+x <- interaction_missing_stats(xx, configur)$data \%>\% arrange(desc(nrNAs))
 stopifnot(nrow(x) == 7416)
 stopifnot(sum(is.na(x$meanArea)) == 249)
 stopifnot(length(unique(x$protein_Id)) == 37)
 
-tmp <- interaction_missing_stats(xx, skylineconfig,
+tmp <- interaction_missing_stats(xx, configur,
  factors= character(),
-  hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+  hierarchy = configur$table$hierarchyKeys()[1])$data
 stopifnot(nrow(tmp) == 37)
 
-tmp <- interaction_missing_stats(xx, skylineconfig,
-  hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+tmp <- interaction_missing_stats(xx, configur,
+  hierarchy = configur$table$hierarchyKeys()[1])$data
 stopifnot(sum(is.na(tmp$nrMeasured))==0)
 
 }

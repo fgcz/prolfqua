@@ -19,28 +19,29 @@ Summarizes the intensities within hierarchy
 
 library(LFQService)
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-data <- LFQServiceData::sample_analysis
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 res <- x("unnest")
 x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+config <- bb$config_f()
 config$table$hierarchyDepth <- 1
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 x("unnest")$data
-xnested<-x()
+xnested <- x()
 dd <- x(value = "plot")
 
 dd$medpolishPly[[1]]
 
 dd$plot[[2]]
+
 # example how to add peptide count information
 
 tmp <- summarize_hierarchy(data, config)
 tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-
 
 }
 \seealso{

@@ -19,8 +19,12 @@ ranks precursor - peptide by intensity.
 }
 \examples{
 library(tidyverse)
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+library(LFQService)
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
+res <- removeLarge_Q_Values(analysis, config)
+#debug(rankPrecursorsByIntensity)
 res <- rankPrecursorsByIntensity(res,config)
 X <-res \%>\% dplyr::select(c(config$table$hierarchyKeys(),
  srm_meanInt, srm_meanIntRank)) \%>\% distinct()

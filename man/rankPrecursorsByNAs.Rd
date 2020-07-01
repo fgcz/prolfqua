@@ -19,8 +19,10 @@ Ranks precursors by NAs (adds new column .NARank)
 }
 \examples{
 library(tidyverse)
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
+res <- removeLarge_Q_Values(analysis, config)
 res <- rankPrecursorsByNAs(res,config)
 colnames(res)
 x <- res \%>\%

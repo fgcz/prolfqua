@@ -31,24 +31,22 @@ function
 used in Acetylation project p2916
 }
 \examples{
-skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig$parameter$qVal_individual_threshold <- 0.01
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+configur$parameter$qVal_individual_threshold <- 0.01
 
-xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-xx <- complete_cases(xx, skylineconfig)
+xx <- LFQService::removeLarge_Q_Values(data, configur)
+xx <- complete_cases(xx, configur)
 
-tmp <- interaction_missing_stats(xx, skylineconfig)
+tmp <- interaction_missing_stats(xx, configur)
 head(tmp)
-fun <- missigness_impute_interactions(xx, skylineconfig)
+fun <- missigness_impute_interactions(xx, configur)
 dd <- fun("long")
-head(dd)
-undebug(fun)
 xx <- fun(DEBUG=TRUE)
 sum(is.na(xx$long$nrReplicates))
 xxx <- (fun("nrReplicates"))
 head(xxx)
-
 xxx <- fun("all")
 head(xxx)
 

@@ -18,8 +18,9 @@ data.frame
 remove rows were qVal_individual_threshold exceeded
 }
 \examples{
-analysis <- LFQServiceData::spectronautDIAData250_analysis
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+dd <- LFQServiceData::spectronautDIAData250_A
+config <- dd$config_f()
+analysis <- dd$analysis(dd$data,config)
 res <- removeLarge_Q_Values(analysis, config)
 }
 \seealso{

@@ -19,14 +19,14 @@ remove rows where intensity lower then threshold
 }
 \examples{
 
-analysis <- LFQServiceData::spectronautDIAData250_analysis
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+dd <- LFQServiceData::spectronautDIAData250_A
+config <- dd$config_f()
+analysis <- dd$analysis(dd$data,config)
 
 config$table$getWorkIntensity()
 
-config2 <- config$clone(deep=TRUE)
 res1 <- remove_small_intensities(analysis, config, threshold=1 )
-res1000 <- remove_small_intensities(analysis, config2, threshold=1000 )
+res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
 stopifnot(nrow(res1) >  nrow(res1000))
 
 }

@@ -39,9 +39,11 @@ summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleNam
 summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
 
-conf <- skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+data <- bb$analysis(bb$data, conf)
 conf$table$hierarchyDepth = 1
-xnested <- LFQServiceData::sample_analysis \%>\%
+xnested <- data \%>\%
   group_by_at(conf$table$hkeysDepth()) \%>\% nest()
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())

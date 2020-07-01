@@ -30,14 +30,13 @@
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' x <- sample(data$protein_Id,2)
 #' data <- data %>% dplyr::filter(protein_Id %in% x)
 #' res <- compute_roc(data, config)
-#' dim(res)
-#' head(res)
 #' i <- 2
 #'
 #' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,

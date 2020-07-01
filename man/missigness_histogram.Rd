@@ -17,20 +17,21 @@ Histogram summarizing missigness
 \examples{
 library(tidyverse)
 library(LFQService)
-sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
 
-xx <- complete_cases(sample_analysis, skylineconfig)
-skylineconfig$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-xx <- complete_cases(xx, skylineconfig)
-missigness_histogram(xx, skylineconfig)
+xx <- complete_cases(data, configur)
+configur$parameter$qVal_individual_threshold <- 0.01
+xx <- LFQService::removeLarge_Q_Values(data, configur)
+xx <- complete_cases(xx, configur)
+missigness_histogram(xx, configur)
 
-missingPrec <- interaction_missing_stats(xx, skylineconfig)
+missingPrec <- interaction_missing_stats(xx, configur)
 
 setNa <- function(x){ifelse(x < 100, NA, x)}
-sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-missigness_histogram(sample_analysis, skylineconfig)
+data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+missigness_histogram(data, configur)
 
 }
 \seealso{

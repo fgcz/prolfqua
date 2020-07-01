@@ -106,7 +106,6 @@ results$HEATMAP <- TRUE
 results$path <- "."
 
 results_MetaboData <- results
-#usethis::use_data(results_MetaboData, overwrite = TRUE)
 
 #saveRDS(results, file="allData.rds")
 

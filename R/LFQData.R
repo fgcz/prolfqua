@@ -6,12 +6,14 @@
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#'
 #' istar <- LFQServiceData::dataIonstarFilteredPep
-#' istar$config$table$is_intensity_transformed
+#'
+#' istar$config$table$is_intensity_transformed <- FALSE
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
+#'
 #' lfqdata$factors()
 #'
 #' lfqdata$is_transformed()

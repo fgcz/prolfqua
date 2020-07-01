@@ -17,14 +17,12 @@ Summarize Protein counts
 Works for one isotope label level only
 }
 \examples{
+
 library(LFQService)
-skylineconfig <- create_config_Skyline(isotopeLabel="Isotope.Label.Type",
-  ident_qValue="Detection.Q.Value")
-skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
-sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-LFQService:::summarize_protein(sample_analysis, skylineconfig)
-configuration <- skylineconfig$clone(deep=TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+LFQService:::summarize_protein(data, configur)
 
 }
 \keyword{internal}

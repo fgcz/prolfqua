@@ -28,8 +28,9 @@ estimate sample sizes
 }
 \examples{
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-data <- LFQServiceData::sample_analysis
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
 data2 <- transform_work_intensity(data, config, log2)
 stats_res <- summarize_cv(data2, config)
 xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))

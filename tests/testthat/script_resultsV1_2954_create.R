@@ -10,11 +10,9 @@ flevel <- 1
 path <- "results_FULL_Phonix_Filter"
 
 
-fp <- file.path( find.package("LFQService"),"samples/testdata/annotatedPeptide_PhonixDS_1097969.csv")
+fp <- .find.package.file("LFQService", "samples/testdata/annotatedPeptide_PhonixDS_1097969.csv")
+
 resPepProtAnnot <- read_csv(file = fp)
-
-
-#resPepProtAnnot <- LFQServiceData::resPepProtAnnot_p2954
 
 resPepProtAnnot$isotope <- "light"
 

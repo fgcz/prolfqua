@@ -19,8 +19,9 @@ plot Violin plot of sd CV or mean given intensity lower or above median
 \examples{
 library(LFQService)
 library(tidyverse)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
 res <- summarize_cv(data, config)
 plot_stat_violin_median(res, config, stat = "mean")
 }

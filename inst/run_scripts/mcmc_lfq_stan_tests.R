@@ -107,7 +107,7 @@ mdata26 <- nested$data[[26]]
 startmodel <- brms::brm(memodel_full, mdata2, cores = 6, refresh = 0)
 tmp <- update(startmodel, newdata = mdata26)
 
-source("../../R/tidyMS_stanr.R")
+#source("../../R/tidyMS_stanr.R")
 library(MCMCvis)
 
 res <- ms_brms_model(mdata = mdata2,

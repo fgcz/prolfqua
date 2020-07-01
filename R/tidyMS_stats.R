@@ -10,14 +10,12 @@
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #'
 #' res1 <- summarize_cv(data, config, all=FALSE)
-#' head(res1)
-#' dim(res1)
 #' res2 <- summarize_cv(data, config, all=TRUE)
-#' head(res2)
 #' dim(res2)
 summarize_cv <- function(pdata, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
@@ -58,8 +56,9 @@ summarize_cv <- function(pdata, config, all = TRUE){
 #' @keywords internal
 #' @examples
 #' library(ggplot2)
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' stats_res <- summarize_cv(data, config)
 #' head(stats_res)
 #' summarize_cv_quantiles(stats_res, config)
@@ -132,8 +131,9 @@ summarize_cv_quantiles <- function(stats_res,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' data2 <- transform_work_intensity(data, config, log2)
 #' stats_res <- summarize_cv(data2, config)
 #' xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
@@ -176,8 +176,9 @@ lfq_power_t_test_quantiles_V2 <-
 #' @keywords internal
 #' @examples
 #'
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #'
 #' data2 <- transform_work_intensity(data, config, log2)
 #'
@@ -241,9 +242,9 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' data2 <- transform_work_intensity(data, config, log2)
 #' stats_res <- summarize_cv(data2, config, all = FALSE)
 #' bb <- lfq_power_t_test_proteins(stats_res)
@@ -285,8 +286,9 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' res <- summarize_cv(data, config)
 #' plot_stat_density(res, config, stat = "mean")
 #' plot_stat_density(res, config, stat = "sd")
@@ -311,8 +313,9 @@ plot_stat_density <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' res <- summarize_cv(data, config)
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
@@ -337,8 +340,9 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
@@ -359,8 +363,9 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin_median(res, config, stat = "mean")
 plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")){
@@ -394,8 +399,9 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' res <- summarize_cv(data, config)
 #'
 #' plot_stdv_vs_mean(res, config)

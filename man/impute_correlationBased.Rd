@@ -12,13 +12,15 @@ imputation based on correlation assumption
 \examples{
 library(LFQService)
 library(tidyverse)
-
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
+dim(data)
 data <- complete_cases(data, config)
 dim(data)
 mean(is.na(data$Area))
 dataI <- impute_correlationBased(data, config)
+dim(dataI)
 stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
 mean(is.na(dataI$srm_ImputedIntensity)) == 0
 

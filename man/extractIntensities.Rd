@@ -12,29 +12,30 @@ Extract intensity column in wide format
 \examples{
 library(dplyr)
 
-skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
-skylineconfig$table$workIntensity <- "Area"
-xnested <- LFQServiceData::sample_analysis \%>\%
- group_by_at(skylineconfig$table$hkeysDepth()) \%>\%
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+xnested <- data \%>\%
+ group_by_at(configur$table$hkeysDepth()) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 
-xx <- extractIntensities(x,skylineconfig)
+xx <- extractIntensities(x,configur)
 stopifnot(dim(xx)==c(nn,22))
 
 # change hierarchyDepth ###################
-conf <- skylineconfig$clone(deep=TRUE)
+conf <- configur$clone(deep=TRUE)
 conf$table$hierarchyDepth = 1
 
-xnested <- LFQServiceData::sample_analysis \%>\%
+xnested <- data \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\%
  tidyr::nest()
 head(xnested)
 
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) \%>\%
+nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,conf)

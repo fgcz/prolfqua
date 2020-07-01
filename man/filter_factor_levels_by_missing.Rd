@@ -22,9 +22,11 @@ removes measurments with less than percent=60 missing values in factor_level = 1
 rm(list=ls())
 library(LFQService)
 library(tidyverse)
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
 config$parameter$min_nr_of_notNA  <- 20
-data <- LFQServiceData::spectronautDIAData250_analysis
+data <- analysis
 data <- removeLarge_Q_Values(data, config)
 hierarchy_counts(data, config)
 res <- filter_factor_levels_by_missing(data, config,percent = 60)

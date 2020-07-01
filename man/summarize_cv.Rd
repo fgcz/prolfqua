@@ -20,14 +20,12 @@ applys func - a funciton workin on matrix for each protein and returning a vecto
 
 library(LFQService)
 library(tidyverse)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
 
 res1 <- summarize_cv(data, config, all=FALSE)
-head(res1)
-dim(res1)
 res2 <- summarize_cv(data, config, all=TRUE)
-head(res2)
 dim(res2)
 }
 \keyword{internal}

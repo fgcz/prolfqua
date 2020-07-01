@@ -10,12 +10,19 @@ spreadValueVarsIsotopeLabel(resData, config)
 spreads isotope label heavy light into two columns
 }
 \examples{
+library(LFQService)
 setNa <- function(x){ifelse(x < 100, NA, x)}
-sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+
+data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+x<-spreadValueVarsIsotopeLabel(data,configur)
 head(x)
+
+bb <- LFQServiceData::skylineSRM_HL_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
 conf <- LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL, conf)
 head(x[,5:ncol(x)])

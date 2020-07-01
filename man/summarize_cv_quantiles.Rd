@@ -25,8 +25,9 @@ summarize stats output (compute quantiles)
 }
 \examples{
 library(ggplot2)
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-data <- LFQServiceData::sample_analysis
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
 stats_res <- summarize_cv(data, config)
 head(stats_res)
 summarize_cv_quantiles(stats_res, config)

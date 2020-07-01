@@ -12,10 +12,12 @@ qVal_individual_threshold and qVal_experiment_threshold
 }
 \examples{
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+dd <- LFQServiceData::spectronautDIAData250_A
+config <- dd$config_f()
+analysis <- dd$analysis(dd$data,config)
 
-summarize_hierarchy(LFQServiceData::sample_analysis, config)
-res <- filter_byQValue(LFQServiceData::sample_analysis, config)
+summarize_hierarchy(analysis, config)
+res <- filter_byQValue(analysis, config)
 summarize_hierarchy(res, config)
 
 }

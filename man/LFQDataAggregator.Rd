@@ -42,6 +42,7 @@ lfqAggregator$mean_topN()
 pMean <- lfqAggregator$plot()
 pMean$plots[[2]]
 lfqAggregator$write_plots("inst")
+protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 
 }
 \concept{LFQData

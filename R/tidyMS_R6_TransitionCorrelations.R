@@ -9,8 +9,9 @@
 #' @keywords internal
 #' @family filtering
 #' @examples
-#' analysis <- LFQServiceData::spectronautDIAData250_analysis
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
 #' res <- removeLarge_Q_Values(analysis, config)
 removeLarge_Q_Values <- function(pdata, config){
   pdata <- pdata %>%
@@ -27,14 +28,14 @@ removeLarge_Q_Values <- function(pdata, config){
 #' @family filtering
 #' @examples
 #'
-#' analysis <- LFQServiceData::spectronautDIAData250_analysis
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
 #'
 #' config$table$getWorkIntensity()
 #'
-#' config2 <- config$clone(deep=TRUE)
 #' res1 <- remove_small_intensities(analysis, config, threshold=1 )
-#' res1000 <- remove_small_intensities(analysis, config2, threshold=1000 )
+#' res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
 #' stopifnot(nrow(res1) >  nrow(res1000))
 #'
 remove_small_intensities <- function(pdata, config, threshold = 1){
@@ -52,13 +53,13 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- LFQServiceData::spectronautDIAData250_analysis
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
 #'
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' analysis <- LFQServiceData::spectronautDIAData250_analysis
+#' config <- dd$config_f()
 #' x <- transform_work_intensity(analysis, config, .func = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 #'
@@ -113,10 +114,11 @@ transform_work_intensity <- function(pdata,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' res <- summariseQValues(LFQServiceData::sample_analysis, config)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
+#' res <- summariseQValues(analysis, config)
 #' stopifnot(c("srm_QValueMin", "srm_QValueNR") %in% colnames(res))
-#' head(res)
 #' hist(unique(res$srm_QValueMin))
 #' hist(unique(res$srm_QValueNR))
 summariseQValues <- function(pdata,
@@ -153,10 +155,12 @@ summariseQValues <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
 #'
-#' summarize_hierarchy(LFQServiceData::sample_analysis, config)
-#' res <- filter_byQValue(LFQServiceData::sample_analysis, config)
+#' summarize_hierarchy(analysis, config)
+#' res <- filter_byQValue(analysis, config)
 #' summarize_hierarchy(res, config)
 #'
 filter_byQValue <- function(pdata, config){
@@ -202,11 +206,11 @@ toWide <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' res <- toWideConfig(LFQServiceData::sample_analysis, config)
-#' res$data
-#' res$annotation
-#' res <- toWideConfig(LFQServiceData::sample_analysis, config, as.matrix = TRUE)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
+#' res <- toWideConfig(analysis, config)
+#' res <- toWideConfig(analysis, config, as.matrix = TRUE)
 #' head(res$data)
 #' res <- scale(res$data)
 #'
@@ -245,11 +249,14 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #'
 #' @keywords internal
 #' @examples
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' conf <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,conf)
+#' res <- toWideConfig(analysis, conf, as.matrix = TRUE)
+#'
 #' res <- scale(res$data)
 #' xx <- gatherItBack(res,"srm_intensityScaled", conf)
-#' xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
+#' xx <- gatherItBack(res,"srm_intensityScaled", conf,analysis)
 #' conf$table$getWorkIntensity() == "srm_intensityScaled"
 #'
 gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
@@ -308,16 +315,16 @@ robust_scale <- function(data){
 #' @examples
 #'
 #' library(tidyverse)
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' conf$table$workIntensity <- "Area"
-#' #debug(applyToIntensityMatrix)
-#' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf, .func = base::scale)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
+#' res <- applyToIntensityMatrix(data, conf, .func = base::scale)
 #'
 #' stopifnot("Area_base..scale" %in% colnames(res))
 #' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' conf <- bb$config_f()
 #' conf$table$workIntensity <- "Area"
-#' res <- applyToIntensityMatrix(LFQServiceData::sample_analysis, conf$clone(deep=TRUE), .func = robust_scale)
+#' res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
   .call <- as.list( match.call() )
@@ -335,10 +342,11 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' sample_analysis <- bb$analysis(bb$data, bb$config_f())
 #' conf$table$workIntensity <- "Area"
 #'
-#' sample_analysis <- LFQServiceData::sample_analysis
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset(res, res, conf)
 #'
@@ -379,12 +387,12 @@ scale_with_subset <- function(data, subset, config){
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #' library(LFQService)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' data <- complete_cases(data, config)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' sample_analysis <- bb$analysis(bb$data, bb$config_f())
+#' data <- complete_cases(sample_analysis, conf)
 #' mean(is.na(data$Area))
-#' #debug(markDecorrelated)
-#' dataI <- markDecorrelated(data, config)
+#' dataI <- markDecorrelated(data, conf)
 #' head(dataI)
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data %>%  dplyr::group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
@@ -423,13 +431,15 @@ simpleImpute <- function(data){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#'
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
+#' dim(data)
 #' data <- complete_cases(data, config)
 #' dim(data)
 #' mean(is.na(data$Area))
 #' dataI <- impute_correlationBased(data, config)
+#' dim(dataI)
 #' stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
 #' mean(is.na(dataI$srm_ImputedIntensity)) == 0
 #'
@@ -493,18 +503,19 @@ impute_correlationBased <- function(x , config){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, bb$config_f())
 #' hierarchy <- config$table$hierarchyKeys()
 #' res <- nr_B_in_A(data, config)
 #' res$data %>% dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) %>% distinct() %>%
 #'   dplyr::pull() %>% table()
 #'
 #'
+#' bb <- LFQServiceData::skylineSRM_HL_A
+#' config <- bb$config_f()
+#' resDataStart <- bb$analysis(bb$data, bb$config_f())
 #'
-#' resDataStart <- LFQServiceData::skylineSRM_HL_data
-#' config <-  LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
-#' resDataStart <- setup_analysis(resDataStart , config)
 #' nr_B_in_A(resDataStart, config)
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #' config$table$hierarchyDepth <- 2
@@ -518,8 +529,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 
 
 # Summarize Intensities by Intensity or NAs ----
-.rankProteinPrecursors <-
-  function(data,
+.rankProteinPrecursors <- function(data,
            config,
            column = config$table$getWorkIntensity(),
            fun = function(x){ mean(x, na.rm = TRUE)},
@@ -551,8 +561,12 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+#' library(LFQService)
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' res <- removeLarge_Q_Values(analysis, config)
+#' #debug(rankPrecursorsByIntensity)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' X <-res %>% dplyr::select(c(config$table$hierarchyKeys(),
 #'  srm_meanInt, srm_meanIntRank)) %>% distinct()
@@ -560,7 +574,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
+  pdata <- LFQService:::.rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
@@ -583,8 +597,10 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' res <- removeLarge_Q_Values(analysis, config)
 #' res <- rankPrecursorsByNAs(res,config)
 #' colnames(res)
 #' x <- res %>%
@@ -620,9 +636,11 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' rm(list=ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- LFQServiceData::spectronautDIAData250_analysis
+#' data <- analysis
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchy_counts(data, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)

@@ -44,41 +44,72 @@ res <- application_add_annotation(
 
 mqdata$data <- setup_analysis(res, mqdata$config)
 
-dd <-
-  LFQService:::filter_proteins_by_peptide_count(mqdata$data, mqdata$config )
 
-pepIntensityNormalized <-
-  transform_work_intensity(dd$data, mqdata$config, log2)
-
-subset <-
-  pepIntensityNormalized %>% dplyr::filter(grepl("HUMAN", pepIntensityNormalized$protein_Id))
-
-pepIntensityNormalized <-
-  scale_with_subset(pepIntensityNormalized, subset, mqdata$config)
-
-hist(pepIntensityNormalized$log2_peptide.intensity)
-hist(pepIntensityNormalized$log2_peptide.intensity_subset_scaled)
-
-pepIntensityNormalized <- pepIntensityNormalized %>%
-  dplyr::rename(transformedIntensity = mqdata$config$table$getWorkIntensity())
-mqdata$config$table$popWorkIntensity()
-mqdata$config$table$setWorkIntensity("transformedIntensity")
-
-res <-
-  list(
-    data = pepIntensityNormalized,
-    config = mqdata$config
+IonstarData <- R6::R6Class(
+  "IonstarData",
+  public = list(
+    data = NULL,
+    config = NULL,
+    initialize = function(data, config){
+      self$data = data
+      self$config = config
+    },
+    Pep = function(){
+      return(list(data = self$data, config = self$config))
+    },
+    filtered = function(){
+      res <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)
+      return(list(data = res$data, config = self$config$clone(deep=TRUE)))
+    },
+    normalized = function(){
+      tmp <- self$filtered()
+      conf <- tmp$config$clone(deep=TRUE)
+      res <- normalize_log2_robscale(tmp$data,
+                                     conf)
+      res <- list(data =  res$data,
+                  config = conf$clone(deep = TRUE))
+      return(res)
+    },
+    subset_normalized = function(){
+      tmp <- self$filtered()
+      conf <- tmp$config$clone(deep=TRUE)
+      data <- transform_work_intensity(tmp$data, conf, log2)
+      subset <-
+        data %>%
+        dplyr::filter(grepl("HUMAN", data$protein_Id))
+      scaldata <-
+        scale_with_subset(data, subset, conf)
+      ndata <- scaldata %>%
+        dplyr::rename(transformedIntensity = conf$table$getWorkIntensity())
+      conf$table$popWorkIntensity()
+      conf$table$setWorkIntensity("transformedIntensity")
+      return(list(data = ndata, config = conf))
+    }
   )
+)
 
-protL <- medpolish_protein_quants(res$pepIntensityNormalized, res$config_pepIntensityNormalized)
+IonstarData$undebug("subset_normalized")
+ionstar <- IonstarData$new(mqdata$data,
+                           mqdata$config$clone(deep=TRUE))
+ionstar$Pep()
+ionstar$filtered()
+ionstar$normalized()
+xx <- ionstar$subset_normalized()
+
+
+usethis::use_data(ionstar, overwrite = TRUE)
+
+
+
+hist(xx$data$log2_peptide.intensity)
+hist(xx$data$transformedIntensity)
+
+
+protL <- medpolish_protein_quants(xx$data, xx$config)
 #protL("plot")
 
-resProt <- list(
+dataIonstarProtein_subsetNorm <- list(
   data = protL("unnest")$data,
   config = protL("unnest")$config
 )
-
-dataIonstarSubsetNorm_V2 <- list()
-dataIonstarSubsetNorm_V2$resultsPep <- res
-dataIonstarSubsetNorm_V2$resultsProt <- resProt
-usethis::use_data(dataIonstarSubsetNorm_V2, overwrite = TRUE)
+usethis::use_data(dataIonstarProtein_subsetNorm, overwrite = TRUE)

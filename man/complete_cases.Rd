@@ -16,10 +16,12 @@ Complete cases
 }
 \examples{
 
- config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
- config$table$isotopeLabel <- "Isotope.Label.Type"
- data <- LFQServiceData::sample_analysis
- xx <- complete_cases(data, config)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
+dim(data)
+xx <- complete_cases(data, config)
+stopifnot(nrow(data) < nrow(xx))
 
 }
 \keyword{internal}

@@ -11,11 +11,11 @@ transform long to wide
 }
 \examples{
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-res <- toWideConfig(LFQServiceData::sample_analysis, config)
-res$data
-res$annotation
-res <- toWideConfig(LFQServiceData::sample_analysis, config, as.matrix = TRUE)
+dd <- LFQServiceData::spectronautDIAData250_A
+config <- dd$config_f()
+analysis <- dd$analysis(dd$data,config)
+res <- toWideConfig(analysis, config)
+res <- toWideConfig(analysis, config, as.matrix = TRUE)
 head(res$data)
 res <- scale(res$data)
 

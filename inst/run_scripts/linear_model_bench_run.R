@@ -39,15 +39,15 @@ res <- application_add_annotation(
   fileName  = mqdata$config$table$fileName
 )
 
-
-
 # creates default configuration
+
 config <- mqdata$config
 config$table$factors[["dilution."]] = "sample"
 config$table$factors[["fPairing."]] = "fakePair_Id"
 config$table$factors[["run_Id"]] = "run_Id"
 config$table$factorDepth <- 1
 mqdata$config <- config
+
 
 # specify model definition
 
@@ -73,26 +73,14 @@ Contrasts <- c(
 )
 
 
-
-
-data <- setup_analysis(res,mqdata$config)
-
-dataIonstarPep <- list(data = data, config = mqdata$config)
-usethis::use_data(dataIonstarPep, overwrite = TRUE)
+data <- setup_analysis(res, mqdata$config)
 
 filteredData <- LFQService::filter_proteins_by_peptide_count(data, mqdata$config)
 
 
-dataIonstarFilteredPep <- filteredData
-usethis::use_data(dataIonstarFilteredPep, overwrite = TRUE)
 
 normalizedData <- normalize_log2_robscale(filteredData$data,
                                           mqdata$config)
-
-dataIonstarNormalizedPep <- list(data =  normalizedData$data,
-                                 config = normalizedData$config$clone(deep = TRUE))
-
-usethis::use_data(dataIonstarNormalizedPep, overwrite = TRUE)
 
 
 protintensity_fun <- medpolish_protein_quants( normalizedData$data,

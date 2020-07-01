@@ -21,21 +21,21 @@ Plot feature data and result of aggretation
 \examples{
 library( LFQService )
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-data <- LFQServiceData::sample_analysis
+dd <- LFQServiceData::skylinePRMSampleData_A
+config <- dd$config_f()
+data <- dd$analysis(dd$data, config)
 
-undebug( aggregate_intensity )
 data <- LFQService::transform_work_intensity(data, config, log2)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
-tmpMed$plots[[1]]
-tmpMed$plots[[2]]
+stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
+stopifnot("ggplot" \%in\% class(tmpMed$plots[[2]]))
 tmpMed$plots[[3]]
 
 bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
 tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
-tmpRob$plots[[1]]
-tmpRob$plots[[2]]
+stopifnot("ggplot" \%in\% class(tmpRob$plots[[1]]))
+stopifnot("ggplot" \%in\% class(tmpRob$plots[[2]]))
 tmpRob$plots[[3]]
 
 

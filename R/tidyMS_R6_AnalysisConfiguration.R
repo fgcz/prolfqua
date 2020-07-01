@@ -360,10 +360,12 @@ separate_factors <- function(data, config) {
 #' @keywords internal
 #' @examples
 #'
-#'  config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#'  config$table$isotopeLabel <- "Isotope.Label.Type"
-#'  data <- LFQServiceData::sample_analysis
-#'  xx <- complete_cases(data, config)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
+#' dim(data)
+#' xx <- complete_cases(data, config)
+#' stopifnot(nrow(data) < nrow(xx))
 #'
 complete_cases <- function(pdata, config) {
   message("completing cases")
@@ -378,7 +380,6 @@ complete_cases <- function(pdata, config) {
 }
 
 
-
 # Functions - summary ----
 
 # Functions - summarize factors ----
@@ -391,11 +392,12 @@ complete_cases <- function(pdata, config) {
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' configuration <- conf
-#' data <- LFQServiceData::sample_analysis
-#' xx <- table_factors(data,configuration )
-#' xx %>% dplyr::group_by(!!sym(configuration$table$factorKeys())) %>% dplyr::summarize(n = n())
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
+#' xx <- table_factors(data,config )
+#' xx %>% dplyr::group_by(!!sym(config$table$factorKeys())) %>%
+#'  dplyr::summarize(n = n())
 #'
 table_factors <- function(pdata, configuration){
   factorsTab <- pdata %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
@@ -417,11 +419,11 @@ table_factors <- function(pdata, configuration){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
-#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
 #'
-#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
-#' hierarchy_counts(sample_analysis, skylineconfig)
+#' hierarchy_counts(data, config)
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$table$hierarchyKeys()
   res <- pdata %>%
@@ -439,11 +441,12 @@ hierarchy_counts <- function(pdata, config){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
-#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' res <- hierarchy_counts_sample(sample_analysis, skylineconfig)
+#'
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
+#'
+#' res <- hierarchy_counts_sample(data, config)
 #' res()
 #' res("long")
 #' res("plot")
@@ -490,31 +493,29 @@ hierarchy_counts_sample <- function(pdata,
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
-#'  ident_qValue = "Detection.Q.Value")
-#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
-#' configuration <- skylineconfig$clone(deep=TRUE)
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, configuration)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
 #'
+#' summarize_hierarchy(data, configur)
+#' summarize_hierarchy(data, configur, factors = character())
 #'
-#' summarize_hierarchy(sample_analysis, configuration)
-#' summarize_hierarchy(sample_analysis, configuration, factors = character())
+#' summarize_hierarchy(data, configur,
+#'  hierarchy = configur$table$hkeysDepth() )
+#' summarize_hierarchy(data, configur,
+#'  hierarchy = NULL, factors = configur$table$fkeysDepth() )
+#' configur$table$hierarchyDepth = 1
+#' summarize_hierarchy(data, configur,
+#'  factors = configur$table$fkeysDepth())
+#' configur$table$hierarchyDepth = 2
+#' summarize_hierarchy(data, configur)
+#' configur$table$hierarchyDepth = 3
+#' summarize_hierarchy(data, configur )
+#' configur$table$hierarchyDepth = 4
+#' summarize_hierarchy(data, configur )
+#' #summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,
+#' #LFQServiceData::dataIonstarFilteredPep$config)
 #'
-#' summarize_hierarchy(sample_analysis, configuration,
-#'  hierarchy = configuration$table$hkeysDepth() )
-#' summarize_hierarchy(sample_analysis, configuration,
-#'  hierarchy = NULL, factors = configuration$table$fkeysDepth() )
-#' configuration$table$hierarchyDepth = 1
-#' summarize_hierarchy(sample_analysis, configuration,
-#'  factors = configuration$table$fkeysDepth())
-#' configuration$table$hierarchyDepth = 2
-#' summarize_hierarchy(sample_analysis, configuration)
-#' configuration$table$hierarchyDepth = 3
-#' summarize_hierarchy(sample_analysis, configuration )
-#' configuration$table$hierarchyDepth = 4
-#' summarize_hierarchy(sample_analysis, configuration )
-#' summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,LFQServiceData::dataIonstarFilteredPep$config)
 summarize_hierarchy <- function(pdata,
                                 config,
                                 hierarchy = config$table$hkeysDepth(),
@@ -537,14 +538,12 @@ summarize_hierarchy <- function(pdata,
 #' @export
 #' @keywords internal
 #' @examples
+#'
 #' library(LFQService)
-#' skylineconfig <- create_config_Skyline(isotopeLabel="Isotope.Label.Type",
-#'   ident_qValue="Detection.Q.Value")
-#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
-#' sample_analysis <- setup_analysis(skylinePRMSampleData, skylineconfig)
-#' LFQService:::summarize_protein(sample_analysis, skylineconfig)
-#' configuration <- skylineconfig$clone(deep=TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' LFQService:::summarize_protein(data, configur)
 #'
 summarize_protein <- function(pdata, config ){
   warning("DEPRECATED use summarize_hierarchy instead")
@@ -590,24 +589,27 @@ summarize_protein <- function(pdata, config ){
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(LFQServiceData::sample_analysis,
-#'    skylineconfig)
-#' xx <- complete_cases(xx, skylineconfig)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#'
+#' configur$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(data,
+#'    configur)
+#' xx <- complete_cases(xx, configur)
 #' nrow(xx)
-#' x <- interaction_missing_stats(xx, skylineconfig)$data %>% arrange(desc(nrNAs))
+#' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
 #' stopifnot(nrow(x) == 7416)
 #' stopifnot(sum(is.na(x$meanArea)) == 249)
 #' stopifnot(length(unique(x$protein_Id)) == 37)
 #'
-#' tmp <- interaction_missing_stats(xx, skylineconfig,
+#' tmp <- interaction_missing_stats(xx, configur,
 #'  factors= character(),
-#'   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+#'   hierarchy = configur$table$hierarchyKeys()[1])$data
 #' stopifnot(nrow(tmp) == 37)
 #'
-#' tmp <- interaction_missing_stats(xx, skylineconfig,
-#'   hierarchy = skylineconfig$table$hierarchyKeys()[1])$data
+#' tmp <- interaction_missing_stats(xx, configur,
+#'   hierarchy = configur$table$hierarchyKeys()[1])$data
 #' stopifnot(sum(is.na(tmp$nrMeasured))==0)
 #'
 interaction_missing_stats <- function(pdata,
@@ -646,24 +648,22 @@ interaction_missing_stats <- function(pdata,
 #' @keywords internal
 #' @return function
 #' @examples
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' configur$parameter$qVal_individual_threshold <- 0.01
 #'
-#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- complete_cases(xx, skylineconfig)
+#' xx <- LFQService::removeLarge_Q_Values(data, configur)
+#' xx <- complete_cases(xx, configur)
 #'
-#' tmp <- interaction_missing_stats(xx, skylineconfig)
+#' tmp <- interaction_missing_stats(xx, configur)
 #' head(tmp)
-#' fun <- missigness_impute_interactions(xx, skylineconfig)
+#' fun <- missigness_impute_interactions(xx, configur)
 #' dd <- fun("long")
-#' head(dd)
-#' undebug(fun)
 #' xx <- fun(DEBUG=TRUE)
 #' sum(is.na(xx$long$nrReplicates))
 #' xxx <- (fun("nrReplicates"))
 #' head(xxx)
-#'
 #' xxx <- fun("all")
 #' head(xxx)
 #'
@@ -778,19 +778,20 @@ missigness_impute_interactions <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- complete_cases(xx, skylineconfig)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' configur$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(data, configur)
+#' xx <- complete_cases(xx, configur)
 #' #undebug(missigness_impute_factors_interactions)
-#' fun <- missigness_impute_factors_interactions(xx, skylineconfig)
+#' fun <- missigness_impute_factors_interactions(xx, configur)
 #' head(fun)
-#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "imputed")
+#' fun <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
 #' head(fun)
 #' dim(fun)
 #' dim(dplyr::distinct(fun[,1:6]))
-#' fun <- missigness_impute_factors_interactions(xx, skylineconfig, value = "nrMeasured")
+#' fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
 missigness_impute_factors_interactions <-
   function(pdata,
            config,
@@ -831,10 +832,11 @@ missigness_impute_factors_interactions <-
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone( deep=TRUE )
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' config$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(sample_analysis, config)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' configur$parameter$qVal_individual_threshold <- 0.01
+#' data <- LFQService::removeLarge_Q_Values(data, config)
 #' data <- complete_cases(data, config)
 #'
 #' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
@@ -924,20 +926,21 @@ workflow_missigness_impute_contrasts <- function(data,
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
 #'
-#' xx <- complete_cases(sample_analysis, skylineconfig)
-#' skylineconfig$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(sample_analysis, skylineconfig)
-#' xx <- complete_cases(xx, skylineconfig)
-#' missigness_histogram(xx, skylineconfig)
+#' xx <- complete_cases(data, configur)
+#' configur$parameter$qVal_individual_threshold <- 0.01
+#' xx <- LFQService::removeLarge_Q_Values(data, configur)
+#' xx <- complete_cases(xx, configur)
+#' missigness_histogram(xx, configur)
 #'
-#' missingPrec <- interaction_missing_stats(xx, skylineconfig)
+#' missingPrec <- interaction_missing_stats(xx, configur)
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' missigness_histogram(sample_analysis, skylineconfig)
+#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' missigness_histogram(data, configur)
 #'
 missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysDepth()){
   table <- config$table
@@ -975,11 +978,14 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' @examples
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
-#' names(res)
+#'
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#'
+#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' res <- missingness_per_condition_cumsum(data,configur)
+#' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #' res$data
 missingness_per_condition_cumsum <- function(x,
@@ -1014,11 +1020,14 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' LFQServiceData::sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' res <- missingness_per_condition(sample_analysis, LFQServiceData::skylineconfig$clone(deep=TRUE))
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' res <- missingness_per_condition(data, configur)
 #' names(res)
-#' res$data
-#' res$figure
+#' stopifnot(c(8,7) == dim(res$data))
+#' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #'
 missingness_per_condition <- function(x, config, factors = config$table$fkeysDepth()){
@@ -1050,12 +1059,19 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' @export
 #' @keywords internal
 #' @examples
+#' library(LFQService)
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' sample_analysis <- LFQServiceData::sample_analysis
-#' skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' sample_analysis %>% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-#' x<-spreadValueVarsIsotopeLabel(sample_analysis,skylineconfig)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#'
+#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' x<-spreadValueVarsIsotopeLabel(data,configur)
 #' head(x)
+#'
+#' bb <- LFQServiceData::skylineSRM_HL_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
 #' conf <- LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
 #' x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL, conf)
 #' head(x[,5:ncol(x)])

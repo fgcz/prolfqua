@@ -32,7 +32,7 @@ configuration <- eval(params$configuration)
 ```{r hierarchy_counts}
 
 x <- hierarchy_counts( data , configuration )
-knitr::kable(data.frame(NR = x), caption="summary")
+knitr::kable(data.frame(NR = x), caption = "summary")
 
 ```
 

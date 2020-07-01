@@ -17,12 +17,12 @@ marks uncorrelated elements
 
 \examples{
 library(LFQService)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-data <- complete_cases(data, config)
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+sample_analysis <- bb$analysis(bb$data, bb$config_f())
+data <- complete_cases(sample_analysis, conf)
 mean(is.na(data$Area))
-#debug(markDecorrelated)
-dataI <- markDecorrelated(data, config)
+dataI <- markDecorrelated(data, conf)
 head(dataI)
 }
 \keyword{internal}

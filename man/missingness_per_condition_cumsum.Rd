@@ -16,11 +16,14 @@ cumulative sums of missing
 \examples{
 
 setNa <- function(x){ifelse(x < 100, NA, x)}
-sample_analysis <- LFQServiceData::sample_analysis
-skylineconfig <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-sample_analysis \%>\% dplyr::mutate(Area = setNa(Area)) -> sample_analysis
-res <- missingness_per_condition_cumsum(sample_analysis,skylineconfig)
-names(res)
+
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+
+data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+res <- missingness_per_condition_cumsum(data,configur)
+stopifnot("ggplot" \%in\% class(res$figure))
 print(res$figure)
 res$data
 }

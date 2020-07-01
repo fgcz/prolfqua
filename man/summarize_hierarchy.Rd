@@ -26,30 +26,28 @@ Summarize hierarchy counts
 \examples{
 library(LFQService)
 library(tidyverse)
-skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
- ident_qValue = "Detection.Q.Value")
-skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData
-configuration <- skylineconfig$clone(deep=TRUE)
-sample_analysis <- setup_analysis(skylinePRMSampleData, configuration)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
 
+summarize_hierarchy(data, configur)
+summarize_hierarchy(data, configur, factors = character())
 
-summarize_hierarchy(sample_analysis, configuration)
-summarize_hierarchy(sample_analysis, configuration, factors = character())
+summarize_hierarchy(data, configur,
+ hierarchy = configur$table$hkeysDepth() )
+summarize_hierarchy(data, configur,
+ hierarchy = NULL, factors = configur$table$fkeysDepth() )
+configur$table$hierarchyDepth = 1
+summarize_hierarchy(data, configur,
+ factors = configur$table$fkeysDepth())
+configur$table$hierarchyDepth = 2
+summarize_hierarchy(data, configur)
+configur$table$hierarchyDepth = 3
+summarize_hierarchy(data, configur )
+configur$table$hierarchyDepth = 4
+summarize_hierarchy(data, configur )
+#summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,
+#LFQServiceData::dataIonstarFilteredPep$config)
 
-summarize_hierarchy(sample_analysis, configuration,
- hierarchy = configuration$table$hkeysDepth() )
-summarize_hierarchy(sample_analysis, configuration,
- hierarchy = NULL, factors = configuration$table$fkeysDepth() )
-configuration$table$hierarchyDepth = 1
-summarize_hierarchy(sample_analysis, configuration,
- factors = configuration$table$fkeysDepth())
-configuration$table$hierarchyDepth = 2
-summarize_hierarchy(sample_analysis, configuration)
-configuration$table$hierarchyDepth = 3
-summarize_hierarchy(sample_analysis, configuration )
-configuration$table$hierarchyDepth = 4
-summarize_hierarchy(sample_analysis, configuration )
-summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,LFQServiceData::dataIonstarFilteredPep$config)
 }
 \keyword{internal}

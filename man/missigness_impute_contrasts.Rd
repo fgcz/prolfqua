@@ -18,10 +18,11 @@ Compute fold changes given Contrasts
 
 library(LFQService)
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone( deep=TRUE )
-sample_analysis <- LFQServiceData::sample_analysis
-config$parameter$qVal_individual_threshold <- 0.01
-data <- LFQService::removeLarge_Q_Values(sample_analysis, config)
+bb <- LFQServiceData::skylinePRMSampleData_A
+configur <- bb$config_f()
+data <- bb$analysis(bb$data, configur)
+configur$parameter$qVal_individual_threshold <- 0.01
+data <- LFQService::removeLarge_Q_Values(data, config)
 data <- complete_cases(data, config)
 
 Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )

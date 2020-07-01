@@ -16,11 +16,12 @@ table of distinct factors (sample annotation)
 }
 \examples{
 library(tidyverse)
-conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-configuration <- conf
-data <- LFQServiceData::sample_analysis
-xx <- table_factors(data,configuration )
-xx \%>\% dplyr::group_by(!!sym(configuration$table$factorKeys())) \%>\% dplyr::summarize(n = n())
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
+xx <- table_factors(data,config )
+xx \%>\% dplyr::group_by(!!sym(config$table$factorKeys())) \%>\%
+ dplyr::summarize(n = n())
 
 }
 \keyword{internal}

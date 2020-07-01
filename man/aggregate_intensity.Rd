@@ -19,11 +19,12 @@ Summarizes the intensities within hierarchy
 
 library( LFQService )
 library(tidyverse)
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-data <- LFQServiceData::sample_analysis
+dd <- LFQServiceData::skylinePRMSampleData_A
+config <- dd$config_f()
+data <- dd$analysis(dd$data, config)
 
-undebug( aggregate_intensity )
 data <- LFQService::transform_work_intensity(data, config, log2)
+colnames(data)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 
 bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)

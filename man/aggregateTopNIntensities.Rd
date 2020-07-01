@@ -26,8 +26,10 @@ run \link{rankPrecursorsByIntensity} first
 
 library(LFQService)
 library(tidyverse)
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+dd <- LFQServiceData::spectronautDIAData250_A
+config <- dd$config_f()
+data <- dd$analysis(dd$data,config)
+res <- removeLarge_Q_Values(data, config)
 ranked <- rankPrecursorsByIntensity(res,config)
 ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
 distinct() \%>\%
@@ -43,7 +45,7 @@ stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
 #debug(plot_aggregation)
 tmpRob <- plot_aggregation(ranked, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
-tmpRob$plot[[4]]
+stopifnot("ggplot"\%in\%class(tmpRob$plots[[4]]))
 
 }
 \seealso{

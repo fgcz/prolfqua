@@ -239,29 +239,30 @@ medpolishPly <- function(x, name = FALSE){
 #' @examples
 #' library(dplyr)
 #'
-#' skylineconfig <-  LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' skylineconfig$table$workIntensity <- "Area"
-#' xnested <- LFQServiceData::sample_analysis %>%
-#'  group_by_at(skylineconfig$table$hkeysDepth()) %>%
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' xnested <- data %>%
+#'  group_by_at(configur$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys() ,  skylineconfig$table$hkeysDepth()) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) %>%
 #'  distinct() %>% nrow()
 #'
-#' xx <- extractIntensities(x,skylineconfig)
+#' xx <- extractIntensities(x,configur)
 #' stopifnot(dim(xx)==c(nn,22))
 #'
 #' # change hierarchyDepth ###################
-#' conf <- skylineconfig$clone(deep=TRUE)
+#' conf <- configur$clone(deep=TRUE)
 #' conf$table$hierarchyDepth = 1
 #'
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- data %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>%
 #'  tidyr::nest()
 #' head(xnested)
 #'
 #' x <- xnested$data[[1]]
-#' nn  <- x %>% dplyr::select( setdiff(skylineconfig$table$hierarchyKeys(),  skylineconfig$table$hkeysDepth()) ) %>%
+#' nn  <- x %>% dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) %>%
 #'  distinct() %>% nrow()
 #'
 #' xx <- extractIntensities(x,conf)
@@ -284,9 +285,12 @@ extractIntensities <- function(pdata, config ){
 #' @family plotting
 #' @examples
 #'
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' data <- bb$analysis(bb$data, conf)
+#'
 #' conf$table$hierarchyDepth = 1
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- data %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
@@ -312,9 +316,11 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' @export
 #' @examples
 #'
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' data <- bb$analysis(bb$data, conf)
 #' conf$table$hierarchyDepth = 1
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- data %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
@@ -442,9 +448,11 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 #'
 #'
-#' conf <- skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' data <- bb$analysis(bb$data, conf)
 #' conf$table$hierarchyDepth = 1
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- data %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
@@ -470,14 +478,17 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @family aggregation
 #' @keywords inernal
 #' @example
-#' conf <- skylineconfig$clone(deep = TRUE)
+#'
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' data <- bb$analysis(bb$data, conf)
 #' conf$table$hierarchyDepth = 1
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- data %>%
 #'   group_by_at(conf$table$hkeysDepth()) %>% nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- summarizeRobust2(x, conf)
+#' bb <- summarizeRobust_config(x, conf)
 #'
 #' LFQService:::.reestablish_condition(x,bb, conf)
 summarizeRobust_config <- function(pdata, config, name= FALSE){
@@ -504,11 +515,12 @@ summarizeRobust_config <- function(pdata, config, name= FALSE){
 #'
 #' library( LFQService )
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' dd <- LFQServiceData::skylinePRMSampleData_A
+#' config <- dd$config_f()
+#' data <- dd$analysis(dd$data, config)
 #'
-#' undebug( aggregate_intensity )
 #' data <- LFQService::transform_work_intensity(data, config, log2)
+#' colnames(data)
 #' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #'
 #' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
@@ -561,21 +573,21 @@ aggregate_intensity <- function(data, config, .func)
 #' @examples
 #' library( LFQService )
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' dd <- LFQServiceData::skylinePRMSampleData_A
+#' config <- dd$config_f()
+#' data <- dd$analysis(dd$data, config)
 #'
-#' undebug( aggregate_intensity )
 #' data <- LFQService::transform_work_intensity(data, config, log2)
 #' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #' tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
-#' tmpMed$plots[[1]]
-#' tmpMed$plots[[2]]
+#' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
+#' stopifnot("ggplot" %in% class(tmpMed$plots[[2]]))
 #' tmpMed$plots[[3]]
 #'
 #' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
 #' tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
-#' tmpRob$plots[[1]]
-#' tmpRob$plots[[2]]
+#' stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
+#' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 #' tmpRob$plots[[3]]
 #'
 #'
@@ -637,8 +649,10 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' res <- removeLarge_Q_Values(LFQServiceData::spectronautDIAData250_analysis, config)
+#' dd <- LFQServiceData::spectronautDIAData250_A
+#' config <- dd$config_f()
+#' data <- dd$analysis(dd$data,config)
+#' res <- removeLarge_Q_Values(data, config)
 #' ranked <- rankPrecursorsByIntensity(res,config)
 #' ranked %>% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) %>%
 #' distinct() %>%
@@ -654,7 +668,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' config$table$getWorkIntensity()
 #' #debug(plot_aggregation)
 #' tmpRob <- plot_aggregation(ranked, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
-#' tmpRob$plot[[4]]
+#' stopifnot("ggplot"%in%class(tmpRob$plots[[4]]))
 #'
 aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 
@@ -693,28 +707,29 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' data <- LFQServiceData::sample_analysis
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' res <- x("unnest")
 #' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' config <- bb$config_f()
 #' config$table$hierarchyDepth <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' x("unnest")$data
-#' xnested<-x()
+#' xnested <- x()
 #' dd <- x(value = "plot")
 #'
 #' dd$medpolishPly[[1]]
 #'
 #' dd$plot[[2]]
+#'
 #' # example how to add peptide count information
 #'
 #' tmp <- summarize_hierarchy(data, config)
 #' tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
-#'
 #'
 intensity_summary_by_hkeys <- function(data, config, func)
 {

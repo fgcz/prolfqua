@@ -20,8 +20,9 @@ plot stddev vs mean to asses stability of variance
 
 library(LFQService)
 library(tidyverse)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, bb$config_f())
 res <- summarize_cv(data, config)
 
 plot_stdv_vs_mean(res, config)

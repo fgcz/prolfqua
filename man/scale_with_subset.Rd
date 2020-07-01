@@ -12,10 +12,11 @@ scale_with_subset
 \examples{
 library(LFQService)
 library(tidyverse)
-conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+sample_analysis <- bb$analysis(bb$data, bb$config_f())
 conf$table$workIntensity <- "Area"
 
-sample_analysis <- LFQServiceData::sample_analysis
 res <- transform_work_intensity(sample_analysis, conf, log2)
 res <- scale_with_subset(res, res, conf)
 

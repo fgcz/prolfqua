@@ -19,11 +19,14 @@ gatherItBack(pdata, value, config, data = NULL, sep = "~lfq~")
 make it long
 }
 \examples{
-conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-res <- toWideConfig(LFQServiceData::sample_analysis, conf, as.matrix = TRUE)
+dd <- LFQServiceData::spectronautDIAData250_A
+conf <- dd$config_f()
+analysis <- dd$analysis(dd$data,conf)
+res <- toWideConfig(analysis, conf, as.matrix = TRUE)
+
 res <- scale(res$data)
 xx <- gatherItBack(res,"srm_intensityScaled", conf)
-xx <- gatherItBack(res,"srm_intensityScaled", conf, LFQServiceData::sample_analysis)
+xx <- gatherItBack(res,"srm_intensityScaled", conf,analysis)
 conf$table$getWorkIntensity() == "srm_intensityScaled"
 
 }
