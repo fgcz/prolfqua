@@ -15,10 +15,12 @@ xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
 config$table$factorKeys()
 config$table$factorDepth <- 1
-make_interaction_column(LFQServiceData::sample_analysis,
+make_interaction_column(analysis,
    config$table$fkeysDepth())
 
 }

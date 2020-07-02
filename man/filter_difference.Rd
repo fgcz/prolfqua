@@ -24,7 +24,7 @@ get the difference of two dataset where one is a subset of the other.
 library(LFQService)
 library(tidyverse)
 
-istar <- LFQServiceData::dataIonstarPep
+istar <- LFQServiceData::ionstar$Pep()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
 tmp <- filter_difference(istar$data, filterPep$data, istar$config)

@@ -15,11 +15,15 @@ plot_sample_correlation(pdata, config)
 visualize correlation among samples
 }
 \examples{
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-analysis <- remove_small_intensities(LFQServiceData::sample_analysis, config)
+
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
+
+analysis <- remove_small_intensities(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 mm <- toWideConfig(analysis, config, as.matrix = TRUE)
-plot_sample_correlation(analysis, config)
+class(plot_sample_correlation(analysis, config))
 }
 \seealso{
 Other plotting: 

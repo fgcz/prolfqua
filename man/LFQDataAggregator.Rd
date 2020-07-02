@@ -15,9 +15,7 @@ aggregates intensities
 library(tidyverse)
 library(LFQService)
 
-
-rm(list = ls())
-istar <- LFQServiceData::dataIonstarFilteredPep
+istar <- LFQServiceData::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 
@@ -41,8 +39,10 @@ pSum$plots[[2]]
 lfqAggregator$mean_topN()
 pMean <- lfqAggregator$plot()
 pMean$plots[[2]]
-lfqAggregator$write_plots("inst")
+# lfqAggregator$write_plots(".")
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
+protPlotter$heatmap()
+
 
 }
 \concept{LFQData

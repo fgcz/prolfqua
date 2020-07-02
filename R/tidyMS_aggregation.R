@@ -118,7 +118,7 @@ plot_hierarchies_line <- function(res,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' istar <- LFQServiceData::dataIonstarNormalizedPep
+#' istar <- LFQServiceData::ionstar$normalized()
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
@@ -132,7 +132,7 @@ plot_hierarchies_line <- function(res,
 #' res <- plot_hierarchies_line_df(istar$data, config)
 #' res[[1]]
 #'
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
 #' res <- plot_hierarchies_line_df(istar$data, config)
@@ -799,7 +799,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQServiceData::dataIonstarNormalizedPep
+#' data <- LFQServiceData::ionstar$normalized()
 #'
 #' data$data <- data$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' res <- medpolish_protein_quants(data$data,

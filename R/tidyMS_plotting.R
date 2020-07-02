@@ -8,10 +8,14 @@
 #' @import ggplot2
 #' @family plotting
 #' @examples
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' plot_intensity_distribution_violin(LFQServiceData::sample_analysis, config)
-#' analysis <- transform_work_intensity(LFQServiceData::sample_analysis, config, log2)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
+#'
 #' plot_intensity_distribution_violin(analysis, config)
+#' analysis <- transform_work_intensity(analysis, config, log2)
+#' plot_intensity_distribution_violin(analysis, config)
+#'
 plot_intensity_distribution_violin <- function(pdata, config){
   p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
     geom_violin() +
@@ -54,11 +58,15 @@ plot_intensity_distribution_density <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_sample_correlation
 #' @examples
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' analysis <- remove_small_intensities(LFQServiceData::sample_analysis, config)
+#'
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
+#'
+#' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
-#' plot_sample_correlation(analysis, config)
+#' class(plot_sample_correlation(analysis, config))
 plot_sample_correlation <- function(pdata, config){
   matrix <- toWideConfig(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
@@ -99,12 +107,13 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#'
-#' conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' conf <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
 #' conf$table$hierarchyDepth
 #' conf$table$hkeysDepth()
 #'
-#' xnested <- LFQServiceData::sample_analysis %>%
+#' xnested <- analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' #debug(plot_hierarchies_boxplot)
@@ -112,24 +121,24 @@ plot_sample_correlation <- function(pdata, config){
 #'  xnested$protein_Id[[3]],
 #'   conf,
 #'   facet_grid_on =  tail(conf$table$hierarchyKeys(),1))
-#' p
+#' stopifnot("ggplot" %in% class(p))
 #'
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
 #'  xnested$protein_Id[[3]],
 #'   conf )
-#' p
+#' stopifnot("ggplot" %in% class(p))
 #'
-#' plot_hierarchies_boxplot(
+#' p <- plot_hierarchies_boxplot(
 #'  xnested$data[[3]],
 #'  xnested$protein_Id[[3]],
 #'   conf,
 #'    beeswarm = FALSE )
+#' stopifnot("ggplot" %in% class(p))
 #'
-#'
-#' config <- LFQServiceData::skylineconfig_HL$clone(deep = TRUE)
-#' data <- LFQServiceData::skylineSRM_HL_data
-#' data <- setup_analysis(data,config)
-#' data <- LFQService::transform_work_intensity(data, config, log2)
+#' bb <- LFQServiceData::skylineSRM_HL_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, config)
+#' data <- LFQService::transform_work_intensity(analysis, config, log2)
 #' res <- plot_hierarchies_boxplot_df(data, config)
 #' res$boxplot[[1]]
 #'
@@ -186,7 +195,8 @@ plot_hierarchies_boxplot <- function(pdata,
 #'
 #' @keywords internal
 #' @examples
-#'  iostar <- LFQServiceData::dataIonstarFilteredPep
+#'
+#'  iostar <- LFQServiceData::ionstar$filtered()
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
@@ -241,10 +251,14 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE )
-#' LFQService::plot_heatmap_cor( data, config )
-#' plot_heatmap_cor( data, config, R2 = TRUE )
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#'
+#' analysis <- bb$analysis(bb$data, config)
+#' pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
+#' stopifnot("pheatmap" %in% class(pheat_map))
+#' pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+#' stopifnot("pheatmap" %in% class(pheat_map))
 #'
 plot_heatmap_cor <- function(data,
                              config,
@@ -289,17 +303,21 @@ plot_heatmap_cor <- function(data,
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#'
+#' analysis <- bb$analysis(bb$data, config)
+#'
 #' graphics.off()
 #' .Device
-#'  p  <- plot_heatmap(data, config)
+#'  p  <- plot_heatmap(analysis, config)
 #' .Device
 #'  print(p)
 #'  .Device
 #'  plot(1)
 #'
 #'  print(p)
+#'
 
 plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
@@ -337,11 +355,14 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-#' tmp <- plot_NA_heatmap(data, config)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#'
+#' analysis <- bb$analysis(bb$data, config)
+#'
+#' tmp <- plot_NA_heatmap(analysis, config)
 #' print(tmp)
-#' xx <- plot_NA_heatmap(data, config,distance = "euclidean")
+#' xx <- plot_NA_heatmap(analysis, config,distance = "euclidean")
 #' print(xx)
 #' dev.off()
 #' print(xx)
@@ -409,12 +430,15 @@ plot_NA_heatmap <- function(data,
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 #'
-#' tmp <- plot_pca(data, config, add_txt= TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, config)
+#'
+#' tmp <- plot_pca(analysis, config, add_txt= TRUE)
+#'
 #' print(tmp)
-#' tmp <- plot_pca(data, config, add_txt= FALSE)
+#' tmp <- plot_pca(analysis, config, add_txt= FALSE)
 #' print(tmp)
 #' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 #'

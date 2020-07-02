@@ -17,10 +17,14 @@ plot correlation heatmap with annotations
 }
 \examples{
 library(tidyverse)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE )
-LFQService::plot_heatmap_cor( data, config )
-plot_heatmap_cor( data, config, R2 = TRUE )
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+
+analysis <- bb$analysis(bb$data, config)
+pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
+stopifnot("pheatmap" \%in\% class(pheat_map))
+pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+stopifnot("pheatmap" \%in\% class(pheat_map))
 
 }
 \keyword{internal}

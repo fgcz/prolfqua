@@ -7,9 +7,8 @@
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar$filtered()
 #'
-#' istar$config$table$is_intensity_transformed <- FALSE
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
@@ -143,7 +142,7 @@ LFQData <- R6::R6Class(
 #' rm(list = ls())
 #' library(LFQService)
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
@@ -235,20 +234,22 @@ LFQDataTransformer <- R6::R6Class(
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' runallfuncs <- function(x){
 #'
-#'   x$cv()
-#'   x$cv_quantiles()
-#'   x$density()
-#'   x$density_median()
-#'   x$density("ecdf")
-#'   x$density_median("ecdf")
-#'   x$violin()
-#'   x$violin_median()
-#'   x$stdv_vs_mean(size = 400)
-#'   x$power_t_test()
-#'   x$power_t_test_quantiles()
+#'   stopifnot("data.frame" %in% class(x$cv()))
+#'   stopifnot(c("long", "wide") %in% names(x$cv_quantiles()))
+#'   stopifnot("ggplot" %in% class(x$density()))
+#'   stopifnot("ggplot" %in% class(x$density_median()))
+#'   stopifnot("ggplot" %in% class(x$density("ecdf")))
+#'   stopifnot("ggplot" %in% class(x$density_median("ecdf")))
+#'   stopifnot("ggplot" %in% class(x$violin()))
+#'   stopifnot("ggplot" %in% class(x$violin_median()))
+#'   stopifnot("ggplot" %in% class(x$stdv_vs_mean(size = 400)))
+#'   if(!x$lfq$is_transformed()){
+#'     stopifnot(is.null(x$power_t_test()))
+#'     stopifnot(is.null(x$power_t_test_quantiles()))
+#'   }
 #' }
 #'
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
@@ -256,8 +257,8 @@ LFQDataTransformer <- R6::R6Class(
 #' x<-lfqstats
 #'
 #' #study variance of normalized data
-#' istar <- LFQServiceData::dataIonstarNormalizedPep
-#' names(istar)
+#' istar <- LFQServiceData::ionstar$normalized()
+#' istar$config$table$is_intensity_transformed
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 200))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$is_transformed(TRUE)
@@ -265,10 +266,12 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' data <- LFQServiceData::sample_analysis
-#' config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
 #'
-#' lfqdata <- LFQData$new(data, config)
+#'
+#' lfqdata <- LFQData$new(analysis, config)
 #'
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
@@ -401,7 +404,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #'
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' sum <- lfqdata$get_Summariser()
@@ -803,9 +806,7 @@ LFQDataWriter <- R6::R6Class(
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#'
-#' rm(list = ls())
-#' istar <- LFQServiceData::dataIonstarFilteredPep
+#' istar <- LFQServiceData::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
@@ -829,8 +830,10 @@ LFQDataWriter <- R6::R6Class(
 #' lfqAggregator$mean_topN()
 #' pMean <- lfqAggregator$plot()
 #' pMean$plots[[2]]
-#' lfqAggregator$write_plots("inst")
+#' # lfqAggregator$write_plots(".")
 #' protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
+#' protPlotter$heatmap()
+#'
 #'
 LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",

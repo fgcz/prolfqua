@@ -13,12 +13,15 @@ plot PCA
 
 library(tidyverse)
 library(LFQService)
-data <- LFQServiceData::sample_analysis
-config <- LFQServiceData::skylineconfig$clone(deep = TRUE)
 
-tmp <- plot_pca(data, config, add_txt= TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, config)
+
+tmp <- plot_pca(analysis, config, add_txt= TRUE)
+
 print(tmp)
-tmp <- plot_pca(data, config, add_txt= FALSE)
+tmp <- plot_pca(analysis, config, add_txt= FALSE)
 print(tmp)
 plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 

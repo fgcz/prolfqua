@@ -59,20 +59,20 @@ IonstarData <- R6::R6Class(
     },
     filtered = function(){
       res <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)
-      return(list(data = res$data, config = self$config$clone(deep=TRUE)))
+      return(list(data = res$data, config = self$config$clone(deep = TRUE)))
     },
     normalized = function(){
       tmp <- self$filtered()
-      conf <- tmp$config$clone(deep=TRUE)
+      conf <- tmp$config$clone(deep = TRUE)
       res <- normalize_log2_robscale(tmp$data,
                                      conf)
       res <- list(data =  res$data,
-                  config = conf$clone(deep = TRUE))
+                  config = res$conf$clone(deep = TRUE))
       return(res)
     },
     subset_normalized = function(){
       tmp <- self$filtered()
-      conf <- tmp$config$clone(deep=TRUE)
+      conf <- tmp$config$clone(deep = TRUE)
       data <- transform_work_intensity(tmp$data, conf, log2)
       subset <-
         data %>%
@@ -90,12 +90,17 @@ IonstarData <- R6::R6Class(
 
 IonstarData$undebug("subset_normalized")
 ionstar <- IonstarData$new(mqdata$data,
-                           mqdata$config$clone(deep=TRUE))
+                           mqdata$config$clone(deep = TRUE))
+
 ionstar$Pep()
 ionstar$filtered()
-ionstar$normalized()
-xx <- ionstar$subset_normalized()
+xx <- ionstar$normalized()
 
+xx$config$table$is_intensity_transformed
+
+
+xx <- ionstar$subset_normalized()
+xx$config$table$is_intensity_transformed
 
 usethis::use_data(ionstar, overwrite = TRUE)
 

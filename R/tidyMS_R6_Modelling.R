@@ -137,7 +137,7 @@ get_complete_model_fit <- function(modelProteinF){
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' ionstar <- LFQServiceData::dataIonstarNormalizedPep
+#' ionstar <- LFQServiceData::ionstar$normalized()
 #' ionstar$data <- ionstar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id,10))
 #' LFQService::table_factors(ionstar$data, ionstar$config)
 #' formula_randomPeptide <-
@@ -215,7 +215,7 @@ model_analyse <- function(pepIntensity,
 #' @examples
 #' rm(list = ls())
 #' library(LFQService)
-#' D <- LFQServiceData::dataIonstarNormalizedPep
+#' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 10))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -319,7 +319,7 @@ model_analyse_summarize_write  <- function(
 #' @keywords internal
 #' @examples
 #'
-#' D <- LFQServiceData::dataIonstarNormalizedPep
+#' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data, protein_Id %in% sample(protein_Id, 10))
 #' D$config$table$getWorkIntensity()
 #' modelName <- "f_condtion_r_peptide"
@@ -422,7 +422,7 @@ model_analyse_summarize_vis_write <- function(modelling_result,
 #' @references function with paramter path
 #' @keywords internal
 #' @examples
-#' D <- LFQServiceData::dataIonstarNormalizedPep
+#' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data, protein_Id %in% sample(protein_Id,12))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-

@@ -24,7 +24,7 @@ skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 
-sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
+sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData_A$data, skylineconfig)
 
 }
 \keyword{internal}

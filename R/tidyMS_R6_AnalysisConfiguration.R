@@ -207,7 +207,8 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #'
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
-#' conf <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#'
+#' conf <- LFQServiceData::skylinePRMSampleData_A$config_f()
 #' make_reduced_hierarchy_config(conf,
 #'  "testintensity",
 #'  conf$table$hierarchy[1:2])
@@ -228,10 +229,12 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #'
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$table$factorKeys()
 #' config$table$factorDepth <- 1
-#' make_interaction_column(LFQServiceData::sample_analysis,
+#' make_interaction_column(analysis,
 #'    config$table$fkeysDepth())
 #'
 make_interaction_column <- function(data, columns, sep="."){
@@ -283,7 +286,7 @@ R6extractValues <- function(r6class){
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData, skylineconfig)
+#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData_A$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
@@ -836,19 +839,19 @@ missigness_impute_factors_interactions <-
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(data, config)
-#' data <- complete_cases(data, config)
+#' data <- LFQService::removeLarge_Q_Values(data, configur)
+#' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
 #' message("missigness_impute_factors_interactions : imputed")
-#' xx <- missigness_impute_factors_interactions(data, config, value = "nrMeasured" )
-#' imputed <- missigness_impute_contrasts(xx, config, Contrasts)
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
+#' imputed <- missigness_impute_contrasts(xx, configur, Contrasts)
 #'
-#' xx <- missigness_impute_factors_interactions(data, config, value = "imputed" )
-#' imputed <- missigness_impute_contrasts(xx, config, Contrasts)
-#' xx <- missigness_impute_factors_interactions(data, config, value = "meanArea" )
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' imputed <- missigness_impute_contrasts(xx, configur, Contrasts)
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
 #' message("missigness_impute_factors_interactions : meanArea")
-#' mean <- missigness_impute_contrasts(xx, config, Contrasts)
+#' mean <- missigness_impute_contrasts(xx, configur, Contrasts)
 #'
 missigness_impute_contrasts <- function(data,
                                         config,

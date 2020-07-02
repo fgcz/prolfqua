@@ -31,12 +31,13 @@ plot peptides by factors and it's levels.
 
 library(LFQService)
 library(tidyverse)
-
-conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
 conf$table$hierarchyDepth
 conf$table$hkeysDepth()
 
-xnested <- LFQServiceData::sample_analysis \%>\%
+xnested <- analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
 #debug(plot_hierarchies_boxplot)
@@ -44,24 +45,24 @@ p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf,
   facet_grid_on =  tail(conf$table$hierarchyKeys(),1))
-p
+stopifnot("ggplot" \%in\% class(p))
 
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf )
-p
+stopifnot("ggplot" \%in\% class(p))
 
-plot_hierarchies_boxplot(
+p <- plot_hierarchies_boxplot(
  xnested$data[[3]],
  xnested$protein_Id[[3]],
   conf,
    beeswarm = FALSE )
+stopifnot("ggplot" \%in\% class(p))
 
-
-config <- LFQServiceData::skylineconfig_HL$clone(deep = TRUE)
-data <- LFQServiceData::skylineSRM_HL_data
-data <- setup_analysis(data,config)
-data <- LFQService::transform_work_intensity(data, config, log2)
+bb <- LFQServiceData::skylineSRM_HL_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, config)
+data <- LFQService::transform_work_intensity(analysis, config, log2)
 res <- plot_hierarchies_boxplot_df(data, config)
 res$boxplot[[1]]
 

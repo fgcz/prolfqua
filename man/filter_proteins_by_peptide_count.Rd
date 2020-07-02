@@ -22,7 +22,7 @@ Keep only those proteins with 2 IDENTIFIED peptides
 library(LFQService)
 library(tidyverse)
 
-istar <- LFQServiceData::dataIonstarPep
+istar <- LFQServiceData::ionstar$Pep()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
  x <- LFQService::summarize_hierarchy(filterPep$data , istar$config)
