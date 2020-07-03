@@ -28,23 +28,30 @@ extracts the relevant information from the configuration to make the plot.
 
 library(LFQService)
 library(tidyverse)
-conf <- LFQServiceData::skylineconfig$clone(deep = TRUE)
-xnested <- LFQServiceData::sample_analysis \%>\%
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+analysis <- bb$analysis(bb$data, conf)
+xnested <- analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
 LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
-bb <- setup_analysis(LFQServiceData::skylineSRM_HL_data,LFQServiceData::skylineconfig_HL )
-nest <- bb \%>\% group_by(LFQServiceData::skylineconfig_HL$table$hkeysDepth()) \%>\% nest()
+
+bb <- LFQServiceData::skylineSRM_HL_A
+conf <- bb$config_f()
+analysis <- bb$analysis(bb$data, conf)
+
+nest <- analysis \%>\% group_by(conf$table$hkeysDepth()) \%>\% nest()
 LFQService::plot_hierarchies_line(nest$data[[1]],
                                   "DUM",
-                                  LFQServiceData::skylineconfig_HL,
+                                  conf,
                                   separate = TRUE)
 LFQService::plot_hierarchies_line(nest$data[[1]],
 "DUM",
-LFQServiceData::skylineconfig_HL,
+conf,
 separate = TRUE,
 show.legend = TRUE)
+
 }
 \seealso{
 Other aggregation: 

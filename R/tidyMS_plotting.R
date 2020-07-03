@@ -36,10 +36,13 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @rdname plot_intensity_distribution_violin
 #' @examples
 #'
-#' config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-#' plot_intensity_distribution_density(LFQServiceData::sample_analysis, config)
-#' analysis <- transform_work_intensity(LFQServiceData::sample_analysis, config, log2)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' config <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, config)
 #' plot_intensity_distribution_density(analysis, config)
+#' analysis <- transform_work_intensity(analysis, config, log2)
+#' plot_intensity_distribution_density(analysis, config)
+#'
 plot_intensity_distribution_density <- function(pdata, config){
   p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
     geom_line(stat = "density")

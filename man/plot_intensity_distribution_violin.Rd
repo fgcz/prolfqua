@@ -29,10 +29,13 @@ analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
 
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-plot_intensity_distribution_density(LFQServiceData::sample_analysis, config)
-analysis <- transform_work_intensity(LFQServiceData::sample_analysis, config, log2)
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, config)
 plot_intensity_distribution_density(analysis, config)
+analysis <- transform_work_intensity(analysis, config, log2)
+plot_intensity_distribution_density(analysis, config)
+
 }
 \seealso{
 Other plotting: 

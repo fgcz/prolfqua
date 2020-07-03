@@ -1075,8 +1075,11 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' bb <- LFQServiceData::skylineSRM_HL_A
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
-#' conf <- LFQServiceData::skylineconfig_HL$clone(deep=TRUE)
-#' x<-spreadValueVarsIsotopeLabel(LFQServiceData::sample_analysis_HL, conf)
+#'
+#' bb <- LFQServiceData::skylineSRM_HL_A
+#' conf <- bb$config_f()
+#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' x <- spreadValueVarsIsotopeLabel(analysis, conf)
 #' head(x[,5:ncol(x)])
 #'
 spreadValueVarsIsotopeLabel <- function(resData, config){

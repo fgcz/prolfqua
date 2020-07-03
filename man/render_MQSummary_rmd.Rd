@@ -23,9 +23,11 @@ render_MQSummary_rmd(
 render MQ Summary.
 }
 \examples{
-config <- LFQServiceData::skylineconfig$clone(deep=TRUE)
-render_MQSummary_rmd(LFQServiceData::sample_analysis,
-  config , workdir=tempdir(check = FALSE))
+bb <- LFQServiceData::skylinePRMSampleData_A
+config <- bb$config_f()
+analysis <- bb$analysis(bb$data, bb$config_f())
+render_MQSummary_rmd(analysis,
+  config , workdir= ".")# tempdir(check = FALSE))
 
 }
 \seealso{
