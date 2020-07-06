@@ -80,6 +80,7 @@ table_facade(pars$annotation, "Sample annotations.")
 - [Protein intensities heatmap](`r qcfile("intensities_heatmap.pdf")`){target="_blank"}. The columns represent samples while the rows represent proteins. The protein intensities were z-scored.
 - The protein intensities in [excel xlsx format](`r qcfile("intensities_wide.xlsx")`){target="_blank"}.
 - A [pdf file](`r qcfile("inference_figures.pdf")`){target="_blank"} visualizing all the peptide and protein intensities (the peptide intensities are $\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) ). 
+- A [pdf file](`r qcfile("")){target="_blank"} with boxplots showing the intensity distribution of each protein in all conditions.
 - A quality control report of estimated protein intensities [html](`r qcfile("intensities_qc.html")`){target="_blank"}.
 
 

@@ -39,7 +39,8 @@ outdir <- tempdir()
 # Setting up the configuration
 
 ```{r loadDataCreateConfig}
-allDataM <- LFQServiceData::skylineSRM_HL_data
+allDataM <- LFQServiceData::skylineSRM_HL_A$data
+
 
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label",
                                             ident_qValue = "annotation_QValue")

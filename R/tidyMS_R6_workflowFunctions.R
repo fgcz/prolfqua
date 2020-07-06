@@ -8,9 +8,10 @@
 #' @examples
 #' library(LFQService)
 #' rm(list=ls())
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' #undebug(workflow_correlation_preprocessing_protein_intensities)
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 #' names(res)
@@ -70,9 +71,10 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' rm(list=ls())
 #' library(tidyverse)
 #' library(LFQService)
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
 #' config$parameter$min_nr_of_notNA  <- 20
-#' data <- LFQServiceData::spectronautDIAData250_analysis
 #' res <- workflow_corr_filter_impute(data,config)
 #'
 workflow_corr_filter_impute <- function(pdata,config, minCorrelation =0.6){
@@ -124,8 +126,9 @@ workflow_corr_filter_impute <- function(pdata,config, minCorrelation =0.6){
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-#' data <- LFQServiceData::spectronautDIAData250_analysis
+#' bb <- LFQServiceData::spectronautDIAData250_A
+#' config <- bb$config_f()
+#' data <- bb$analysis(bb$data, config)
 #' hierarchy_counts(data, config)
 #' tmp <-workflow_DIA_NA_preprocessing(data, config)
 #' hierarchy_counts(tmp$data, config)
