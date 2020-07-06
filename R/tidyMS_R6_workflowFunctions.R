@@ -33,6 +33,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   stat_min_peptides_protein  <- hierarchy_counts(data_NA_QVal, config)
 
   # filter decorrelated.
+
   data_NA_QVal <- transform_work_intensity(data_NA_QVal, config, log2)
   data_NA_QVal <- markDecorrelated(data_NA_QVal, config, minCorrelation = minCorrelation)
   keepCorrelated <- dplyr::filter(data_NA_QVal, srm_decorelated == FALSE)
@@ -43,7 +44,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   # rank precursors by intensity
   keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
-  mean_na <- function(x){mean(x, na.rm = TRUE)}
+  mean_na <- function(x, name=FALSE){if(name){return("mean_na")};mean(x, na.rm = TRUE)}
   proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, .func = mean_na, N = 3)
 
   # collect stats
