@@ -44,7 +44,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
   mean_na <- function(x){mean(x, na.rm = TRUE)}
-  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, func = mean_na, N = 3)
+  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, .func = mean_na, N = 3)
 
   # collect stats
   stats <- list(stat_input = stat_input,
