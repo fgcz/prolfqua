@@ -23,9 +23,10 @@ correlation preprocessing
 \examples{
 library(LFQService)
 rm(list=ls())
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
 config$parameter$min_nr_of_notNA  <- 20
-data <- LFQServiceData::spectronautDIAData250_analysis
 #undebug(workflow_correlation_preprocessing_protein_intensities)
 res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 names(res)

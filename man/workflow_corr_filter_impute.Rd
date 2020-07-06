@@ -20,9 +20,10 @@ Apply correlation filtering and impute missing values
 rm(list=ls())
 library(tidyverse)
 library(LFQService)
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
 config$parameter$min_nr_of_notNA  <- 20
-data <- LFQServiceData::spectronautDIAData250_analysis
 res <- workflow_corr_filter_impute(data,config)
 
 }

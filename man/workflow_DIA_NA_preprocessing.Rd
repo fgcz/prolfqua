@@ -27,8 +27,9 @@ filter QVAlues and NA's and factor information
 library(LFQService)
 library(tidyverse)
 rm(list=ls())
-config <- LFQServiceData::spectronautDIAData250_config$clone(deep=TRUE)
-data <- LFQServiceData::spectronautDIAData250_analysis
+bb <- LFQServiceData::spectronautDIAData250_A
+config <- bb$config_f()
+data <- bb$analysis(bb$data, config)
 hierarchy_counts(data, config)
 tmp <-workflow_DIA_NA_preprocessing(data, config)
 hierarchy_counts(tmp$data, config)
