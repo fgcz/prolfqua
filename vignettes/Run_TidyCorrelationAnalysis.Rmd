@@ -201,8 +201,7 @@ qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 
 
 ```{r aggregate}
-
-mean_na <- function(x, name = FALSE){if(name){return("mean_na")};mean(x,na.rm = TRUE)}
+mean_na <- function(x, name = FALSE){if(name){return("mean_na")}; mean(x,na.rm = TRUE)}
 proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
                                                config,
                                                .func = mean_na,
