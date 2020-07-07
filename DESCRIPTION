@@ -35,6 +35,7 @@ Imports:
     limma,
     lme4,
     lmerTest,
+    MASS,
     magrittr,
     MCMCvis,
     multcomp,
