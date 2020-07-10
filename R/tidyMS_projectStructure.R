@@ -1,8 +1,10 @@
 .checkForFile <- function(inputData){
-  if ( file.exists(inputData) ) {
-    inputData
-  } else {
-    stop("File does not exist : ", inputData)
+  if (!is.null(inputData)) {
+    if ( file.exists(inputData) ) {
+      inputData
+    } else {
+      stop("File does not exist : ", inputData)
+    }
   }
 }
 

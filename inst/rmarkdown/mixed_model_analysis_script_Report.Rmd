@@ -114,8 +114,6 @@ To estimate fold-changes for proteins for which we could not fit a mixed-effects
 [^0]: This section can be used in the material and methods section alongside the model formula and the contrast specifications given below.
 
 
-
-
 The following `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}`  was fitted :
 
 __`r format(pars$model$model_fun(get_formula = TRUE))`__

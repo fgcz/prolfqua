@@ -68,16 +68,32 @@ ms_brms_model <- function(mdata,
                           linfct_A,
                           func =ms_mcmc_checkzero,
                           summarize=TRUE,
-                          cores = parallel::detectCores()){
+                          cores = parallel::detectCores()
+                          , iter = 2000,
+                          control = list(adapt_delta = 0.95)){
 
   if (!check_factors_level_coverage(mdata, fixef)) {
     return(NULL)
   }
 
   if (class(memodel) == "character") {
-    resultmodel <- tryCatch(brm(memodel, data = mdata, cores = cores, refresh = 0), error = function(x) warning(x))
+    resultmodel <- tryCatch(
+      brms::brm(memodel,
+                data = mdata,
+                cores = cores,
+                refresh = 0,
+                iter = iter,
+                control = control),
+      error = function(x) warning(x))
   }else if (class(memodel) == "brmsfit") {
-    resultmodel <- tryCatch(update(memodel, newdata = mdata, cores = cores, refresh = 0), error = function(x) warning(x))
+    resultmodel <- tryCatch(
+      update(memodel,
+             newdata = mdata,
+             cores = cores,
+             refresh = 0,
+             iter = iter,
+             control = control),
+      error = function(x) warning(x))
   }
   res <- NULL
   if (!is.null(resultmodel)) {

@@ -11,7 +11,9 @@ ms_brms_model(
   linfct_A,
   func = ms_mcmc_checkzero,
   summarize = TRUE,
-  cores = parallel::detectCores()
+  cores = parallel::detectCores(),
+  iter = 2000,
+  control = list(adapt_delta = 0.95)
 )
 }
 \arguments{

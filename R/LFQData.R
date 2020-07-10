@@ -187,9 +187,17 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     log2_robscale_subset = function(lfqsubset){
-      self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
+      if(self$lfq$is_transformed() != lfqsubset$is_transformed()){
+        warning("the subset must have the same config as self")
+        return(NULL)
+      }
+      if(self$lfq$is_transformed() == FALSE){
+        self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
+        lfqsubset$data <- LFQService::transform_work_intensity(lfqsubset$data, lfqsubset$config, log2)
+        self$lfq$is_transformed(TRUE)
+      }
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
-      self$lfq$is_transformed(TRUE)
+
       return(self)
     },
     #' @description

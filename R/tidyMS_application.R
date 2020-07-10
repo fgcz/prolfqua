@@ -1,38 +1,3 @@
-.columnsImputed <- function(all, contrasts) {
-  getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
-
-  get_sides <- function(contrast, all_variables) {
-    ast_list <- getAST(rlang::parse_expr(contrast))
-    ast_array <- array(as.character(unlist(ast_list)))
-    bb <- intersect(gsub("`","",ast_array),all_variables)
-    return(bb)
-  }
-
-  all_variables <- c(names(contrasts), unique(all$contrast))
-
-
-  res <- NULL
-
-  for (i in 1:length(contrasts)) {
-    cname <- names(contrasts)[i]
-    cc <- get_sides(contrasts[i], all_variables)
-    if (length(cc) != 2) {
-      message("there are ", length(cc) , "> 2 elements")
-      next;
-    }
-
-    tmp <- all %>% dplyr::filter( .data$contrast %in% c(cname,cc) )
-    tmp <- tmp %>% dplyr::select(-.data$meanArea) %>%
-      tidyr::spread(.data$contrast , .data$imputed)
-
-    tmp <- tmp %>% add_column(lhs = cname,.after = 1)
-    tmp <- tmp %>% add_column(c1_name = cc[1],.after = 2)
-    tmp <- tmp %>% add_column(c2_name = cc[2],.after = 3)
-    tmp <- tmp %>% dplyr::rename(c1 = !!sym(cc[1]), c2 = !!sym(cc[2]), estimate = !!sym(cname))
-    res <- dplyr::bind_rows(res,tmp)
-  }
-  return(res)
-}
 
 # merges contrasts and imputed contrasts
 .makeResult_contrasts <- function(contrast_minimal,
