@@ -59,25 +59,24 @@ application_run_modelling_V2 <- function(data,
                                                 modelFunction,
                                                 subject_Id = config$table$hkeysDepth())
 
-  ### Do missing value imputation
-  res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
-                                                                config,
-                                                                contrasts)
-  contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
-  contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
-                                          contrasts = contrasts[setdiff(names(contrasts) ,
-                                                                        do_not_report)])
-
-  #### Compute contrasts from model ####
 
   modellingResult <-  modellingResult_fun()
   modelProteinF <- modellingResult$modellingResult$modelProtein
+  message("finished modelling, starting contrasts estimation")
   res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
                                                 contrasts,
                                                 config,
                                                 modelName = modelFunction$model_name,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
+  message("finished contrast estimateion, starting missing value imputation and contrast estimation")
+  ### Do missing value imputation
+  contrasts_xx_imputed <- workflow_missigness_impute_contrasts_V2(data,
+                                                                config,
+                                                                contrasts, do_not_report = do_not_report)
+
+  #### Compute contrasts from model ####
+  message("returning results")
 
   # RESULT FUNCTION
   res_fun <- function(do = c("result",

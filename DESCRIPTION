@@ -61,7 +61,7 @@ Suggests:
     KernSmooth
 Remotes:
     bioc::3.9/limma
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
     R (>= 2.10)

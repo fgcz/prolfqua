@@ -26,9 +26,12 @@ make_custom_model_lmer <- function(modelstr,
                                                       "moderated.p.value.adjusted")
                                    ) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula = FALSE){
+  model_fun <- function(x, pb , get_formula = FALSE){
     if (get_formula) {
       return(formula)
+    }
+    if (!missing(pb)) {
+      pb$tick()
     }
     modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
                           error = .ehandler)
@@ -157,15 +160,15 @@ model_analyse <- function(pepIntensity,
 
   lmermodel <- "linear_model"
 
+  pb <- progress::progress_bar$new(total = nrow(nestProtein))
   if (TRUE) { # added because this errors after package update on 6.6.2020
     modelProtein <- nestProtein %>%
-      dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun))
+      dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
   } else {
-    resModel <- purrr::map(nestProtein$data, modelFunction$model_fun)
+    resModel <- purrr::map(nestProtein$data, modelFunction$model_fun, pb = pb)
     modelProtein <- nestProtein
     modelProtein[[lmermodel]] <- resModel
   }
-  # TODO check for string here.
   modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
 
   modelProteinF <- modelProtein %>%
@@ -277,8 +280,9 @@ model_analyse_summarize <- function(modelProteinF,
   Model_Anova <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
 
   Model_Anova <- Model_Anova %>%
-    dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef) %>%
-    tidyr::unnest(cols = "Anova_model")
+    dplyr::select(!!!syms(subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
+  Model_Anova <- tidyr::unnest_legacy(Model_Anova)
+    #tidyr::unnest(cols = "Anova_model")
 
 
   return(list(
@@ -1200,7 +1204,7 @@ contrasts_linfct <- function(models,
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>%
-    tidyr::unnest(cols = "contrast")
+    tidyr::unnest_legacy()
 
   # take sigma and df from somewhere else.
   modelInfos <- models %>%
@@ -1625,7 +1629,7 @@ get_model_coefficients <- function(modeldata, config){
   xxs <- xx %>% dplyr::select( config$table$hkeysDepth(),
                                coefficients_values,
                                coefficients_names)
-  xxxn <- xxs %>% unnest()
+  xxxn <- xxs %>% unnest_legacy()
   xxcoef <- xxxn %>% spread(coefficients_names,coefficients_values)
   return(xxcoef)
 }
