@@ -40,9 +40,10 @@ xx <- complete_cases(xx, configur)
 res <- missigness_impute_factors_interactions(xx, configur)
 head(res)
 res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-head(fun)
-dim(fun)
-dim(dplyr::distinct(fun[,1:6]))
+head(res)
+dim(res)
+dim(dplyr::distinct(res[,1:6]))
 fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
+
 }
 \keyword{internal}

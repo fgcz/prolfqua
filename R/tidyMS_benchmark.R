@@ -26,9 +26,9 @@ ms_bench_preprocess <- function(data) {
 # TP_hits - true positives
 #
 .ms_bench_add_FPRTPR <- function(data,
-                                TP_col = "TP",
-                                arrangeby = "estimate",
-                                desc = TRUE) {
+                                 TP_col = "TP",
+                                 arrangeby = "estimate",
+                                 desc = TRUE) {
   #data <- est
 
   data <- if (!desc) {
@@ -115,9 +115,9 @@ do_confusion <-
       score <- arrange$sc
       res[[score]] <-
         .ms_bench_add_FPRTPR(est,
-                            TP_col = "TP",
-                            arrangeby = score,
-                            desc = arrange$desc)
+                             TP_col = "TP",
+                             arrangeby = score,
+                             desc = arrange$desc)
     }
     all <- bind_rows(res)
     return(all)
@@ -297,7 +297,7 @@ Benchmark <-
                               list(sc = "scaled.moderated.p.value", desc = TRUE)
                             ),
                             FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE),
-                                           list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+                                            list(sc = "moderated.p.value.adjusted", desc = FALSE)),
                             model_description = "protein level measurments, linear model",
                             model_name = "medpolish_lm",
                             contrast = "contrast",
@@ -346,7 +346,7 @@ Benchmark <-
         if (missing(arrange)) {
           arrange = self$FDRvsFDP
         }
-        confusion <- do_confusion_c(self$data(),
+        confusion <- LFQService:::do_confusion_c(self$data(),
                                     contrast = self$contrast,
                                     arrangeby = arrange)
         confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)

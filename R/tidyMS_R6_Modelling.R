@@ -62,11 +62,13 @@ make_custom_model_lm <- function(modelstr,
                                                     "moderated.p.value.adjusted")
                                  ) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE){
     if (get_formula) {
       return(formula)
     }
-
+    if (!missing(pb)) {
+      pb$tick()
+    }
     modelTest <- tryCatch(lm( formula , data = x ),
                           error = .ehandler)
     return(modelTest)
