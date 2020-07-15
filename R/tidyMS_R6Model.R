@@ -106,7 +106,7 @@ model_analyse_summarize <- function(modelProteinF,
 #' library(LFQService)
 #' library(tidyverse)
 #' D <- LFQServiceData::ionstar$normalized()
-#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 10))
+#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
@@ -129,7 +129,10 @@ model_analyse_summarize <- function(modelProteinF,
 #' mod$modelDF
 #' mod$get_anova()
 #' mod$get_coefficients()
-#'
+#' mod$coef_histogram()
+#' mod$coef_volcano()
+#' mod$coef_pairs()
+#' mod$anova_histogram()
 Model <- R6::R6Class(
   "Model",
   public = list(
@@ -157,6 +160,7 @@ Model <- R6::R6Class(
        dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
      Model_Coeff <- Model_Coeff %>%
        dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
+     Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
      return(Model_Coeff)
    },
    get_anova = function(){
@@ -179,6 +183,7 @@ Model <- R6::R6Class(
      return(Model_Anova)
 
    },
+   #' @description histogram of model coefficient
    coef_histogram = function(){
      Model_Coeff <- self$get_coefficients()
      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
@@ -187,11 +192,12 @@ Model <- R6::R6Class(
      histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = row.names.x.)) +
        geom_histogram(breaks = seq(0,1,by = 0.05)) +
        facet_wrap(~row.names.x.)
-
+     return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
    },
+   #' @description volcano plot of non intercept coefficients
    coef_volcano = function(){
      Model_Coeff <- self$get_coefficients()
-
+     Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
      fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
      VolcanoPlot <- Model_Coeff %>%
        dplyr::filter(row.names.x. != "(Intercept)") %>%
@@ -202,17 +208,22 @@ Model <- R6::R6Class(
          label = "subject_Id" ,
          xintercept = c(-1, 1) ,
          colour = "isSingular" )
+     return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
    },
+   #' @description pairsplot of coefficients
    coef_pairs = function(){
      Model_Coeff <- self$get_coefficients()
+     Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
      ## Coef_Pairsplot
      forPairs <- Model_Coeff %>%
        dplyr::select(!!sym("subject_Id") , row.names.x. ,  Estimate ) %>%
        tidyr::spread(row.names.x., Estimate )
      fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
      Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
+     return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
 
    },
+   #' @description histogram of anova results
    anova_histogram = function(){
      ## Anova_p.values
      Model_Anova <- self$get_anova()
@@ -222,7 +233,7 @@ Model <- R6::R6Class(
        ggplot( aes(x = Pr..F., group = rownames.x.)) +
        geom_histogram(breaks = seq(0,1,by = 0.05)) +
        facet_wrap(~rownames.x.)
-
+     return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
    }
 
 

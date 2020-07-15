@@ -13,7 +13,7 @@ rm(list = ls())
 library(LFQService)
 library(tidyverse)
 D <- LFQServiceData::ionstar$normalized()
-D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 10))
+D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
@@ -36,7 +36,10 @@ mod <- Model$new(
 mod$modelDF
 mod$get_anova()
 mod$get_coefficients()
-
+mod$coef_histogram()
+mod$coef_volcano()
+mod$coef_pairs()
+mod$anova_histogram()
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -89,6 +92,7 @@ mod$get_coefficients()
 \if{html}{\out{<a id="method-coef_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_histogram}{}}}
 \subsection{Method \code{coef_histogram()}}{
+histogram of model coefficient
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$coef_histogram()}\if{html}{\out{</div>}}
 }
@@ -98,6 +102,7 @@ mod$get_coefficients()
 \if{html}{\out{<a id="method-coef_volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_volcano}{}}}
 \subsection{Method \code{coef_volcano()}}{
+volcano plot of non intercept coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$coef_volcano()}\if{html}{\out{</div>}}
 }
@@ -107,6 +112,7 @@ mod$get_coefficients()
 \if{html}{\out{<a id="method-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
+pairsplot of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$coef_pairs()}\if{html}{\out{</div>}}
 }
@@ -116,6 +122,7 @@ mod$get_coefficients()
 \if{html}{\out{<a id="method-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
+histogram of anova results
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram()}\if{html}{\out{</div>}}
 }
