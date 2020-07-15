@@ -41,10 +41,12 @@ mod$coef_volcano()
 mod$coef_pairs()
 mod$anova_histogram()
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{modelDF}}{data.frame with modelling data and model.}
+\item{\code{modelDF}}{data.frame with modelling data and model.
+writes results of `model_analyse`, anova table and all the coefficients with parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -54,10 +56,14 @@ mod$anova_histogram()
 \item \href{#method-new}{\code{Model$new()}}
 \item \href{#method-get_coefficients}{\code{Model$get_coefficients()}}
 \item \href{#method-get_anova}{\code{Model$get_anova()}}
+\item \href{#method-write_coefficients}{\code{Model$write_coefficients()}}
+\item \href{#method-write_anova}{\code{Model$write_anova()}}
 \item \href{#method-coef_histogram}{\code{Model$coef_histogram()}}
 \item \href{#method-coef_volcano}{\code{Model$coef_volcano()}}
 \item \href{#method-coef_pairs}{\code{Model$coef_pairs()}}
 \item \href{#method-anova_histogram}{\code{Model$anova_histogram()}}
+\item \href{#method-write_anova_figures}{\code{Model$write_anova_figures()}}
+\item \href{#method-write_coef_figures}{\code{Model$write_coef_figures()}}
 \item \href{#method-clone}{\code{Model$clone()}}
 }
 }
@@ -85,6 +91,24 @@ mod$anova_histogram()
 \subsection{Method \code{get_anova()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_anova()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_coefficients"></a>}}
+\if{latex}{\out{\hypertarget{method-write_coefficients}{}}}
+\subsection{Method \code{write_coefficients()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_coefficients(path)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_anova"></a>}}
+\if{latex}{\out{\hypertarget{method-write_anova}{}}}
+\subsection{Method \code{write_anova()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_anova(path)}\if{html}{\out{</div>}}
 }
 
 }
@@ -125,6 +149,24 @@ pairsplot of coefficients
 histogram of anova results
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_anova_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-write_anova_figures}{}}}
+\subsection{Method \code{write_anova_figures()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_anova_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_coef_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-write_coef_figures}{}}}
+\subsection{Method \code{write_coef_figures()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_coef_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
 }
 
 }
