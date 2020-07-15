@@ -60,7 +60,7 @@ split2table <- function(names,split="\\||\\_")
 #' library(tidyverse)
 #' library(ggrepel)
 #' multigroupVolcano(LFQServiceData::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
-multigroupVolcano <- function(misspX,
+multigroupVolcano <- function(.data,
                               effect = "fc",
                               p.value = "p.adjust",
                               condition = "condition",
@@ -78,7 +78,7 @@ multigroupVolcano <- function(misspX,
                               ), scales = "fixed",
                               maxNrOfSignificantText = 20)
 {
-  misspX <- tidyr::unite(misspX, "label", label)
+  misspX <- tidyr::unite(.data, "label", label)
   colname = paste("-log10(", p.value , ")" , sep = "")
   p <- ggplot( misspX, aes_string(x = effect , y = colname, color = colour  )  )  +
     geom_point(alpha = 0.5)

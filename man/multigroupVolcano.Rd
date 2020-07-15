@@ -5,7 +5,7 @@
 \title{plot volcano given multiple conditions}
 \usage{
 multigroupVolcano(
-  misspX,
+  .data,
   effect = "fc",
   p.value = "p.adjust",
   condition = "condition",
@@ -22,8 +22,6 @@ multigroupVolcano(
 )
 }
 \arguments{
-\item{misspX}{data in long format}
-
 \item{effect}{column containing effect sizes}
 
 \item{p.value}{column containing p-values, q.values etc}
@@ -47,6 +45,8 @@ multigroupVolcano(
 \item{ablines}{adds ablines horizontal and vertical}
 
 \item{scales}{parameter to ggplot2::facet_wrap}
+
+\item{misspX}{data in long format}
 }
 \description{
 plot volcano given multiple conditions
