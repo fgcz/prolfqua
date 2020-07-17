@@ -21,20 +21,15 @@ formula_randomPeptide <-
 pepIntensity <- D$data
 config <- D$config
 config$table$hkeysDepth()
-modellingResult <- LFQService:::model_analyse(
+mod <- LFQService:::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,
  subject_Id = config$table$hkeysDepth())
-names(modellingResult)
-
-mod <- Model$new(
-  modelDF = modellingResult$modelProtein,
-  modelName = modellingResult$modelName,
-  subject_Id = config$table$hkeysDepth())
 
 mod$modelDF
-mod$get_anova()
+aovtable  <- mod$get_anova()
+unique(aovtable$factor)
 mod$get_coefficients()
 mod$coef_histogram()
 mod$coef_volcano()
@@ -45,8 +40,7 @@ mod$anova_histogram()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{modelDF}}{data.frame with modelling data and model.
-writes results of `model_analyse`, anova table and all the coefficients with parameters.}
+\item{\code{modelDF}}{data.frame with modelling data and model.}
 }
 \if{html}{\out{</div>}}
 }
@@ -80,6 +74,9 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 \if{html}{\out{<a id="method-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-get_coefficients}{}}}
 \subsection{Method \code{get_coefficients()}}{
+return model coefficient table
+return anova table
+writes results of `model_analyse`, anova table and all the coefficients with parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_coefficients()}\if{html}{\out{</div>}}
 }

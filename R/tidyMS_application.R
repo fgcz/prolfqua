@@ -55,20 +55,19 @@ application_run_modelling_V2 <- function(data,
   modelling_path <- modelling_dir
 
   ### make modeling  -----
-  modellingResult_fun <- workflow_model_analyse(data,
-                                                modelFunction,
-                                                subject_Id = config$table$hkeysDepth())
+  model <- build_model(data,
+                       modelFunction,
+                       subject_Id = config$table$hkeysDepth())
 
 
-  modellingResult <-  modellingResult_fun()
-  modelProteinF <- modellingResult$modellingResult$modelProtein
   message("finished modelling, starting contrasts estimation")
-  res_contrasts <- workflow_contrasts_linfct_V2(modelProteinF,
+  res_contrasts <- workflow_contrasts_linfct_V2( model$modelDF,
                                                 contrasts,
                                                 config,
                                                 modelName = modelFunction$model_name,
                                                 prefix =  "contrasts",
                                                 contrastfun = modelFunction$contrast_fun)
+
   message("finished contrast estimateion, starting missing value imputation and contrast estimation")
   ### Do missing value imputation
   contrasts_xx_imputed <- workflow_missigness_impute_contrasts_V2(data,
