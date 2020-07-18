@@ -16,7 +16,7 @@ library(tidyverse)
 
 D <- LFQServiceData::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
-modelName <- "f_condtion_r_peptide"
+modelName <- "Model"
 modelFunction <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
    model_name = modelName)
@@ -29,16 +29,62 @@ mod <- build_model(
  modelName = modelName,
  subject_Id = config$table$hkeysDepth())
  mod$get_coefficients()
- Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+ Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
+  "dil.e_vs_a" = "dilution.e - dilution.a",
+  "dil.e_vs_b" = "dilution.e - dilution.b",
+  "dil.c_vs_b" = "dilution.c - dilution.b"
+ )
 contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
-contrast$get_contrasts()
-Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
+#Contrast_Plotter$debug("volcano_plotly")
+cp <- Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
+cp$histogram()
+cp$histogram_estimate()
+res <- cp$volcano()
+res[[1]]
+res[[2]]
+respltly <- cp$volcano_plotly()
+cp$ma_plot()
+cp$ma_plotly()
+cp$write_pdf("c:/Temp")
+cp$write_plotly("c:/Temp")
+cp$get_minimal()
+cp$to_wide()
+
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{contrastDF}}{data frame with contrasts}
+
+\item{\code{modelName}}{name of model}
+
+\item{\code{subject_Id}}{hierarchy key columns}
+
+\item{\code{prefix}}{default Contrasts - used to generate file names
+column with fold change estimates}
+
+\item{\code{contrast}}{column with contrasts names, default "contrast"}
+
+\item{\code{figures}}{list of generated figures}
+
+\item{\code{figures_plotly}}{list of generated figures}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Contrast_Plotter$new()}}
 \item \href{#method-histogram}{\code{Contrast_Plotter$histogram()}}
+\item \href{#method-histogram_estimate}{\code{Contrast_Plotter$histogram_estimate()}}
+\item \href{#method-volcano}{\code{Contrast_Plotter$volcano()}}
+\item \href{#method-volcano_plotly}{\code{Contrast_Plotter$volcano_plotly()}}
+\item \href{#method-ma_plot}{\code{Contrast_Plotter$ma_plot()}}
+\item \href{#method-ma_plotly}{\code{Contrast_Plotter$ma_plotly()}}
+\item \href{#method-write_pdf}{\code{Contrast_Plotter$write_pdf()}}
+\item \href{#method-write_pltly}{\code{Contrast_Plotter$write_pltly()}}
+\item \href{#method-get_minimal}{\code{Contrast_Plotter$get_minimal()}}
+\item \href{#method-to_wide}{\code{Contrast_Plotter$to_wide()}}
 \item \href{#method-clone}{\code{Contrast_Plotter$clone()}}
 }
 }
@@ -46,6 +92,7 @@ Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subje
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+create Crontrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$new(
   contrastDF,
@@ -61,12 +108,141 @@ Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subje
 \if{html}{\out{<a id="method-histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-histogram}{}}}
 \subsection{Method \code{histogram()}}{
+plot histogram of selected socres
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$histogram(
   score = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score =
-    "p.value.adjusted", xlim = c(0, 1, 0.5)), list(score = "statistic", xlim = c(0, 4,
-    0.5)))
+    "p.value.adjusted", xlim = c(0, 1, 0.05)), list(score = "statistic", xlim = c(0, 4,
+    0.1)))
 )}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{score}}{which scores to show - list of lists}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-histogram_estimate"></a>}}
+\if{latex}{\out{\hypertarget{method-histogram_estimate}{}}}
+\subsection{Method \code{histogram_estimate()}}{
+plot histogram of estimated fold change
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$histogram_estimate()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-volcano"></a>}}
+\if{latex}{\out{\hypertarget{method-volcano}{}}}
+\subsection{Method \code{volcano()}}{
+plotly volcano plots
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$volcano(scores = c("p.value", "p.value.adjusted"), fc = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{scores}}{for which scores to generate volcano plot}
+
+\item{\code{fc}}{fold change abline}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-volcano_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-volcano_plotly}{}}}
+\subsection{Method \code{volcano_plotly()}}{
+plotly volcano plots
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$volcano_plotly(
+  scores = c("p.value", "p.value.adjusted"),
+  fc = 1
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{scores}}{for which scores to generate volcano plot}
+
+\item{\code{fc}}{fold change abline}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ma_plot"></a>}}
+\if{latex}{\out{\hypertarget{method-ma_plot}{}}}
+\subsection{Method \code{ma_plot()}}{
+ma plot
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$ma_plot(fc = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fc}}{fold change abline}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ma_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-ma_plotly}{}}}
+\subsection{Method \code{ma_plotly()}}{
+ma plotly
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$ma_plotly(fc = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fc}}{fold change abline}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_pdf"></a>}}
+\if{latex}{\out{\hypertarget{method-write_pdf}{}}}
+\subsection{Method \code{write_pdf()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$write_pdf(path, width = 10, height = 10)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_pltly"></a>}}
+\if{latex}{\out{\hypertarget{method-write_pltly}{}}}
+\subsection{Method \code{write_pltly()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$write_pltly(path)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_minimal"></a>}}
+\if{latex}{\out{\hypertarget{method-get_minimal}{}}}
+\subsection{Method \code{get_minimal()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$get_minimal(columns = c("p.value", "p.value.adjusted"))}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\subsection{Method \code{to_wide()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrast_Plotter$to_wide(columns = c("p.value", "p.value.adjusted"))}\if{html}{\out{</div>}}
 }
 
 }

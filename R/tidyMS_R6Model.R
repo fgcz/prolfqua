@@ -395,7 +395,9 @@ Contrasts <- R6::R6Class(
   return(fig)
 }
 
+# Contrasts ----
 #' plot contrasts
+#' @export
 #' @examples
 #'
 #' rm(list = ls())
@@ -404,7 +406,7 @@ Contrasts <- R6::R6Class(
 #'
 #' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
-#' modelName <- "f_condtion_r_peptide"
+#' modelName <- "Model"
 #' modelFunction <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
 #'    model_name = modelName)
@@ -423,23 +425,42 @@ Contrasts <- R6::R6Class(
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
+#' #Contrast_Plotter$debug("volcano_plotly")
 #' cp <- Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
 #' cp$histogram()
 #' cp$histogram_estimate()
 #' res <- cp$volcano()
-#'
+#' res[[1]]
+#' res[[2]]
+#' respltly <- cp$volcano_plotly()
+#' cp$ma_plot()
+#' cp$ma_plotly()
+#' cp$write_pdf("c:/Temp")
+#' cp$write_plotly("c:/Temp")
+#' cp$get_minimal()
+#' cp$to_wide()
 #'
 Contrast_Plotter <- R6::R6Class(
   "Contrast_Plotter"
   ,
   public = list(
+    #' @field contrastDF data frame with contrasts
     contrastDF = NULL,
+    #' @field modelName name of model
     modelName =  character(),
+    #' @field subject_Id hierarchy key columns
     subject_Id = character(),
-
+    #' @field prefix default Contrasts - used to generate file names
     prefix = "Contrasts",
+    #' column with fold change estimates
     estimate = "estimate",
+    #' @field contrast column with contrasts names, default "contrast"
     contrast = "contrast",
+    #' @field figures list of generated figures
+    figures = list(),
+    #' @field figures_plotly list of generated figures
+    figures_plotly = list(),
+    #' @description create Crontrast_Plotter
     initialize = function(contrastDF,
                           modelName,
                           subject_Id,
@@ -451,41 +472,161 @@ Contrast_Plotter <- R6::R6Class(
       self$subject_Id = subject_Id
       self$estimate = estimate
     },
+    #' @description  plot histogram of selected socres
+    #' @param score which scores to show - list of lists
     histogram = function(score = list(list(score = "p.value", xlim = c(0,1,0.05)),
                                         list(score = "p.value.adjusted", xlim = c(0,1,0.05)),
                                         list(score = "statistic" , xlim = c(0,4,0.1)))
                          ){
-      plots <- list()
-      for (i in score) {
-        print(i)
-        xlim = i$xlim
-        score = i$score
-        plots[[score]] <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
-          geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
-          facet_wrap(vars(!!sym(self$contrast)))
-      }
-      fig <- ggpubr::ggarrange(plotlist = plots,
-                               nrow = 1,
-                               common.legend = TRUE,
-                               legend = "bottom")
+      fig <- private$.histogram(score = score)
 
-      #annot <- "histogram of score distribution"
-      #fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
+      self$figures[["histogram"]] <- list(fig = fig,
+                                         name = paste0(self$prefix,"_Histogram_", self$modelName))
       return(fig)
+
     },
+    #' @description plot histogram of estimated fold change
     histogram_estimate = function(){
       re <- range(self$contrastDF[[self$estimate]])
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
-      self$histogram(score = list(list(score =  self$estimate, xlim = c(re,0.1))))
+      fig <- private$.histogram(score = list(list(score =  self$estimate, xlim = c(re,0.1))))
+      self$figures[["histogram_estimate"]] <- list(fig = fig,
+                                         name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
+      return(fig)
+
     },
+    #' @description plotly volcano plots
+    #' @param scores for which scores to generate volcano plot
+    #' @param  fc fold change abline
     volcano = function(scores = c("p.value","p.value.adjusted"), fc = 1){
-      private$.volcano(self$contrastDF, scores, fc = fc )
+      fig <- private$.volcano(self$contrastDF, scores, fc = fc )
+      self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
+      return(fig)
     },
-    volcano_plotly = function(columns){
+    #' @description plotly volcano plots
+    #' @param scores for which scores to generate volcano plot
+    #' @param  fc fold change abline
+    volcano_plotly = function(scores = c("p.value","p.value.adjusted"), fc = 1){
+      contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
+      res <- private$.volcano(contrastDF, scores, fc = fc )
+      for (i in 1:length(res)) {
+        res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
+      }
+      self$figures_plotly[["volcano"]] <- list(fig = res,
+                                              name = paste0(self$prefix, "_Volcano_Plolty_", self$modelName))
+      return(res)
+    },
+    #' @description
+    #' ma plot
+    #' @param fc fold change abline
+    ma_plot = function(fc = 1){
+      contrastDF <- self$contrastDF
+      if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
+        # pdf version
+        fig <- private$.ma_plot(contrastDF ,self$contrast, fc = fc)
+        self$figures[["ma_plot"]] <- list(fig = fig,
+                                         name = paste0(self$prefix, "_MA_", self$modelName))
+      }else{
+        warning("no c1 c2 columns can't generate MA")
+        fig <- NULL
+      }
+      return(fig)
+    },
+    #' @description
+    #' ma plotly
+    #' @param fc fold change abline
+    ma_plotly = function(fc =1){
+      # html version
+      contrastDF  <- self$contrastDF
+      if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
 
+        contrastDF  <- contrastDF %>%
+          plotly::highlight_key(~subject_Id)
+        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc = fc) %>%
+          plotly::ggplotly(tooltip = "subject_Id")
+
+        self$figures_plotly[["ma_plot"]] <- list(fig = fig_plotly,
+                                                name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
+        return(fig_plotly)
+
+      }else{
+        return(NULL)
+      }
+    },
+    write_pdf = function(path,
+                         width = 10,
+                          height = 10){
+      message("Writing: ",path,"\n")
+
+      plotX <- function(fig, width, height, path, fname, xname){
+        fpath <- file.path(path,
+                           paste(c(fname, if (!is.null(xname)) { c("_" , xname) }, ".pdf"),
+                                 collapse = ""))
+        pdf(fpath, width = width, height = height)
+        print(fig)
+        dev.off()
+      }
+
+      for (fig in self$figures) {
+        if ("list" %in% class(fig$fig)) {
+          for (i in 1:length(fig$fig)) {
+            plotX(fig$fig[[i]], width, height, path, fname = fig$name, xname = names(fig$fig)[i] )
+          }
+        }else{
+          plotX(fig$fig, width, height, path, fname = fig$name, xname = NULL )
+        }
+
+      }
+    },
+    write_pltly = function(path){
+      message("Writing: ",path,"\n")
+
+      plotX <- function(fig,path, fname, xname){
+        fname <- paste(c(fname, if (!is.null(xname)) { c("_" , xname) }, ".html"),
+                       collapse = "")
+        fpath <- file.path(path,fname)
+        message("Writing: ",fpath,"\n")
+        htmlwidgets::saveWidget(widget = fig, fname, selfcontained = TRUE)
+        file.rename(fname, fpath)
+      }
+
+      for (fig in self$figures_plotly) {
+        if ("list" %in% class(fig$fig)) {
+          for (i in 1:length(fig$fig)) {
+            plotX(fig$fig[[i]], path, fname = fig$name, xname = names(fig$fig)[i] )
+          }
+        }else{
+          plotX(fig$fig,  path, fname = fig$name, xname = NULL )
+        }
+
+      }
+    },
+    get_minimal = function(columns = c("p.value","p.value.adjusted")){
+      relevant_columns <- c("contrast",
+                            "c1_name",
+                            "c1",
+                            "c2_name",
+                            "c2",
+                            "sigma",
+                            "df",
+                            "isSingular",
+                            "estimate",
+                            "conf.low",
+                            "conf.high") # other relevant columns.
+
+      contrast_minimal <- self$contrastDF %>%
+        dplyr::select_at(c(subject_Id, relevant_columns, columns) )
+      return(contrast_minimal)
+
+    },
+    to_wide = function(columns = c("p.value","p.value.adjusted")){
+      contrast_minimal <- self$get_minimal(columns = columns)
+      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                     subject_Id = subject_Id,
+                                                     columns = c("estimate", columns))
+      return(contrasts_wide)
     }
-
   ),
   private = list(
     .volcano = function(contrasts, scores , fc = 1){
@@ -503,265 +644,42 @@ Contrast_Plotter <- R6::R6Class(
       }
       return(fig)
 
+    },
+    .histogram  = function(score){
+      plots <- list()
+      for (i in score) {
+        xlim = i$xlim
+        score = i$score
+        plots[[score]] <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
+          geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
+          facet_wrap(vars(!!sym(self$contrast)))
+      }
+      fig <- ggpubr::ggarrange(plotlist = plots,
+                               nrow = 1,
+                               common.legend = TRUE,
+                               legend = "bottom")
+      #annot <- "histogram of score distribution"
+      #fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
+      return(fig)
+    },
+    .ma_plot = function(x, contrast,  fc = 1){
+      x <- ggplot(x , aes(x = (c1 + c2)/2,
+                          y = !!sym(self$estimate),
+                          text = !!sym("subject_Id"),
+                          colour = !!sym("isSingular"))) +
+        geom_point(alpha = 0.5) +
+        scale_colour_manual(values = c("black", "red")) +
+        facet_wrap(vars(!!sym(self$contrast))) + theme_light() +
+        geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
+      return(x)
     }
+
 
   )
 )
 
 
-#' visualize output of `contrasts_linfct``
-#' @export
-#' @keywords internal
-contrasts_linfct_vis <- function(contrasts,
-                                 modelName = "Model",
-                                 prefix = "Contrasts",
-                                 subject_Id = "protein_Id",
-                                 columns = c("p.value","p.value.adjusted"),
-                                 estimate = "estimate",
-                                 contrast = "lhs",
-                                 fc = 1){
-  res <- list()
-  contrasts %>% tidyr::unite("label", subject_Id, sep = "~", remove = FALSE) -> contrasts
-  #return(contrasts)
-  # add histogram of p-values
-  for (column in columns) {
-    fig <- list()
-    name <- paste0(prefix,"_Histogram_",column)
-    fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- ggplot(data = contrasts, aes(x = !!sym(column))) +
-      geom_histogram(breaks = seq(0, 1, by = 0.05)) +
-      facet_wrap(vars(!!sym(contrast)))
-    res[[name]] <- fig
-  }
-  message("histograms created")
-  # add volcano plots
-  for (column in columns) {
-    message(column)
-    fig <- list()
-    name <- paste0(prefix,"_Volcano_",column)
-    fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- LFQService:::.multigroupVolcano(contrasts,
-                                               effect = estimate,
-                                               p.value = column,
-                                               condition = contrast,
-                                               text = "label",
-                                               xintercept = c(-fc, fc),
-                                               colour = "isSingular",
-                                               scales = "free_y")
-
-    message("volcano1")
-    fig$plotly <- contrasts %>% plotly::highlight_key(~label) %>%
-      LFQService:::.multigroupVolcano(.,
-                                      effect = estimate,
-                                      p.value = column,
-                                      condition = contrast,
-                                      text = "label",
-                                      xintercept = c(-fc, fc),
-                                      colour = "isSingular",
-                                      scales = "free_y") %>%
-      plotly::ggplotly(tooltip = "label")
-    message("volcano plotly")
-    res[[name]] <- fig
-  }
-  message("volcanos_build")
-  # add histogram of fold changes
-  {
-    fig <- list()
-    name <- paste0(prefix,"_Histogram_FC_estimate")
-    fig$fname <- paste0(name, "_", modelName )
-    fig$fig <- ggplot(data = contrasts, aes(x = !!sym(estimate))) +
-      geom_histogram(breaks = seq(floor(min(contrasts[[estimate]], na.rm = TRUE)),
-                                  ceiling(max(contrasts[[estimate]], na.rm = TRUE)), by = 0.1)) +
-      facet_wrap(vars(!!sym(contrast)))
-    res[[name]] <- fig
-  }
-  # MA plot
-  {
-    ma_plot <- function(x, fc = 1){
-      x <- ggplot(x , aes(x = (c1 + c2)/2,
-                          y = !!sym(estimate),
-                          text = !!sym("label"),
-                          colour = !!sym("isSingular"))) +
-        geom_point(alpha = 0.5) + scale_colour_manual(values = c("black", "red")) +
-        facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
-      return(x)
-    }
-
-    if (!is.null(contrasts$c1) && !is.null(contrasts$c2)) {
-      fig <- list()
-      name <- paste0(prefix,"_MA_FC_estimate")
-      fig$fname <- paste0(name, "_", modelName )
-      # pdf version
-      fig$fig <- contrasts %>% ma_plot(fc = fc)
-
-      # html version
-      fig$plotly  <- contrasts %>%
-        plotly::highlight_key(~label) %>%
-        ma_plot() %>%
-        plotly::ggplotly(tooltip = "label")
-
-      res[[name]] <- fig
-    }
-  }
-  return(res)
-}
-
-
-workflow_contrasts_linfct_V2 <- function(models,
-                                         contrasts,
-                                         modelFunction,
-                                         config,
-                                         subject_Id  = "protein_Id",
-                                         modelName = modelFunction$model_name,
-                                         contrastfun = modelFunction$contrast_fun,
-                                         prefix = "Contrasts"
-                                         )
-{
-
-  # extract contrast sides
-  tt <- contrasts[grep("-",contrasts)]
-  tt <- tibble(lhs = names(tt) , contrast = tt)
-  tt <- tt %>% mutate(contrast = gsub("[` ]","",contrast)) %>%
-    tidyr::separate(contrast, c("c1", "c2"), sep = "-")
-
-  models <- models %>% dplyr::filter(exists_lmer == TRUE)
-  m <- get_complete_model_fit(models)
-  linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-  linfct <- unique(linfct) # needed for single factor models
-  linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
-
-
-  contrast_result <- contrasts_linfct(models,
-                                      rbind(linfct, linfct_A),
-                                      subject_Id = subject_Id,
-                                      contrastfun = contrastfun )
-
-  xx <- contrast_result %>% dplyr::select(subject_Id, "lhs", "estimate")
-  xx <- xx %>% pivot_wider(names_from = "lhs", values_from = "estimate")
-
-  contrast_result <- contrast_result %>% dplyr::filter(lhs %in% names(contrasts))
-
-  get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
-    data.frame(lhs = contrast_table[i, "lhs"],
-               dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("c1","c2")]))),
-               c1_name = contrast_table[i,"c1", drop = T],
-               c2_name = contrast_table[i,"c2", drop = T], stringsAsFactors = FALSE)
-  }
-
-  contrast_sides <- purrr::map_df(1:nrow(tt), get_contrast_cols, xx, tt, subject_Id)
-  contrast_result <- inner_join(contrast_sides,contrast_result)
-
-  contrast_result <- moderated_p_limma_long(contrast_result)
-
-  prefix <- prefix
-  modelName <- modelName
-
-
-  res_fun <- function(path = NULL, columns = c("p.value",
-                                               "p.value.adjusted",
-                                               "moderated.p.value",
-                                               "moderated.p.value.adjusted"),
-                      DEBUG = FALSE){
-    if (DEBUG) {
-      return(list(contrast_result = contrast_result,
-                  linfct_A = linfct_A,
-                  modelName = modelName,
-                  config = config,
-                  prefix = prefix,
-                  subject_Id = subject_Id,
-                  columns = columns
-      ))
-    }
-
-    visualization <- contrasts_linfct_vis(contrast_result,
-                                          modelName ,
-                                          prefix = prefix,
-                                          subject_Id = subject_Id,
-                                          columns = columns
-    )
-
-    relevant_columns <- c("lhs",
-                          "c1_name",
-                          "c1",
-                          "c2_name",
-                          "c2",
-                          "sigma",
-                          "df",
-                          "isSingular",
-                          "estimate",
-                          "conf.low",
-                          "conf.high") # other relevant columns.
-
-    contrast_minimal <- contrast_result %>%
-      dplyr::select(subject_Id, relevant_columns, columns )
-    contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                   subject_Id = subject_Id,
-                                                   columns = c("estimate", columns))
-
-    if (!is.null(path)) {
-      if (FALSE) {
-        contrasts_linfct_write(contrast_minimal,
-                               config,
-                               path = path,
-                               modelName = modelName,
-                               prefix = prefix,
-                               columns = c("estimate", columns))
-      }
-
-      contrasts_linfct_vis_write(visualization, path = path, format = "pdf")
-      contrasts_linfct_vis_write(visualization, path = path, format = "html")
-    }
-
-    res <- list(contrast_result = contrast_result,
-                contrast_minimal = contrast_minimal,
-                contrasts_wide = contrasts_wide,
-                visualization = visualization,
-                modelName = modelName,
-                linfct_A = linfct_A,
-                prefix = prefix)
-
-    invisible(res)
-  }
-  return( res_fun )
-}
 
 
 
-
-
-
-#' helper function to write the result of `contrasts_linfct_vis`
-#'
-#' used in p2901
-#'
-#' @export
-#' @keywords internal
-contrasts_linfct_vis_write <- function(fig_list,
-                                       path,
-                                       fig.width = 10,
-                                       fig.height = 10,
-                                       format = c("pdf","html")){
-  format <- match.arg(format)
-  if (!is.null(path)) {
-    for (fig in fig_list) {
-
-      fpath <- file.path(path,paste0(fig$fname,".", format))
-
-
-      if (format == "pdf") {
-        message("Writing: ",fpath,"\n")
-        pdf(fpath, width = fig.width, height = fig.height)
-        print(fig$fig)
-        dev.off()
-      }else if (format == "html") {
-        if (!is.null(fig$plotly)) {
-          message("Writing: ",fpath,"\n")
-          htmlwidgets::saveWidget(widget = fig$plotly, fig$fname, selfcontained = TRUE)
-          file.rename(fig$fname, fpath)
-        }
-      }
-    }
-  }
-}
 
