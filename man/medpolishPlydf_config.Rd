@@ -46,3 +46,4 @@ Other aggregation:
 \code{\link{summarizeRobust}()}
 }
 \concept{aggregation}
+\keyword{internal}

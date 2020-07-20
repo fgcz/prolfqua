@@ -288,6 +288,7 @@ extractIntensities <- function(pdata, config ){
 #' @param samples column name e.g. sampleName
 #' @return data.frame
 #' @export
+#' @keywords internal
 #' @family aggregation
 #' @family plotting
 #' @examples
@@ -320,6 +321,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @family aggregation
+#' @keywords internal
 #' @export
 #' @examples
 #'
@@ -483,7 +485,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @param pdata data.frame
 #' @param config AnalysisConfiguraton
 #' @family aggregation
-#' @keywords inernal
+#' @keywords internal
 #' @example
 #'
 #' bb <- LFQServiceData::skylinePRMSampleData_A
@@ -576,6 +578,7 @@ aggregate_intensity <- function(data, config, .func)
 #' @param config_aggr AnalysisConfiguration of aggregated data
 #' @family plotting
 #' @family aggregation
+#' @keywords internal
 #' @export
 #' @examples
 #' library( LFQService )

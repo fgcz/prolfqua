@@ -70,3 +70,4 @@ Other aggregation:
 }
 \concept{aggregation}
 \concept{plotting}
+\keyword{internal}

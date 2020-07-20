@@ -39,3 +39,4 @@ Other MaxQuant:
 \code{\link{tidyMQ_top_protein_name}()}
 }
 \concept{MaxQuant}
+\keyword{internal}

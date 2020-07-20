@@ -5,6 +5,8 @@
 #' to code mcmc.list
 #' @param model brms model
 #' @param linfct_A linear function
+#' @keywords internal
+#' @family modelling
 #' @export
 #'
 #'
@@ -22,6 +24,8 @@ ms_mcmc_constrast <- function(model, linfct_A){
 
 #' plugin method for MCMCsummary.
 #' can be passed to MCMCsummary func and func_name argument.
+#' @keywords internal
+#' @family modelling
 #' @export
 #'
 #'
@@ -59,6 +63,8 @@ check_factors_level_coverage <- function(mdata26, fixeff){
 #' @param func todo
 #' @param summarize todo
 #' @param cores todo
+#' @keywords internal
+#' @family modelling
 #' @export
 #' @examples
 #' # todo

@@ -373,6 +373,7 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 #' Plotting two independent random effects
 #' @export
 #' @family modelling
+#' @keywords internal
 #' @examples
 #' #todo
 #'

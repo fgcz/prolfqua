@@ -497,7 +497,9 @@ tidyMQ_from_Sites <- function(pDat){
 #' @param use either peptides.txt or modificationSpecificPeptides.txt
 #' @param id_extractor function to parse id's
 #' @param remove_rev should reverse sequences be removed
+#'
 #' @family MaxQuant
+#' @keywords internal
 #' @export
 tidyMQ_Peptides_Config <- function(MQtxtfolder,
                                    use = c("peptides", "modificationSpecificPeptides" ),
