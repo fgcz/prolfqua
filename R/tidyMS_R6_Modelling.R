@@ -819,18 +819,19 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' tmp
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
-                                         columns = c("estimate", "p.value","p.value.adjusted")){
+                                         columns = c("estimate", "p.value","p.value.adjusted"),
+                                         contrast = "lhs"){
 
-  m_spread <- function(longContrasts, subject_Id, column ){
+  m_spread <- function(longContrasts, subject_Id, column , contrast){
     res <- longContrasts %>%
-      dplyr::select_at(c(subject_Id, "isSingular", "lhs",  column))
-    res <- res %>% dplyr::mutate(lhs = glue::glue('{column}.{lhs}'))
-    res <- res %>% tidyr::spread(lhs, !!sym(column) )
+      dplyr::select_at(c(subject_Id, "isSingular", contrast,  column))
+    res <- res %>% dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
+    res <- res %>% tidyr::spread(contrast, !!sym(column) )
     return(res)
   }
   res <- list()
   for (column in columns) {
-    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id,column)
+    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id,column, contrast)
   }
   res <- res %>% reduce(left_join, by = c(subject_Id,"isSingular"))
   return(res)
