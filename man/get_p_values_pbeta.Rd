@@ -20,4 +20,34 @@ abline(h=.05,col = 2)
 plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 
 }
+\seealso{
+Other modelling: 
+\code{\link{.linfct_all_possible_contrasts}()},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{get_complete_model_fit}()},
+\code{\link{get_model_coefficients}()},
+\code{\link{isSingular_lm}()},
+\code{\link{linfct_factors_contrasts}()},
+\code{\link{linfct_from_model}()},
+\code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_custom_model_lmer}()},
+\code{\link{make_custom_model_lm}()},
+\code{\link{model_analyse}()},
+\code{\link{moderated_p_limma_long}()},
+\code{\link{moderated_p_limma}()},
+\code{\link{my_contest}()},
+\code{\link{my_contrast_V1}()},
+\code{\link{my_contrast_V2}()},
+\code{\link{my_contrast}()},
+\code{\link{my_glht}()},
+\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{plot_lmer_model_and_data_TWO}()},
+\code{\link{plot_lmer_model_and_data}()},
+\code{\link{plot_lmer_peptide_noRandom_TWO}()},
+\code{\link{plot_lmer_peptide_noRandom}()},
+\code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{summary_ROPECA_median_p.scaled}()}
+}
+\concept{modelling}
 \keyword{internal}

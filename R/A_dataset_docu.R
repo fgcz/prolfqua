@@ -31,7 +31,7 @@ NULL
 #' @family workflows
 #' @family utilities
 #' @family vignetteHelpers
-#'
+#' @family modelling
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

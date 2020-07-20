@@ -616,15 +616,16 @@ Contrast_Plotter <- R6::R6Class(
                             "conf.high") # other relevant columns.
 
       contrast_minimal <- self$contrastDF %>%
-        dplyr::select_at(c(subject_Id, relevant_columns, columns) )
+        dplyr::select_at(c(self$subject_Id, relevant_columns, columns) )
       return(contrast_minimal)
 
     },
     to_wide = function(columns = c("p.value","p.value.adjusted")){
       contrast_minimal <- self$get_minimal(columns = columns)
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = subject_Id,
-                                                     columns = c("estimate", columns))
+                                                     subject_Id = self$subject_Id,
+                                                     columns = c("estimate", columns),
+                                                     contrast = 'contrast')
       return(contrasts_wide)
     }
   ),

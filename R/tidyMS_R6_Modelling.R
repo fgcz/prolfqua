@@ -11,6 +11,7 @@
 #'
 #' @export
 #' @keywords internal
+#' @family modelling
 #' @examples
 #'
 #' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
@@ -49,6 +50,7 @@ make_custom_model_lmer <- function(modelstr,
 #' Create custom ml model
 #' @export
 #' @keywords internal
+#' @family modelling
 #' @examples
 #' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
@@ -101,6 +103,7 @@ make_custom_model_lm <- function(modelstr,
 
 #' check if lm model is singular
 #' @keywords internal
+#' @family modelling
 #' @export
 #'
 isSingular_lm <- function(m){
@@ -121,6 +124,7 @@ isSingular_lm <- function(m){
 
 #' retrieve complete model.
 #' @keywords internal
+#' @family modelling
 #' @export
 #'
 get_complete_model_fit <- function(modelProteinF){
@@ -137,6 +141,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' used in project p2901
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #'
@@ -214,6 +219,7 @@ model_analyse <- function(pepIntensity,
 
 #' Plot prdictions
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' m <- LFQServiceData::interactionModel_p1807
@@ -234,6 +240,7 @@ plot_lmer_peptide_predictions <- function(m){
 #'
 #' @param m model
 #' @param legend.position none
+#' @family modelling
 #' @export
 #' @keywords internal
 #' @examples
@@ -276,6 +283,7 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
 #'  @param legend.position none
 #'  @param firstlast todo
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' #todo look up example
@@ -330,6 +338,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
 #' Add predicted values for each interaction
 #' @export
 #' @keywords internal
+#' @family modelling
 #' @examples
 #' m <- LFQServiceData::interactionModel_p1807
 #' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m,"dumm"),m)
@@ -346,6 +355,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 
 #' Make model plot with title - protein Name.
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' library(LFQService)
@@ -362,6 +372,7 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 
 #' Plotting two independent random effects
 #' @export
+#' @family modelling
 #' @examples
 #' #todo
 #'
@@ -428,6 +439,7 @@ plot_lmer_model_and_data_TWO <- function(m,
 
 #' get linfct from model
 #' @param m linear model
+#' @family modelling
 #' @export
 #' @keywords internal
 #' @examples
@@ -483,6 +495,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 
 #' linfct_matrix_contrasts
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' m <- LFQServiceData::basicModel_p1807
@@ -518,6 +531,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts){
 
 #' create all possible contrasts
 #' @keywords internal
+#' @family modelling
 #' @examples
 #' m <- LFQServiceData::basicModel_p1807
 #' m
@@ -542,6 +556,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts){
 #' create contrasts between factor levels
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' library(LFQService)
@@ -572,6 +587,7 @@ linfct_factors_contrasts <- function(m){
 #' apply multcomp::glht method to linfct
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #'
@@ -630,6 +646,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @param confint which confidence interval to determine
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #'
@@ -688,6 +705,7 @@ my_contrast <- function(m,
 #' @param confint confidence interval default 0.95
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
@@ -716,6 +734,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @param confint confidence interval default 0.95
 #'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
@@ -762,6 +781,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @param m mixed effects model
 #' @param linfct linear function
 #' @param ddf method to determine denominator degrees of freedom
+#' @family modelling
 #' @export
 #' @keywords internal
 #' @examples
@@ -811,6 +831,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 # computing contrast ----
 #' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' dd <- LFQServiceData::factor_levelContrasts
@@ -954,6 +975,7 @@ contrasts_linfct <- function(models,
 
 #' Moderate p-values - limma approach
 #' @export
+#' @family modelling
 #' @keywords internal
 #'
 moderated_p_limma <- function(mm, df = "df", robust = FALSE){
@@ -973,6 +995,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' @param mm result of `contrasts_linfct``
 #' @param group_by_col colnames with contrast description - default 'lhs'
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #'
@@ -1044,6 +1067,7 @@ contrasts_linfct_write <- function(results,
 
 #' get coefficients from all models
 #' @export
+#' @family modelling
 #' @keywords internal
 get_model_coefficients <- function(modeldata, config){
   l_coeff <- function(m){
@@ -1080,6 +1104,7 @@ get_model_coefficients <- function(modeldata, config){
 #' p-value of protein from p.value of the median fold change peptide.
 #' @param max.n limit number of peptides per protein.
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @examples
 #' plot(get_p_values_pbeta(0.1,1:10))
@@ -1111,6 +1136,7 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' @param max.n used to limit the number of peptides in probablity computation.
 #' @export
+#' @family modelling
 #' @keywords internal
 #' @return data.frame with columns
 #'
