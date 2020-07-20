@@ -7,7 +7,8 @@
 pivot_model_contrasts_2_Wide(
   modelWithInteractionsContrasts,
   subject_Id = "protein_Id",
-  columns = c("estimate", "p.value", "p.value.adjusted")
+  columns = c("estimate", "p.value", "p.value.adjusted"),
+  contrast = "lhs"
 )
 }
 \description{
