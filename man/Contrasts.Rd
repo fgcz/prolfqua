@@ -42,7 +42,6 @@ moderated_p_limma_long(contrasts, group_by_col = "contrast")
 
 
 }
-\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

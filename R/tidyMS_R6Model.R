@@ -1,47 +1,9 @@
-#' build Model
-#' @param data data - a data frame
-#' @param modelFunction model function
-#' @param grouping variable
-#' @param modelName model name
-#' @export
-#' @examples
-#' rm(list = ls())
-#' library(LFQService)
-#' library(tidyverse)
-#' D <- LFQServiceData::ionstar$normalized()
-#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
-#' modelName <- "f_condtion_r_peptide"
-#' formula_randomPeptide <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-#'    model_name = modelName)
-#' pepIntensity <- D$data
-#' config <- D$config
-#' config$table$hkeysDepth()
-#' mod <- LFQService:::build_model(
-#'  pepIntensity,
-#'  formula_randomPeptide,
-#'  modelName = modelName,
-#'  subject_Id = config$table$hkeysDepth())
-
-build_model <- function(data,
-                        modelFunction,
-                        subject_Id = "protein_Id",
-                        modelName = modelFunction$modelName){
-
-  modellingResult <- LFQService:::model_analyse(
-    pepIntensity,
-    modelFunction,
-    modelName = modelName,
-    subject_Id = subject_Id)
-  return( Model$new(modelDF = modellingResult$modelProtein,
-                    modelName = modellingResult$modelName,
-                    subject_Id = subject_Id))
-}
 
 
 # Model -----
 
-#' Model
+#' Do Model
+#'
 #' @export
 #' @examples
 #' rm(list = ls())
@@ -70,6 +32,7 @@ build_model <- function(data,
 #' mod$coef_volcano()
 #' mod$coef_pairs()
 #' mod$anova_histogram()
+#'
 Model <- R6::R6Class(
   "Model",
   public = list(
@@ -214,6 +177,7 @@ Model <- R6::R6Class(
 
 #' p2621 workflow likelihood ratio test
 #' @keywords internal
+#' @family modelling
 #' @export
 #' @examples
 #' #todo add example
@@ -257,10 +221,51 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 }
 
 
+#' build Model
+#' @param data data - a data frame
+#' @param modelFunction model function
+#' @param grouping variable
+#' @param modelName model name
+#' @return `Model`
+#' @export
+#' @examples
+#' rm(list = ls())
+#' library(LFQService)
+#' library(tidyverse)
+#' D <- LFQServiceData::ionstar$normalized()
+#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
+#' modelName <- "f_condtion_r_peptide"
+#' formula_randomPeptide <-
+#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'    model_name = modelName)
+#' pepIntensity <- D$data
+#' config <- D$config
+#' config$table$hkeysDepth()
+#' mod <- LFQService:::build_model(
+#'  pepIntensity,
+#'  formula_randomPeptide,
+#'  modelName = modelName,
+#'  subject_Id = config$table$hkeysDepth())
 
+build_model <- function(data,
+                        modelFunction,
+                        subject_Id = "protein_Id",
+                        modelName = modelFunction$modelName){
+
+  modellingResult <- LFQService:::model_analyse(
+    pepIntensity,
+    modelFunction,
+    modelName = modelName,
+    subject_Id = subject_Id)
+  return( Model$new(modelDF = modellingResult$modelProtein,
+                    modelName = modellingResult$modelName,
+                    subject_Id = subject_Id))
+}
+
+
+# Contrasts -----
 #' Do contrast
 #' @export
-#' @keywords internal
 #' @examples
 #'
 #' rm(list = ls())
@@ -395,7 +400,7 @@ Contrasts <- R6::R6Class(
   return(fig)
 }
 
-# Contrasts ----
+# Contrast_Plotter ----
 #' plot contrasts
 #' @export
 #' @examples
@@ -425,8 +430,8 @@ Contrasts <- R6::R6Class(
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
-#' #Contrast_Plotter$debug("volcano_plotly")
-#' cp <- Contrast_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
+#' #Contrasts_Plotter$debug("volcano_plotly")
+#' cp <- Contrasts_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
 #' cp$histogram()
 #' cp$histogram_estimate()
 #' res <- cp$volcano()
@@ -437,10 +442,11 @@ Contrasts <- R6::R6Class(
 #' cp$ma_plotly()
 #' cp$write_pdf("c:/Temp")
 #' cp$write_plotly("c:/Temp")
-#' cp$get_minimal()
-#' cp$to_wide()
-#'
-Contrast_Plotter <- R6::R6Class(
+#' bb <- cp$get_minimal()
+#' head(bb)
+#' bw <- cp$to_wide()
+#' head(bw)
+Contrasts_Plotter <- R6::R6Class(
   "Contrast_Plotter"
   ,
   public = list(

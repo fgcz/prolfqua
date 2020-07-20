@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{Model}
 \alias{Model}
-\title{Model}
+\title{Do Model}
 \description{
-Model
+Do Model
 
-Model
+Do Model
 }
 \examples{
 rm(list = ls())
@@ -35,6 +35,7 @@ mod$coef_histogram()
 mod$coef_volcano()
 mod$coef_pairs()
 mod$anova_histogram()
+
 }
 \keyword{internal}
 \section{Public fields}{

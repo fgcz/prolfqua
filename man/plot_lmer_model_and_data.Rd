@@ -45,7 +45,8 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
+\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{workflow_likelihood_ratio_test}()}
 }
 \concept{modelling}
 \keyword{internal}

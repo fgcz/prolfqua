@@ -20,6 +20,9 @@ build_model(
 
 \item{grouping}{variable}
 }
+\value{
+`Model`
+}
 \description{
 build Model
 }
