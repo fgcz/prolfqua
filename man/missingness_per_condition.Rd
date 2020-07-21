@@ -34,6 +34,14 @@ Other plotting:
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_sample_correlation}()}
+
+Other imputation: 
+\code{\link{aggregate_contrast}()},
+\code{\link{get_contrast}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missigness_impute_factors_interactions}()},
+\code{\link{missingness_per_condition_cumsum}()}
 }
+\concept{imputation}
 \concept{plotting}
 \keyword{internal}

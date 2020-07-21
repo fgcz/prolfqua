@@ -38,18 +38,6 @@ Other deprecated:
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_protein_quants}()}
 
-Other plotting: 
-\code{\link{medpolishPlydf}()},
-\code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{missingness_per_condition}()},
-\code{\link{plot_aggregation}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_intensity_distribution_violin}()},
-\code{\link{plot_sample_correlation}()}
-
 Other concrete_configuration: 
 \code{\link{create_config_MQ_peptide}()},
 \code{\link{create_config_MSFragger_MSstats}()},

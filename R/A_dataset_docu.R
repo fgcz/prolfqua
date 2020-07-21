@@ -26,7 +26,6 @@ NULL
 #' @family aggregation
 #' @family plotting
 #' @family deprecated
-#' @family plotting
 #' @family concrete_configuration
 #' @family workflows
 #' @family utilities

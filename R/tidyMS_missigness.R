@@ -123,6 +123,7 @@ interaction_missing_stats <- function(pdata,
       mutate(imputed = lowerMean(.data$meanArea,probs = 0.2))
 
   }
+
   res_fun <- function(value = c("long",
                                 "nrReplicates",
                                 "nrMeasured",
@@ -211,6 +212,7 @@ interaction_missing_stats <- function(pdata,
 #'
 #' @export
 #' @keywords internal
+#' @family imputation
 #' @examples
 #'
 #' bb <- LFQServiceData::skylinePRMSampleData_A
@@ -233,7 +235,8 @@ missigness_impute_factors_interactions <-
            probs = 0.1,
            value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
            add.prefix = FALSE,
-           global = TRUE){
+           global = TRUE)
+  {
     value <- match.arg(value)
     fac_fun <- list()
     fac_fun[["interaction"]] <- .missigness_impute_interactions(
@@ -252,7 +255,8 @@ missigness_impute_factors_interactions <-
       }
     }
 
-    fac_res <- list()
+    fac_res <- vector(mode = "list",length = length(fac_fun))
+    names(fac_res) <- names(fac_fun)
     for (fun_name in names(fac_fun)) {
       fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
     }
@@ -268,6 +272,7 @@ missigness_impute_factors_interactions <-
 
 #' Compute fold changes given Contrasts
 #' @keywords internal
+#' @family imputation
 #' @export
 #'
 #' @examples
@@ -282,37 +287,46 @@ missigness_impute_factors_interactions <-
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
-#' message("missigness_impute_factors_interactions : imputed")
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
-#' imputed <- missigness_impute_contrasts(xx, configur, Contrasts)
-#'
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
-#' imputed <- missigness_impute_contrasts(xx, configur, Contrasts)
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-#' message("missigness_impute_factors_interactions : meanArea")
-#' mean <- missigness_impute_contrasts(xx, configur, Contrasts)
+#' View(xx)
+#' mean <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 #' head(mean)
-missigness_impute_contrasts <- function(data,
-                                        config,
-                                        contrasts,
-                                        agg_fun = function(x){median(x, na.rm = TRUE)})
+#'
+#' aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+aggregate_contrast <- function(
+  data,
+  subject_Id ,
+  agg_func = list(median = function(x){median(x, na.rm = TRUE)},
+                   mad = function(x){mad(x, na.rm = TRUE)}),
+  contrast = "contrast")
 {
-  for (i in 1:length(contrasts)) {
-    message(names(contrasts)[i], "=", contrasts[i],"\n")
-    data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
-  }
+  xxx <- c(contrast, subject_Id, "c1_name","c2_name")
+  dataG <- data %>%
+    group_by(across(all_of(xxx)))
 
-  if (!is.null(agg_fun)) {
-    data <- data %>% group_by_at(c("value" , config$table$hkeysDepth())) %>%
-      summarise_if(is.numeric, agg_fun)
-  }
-  return(data)
+  agg_func_c <- agg_func[1]
+
+  resE <- dataG %>% summarise(across(all_of(c("estimate")),
+                                     agg_func
+                                    ), .groups = "drop")
+  resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
+                                     agg_func_c
+                                     ), .groups = "drop")
+  res <- full_join(resC,resE, by = xxx)
+  #resI <- full_join(resC,resE, by = xxx)
+  return(res)
+
 }
-
-#' Compute fold changes given Contrasts 2
+#' Compute fold changes given Contrasts
 #' @keywords internal
+#' @family imputation
+#' @param data data.frame
+#' @param data hierarchyKeys of Analysis Configuration
+#' @param contrasts list of contrasts to compute
 #' @export
 #' @examples
+#'
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQServiceData::skylinePRMSampleData_A
@@ -321,72 +335,21 @@ missigness_impute_contrasts <- function(data,
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #' data <- LFQService::removeLarge_Q_Values(data, configur)
 #' data <- complete_cases(data, configur)
-#' unique(data$Time)
-#' Contrasts <- c("timeT24-T8" = "TimeT24-TimeT8", "timeT72-T8" = "TimeT72 - TimeT8")
-#' res <- workflow_missigness_impute_contrasts(data, configur, Contrasts)
-#' res("long", "factors")
-#' bb <- res("long", "all")
-#' bb
-#' bb$contrast
-#' xx <- res("wide", "all")
-#' plot((xx$`imputed~TimeT24` - xx$`imputed~TimeT8`) -  xx$`imputed~timeT24-T8`)
-#' range((xx$`meanArea~TimeT24` - xx$`meanArea~TimeT8`) -  xx$`meanArea~timeT24-T8`)
-workflow_missigness_impute_contrasts <- function(data,
-                                                 config,
-                                                 contrasts, agg_fun = function(x){median(x, na.rm = TRUE)},
-                                                 global = TRUE){
-
-  xx <- missigness_impute_factors_interactions(data, config, value = "imputed", global=global )
-  message("missigness_impute_factors_interactions : imputed")
-  imputed <- missigness_impute_contrasts(xx, config, contrasts, agg_fun = agg_fun)
-  xx <- missigness_impute_factors_interactions(data, config, value = "meanArea" , global = global)
-  message("missigness_impute_factors_interactions : meanArea")
-  mean <- missigness_impute_contrasts(xx, config, contrasts, agg_fun = agg_fun)
-
-  dd <- dplyr::bind_rows(imputed, mean)
-  dd_long <- dd %>% tidyr::gather("contrast","int_val",
-                                  colnames(dd)[sapply(dd, is.numeric)])
-
-  res_fun <- function(value = c("long", "wide","raw"),
-                      what = c("contrasts", "factors", "all"),
-                      DEBUG = FALSE){
-    value <- match.arg( value )
-    what  <- match.arg( what  )
-    if (DEBUG) {
-      return(list(value = value,
-                  what = what,
-                  dd_long = dd_long,
-                  contrasts = contrasts,
-                  config = config ))
-    }
-
-    if (what == "contrasts") {
-      dd_long <- dplyr::filter(dd_long, contrast %in% names(contrasts))
-    }else if (what == "factors") {
-      dd_long <- dplyr::filter(dd_long, !contrast %in% names(contrasts))
-    }else if (what == "all") {
-    }
-
-    if (value == "long") {
-      long_xxxx <- dd_long %>% spread(value, int_val)
-      return(long_xxxx)
-    }else if (value == "wide") {
-      dd <- dd_long %>% unite(contrast.v , value, contrast, sep = "~") %>% spread(contrast.v, int_val)
-      xxx_imputed <- inner_join(LFQService::summarize_hierarchy(data,config),dd)
-      return(xxx_imputed)
-    }else if (value == "raw") {
-      return(dd_long)
-    }
-  }
-  return(res_fun)
-}
-
-
-
-
-.columnsImputed <- function(all, contrasts) {
+#'
+#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' message("missigness_impute_factors_interactions : imputed")
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
+#' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+#'
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+#' head(imputed)
+#'
+get_contrast <- function(data,
+                         hierarchyKeys,
+                         contrasts)
+{
   getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
-
   get_sides <- function(contrast, all_variables) {
     ast_list <- getAST(rlang::parse_expr(contrast))
     ast_array <- array(as.character(unlist(ast_list)))
@@ -394,85 +357,35 @@ workflow_missigness_impute_contrasts <- function(data,
     return(bb)
   }
 
-  all_variables <- c(names(contrasts), unique(all$contrast))
-
-
-  res <- NULL
 
   for (i in 1:length(contrasts)) {
-    cname <- names(contrasts)[i]
-    cc <- get_sides(contrasts[i], all_variables)
-    if (length(cc) != 2) {
-      message("there are ", length(cc) , "> 2 elements")
-      next;
-    }
-
-    tmp <- all %>% dplyr::filter( .data$contrast %in% c(cname,cc) )
-    tmp <- tmp %>% dplyr::select(-.data$meanArea) %>%
-      tidyr::spread(.data$contrast , .data$imputed)
-
-    tmp <- tmp %>% add_column(lhs = cname,.after = 1)
-    tmp <- tmp %>% add_column(c1_name = cc[1],.after = 2)
-    tmp <- tmp %>% add_column(c2_name = cc[2],.after = 3)
-    tmp <- tmp %>% dplyr::rename(c1 = !!sym(cc[1]), c2 = !!sym(cc[2]), estimate = !!sym(cname))
-    res <- dplyr::bind_rows(res,tmp)
+    message(names(contrasts)[i], "=", contrasts[i],"\n")
+    data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
+  res <- vector(mode = "list", length(contrasts))
+  names(res) <- names(contrasts)
+  for (i in 1:length(contrasts)) {
+    sides <- get_sides(contrasts[i], colnames(data))
+    df  <- select(data , c( hierarchyKeys, c1 = sides[1], c2 = sides[2], estimate = names(contrasts)[i]))
+    df$c1_name <- sides[1]
+    df$c2_name <- sides[2]
+    df$contrast <-  names(contrasts)[i]
+
+    res[[names(contrasts)[i]]] <- df
+  }
+  res <- dplyr::bind_rows(res)
   return(res)
 }
 
 
 
-### Do missing value imputation
-#' decorate the data
-#' @export
-#' @examples
-#'
-#' library(LFQService)
-#' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#'
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(data, configur)
-#' data <- complete_cases(data, configur)
-#' xx <- LFQService::transform_work_intensity(data, configur, log2)
-#' head(xx)
-#' configur$table$getWorkIntensity()
-#' unique(data$Time)
-#' Contrasts <- c("timeT24-T8" = "TimeT24-TimeT8", "timeT72-T8" = "TimeT72 - TimeT8")
-#' res <- workflow_missigness_impute_contrasts_V2(xx, configur, Contrasts)
-#' head(res)
-#' plot((res$c1+res$c2)/2 ,(res$c1 - res$c2))
-#' abline(h=0)
-#' plot((res$c1 - res$c2) - res$estimate)
-#'
-#' plot(res$c1, res$c2, log="xy")
-#' abline(0,1, col=2)
-#'
-workflow_missigness_impute_contrasts_V2 <- function(
-  data,
-  config,
-  contrasts,
-  do_not_report = "",
-  agg_fun = function(x){median(x, na.rm = TRUE)},
-  global = TRUE){
-  res_contrasts_imputed <- workflow_missigness_impute_contrasts(data,
-                                                                config,
-                                                                contrasts, agg_fun = agg_fun,
-                                                                global = global)
-  contrasts_xx_imputed <- res_contrasts_imputed("long",what = "all")
-  contrasts_xx_imputed <- .columnsImputed(contrasts_xx_imputed,
-                                          contrasts = contrasts[setdiff(names(contrasts) ,
-                                                                        do_not_report)])
-
-}
 
 
 #' Histogram summarizing missigness
 #' @export
 #' @keywords internal
 #' @family plotting
+#' @family imputation
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
@@ -525,6 +438,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' @export
 #' @keywords internal
 #' @family plotting
+#' @family imputation
 #' @examples
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
@@ -568,6 +482,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @export
 #' @keywords internal
 #' @family plotting
+#' @family imputation
 #' @examples
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
 #' bb <- LFQServiceData::skylinePRMSampleData_A

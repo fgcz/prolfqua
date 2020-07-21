@@ -46,4 +46,13 @@ dim(dplyr::distinct(res[,1:6]))
 fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
 
 }
+\seealso{
+Other imputation: 
+\code{\link{aggregate_contrast}()},
+\code{\link{get_contrast}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()}
+}
+\concept{imputation}
 \keyword{internal}
