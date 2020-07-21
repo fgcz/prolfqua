@@ -50,7 +50,8 @@ interaction_missing_stats <- function(pdata,
   missingPrec <- missingPrec %>%
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
-                     meanArea = mean(!!sym(workIntensity), na.rm = TRUE)) %>%
+                     meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
+                     medianArea = median(!!sym(workIntensity), na.rm = TRUE)) %>%
     mutate(nrMeasured = nrReplicates - nrNAs) %>% dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea")))
@@ -103,8 +104,8 @@ interaction_missing_stats <- function(pdata,
                                             global = TRUE){
   mstats <- interaction_missing_stats(pdata, config, factors = factors)
   x_summaries <- mstats$summaries
-  xx <- mstats$data
-  xx <- make_interaction_column(xx, factors, sep = ":")
+  mstats <- mstats$data
+  mstats <- make_interaction_column(mstats, factors, sep = ":")
 
 
   lowerMean <- function(meanArea, probs = probs){
@@ -115,11 +116,11 @@ interaction_missing_stats <- function(pdata,
   }
 
   if (!global) {
-    xx <- xx %>%
+    mstats <- mstats %>%
       group_by(interaction) %>%
       mutate(imputed = lowerMean(.data$meanArea,probs = 0.2))
   }else{
-    xx <- xx %>%
+    mstats <- mstats %>%
       mutate(imputed = lowerMean(.data$meanArea,probs = 0.2))
 
   }
@@ -135,29 +136,29 @@ interaction_missing_stats <- function(pdata,
                       DEBUG = FALSE){
     value <- match.arg(value)
     if (DEBUG) {
-      return(list(value = value, long = xx , config = config ))
+      return(list(value = value, long = mstats , config = config ))
     }
 
     if (value == "long") {
-      return(xx)
+      return(mstats)
     }else{
-      xx <- xx %>% dplyr::select(-one_of(factors))
+      mstats <- mstats %>% dplyr::select(-one_of(factors))
 
       pid <- config$table$hkeysDepth()
-      nrReplicates <- xx %>%
+      nrReplicates <- mstats %>%
         dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) %>%
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") %>%
         arrange(!!!syms(pid)) %>%
         dplyr::ungroup()
-      nrMeasured <- xx %>% dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) %>%
+      nrMeasured <- mstats %>% dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) %>%
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanArea <- xx %>% dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) %>%
+      meanArea <- mstats %>% dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) %>%
         tidyr::spread(interaction, meanArea, sep = ".meanArea.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
-      meanAreaImputed <- xx %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
+      meanAreaImputed <- mstats %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
         tidyr::spread(interaction, imputed, sep = ".imputed.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
@@ -167,7 +168,7 @@ interaction_missing_stats <- function(pdata,
                         meanAreaImputed = meanAreaImputed)
 
       if (value == "all") {
-        allTables[["long"]] <- xx
+        allTables[["long"]] <- mstats
         return(allTables)
       }else if (value == "allWide") {
         return(purrr::reduce(allTables, inner_join))
@@ -288,7 +289,6 @@ missigness_impute_factors_interactions <-
 #'
 #' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-#' View(xx)
 #' mean <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 #' head(mean)
 #'
@@ -296,13 +296,13 @@ missigness_impute_factors_interactions <-
 aggregate_contrast <- function(
   data,
   subject_Id ,
-  agg_func = list(median = function(x){median(x, na.rm = TRUE)},
-                   mad = function(x){mad(x, na.rm = TRUE)}),
+  agg_func = list(median = function(x){ median(x, na.rm = TRUE) },
+                   mad = function(x){ mad(x, na.rm = TRUE)} ),
   contrast = "contrast")
 {
-  xxx <- c(contrast, subject_Id, "c1_name","c2_name")
+  grouping_columns <- c(contrast, subject_Id, "c1_name","c2_name")
   dataG <- data %>%
-    group_by(across(all_of(xxx)))
+    group_by(across(all_of(grouping_columns)))
 
   agg_func_c <- agg_func[1]
 
@@ -312,7 +312,7 @@ aggregate_contrast <- function(
   resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
                                      agg_func_c
                                      ), .groups = "drop")
-  res <- full_join(resC,resE, by = xxx)
+  res <- full_join(resC,resE, by = grouping_columns)
   #resI <- full_join(resC,resE, by = xxx)
   return(res)
 
@@ -342,6 +342,7 @@ aggregate_contrast <- function(
 #' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 #'
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#'
 #' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 #' head(imputed)
 #'

@@ -28,7 +28,6 @@ data <- complete_cases(data, configur)
 
 Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
 xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-View(xx)
 mean <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 head(mean)
 

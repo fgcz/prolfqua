@@ -83,7 +83,7 @@ column with fold change estimates}
 \item \href{#method-ma_plot}{\code{Contrasts_Plotter$ma_plot()}}
 \item \href{#method-ma_plotly}{\code{Contrasts_Plotter$ma_plotly()}}
 \item \href{#method-write_pdf}{\code{Contrasts_Plotter$write_pdf()}}
-\item \href{#method-write_pltly}{\code{Contrasts_Plotter$write_pltly()}}
+\item \href{#method-write_plotly}{\code{Contrasts_Plotter$write_plotly()}}
 \item \href{#method-get_minimal}{\code{Contrasts_Plotter$get_minimal()}}
 \item \href{#method-to_wide}{\code{Contrasts_Plotter$to_wide()}}
 \item \href{#method-clone}{\code{Contrasts_Plotter$clone()}}
@@ -221,11 +221,11 @@ ma plotly
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_pltly"></a>}}
-\if{latex}{\out{\hypertarget{method-write_pltly}{}}}
-\subsection{Method \code{write_pltly()}}{
+\if{html}{\out{<a id="method-write_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-write_plotly}{}}}
+\subsection{Method \code{write_plotly()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_pltly(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_plotly(path)}\if{html}{\out{</div>}}
 }
 
 }

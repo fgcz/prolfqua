@@ -38,7 +38,6 @@ contrast$get_contrasts()
 head(contrasts)
 contrast$moderate()
 
-moderated_p_limma_long(contrasts, group_by_col = "contrast")
 
 
 }

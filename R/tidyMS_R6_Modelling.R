@@ -591,7 +591,7 @@ linfct_factors_contrasts <- function(m){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#'
+#' library(LFQService)
 #' mb <- LFQServiceData::basicModel_p1807
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
@@ -623,7 +623,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
       RHS$df <- x$df
       RHS$sigma <- sigma(model)
 
-      x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("lhs", "rhs")) %>% dplyr::select(-rhs)
+      x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("contrast"))# %>% dplyr::select(-contrast)
       res[[i]] <- x
     }
     res <- dplyr::bind_rows(res)
@@ -633,7 +633,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
     RHS$df <- x$df
     RHS$sigma <- sigma(model)
-    res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("lhs", "rhs")) %>%
+    res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) %>%
       dplyr::select(-rhs)
     return(res)
   }

@@ -32,6 +32,7 @@ xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured
 imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 
 xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+
 imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
 head(imputed)
 

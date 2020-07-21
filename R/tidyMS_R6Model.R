@@ -26,6 +26,7 @@
 #'
 #' mod$modelDF
 #' aovtable  <- mod$get_anova()
+#' head(aovtable)
 #' unique(aovtable$factor)
 #' mod$get_coefficients()
 #' mod$coef_histogram()
@@ -108,9 +109,9 @@ Model <- R6::R6Class(
      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
      ## Coef_Histogram
      fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",self$modelName,".pdf")
-     histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = row.names.x.)) +
+     histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = factor)) +
        geom_histogram(breaks = seq(0,1,by = 0.05)) +
-       facet_wrap(~row.names.x.)
+       facet_wrap(~factor)
      return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
    },
    #' @description volcano plot of non intercept coefficients
@@ -119,11 +120,11 @@ Model <- R6::R6Class(
      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
      fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
      VolcanoPlot <- Model_Coeff %>%
-       dplyr::filter(row.names.x. != "(Intercept)") %>%
+       dplyr::filter(factor != "(Intercept)") %>%
        LFQService::multigroupVolcano(
          effect = "Estimate",
          p.value = "Pr...t..",
-         condition = "row.names.x.",
+         condition = "factor",
          label = "subject_Id" ,
          xintercept = c(-1, 1) ,
          colour = "isSingular" )
@@ -135,8 +136,8 @@ Model <- R6::R6Class(
      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
      ## Coef_Pairsplot
      forPairs <- Model_Coeff %>%
-       dplyr::select(!!sym("subject_Id") , row.names.x. ,  Estimate ) %>%
-       tidyr::spread(row.names.x., Estimate )
+       dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) %>%
+       tidyr::spread(factor, Estimate )
      fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
      Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
      return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
@@ -148,10 +149,10 @@ Model <- R6::R6Class(
      Model_Anova <- self$get_anova()
      fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
      histogram_anova_p.values <-  Model_Anova %>%
-       dplyr::filter(rownames.x. != "Residuals") %>%
-       ggplot( aes(x = Pr..F., group = rownames.x.)) +
+       dplyr::filter(factor != "Residuals") %>%
+       ggplot( aes(x = Pr..F., group = factor)) +
        geom_histogram(breaks = seq(0,1,by = 0.05)) +
-       facet_wrap(~rownames.x.)
+       facet_wrap(~factor)
      return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
    },
    write_anova_figures = function(path, width = 10, height =10){
@@ -234,18 +235,23 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 #' library(tidyverse)
 #' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
+#'
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
 #'    model_name = modelName)
 #' pepIntensity <- D$data
 #' config <- D$config
-#' config$table$hkeysDepth()
+#'
+#'
+#'
 #' mod <- LFQService:::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
 #'  subject_Id = config$table$hkeysDepth())
+#'
+#'
 
 build_model <- function(data,
                         modelFunction,
@@ -296,7 +302,6 @@ build_model <- function(data,
 #' head(contrasts)
 #' contrast$moderate()
 #'
-#' moderated_p_limma_long(contrasts, group_by_col = "contrast")
 #'
 #'
 Contrasts <- R6::R6Class(
@@ -585,7 +590,7 @@ Contrasts_Plotter <- R6::R6Class(
 
       }
     },
-    write_pltly = function(path){
+    write_plotly = function(path){
       message("Writing: ",path,"\n")
 
       plotX <- function(fig,path, fname, xname){

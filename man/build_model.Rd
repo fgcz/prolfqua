@@ -32,16 +32,21 @@ library(LFQService)
 library(tidyverse)
 D <- LFQServiceData::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
+
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
    model_name = modelName)
 pepIntensity <- D$data
 config <- D$config
-config$table$hkeysDepth()
+
+
+
 mod <- LFQService:::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,
  subject_Id = config$table$hkeysDepth())
+
+
 }
