@@ -95,3 +95,15 @@ What is a paired measurement.
 # TODO
 - Make public
 
+# Related resources and relevant background information
+
+- [Contrasts in R by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+- [R Companion](https://rcompanion.org/rcompanion/h_01.html)
+- [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
+- [Triqler](https://github.com/statisticalbiotechnology/triqler)
+- [MSQRob](https://github.com/statOmics/MSqRob)
+- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
+- [Bayesian essentials with R - R package](https://cran.r-project.org/web/packages/bayess/index.html)
+- [Contrasts in R - an eample vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+
