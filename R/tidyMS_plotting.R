@@ -331,12 +331,12 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
-  resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
+  resdata <- t(scale(t(resdata)))
+  resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
   # not showing row dendrogram trick
   res <- pheatmap::pheatmap(resdata,
-                            scale = "row",
                             silent = TRUE)
 
   res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
