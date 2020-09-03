@@ -127,7 +127,7 @@ get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
   modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>%
     dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
-  modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
+  #modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
 
@@ -1751,13 +1751,18 @@ summary_ROPECA_median_p.scaled <- function(
     dplyr::mutate(median.p = 1 - abs(median.p.scaled))
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p , n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
     mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
   summarized.protein <- summarized.protein %>%
+    mutate(median.p.adjusted = p.adjust(median.p, method = "BH"))
+
+  summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
-  summarized.protein <- dplyr::inner_join(nrpepsPerProt , summarized.protein ,  by = c(subject_Id, contrast))
+  summarized.protein <- dplyr::inner_join(nrpepsPerProt ,
+                                          summarized.protein ,
+                                          by = c(subject_Id, contrast))
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.

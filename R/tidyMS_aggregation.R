@@ -379,7 +379,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
   ## MASS::rlm breaks on singular values.
   ## check with base lm if singular values are present.
   ## if so, these coefficients will be zero, remove this column from model matrix
-  ## rinse and repeat on reduced modelmatrix untill no singular values are present
+  ## rinse and repeat on reduced model-matrix untill no singular values are present
   y <- data[[expression]]
   repeat {
     fit = .lm.fit(X,y)
