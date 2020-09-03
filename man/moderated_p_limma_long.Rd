@@ -7,7 +7,7 @@
 moderated_p_limma_long(mm, group_by_col = "lhs", robust = FALSE)
 }
 \arguments{
-\item{mm}{result of `contrasts_linfct``}
+\item{mm}{result of \code{\link{contrasts_linfct}}}
 
 \item{group_by_col}{colnames with contrast description - default 'lhs'}
 }
@@ -49,7 +49,9 @@ abline(0,1, col = 2)
 Other modelling: 
 \code{\link{.linfct_all_possible_contrasts}()},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
+\code{\link{get_imputed_contrasts}()},
 \code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},

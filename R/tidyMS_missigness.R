@@ -54,7 +54,7 @@ interaction_missing_stats <- function(pdata,
                      medianArea = median(!!sym(workIntensity), na.rm = TRUE)) %>%
     mutate(nrMeasured = nrReplicates - nrNAs) %>% dplyr::ungroup()
   return(list(data = missingPrec,
-              summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea")))
+              summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea", "medianArea")))
 }
 
 #' Compute interaction averages and
@@ -73,6 +73,7 @@ interaction_missing_stats <- function(pdata,
 #' @keywords internal
 #' @return function
 #' @examples
+#' library(LFQService)
 #' bb <- LFQServiceData::skylinePRMSampleData_A
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
@@ -84,19 +85,22 @@ interaction_missing_stats <- function(pdata,
 #' tmp <- interaction_missing_stats(xx, configur)
 #' fun <- .missigness_impute_interactions(xx, configur)
 #'
-#' dd <- fun("long")
-#' head(dd)
-#' xx <- fun(DEBUG=TRUE)
-#' names(xx)
-#' xx$long
+#' long <- fun("long")
+#' head(long)
+#' debugData <- fun(DEBUG=TRUE)
+#' names(debugData)
+#' head(debugData$long)
 #' sum(is.na(xx$long$nrReplicates))
 #' xxx <- (fun("nrReplicates"))
-#' head(xxx)
-#' xxx <- fun("all")
-#' xi <- fun("imputed")
-#' xi
+#' alldata <- fun("all")
 #' head(xxx)
 #'
+#' imputed <- fun("imputed")
+#' imputed
+#'
+#'  meanArea <- fun("mean")
+#'  stopifnot(sum(is.na(meanArea$mean.TimeT0)) == 46)
+#'  stopifnot(sum(is.na(imputed$mean.imp.TimeT0))==0)
 .missigness_impute_interactions <- function(pdata,
                                             config,
                                             factors = config$table$fkeysDepth(),
@@ -288,11 +292,25 @@ missigness_impute_factors_interactions <-
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-#' mean <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
+#' mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
 #' head(mean)
 #'
-#' aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+#' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+#'
+#' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
+#' head(imputed)
+#'
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
+#' plot(imputedProt$c1 - imputedProt$c2, imputedProt$estimate_median)
+#' abline(c(0,1), col=2, pch = "*")
+#' dim(meanProt)
+#' sum(is.na(meanProt$estimate_median)) == 0
+#' dim(imputedProt)
+#' sum(is.na(imputedProt$estimate_median)) == 0
+#' plot(meanProt$estimate_median - imputedProt$estimate_median )
+#'
 aggregate_contrast <- function(
   data,
   subject_Id ,
@@ -310,7 +328,7 @@ aggregate_contrast <- function(
                                      agg_func
                                     ), .groups = "drop")
   resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
-                                     agg_func_c
+                                     agg_func_c,.names = "{col}"
                                      ), .groups = "drop")
   res <- full_join(resC,resE, by = grouping_columns)
   #resI <- full_join(resC,resE, by = xxx)
@@ -378,10 +396,34 @@ get_contrast <- function(data,
   return(res)
 }
 
-
-
-
-
+#' compute contrasts based on peptide fold changes - compute median of fold change for each protein.
+#' peptide fold change is comptuted based on interaction average
+#' @param data data.frame
+#' @param config AnalysisConfiguration
+#' @param contrast list of contrasts
+#' @family missingness
+#' @family modelling
+#' @export
+#' @examples
+#'
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#' bb <- LFQServiceData::skylinePRMSampleData_A
+#' configur <- bb$config_f()
+#' data <- bb$analysis(bb$data, configur)
+#' configur$parameter$qVal_individual_threshold <- 0.01
+#' data <- LFQService::removeLarge_Q_Values(data, configur)
+#' data <- complete_cases(data, configur)
+#'
+#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' get_imputed_contrasts(data, configur, Contrasts)
+get_imputed_contrasts <- function(data, config, contrasts){
+  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+  imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
+  imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+  return(imputedProt)
+}
 #' Histogram summarizing missigness
 #' @export
 #' @keywords internal

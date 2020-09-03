@@ -34,14 +34,18 @@ mod <- build_model(
   "dil.e_vs_b" = "dilution.e - dilution.b",
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
-contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
+contrast <- Contrasts$new(mod$modelDF,
+  Contr,
+  modelFunction$contrast_fun,
+  subject_Id = config$table$hkeysDepth(),
+  modelName = modelFunction$modelName)
 #Contrasts_Plotter$debug("volcano_plotly")
-cp <- Contrasts_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
+tmp <- contrast$get_contrasts()
+cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
 cp$histogram()
 cp$histogram_estimate()
 res <- cp$volcano()
 res[[1]]
-res[[2]]
 respltly <- cp$volcano_plotly()
 cp$ma_plot()
 cp$ma_plotly()
@@ -69,6 +73,10 @@ column with fold change estimates}
 \item{\code{figures}}{list of generated figures}
 
 \item{\code{figures_plotly}}{list of generated figures}
+
+\item{\code{volcano_spec}}{volcano plot specification}
+
+\item{\code{histogram_spec}}{plot specification}
 }
 \if{html}{\out{</div>}}
 }
@@ -97,13 +105,37 @@ create Crontrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$new(
   contrastDF,
-  modelName,
   subject_Id,
+  volcano = list(list(score = "p.value", fc = 1)),
+  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score =
+    "statistic", xlim = c(0, 4, 0.1))),
+  modelName = "Model",
   estimate = "estimate",
   contrast = "contrast"
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contrastDF}}{frame with contrast data}
+
+\item{\code{subject_Id}}{columns containing subject Identifier}
+
+\item{\code{volcano}}{which score to plot and which ablines to add.}
+
+\item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
+
+\item{\code{modelName}}{name of model}
+
+\item{\code{modelName}}{Model}
+
+\item{\code{estimate}}{estimate column}
+
+\item{\code{contrast}}{contrast column}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-histogram"></a>}}
@@ -111,11 +143,7 @@ create Crontrast_Plotter
 \subsection{Method \code{histogram()}}{
 plot histogram of selected socres
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram(
-  score = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score =
-    "p.value.adjusted", xlim = c(0, 1, 0.05)), list(score = "statistic", xlim = c(0, 4,
-    0.1)))
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -142,18 +170,9 @@ plot histogram of estimated fold change
 \subsection{Method \code{volcano()}}{
 plotly volcano plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(scores = c("p.value", "p.value.adjusted"), fc = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{scores}}{for which scores to generate volcano plot}
-
-\item{\code{fc}}{fold change abline}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-volcano_plotly"></a>}}
@@ -161,10 +180,7 @@ plotly volcano plots
 \subsection{Method \code{volcano_plotly()}}{
 plotly volcano plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(
-  scores = c("p.value", "p.value.adjusted"),
-  fc = 1
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -234,7 +250,7 @@ ma plotly
 \if{latex}{\out{\hypertarget{method-get_minimal}{}}}
 \subsection{Method \code{get_minimal()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$get_minimal(columns = c("p.value", "p.value.adjusted"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$get_minimal(columns = c("p.value"))}\if{html}{\out{</div>}}
 }
 
 }
@@ -243,7 +259,7 @@ ma plotly
 \if{latex}{\out{\hypertarget{method-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$to_wide(columns = c("p.value", "p.value.adjusted"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$to_wide(columns = c("p.value"))}\if{html}{\out{</div>}}
 }
 
 }

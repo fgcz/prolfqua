@@ -47,6 +47,7 @@
 
 #' copy all files need to run mixed model analysis.
 #' @param workdir directory where to copy file - default is current working directory.
+#' @keywords internal
 #' @export
 #'
 copy_mixed_model_analysis_script <- function(workdir = getwd()){

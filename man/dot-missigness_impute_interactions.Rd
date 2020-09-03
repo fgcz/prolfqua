@@ -34,6 +34,7 @@ function
 used in Acetylation project p2916
 }
 \examples{
+library(LFQService)
 bb <- LFQServiceData::skylinePRMSampleData_A
 configur <- bb$config_f()
 data <- bb$analysis(bb$data, configur)
@@ -45,18 +46,21 @@ xx <- complete_cases(xx, configur)
 tmp <- interaction_missing_stats(xx, configur)
 fun <- .missigness_impute_interactions(xx, configur)
 
-dd <- fun("long")
-head(dd)
-xx <- fun(DEBUG=TRUE)
-names(xx)
-xx$long
+long <- fun("long")
+head(long)
+debugData <- fun(DEBUG=TRUE)
+names(debugData)
+head(debugData$long)
 sum(is.na(xx$long$nrReplicates))
 xxx <- (fun("nrReplicates"))
-head(xxx)
-xxx <- fun("all")
-xi <- fun("imputed")
-xi
+alldata <- fun("all")
 head(xxx)
 
+imputed <- fun("imputed")
+imputed
+
+ meanArea <- fun("mean")
+ stopifnot(sum(is.na(meanArea$mean.TimeT0)) == 46)
+ stopifnot(sum(is.na(imputed$mean.imp.TimeT0))==0)
 }
 \keyword{internal}

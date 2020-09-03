@@ -929,12 +929,6 @@ contrasts_linfct <- function(models,
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
-
-  # adjust
-  contrasts <- contrasts %>% group_by_at("lhs") %>%
-    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method = "BH")) %>%
-    dplyr::ungroup()
-
   return(contrasts)
 }
 
@@ -969,9 +963,6 @@ contrasts_linfct <- function(models,
   return(p)
 }
 
-
-
-
 # LIMMA ----
 
 #' Moderate p-values - limma approach
@@ -987,13 +978,12 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
   mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
   mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
   mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df = moderated.df.total, lower.tail = FALSE) )
-  mm <- mm %>% dplyr::mutate(moderated.p.value.adjusted = p.adjust(moderated.p.value, method = "BH")) %>%
-    dplyr::ungroup()
+  mm <-  dplyr::ungroup(mm)
   return(mm)
 }
 
 #' Moderate p-value for long table
-#' @param mm result of `contrasts_linfct``
+#' @param mm result of \code{\link{contrasts_linfct}}
 #' @param group_by_col colnames with contrast description - default 'lhs'
 #' @export
 #' @family modelling
@@ -1155,7 +1145,7 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' plot(table(table(protein_Id)))
 #'
-#' testdata <- data.frame(lhs = "contrast1", protein_Id = protein_Id,
+#' testdata <- data.frame(contrast = "contrast1", protein_Id = protein_Id,
 #'   estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
 #'   head(testdata)
 #' xx <- summary_ROPECA_median_p.scaled(testdata,
@@ -1175,7 +1165,7 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
-  contrast = "lhs",
+  contrast = "contrast",
   subject_Id = "protein_Id",
   estimate = "estimate",
   statistic = "statistic",
@@ -1184,7 +1174,7 @@ summary_ROPECA_median_p.scaled <- function(
 
   contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
-    dplyr::summarize(n = n()) -> nrpepsPerProt
+    dplyr::summarize(n = n() ) -> nrpepsPerProt
 
   contrasts_data <- contrasts_data %>%
     # dplyr::filter(!is.na(!!sym(p.value))) %>%
@@ -1194,7 +1184,6 @@ summary_ROPECA_median_p.scaled <- function(
     group_by_at(c(subject_Id, contrast)) %>%
     dplyr::summarize(
       n_not_na = n(),
-      pseudo_estimate = median(pseudo_estimate),
       estimate = median(!!sym(estimate), na.rm = TRUE),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),
@@ -1217,8 +1206,6 @@ summary_ROPECA_median_p.scaled <- function(
 
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
-  summarized.protein <- summarized.protein %>%
-    mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 

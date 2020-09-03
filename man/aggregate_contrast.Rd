@@ -27,11 +27,25 @@ data <- LFQService::removeLarge_Q_Values(data, configur)
 data <- complete_cases(data, configur)
 
 Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
-xx <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-mean <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
+mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
 head(mean)
 
-aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+
+imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
+head(imputed)
+
+imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
+plot(imputedProt$c1 - imputedProt$c2, imputedProt$estimate_median)
+abline(c(0,1), col=2, pch = "*")
+dim(meanProt)
+sum(is.na(meanProt$estimate_median)) == 0
+dim(imputedProt)
+sum(is.na(imputedProt$estimate_median)) == 0
+plot(meanProt$estimate_median - imputedProt$estimate_median )
+
 }
 \seealso{
 Other imputation: 

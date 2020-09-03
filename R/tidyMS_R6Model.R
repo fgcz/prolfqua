@@ -37,132 +37,132 @@
 Model <- R6::R6Class(
   "Model",
   public = list(
-   #' @field modelDF data.frame with modelling data and model.
-   modelDF = NULL,
-   modelName = character(),
-   subject_Id = character(),
-   initialize = function(modelDF, modelName, subject_Id = "protein_Id"){
-     self$modelDF = modelDF
-     self$modelName = modelName
-     self$subject_Id = subject_Id
+    #' @field modelDF data.frame with modelling data and model.
+    modelDF = NULL,
+    modelName = character(),
+    subject_Id = character(),
+    initialize = function(modelDF, modelName, subject_Id = "protein_Id"){
+      self$modelDF = modelDF
+      self$modelName = modelName
+      self$subject_Id = subject_Id
 
-   },
-   #' @description return model coefficient table
-   get_coefficients = function(){
-     lmermodel <- "linear_model"
-     modelProteinF <- get_complete_model_fit(self$modelDF)
-     # modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
-     # Extract coefficients
-     .coef_df <-  function(x){
-       x <- coef(summary(x));
-       x <- data.frame(factor = row.names(x), x);
-       return(x)
-     }
-     Model_Coeff <- modelProteinF %>%
-       dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
-     Model_Coeff <- Model_Coeff %>%
-       dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
-     Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
-     return(Model_Coeff)
-   },
-   #' return anova table
-   get_anova = function(){
-     lmermodel <- "linear_model"
-     modelProteinF <- get_complete_model_fit(self$modelDF)
-     # ANOVA
-     .anova_df <- function(x){
-       x <- anova(x)
-       colnames(x) <- make.names(colnames(x))
-       x <- data.frame(factor = rownames(x), x)
-       return(x)
-     }
+    },
+    #' @description return model coefficient table
+    get_coefficients = function(){
+      lmermodel <- "linear_model"
+      modelProteinF <- get_complete_model_fit(self$modelDF)
+      # modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
+      # Extract coefficients
+      .coef_df <-  function(x){
+        x <- coef(summary(x));
+        x <- data.frame(factor = row.names(x), x);
+        return(x)
+      }
+      Model_Coeff <- modelProteinF %>%
+        dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
+      Model_Coeff <- Model_Coeff %>%
+        dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
+      Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
+      return(Model_Coeff)
+    },
+    #' return anova table
+    get_anova = function(){
+      lmermodel <- "linear_model"
+      modelProteinF <- get_complete_model_fit(self$modelDF)
+      # ANOVA
+      .anova_df <- function(x){
+        x <- anova(x)
+        colnames(x) <- make.names(colnames(x))
+        x <- data.frame(factor = rownames(x), x)
+        return(x)
+      }
 
-     Model_Anova <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
+      Model_Anova <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
 
-     Model_Anova <- Model_Anova %>%
-       dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
-     Model_Anova <- tidyr::unnest_legacy(Model_Anova)
-     #tidyr::unnest(cols = "Anova_model")
-     return(Model_Anova)
+      Model_Anova <- Model_Anova %>%
+        dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
+      Model_Anova <- tidyr::unnest_legacy(Model_Anova)
+      #tidyr::unnest(cols = "Anova_model")
+      return(Model_Anova)
 
-   },
+    },
 
 
-   #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
-   #' @keywords internal
-   #' @export
-   write_coefficients  = function(path){
-       lfq_write_table(self$get_coefficients(),
-                       path = path,
-                       name  = paste0("Coef_",self$modelName) )
-   },
-   write_anova = function(path){
-     lfq_write_table(self$get_anova(),
-                     path = path,
-                     name  = paste0("ANOVA_",self$modelName) )
+    #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
+    #' @keywords internal
+    #' @export
+    write_coefficients  = function(path){
+      lfq_write_table(self$get_coefficients(),
+                      path = path,
+                      name  = paste0("Coef_",self$modelName) )
+    },
+    write_anova = function(path){
+      lfq_write_table(self$get_anova(),
+                      path = path,
+                      name  = paste0("ANOVA_",self$modelName) )
 
-   },
+    },
 
-   #' @description histogram of model coefficient
-   coef_histogram = function(){
-     Model_Coeff <- self$get_coefficients()
-     Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-     ## Coef_Histogram
-     fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",self$modelName,".pdf")
-     histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = factor)) +
-       geom_histogram(breaks = seq(0,1,by = 0.05)) +
-       facet_wrap(~factor)
-     return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
-   },
-   #' @description volcano plot of non intercept coefficients
-   coef_volcano = function(){
-     Model_Coeff <- self$get_coefficients()
-     Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-     fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
-     VolcanoPlot <- Model_Coeff %>%
-       dplyr::filter(factor != "(Intercept)") %>%
-       LFQService::multigroupVolcano(
-         effect = "Estimate",
-         p.value = "Pr...t..",
-         condition = "factor",
-         label = "subject_Id" ,
-         xintercept = c(-1, 1) ,
-         colour = "isSingular" )
-     return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
-   },
-   #' @description pairsplot of coefficients
-   coef_pairs = function(){
-     Model_Coeff <- self$get_coefficients()
-     Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-     ## Coef_Pairsplot
-     forPairs <- Model_Coeff %>%
-       dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) %>%
-       tidyr::spread(factor, Estimate )
-     fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
-     Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
-     return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
+    #' @description histogram of model coefficient
+    coef_histogram = function(){
+      Model_Coeff <- self$get_coefficients()
+      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      ## Coef_Histogram
+      fname_histogram_coeff_p.values <- paste0("Coef_Histogram_",self$modelName,".pdf")
+      histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = factor)) +
+        geom_histogram(breaks = seq(0,1,by = 0.05)) +
+        facet_wrap(~factor)
+      return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
+    },
+    #' @description volcano plot of non intercept coefficients
+    coef_volcano = function(){
+      Model_Coeff <- self$get_coefficients()
+      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
+      VolcanoPlot <- Model_Coeff %>%
+        dplyr::filter(factor != "(Intercept)") %>%
+        LFQService::multigroupVolcano(
+          effect = "Estimate",
+          p.value = "Pr...t..",
+          condition = "factor",
+          label = "subject_Id" ,
+          xintercept = c(-1, 1) ,
+          colour = "isSingular" )
+      return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
+    },
+    #' @description pairsplot of coefficients
+    coef_pairs = function(){
+      Model_Coeff <- self$get_coefficients()
+      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      ## Coef_Pairsplot
+      forPairs <- Model_Coeff %>%
+        dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) %>%
+        tidyr::spread(factor, Estimate )
+      fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
+      Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
+      return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
 
-   },
-   #' @description histogram of anova results
-   anova_histogram = function(){
-     ## Anova_p.values
-     Model_Anova <- self$get_anova()
-     fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
-     histogram_anova_p.values <-  Model_Anova %>%
-       dplyr::filter(factor != "Residuals") %>%
-       ggplot( aes(x = Pr..F., group = factor)) +
-       geom_histogram(breaks = seq(0,1,by = 0.05)) +
-       facet_wrap(~factor)
-     return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
-   },
-   write_anova_figures = function(path, width = 10, height =10){
-     private$write_fig(self$anova_histogram(),path, width, height )
-   },
-   write_coef_figures = function(path, width = 10, height =10){
-     private$write_fig(self$coef_histogram(),path, width, height )
-     private$write_fig(self$coef_volcano(),path, width, height )
-     private$write_fig(self$coef_pairs(),path, width, height )
-   }
+    },
+    #' @description histogram of anova results
+    anova_histogram = function(){
+      ## Anova_p.values
+      Model_Anova <- self$get_anova()
+      fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
+      histogram_anova_p.values <-  Model_Anova %>%
+        dplyr::filter(factor != "Residuals") %>%
+        ggplot( aes(x = Pr..F., group = factor)) +
+        geom_histogram(breaks = seq(0,1,by = 0.05)) +
+        facet_wrap(~factor)
+      return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
+    },
+    write_anova_figures = function(path, width = 10, height =10){
+      private$write_fig(self$anova_histogram(),path, width, height )
+    },
+    write_coef_figures = function(path, width = 10, height =10){
+      private$write_fig(self$coef_histogram(),path, width, height )
+      private$write_fig(self$coef_volcano(),path, width, height )
+      private$write_fig(self$coef_pairs(),path, width, height )
+    }
   ),
   private = list(
     write_fig = function(res, path, width = 10, height = 10){
@@ -222,12 +222,19 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 }
 
 
-#' build Model
+#' build from data and modelFunction Model
+#'
+#'
+#'
 #' @param data data - a data frame
 #' @param modelFunction model function
 #' @param grouping variable
 #' @param modelName model name
-#' @return `Model`
+#' @return
+#' a object of class \code{\link{Model}}
+#' @family modelling
+#' @seealso \code{\link{model_analyse}}, \code{\link{make_custom_model_lmer}} \code{\link{make_custom_model_lm}}
+#'
 #' @export
 #' @examples
 #' rm(list = ls())
@@ -252,7 +259,6 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'
-
 build_model <- function(data,
                         modelFunction,
                         subject_Id = "protein_Id",
@@ -280,30 +286,39 @@ build_model <- function(data,
 #'
 #' D <- LFQServiceData::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
-#' modelName <- "f_condtion_r_peptide"
 #' modelFunction <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-#'    model_name = modelName)
+#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
 #' pepIntensity <- D$data
 #' config <- D$config
 #' config$table$hkeysDepth()
 #' mod <- build_model(
 #'  pepIntensity,
 #'  modelFunction,
-#'  modelName = modelName,
 #'  subject_Id = config$table$hkeysDepth())
-#'  mod$get_coefficients()
+#'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#' contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
+#'  contrast <- Contrasts$new(mod$modelDF,
+#'  Contr,
+#'  modelFunction$contrast_fun,
+#'  subject_Id = config$table$hkeysDepth(),
+#'  modelName = modelFunction$model_name)
+#'
 #' contrast$get_contrasts_sides()
 #' contrast$get_linfct()
 #' contrast$get_contrasts()
 #'
 #' head(contrasts)
 #' contrast$moderate()
+#' bb <- contrast$ropeca()
+#' #View(bb)
 #'
-#'
-#'
+if(FALSE){
+  bb <- get_imputed_contrasts(D$data, D$config, Contr)
+  head(bb)
+  bm <- contrast$moderate()
+  head(bm)
+  cor(bb$estimate_median, bm$estimate)
+}
 Contrasts <- R6::R6Class(
   "Contrast",
   public = list(
@@ -316,11 +331,21 @@ Contrasts <- R6::R6Class(
     #' @field modelName model name
     modelName = NULL,
     subject_Id = character(),
-    initialize = function(models, contrasts, modelFunction, subject_Id){
+    #' create Contrast
+    #' @param models a dataframe with a structure similar to that generated by \code{\link{build_model}}
+    #' @param contrasts a character vector with contrast specificiation
+    #' @param contrast_fun see. eg. \code{\link{my_contrast_V2},\link{my_contest}}
+    #' @param subject_Id columns with subject_Id (e.g. protein_Id)
+    #' @param Modelname default "Model"
+    initialize = function(models,
+                          contrasts,
+                          contrast_fun,
+                          subject_Id,
+                          modelName = "Model"){
       self$models = models
       self$contrasts = contrasts
-      self$contrastfun = modelFunction$contrast_fun
-      self$modelName = modelFunction$model_name
+      self$contrastfun = contrast_fun
+      self$modelName = modelName
       self$subject_Id = subject_Id
     },
     #' @description get both sides of contrasts
@@ -372,12 +397,29 @@ Contrasts <- R6::R6Class(
       contrast_result <- inner_join(contrast_sides,contrast_result)
       return(contrast_result)
     },
+    #' @description applies limma moderation
+    #' @seealso \code{\link{moderated_p_limma_long}}
     moderate = function(){
       res <- moderated_p_limma_long(self$get_contrasts(),group_by_col = "contrast")
       return(res)
+    },
+    #' @describtion
+    #'
+    #' Ropeca
+    #'
+    #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
+    ropeca = function(){
+      contrasts_data <- self$moderate()
+      res <- summary_ROPECA_median_p.scaled(
+        contrasts_data,
+        contrast = self$contrast,
+        subject_Id = self$subject_Id,
+        estimate = "estimate",
+        statistic = "statistic",
+        p.value = "moderated.p.value",
+        max.n = 10)
+      return(res)
     }
-
-
 
   ))
 
@@ -434,14 +476,18 @@ Contrasts <- R6::R6Class(
 #'   "dil.e_vs_b" = "dilution.e - dilution.b",
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
-#' contrast <- Contrasts$new(mod$modelDF, Contr, modelFunction, subject_Id = config$table$hkeysDepth())
+#' contrast <- Contrasts$new(mod$modelDF,
+#'   Contr,
+#'   modelFunction$contrast_fun,
+#'   subject_Id = config$table$hkeysDepth(),
+#'   modelName = modelFunction$modelName)
 #' #Contrasts_Plotter$debug("volcano_plotly")
-#' cp <- Contrasts_Plotter$new(contrast$get_contrasts(),contrast$modelName, contrast$subject_Id)
+#' tmp <- contrast$get_contrasts()
+#' cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
 #' cp$histogram()
 #' cp$histogram_estimate()
 #' res <- cp$volcano()
 #' res[[1]]
-#' res[[2]]
 #' respltly <- cp$volcano_plotly()
 #' cp$ma_plot()
 #' cp$ma_plotly()
@@ -471,30 +517,50 @@ Contrasts_Plotter <- R6::R6Class(
     figures = list(),
     #' @field figures_plotly list of generated figures
     figures_plotly = list(),
+    #' @field volcano_spec volcano plot specification
+    #'
+    volcano_spec = NULL,
+    #' @field histogram_spec plot specification
+    #'
+    histogram_spec = NULL,
     #' @description create Crontrast_Plotter
+    #' @param contrastDF frame with contrast data
+    #' @param modelName name of model
+    #' @param subject_Id columns containing subject Identifier
+    #' @param volcano which score to plot and which ablines to add.
+    #' @param histogram which scores to plot and which range (x) should be shown.
+    #' @param modelName Model
+    #' @param estimate estimate column
+    #' @param contrast contrast column
     initialize = function(contrastDF,
-                          modelName,
                           subject_Id,
+                          volcano = list(list(score = "p.value", fc = 1)),
+                          histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+                                           #list(score = "p.value.adjusted", xlim = c(0,1,0.05)),
+                                           list(score = "statistic" , xlim = c(0,4,0.1))),
+                          modelName = "Model",
                           estimate = "estimate",
                           contrast = "contrast"
-                          ){
+    ){
       self$contrastDF <- contrastDF %>% tidyr::unite("subject_Id", subject_Id, sep = "~", remove = FALSE)
       self$modelName  = modelName
       self$subject_Id = subject_Id
       self$estimate = estimate
+      self$volcano_spec = volcano
+      self$histogram_spec = histogram
+
     },
     #' @description  plot histogram of selected socres
     #' @param score which scores to show - list of lists
-    histogram = function(score = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                                        list(score = "p.value.adjusted", xlim = c(0,1,0.05)),
-                                        list(score = "statistic" , xlim = c(0,4,0.1)))
-                         ){
-      fig <- private$.histogram(score = score)
+    histogram = function(){
+      if (length(self$histogram_spec) > 0) {
+        fig <- private$.histogram(scores = self$histogram_spec)
 
-      self$figures[["histogram"]] <- list(fig = fig,
-                                         name = paste0(self$prefix,"_Histogram_", self$modelName))
-      return(fig)
-
+        self$figures[["histogram"]] <-
+          list(fig = fig,
+               name = paste0(self$prefix,"_Histogram_", self$modelName))
+        return(fig)
+      }
     },
     #' @description plot histogram of estimated fold change
     histogram_estimate = function(){
@@ -503,29 +569,27 @@ Contrasts_Plotter <- R6::R6Class(
       re[2] <- ceiling(re[2])
       fig <- private$.histogram(score = list(list(score =  self$estimate, xlim = c(re,0.1))))
       self$figures[["histogram_estimate"]] <- list(fig = fig,
-                                         name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
+                                                   name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
       return(fig)
 
     },
     #' @description plotly volcano plots
-    #' @param scores for which scores to generate volcano plot
-    #' @param  fc fold change abline
-    volcano = function(scores = c("p.value","p.value.adjusted"), fc = 1){
-      fig <- private$.volcano(self$contrastDF, scores, fc = fc )
+    volcano = function(){
+      fig <- private$.volcano(self$contrastDF, self$volcano_spec )
       self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
       return(fig)
     },
     #' @description plotly volcano plots
     #' @param scores for which scores to generate volcano plot
     #' @param  fc fold change abline
-    volcano_plotly = function(scores = c("p.value","p.value.adjusted"), fc = 1){
+    volcano_plotly = function(){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
-      res <- private$.volcano(contrastDF, scores, fc = fc )
+      res <- private$.volcano(contrastDF, self$volcano_spec )
       for (i in 1:length(res)) {
         res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
       }
       self$figures_plotly[["volcano"]] <- list(fig = res,
-                                              name = paste0(self$prefix, "_Volcano_Plolty_", self$modelName))
+                                               name = paste0(self$prefix, "_Volcano_Plolty_", self$modelName))
       return(res)
     },
     #' @description
@@ -537,7 +601,7 @@ Contrasts_Plotter <- R6::R6Class(
         # pdf version
         fig <- private$.ma_plot(contrastDF ,self$contrast, fc = fc)
         self$figures[["ma_plot"]] <- list(fig = fig,
-                                         name = paste0(self$prefix, "_MA_", self$modelName))
+                                          name = paste0(self$prefix, "_MA_", self$modelName))
       }else{
         warning("no c1 c2 columns can't generate MA")
         fig <- NULL
@@ -557,8 +621,9 @@ Contrasts_Plotter <- R6::R6Class(
         fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc = fc) %>%
           plotly::ggplotly(tooltip = "subject_Id")
 
-        self$figures_plotly[["ma_plot"]] <- list(fig = fig_plotly,
-                                                name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
+        self$figures_plotly[["ma_plot"]] <-
+          list(fig = fig_plotly,
+               name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
         return(fig_plotly)
 
       }else{
@@ -567,7 +632,7 @@ Contrasts_Plotter <- R6::R6Class(
     },
     write_pdf = function(path,
                          width = 10,
-                          height = 10){
+                         height = 10){
       message("Writing: ",path,"\n")
 
       plotX <- function(fig, width, height, path, fname, xname){
@@ -613,7 +678,7 @@ Contrasts_Plotter <- R6::R6Class(
 
       }
     },
-    get_minimal = function(columns = c("p.value","p.value.adjusted")){
+    get_minimal = function(columns = c("p.value")){
       relevant_columns <- c("contrast",
                             "c1_name",
                             "c1",
@@ -631,7 +696,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(contrast_minimal)
 
     },
-    to_wide = function(columns = c("p.value","p.value.adjusted")){
+    to_wide = function(columns = c("p.value")){
       contrast_minimal <- self$get_minimal(columns = columns)
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
@@ -641,25 +706,27 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores , fc = 1){
+    .volcano = function(contrasts, scores){
       fig <- list()
-      for (column in scores) {
+      for (score in scores) {
+        column <- score$score
+        fc <- score$fc
         fig[[column]] <- LFQService:::.multigroupVolcano(contrasts,
-                                               effect = self$estimate,
-                                               p.value = column,
-                                               condition = self$contrast,
-                                               text = "subject_Id",
-                                               xintercept = c(-fc, fc),
-                                               colour = "isSingular",
-                                               scales = "free_y")
+                                                         effect = self$estimate,
+                                                         p.value = column,
+                                                         condition = self$contrast,
+                                                         text = "subject_Id",
+                                                         xintercept = c(-fc, fc),
+                                                         colour = "isSingular",
+                                                         scales = "free_y")
 
       }
       return(fig)
 
     },
-    .histogram  = function(score){
+    .histogram  = function(scores){
       plots <- list()
-      for (i in score) {
+      for (i in scores) {
         xlim = i$xlim
         score = i$score
         plots[[score]] <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +

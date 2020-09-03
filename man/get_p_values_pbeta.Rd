@@ -24,7 +24,9 @@ plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
 Other modelling: 
 \code{\link{.linfct_all_possible_contrasts}()},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
+\code{\link{get_imputed_contrasts}()},
 \code{\link{get_model_coefficients}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_factors_contrasts}()},

@@ -21,7 +21,9 @@ xx <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_interactions)
 \seealso{
 Other modelling: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
+\code{\link{get_imputed_contrasts}()},
 \code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
