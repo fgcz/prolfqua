@@ -276,6 +276,7 @@ build_model <- function(data,
 
 
 # Contrasts -----
+
 #' Do contrast
 #' @export
 #' @examples
@@ -312,13 +313,13 @@ build_model <- function(data,
 #' bb <- contrast$ropeca()
 #' #View(bb)
 #'
-if(FALSE){
-  bb <- get_imputed_contrasts(D$data, D$config, Contr)
-  head(bb)
-  bm <- contrast$moderate()
-  head(bm)
-  cor(bb$estimate_median, bm$estimate)
-}
+#'if(FALSE){
+#'  bb <- get_imputed_contrasts(D$data, D$config, Contr)
+#'  head(bb)
+#'  bm <- contrast$moderate()
+#'  head(bm)
+#'  cor(bb$estimate_median, bm$estimate)
+#'}
 Contrasts <- R6::R6Class(
   "Contrast",
   public = list(
