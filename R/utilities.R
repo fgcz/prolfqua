@@ -354,7 +354,7 @@ pairs_smooth <- function(dataframe, legend = FALSE, ...) {
 #' @keywords internal
 table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
   if (kable) {
-    knitr::kable(df, digits = digits, caption = caption )
+    knitr::kable(df, digits = digits, caption = caption, booktabs = TRUE )
   }
 }
 
