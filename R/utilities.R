@@ -354,7 +354,16 @@ pairs_smooth <- function(dataframe, legend = FALSE, ...) {
 #' @keywords internal
 table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
   if (kable) {
-    knitr::kable(df, digits = digits, caption = caption, booktabs = TRUE )
+    knitr::kable(df, digits = digits, caption = caption )
+  } else {
+    if(!"data.frame" %in% class(df) ){
+      df <- as.data.frame(df)
+    }
+    table <- flextable::flextable(as.data.frame(df)) %>%
+      flextable::set_caption(caption = caption) %>%
+      flextable::colformat_num(digits = digits) %>%
+      flextable::theme_vanilla()
+    #print(table)
   }
 }
 
