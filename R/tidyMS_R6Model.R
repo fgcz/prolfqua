@@ -18,7 +18,7 @@
 #' pepIntensity <- D$data
 #' config <- D$config
 #' config$table$hkeysDepth()
-#' mod <- LFQService:::build_model(
+#' mod <- LFQService::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
@@ -265,7 +265,7 @@ build_model <- function(data,
                         modelName = modelFunction$modelName){
 
   modellingResult <- LFQService:::model_analyse(
-    pepIntensity,
+    data,
     modelFunction,
     modelName = modelName,
     subject_Id = subject_Id)
@@ -306,20 +306,19 @@ build_model <- function(data,
 #'
 #' contrast$get_contrasts_sides()
 #' contrast$get_linfct()
-#' contrast$get_contrasts()
-#'
-#' head(contrasts)
-#' contrast$moderate()
+#' xx <- contrast$get_contrasts()
+#' head(xx)
+#' xx <- contrast$moderate()
+#' dim(xx)
 #' bb <- contrast$ropeca()
-#' #View(bb)
+#' View(bb)
 #'
-#'if(FALSE){
-#'  bb <- get_imputed_contrasts(D$data, D$config, Contr)
-#'  head(bb)
-#'  bm <- contrast$moderate()
-#'  head(bm)
-#'  cor(bb$estimate_median, bm$estimate)
-#'}
+#'
+#' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
+#' dim(imputed)
+#' bm <- contrast$moderate()
+#' cor(bb$estimate_median, bm$estimate)
+#'
 Contrasts <- R6::R6Class(
   "Contrast",
   public = list(

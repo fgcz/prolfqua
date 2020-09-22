@@ -23,14 +23,16 @@
 #' @importFrom utils combn data head read.csv tail unzip
 NULL
 #' Internal Functions by category
+#' @family configuration
+#' @family concrete_configuration
+#' @family summary
 #' @family aggregation
 #' @family plotting
-#' @family deprecated
-#' @family concrete_configuration
-#' @family workflows
 #' @family utilities
-#' @family vignetteHelpers
 #' @family modelling
+#' @family workflows
+#' @family vignetteHelpers
+#' @family deprecated
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

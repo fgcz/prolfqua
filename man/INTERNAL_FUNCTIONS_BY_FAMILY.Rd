@@ -7,6 +7,32 @@
 Internal Functions by category
 }
 \seealso{
+Other configuration: 
+\code{\link{AnalysisConfiguration}},
+\code{\link{AnalysisParameters}},
+\code{\link{AnalysisTableAnnotation}},
+\code{\link{R6extractValues}()},
+\code{\link{complete_cases}()},
+\code{\link{make_interaction_column}()},
+\code{\link{make_reduced_hierarchy_config}()},
+\code{\link{separate_factors}()},
+\code{\link{separate_hierarchy}()},
+\code{\link{setup_analysis}()},
+\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{table_factors}()}
+
+Other concrete_configuration: 
+\code{\link{create_config_MQ_peptide}()},
+\code{\link{create_config_MSFragger_MSstats}()},
+\code{\link{create_config_Skyline}()},
+\code{\link{create_config_Spectronaut_Peptide}()}
+
+Other summary: 
+\code{\link{hierarchy_counts_sample}()},
+\code{\link{hierarchy_counts}()},
+\code{\link{summarize_hierarchy}()},
+\code{\link{summarize_protein}()}
+
 Other aggregation: 
 \code{\link{aggregateTopNIntensities}()},
 \code{\link{aggregate_intensity}()},
@@ -34,21 +60,6 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_sample_correlation}()}
 
-Other deprecated: 
-\code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()}
-
-Other concrete_configuration: 
-\code{\link{create_config_MQ_peptide}()},
-\code{\link{create_config_MSFragger_MSstats}()},
-\code{\link{create_config_Skyline}()},
-\code{\link{create_config_Spectronaut_Peptide}()}
-
-Other workflows: 
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_corr_filter_impute}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
-
 Other utilities: 
 \code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
@@ -62,10 +73,6 @@ Other utilities:
 \code{\link{split2table}()},
 \code{\link{table_facade.list}()},
 \code{\link{table_facade}()}
-
-Other vignetteHelpers: 
-\code{\link{render_MQSummary_rmd}()},
-\code{\link{render_SummarizeFiltering_rmd}()}
 
 Other modelling: 
 \code{\link{.linfct_all_possible_contrasts}()},
@@ -100,12 +107,27 @@ Other modelling:
 \code{\link{plot_lmer_predicted_interactions}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
 \code{\link{workflow_likelihood_ratio_test}()}
+
+Other workflows: 
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_corr_filter_impute}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+
+Other vignetteHelpers: 
+\code{\link{render_MQSummary_rmd}()},
+\code{\link{render_SummarizeFiltering_rmd}()}
+
+Other deprecated: 
+\code{\link{intensity_summary_by_hkeys}()},
+\code{\link{medpolish_protein_quants}()}
 }
 \concept{aggregation}
 \concept{concrete_configuration}
+\concept{configuration}
 \concept{deprecated}
 \concept{modelling}
 \concept{plotting}
+\concept{summary}
 \concept{utilities}
 \concept{vignetteHelpers}
 \concept{workflows}

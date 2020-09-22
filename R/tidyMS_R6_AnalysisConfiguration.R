@@ -4,6 +4,7 @@ library(R6)
 #' Analysis parameters
 #' @description Analysis parameters
 #' @keywords internal
+#' @family configuration
 #' @export
 AnalysisParameters <- R6::R6Class(
   "AnalysisParameters",
@@ -31,6 +32,7 @@ AnalysisParameters <- R6::R6Class(
 #' Create Annotation
 #' @description Annotates Data Table
 #' @keywords internal
+#' @family configuration
 #' @export
 #'
 AnalysisTableAnnotation <- R6::R6Class(
@@ -177,6 +179,7 @@ AnalysisTableAnnotation <- R6::R6Class(
 #' Analysis Configuration
 #' @description Hello world
 #' @keywords internal
+#' @family configuration
 #' @export
 #'
 AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
@@ -204,7 +207,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' @param config AnalysisConfiguration
 #' @param workIntensity work intensity column
 #' @param hierarchy new reduced hierarchy
-#'
+#' @family configuration
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
 #'
@@ -223,6 +226,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' create interaction column from factors
 #' @export
 #' @keywords internal
+#' @family configuration
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 #' # debug(make_interaction_column)
@@ -256,6 +260,7 @@ make_interaction_column <- function(data, columns, sep="."){
 #' Extract all value slots in an R6 object
 #' @param r6class r6 class
 #' @keywords internal
+#' @family configuration
 #' @export
 R6extractValues <- function(r6class){
   tmp <- sapply(r6class, class)
@@ -280,6 +285,7 @@ R6extractValues <- function(r6class){
 #' @param cc complete cases default TRUE
 #' @export
 #' @keywords internal
+#' @family configuration
 #' @examples
 #'
 #' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
@@ -331,9 +337,11 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 }
 
 #' separates hierarchy columns into starting columns
+#'
 #' @export
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
+#' @family configuration
 #' @keywords internal
 separate_hierarchy <- function(data, config){
   for (hkey in config$table$hkeysDepth()) {
@@ -346,7 +354,9 @@ separate_hierarchy <- function(data, config){
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
 #' @export
+#'
 #' @keywords internal
+#' @family configuration
 separate_factors <- function(data, config) {
   for (fkey in config$table$factorKeys()) {
     data <- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
@@ -361,6 +371,7 @@ separate_factors <- function(data, config) {
 #' @param pdata data.frame
 #' @param config AnlalysisConfiguration
 #' @keywords internal
+#' @family configuration
 #' @examples
 #'
 #' bb <- LFQServiceData::skylinePRMSampleData_A
@@ -393,6 +404,7 @@ complete_cases <- function(pdata, config) {
 #'
 #' @export
 #' @keywords internal
+#' @family configuration
 #' @examples
 #' library(tidyverse)
 #' bb <- LFQServiceData::skylinePRMSampleData_A
@@ -419,6 +431,7 @@ table_factors <- function(pdata, configuration){
 #'
 #' @export
 #' @keywords internal
+#' @family summary
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
@@ -441,6 +454,7 @@ hierarchy_counts <- function(pdata, config){
 #' @param config AnalysisConfiguration
 #'
 #' @keywords internal
+#' @family summary
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -489,10 +503,12 @@ hierarchy_counts_sample <- function(pdata,
 #' Summarize hierarchy counts
 #' @export
 #' @keywords internal
+#' @family summary
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @param hierarchy for which hierarchy level (default up to hierarchy depth)
 #' @param factors which factors to include
+#'
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
@@ -540,6 +556,7 @@ summarize_hierarchy <- function(pdata,
 #' @param config AnalysisConfiguration
 #' @export
 #' @keywords internal
+#' @family summary
 #' @examples
 #'
 #' library(LFQService)
@@ -584,6 +601,7 @@ summarize_protein <- function(pdata, config ){
 #' spreads isotope label heavy light into two columns
 #' @export
 #' @keywords internal
+#' @family configuration
 #' @examples
 #' library(LFQService)
 #' setNa <- function(x){ifelse(x < 100, NA, x)}

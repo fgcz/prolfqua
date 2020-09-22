@@ -27,4 +27,20 @@ make_reduced_hierarchy_config(conf,
  conf$table$hierarchy[1:2])
 
 }
+\seealso{
+Other configuration: 
+\code{\link{AnalysisConfiguration}},
+\code{\link{AnalysisParameters}},
+\code{\link{AnalysisTableAnnotation}},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{R6extractValues}()},
+\code{\link{complete_cases}()},
+\code{\link{make_interaction_column}()},
+\code{\link{separate_factors}()},
+\code{\link{separate_hierarchy}()},
+\code{\link{setup_analysis}()},
+\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{table_factors}()}
+}
+\concept{configuration}
 \keyword{internal}

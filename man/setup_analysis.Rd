@@ -27,4 +27,20 @@ skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData_A$data, skylineconfig)
 
 }
+\seealso{
+Other configuration: 
+\code{\link{AnalysisConfiguration}},
+\code{\link{AnalysisParameters}},
+\code{\link{AnalysisTableAnnotation}},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{R6extractValues}()},
+\code{\link{complete_cases}()},
+\code{\link{make_interaction_column}()},
+\code{\link{make_reduced_hierarchy_config}()},
+\code{\link{separate_factors}()},
+\code{\link{separate_hierarchy}()},
+\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{table_factors}()}
+}
+\concept{configuration}
 \keyword{internal}

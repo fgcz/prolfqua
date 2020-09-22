@@ -21,7 +21,7 @@ formula_randomPeptide <-
 pepIntensity <- D$data
 config <- D$config
 config$table$hkeysDepth()
-mod <- LFQService:::build_model(
+mod <- LFQService::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,

@@ -26,6 +26,8 @@
 #' @param data data
 #' @param config AnalysisConfiguration
 #' @export
+#' @keywords internal
+#' @family deprecated
 #' @examples
 #'
 #' library(tidyverse)

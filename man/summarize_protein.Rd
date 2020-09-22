@@ -25,4 +25,12 @@ data <- bb$analysis(bb$data, configur)
 LFQService:::summarize_protein(data, configur)
 
 }
+\seealso{
+Other summary: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{hierarchy_counts_sample}()},
+\code{\link{hierarchy_counts}()},
+\code{\link{summarize_hierarchy}()}
+}
+\concept{summary}
 \keyword{internal}

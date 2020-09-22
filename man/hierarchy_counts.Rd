@@ -23,4 +23,12 @@ data <- bb$analysis(bb$data, config)
 
 hierarchy_counts(data, config)
 }
+\seealso{
+Other summary: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{hierarchy_counts_sample}()},
+\code{\link{summarize_hierarchy}()},
+\code{\link{summarize_protein}()}
+}
+\concept{summary}
 \keyword{internal}

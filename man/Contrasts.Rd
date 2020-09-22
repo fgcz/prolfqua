@@ -35,20 +35,19 @@ mod <- build_model(
 
 contrast$get_contrasts_sides()
 contrast$get_linfct()
-contrast$get_contrasts()
-
-head(contrasts)
-contrast$moderate()
+xx <- contrast$get_contrasts()
+head(xx)
+xx <- contrast$moderate()
+dim(xx)
 bb <- contrast$ropeca()
-#View(bb)
+View(bb)
 
-if(FALSE){
- bb <- get_imputed_contrasts(D$data, D$config, Contr)
- head(bb)
- bm <- contrast$moderate()
- head(bm)
- cor(bb$estimate_median, bm$estimate)
-}
+
+imputed <- get_imputed_contrasts(D$data, D$config, Contr)
+dim(imputed)
+bm <- contrast$moderate()
+cor(bb$estimate_median, bm$estimate)
+
 }
 \seealso{
 \code{\link{moderated_p_limma_long}}
