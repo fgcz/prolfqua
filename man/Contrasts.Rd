@@ -38,15 +38,14 @@ contrast$get_linfct()
 xx <- contrast$get_contrasts()
 head(xx)
 xx <- contrast$moderate()
-dim(xx)
+head(xx)
 bb <- contrast$ropeca()
-View(bb)
+#View(bb)
 
 
 imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-dim(imputed)
-bm <- contrast$moderate()
-cor(bb$estimate_median, bm$estimate)
+alli <- inner_join(bm, imputed, by = "protein_Id")
+cor(alli$estimate_median, alli$estimate, method="spearman")
 
 }
 \seealso{

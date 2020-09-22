@@ -309,15 +309,14 @@ build_model <- function(data,
 #' xx <- contrast$get_contrasts()
 #' head(xx)
 #' xx <- contrast$moderate()
-#' dim(xx)
+#' head(xx)
 #' bb <- contrast$ropeca()
-#' View(bb)
+#' #View(bb)
 #'
 #'
 #' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-#' dim(imputed)
-#' bm <- contrast$moderate()
-#' cor(bb$estimate_median, bm$estimate)
+#' alli <- inner_join(bm, imputed, by = "protein_Id")
+#' cor(alli$estimate_median, alli$estimate, method="spearman")
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -370,7 +369,6 @@ Contrasts <- R6::R6Class(
     get_contrasts = function(){
       linfct <- self$get_linfct()
       contrast_sides <- self$get_contrasts_sides()
-
       contrast_result <- contrasts_linfct(self$models,
                                           rbind(linfct$linfct, linfct$linfct_A),
                                           subject_Id = self$subject_Id,
@@ -483,18 +481,20 @@ Contrasts <- R6::R6Class(
 #'   modelName = modelFunction$modelName)
 #' #Contrasts_Plotter$debug("volcano_plotly")
 #' tmp <- contrast$get_contrasts()
+#' contrast$subject_Id
 #' cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
 #' cp$histogram()
 #' cp$histogram_estimate()
 #' res <- cp$volcano()
-#' res[[1]]
+#' length(res)
+#' res
 #' respltly <- cp$volcano_plotly()
+#' length(respltly)
 #' cp$ma_plot()
 #' cp$ma_plotly()
 #' cp$write_pdf("c:/Temp")
 #' cp$write_plotly("c:/Temp")
 #' bb <- cp$get_minimal()
-#' head(bb)
 #' bw <- cp$to_wide()
 #' head(bw)
 Contrasts_Plotter <- R6::R6Class(

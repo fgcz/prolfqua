@@ -13,3 +13,4 @@ doc
 /tests/testthat/*.txt
 /tests/testthat/*_files/
 .idea
+docs

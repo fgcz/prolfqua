@@ -90,6 +90,7 @@ modelFunction <- make_custom_model_lmer( memodel, report_columns = c("p.value", 
 
 #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
+  #debug(application_run_modelling_V2)
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
     config = normalizedData$config,
@@ -98,7 +99,9 @@ if (TRUE) {
     modelling_dir = ps$modelling_path() )
 
 
+  xx <- resXXmixmodel(DEBUG = TRUE)
   resXXmixmodel(do = "write_modelling")
+
   resXXmixmodel(do = "write_contrasts")
 }
 

@@ -41,18 +41,20 @@ contrast <- Contrasts$new(mod$modelDF,
   modelName = modelFunction$modelName)
 #Contrasts_Plotter$debug("volcano_plotly")
 tmp <- contrast$get_contrasts()
+contrast$subject_Id
 cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
 cp$histogram()
 cp$histogram_estimate()
 res <- cp$volcano()
-res[[1]]
+length(res)
+res
 respltly <- cp$volcano_plotly()
+length(respltly)
 cp$ma_plot()
 cp$ma_plotly()
 cp$write_pdf("c:/Temp")
 cp$write_plotly("c:/Temp")
 bb <- cp$get_minimal()
-head(bb)
 bw <- cp$to_wide()
 head(bw)
 }

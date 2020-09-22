@@ -4,3 +4,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .idea
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
