@@ -364,7 +364,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
     return(data)
   }
 
-  ## modelmatrix breaks on factors with 1 level so make vector of ones (will be intercept)
+  ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
     data <- data %>% group_by_at(samples) %>%
       summarize(lmrob = mean(!!sym(expression)),
@@ -381,7 +381,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
   ## MASS::rlm breaks on singular values.
   ## check with base lm if singular values are present.
   ## if so, these coefficients will be zero, remove this column from model matrix
-  ## rinse and repeat on reduced modelmatrix untill no singular values are present
+  ## rinse and repeat on reduced model-matrix untill no singular values are present
   y <- data[[expression]]
   repeat {
     fit = .lm.fit(X,y)
