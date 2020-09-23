@@ -331,12 +331,12 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
+  resdata <- t(scale(t(resdata)))
   resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
 
   # not showing row dendrogram trick
   res <- pheatmap::pheatmap(resdata,
-                            scale = "row",
                             silent = TRUE)
 
   res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
@@ -467,7 +467,12 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   x <- ggplot(xx, aes(x = PC1, y = PC2,
                       color = !!sym(config$table$fkeysDepth()[1]),
                       text = !!sym(config$table$sampleName))) +
-    point + if (add_txt) {text}
+    point +
+    if (add_txt) {text}
+
+  if (!is.na(sh)) {
+    x <- x +  ggplot2::scale_shape_manual(values = 1:length(unique(xx[[sh]])))
+  }
   return(x)
 }
 
