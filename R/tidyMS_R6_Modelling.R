@@ -1170,7 +1170,8 @@ summary_ROPECA_median_p.scaled <- function(
   estimate = "estimate",
   statistic = "statistic",
   p.value = "moderated.p.value",
-  max.n = 10){
+  max.n = 10,
+  adjust = TRUE){
 
   contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
@@ -1209,10 +1210,21 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
-  summarized.protein <- dplyr::inner_join(nrpepsPerProt , summarized.protein ,  by = c(subject_Id, contrast))
+  summarized.protein <- dplyr::inner_join(nrpepsPerProt,
+                                          summarized.protein,
+                                          by = c(subject_Id, contrast))
+  # TODO move p-value adjustment into independent code.
+  if (adjust) {
+    summarized.protein <- summarized.protein %>%
+      mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
+    summarized.protein <- summarized.protein %>%
+      mutate(median.p.adjusted = p.adjust(median.p, method = "BH"))
+  }
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.
   return(ungroup( summarized.protein ))
 }
+
+
 
