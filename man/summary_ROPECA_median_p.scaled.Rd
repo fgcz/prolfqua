@@ -12,7 +12,8 @@ summary_ROPECA_median_p.scaled(
   estimate = "estimate",
   statistic = "statistic",
   p.value = "moderated.p.value",
-  max.n = 10
+  max.n = 10,
+  adjust = TRUE
 )
 }
 \arguments{
