@@ -182,7 +182,7 @@ do_confusion_c <- function(
   }
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
-  summaryS <- pStats %>% dplyr::group_by(what, contrast) %>%
+  summaryS <- pStats %>% dplyr::group_by(contrast, what) %>%
     dplyr::summarize(
       AUC = ms_bench_auc(FPR, TPR),
       pAUC_10 =  ms_bench_auc(FPR, TPR, 0.1),
@@ -193,8 +193,7 @@ do_confusion_c <- function(
                  caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description), digits = 2)
 
   sumd <- reshape2::melt(summaryS)
-
-  barp <- ggplot(sumd, aes(x = what, y = value, color = NULL , fill = contrast)) +
+  barp <- ggplot(sumd, aes(x = contrast , y = value, color = NULL , fill = what)) +
     geom_bar(stat = "identity", position = position_dodge()) +
     facet_wrap(~ variable, scales = "free") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
@@ -243,11 +242,46 @@ do_confusion_c <- function(
   return(fig)
 }
 
-
+# Benchmark ----
 #' Benchmark R6 class
 #'
 #' @export
+#' @examples
+#' library(ggpubr)
+#' ttd <- ms_bench_preprocess(LFQService::resXXmedpolishTSV)
+#' medpol_benchmark <- make_benchmark(ttd$data,
+#'                                    model_description = "med. polish and lm. density",
+#'                                    model_name = "prot_med_lm"
+#' )
+#' medpol_benchmark$plot_score_distribution()
 #'
+#' ttd <- ms_bench_preprocess(LFQService::brmsBench)
+#' head(ttd)
+#' #Benchmark$debug("pAUC_summaries")
+#'# Benchmark$undebug("get_FDRvsFDP")
+#' #Benchmark$debug("get_confusion")
+#' #Benchmark$undebug("do_confusion")
+#' brms_benchmark <- make_benchmark(
+#'   ttd$data,
+#'   toscale =  c("p.value", "regulation.probability"),
+#'   benchmark = list(list(sc = "estimate", desc = TRUE),
+#'                    list(sc = "statistic", desc = TRUE),
+#'                    list(sc = "scaled.p.value", desc = TRUE),
+#'                    list(sc = "scaled.regulation.probability", desc = TRUE)
+#'   ),
+#'   FDRvsFDP =
+#'     list(list(sc = "p.value.adjusted", desc = FALSE),
+#'          list(sc = "regulation.probability.adjusted", desc = FALSE)),
+#'   model_description = "protein level measurments, brms model",
+#'   model_name = "prot_brms"
+#' )
+#' brms_benchmark$complete()
+#' debug(LFQService:::do_confusion_c)
+#' bb <- brms_benchmark$get_confusion()
+#' dim(bb)
+#' head(bb)
+#'
+
 Benchmark <-
   R6::R6Class(
     "Benchmark",
@@ -347,8 +381,8 @@ Benchmark <-
           arrange = self$FDRvsFDP
         }
         confusion <- LFQService:::do_confusion_c(self$data(),
-                                    contrast = self$contrast,
-                                    arrangeby = arrange)
+                                                 contrast = self$contrast,
+                                                 arrangeby = arrange)
         confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)
         return(confusion)
       },
@@ -390,7 +424,7 @@ Benchmark <-
         #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
         p <- ggplot(xx, aes(x = scorecol, y = FDP, color = !!sym(self$contrast))) +
           geom_line() +
-          geom_abline(slope = 1, col = 2) +
+          geom_abline(slope = max(xx$FDP), col = 2) +
           facet_wrap(~what)
         return(p)
       },
