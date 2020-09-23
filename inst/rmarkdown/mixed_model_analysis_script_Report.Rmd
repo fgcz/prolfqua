@@ -57,24 +57,24 @@ modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_di
 
 # Data preprocessing and diagnostic plots
 
-We preprocess the _peptide intensities reported in the MaxQuant generated`peptides.txt` file_ as follows: we removed all proteins with only one identified peptide, we remove intensities equal zero, non zero intensities are $\log_2$ transformed and modified using robust z-score transformation (using the median and median average deviation). 
+We preprocess the _peptide intensities reported in the MaxQuant generated `peptides.txt` file_ as follows:
+
+- we removed all proteins with only one identified peptide, 
+- we remove intensities equal zero, 
+- non zero intensities are $\log_2$ transformed and modified using robust z-score transformation (using the median and median average deviation). 
 
 A set of diagnostic plots is generated from protein intensities. The diagnostic plots (PCA, heatmaps) are generated based on transformed and normalized protein intensities [^1].
 
-
-[^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are determined using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the transformed and scored peptide intensities.  
-
+[^1]: The peptide intensities are $\log_2$ transformed and z-scored. The protein intensity are estimated using the [Tukey Median polish](https://en.wikipedia.org/wiki/Median_polish) from the normalized peptide intensities.  
 
 The raw files are annotated with the following factors and factor levels:
 
 ```{r annotation}
 table_facade(pars$annotation, "Sample annotations.")
-
 ```
 
 
 ```{r prepInferenceFigrues,include = FALSE, eval=FALSE}
-
 txt_inference_fig <- paste( c("- A [pdf file](", qcfile("inference_figures.pdf"), '){target="_blank"}',
 "visualizing all the peptide and protein intensities (the peptide intensities are $\\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) )."), collapse = "")
 ```
@@ -111,7 +111,20 @@ mixed_contrast_txt <- "To compute the p-values and contrasts we used the method 
 ```
 
 
-For each protein, we fitted a `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}` to the peptide intensities. Fold changes and p-Values for each contrast ( differences among conditions ,see table \@ref(tab:contrasts) ) are computed based on the parameter estimates of the model model.  `r if(pars$model$is_mixed) {mixed_contrast_txt}`. All the protein p-Values are adjusted for multiple testing using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [see @BenjaminiHochberg1995].
+For each protein, we fitted a `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}` to the peptide intensities. 
+The following `r if(pars$model$is_mixed) {mixed_txt} else {fixed_txt}`  was fitted :
+
+__`r format(pars$model$model_fun(get_formula = TRUE))`__
+
+Fold changes and p-Values for each contrast (see next Table) are computed based on the parameter estimates of the model model.
+
+```{r contrasts}
+Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = as.character(pars$Contrasts))
+table_facade(Contrasts, "Contrasts (vs - versus, gv - given).")
+
+```
+
+`r if(pars$model$is_mixed) {mixed_contrast_txt}`. All the protein p-Values are adjusted for multiple testing using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [see @BenjaminiHochberg1995].
 
 To estimate fold-changes for proteins for which we could not fit a mixed-effects model because of an excess in missing measurements, we proceed as follows: First, we compute the mean intensity for all peptides for each condition. For the proteins with no measurements in that condition, we impute the peptide intensities using the mean of the $10\%$ smallest average peptide intensities computed in step one. Afterwards, we compute contrasts (differences between conditions) for each peptide and finally, the median of the peptide estimates is used to provide a per protein fold change estimate.  
 
