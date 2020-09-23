@@ -73,10 +73,15 @@ table_facade(pars$annotation, "Sample annotations.")
 ```
 
 
-```{r include = FALSE}
+```{r prepInferenceFigrues,include = FALSE, eval=FALSE}
+
 txt_inference_fig <- paste( c("- A [pdf file](", qcfile("inference_figures.pdf"), '){target="_blank"}',
 "visualizing all the peptide and protein intensities (the peptide intensities are $\\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) )."), collapse = "")
+```
 
+
+
+```{r prepareBoxplot, include = FALSE prepareBoxplot, include = FALSE}
 txt_boxplot_fig <- paste( c("- A [pdf file](", qcfile("boxplot.pdf"), '){target="_blank"}',  
                        "with box-plots showing the intensity distribution of each protein in all conditions."), collapse = "")
 
