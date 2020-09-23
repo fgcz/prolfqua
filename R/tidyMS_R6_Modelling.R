@@ -1205,7 +1205,7 @@ summary_ROPECA_median_p.scaled <- function(
     dplyr::mutate(median.p = 1 - abs(median.p.scaled))
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p  , n_not_na, max.n = max.n))
+    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p, n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
