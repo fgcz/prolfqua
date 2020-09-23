@@ -131,7 +131,7 @@ get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
   modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>%
     dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
-  modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
+  # modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
 
