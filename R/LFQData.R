@@ -686,14 +686,11 @@ LFQDataPlotter <- R6::R6Class(
                          width=7 , height=7 ){
       fpath <- file.path(path_qc,paste0(self$prefix,fig_name,".pdf"))
       message("writing ", fpath)
+      graphics.off()
       pdf(fpath,
           width = width,
           height = height)
-      #if ('pheatmap' %in% class(fig)) {
-      #  print(plot(fig$gtable))
-      #}else{
         print(fig)
-      #}
       graphics.off()
       self$file_paths_pdf[[fig_name]] <- fpath
       invisible(fpath)
