@@ -1,11 +1,34 @@
-# LFQService - for Label Free Quantification Services
+# prolfqua - an R package for Proteomics Label Free Quantification Services
 
 ![prolfqua](inst/Figures/imgfile.png)
 
-The R package contains vignettes and functions for analyzing mass spec device based LFQ proteomics experiments at the [FGCZ](http://www.fgcz.ch/).
+The R package contains functions for analyzing mass spectrometry based LFQ experiments at the [FGCZ](http://www.fgcz.ch/).
 
+
+
+## Motivation
+
+The package for **pro**teomics **l**abel **f**ree **qua**ntification `prolfqua` (read : prolevka) evolved from a set of scripts and functions written in the R programming language to visualize and analyze mass spectrometric data, and some of them are still in R packages such as quantable, protViz or imsbInfer. For computing protein fold changes among treatment conditions, we first used t-test or linear models, then started to use functions implemented in the package limma to obtain moderated p-values. We did also try to use other packages such as MSStats, ROPECA or MSqRob all implemented in R, with the idea to integrate the various approaches to protein fold-change estimation. Although all these packages were written in R,  model specification, input and output formats differ widely and wildly, which made our aim to use the original implementations challenging. Therefore, and also to understand the algorithms used, we attempted to reimplement those methods, if possible. 
+
+When developing _prolfqua_ we were inspired by packages such as _sf_ or _stars_ which use data in long table format and _dplyr_ for data transformation and ggplot2 for visualization.  In the long table format each column stores a different attribute, e.g. there is only a single column with the raw intensities. In the wide table format there might be several columns with the same attribute, e.g. for each recorded sample a raw intensity column.
+In _prolfqua_ the data needed for analysis is represented using a single data-frame in long format and a configuration object. The configuration annotates the table, specifies what information is in which column. The results of the statistical modelling are stored in data frames.  Relying on the long data table format enabled us to access a large variety of useful visualizations as well as data preprocessing methods implemented in the R packages _dplyr_ and _ggplot2_.
+
+The use of an annotated table makes integrating new data if provided in long formatted tables simple.  Hence for Spectronaut or Skyline text output, all is needed is a table annotation (see code snipped).  Since MSStats formatted input is a table in long format _prolefqa_ works with MSstats formatted files. For software, which writes the data in a wide table format, e.g. Maxquant, we implemented methods which first transform the data into a long format.  
+
+A further design decision, which differentiates `prolfqua` is that it embraces and supports R's linear model formula interface, or R lme4 formula interface. R's formula interface for linear models is flexible, widely used and documented. The linear model and linear mixed model interfaces allow specifying a wide range of essential models, including parallel designs, factorial designs, repeated measurements and many more. Since `prolfqua` uses R modelling infrastructure directly, we can fit all these models to proteomics data.
+This is not easily possible with any other package dedicated to proteomics data analysis. For instance, MSStats, although using the same modelling infrastructure, supports only a small subset of possible models. Limma, on the other hand, supports R formula interface but not for linear mixed models. Since the ROPECA package relies on _limma_ it is limited to the same subset of models. MSqRob is limited to random effects model's, and it is unclear how to fit these models to factorial designs, and how interactions among factors can be computed and tested.
+
+The use of R's formula interface does not limit _prolfqua_ to the output provided by the R modelling infrastructure. _prolfqua_ also implements p-value moderations, as in the limma publication or computing probabilities of differential regulation, as suggested in the ROPECA publication. 
+Moreover, the design decision to use the R formula interface allowed us to integrate Bayesian regression models provided by the r-package _brms_. Because of that, we can benchmark all those methods: linear models, mixed effect models, p-value moderation, ROPECA as well as Bayesian regression models within the same framework, which enabled us to evaluate the practical relevance of these methods.
+
+Last but not least _prolfqua_ supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc.
+It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish etc. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed. 
+
+To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface,  we provide an  MSstats emulator, where the model specification is generated based on the annotation file structure. 
 
 ## 1. System Requirements  
+
+R 3.6 or higher.
 
 ## 1.1. Install R
 
@@ -13,7 +36,10 @@ a Windows/Linux/MacOSX x64 platform R 3.6.
 
 ```{r}
 # requires install.packages(c(BiocManager, 'remotes'))
-BiocManager::install('wolski/LFQService')
+
+remotes::install_github("wolski/prolfqua")
+# BiocManager::install('wolski/prolfqua')
+
 ```
 
 ### 1.2. Required packages
@@ -52,27 +78,6 @@ Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/
 ```
 
 
-## Motivation
-
-The package for **pro**teomics **l**abel **f**ree **qua**ntification `prolfqua` (read : prolevka) evolved from a set of scripts and functions written in the R programming language to visualize and analyze mass spectrometric data, and some of them are still in R packages such as quantable, protViz or imsbInfer. For computing protein fold changes among treatment conditions, we first used t-test or linear models, then started to use functions implemented in the package limma to obtain moderated p-values. We did also try to use other packages such as MSStats, ROPECA or MSqRob all implemented in R, with the idea to integrate the various approaches to protein fold-change estimation. Although all these packages were written in R,  model specification, input and output formats differ widely and wildly, which made our aim to use the original implementations challenging. Therefore, and also to understand the algorithms used, we attempted to reimplement those methods, if possible. 
-
-When developing `prolfqua` we were inspired by packages such as `sf` or `stars` which use data in the long table format, use dplyr for data transformation and ggplot2 for visualization. In `prolfqua` the data needed for analysis is represented using a single data.frame and a configuration object. The configuration annotates the table, specifies what information is in which column. The results of the statistical modelling we also store in data-frames, making filtering, transforming the results with `dplyr` and `ggplot2` easy.
-
-The use of an annotated table makes integrating new data if provided in long formatted tables simple. Hence for Spectronaut or Skyline outputs, or MSStats formatted input, all is needed is a table annotation (see code snipped). For software, which writes the data in a wide tables, e.g. Maxquant, we implemented methods which first transform the data into a long format.  Relying on the long data table format enabled us to apply a large variety of useful visualizations and data preprocessing methods in R. 
-
-A further design decision, which differentiates `prolfqua` is that it embraces and supports R's linear model formula interface, and R's lme4 mixed effect models formula interface. R's formula interface for regression models is flexible, widely used and documented. The linear model and linear mixed model interfaces allow specifying a wide range of essential models, including parallel designs, factorial designs, repeated measurements and many more. Since `prolfqua` uses R modelling infrastructure, we can fit all these models to proteomics data.
-
-This is not possible with any other package dedicated to proteomics data analysis. For instance, MSStats, although it uses the same modelling infrastructure, supports only a small subset of possible models. Limma, on the other hand, supports the R formula interface but not for linear mixed models. Because ROPECA relies on `limma` it is limited to the same subset of models. MSqRob is limited to random effects model's only, and it is unclear how to fit these models to factorial designs and how to estimate interaction terms.
-
-
-The use of R's formula interface does not limit `prolfqua` to outputs provided by R modelling infrastructure. `prolefqa` also implements p-Value moderation, as in the limma publication or computing probabilities of differential regulation as suggested in the ROPECA publication. 
-Moreover, the design decision allowed us to integrate Bayesian regression models provided by the r-package `brms` easily. Because of that, we can benchmark all those methods: linear models, mixed effect models, p-value moderation, ROPECA as well as Bayesian regression models within the same framework. This helped us to deepen our understanding of the practical application of these methods.
-
-Last but not least `prolfqua` supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, it can be used for sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc.
-It also implements various protein intensity summarization and inference methods, e.g. Top 3, or Tukeys median polish. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins is implemented and can be performed.
-
-
-To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface, we provide an  MSstats emulator, where the model formula is inferred from the annotation file structure of an MSStats analysis.
 
 
 # How to get started
@@ -94,4 +99,16 @@ What is a paired measurement.
 
 # TODO
 - Make public
+
+# Related resources and relevant background information
+
+- [Contrasts in R by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+- [R Companion](https://rcompanion.org/rcompanion/h_01.html)
+- [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
+- [Triqler](https://github.com/statisticalbiotechnology/triqler)
+- [MSQRob](https://github.com/statOmics/MSqRob)
+- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
+- [Bayesian essentials with R - R package](https://cran.r-project.org/web/packages/bayess/index.html)
+- [Contrasts in R - an eample vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 
