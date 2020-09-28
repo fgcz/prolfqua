@@ -82,29 +82,36 @@ Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/
 
 # How to get started
 
-## 2 grp analysis
+## 2 grp analysis (TODO)
 - See vignettes.
 
-## Parallel design
+## Parallel design (TODO)
 What is parallel design.
 - See vignettes.
 
-## repeated measurements
+## Repeated measurements (TODO)
 What is a paired measurement.
 - See vignettes.
 
-## Contrasts
+## Contrasts (TODO)
 - See vignettes.
 
-# Related resources and relevant background information
+# Related resources
+
+- [Triqler](https://github.com/statisticalbiotechnology/triqler)
+- [MSQRob](https://github.com/statOmics/MSqRob)
+- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- PEPA test - analysis including shared peptides
+  - [DAPAR](https://github.com/samWieczorek/DAPAR/)
+  - [DAPARData](https://github.com/samWieczorek/DAPARdata/)
+  - [PEPA validation](https://github.com/ThomasBurger/pepa-validation)
+
+#  Relevant background information
 
 - [Contrasts in R by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 - [R Companion](https://rcompanion.org/rcompanion/h_01.html)
 - [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
-- [Triqler](https://github.com/statisticalbiotechnology/triqler)
-- [MSQRob](https://github.com/statOmics/MSqRob)
-- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
 - [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
 - [Bayesian essentials with R - R package](https://cran.r-project.org/web/packages/bayess/index.html)
-- [Contrasts in R - an eample vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+- [Contrasts in R - an example vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 
