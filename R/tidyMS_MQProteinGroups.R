@@ -427,8 +427,8 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 tidyMQ_top_protein_name <- function(modSpecData) {
   modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
-  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id,proteins) %>% dplyr::distinct()
-  groupIDprotein %>% separate_rows(proteins, sep = ";",convert = TRUE) -> groupIDprotein_Separated
+  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id, proteins) %>% dplyr::distinct()
+  groupIDprotein_Separated <- groupIDprotein %>% separate_rows(proteins, sep = ";",convert = TRUE)
   groupIDprotein_Separated %>%
     dplyr::group_by(protein.group.id) %>%
     tidyr::nest() -> groupIDprotein_Separated
