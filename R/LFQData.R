@@ -174,31 +174,30 @@ LFQDataTransformer <- R6::R6Class(
     },
     #' @description
     #' log2 transform and robust scale datas
-    #' @return LFQDataTransformer (self)
+    #' @return LFQData
     log2_robscale = function(){
       r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
       self$lfq$data <- r$data
       self$lfq$config <- r$config
-      return(self)
+      invisible(LFQData$new(r$data, r$config))
     },
     #' @description
     #' log2 transform and robust scale data based on subset
     #' @param LFQData
-    #' @return LFQDataTransformer (self)
+    #' @return LFQData
     #'
     log2_robscale_subset = function(lfqsubset){
-      if(self$lfq$is_transformed() != lfqsubset$is_transformed()){
+      if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
         return(NULL)
       }
-      if(self$lfq$is_transformed() == FALSE){
+      if (self$lfq$is_transformed() == FALSE) {
         self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
         lfqsubset$data <- LFQService::transform_work_intensity(lfqsubset$data, lfqsubset$config, log2)
         self$lfq$is_transformed(TRUE)
       }
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
-
-      return(self)
+      invisible(LFQData$new(self$data, self$config))
     },
     #' @description
     #' Transforms intensities
