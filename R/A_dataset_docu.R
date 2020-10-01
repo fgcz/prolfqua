@@ -33,6 +33,8 @@ NULL
 #' @family workflows
 #' @family vignetteHelpers
 #' @family deprecated
+#' @family transitionCorrelation
+#' @family preprocessing
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

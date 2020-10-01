@@ -6,6 +6,7 @@
 #' @return list with data.frame (data) and name of new column (name)
 #' @export
 #' @keywords internal
+#' @family preprocessing
 #' @examples
 #'
 #' library(LFQService)
@@ -36,6 +37,7 @@ filter_proteins_by_peptide_count <-
 #' @return list with data.frame (data) and updated config (config)
 #' @export
 #' @keywords internal
+#' @family preprocessing
 #' @examples
 #'
 #' istar <- LFQServiceData::ionstar$Pep()

@@ -69,7 +69,7 @@ log2 transform and robust scale datas
 }
 
 \subsection{Returns}{
-LFQDataTransformer (self)
+LFQData
 }
 }
 \if{html}{\out{<hr>}}
@@ -82,7 +82,7 @@ log2 transform and robust scale data based on subset
 }
 
 \subsection{Returns}{
-LFQDataTransformer (self)
+LFQData
 }
 }
 \if{html}{\out{<hr>}}

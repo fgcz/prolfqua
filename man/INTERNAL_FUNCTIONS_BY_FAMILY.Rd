@@ -133,6 +133,10 @@ Other deprecated:
 \code{\link{workflow_missigness_impute_contrasts_V2}()},
 \code{\link{workflow_missigness_impute_contrasts}()},
 \code{\link{workflow_model_analyse}()}
+
+Other preprocessing: 
+\code{\link{filter_proteins_by_peptide_count}()},
+\code{\link{normalize_log2_robscale}()}
 }
 \concept{aggregation}
 \concept{concrete_configuration}
@@ -140,7 +144,9 @@ Other deprecated:
 \concept{deprecated}
 \concept{modelling}
 \concept{plotting}
+\concept{preprocessing}
 \concept{summary}
+\concept{transitionCorrelation}
 \concept{utilities}
 \concept{vignetteHelpers}
 \concept{workflows}

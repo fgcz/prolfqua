@@ -27,4 +27,10 @@ names(xx)
 xx$config$table$workIntensity
 
 }
+\seealso{
+Other preprocessing: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{filter_proteins_by_peptide_count}()}
+}
+\concept{preprocessing}
 \keyword{internal}

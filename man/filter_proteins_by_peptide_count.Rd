@@ -30,4 +30,10 @@ stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
 
 
 }
+\seealso{
+Other preprocessing: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{normalize_log2_robscale}()}
+}
+\concept{preprocessing}
 \keyword{internal}
