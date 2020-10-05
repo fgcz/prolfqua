@@ -20,7 +20,7 @@ istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id
 lfqdata <- LFQData$new(istar$data, istar$config)
 
 lfqTrans <- lfqdata$clone_d()$get_Transformer()$log2_robscale()
-lfqAggregator <- LFQDataAggregator$new(lfqTrans$lfq, "protein")
+lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 
 lfqAggregator$medpolish()
 pmed <- lfqAggregator$plot()

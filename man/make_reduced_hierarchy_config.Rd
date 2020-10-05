@@ -36,6 +36,7 @@ Other configuration:
 \code{\link{R6extractValues}()},
 \code{\link{complete_cases}()},
 \code{\link{make_interaction_column}()},
+\code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},

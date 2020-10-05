@@ -1,0 +1,120 @@
+# Example of subset normalization of the ionstar dataset.
+
+
+Please download and install the `prolfquaData` package from github
+
+```{r}
+rm(list = ls())
+
+library(conflicted)
+library(LFQService)
+library(tidyverse)
+library(dplyr)
+
+conflict_prefer("filter", "dplyr")
+```
+
+
+Load the data.
+
+```{r}
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
+
+ps <- ProjectStructure$new(outpath = ".",
+                     project_Id = "Ionstar",
+                     order_Id = "IonStar" ,
+                     workunit_Id = "IonStar",
+                     inputData = inputMQfile,
+                     inputAnnotation = inputAnnotation)
+
+mqdata <- tidyMQ_Peptides_Config(ps$inputData)
+annotation <- readxl::read_xlsx(ps$inputAnnotation)
+mqdata$config$table$factors[["dilution."]] = "sample"
+mqdata$config$table$factors[["run_Id"]] = "run_ID"
+mqdata$config$table$factorDepth <- 1
+
+```
+
+
+```{r}
+res <- application_add_annotation(
+  mqdata$data,
+  annotation
+)
+mqdata$data <- setup_analysis(res, mqdata$config)
+
+```
+
+# Normalize data using HUMAN proteins only
+
+```{r}
+
+lfqdata <- LFQData$new(mqdata$data, mqdata$config)
+tr <- lfqdata$get_Transformer()
+subset <- lfqdata$get_copy()
+subset$data <- subset$data %>% filter(grepl("HUMAN", protein_Id))
+
+lfqdataNorm <- tr$log2_robscale_subset(lfqsubset = subset)
+
+data <- lfqdataNorm$data
+config <- lfqdataNorm$config
+
+hk <- config$table$hkeysDepth()
+hkdf <- data %>% select(all_of(hk)) %>% distinct() %>% sample_n(size = 100)
+sdata <- inner_join(hkdf, data)
+
+```
+
+# Check
+
+Compare the intensity distribution before and after normalization.
+
+```{r}
+before <- lfqdata$get_Plotter()
+before$intensity_distribution_density()
+
+after <- lfqdataNorm$get_Plotter()
+after$intensity_distribution_density()
+
+```
+
+# Aggregation
+
+## Tukeys median polish
+
+To test aggregation we create a small subset of data. Creating a small subset is recommended when you want to check if everything is working.
+
+
+```{r}
+LFQService::sample_subset(100,lfqdata$data, lfqdata$config)
+isoStarSmall_350 <- lfqdataNorm$sample_subset(350)
+```
+
+
+```{r}
+lfqAggregator <- LFQDataAggregator$new(isoStarSmall_350, "protein")
+lfqAggregator$medpolish()
+xx <- lfqAggregator$plot()
+xx$plots[[1]]
+
+
+
+```
+
+## Top N
+
+The top N methods works on not normalized data.
+
+```{r}
+ionStar350 <- lfqdata$sample_subset(300)
+lfqAggregator <- LFQDataAggregator$new(ionStar350, "protein")
+
+lfqAggregator$mean_topN()
+topN <- lfqAggregator$plot()
+topN$plots[[1]]
+```
+
+
+

@@ -37,6 +37,7 @@ Other configuration:
 \code{\link{complete_cases}()},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
+\code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{spreadValueVarsIsotopeLabel}()},
