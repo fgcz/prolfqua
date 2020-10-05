@@ -1,5 +1,7 @@
 # Run mixed models on benchmark dataset.
 
+
+
 rm(list = ls())
 
 library(conflicted)
@@ -11,12 +13,9 @@ conflict_prefer("filter", "dplyr")
 
 
 
-inputMQfile <-
-  "C:/Users/wewol/MAS_WEW/LFQServiceAnalysisTemplate/inst/benchmarkData/MQ_Ionstar2018_PXD003881.zip"
-outpath <- "results_modelling_all"
-#outpath <- "results_modelling_WHO_noSex"
-
-inputAnnotation <- "C:\\Users\\wewol\\MAS_WEW\\LFQServiceAnalysisTemplate\\inst\\MQ_Ionstar2018_PXD003881/annotationIonstar.xlsx"
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
 ps <- ProjectStructure$new(outpath = ".",
                      project_Id = 3000,
@@ -30,8 +29,8 @@ mqdata <- tidyMQ_Peptides_Config(ps$inputData)
 annotation <- readxl::read_xlsx(ps$inputAnnotation)
 
 mqdata$config$table$factors[["dilution."]] = "sample"
-mqdata$config$table$factors[["fPairing."]] = "fakePair_Id"
-mqdata$config$table$factors[["run_Id"]] = "run_Id"
+#mqdata$config$table$factors[["fPairing."]] = "fakePair_Id"
+mqdata$config$table$factors[["run_Id"]] = "run_ID"
 mqdata$config$table$factorDepth <- 1
 
 
@@ -88,7 +87,6 @@ IonstarData <- R6::R6Class(
   )
 )
 
-IonstarData$undebug("subset_normalized")
 ionstar <- IonstarData$new(mqdata$data,
                            mqdata$config$clone(deep = TRUE))
 

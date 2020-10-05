@@ -365,7 +365,6 @@ separate_factors <- function(data, config) {
 }
 
 
-
 #' Complete cases
 #' @export
 #' @param pdata data.frame
@@ -393,6 +392,19 @@ complete_cases <- function(pdata, config) {
   return(res)
 }
 
+
+#' sample subset of data
+#' @export
+#' @keywords internal
+#' @family configuration
+#'
+sample_subset <- function(size, pdata, config){
+  hk <- config$table$hkeysDepth()
+  message("Sampling ", size, paste(hk, collapse = "," ) )
+  hkdf <- pdata %>% select(all_of(hk)) %>% distinct() %>% sample_n(size = size)
+  sdata <- inner_join(hkdf, pdata)
+  return(sdata)
+}
 
 # Functions - summary ----
 

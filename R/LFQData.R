@@ -38,14 +38,19 @@ LFQData <- R6::R6Class(
     #' @param prefix will be use as output prefix
     initialize = function(data, config, is_pep=TRUE, prefix = "ms_") {
       self$data <- data
-      self$config <- config
+      self$config <- config$clone(deep = TRUE)
       self$is_pep <- is_pep
       self$prefix <- prefix
     },
     #' @description
     #' get deep copy
-    clone_d = function(){
-      self$clone(deep = TRUE)
+    get_copy = function(){
+      return(self$clone(deep = TRUE))
+    },
+    #' @description samples subset of data
+    sample_subset = function(size = 100){
+      subset <- LFQService::sample_subset(size = size, self$data, self$config)
+      return(LFQData$new(subset, self$config))
     },
     is_transformed = function(is_transformed){
       if (missing(is_transformed)) {
@@ -53,6 +58,12 @@ LFQData <- R6::R6Class(
       }else{
         self$config$table$is_intensity_transformed = is_transformed
       }
+    },
+    #' @description
+    #' some software is reporting NA's as 0, you must remove it from your data
+    #' @param threshold default 4.
+    remove_small_intensities = function(threshold = 4){
+      LFQService::remove_small_intensities( self$data, self$config, threshold = threshold )
     },
     #' @description
     #'
@@ -170,7 +181,7 @@ LFQDataTransformer <- R6::R6Class(
     lfq = NULL,
 
     initialize = function(lfqdata){
-      self$lfq = lfqdata
+      self$lfq = lfqdata$clone(deep = TRUE)
     },
     #' @description
     #' log2 transform and robust scale datas
@@ -179,7 +190,7 @@ LFQDataTransformer <- R6::R6Class(
       r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
       self$lfq$data <- r$data
       self$lfq$config <- r$config
-      invisible(LFQData$new(r$data, r$config))
+      return(self$lfq)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
@@ -197,7 +208,7 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$is_transformed(TRUE)
       }
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
-      invisible(LFQData$new(self$data, self$config))
+      return(self$lfq)
     },
     #' @description
     #' Transforms intensities
@@ -815,7 +826,7 @@ LFQDataWriter <- R6::R6Class(
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
 #' lfqTrans <- lfqdata$clone_d()$get_Transformer()$log2_robscale()
-#' lfqAggregator <- LFQDataAggregator$new(lfqTrans$lfq, "protein")
+#' lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 #'
 #' lfqAggregator$medpolish()
 #' pmed <- lfqAggregator$plot()
