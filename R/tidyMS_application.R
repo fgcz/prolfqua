@@ -874,7 +874,7 @@ application_run_modelling_V2 <- function(data,
 #' @param fileName column name to join on.
 #' @export
 #'
-application_add_annotation <- function(intensityData,
+add_annotation <- function(intensityData,
                                        inputAnnotation,
                                        fileName = "raw.file") {
   ## read the data
