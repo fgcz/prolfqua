@@ -1,0 +1,230 @@
+---
+title: "Data Preprocessing of Yeast data from the Combined course"
+author: "Witold Wolski"
+date: "06/10/2020"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined course} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+
+---
+
+Setting up Yeast data p
+
+Create MaxQuant Configuration (only works with `LFQService::tidyMQ_Peptides` function)
+
+```{r}
+library(LFQService)
+library(tidyverse)
+conflicted::conflict_prefer("filter", "dplyr")
+
+
+# creates default configuration
+create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
+                                            intensity = "peptide.intensity"
+){
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = "raw.file"
+  # measurement levels.
+  atable$hierarchy[["protein_Id"]] <- c("top_protein")
+  atable$hierarchy[["peptide_Id"]] <- c("sequence")
+  atable$hierarchyDepth <- 1
+  #
+  atable$ident_qValue = ident_qValue
+  atable$setWorkIntensity(intensity)
+  
+  anaparam <- AnalysisParameters$new()
+  anaparam$min_peptides_protein <- 2
+  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  
+  return(configuration)
+}
+```
+
+# Prepare p2691 dataset
+
+```{r}
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
+inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
+startdata <- LFQService::tidyMQ_Peptides(inputMQfile)
+startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
+
+undebug(tidyMQ_top_protein_name)
+startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+
+#startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "leading.razor.protein")
+#startdata <- startdata %>% mutate(top_protein = leading.razor.protein)
+
+
+annotation <- readxl::read_xlsx(inputAnnotation)
+annotation$experiment = 2691
+
+```
+
+Add annotation information data to configuration and data.
+
+```{r}
+config <- create_MQ_peptide_Configuration()
+data <- inner_join(annotation, startdata)
+
+config$table$factors[["condition_"]] = "condition"
+config$table$factors[["experiment"]] = "experiment"
+config$table$factors[["Run_ID"]] = "Run_ID"
+config$table$factorDepth <- 1
+```
+
+Preprocess and normalize data.
+
+```{r}
+adata <- setup_analysis(data, config)
+xx <- toWideConfig(adata, config)
+
+adata <- filter_proteins_by_peptide_count(adata, config)$data
+adata <- LFQService::remove_small_intensities(adata,config)
+
+
+p2691 <- LFQData$new(adata, config)
+p2691$get_Plotter()$intensity_distribution_density()
+
+tr <- p2691$get_Transformer()
+p2691 <- tr$log2_robscale()
+
+pl <- p2691$get_Plotter()
+pl$intensity_distribution_density()
+#dev.off()
+pha2691 <- pl$NA_heatmap()
+
+```
+
+```{r fig.cap="missing value heatmap for project 2691"}
+print(pha2691)
+```
+
+
+# Prepare p2370 dataset
+
+
+```{r}
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
+inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
+
+startdata <- LFQService::tidyMQ_Peptides(inputMQfile)
+startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
+startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+
+annotation <- readxl::read_xlsx(inputAnnotation)
+annotation$experiment <- 2370
+```
+
+Code snipped below shows how to add annotation to the data and configuration.
+
+```{r}
+data <- inner_join(annotation, startdata)
+
+config <- create_MQ_peptide_Configuration()
+
+config$table$factors[["condition_"]] = "condition"
+config$table$factors[["experiment"]] = "experiment"
+config$table$factors[["Run_ID"]] = "Run_ID"
+config$table$factorDepth <- 1
+```
+
+```{r}
+adata <- setup_analysis(data, config)
+xx <- toWideConfig(adata, config)
+adata <- filter_proteins_by_peptide_count(adata, config)$data
+adata <- LFQService::remove_small_intensities(adata,config)
+
+p2370 <- LFQData$new(adata, config)
+p2370$get_Plotter()$intensity_distribution_density()
+
+tr <- p2370$get_Transformer()
+p2370 <- tr$log2_robscale()
+pl <- p2370$get_Plotter()
+ha2370 <- pl$NA_heatmap()
+```
+
+```{r, fig.cap="Intensity distribution after normalization, p2370"}
+pl$intensity_distribution_density()
+```
+
+```{r, fig.cap="Heatmap of missing values p2370."}
+print(ha2370)
+```
+
+
+# Merge both dataset
+
+To simulate a factorial design we merge both datasets.
+
+```{r}
+
+outpath <- "results_modelling"
+data <- bind_rows(p2691$data, p2370$data)
+sum(is.na(p2691$data$protein_Id))
+sum(is.na(p2370$data$protein_Id))
+
+
+# creates default configuration
+
+config <- p2691$config$clone(deep=TRUE)
+config$table$factorDepth <- 2
+```
+
+## QC for merged dataset 
+
+```{r}
+pl$intensity_distribution_density()
+```
+
+
+```{r}
+pMerged <- LFQData$new(data, config)
+
+bb <- pMerged$complete_cases()
+sum(is.na(bb$protein_Id))
+pl <- pMerged$get_Plotter()
+pl$sample_correlation()
+ph <- pl$heatmap_cor()
+pha <- pl$NA_heatmap()
+```
+
+```{r fig.cap="sample correlation heatmap merged"}
+print(ph)
+```
+
+```{r fig.cap ="Missing data heatmap for merged data"}
+print(pha)
+```
+
+```{r}
+su <- pMerged$get_Summariser()
+su$hierarchy_counts()
+```
+
+```{r, fig.cap = "Number of Proteins or peptides per sample in merged dataset"}
+su$hierarchy_counts_sample("plot")
+```
+
+
+
+```{r}
+# specify model definition
+modelName  <- "Model"
+model <- "~ condition_*batch_ + (1|peptide_Id)  + (1|sampleName)"
+DEBUG <- TRUE
+
+Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
+               "p2370 - p2691" = "batch_p2370 - batch_p2691",
+               "Glucose_vs_Ethanol_gv_p2370" = "`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`",
+               "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
+               "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"
+)
+
+
+
+
+```
