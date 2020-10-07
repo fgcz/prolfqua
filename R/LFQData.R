@@ -48,7 +48,7 @@ LFQData <- R6::R6Class(
       return(self$clone(deep = TRUE))
     },
     #' @description samples subset of data
-    sample_subset = function(size = 100){
+    get_sample = function(size = 100){
       subset <- LFQService::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config))
     },
@@ -63,7 +63,15 @@ LFQData <- R6::R6Class(
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
     remove_small_intensities = function(threshold = 4){
-      LFQService::remove_small_intensities( self$data, self$config, threshold = threshold )
+      self$data <- LFQService::remove_small_intensities( self$data, self$config, threshold = threshold )
+      invisible(self$data)
+    },
+    #' @description
+    #' some software is reporting NA's as 0, you must remove it from your data
+    #' @param threshold default 4.
+    complete_cases = function(){
+      self$data <- LFQService::complete_cases(self$data, self$config)
+      invisible(self$data)
     },
     #' @description
     #'
