@@ -50,9 +50,10 @@ Other LFQData:
 \itemize{
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-get_copy}{\code{LFQData$get_copy()}}
-\item \href{#method-sample_subset}{\code{LFQData$sample_subset()}}
+\item \href{#method-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
+\item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
@@ -99,12 +100,12 @@ get deep copy
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sample_subset"></a>}}
-\if{latex}{\out{\hypertarget{method-sample_subset}{}}}
-\subsection{Method \code{sample_subset()}}{
+\if{html}{\out{<a id="method-get_sample"></a>}}
+\if{latex}{\out{\hypertarget{method-get_sample}{}}}
+\subsection{Method \code{get_sample()}}{
 samples subset of data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$sample_subset(size = 100)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100)}\if{html}{\out{</div>}}
 }
 
 }
@@ -124,6 +125,23 @@ samples subset of data
 some software is reporting NA's as 0, you must remove it from your data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_small_intensities(threshold = 4)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{threshold}}{default 4.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-complete_cases"></a>}}
+\if{latex}{\out{\hypertarget{method-complete_cases}{}}}
+\subsection{Method \code{complete_cases()}}{
+some software is reporting NA's as 0, you must remove it from your data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$complete_cases()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

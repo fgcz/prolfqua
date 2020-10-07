@@ -5,7 +5,10 @@
 \title{Same protein group id might have different names in the protein field.
 this function selects the protein name mentioned most in association with a protein group id.}
 \usage{
-tidyMQ_top_protein_name(modSpecData)
+tidyMQ_top_protein_name(
+  modSpecData,
+  prot_col = c("proteins", "leading.razor.protein")
+)
 }
 \arguments{
 \item{modSpecData}{obtained by either colling tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides}
