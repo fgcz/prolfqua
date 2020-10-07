@@ -23,6 +23,7 @@
 }
 
 #' keep track of folder paths and create them if needed
+#'
 #' @export
 #'
 #' @examples
