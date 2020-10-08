@@ -140,6 +140,9 @@ IonstarData <- R6::R6Class(
     filtered = function(){
       return(list(data = self$data, config = self$config$clone(deep = TRUE)))
     },
+    normalized = function(){
+      return(list(data = data_N, config = config_N))
+    },
     subset_normalized = function(){
       return(list(data = data_N, config = config_N))
     }
@@ -149,6 +152,7 @@ IonstarData <- R6::R6Class(
 lfqdata$data <- inner_join(protein_Ids, lfqdata$data)
 lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
 ionstar <- IonstarData$new(lfqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
+
 usethis::use_data(ionstar, overwrite = TRUE)
 
 ```

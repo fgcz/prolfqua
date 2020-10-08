@@ -285,7 +285,7 @@ LFQDataTransformer <- R6::R6Class(
 #' #study variance of normalized data
 #' istar <- LFQService::ionstar$normalized()
 #' istar$config$table$is_intensity_transformed
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 200))
+#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
