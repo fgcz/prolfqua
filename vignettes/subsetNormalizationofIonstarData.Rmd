@@ -141,10 +141,10 @@ IonstarData <- R6::R6Class(
       return(list(data = self$data, config = self$config$clone(deep = TRUE)))
     },
     normalized = function(){
-      return(list(data = data_N, config = config_N))
+      return(list(data = self$data_N, config = self$config_N))
     },
     subset_normalized = function(){
-      return(list(data = data_N, config = config_N))
+      return(list(data = self$data_N, config = self$config_N))
     }
   )
 )
