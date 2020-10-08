@@ -194,18 +194,25 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' log2 transform and robust scale datas
     #' @return LFQData
-    log2_robscale = function(){
+    log2_robscale = function(colname = "tranformedIntensity"){
       r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
       self$lfq$data <- r$data
       self$lfq$config <- r$config
+      if (!is.null(colname)) {
+        self$lfq$data <- self$lfq$data %>%
+          dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
+        self$lfq$config$table$popWorkIntensity()
+        self$lfq$config$table$setWorkIntensity(colname)
+      }
       return(self$lfq)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
     #' @param LFQData
+    #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQData
     #'
-    log2_robscale_subset = function(lfqsubset){
+    log2_robscale_subset = function(lfqsubset, colname = "transformedIntensity"){
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
         return(NULL)
@@ -216,6 +223,12 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$is_transformed(TRUE)
       }
       self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      if (!is.null(colname)) {
+        self$lfq$data <- self$lfq$data %>%
+          dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
+        self$lfq$config$table$popWorkIntensity()
+        self$lfq$config$table$setWorkIntensity(colname)
+      }
       return(self$lfq)
     },
     #' @description
