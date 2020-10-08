@@ -65,7 +65,7 @@ plotter$intensity_distribution_density()
 \subsection{Method \code{log2_robscale()}}{
 log2 transform and robust scale datas
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale(colname = "tranformedIntensity")}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -78,9 +78,19 @@ LFQData
 \subsection{Method \code{log2_robscale_subset()}}{
 log2 transform and robust scale data based on subset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale_subset(lfqsubset)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale_subset(
+  lfqsubset,
+  colname = "transformedIntensity"
+)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 LFQData
 }

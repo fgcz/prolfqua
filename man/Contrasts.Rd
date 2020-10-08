@@ -34,6 +34,7 @@ mod <- build_model(
  modelName = modelFunction$model_name)
 
 contrast$get_contrasts_sides()
+
 contrast$get_linfct()
 xx <- contrast$get_contrasts()
 head(xx)
