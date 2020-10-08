@@ -14,7 +14,7 @@ rm(list = ls())
 library(LFQService)
 library(tidyverse)
 
-D <- LFQServiceData::ionstar$normalized()
+D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
@@ -27,7 +27,7 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- contrast <- Contrasts$new(mod$modelDF,
+ contrast <- LFQService::Contrasts$new(mod$modelDF,
  Contr,
  modelFunction$contrast_fun,
  subject_Id = config$table$hkeysDepth(),
@@ -44,8 +44,8 @@ bb <- contrast$ropeca()
 
 
 imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-alli <- inner_join(bm, imputed, by = "protein_Id")
-cor(alli$estimate_median, alli$estimate, method="spearman")
+#alli <- inner_join(bm, imputed, by = "protein_Id")
+#cor(alli$estimate_median, alli$estimate, method="spearman")
 
 }
 \seealso{

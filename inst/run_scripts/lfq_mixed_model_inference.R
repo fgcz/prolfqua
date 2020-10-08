@@ -38,7 +38,7 @@ Contrasts <- c("8wk_vs_1wk" = "SCI_8wk - SCI_1wk",
 
 
 
-annotated_data <- application_add_annotation( mqdata$data,
+annotated_data <- add_annotation( mqdata$data,
                                               annotation,
                                               fileName = mqdata$config$table$fileName )
 

@@ -15,7 +15,7 @@ workflow_model_analyse(
 workflow_model_analyse
 }
 \examples{
-D <- LFQServiceData::ionstar$normalized()
+D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data, protein_Id \%in\% sample(protein_Id,12))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-

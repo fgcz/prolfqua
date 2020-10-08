@@ -33,7 +33,7 @@ mqdata <- tidyMQ_Peptides_Config(pStruct$inputData)
 annotation <- readxl::read_xlsx(inputAnnotation)
 head(annotation)
 
-res <- application_add_annotation(
+res <- add_annotation(
   mqdata$data,
   inputAnnotation = annotation,
   fileName  = mqdata$config$table$fileName

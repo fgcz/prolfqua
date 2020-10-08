@@ -327,7 +327,7 @@ model_analyse_summarize_write  <- function(
 #' @family deprecated
 #' @examples
 #'
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data, protein_Id %in% sample(protein_Id, 10))
 #' D$config$table$getWorkIntensity()
 #' modelName <- "f_condtion_r_peptide"
@@ -551,7 +551,7 @@ workflow_missigness_impute_contrasts <- function(data,
 #' @examples
 #' rm(list = ls())
 #' library(LFQService)
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 10))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -684,7 +684,7 @@ workflow_missigness_impute_contrasts_V2 <- function(
 #' @family deprecated
 #'
 #' @examples
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data, protein_Id %in% sample(protein_Id,12))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-

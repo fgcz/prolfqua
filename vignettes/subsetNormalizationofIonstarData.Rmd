@@ -1,11 +1,35 @@
+---
+title: "Proprocessing the Ionstar dataset"
+author: "FGCZ - (Draft)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+papersize: a4
+geometry: margin=.5in
+vignette: >
+  %\VignetteIndexEntry{Proprocessing the Ionstar dataset} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+  
+---
+
 # Example of subset normalization of the ionstar dataset.
 
 
 Please download and install the `prolfquaData` package from github
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+echo = TRUE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
+```
+
+
 ```{r}
 rm(list = ls())
-
 library(conflicted)
 library(LFQService)
 library(tidyverse)
@@ -15,106 +39,150 @@ conflict_prefer("filter", "dplyr")
 ```
 
 
-Load the data.
+We start by loading the IonStar dataset and the annotation from the `prolfquaData` package. The method `add_annotation` adds the annotation to the data.
 
 ```{r}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
-ps <- ProjectStructure$new(outpath = ".",
-                     project_Id = "Ionstar",
-                     order_Id = "IonStar" ,
-                     workunit_Id = "IonStar",
-                     inputData = inputMQfile,
-                     inputAnnotation = inputAnnotation)
+mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+annotation <- readxl::read_xlsx(inputAnnotation)
 
-mqdata <- tidyMQ_Peptides_Config(ps$inputData)
-annotation <- readxl::read_xlsx(ps$inputAnnotation)
+
+res <- add_annotation(
+  mqdata$data,
+  annotation,
+  fileName = "raw.file"
+)
+
+```
+
+
+
+```{r}
+
 mqdata$config$table$factors[["dilution."]] = "sample"
 mqdata$config$table$factors[["run_Id"]] = "run_ID"
 mqdata$config$table$factorDepth <- 1
 
-```
-
-
-```{r}
-res <- application_add_annotation(
-  mqdata$data,
-  annotation
-)
 mqdata$data <- setup_analysis(res, mqdata$config)
 
 ```
 
-# Normalize data using HUMAN proteins only
+
+
+```{r}
+mqdata$data <- LFQService::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
+```
+
+Create a sample N proteins to speed up computations.
+
+```{r}
+N <- 200
+set.seed(2020)
+hk <- mqdata$config$table$hkeysDepth()
+protein_Ids <- mqdata$data %>%
+  select(all_of(hk)) %>%
+  distinct() %>%
+  sample_n(size = N)
+
+```
+
+
+## Normalize data using HUMAN proteins only
+
+
 
 ```{r}
 
 lfqdata <- LFQData$new(mqdata$data, mqdata$config)
 tr <- lfqdata$get_Transformer()
-subset <- lfqdata$get_copy()
-subset$data <- subset$data %>% filter(grepl("HUMAN", protein_Id))
 
-lfqdataNorm <- tr$log2_robscale_subset(lfqsubset = subset)
-
-data <- lfqdataNorm$data
-config <- lfqdataNorm$config
-
-hk <- config$table$hkeysDepth()
-hkdf <- data %>% select(all_of(hk)) %>% distinct() %>% sample_n(size = 100)
-sdata <- inner_join(hkdf, data)
+subset_h <- lfqdata$get_copy()
+subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
+lfqdataNormalized <- tr$log2_robscale_subset(lfqsubset = subset_h)
 
 ```
 
-# Check
 
-Compare the intensity distribution before and after normalization.
+The figures below show the intensity distribution before and after normalization.
 
 ```{r}
 before <- lfqdata$get_Plotter()
 before$intensity_distribution_density()
 
-after <- lfqdataNorm$get_Plotter()
+after <- lfqdataNormalized$get_Plotter()
 after$intensity_distribution_density()
 
 ```
 
-# Aggregation
 
-## Tukeys median polish
+# Create result object for peptides
 
-To test aggregation we create a small subset of data. Creating a small subset is recommended when you want to check if everything is working.
-
+We collect all the relevant data for the Ionstar data in an R6 object.
 
 ```{r}
-LFQService::sample_subset(100,lfqdata$data, lfqdata$config)
-isoStarSmall_350 <- lfqdataNorm$sample_subset(350)
+IonstarData <- R6::R6Class(
+  "IonstarData",
+  public = list(
+    data = NULL,
+    config = NULL,
+    data_N = NULL,
+    config_N = NULL,
+    
+    initialize = function(data, config, data_N, config_N){
+      self$data = data
+      self$config = config
+      self$data_N = data_N
+      self$config_N = config_N
+    },
+    filtered = function(){
+      return(list(data = self$data, config = self$config$clone(deep = TRUE)))
+    },
+    subset_normalized = function(){
+      return(list(data = data_N, config = config_N))
+    }
+  )
+)
+
+lfqdata$data <- inner_join(protein_Ids, lfqdata$data)
+lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
+ionstar <- IonstarData$new(lfqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
+usethis::use_data(ionstar, overwrite = TRUE)
+
 ```
 
 
+# Protein intensities
+
+We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use normalized data.
+The figure below shows the the protein estimates (dashed line) and the peptide intensities.
+
 ```{r}
-lfqAggregator <- LFQDataAggregator$new(isoStarSmall_350, "protein")
+lfqAggregator <- LFQDataAggregator$new(lfqdataNormalized, "protein")
 lfqAggregator$medpolish()
 xx <- lfqAggregator$plot()
 xx$plots[[1]]
 
 
+dataIonstarProtein_subsetNorm <- list(
+  data = lfqAggregator$lfq_agg$data,
+  config = lfqAggregator$lfq_agg$config
+)
+
+dataIonstarProtein_subsetNorm$data
+usethis::use_data(dataIonstarProtein_subsetNorm, overwrite = TRUE)
 
 ```
 
-## Top N
-
-The top N methods works on not normalized data.
+We can also estimate the protein intensities using the top N most abundant peptides. In this case we are using the untransformed protein intensities. The figure below shows the estimated protein intensities.
 
 ```{r}
-ionStar350 <- lfqdata$sample_subset(300)
-lfqAggregator <- LFQDataAggregator$new(ionStar350, "protein")
-
+lfqAggregator <- LFQDataAggregator$new(lfqdata, "protein_topN")
 lfqAggregator$mean_topN()
 topN <- lfqAggregator$plot()
 topN$plots[[1]]
 ```
-
 
 

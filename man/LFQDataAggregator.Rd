@@ -15,7 +15,7 @@ aggregates intensities
 library(tidyverse)
 library(LFQService)
 
-istar <- LFQServiceData::ionstar$filtered()
+istar <- LFQService::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 

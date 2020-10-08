@@ -7,7 +7,7 @@
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' istar <- LFQServiceData::ionstar$filtered()
+#' istar <- LFQService::ionstar$filtered()
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
@@ -161,7 +161,7 @@ LFQData <- R6::R6Class(
 #' rm(list = ls())
 #' library(LFQService)
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-#' istar <- LFQServiceData::ionstar$filtered()
+#' istar <- LFQService::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
@@ -275,7 +275,7 @@ LFQDataTransformer <- R6::R6Class(
 #'   }
 #' }
 #'
-#' istar <- LFQServiceData::ionstar$filtered()
+#' istar <- LFQService::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
@@ -283,7 +283,7 @@ LFQDataTransformer <- R6::R6Class(
 #' x<-lfqstats
 #'
 #' #study variance of normalized data
-#' istar <- LFQServiceData::ionstar$normalized()
+#' istar <- LFQService::ionstar$normalized()
 #' istar$config$table$is_intensity_transformed
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 200))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
@@ -430,7 +430,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #'
-#' istar <- LFQServiceData::ionstar
+#' istar <- LFQService::ionstar
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' sum <- lfqdata$get_Summariser()
@@ -829,7 +829,7 @@ LFQDataWriter <- R6::R6Class(
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' istar <- LFQServiceData::ionstar$filtered()
+#' istar <- LFQService::ionstar$filtered()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'

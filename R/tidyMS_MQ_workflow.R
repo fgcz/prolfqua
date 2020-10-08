@@ -12,7 +12,7 @@
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' istar <- LFQServiceData::ionstar$Pep()
+#' istar <- LFQService::ionstar$Pep()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
 #'  x <- LFQService::summarize_hierarchy(filterPep$data , istar$config)
@@ -40,7 +40,7 @@ filter_proteins_by_peptide_count <-
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- LFQServiceData::ionstar$Pep()
+#' istar <- LFQService::ionstar$Pep()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
 #' xx <- normalize_log2_robscale(istar$data, istar$config)
@@ -78,7 +78,7 @@ normalize_log2_robscale <- function(pdata, config){
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' istar <- LFQServiceData::ionstar$Pep()
+#' istar <- LFQService::ionstar$Pep()
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
 #' tmp <- filter_difference(istar$data, filterPep$data, istar$config)

@@ -11,7 +11,7 @@ used in p2901
 }
 \examples{
 
-D <- LFQServiceData::ionstar$normalized()
+D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data, protein_Id \%in\% sample(protein_Id, 10))
 D$config$table$getWorkIntensity()
 modelName <- "f_condtion_r_peptide"

@@ -336,9 +336,8 @@ tidyMQ_Peptides <- function(MQPeptides){
     PepIntensities$id.type <- "By MS/MS"
   }
   xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
-
-  xx$proteotypic <- !grepl(";",xx$protein.group.id)
-  xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
+  xx$proteotypic <- !grepl(";", xx$protein.group.id)
+  xx <- xx %>% separate_rows( protein.group.id, sep = ";", convert  = TRUE)
   return(xx)
 }
 
@@ -424,11 +423,12 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
 #' @export
 #' @keywords internal
 #'
-tidyMQ_top_protein_name <- function(modSpecData) {
-  modSpecData <- modSpecData %>% dplyr::filter(!is.na(proteins))
+tidyMQ_top_protein_name <- function(modSpecData, prot_col = c("proteins","leading.razor.protein")) {
+  prot_col <- match.arg(prot_col)
+  modSpecData <- modSpecData %>% dplyr::filter(!is.na(!!sym(prot_col)))
   nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
-  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id, proteins) %>% dplyr::distinct()
-  groupIDprotein_Separated <- groupIDprotein %>% separate_rows(proteins, sep = ";",convert = TRUE)
+  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id, !!sym(prot_col)) %>% dplyr::distinct()
+  groupIDprotein_Separated <- groupIDprotein %>% separate_rows(!!sym(prot_col), sep = ";",convert = TRUE)
   groupIDprotein_Separated %>%
     dplyr::group_by(protein.group.id) %>%
     tidyr::nest() -> groupIDprotein_Separated

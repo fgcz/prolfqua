@@ -18,7 +18,7 @@ used in project p2901
 
 library(tidyverse)
 library(LFQService)
-ionstar <- LFQServiceData::ionstar$normalized()
+ionstar <- LFQService::ionstar$normalized()
 ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
 LFQService::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-

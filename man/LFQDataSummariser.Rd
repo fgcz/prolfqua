@@ -11,7 +11,7 @@ generate dataset summaries.
 \examples{
 library(tidyverse)
 
-istar <- LFQServiceData::ionstar
+istar <- LFQService::ionstar
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 sum <- lfqdata$get_Summariser()

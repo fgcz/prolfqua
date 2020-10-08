@@ -9,7 +9,7 @@
 #' rm(list = ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -240,7 +240,7 @@ workflow_likelihood_ratio_test <- function(modelProteinF,
 #' rm(list = ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #'
 #' modelName <- "f_condtion_r_peptide"
@@ -285,7 +285,7 @@ build_model <- function(data,
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
@@ -298,7 +298,7 @@ build_model <- function(data,
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#'  contrast <- Contrasts$new(mod$modelDF,
+#'  contrast <- LFQService::Contrasts$new(mod$modelDF,
 #'  Contr,
 #'  modelFunction$contrast_fun,
 #'  subject_Id = config$table$hkeysDepth(),
@@ -315,8 +315,8 @@ build_model <- function(data,
 #'
 #'
 #' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-#' alli <- inner_join(bm, imputed, by = "protein_Id")
-#' cor(alli$estimate_median, alli$estimate, method="spearman")
+#' #alli <- inner_join(bm, imputed, by = "protein_Id")
+#' #cor(alli$estimate_median, alli$estimate, method="spearman")
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -454,7 +454,7 @@ Contrasts <- R6::R6Class(
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' D <- LFQServiceData::ionstar$normalized()
+#' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-

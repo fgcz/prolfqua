@@ -14,7 +14,7 @@ rm(list = ls())
 library(LFQService)
 library(tidyverse)
 
-D <- LFQServiceData::ionstar$normalized()
+D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "Model"
 modelFunction <-

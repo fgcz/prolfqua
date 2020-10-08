@@ -38,7 +38,7 @@ brms_benchmark <- make_benchmark(
   model_name = "prot_brms"
 )
 brms_benchmark$complete()
-debug(LFQService:::do_confusion_c)
+#debug(LFQService:::do_confusion_c)
 bb <- brms_benchmark$get_confusion()
 dim(bb)
 head(bb)

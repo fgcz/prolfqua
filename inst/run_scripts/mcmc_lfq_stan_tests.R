@@ -57,7 +57,7 @@ Contrasts <- c(
 
 if (TRUE) {
   #source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
-  res <- application_add_annotation(outpath = outpath,
+  res <- add_annotation(outpath = outpath,
                                    inputMQfile = inputMQfile,
                                    inputAnnotation = inputAnntation,
                                    config = config)

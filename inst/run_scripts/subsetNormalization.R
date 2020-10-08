@@ -36,7 +36,7 @@ mqdata$config$table$factorDepth <- 1
 
 # specify model definition
 
-res <- application_add_annotation(
+res <- add_annotation(
   mqdata$data,
   annotation
 )
