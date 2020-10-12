@@ -73,8 +73,11 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "raw.file"
   # measurement levels.
-  atable$hierarchy[["protein_Id"]] <- c("top_protein","protein.group.id")
-  atable$hierarchy[["peptide_Id"]] <- c("sequence","peptide.id")
+  atable$hierarchy[["protein_Id"]] <- c("top_protein", "protein.group.id")
+  #atable$hierarchy[["peptide_Id"]] <- c("sequence", "peptide.id")
+
+  #atable$hierarchy[["protein_Id"]] <- c("top_protein")
+  atable$hierarchy[["peptide_Id"]] <- c("sequence")
   atable$hierarchyDepth <- 1
   #
   atable$ident_qValue = ident_qValue

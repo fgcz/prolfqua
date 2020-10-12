@@ -165,7 +165,7 @@ LFQData <- R6::R6Class(
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
-#' lfqcopy <- lfqdata$clone_d()
+#' lfqcopy <- lfqdata$clone()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #'
 #' x <- lfqTrans$intensity_array(log2)
@@ -175,7 +175,7 @@ LFQData <- R6::R6Class(
 #' plotter$intensity_distribution_density()
 #'
 #' # transform by asinh root and scale
-#' lfqcopy <- lfqdata$clone_d()
+#' lfqcopy <- lfqdata$clone()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #' x <- lfqTrans$intensity_array(asinh)
 #' x$lfq$config$table$is_intensity_transformed
@@ -846,7 +846,7 @@ LFQDataWriter <- R6::R6Class(
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
-#' lfqTrans <- lfqdata$clone_d()$get_Transformer()$log2_robscale()
+#' lfqTrans <- lfqdata$clone()$get_Transformer()$log2_robscale()
 #' lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 #'
 #' lfqAggregator$medpolish()
@@ -856,7 +856,7 @@ LFQDataWriter <- R6::R6Class(
 #' prob <- lfqAggregator$plot()
 #' prob$plots[[2]]
 #'
-#' lfqCopy <- lfqdata$clone_d()
+#' lfqCopy <- lfqdata$clone()
 #' lfqCopy$is_transformed()
 #' lfqAggregator <- LFQDataAggregator$new(lfqCopy, "protein")
 #' lfqAggregator$sum_topN()

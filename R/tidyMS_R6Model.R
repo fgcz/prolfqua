@@ -305,6 +305,7 @@ build_model <- function(data,
 #'  modelName = modelFunction$model_name)
 #'
 #' contrast$get_contrasts_sides()
+#'
 #' contrast$get_linfct()
 #' xx <- contrast$get_contrasts()
 #' head(xx)
@@ -474,7 +475,7 @@ Contrasts <- R6::R6Class(
 #'   "dil.e_vs_b" = "dilution.e - dilution.b",
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
-#' contrast <- Contrasts$new(mod$modelDF,
+#' contrast <- LFQService::Contrasts$new(mod$modelDF,
 #'   Contr,
 #'   modelFunction$contrast_fun,
 #'   subject_Id = config$table$hkeysDepth(),

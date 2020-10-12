@@ -338,6 +338,9 @@ tidyMQ_Peptides <- function(MQPeptides){
   xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
   xx$proteotypic <- !grepl(";", xx$protein.group.id)
   xx <- xx %>% separate_rows( protein.group.id, sep = ";", convert  = TRUE)
+
+  xx <- xx %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
+  xx$isotope <- "light"
   return(xx)
 }
 
