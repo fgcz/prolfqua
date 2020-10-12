@@ -19,7 +19,7 @@ istar <- LFQService::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 
-lfqTrans <- lfqdata$clone_d()$get_Transformer()$log2_robscale()
+lfqTrans <- lfqdata$clone()$get_Transformer()$log2_robscale()
 lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 
 lfqAggregator$medpolish()
@@ -29,7 +29,7 @@ lfqAggregator$lmrob()
 prob <- lfqAggregator$plot()
 prob$plots[[2]]
 
-lfqCopy <- lfqdata$clone_d()
+lfqCopy <- lfqdata$clone()
 lfqCopy$is_transformed()
 lfqAggregator <- LFQDataAggregator$new(lfqCopy, "protein")
 lfqAggregator$sum_topN()

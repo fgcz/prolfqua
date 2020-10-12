@@ -20,7 +20,7 @@ istar <- LFQService::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 
-lfqcopy <- lfqdata$clone_d()
+lfqcopy <- lfqdata$clone()
 lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
@@ -30,7 +30,7 @@ plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
 # transform by asinh root and scale
-lfqcopy <- lfqdata$clone_d()
+lfqcopy <- lfqdata$clone()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
 x$lfq$config$table$is_intensity_transformed

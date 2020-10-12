@@ -34,7 +34,7 @@ mod <- build_model(
   "dil.e_vs_b" = "dilution.e - dilution.b",
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
-contrast <- Contrasts$new(mod$modelDF,
+contrast <- LFQService::Contrasts$new(mod$modelDF,
   Contr,
   modelFunction$contrast_fun,
   subject_Id = config$table$hkeysDepth(),

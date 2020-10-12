@@ -19,9 +19,8 @@ normalize data by log2 and robust scaling
 }
 \examples{
 
-istar <- LFQService::ionstar$Pep()
+istar <- LFQService::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
 xx <- normalize_log2_robscale(istar$data, istar$config)
 names(xx)
 xx$config$table$workIntensity

@@ -34,7 +34,7 @@ models_interaction <- LFQServiceData::models_interaction
 m <- get_complete_model_fit(models_interaction$modelProtein)
 m$linear_model[[1]]
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-factor_levelContrasts <- contrasts_linfct_D( m,
+factor_levelContrasts <- contrasts_linfct_deprec( m,
                            factor_contrasts,
                        subject_Id = "protein_Id")
 head(factor_levelContrasts)

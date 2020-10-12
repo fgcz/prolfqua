@@ -73,7 +73,7 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 
 ```{r}
-mqdata$data <- LFQService::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
+datafilt <- LFQService::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
 ```
 
 Create a sample N proteins to speed up computations.
@@ -96,7 +96,7 @@ protein_Ids <- mqdata$data %>%
 
 ```{r}
 
-lfqdata <- LFQData$new(mqdata$data, mqdata$config)
+lfqdata <- LFQData$new(datafilt, mqdata$config)
 tr <- lfqdata$get_Transformer()
 
 subset_h <- lfqdata$get_copy()
@@ -137,8 +137,12 @@ IonstarData <- R6::R6Class(
       self$data_N = data_N
       self$config_N = config_N
     },
-    filtered = function(){
+    Pep = function(){
       return(list(data = self$data, config = self$config$clone(deep = TRUE)))
+    },
+    filtered = function(){
+      data <- LFQService:::filter_proteins_by_peptide_count( self$data ,  self$config )$data
+      return(list(data = data, config = self$config$clone(deep = TRUE)))
     },
     normalized = function(){
       return(list(data = self$data_N, config = self$config_N))
@@ -149,9 +153,10 @@ IonstarData <- R6::R6Class(
   )
 )
 
-lfqdata$data <- inner_join(protein_Ids, lfqdata$data)
+#lfqdata$data <- inner_join(protein_Ids, lfqdata$data)
 lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
-ionstar <- IonstarData$new(lfqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
+mqdata$data  <- inner_join(protein_Ids, mqdata$data)  
+ionstar <- IonstarData$new(mqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
 
 usethis::use_data(ionstar, overwrite = TRUE)
 
