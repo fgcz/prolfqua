@@ -11,7 +11,7 @@ ps <- ProjectStructure$new(outpath = outpath,
                                       inputData = "../samples/p2558_o5748_peptides.zip",
                                       inputAnnotation = "../samples/p2558_05748_annotation.xlsx")
 
-
+ps$create()
 
 
 mqdata <- tidyMQ_Peptides_Config(ps$inputData)
@@ -120,8 +120,8 @@ relevantParameters <- list(ps = ps,
 )
 
 
-#LFQService::copy_mixed_model_analysis_script()
-file.copy("../rmarkdown/mixed_model_analysis_script_Report.Rmd",".",overwrite = TRUE)
+LFQService::copy_mixed_model_analysis_script()
+#file.copy("../rmarkdown/mixed_model_analysis_script_Report.Rmd",".",overwrite = TRUE)
 rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   params = list(pars = relevantParameters),
                   output_format = "html_document",
