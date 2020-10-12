@@ -18,6 +18,7 @@ Imports:
     brms,
     conflicted,
     corrplot,
+    docopt,
     dplyr,
     DT,
     flextable,
