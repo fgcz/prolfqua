@@ -135,6 +135,90 @@ contrasts_linfct_vis_write <- function(fig_list,
   }
 }
 
+#' Do contrast
+#' @export
+#' @examples
+#'
+workflow_contrasts_linfct <- function(models,
+                                      contrasts,
+                                      config,
+                                      modelName = "Model",
+                                      prefix = "Contrasts",
+                                      contrastfun = LFQService::my_contest )
+{
+  warning("DEPRECATE workflow_contrasts_linfct!\n use workflow_contrasts_linfct_V2")
+  if (class(contrasts) == "matrix") {
+    linfct_A <- contrasts
+  }else{
+    models <- models %>% dplyr::filter(exists_lmer == TRUE)
+    m <- get_complete_model_fit(models)
+    linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+    linfct_A <- linfct_matrix_contrasts(linfct, contrasts)
+  }
+
+  subject_Id <- config$table$hkeysDepth()
+  contrast_result <- contrasts_linfct_deprec(models,
+                                      linfct_A,
+                                      subject_Id = subject_Id,
+                                      contrastfun = contrastfun )
+
+  contrast_result <- moderated_p_limma_long(contrast_result)
+  subject_Id <- subject_Id
+  prefix <- prefix
+  modelName <- modelName
+
+  res_fun <- function(path = NULL, columns = c("p.value",
+                                               "p.value.adjusted",
+                                               "moderated.p.value"),
+                      DEBUG = FALSE){
+    if (DEBUG) {
+      return(list(contrast_result = contrast_result,
+                  modelName = modelName,
+                  config = config,
+                  prefix = prefix,
+                  subject_Id = subject_Id,
+                  columns = columns
+      ))
+    }
+
+    visualization <- contrasts_linfct_vis(contrast_result,
+                                          modelName ,
+                                          prefix = prefix,
+                                          subject_Id = subject_Id,
+                                          columns = columns
+    )
+
+    relevant_columns <- c("lhs", "sigma", "df", "isSingular", "estimate", "conf.low", "conf.high") # other relevant columns.
+    contrast_minimal <- contrast_result %>% dplyr::select(subject_Id, relevant_columns, columns )
+
+    contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                   subject_Id = subject_Id,
+                                                   columns = c("estimate", columns))
+
+    if (!is.null(path)) {
+      if (FALSE) {
+        contrasts_linfct_write(contrast_minimal,
+                               config,
+                               path = path,
+                               modelName = modelName,
+                               prefix = prefix,
+                               columns = c("estimate", columns))
+      }
+      contrasts_linfct_vis_write(visualization, path = path, format = "pdf")
+      contrasts_linfct_vis_write(visualization, path = path, format = "html")
+    }
+
+    res <- list(contrast_result = contrast_result,
+                contrast_minimal = contrast_minimal,
+                contrasts_wide = contrasts_wide,
+                visualization = visualization,
+                modelName = modelName,
+                prefix = prefix)
+
+    invisible(res)
+  }
+  return( res_fun )
+}
 
 #' Do contrast
 #' @export

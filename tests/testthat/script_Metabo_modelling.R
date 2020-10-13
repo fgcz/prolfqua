@@ -1,4 +1,5 @@
 rm(list = ls())
+
 library("tidyverse")
 library("LFQService")
 library("conflicted")
@@ -46,7 +47,7 @@ m <- get_complete_model_fit(modellingResult_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 
-factor_levelContrasts <- contrasts_linfct(
+factor_levelContrasts <- contrasts_linfct_deprec(
   m,
   factor_contrasts,
   subject_Id = pepConfig$table$hkeysDepth(),
@@ -70,7 +71,7 @@ contrasts_linfct_write(
 
 # Compute subgroup averages ----
 linfct <- linfct_from_model(m$linear_model[[1]])
-models_interaction_Averages <- contrasts_linfct(
+models_interaction_Averages <- contrasts_linfct_deprec(
   m,
   linfct$linfct_factors,
   subject_Id = pepConfig$table$hkeysDepth(),
@@ -93,19 +94,6 @@ wfs <- contrasts_linfct_vis(
 )
 
 contrasts_linfct_vis_write(wfs, path = results$path)
-
-
-contrastres_fun <- LFQService:::workflow_contrasts_linfct(
-  m,
-  contrasts = linfct$linfct_factors ,
-  config = pepConfig,
-  modelName = modellingResult_A$modelName,
-  prefix = "GroupAverages",
-  contrastfun = LFQService::my_contrast_V2
-)
-
-contrasts <- contrastres_fun()
-res <- contrastres_fun(path = results$path)
 
 
 

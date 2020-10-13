@@ -41,6 +41,7 @@ factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 linfct <- linfct_from_model(m$linear_model[[1]], as_list = F)
 linfct_A <- rbind(linfct, factor_contrasts)
 
+
 models_interaction_Averages <- contrasts_linfct( m,
                                                  linfct,
                                                  subject_Id = pepConfig$table$hkeysDepth(),
@@ -52,6 +53,8 @@ head(models_interaction_Averages)
 
 modelProteinF <- modellingResult_A$modelProtein %>%
   dplyr::filter(exists_lmer == TRUE)
+
+
 res_contrasts <- LFQService:::workflow_contrasts_linfct(modelProteinF,
                                            linfct_A,
                                            pepConfig,
@@ -61,5 +64,7 @@ res_contrasts <- LFQService:::workflow_contrasts_linfct(modelProteinF,
 tmp <- res_contrasts()$contrast_result
 xx <- tmp %>% dplyr::select(pepConfig$table$hierarchyKeys(), "lhs", "estimate")
 xx <- xx %>% pivot_wider(names_from = "lhs", values_from = "estimate")
+
+
 
 

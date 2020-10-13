@@ -56,7 +56,6 @@ resDataStart <- inner_join(bb,resDataStart)
 config$table$workIntensity
 #LFQService::render_MQSummary_rmd(resDataStart, config,dest_path = qc_path, workdir = ".")
 filteredPep <- LFQService::transform_work_intensity(resDataStart, config, log2)
-
 #
 impfac_int <- missigness_impute_factors_interactions(filteredPep, config, value = "imputed")
 

@@ -28,7 +28,7 @@ pepConfig$table$fkeysDepth()
 modelName  <- "f_Condition_r_peptide"
 
 formula_randomPeptide <-
-  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id)",
+  make_custom_model_lmer("transformedIntensity  ~ Condition + (1 | peptide_Id) + (1 | sampleName)",
                          model_name = modelName)
 models_base <-
   model_analyse(results$data,
@@ -93,11 +93,14 @@ models <- get_complete_model_fit(models_interaction$modelProtein)
 m <- linfct_from_model(models$linear_model[[1]])
 m$linfct_interactions
 # Group averages for one of the models
-models_interaction_Averages <- contrasts_linfct(models,
+models_interaction_Averages <- contrasts_linfct_deprec(models,
                                                  m$linfct_interactions,
                                                  subject_Id = pepConfig$table$hkeysDepth() )
 
-contrasts_linfct_write(models_interaction_Averages, pepConfig, models_base$modelName ,  path = "." )
+contrasts_linfct_write(models_interaction_Averages,
+                       pepConfig,
+                       models_base$modelName,
+                       path = "." )
 
 wfs <- contrasts_linfct_vis(models_interaction_Averages,models_base$modelName )
 contrasts_linfct_vis_write(wfs, path = ".")
@@ -109,7 +112,7 @@ models_allContrasts <- contrasts_linfct( models,
                                          all_linfct,
                                          subject_Id = pepConfig$table$hkeysDepth() )
 
-wfs <- contrasts_linfct_vis(models_allContrasts,models_interaction$modelName )
+wfs <- contrasts_linfct_vis(models_allContrasts,models_interaction$modelName, columns = c("p.value") )
 contrasts_linfct_vis_write(wfs, path = ".")
-pivot_model_contrasts_2_Wide(models_allContrasts)
+pivot_model_contrasts_2_Wide(models_allContrasts,columns = c("estimate", "p.value"))
 

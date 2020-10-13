@@ -88,9 +88,8 @@ modelFunction <- make_custom_model_lmer( memodel, report_columns = c("p.value", 
 
 
 
-#source("c:/Users/wolski/prog/LFQService/R/tidyMS_application.R")
 if (TRUE) {
-  #debug(application_run_modelling_V2)
+  debug(application_run_modelling_V2)
   resXXmixmodel <- application_run_modelling_V2(
     data = normalizedData$data,
     config = normalizedData$config,
@@ -104,8 +103,6 @@ if (TRUE) {
 
   resXXmixmodel(do = "write_contrasts")
 }
-
-
 
 relevantParameters <- list(ps = ps,
 
@@ -129,4 +126,12 @@ rmarkdown::render("mixed_model_analysis_script_Report.Rmd",
                   output_file = "index.html")
 
 
+# Cleanup code
+if(grepl("inst/run_scripts", getwd())){
+  files <- dir()
+  if("lfq_mixed_model_inference.R" %in% files){
+    toremeove <- files[!grepl("*.R$",files)]
+    unlink(toremeove, recursive = TRUE)
+  }
+}
 
