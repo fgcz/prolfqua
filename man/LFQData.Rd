@@ -53,6 +53,7 @@ Other LFQData:
 \item \href{#method-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
+\item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
@@ -134,6 +135,16 @@ some software is reporting NA's as 0, you must remove it from your data
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-filter_proteins_by_peptide_count"></a>}}
+\if{latex}{\out{\hypertarget{method-filter_proteins_by_peptide_count}{}}}
+\subsection{Method \code{filter_proteins_by_peptide_count()}}{
+remove proteins with less than X peptides
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$filter_proteins_by_peptide_count()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-complete_cases"></a>}}

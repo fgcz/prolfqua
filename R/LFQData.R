@@ -64,14 +64,24 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     remove_small_intensities = function(threshold = 4){
       self$data <- LFQService::remove_small_intensities( self$data, self$config, threshold = threshold )
-      invisible(self$data)
+      invisible(self)
+    },
+    #' @description
+    #' remove proteins with less than X peptides
+    filter_proteins_by_peptide_count = function(){
+      message("removing proteins with less than",
+              self$config$parameter$min_peptides_protein,
+              " peptpides")
+      self$data <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)
+      invisible(self)
     },
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
+    #'
     complete_cases = function(){
       self$data <- LFQService::complete_cases(self$data, self$config)
-      invisible(self$data)
+      invisible(self)
     },
     #' @description
     #'
