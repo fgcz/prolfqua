@@ -41,6 +41,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(LFQService)
+conflict_prefer("filter", "dplyr")
+
 ```
 
 

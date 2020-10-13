@@ -33,6 +33,8 @@ library(tidyverse)
 library(readxl)
 library(yaml)
 library(LFQService)
+conflict_prefer("filter", "dplyr")
+
 ```
 
 
