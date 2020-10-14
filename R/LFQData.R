@@ -12,10 +12,19 @@
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' tmp <- lfqdata$to_wide()
-#'
+#' stopifnot("data.frame" %in% class(tmp$data))
+#' tmp <- lfqdata$to_wide(as.matrix = TRUE)
+#' stopifnot("matrix" %in% class(tmp$data))
 #' lfqdata$factors()
+#' stopifnot(lfqdata$is_transformed()==FALSE)
 #'
-#' lfqdata$is_transformed()
+#' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
+#' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
+#' stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
+#' stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
+#' stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
+#' stopifnot("LFQDataWriter" %in% class(lfqdata$get_Writer()))
+#' stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
 #'
 #'
 LFQData <- R6::R6Class(
@@ -72,7 +81,7 @@ LFQData <- R6::R6Class(
       message("removing proteins with less than",
               self$config$parameter$min_peptides_protein,
               " peptpides")
-      self$data <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)
+      self$data <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)$data
       invisible(self)
     },
     #' @description
@@ -102,9 +111,10 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' converts the data to wide
+    #' @param as.matrix return as data.frame or matrix
     #' @return data and annotation
-    to_wide = function(){
-      wide <- LFQService::toWideConfig(self$data, self$config)
+    to_wide = function(as.matrix = FALSE){
+      wide <- LFQService::toWideConfig(self$data, self$config, as.matrix = as.matrix)
       wide$config <- self$config
       return(wide)
     },
@@ -139,8 +149,17 @@ LFQData <- R6::R6Class(
     get_Stats = function(){
       return(LFQDataStats$new(self))
     },
+    #' @description
+    #' get Stats
+    #' @return LFQDataTransformer
     get_Transformer = function(){
       return(LFQDataTransformer$new(self))
+    },
+    #' @description
+    #' get Aggregator
+    #' @return LFQDataAggregator
+    get_Aggregator = function(){
+      return(LFQDataAggregator$new(self))
     },
     #' @description
     #' get difference of self with other if other is subset of self
@@ -901,7 +920,7 @@ LFQDataAggregator <- R6::R6Class(
              ", hierarchyDepth :",
              lfq$config$table$hierarchyDepth)
       }
-      self$lfq = lfq
+      self$lfq = lfq$clone(deep = TRUE)
       self$prefix = prefix
     },
     #' @description

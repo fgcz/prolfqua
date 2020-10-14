@@ -17,10 +17,19 @@ istar <- LFQService::ionstar$filtered()
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(istar$data, istar$config)
 tmp <- lfqdata$to_wide()
-
+stopifnot("data.frame" \%in\% class(tmp$data))
+tmp <- lfqdata$to_wide(as.matrix = TRUE)
+stopifnot("matrix" \%in\% class(tmp$data))
 lfqdata$factors()
+stopifnot(lfqdata$is_transformed()==FALSE)
 
-lfqdata$is_transformed()
+stopifnot("LFQData" \%in\% class(lfqdata$get_copy()))
+stopifnot("LFQDataTransformer" \%in\% class(lfqdata$get_Transformer()))
+stopifnot("LFQDataStats" \%in\% class(lfqdata$get_Stats()))
+stopifnot("LFQDataSummariser" \%in\% class(lfqdata$get_Summariser()))
+stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
+stopifnot("LFQDataWriter" \%in\% class(lfqdata$get_Writer()))
+stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
 
 
 }
@@ -63,6 +72,7 @@ Other LFQData:
 \item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
 \item \href{#method-get_Stats}{\code{LFQData$get_Stats()}}
 \item \href{#method-get_Transformer}{\code{LFQData$get_Transformer()}}
+\item \href{#method-get_Aggregator}{\code{LFQData$get_Aggregator()}}
 \item \href{#method-filter_difference}{\code{LFQData$filter_difference()}}
 \item \href{#method-clone}{\code{LFQData$clone()}}
 }
@@ -186,9 +196,16 @@ Render a QC document
 \subsection{Method \code{to_wide()}}{
 converts the data to wide
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide(as.matrix = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{as.matrix}}{return as data.frame or matrix}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data and annotation
 }
@@ -269,10 +286,27 @@ LFQDataStats
 \if{html}{\out{<a id="method-get_Transformer"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Transformer}{}}}
 \subsection{Method \code{get_Transformer()}}{
+get Stats
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Transformer()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+LFQDataTransformer
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Aggregator"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Aggregator}{}}}
+\subsection{Method \code{get_Aggregator()}}{
+get Aggregator
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Aggregator()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+LFQDataAggregator
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter_difference"></a>}}
