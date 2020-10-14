@@ -60,6 +60,7 @@ Other LFQData:
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-get_sample}{\code{LFQData$get_sample()}}
+\item \href{#method-subject_id}{\code{LFQData$subject_id()}}
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
@@ -117,6 +118,16 @@ get deep copy
 samples subset of data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-subject_id"></a>}}
+\if{latex}{\out{\hypertarget{method-subject_id}{}}}
+\subsection{Method \code{subject_id()}}{
+
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_id()}\if{html}{\out{</div>}}
 }
 
 }

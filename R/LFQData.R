@@ -61,6 +61,12 @@ LFQData <- R6::R6Class(
       subset <- LFQService::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config))
     },
+    #' @description
+    #'
+    #' @param
+    subject_id = function(){
+      return(self$config$table$hkeysDepth())
+    },
     is_transformed = function(is_transformed){
       if (missing(is_transformed)) {
         return(self$config$table$is_intensity_transformed)
