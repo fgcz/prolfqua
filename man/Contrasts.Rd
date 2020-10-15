@@ -17,42 +17,33 @@ library(tidyverse)
 D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
-  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
+  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 pepIntensity <- D$data
 config <- D$config
 config$table$hkeysDepth()
+
 mod <- build_model(
  pepIntensity,
  modelFunction,
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- contrast <- LFQService::Contrasts$new(mod$modelDF,
+ #LFQService::Contrasts$debug("get_linfct")
+contrastX <- LFQService::Contrasts$new(mod$modelDF,
  Contr,
  modelFunction$contrast_fun,
  subject_Id = config$table$hkeysDepth(),
  modelName = modelFunction$model_name)
 
-contrast$get_contrasts_sides()
-
-contrast$get_linfct()
-xx <- contrast$get_contrasts()
+contrastX$get_contrasts_sides()
+#foo
+contrastX$get_linfct()
+xx <- contrastX$get_contrasts()
 head(xx)
-xx <- contrast$moderate()
-head(xx)
-bb <- contrast$ropeca()
-#View(bb)
 
 
 imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-#alli <- inner_join(bm, imputed, by = "protein_Id")
-#cor(alli$estimate_median, alli$estimate, method="spearman")
 
-}
-\seealso{
-\code{\link{moderated_p_limma_long}}
-
-\code{\link{summary_ROPECA_median_p.scaled}}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -82,8 +73,6 @@ create Contrast}
 \item \href{#method-get_contrasts_sides}{\code{Contrasts$get_contrasts_sides()}}
 \item \href{#method-get_linfct}{\code{Contrasts$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{Contrasts$get_contrasts()}}
-\item \href{#method-moderate}{\code{Contrasts$moderate()}}
-\item \href{#method-ropeca}{\code{Contrasts$ropeca()}}
 \item \href{#method-clone}{\code{Contrasts$clone()}}
 }
 }
@@ -136,26 +125,7 @@ get linear functions from contrasts
 \if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-moderate"></a>}}
-\if{latex}{\out{\hypertarget{method-moderate}{}}}
-\subsection{Method \code{moderate()}}{
-applies limma moderation
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$moderate()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ropeca"></a>}}
-\if{latex}{\out{\hypertarget{method-ropeca}{}}}
-\subsection{Method \code{ropeca()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$ropeca()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 }

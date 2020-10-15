@@ -288,36 +288,32 @@ build_model <- function(data,
 #' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
+#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 #' pepIntensity <- D$data
 #' config <- D$config
 #' config$table$hkeysDepth()
+#'
 #' mod <- build_model(
 #'  pepIntensity,
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#'  contrast <- LFQService::Contrasts$new(mod$modelDF,
+#'  #LFQService::Contrasts$debug("get_linfct")
+#' contrastX <- LFQService::Contrasts$new(mod$modelDF,
 #'  Contr,
 #'  modelFunction$contrast_fun,
 #'  subject_Id = config$table$hkeysDepth(),
 #'  modelName = modelFunction$model_name)
 #'
-#' contrast$get_contrasts_sides()
-#'
-#' contrast$get_linfct()
-#' xx <- contrast$get_contrasts()
+#' contrastX$get_contrasts_sides()
+#' #foo
+#' contrastX$get_linfct()
+#' xx <- contrastX$get_contrasts()
 #' head(xx)
-#' xx <- contrast$moderate()
-#' head(xx)
-#' bb <- contrast$ropeca()
-#' #View(bb)
 #'
 #'
 #' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
-#' #alli <- inner_join(bm, imputed, by = "protein_Id")
-#' #cor(alli$estimate_median, alli$estimate, method="spearman")
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -367,7 +363,7 @@ Contrasts <- R6::R6Class(
       return(list(linfct = linfct, linfct_A = linfct_A))
     },
 
-    get_contrasts = function(){
+    get_contrasts = function(all = FALSE){
       linfct <- self$get_linfct()
       contrast_sides <- self$get_contrasts_sides()
       contrast_result <- contrasts_linfct(self$models,
@@ -394,33 +390,126 @@ Contrasts <- R6::R6Class(
                                       contrast_sides,
                                       self$subject_Id)
       contrast_result <- inner_join(contrast_sides,contrast_result)
+      if (!all) {
+        contrast_result <- contrast_result %>% select(-all_of(c("sigma.model",
+                                                                "df.residual.model")))
+      }
       return(contrast_result)
-    },
+    }
+
+
+  ))
+
+# ContrastsModerated -----
+
+
+#' Limma moderated contrasts
+#' @export
+#'
+#' @examples
+#' D <- LFQService::ionstar$normalized()
+#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
+#' modelFunction <-
+#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
+#' pepIntensity <- D$data
+#' config <- D$config$clone(deep = TRUE)
+#' config$table$hkeysDepth()
+#' mod <- build_model(
+#'  pepIntensity,
+#'  modelFunction,
+#'  subject_Id = config$table$hkeysDepth())
+#'
+#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#'  contrast <- LFQService::ContrastsModerated$new(mod$modelDF,
+#'  Contr,
+#'  modelFunction$contrast_fun,
+#'  subject_Id = config$table$hkeysDepth(),
+#'  modelName = modelFunction$model_name)
+#'  contrast$get_contrast(all = TRUE)
+#'
+ContrastsModerated <- R6::R6Class(
+  classname = "ContrastsModerated",
+  inherit = Contrasts,
+  public = list(
     #' @description applies limma moderation
     #' @seealso \code{\link{moderated_p_limma_long}}
-    moderate = function(){
-      res <- moderated_p_limma_long(self$get_contrasts(),group_by_col = "contrast")
+    get_contrast = function(all = FALSE){
+      res <- super$get_contrasts(all = TRUE)
+      res <- moderated_p_limma_long(res , group_by_col = "contrast")
+      if (!all) {
+        res <- res %>% select(-all_of(c("sigma.model",
+                                        "df.residual.model",
+                                        "moderated.df.prior",
+                                        "moderated.var.prior",
+                                        "moderated.var.post",
+                                        "moderated.statistic",
+                                        "moderated.df.total" )))
+      }
       return(res)
-    },
-    #' @describtion
-    #'
-    #' Ropeca
-    #'
+    }
+  )
+)
+
+
+# ContrastsROPECA -----
+
+#'
+#' Ropeca
+#'
+#' @export
+#' @examples
+#' D <- LFQService::ionstar$normalized()
+#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
+#' modelFunction <-
+#'   make_custom_model_lm("transformedIntensity  ~ dilution.")
+#' pepIntensity <- D$data
+#' config <- D$config$clone(deep = TRUE)
+#' config$table$hierarchyDepth <- 2
+#' config$table$hkeysDepth()
+#'
+#' mod <- build_model(
+#'  pepIntensity,
+#'  modelFunction,
+#'  subject_Id = config$table$hkeysDepth())
+#'
+#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#'  #ContrastROPECA$debug("get_contrast")
+#'  contrast <- LFQService::ContrastsROPECA$new(mod$modelDF,
+#'  Contr,
+#'  modelFunction$contrast_fun,
+#'  subject_Id = config$table$hkeysDepth(),
+#'  modelName = modelFunction$model_name)
+#'
+#'  contrast$get_linfct()
+#'  contrast$subject_Id
+#'  tmp <- contrast$get_contrast(all = TRUE)
+ContrastsROPECA <- R6::R6Class(
+  "ContrastsROPECA",
+  inherit = ContrastsModerated,
+  public = list(
+    #' @description
+    #' get contrasts
     #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
-    ropeca = function(){
-      contrasts_data <- self$moderate()
+    get_contrast = function(all=FALSE){
+      contrasts_data <- super$get_contrast(all = TRUE)
       res <- summary_ROPECA_median_p.scaled(
         contrasts_data,
-        contrast = self$contrast,
-        subject_Id = self$subject_Id,
+        contrast = "contrast",
+        subject_Id = self$subject_Id[1],
         estimate = "estimate",
         statistic = "statistic",
         p.value = "moderated.p.value",
         max.n = 10)
       return(res)
     }
-
   ))
+
+
+
+
+
+
+
 
 # plot score distributions by species
 .plot_score_distribution <- function(data,

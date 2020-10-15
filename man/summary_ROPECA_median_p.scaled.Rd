@@ -12,8 +12,7 @@ summary_ROPECA_median_p.scaled(
   estimate = "estimate",
   statistic = "statistic",
   p.value = "moderated.p.value",
-  max.n = 10,
-  adjust = TRUE
+  max.n = 10
 )
 }
 \arguments{
@@ -33,7 +32,7 @@ library(tidyverse)
 nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)
-estimate <- sample(c(-1,1),nrPep, replace = TRUE)
+estimate <- runif(nrPep)
 protein_Id <- sample(1:800, size = nrPep,
   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 
@@ -42,20 +41,32 @@ plot(table(table(protein_Id)))
 testdata <- data.frame(contrast = "contrast1", protein_Id = protein_Id,
   estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
   head(testdata)
-xx <- summary_ROPECA_median_p.scaled(testdata,
+xx30 <- summary_ROPECA_median_p.scaled(testdata,
+                                    subject_Id = "protein_Id",
+                                    estimate = "estimate",
+                                    p.value = "p.value",
+                                    max.n = 30)
+xx30$mad.estimate
+xx2 <- summary_ROPECA_median_p.scaled(testdata,
 
                                     subject_Id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
-                                    max.n = 10)
-colnames(xx)
-hist(testdata$p.value)
-hist(xx$median.p.scaled, breaks = 20)
-hist(xx$median.p, breaks = 20)
-hist(xx$beta.based.significance, breaks = 20)
+                                    max.n = 1)
+mad(xx2$estimate, na.rm=TRUE)
 
+hist(testdata$p.value)
+hist(xx30$median.p.scaled, breaks = 20)
+hist(xx2$median.p.scaled, breaks = 20)
+hist(xx30$beta.based.significance, breaks = 20)
+hist(xx2$beta.based.significance, breaks = 20)
+hist(xx2$median.p, breaks = 20)
+hist(xx2$beta.based.significance, breaks = 20)
+hist(xx2$mad.estimate)
 
 summary_ROPECA_median_p.scaled(LFQServiceData::exampleDataForRopeca, contrast = "contrast")
+xx2$mad.estimate
+
 
 }
 \seealso{

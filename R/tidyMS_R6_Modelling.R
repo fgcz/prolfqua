@@ -1031,7 +1031,9 @@ moderated_p_limma_long <- function(mm ,
 
 #' adjust columns
 #' @export
+#' @keywords internal
 #' @examples
+#'
 #' bb <- c(runif(1000), rexp(1500,rate=5))
 #' length(bb)
 #' bb <- bb[bb < 1]
@@ -1041,9 +1043,11 @@ moderated_p_limma_long <- function(mm ,
 #' data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
 #'
 #' data <- adjust_p_values(data)
+#' Adata <- data %>% filter(contrast == "A")
+#' stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method="BH")))
+#' data2 <- adjust_p_values(data, group_by_col = NULL)
+#' stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))
 #'
-#' plot(data$p.value.adjusted, p.adjust(data$p.value, method="BH"), pch=".")
-#' abline(0,1, col=2)
 #'
 adjust_p_values <- function(mm,
                             column = "p.value",
@@ -1132,12 +1136,14 @@ get_model_coefficients <- function(modeldata, config){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' plot(get_p_values_pbeta(0.1,1:10))
+#' plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))
+#' plot(get_p_values_pbeta(0.1,1:10,3), ylim=c(0,0.1))
+#' plot(get_p_values_pbeta(0.3,1:30, 3), ylim=c(0,0.1))
 #' abline(h=.05,col = 2)
-#' plot(get_p_values_pbeta(0.3,1:30))
-#' abline(h=.05,col = 2)
-#' plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
-#'
+#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)))
+#' abline(0,1)
+#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
+#' abline(0,1)
 get_p_values_pbeta <- function(median.p.value,
                                n.obs,
                                max.n = 10){
@@ -1173,7 +1179,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' nrPep <- 10000
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)
-#' estimate <- sample(c(-1,1),nrPep, replace = TRUE)
+#' estimate <- runif(nrPep)
 #' protein_Id <- sample(1:800, size = nrPep,
 #'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 #'
@@ -1182,20 +1188,32 @@ get_p_values_pbeta <- function(median.p.value,
 #' testdata <- data.frame(contrast = "contrast1", protein_Id = protein_Id,
 #'   estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
 #'   head(testdata)
-#' xx <- summary_ROPECA_median_p.scaled(testdata,
+#' xx30 <- summary_ROPECA_median_p.scaled(testdata,
+#'                                     subject_Id = "protein_Id",
+#'                                     estimate = "estimate",
+#'                                     p.value = "p.value",
+#'                                     max.n = 30)
+#' xx30$mad.estimate
+#' xx2 <- summary_ROPECA_median_p.scaled(testdata,
 #'
 #'                                     subject_Id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
-#'                                     max.n = 10)
-#' colnames(xx)
-#' hist(testdata$p.value)
-#' hist(xx$median.p.scaled, breaks = 20)
-#' hist(xx$median.p, breaks = 20)
-#' hist(xx$beta.based.significance, breaks = 20)
+#'                                     max.n = 1)
+#' mad(xx2$estimate, na.rm=TRUE)
 #'
+#' hist(testdata$p.value)
+#' hist(xx30$median.p.scaled, breaks = 20)
+#' hist(xx2$median.p.scaled, breaks = 20)
+#' hist(xx30$beta.based.significance, breaks = 20)
+#' hist(xx2$beta.based.significance, breaks = 20)
+#' hist(xx2$median.p, breaks = 20)
+#' hist(xx2$beta.based.significance, breaks = 20)
+#' hist(xx2$mad.estimate)
 #'
 #' summary_ROPECA_median_p.scaled(LFQServiceData::exampleDataForRopeca, contrast = "contrast")
+#' xx2$mad.estimate
+#'
 #'
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
@@ -1204,12 +1222,11 @@ summary_ROPECA_median_p.scaled <- function(
   estimate = "estimate",
   statistic = "statistic",
   p.value = "moderated.p.value",
-  max.n = 10,
-  adjust = TRUE){
+  max.n = 10){
 
-  contrasts_data %>%
+  nrpepsPerProt <- contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
-    dplyr::summarize(n = n() ) -> nrpepsPerProt
+    dplyr::summarize(n = n() )
 
   contrasts_data <- contrasts_data %>%
     # dplyr::filter(!is.na(!!sym(p.value))) %>%
@@ -1219,13 +1236,13 @@ summary_ROPECA_median_p.scaled <- function(
     group_by_at(c(subject_Id, contrast)) %>%
     dplyr::summarize(
       n_not_na = n(),
-      estimate = median(!!sym(estimate), na.rm = TRUE),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
+      estimate = median(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),
       median.p.scaled = median(scaled.p, na.rm = TRUE))
 
 
-  if (has_name(contrasts_data, "c1_name")) {
+  if (rlang::has_name(contrasts_data, "c1_name")) {
     ccsummary <- contrasts_data %>%
       group_by_at(c(subject_Id, contrast)) %>%
       dplyr::summarize(
@@ -1248,7 +1265,7 @@ summary_ROPECA_median_p.scaled <- function(
                                           summarized.protein,
                                           by = c(subject_Id, contrast))
   # TODO move p-value adjustment into independent code.
-  if (adjust) {
+  if (FALSE) {
     summarized.protein <- summarized.protein %>%
       mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
     summarized.protein <- summarized.protein %>%

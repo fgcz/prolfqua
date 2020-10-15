@@ -14,6 +14,21 @@ summarizeRobust_config(pdata, config, name = FALSE)
 \description{
 same as summarize robust but with config
 }
+\examples{
+
+bb <- LFQServiceData::skylinePRMSampleData_A
+conf <- bb$config_f()
+data <- bb$analysis(bb$data, conf)
+conf$table$hierarchyDepth = 1
+xnested <- data \%>\%
+  group_by_at(conf$table$hkeysDepth()) \%>\% nest()
+
+feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+x <- xnested$data[[1]]
+bb <- summarizeRobust_config(x, conf)
+
+LFQService:::.reestablish_condition(x,bb, conf)
+}
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

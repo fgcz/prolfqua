@@ -13,12 +13,14 @@ get_p_values_pbeta(median.p.value, n.obs, max.n = 10)
 p-value of protein from p.value of the median fold change peptide.
 }
 \examples{
-plot(get_p_values_pbeta(0.1,1:10))
+plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))
+plot(get_p_values_pbeta(0.1,1:10,3), ylim=c(0,0.1))
+plot(get_p_values_pbeta(0.3,1:30, 3), ylim=c(0,0.1))
 abline(h=.05,col = 2)
-plot(get_p_values_pbeta(0.3,1:30))
-abline(h=.05,col = 2)
-plot(get_p_values_pbeta(rep(0.1,30),rep(3,30)))
-
+plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)))
+abline(0,1)
+plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
+abline(0,1)
 }
 \seealso{
 Other modelling: 

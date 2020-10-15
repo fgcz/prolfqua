@@ -486,7 +486,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @param config AnalysisConfiguraton
 #' @family aggregation
 #' @keywords internal
-#' @example
+#' @examples
 #'
 #' bb <- LFQServiceData::skylinePRMSampleData_A
 #' conf <- bb$config_f()
