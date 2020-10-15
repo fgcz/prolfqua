@@ -1028,6 +1028,40 @@ moderated_p_limma_long <- function(mm ,
   return(xx)
 }
 
+
+#' adjust columns
+#' @export
+#' @examples
+#' bb <- c(runif(1000), rexp(1500,rate=5))
+#' length(bb)
+#' bb <- bb[bb < 1]
+#' length(bb)
+#' bb <- bb[1:2000]
+#' hist(bb)
+#' data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
+#'
+#' data <- adjust_p_values(data)
+#'
+#' plot(data$p.value.adjusted, p.adjust(data$p.value, method="BH"), pch=".")
+#' abline(0,1, col=2)
+#'
+adjust_p_values <- function(mm,
+                            column = "p.value",
+                            group_by_col = "contrast",
+                            newname = NULL
+                            ){
+  if (is.null(newname)) {
+    newname <- paste0(column, ".adjusted")
+  }
+  dfg <- mm %>%
+    dplyr::group_by_at(group_by_col)
+
+  xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column),method = "BH"))
+
+  return(xx)
+
+}
+
 #' write results of `contrasts_linfct`
 #' @keywords internal
 #' @export
