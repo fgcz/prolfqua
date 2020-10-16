@@ -5,6 +5,7 @@
 #' @export
 #' @keywords internal
 #' @family workflows
+#' @family deprecated
 #' @examples
 #' library(LFQService)
 #' rm(list=ls())
@@ -78,7 +79,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' config$parameter$min_nr_of_notNA  <- 20
 #' res <- workflow_corr_filter_impute(data,config)
 #'
-workflow_corr_filter_impute <- function(pdata,config, minCorrelation =0.6){
+workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
   stat_input <- hierarchy_counts(pdata, config)
 
   data_NA_QVal <- filter_byQValue(pdata, config)
@@ -123,7 +124,9 @@ workflow_corr_filter_impute <- function(pdata,config, minCorrelation =0.6){
 #' @export
 #' @keywords internal
 #' @family workflows
+#' @family deprecated
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
