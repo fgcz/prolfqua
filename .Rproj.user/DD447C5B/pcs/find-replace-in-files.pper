@@ -1,0 +1,13 @@
+{
+    "dialog-state": {
+        "query": "workflow_contrasts_linfct",
+        "path": "C:/Users/wolski/__checkout/LFQService",
+        "regex": false,
+        "caseSensitive": false,
+        "filePatterns": [],
+        "excludeFilePatterns": [],
+        "resultsCount": 0,
+        "errorCount": 0,
+        "replaceErrors": ""
+    }
+}

@@ -1,0 +1,15 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  ExDesignSurvey: ExDesignSurvey.html
+  LFQSurvey: LFQSurvey.html
+  Run_TidyAnalysis_HL_Skyline: Run_TidyAnalysis_HL_Skyline.html
+  Run_TidyAnalysis_Skyline_PRM: Run_TidyAnalysis_Skyline_PRM.html
+  Run_TidyCorrelationAnalysis: Run_TidyCorrelationAnalysis.html
+  subsetNormalizationofIonstarData: subsetNormalizationofIonstarData.html
+  tr_srm_summary: tr_srm_summary.html
+  tr_srm_summary_HL: tr_srm_summary_HL.html
+  YeastDataSetup: YeastDataSetup.html
+last_built: 2020-10-16T09:23Z
+

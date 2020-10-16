@@ -1,0 +1,350 @@
+---
+title: "Quality Control & Sample Size Estimation"
+author: "WEW@FGCZ.ETHZ.CH"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    toc: yes
+    toc_depth: 2
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+params:
+  configuration:  !r quote(LFQServiceData::skylinePRMSampleData_A$config_f())
+  data: !r quote(LFQServiceData::skylinePRMSampleData_A$analysis(LFQServiceData::skylinePRMSampleData_A$data, LFQServiceData::skylinePRMSampleData_A$config_f()))
+  plot_density: TRUE
+  plot_sd_vs_mean: FALSE
+  pep: TRUE
+vignette: >
+  %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+  editor_options:
+  chunk_output_type: console
+header-includes:
+  - \usepackage[english]{babel}
+  - \usepackage{blindtext}
+  - \usepackage{float}
+---
+
+
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(LFQService)
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 5.5,
+  fig.height = 3.5,
+  fig.align = "center",
+  fig.pos = "H"
+)
+
+data <- eval(params$data)
+local_config <- eval(params$configuration)
+
+
+if(is.null(params$plot_density)){
+  params$plot_density <- TRUE
+}
+if(is.null(params$plot_sd_vs_mean)){
+  params$plot_sd_vs_mean <- FALSE
+}
+old.theme <- theme_set(theme_classic())
+
+```
+
+\clearpage
+
+# Introduction
+
+- Workunit: `r local_config$workunit_Id`
+- Project: `r local_config$project_Id`
+- Order : `r local_config$order_Id`
+
+<!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.-->
+
+You were asked to hand in 4 QC samples, to asses the biological, biochemical, and technical variability of your experiments. We did run your samples through the same analysis pipeline, which will be applied in the main experiment.
+This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variability to asses the reproducibility of the biological samples and estimates the sample sizes needed for the main experiment. 
+
+
+# Quality Control: Identifications
+
+Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins `r if(params$pep){", and between a few hundred to up to some few tens of thousands of peptides"}else{""}`.
+While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
+
+
+```{r hierarchy_counts}
+x <- hierarchy_counts(data, local_config)
+#knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
+
+LFQService::table_facade( 
+  data.frame(NR = x),
+  caption = paste0("Nr of",
+                   if(params$pep){"proteins and peptides"}
+                   else
+                   {"proteins"} ,
+                   " detected in all samples."))
+
+```
+
+(ref:hierarchyCountsSampleBarplot) Number of quantified `r if(params$pep){"peptides"}else{"proteins"}` per sample.
+
+```{r hierarchyCountsSampleBarplot, fig.cap="(ref:hierarchyCountsSampleBarplot)", fig.width=8, fig.height=6}
+hcs <- hierarchy_counts_sample(data, configuration = local_config)
+hcs("plot")
+
+```
+
+
+```{r fig.height=3.5, fig.width=3.5, fig.cap="Number of proteins with one or more peptides."}
+x3 <- summarize_hierarchy(data, local_config)
+if (ncol(x3) >= 4) {
+  cnames_x3 <- colnames(x3)[4]
+  x3 <- x3 %>% dplyr::mutate(protein_with = case_when(!!sym(cnames_x3) == 1 ~ "one",
+                                                      !!sym(cnames_x3) > 1 ~ "two and more"))
+  
+  pltdt <- x3 %>% 
+    count(protein_with)
+  nudgeval <- max(pltdt$n) * 0.05
+  ggplot(pltdt, aes(x = protein_with, y = n)) + 
+    geom_col(color="black", fill="white") +
+    geom_text(aes(label = n), nudge_y = nudgeval)
+}
+```
+
+# Quality Control: Quantification
+
+## Summary of missing data
+
+Ideally, we identify each `r if(params$pep){"peptide"}else{"protein"}` in all of the samples. However, because of the limit of detection (LOD) low-intensity `r if(params$pep){"peptides"}else{"proteins"}` might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data.
+
+(ref:missingFigIntensityHistorgram) Top - intensity distribution of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1 etc. missing values. B - number of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1, 2 etc. missing value.
+
+```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="(ref:missingFigIntensityHistorgram)"}
+data_cc <- data
+p <- missigness_histogram(data_cc, local_config)
+xx3 <- missingness_per_condition(data_cc, local_config)
+xx4 <- missingness_per_condition_cumsum(data_cc, local_config)
+gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
+
+```
+
+(ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
+
+```{r preparemissingnessHeatmap, include=FALSE}
+pNAmap <- plot_NA_heatmap(data = data_cc, config = local_config)
+```
+
+```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
+print(pNAmap)
+```
+
+
+```{r checktransformation, include = FALSE}
+show_text <- !local_config$table$is_intensity_transformed
+
+```
+
+
+```{r conditional_print, child='CVReport.Rmd', eval = show_text}
+```
+
+## Variability of transformed intensities
+
+We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the `r if(params$pep){"peptide"}else{"protein"}` standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
+
+
+```{r transformIntensities}
+if (!local_config$table$is_intensity_transformed) {
+  data_tf <- LFQService::transform_work_intensity(data_cc,
+                                                  local_config,
+                                                  log2)
+  dataTransformed <-
+    LFQService::applyToIntensityMatrix(data_tf, local_config, robust_scale)
+  local_config$table$is_intensity_transformed = TRUE
+} else{
+  dataTransformed <- data_cc
+}
+
+```
+
+
+(ref:plotTransformedIntensityDistributions) `r if(params$pep){"Peptide"}else{"Protein"}` intensity distribution after transformation.
+
+```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
+if (params$plot_density) {
+  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, local_config) + 
+    theme(legend.text = element_text(size = 5))
+  p1
+} else {
+  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed, local_config) 
+  p2
+}
+```
+
+(ref:correlationHeat) Heatmap of `r if(params$pep){"peptide"}else{"protein"}` intensity correlation between samples.
+
+```{r preparecorrelationHeat, include= FALSE}
+chmap <- plot_heatmap_cor(dataTransformed,
+                       local_config,
+                       R2 = TRUE, 
+                       col = colorRampPalette(c("white", "red"))(1024))
+```
+
+```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}
+print(chmap)
+```
+
+
+```{r pairsplotSmooth, fig.cap = "Pairsplot - scatterplot of samples.", fig.height=12, fig.width=12}
+samples <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull()
+if (length(samples) > 10) {
+  limit <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
+  ldata <- dataTransformed %>% dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
+  LFQService::pairs_smooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
+}else{
+  LFQService::pairs_smooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
+}
+```
+
+
+
+
+(ref:sdviolinplots) Visualization of `r if(params$pep){"peptide"}else{"protein"}` standard deviations. A) all. B) - for low (bottom 50) and high intensity (top 50).
+
+```{r sdviolinplots,fig.cap="(ref:sdviolinplots)", fig.height=6, fig.width=8}
+stats_res <- summarize_cv(dataTransformed, local_config)
+
+if (params$plot_density) {
+  p1 <-
+    LFQService::plot_stat_density(stats_res, local_config, stat = "sd") +
+    labs(tag = "A") +
+    theme(legend.position = "none")
+  p2 <-
+    LFQService::plot_stat_density_median(stats_res, local_config, stat = "sd") +
+    labs(tag = "B") +
+    theme(legend.position = "bottom")
+  gridExtra::grid.arrange(p1, p2)
+} else {
+  p1 <- LFQService::plot_stat_violin(stats_res, local_config, stat = "sd") + 
+    labs(tag = "A")
+  p2 <- LFQService::plot_stat_violin_median(stats_res, local_config, stat = "sd") + 
+    labs(tag = "B")
+  gridExtra::grid.arrange(p1, p2)
+}
+```
+
+
+(ref:sdecdf) Visualization of `r if(params$pep){"peptide"}else{"protein"}` standard deviations as empirical cumulative distribution function. A) all. B) - for low (bottom 50) and high intensity (top 50).
+
+```{r sdecdf,fig.cap="(ref:sdecdf)", fig.height=6, fig.width=8}
+  p1 <-
+    LFQService::plot_stat_density(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
+    labs(tag = "A") +
+    theme(legend.position = "none")
+  p2 <-
+    LFQService::plot_stat_density_median(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
+    labs(tag = "B") +
+    theme(legend.position = "bottom")
+  gridExtra::grid.arrange(p1, p2)
+```
+
+```{r fig.cap="Standard Deviation vs Mean"}
+if(params$plot_sd_vs_mean){
+  p0 <- plot_stdv_vs_mean(stats_res, local_config) + labs(tag="A")
+}
+```
+
+
+```{r computeSDQuantiles, include=FALSE}
+sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
+```
+
+```{r printSDTable}
+#knitr::kable(sd_quantile_res2,  digits = 3,
+#             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
+LFQService::table_facade(sd_quantile_res2,
+  caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
+
+```
+
+(ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
+
+```{r prepareoverviewHeat, include = FALSE}
+hm <- plot_heatmap(dataTransformed, local_config)
+```
+
+```{r overviewHeat, fig.cap="(ref:overviewHeat)", fig.height=10, fig.width=8}
+print(hm)
+```
+
+# Sample Size Calculation
+
+
+In the previous section, we estimated the `r  if(params$pep){"peptide"}else{"protein"}` variance using the QC samples. Figure \@ref(fig:sdviolinplots) shows the distribution of the standard deviations. We are using this information, as well as some typical values for the size and the power of the test to estimate the required sample sizes for your main experiment. 
+
+An important factor in estimating the sample sizes is the smallest effect size (`r  if(params$pep){"peptide"}else{"protein"}` fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result. Typical $log_2$ fold change thresholds are $0.59, 1, 2$ which correspond to a fold change of $1.5, 2, 4$.
+
+
+Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how many samples are needed to detect a fold change of $0.5, 1, 2$ at a confidence level of $95\%$ and power of $80\%$, for $50, 60, 70, 80$ and $90\%$ percent of the measured `r if(params$pep){"peptides"}else{"proteins"}`.
+
+(ref:figSampleSize) Graphical representation of the sample size needed to detect a log fold change greater than delta with a significance level of $0.05$ and power 0.8 when using a t-test to compare means, in $X\%$ of `r  if(params$pep){"peptides"}else{"proteins"}` (x - axis).
+
+```{r figSampleSize, fig.cap="(ref:figSampleSize)", fig.width=8}
+
+sampleSize <- lfq_power_t_test_quantiles(dataTransformed, local_config, delta=c(0.59,1,2))
+
+nudgeval <- max(sampleSize$long$N) * 0.05
+
+ggplot(sampleSize$long, aes(x = quantile, y = N)) +
+  geom_bar(stat="identity", color="black", fill="white") +
+  geom_text(aes(label = N), nudge_y = nudgeval) + 
+  facet_wrap(~ paste0("FC==", round(FC,digits=2), "~or~log[2](FC)==", delta), labeller = label_parsed)
+
+
+```
+
+
+```{r sampleSize}
+LFQService::table_facade(
+  dplyr::select( sampleSize$summary, -probs),
+  caption = "Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
+
+```
+
+
+The _power_ of a test is $1-\beta$, where $\beta$ is the probability of a Type 2 error (failing to reject the null hypothesis when the alternative hypothesis is true).
+In other words, if you have a $20\%$ chance of failing to detect a real difference, then the power of your test is $80\%$.
+
+The _confidence level_ is equal to $1 - \alpha$, where $\alpha$ is the probability of making a Type 1 Error. That is, alpha represents the chance of a falsely rejecting $H_0$ and picking up a false-positive effect. Alpha is usually set at $5\%$ significance level, for a $95\%$ confidence level.
+
+Fold change: Suppose you are comparing a treatment group to a placebo group, and you will be measuring some continuous response variable which, you hypothesize, will be affected by the treatment. We can consider the mean response in the treatment group, $\mu_1$, and the mean response in the placebo group, $\mu_2$. We can then define $\Delta = \mu_1 - \mu_2$ as the mean difference. The smaller the difference you want to detect, the larger the required sample size.
+
+
+# Appendix
+
+```{r sampleNameRawFileMapping}
+LFQService::table_facade(
+  table_factors(data, local_config),
+  caption = "Mapping of raw file names to sample names used throughout this report.")
+
+```
+
+```{r hierarchyCountsSample}
+caption <- paste("Number of quantified ",
+                 if (params$pep) { "peptides and proteins" } else {"peptides" }, " per sample.")
+LFQService::table_facade(
+  hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")
+  , caption = caption)
+
+```
+
+
+```{r resetTheme, include=FALSE}
+theme_set(old.theme)
+```

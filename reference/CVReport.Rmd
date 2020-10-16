@@ -1,0 +1,56 @@
+## Variablity of the raw intensities
+
+
+Without applying any intensity scaling and data preprocessing, the peptide intensities in all samples should be similar. To asses this we plotted the distribution of the peptide intensities in the samples (Figure \@ref(fig:plotDistributions)) as well as the distribution of the coefficient of variation CV for all peptides in the samples (Figure \@ref(fig:intensityDistribution)). Table \@ref(tab:printTable) summarises the CV.
+
+```{r plotDistributions, fig.cap="Density plot of peptide level Coefficient of Variations (CV).", fig.height=6, fig.width=8}
+stats_res <- summarize_cv(data_cc, local_config)
+if (params$plot_density) {
+  p1 <- LFQService::plot_stat_density(stats_res, local_config, stat="CV") + 
+    labs(tag = "A") + 
+    xlim(0, 150) +
+    theme(legend.position = "none")
+  p2 <- LFQService::plot_stat_density_median(stats_res, local_config, stat="CV") + 
+    labs(tag = "B") + 
+    xlim(0, 150) +
+    theme(legend.position = "bottom")
+  gridExtra::grid.arrange(p1,p2)
+} else {
+  p1 <- LFQService::plot_stat_violin(stats_res, local_config, stat="CV") + labs(tag='A')
+  p2 <- LFQService::plot_stat_violin_median(stats_res, local_config, stat="CV") + labs(tag='B')
+  gridExtra::grid.arrange(p1,p2)
+}
+```
+
+```{r}
+if(!local_config$table$is_intensity_transformed){
+  if (params$plot_sd_vs_mean) {
+    p0 <- plot_stdv_vs_mean(stats_res, local_config)  + labs(tag='A') # takes to long to plot.
+  }
+}
+```
+
+
+```{r computeCVQuantiles, include=FALSE}
+cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
+```
+
+
+```{r printTable, results="asis"}
+LFQService::table_facade(cv_quantiles_res,
+                         caption = "Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
+
+
+```
+
+```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities."}
+if(params$plot_density){
+  p0 <- LFQService::plot_intensity_distribution_density(data_cc, local_config) + 
+    theme(legend.text = element_text(size=5))
+  p0
+} else{
+  p1 <- LFQService::plot_intensity_distribution_violin(data_cc, local_config)
+  p1
+}
+
+```
