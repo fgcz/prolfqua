@@ -16,8 +16,6 @@ Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence
 
 #txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #allData <- tidyMQ_PeptideProtein(txt_directory)
-#zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
-#res <- tidyMQ_PeptideProtein(zip_archive)
 
 }
 \seealso{

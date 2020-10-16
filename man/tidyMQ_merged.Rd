@@ -16,8 +16,6 @@ Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all leve
 
 txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 allData <- tidyMQ_merged(txt_directory)
-zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package = "LFQService")
-res <- tidyMQ_merged(zip_archive)
 
 }
 \seealso{
