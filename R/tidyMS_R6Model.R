@@ -466,6 +466,10 @@ Contrasts <- R6::R6Class(
 #'  subject_Id = config$table$hkeysDepth(),
 #'  modelName = modelFunction$model_name)
 #'  contrast$get_contrasts(all = TRUE)
+#'  plotter <- contrast$get_Plotter()
+#'  plotter$histogram()
+#'  plotter$ma_plot()
+#'  plotter$volcano()
 #'
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
