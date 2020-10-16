@@ -396,11 +396,16 @@ get_contrast <- function(data,
   return(res)
 }
 
-#' compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-#' peptide fold change is comptuted based on interaction average
+#' compute contrasts based on peptide fold changes
+#'
+#' Computes median of fold peptide fold change to obtain protein fold change.
+#' peptide fold change is computed based on the average of intensities in the conditions.
+#'
+#'
 #' @param data data.frame
 #' @param config AnalysisConfiguration
 #' @param contrast list of contrasts
+#' @keywords internal
 #' @family missingness
 #' @family modelling
 #' @export

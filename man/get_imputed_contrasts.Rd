@@ -2,8 +2,7 @@
 % Please edit documentation in R/tidyMS_missigness.R
 \name{get_imputed_contrasts}
 \alias{get_imputed_contrasts}
-\title{compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average}
+\title{compute contrasts based on peptide fold changes}
 \usage{
 get_imputed_contrasts(data, config, contrasts)
 }
@@ -15,8 +14,8 @@ get_imputed_contrasts(data, config, contrasts)
 \item{contrast}{list of contrasts}
 }
 \description{
-compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average
+Computes median of fold peptide fold change to obtain protein fold change.
+peptide fold change is computed based on the average of intensities in the conditions.
 }
 \examples{
 
@@ -70,3 +69,4 @@ Other modelling:
 }
 \concept{missingness}
 \concept{modelling}
+\keyword{internal}

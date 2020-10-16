@@ -24,7 +24,9 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- #ContrastROPECA$debug("get_contrast")
+
+
+ #ContrastsROPECA$debug("get_Plotter")
  contrast <- LFQService::ContrastsROPECA$new(mod$modelDF,
  Contr,
  modelFunction$contrast_fun,
@@ -33,8 +35,13 @@ mod <- build_model(
 
  contrast$get_linfct()
  contrast$subject_Id
- tmp <- contrast$get_contrast(all = TRUE)
- head(tmp)
+ tmp <- contrast$get_contrasts(all = TRUE)
+
+ pl <- contrast$get_Plotter()
+
+ pl$histogram()
+ pl$ma_plot()
+
 }
 \seealso{
 \code{\link{summary_ROPECA_median_p.scaled}}
@@ -45,15 +52,15 @@ mod <- build_model(
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-get_contrast}{\code{ContrastsROPECA$get_contrast()}}
+\item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
+\item \href{#method-to_wide}{\code{ContrastsROPECA$to_wide()}}
 \item \href{#method-clone}{\code{ContrastsROPECA$clone()}}
 }
 }
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts">}\href{../../LFQService/html/Contrast.html#method-get_contrasts}{\code{LFQService::Contrast$get_contrasts()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../LFQService/html/Contrast.html#method-get_contrasts_sides}{\code{LFQService::Contrast$get_contrasts_sides()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_linfct">}\href{../../LFQService/html/Contrast.html#method-get_linfct}{\code{LFQService::Contrast$get_linfct()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="initialize">}\href{../../LFQService/html/Contrast.html#method-initialize}{\code{LFQService::Contrast$initialize()}}\out{</span>}
@@ -61,12 +68,12 @@ mod <- build_model(
 \out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast}{}}}
-\subsection{Method \code{get_contrast()}}{
+\if{html}{\out{<a id="method-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\subsection{Method \code{get_contrasts()}}{
 get contrasts
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrast(all = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -76,6 +83,17 @@ get contrasts
 \subsection{Method \code{get_Plotter()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\subsection{Method \code{to_wide()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$to_wide(
+  columns = c("beta.based.significance", "FDR.beta.based.significance")
+)}\if{html}{\out{</div>}}
 }
 
 }

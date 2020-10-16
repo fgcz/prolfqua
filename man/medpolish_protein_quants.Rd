@@ -49,7 +49,9 @@ Other deprecated:
 \code{\link{model_analyse_summarize_vis}()},
 \code{\link{model_analyse_summarize_write}()},
 \code{\link{model_analyse_summarize}()},
+\code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_contrasts_linfct_V2}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()},
 \code{\link{workflow_missigness_impute_contrasts_V2}()},
 \code{\link{workflow_missigness_impute_contrasts}()},
 \code{\link{workflow_model_analyse}()}

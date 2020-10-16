@@ -78,6 +78,7 @@ create Contrast}
 \item \href{#method-get_linfct}{\code{Contrasts$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{Contrasts$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{Contrasts$get_Plotter()}}
+\item \href{#method-to_wide}{\code{Contrasts$to_wide()}}
 \item \href{#method-clone}{\code{Contrasts$clone()}}
 }
 }
@@ -107,9 +108,11 @@ create Contrast}
 
 \item{\code{subject_Id}}{columns with subject_Id (e.g. protein_Id)}
 
+\item{\code{modelName}}{default "Model"}
+
 \item{\code{p.adjust}}{function to adjust the p-values}
 
-\item{\code{Modelname}}{default "Model"}
+\item{\code{contrast_result}}{contrast result}
 }
 \if{html}{\out{</div>}}
 }
@@ -161,6 +164,15 @@ data.frame with contrasts
 return Contrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\subsection{Method \code{to_wide()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$to_wide(columns = c("p.value", "FDR"))}\if{html}{\out{</div>}}
 }
 
 }

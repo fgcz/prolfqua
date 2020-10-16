@@ -28,21 +28,27 @@ mod <- build_model(
  modelFunction,
  modelName = modelName,
  subject_Id = config$table$hkeysDepth())
- mod$get_coefficients()
+
+ #mod$get_coefficients()
+
  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
   "dil.e_vs_a" = "dilution.e - dilution.a",
   "dil.e_vs_b" = "dilution.e - dilution.b",
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
+#Contrasts$debug("get_contrasts")
 contrast <- LFQService::Contrasts$new(mod$modelDF,
   Contr,
   modelFunction$contrast_fun,
   subject_Id = config$table$hkeysDepth(),
   modelName = modelFunction$modelName)
-#Contrasts_Plotter$debug("volcano_plotly")
 tmp <- contrast$get_contrasts()
-contrast$subject_Id
-cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
+
+cp <- Contrasts_Plotter$new(tmp ,
+ contrast$subject_Id,
+volcano = list(list(score = "FDR", fc = 1)),
+histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+                 list(score = "FDR", xlim = c(0,1,0.05))))
 cp$histogram()
 cp$histogram_estimate()
 res <- cp$volcano()
@@ -54,9 +60,7 @@ cp$ma_plot()
 cp$ma_plotly()
 cp$write_pdf("c:/Temp")
 cp$write_plotly("c:/Temp")
-bb <- cp$get_minimal()
-bw <- cp$to_wide()
-head(bw)
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -94,8 +98,6 @@ column with fold change estimates}
 \item \href{#method-ma_plotly}{\code{Contrasts_Plotter$ma_plotly()}}
 \item \href{#method-write_pdf}{\code{Contrasts_Plotter$write_pdf()}}
 \item \href{#method-write_plotly}{\code{Contrasts_Plotter$write_plotly()}}
-\item \href{#method-get_minimal}{\code{Contrasts_Plotter$get_minimal()}}
-\item \href{#method-to_wide}{\code{Contrasts_Plotter$to_wide()}}
 \item \href{#method-clone}{\code{Contrasts_Plotter$clone()}}
 }
 }
@@ -108,9 +110,9 @@ create Crontrast_Plotter
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$new(
   contrastDF,
   subject_Id,
-  volcano = list(list(score = "p.value", fc = 1)),
-  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score =
-    "statistic", xlim = c(0, 4, 0.1))),
+  volcano = list(list(score = "FDR", fc = 1)),
+  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
+    xlim = c(0, 1, 0.05))),
   modelName = "Model",
   estimate = "estimate",
   contrast = "contrast"
@@ -244,24 +246,6 @@ ma plotly
 \subsection{Method \code{write_plotly()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_plotly(path)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_minimal"></a>}}
-\if{latex}{\out{\hypertarget{method-get_minimal}{}}}
-\subsection{Method \code{get_minimal()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$get_minimal(columns = c("p.value"))}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
-\subsection{Method \code{to_wide()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$to_wide(columns = c("p.value"))}\if{html}{\out{</div>}}
 }
 
 }
