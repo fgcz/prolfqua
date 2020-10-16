@@ -34,6 +34,7 @@ mod <- build_model(
  contrast$get_linfct()
  contrast$subject_Id
  tmp <- contrast$get_contrast(all = TRUE)
+ head(tmp)
 }
 \seealso{
 \code{\link{summary_ROPECA_median_p.scaled}}
@@ -45,6 +46,7 @@ mod <- build_model(
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-get_contrast}{\code{ContrastsROPECA$get_contrast()}}
+\item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
 \item \href{#method-clone}{\code{ContrastsROPECA$clone()}}
 }
 }
@@ -65,6 +67,15 @@ mod <- build_model(
 get contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrast(all = FALSE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\subsection{Method \code{get_Plotter()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter()}\if{html}{\out{</div>}}
 }
 
 }

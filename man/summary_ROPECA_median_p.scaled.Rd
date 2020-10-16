@@ -60,7 +60,7 @@ hist(xx30$median.p.scaled, breaks = 20)
 hist(xx2$median.p.scaled, breaks = 20)
 hist(xx30$beta.based.significance, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
-hist(xx2$median.p, breaks = 20)
+hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
 hist(xx2$mad.estimate)
 

@@ -73,6 +73,7 @@ create Contrast}
 \item \href{#method-get_contrasts_sides}{\code{Contrasts$get_contrasts_sides()}}
 \item \href{#method-get_linfct}{\code{Contrasts$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{Contrasts$get_contrasts()}}
+\item \href{#method-get_Plotter}{\code{Contrasts$get_Plotter()}}
 \item \href{#method-clone}{\code{Contrasts$clone()}}
 }
 }
@@ -124,8 +125,29 @@ get linear functions from contrasts
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
+get table with contrast estimates
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{all}}{should all columns be returned (default FALSE)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame with contrasts
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\subsection{Method \code{get_Plotter()}}{
+return Contrast_Plotter
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter()}\if{html}{\out{</div>}}
 }
 
 }

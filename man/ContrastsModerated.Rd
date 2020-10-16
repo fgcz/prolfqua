@@ -40,6 +40,7 @@ mod <- build_model(
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-get_contrast}{\code{ContrastsModerated$get_contrast()}}
+\item \href{#method-get_Plotter}{\code{ContrastsModerated$get_Plotter()}}
 \item \href{#method-clone}{\code{ContrastsModerated$clone()}}
 }
 }
@@ -60,6 +61,15 @@ mod <- build_model(
 applies limma moderation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_contrast(all = FALSE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\subsection{Method \code{get_Plotter()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_Plotter()}\if{html}{\out{</div>}}
 }
 
 }
