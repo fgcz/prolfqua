@@ -1207,7 +1207,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$median.p.scaled, breaks = 20)
 #' hist(xx30$beta.based.significance, breaks = 20)
 #' hist(xx2$beta.based.significance, breaks = 20)
-#' hist(xx2$median.p, breaks = 20)
+#' hist(xx2$median.p.value, breaks = 20)
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(xx2$mad.estimate)
 #'
@@ -1254,10 +1254,10 @@ summary_ROPECA_median_p.scaled <- function(
   }
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(median.p = 1 - abs(median.p.scaled))
+    dplyr::mutate(median.p.value = 1 - abs(median.p.scaled))
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p, n_not_na, max.n = max.n))
+    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p.value, n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
     dplyr::mutate(n.beta = pmin(n_not_na, max.n))
 
@@ -1269,7 +1269,7 @@ summary_ROPECA_median_p.scaled <- function(
     summarized.protein <- summarized.protein %>%
       mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
     summarized.protein <- summarized.protein %>%
-      mutate(median.p.adjusted = p.adjust(median.p, method = "BH"))
+      mutate(median.p.adjusted = p.adjust(median.p.value, method = "BH"))
   }
 
   summarized.protein$isSingular <- FALSE
