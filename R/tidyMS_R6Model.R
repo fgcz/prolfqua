@@ -630,7 +630,7 @@ ContrastsROPECA <- R6::R6Class(
 #'   "dil.e_vs_b" = "dilution.e - dilution.b",
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
-#' Contrasts$debug("get_contrasts")
+#' #Contrasts$debug("get_contrasts")
 #' contrast <- LFQService::Contrasts$new(mod$modelDF,
 #'   Contr,
 #'   modelFunction$contrast_fun,
