@@ -1264,13 +1264,6 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- dplyr::inner_join(nrpepsPerProt,
                                           summarized.protein,
                                           by = c(subject_Id, contrast))
-  # TODO move p-value adjustment into independent code.
-  if (FALSE) {
-    summarized.protein <- summarized.protein %>%
-      mutate(beta.based.significance.adjusted = p.adjust(beta.based.significance, method = "BH"))
-    summarized.protein <- summarized.protein %>%
-      mutate(median.p.adjusted = p.adjust(median.p.value, method = "BH"))
-  }
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.
