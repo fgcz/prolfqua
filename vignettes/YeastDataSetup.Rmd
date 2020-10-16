@@ -1,16 +1,26 @@
 ---
-title: "Data Preprocessing of Yeast data from the Combined course"
+title: "Data Preprocessing of Yeast data from the Combined Course FGCZ"
 author: "Witold Wolski"
 date: "06/10/2020"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined course} 
+  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined Course FGCZ} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 
 ---
 
-Setting up Yeast data p
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+echo = TRUE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
+```
+
+
 
 Create MaxQuant Configuration (only works with `LFQService::tidyMQ_Peptides` function)
 

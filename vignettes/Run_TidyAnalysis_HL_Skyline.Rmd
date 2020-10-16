@@ -6,7 +6,7 @@ output:
   pdf_document: default
   html_document: default
 vignette: >
-  %\VignetteIndexEntry{Example of data preprocessing for HL experiment}
+  %\VignetteIndexEntry{Example of data preprocessing of Heavy Light data}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

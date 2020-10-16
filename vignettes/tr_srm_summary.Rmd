@@ -19,10 +19,16 @@ vignette: >
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(LFQService)
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
+knitr::opts_chunk$set(
+echo = TRUE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 data <- eval(params$data)
 configuration <- eval(params$configuration)
 
