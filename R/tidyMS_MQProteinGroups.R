@@ -105,8 +105,6 @@ tidyMQ_Evidence <- function(Evidence){
 #'
 #' txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' allData <- tidyMQ_merged(txt_directory)
-#' zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package = "LFQService")
-#' res <- tidyMQ_merged(zip_archive)
 #'
 tidyMQ_merged <- function(txt_directory){
   if (grepl("\\.zip$",txt_directory)) {
@@ -140,8 +138,6 @@ tidyMQ_merged <- function(txt_directory){
 #'
 #' #txt_directory <- system.file("samples/maxquant_txt/MSQC1", package = "LFQService")
 #' #allData <- tidyMQ_PeptideProtein(txt_directory)
-#' #zip_archive <- system.file("samples/maxquant_txt/twoGroup3Reps.zip", package="LFQService")
-#' #res <- tidyMQ_PeptideProtein(zip_archive)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
   if (grepl("\\.zip$",tolower(txt_directory))) {

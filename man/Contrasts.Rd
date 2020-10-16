@@ -36,10 +36,9 @@ contrastX <- LFQService::Contrasts$new(mod$modelDF,
  modelName = modelFunction$model_name)
 
 contrastX$get_contrasts_sides()
-#foo
+
 contrastX$get_linfct()
 xx <- contrastX$get_contrasts()
-head(xx)
 
 
 imputed <- get_imputed_contrasts(D$data, D$config, Contr)
@@ -54,7 +53,9 @@ imputed <- get_imputed_contrasts(D$data, D$config, Contr)
 
 \item{\code{contrast}}{function}
 
-\item{\code{modelName}}{model name
+\item{\code{modelName}}{model name}
+
+\item{\code{function}}{to adjust p-values (default LFQService::adjust_p_values)
 create Contrast}
 }
 \if{html}{\out{</div>}}
@@ -63,6 +64,9 @@ create Contrast}
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{contrast}}{function}
+
+\item{\code{function}}{to adjust p-values (default LFQService::adjust_p_values)
+create Contrast}
 }
 \if{html}{\out{</div>}}
 }
@@ -82,7 +86,14 @@ create Contrast}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(models, contrasts, contrast_fun, subject_Id, modelName = "Model")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(
+  models,
+  contrasts,
+  contrast_fun,
+  subject_Id,
+  modelName = "Model",
+  p.adjust = LFQService::adjust_p_values
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -95,6 +106,8 @@ create Contrast}
 \item{\code{contrast_fun}}{see. eg. \code{\link{my_contrast_V2},\link{my_contest}}}
 
 \item{\code{subject_Id}}{columns with subject_Id (e.g. protein_Id)}
+
+\item{\code{p.adjust}}{function to adjust the p-values}
 
 \item{\code{Modelname}}{default "Model"}
 }

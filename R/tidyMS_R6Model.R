@@ -307,10 +307,9 @@ build_model <- function(data,
 #'  modelName = modelFunction$model_name)
 #'
 #' contrastX$get_contrasts_sides()
-#' #foo
+#'
 #' contrastX$get_linfct()
 #' xx <- contrastX$get_contrasts()
-#' head(xx)
 #'
 #'
 #' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
@@ -334,7 +333,8 @@ Contrasts <- R6::R6Class(
     #' @param contrasts a character vector with contrast specificiation
     #' @param contrast_fun see. eg. \code{\link{my_contrast_V2},\link{my_contest}}
     #' @param subject_Id columns with subject_Id (e.g. protein_Id)
-    #' @param Modelname default "Model"
+    #' @param modelName default "Model"
+    #' @param p.adjust function to adjust the p-values
     initialize = function(models,
                           contrasts,
                           contrast_fun,
@@ -347,6 +347,7 @@ Contrasts <- R6::R6Class(
       self$contrastfun = contrast_fun
       self$modelName = modelName
       self$subject_Id = subject_Id
+      self$p.adjust = p.adjust
     },
     #' @description get both sides of contrasts
     get_contrasts_sides = function(){
@@ -412,7 +413,17 @@ Contrasts <- R6::R6Class(
     #' @description
     #' return Contrast_Plotter
     get_Plotter = function(){
-
+      contrast_result <- self$get_contrasts()
+      res <- Contrasts_Plotter$new(
+        contrast_result,
+        subject_Id = self$subject_Id,
+        volcano = list(list(score = "FDR", fc = 1)),
+        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+                         list(score = "FDR", xlim = c(0,1,0.05))),
+        modelName = self$modelName,
+        estimate = "estimate",
+        contrast = "contrast")
+      return(res)
     }
   ))
 
@@ -468,7 +479,17 @@ ContrastsModerated <- R6::R6Class(
       return(contrast_result)
     },
     get_Plotter = function(){
-
+      contrast_result <- self$get_contrasts()
+      res <- Contrasts_Plotter$new(
+        contrast_result,
+        subject_Id = self$subject_Id,
+        volcano = list(list(score = "FDR.moderated", fc = 1)),
+        histogram = list(list(score = "moderated.p.value", xlim = c(0,1,0.05)),
+                         list(score = "FDR.moderated", xlim = c(0,1,0.05))),
+        modelName = self$modelName,
+        estimate = "estimate",
+        contrast = "contrast")
+      return(res)
     }
   )
 )
@@ -540,14 +561,19 @@ ContrastsROPECA <- R6::R6Class(
       return(res)
     },
     get_Plotter = function(){
-
+      contrast_result <- self$get_contrasts()
+      res <- Contrasts_Plotter$new(
+        contrast_result,
+        subject_Id = self$subject_Id,
+        volcano = list(list(score = "FDR.beta.based.significance", fc = 1)),
+        histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
+                         list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
+        modelName = self$modelName,
+        estimate = "estimate",
+        contrast = "contrast")
+      return(res)
     }
   ))
-
-
-
-
-
 
 
 
@@ -604,12 +630,12 @@ ContrastsROPECA <- R6::R6Class(
 #'   "dil.e_vs_b" = "dilution.e - dilution.b",
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
+#' Contrasts$debug("get_contrasts")
 #' contrast <- LFQService::Contrasts$new(mod$modelDF,
 #'   Contr,
 #'   modelFunction$contrast_fun,
 #'   subject_Id = config$table$hkeysDepth(),
 #'   modelName = modelFunction$modelName)
-#' #Contrasts_Plotter$debug("volcano_plotly")
 #' tmp <- contrast$get_contrasts()
 #' contrast$subject_Id
 #' cp <- Contrasts_Plotter$new(tmp , contrast$subject_Id)
@@ -666,7 +692,7 @@ Contrasts_Plotter <- R6::R6Class(
                           subject_Id,
                           volcano = list(list(score = "p.value", fc = 1)),
                           histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                                           list(score = "p.value.adjusted", xlim = c(0,1,0.05)),
+                                           list(score = "p.value.adjusted", xlim = c(0,1,0.05))),
                                            #list(score = "statistic" , xlim = c(0,4,0.1))),
                           modelName = "Model",
                           estimate = "estimate",
