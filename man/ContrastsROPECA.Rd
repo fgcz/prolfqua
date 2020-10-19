@@ -64,6 +64,7 @@ mod <- build_model(
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../LFQService/html/Contrast.html#method-get_contrasts_sides}{\code{LFQService::Contrast$get_contrasts_sides()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_linfct">}\href{../../LFQService/html/Contrast.html#method-get_linfct}{\code{LFQService::Contrast$get_linfct()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="initialize">}\href{../../LFQService/html/Contrast.html#method-initialize}{\code{LFQService::Contrast$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="write">}\href{../../LFQService/html/Contrast.html#method-write}{\code{LFQService::Contrast$write()}}\out{</span>}
 }
 \out{</details>}
 }

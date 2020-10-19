@@ -77,6 +77,7 @@ create Contrast}
 \item \href{#method-get_contrasts_sides}{\code{Contrasts$get_contrasts_sides()}}
 \item \href{#method-get_linfct}{\code{Contrasts$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{Contrasts$get_contrasts()}}
+\item \href{#method-write}{\code{Contrasts$write()}}
 \item \href{#method-get_Plotter}{\code{Contrasts$get_Plotter()}}
 \item \href{#method-to_wide}{\code{Contrasts$to_wide()}}
 \item \href{#method-clone}{\code{Contrasts$clone()}}
@@ -156,6 +157,15 @@ get table with contrast estimates
 \subsection{Returns}{
 data.frame with contrasts
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write"></a>}}
+\if{latex}{\out{\hypertarget{method-write}{}}}
+\subsection{Method \code{write()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$write(path, format = "xlsx")}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}

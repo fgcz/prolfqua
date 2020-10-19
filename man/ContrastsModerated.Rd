@@ -28,6 +28,10 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth(),
  modelName = modelFunction$model_name)
  contrast$get_contrasts(all = TRUE)
+ plotter <- contrast$get_Plotter()
+ plotter$histogram()
+ plotter$ma_plot()
+ plotter$volcano()
 
 }
 \seealso{
@@ -51,6 +55,7 @@ mod <- build_model(
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../LFQService/html/Contrast.html#method-get_contrasts_sides}{\code{LFQService::Contrast$get_contrasts_sides()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_linfct">}\href{../../LFQService/html/Contrast.html#method-get_linfct}{\code{LFQService::Contrast$get_linfct()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="initialize">}\href{../../LFQService/html/Contrast.html#method-initialize}{\code{LFQService::Contrast$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="write">}\href{../../LFQService/html/Contrast.html#method-write}{\code{LFQService::Contrast$write()}}\out{</span>}
 }
 \out{</details>}
 }

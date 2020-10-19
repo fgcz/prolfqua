@@ -4,7 +4,7 @@
 \alias{lfq_write_table}
 \title{Facade to writing data frame into various file formats.}
 \usage{
-lfq_write_table(x, path, name, lfq_write_format = c("xlsx", "csv", "html"))
+lfq_write_table(x, path, name, format = c("xlsx", "csv", "html"))
 }
 \arguments{
 \item{x}{data.frame}

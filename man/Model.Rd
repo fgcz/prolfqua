@@ -98,7 +98,7 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 \if{latex}{\out{\hypertarget{method-write_coefficients}{}}}
 \subsection{Method \code{write_coefficients()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$write_coefficients(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_coefficients(path, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 }
@@ -107,7 +107,7 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 \if{latex}{\out{\hypertarget{method-write_anova}{}}}
 \subsection{Method \code{write_anova()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$write_anova(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$write_anova(path, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 }

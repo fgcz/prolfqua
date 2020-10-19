@@ -96,6 +96,7 @@ column with fold change estimates}
 \item \href{#method-volcano_plotly}{\code{Contrasts_Plotter$volcano_plotly()}}
 \item \href{#method-ma_plot}{\code{Contrasts_Plotter$ma_plot()}}
 \item \href{#method-ma_plotly}{\code{Contrasts_Plotter$ma_plotly()}}
+\item \href{#method-all_figs}{\code{Contrasts_Plotter$all_figs()}}
 \item \href{#method-write_pdf}{\code{Contrasts_Plotter$write_pdf()}}
 \item \href{#method-write_plotly}{\code{Contrasts_Plotter$write_plotly()}}
 \item \href{#method-clone}{\code{Contrasts_Plotter$clone()}}
@@ -230,6 +231,16 @@ ma plotly
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-all_figs"></a>}}
+\if{latex}{\out{\hypertarget{method-all_figs}{}}}
+\subsection{Method \code{all_figs()}}{
+generate all figures
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$all_figs()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_pdf"></a>}}
