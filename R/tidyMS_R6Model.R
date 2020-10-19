@@ -41,11 +41,15 @@ Model <- R6::R6Class(
     modelDF = NULL,
     modelName = character(),
     subject_Id = character(),
-    initialize = function(modelDF, modelName = "Model", subject_Id = "protein_Id"){
+    p.adjust = NULL,
+    initialize = function(modelDF,
+                          modelName = "Model",
+                          subject_Id = "protein_Id",
+                          p.adjust = LFQService::adjust_p_values){
       self$modelDF = modelDF
       self$modelName = modelName
       self$subject_Id = subject_Id
-
+      self$p.adjust = p.adjust
     },
     #' @description return model coefficient table
     get_coefficients = function(){
@@ -82,9 +86,17 @@ Model <- R6::R6Class(
       Model_Anova <- Model_Anova %>%
         dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
       Model_Anova <- tidyr::unnest_legacy(Model_Anova)
+
+
+
+      Model_Anova <- Model_Anova %>% dplyr::filter(factor != "Residuals")
+
+      Model_Anova <- self$p.adjust(Model_Anova,
+                                   column = "Pr..F.",
+                                   group_by_col = "factor",
+                                   newname = "FDR.Pr..F.")
       #tidyr::unnest(cols = "Anova_model")
       return(Model_Anova)
-
     },
 
 
@@ -151,7 +163,6 @@ Model <- R6::R6Class(
       Model_Anova <- self$get_anova()
       fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
       histogram_anova_p.values <-  Model_Anova %>%
-        dplyr::filter(factor != "Residuals") %>%
         ggplot( aes(x = Pr..F., group = factor)) +
         geom_histogram(breaks = seq(0,1,by = 0.05)) +
         facet_wrap(~factor)
