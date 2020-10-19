@@ -91,15 +91,17 @@ Model <- R6::R6Class(
     #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
     #' @keywords internal
     #' @export
-    write_coefficients  = function(path){
+    write_coefficients  = function(path, format = "xlsx"){
       lfq_write_table(self$get_coefficients(),
                       path = path,
-                      name  = paste0("Coef_",self$modelName) )
+                      name  = paste0("Coef_",self$modelName),
+                      format = format)
     },
-    write_anova = function(path){
+    write_anova = function(path, format = "xlsx"){
       lfq_write_table(self$get_anova(),
                       path = path,
-                      name  = paste0("ANOVA_",self$modelName) )
+                      name  = paste0("ANOVA_",self$modelName) ,
+                      format = format)
 
     },
 
@@ -414,6 +416,12 @@ Contrasts <- R6::R6Class(
                                   group_by_col = "contrast",
                                   newname = "FDR")
       return(self$contrast_result)
+    },
+    write = function(path, format = "xlsx"){
+      lfq_write_table(self$get_contrasts(),
+                      path = path,
+                      name  = paste0("ANOVA_",self$modelName) ,
+                      format = format)
     },
     #' @description
     #' return Contrast_Plotter
@@ -819,6 +827,18 @@ Contrasts_Plotter <- R6::R6Class(
       }else{
         return(NULL)
       }
+    },
+    #' @description
+    #' generate all figures
+    #'
+    all_figs = function(){
+      ma_plotly()
+      volcano_plotly()
+      ma_plot()
+      volcano()
+      histogram()
+      histogram_estimate()
+      invisible(NULL)
     },
     write_pdf = function(path,
                          width = 10,
