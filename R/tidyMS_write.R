@@ -5,12 +5,12 @@
 #' @param x data.frame
 #' @param path path to write to
 #' @param name file name
-#' @param lfq_write_format formats to write to.
+#' @param format formats to write to.
 #' @return list with paths to files written
 #' @examples
 #' x<- data.frame(a = 1:3, b = 4:6 )
 #'
-#' # lfq_write_table(x, "." , "test", lfq_write_format = c( "csv", "xlsx",  "html"))
+#' # lfq_write_table(x, "." , "test", format = c( "csv", "xlsx",  "html"))
 #'
 lfq_write_table <- function(x, path, name, format = c("xlsx","csv","html"))
 {

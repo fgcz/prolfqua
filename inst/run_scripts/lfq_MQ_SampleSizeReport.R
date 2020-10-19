@@ -131,13 +131,13 @@ data_wide <-
 lfq_write_table(
   separate_hierarchy(data_wide, config),
   path = file.path(outputDir, paste0("r_", filename, "_Protein.csv")),
-  lfq_write_format = "xlsx"
+  format = "xlsx"
 )
 
 lfq_write_table(
   toWideConfig(data, xx$config)$annotation,
   path = file.path(outputDir, paste0("r_", filename, "_annotation.csv")),
-  lfq_write_format = "xlsx"
+  format = "xlsx"
 )
 
 ##```{r corrplot, fig.cap="Correlation plot."}

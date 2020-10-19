@@ -41,7 +41,7 @@ Model <- R6::R6Class(
     modelDF = NULL,
     modelName = character(),
     subject_Id = character(),
-    initialize = function(modelDF, modelName, subject_Id = "protein_Id"){
+    initialize = function(modelDF, modelName = "Model", subject_Id = "protein_Id"){
       self$modelDF = modelDF
       self$modelName = modelName
       self$subject_Id = subject_Id
@@ -420,7 +420,7 @@ Contrasts <- R6::R6Class(
     write = function(path, format = "xlsx"){
       lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("ANOVA_",self$modelName) ,
+                      name  = paste0("Contrasts_",self$modelName) ,
                       format = format)
     },
     #' @description
@@ -832,12 +832,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' generate all figures
     #'
     all_figs = function(){
-      ma_plotly()
-      volcano_plotly()
-      ma_plot()
-      volcano()
-      histogram()
-      histogram_estimate()
+      self$ma_plotly()
+      self$volcano_plotly()
+      self$ma_plot()
+      self$volcano()
+      self$histogram()
+      self$histogram_estimate()
       invisible(NULL)
     },
     write_pdf = function(path,

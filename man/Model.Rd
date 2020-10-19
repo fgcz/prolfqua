@@ -68,7 +68,7 @@ mod$anova_histogram()
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$new(modelDF, modelName, subject_Id = "protein_Id")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$new(modelDF, modelName = "Model", subject_Id = "protein_Id")}\if{html}{\out{</div>}}
 }
 
 }

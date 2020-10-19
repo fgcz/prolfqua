@@ -840,7 +840,7 @@ LFQDataWriter <- R6::R6Class(
         lfq_write_table(self$get_long(),
                         path = path_qc,
                         name = fname,
-                        lfq_write_format = self$format)
+                        format = self$format)
     },
     #' @description
     #' write data to file
@@ -853,14 +853,14 @@ LFQDataWriter <- R6::R6Class(
         lfq_write_table(wide$data,
                         path = path_qc,
                         name = fname,
-                        lfq_write_format = self$format)
+                        format = self$format)
 
       fname <- paste0(self$prefix,"intensities_file_annotation")
       self$file_paths[[fname]] <-
       lfq_write_table(wide$annotation,
                       path = path_qc,
                       name = fname,
-                      lfq_write_format = self$format)
+                      format = self$format)
     }
   ))
 
