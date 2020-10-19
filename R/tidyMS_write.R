@@ -12,9 +12,9 @@
 #'
 #' # lfq_write_table(x, "." , "test", lfq_write_format = c( "csv", "xlsx",  "html"))
 #'
-lfq_write_table <- function(x, path, name, lfq_write_format = c("xlsx","csv","html"))
+lfq_write_table <- function(x, path, name, format = c("xlsx","csv","html"))
 {
-  lfq_write_format <- match.arg(lfq_write_format, several.ok = TRUE)
+  lfq_write_format <- match.arg(format, several.ok = TRUE)
   file_paths <- list()
   if ("csv" %in% lfq_write_format) {
     message("writing csv")
