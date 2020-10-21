@@ -287,6 +287,77 @@ build_model <- function(data,
                     subject_Id = subject_Id))
 }
 
+# Contrast simple ----
+
+#' compute contrasts with imputation
+#' @export
+#' @examples
+#'
+#' library(LFQService)
+#' library(tidyverse)
+#' bb <- LFQService::ionstar$normalized()
+#' configur <- bb$config
+#' data <- bb$data
+#' lfqdata <- LFQData$new(data, configur)
+#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
+#' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+#' tmp$get_contrast_sides()
+#' bb <- tmp$get_contrasts()
+#'
+#' bb$estimate_mad == 0
+#' tmp$get_Plotter()
+#'
+ContrastsSimpleImpute <- R6::R6Class(
+  "ContrastSimple",
+  public = list(
+    subject_Id = character(),
+    contrasts = character(),
+    modelName = character(),
+    contrast_result = NULL,
+    initialize = function(lfqdata,
+                          contrasts,
+                          modelName = "groupAverage"){
+      self$subject_Id = lfqdata$config$table$hkeysDepth()
+      self$contrasts = contrasts
+      self$modelName = modelName
+      self$contrast_result = get_imputed_contrasts(lfqdata$data, lfqdata$config, contrasts)
+    },
+    get_contrast_sides = function(){
+      self$contrast_result %>% select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+    },
+    get_contrasts = function(){
+      self$contrast_result
+    },
+    write = function(path, format = "xlsx"){
+      lfq_write_table(self$get_contrasts(),
+                      path = path,
+                      name  = paste0("Contrasts_",self$modelName) ,
+                      format = format)
+    },
+    get_Plotter = function(){
+      res <- Contrasts_Plotter$new(
+        self$contrast_result,
+        subject_Id = self$subject_Id,
+        volcano = NULL,
+        histogram = list(list(score = "estimate_mad", xlim = c(0,5,0.05))),
+        modelName = self$modelName,
+        estimate = "estimate_median",
+        contrast = "contrast")
+      return(res)
+    },
+    to_wide = function(columns = c("p.value", "FDR")){
+      contrast_minimal <- self$get_contrasts()
+      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                     subject_Id = self$subject_Id,
+                                                     columns = c("estimate_median"),
+                                                     contrast = 'contrast')
+      return(contrasts_wide)
+    }
+
+  )
+)
+
+
 
 # Contrasts -----
 
@@ -311,7 +382,8 @@ build_model <- function(data,
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
-#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
+#'     "dil.e_vs_a" = "dilution.e - dilution.b" )
 #'  #LFQService::Contrasts$debug("get_linfct")
 #' contrastX <- LFQService::Contrasts$new(mod$modelDF,
 #'  Contr,
@@ -337,7 +409,7 @@ Contrasts <- R6::R6Class(
     #' @field contrast function
     contrastfun = NULL,
     #' @field modelName model name
-    modelName = NULL,
+    modelName = character(),
     subject_Id = character(),
     #' @field function to adjust p-values (default LFQService::adjust_p_values)
     p.adjust = NULL,
@@ -356,7 +428,7 @@ Contrasts <- R6::R6Class(
                           subject_Id,
                           modelName = "Model",
                           p.adjust = LFQService::adjust_p_values
-                          ){
+    ){
       self$models = models
       self$contrasts = contrasts
       self$contrastfun = contrast_fun
@@ -423,9 +495,9 @@ Contrasts <- R6::R6Class(
       }
 
       self$contrast_result <- self$p.adjust(contrast_result,
-                                  column = "p.value",
-                                  group_by_col = "contrast",
-                                  newname = "FDR")
+                                            column = "p.value",
+                                            group_by_col = "contrast",
+                                            newname = "FDR")
       return(self$contrast_result)
     },
     write = function(path, format = "xlsx"){
@@ -501,12 +573,12 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- moderated_p_limma_long(contrast_result , group_by_col = "contrast")
       if (!all) {
         contrast_result <- select(contrast_result ,-all_of(c("sigma.model",
-                                        "df.residual.model",
-                                        "moderated.df.prior",
-                                        "moderated.var.prior",
-                                        "moderated.var.post",
-                                        "moderated.statistic",
-                                        "moderated.df.total" )))
+                                                             "df.residual.model",
+                                                             "moderated.df.prior",
+                                                             "moderated.var.prior",
+                                                             "moderated.var.post",
+                                                             "moderated.statistic",
+                                                             "moderated.df.total" )))
       }
       contrast_result <- self$p.adjust(contrast_result,
                                        column = "moderated.p.value",
@@ -746,7 +818,7 @@ Contrasts_Plotter <- R6::R6Class(
                           volcano = list(list(score = "FDR", fc = 1)),
                           histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                                            list(score = "FDR", xlim = c(0,1,0.05))),
-                                           #list(score = "statistic" , xlim = c(0,4,0.1))),
+                          #list(score = "statistic" , xlim = c(0,4,0.1))),
                           modelName = "Model",
                           estimate = "estimate",
                           contrast = "contrast"
@@ -759,8 +831,7 @@ Contrasts_Plotter <- R6::R6Class(
       self$histogram_spec = histogram
 
     },
-    #' @description  plot histogram of selected socres
-    #' @param score which scores to show - list of lists
+    #' @description  plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
     histogram = function(){
       if (length(self$histogram_spec) > 0) {
         fig <- private$.histogram(scores = self$histogram_spec)
@@ -782,7 +853,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
 
     },
-    #' @description plotly volcano plots
+    #' @description plotly volcano plots (fold change vs FDR)
     volcano = function(){
       fig <- private$.volcano(self$contrastDF, self$volcano_spec )
       self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
