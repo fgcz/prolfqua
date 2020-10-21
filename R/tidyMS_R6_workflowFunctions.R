@@ -1,3 +1,41 @@
+
+#' Add Annotation to a data.frame in long format
+#' @family setup
+#'
+#' for an usage example see run_script lfq_mixed_model_inference
+#' @param intensityData data imported using ``
+#' @param inputAnnotation annotation
+#' @param fileName column name to join on.
+#' @export
+#'
+add_annotation <- function(intensityData,
+                           inputAnnotation,
+                           fileName = "raw.file") {
+  ## read the data
+  {# add annotation
+    if ( is.character(inputAnnotation) ) {
+      annotation <- readxl::read_xlsx(inputAnnotation)
+    } else {
+      annotation <- inputAnnotation
+    }
+    noData <- annotation[!annotation[[fileName]] %in% intensityData[[fileName]],]
+    if (nrow(noData)) {
+      message("some files in annotation have no measurements")
+      message(paste(noData, collapse = " "))
+    }
+    measSamples <- unique(intensityData[[fileName]])
+    noAnnot <- measSamples[!measSamples %in% annotation[[fileName]] ]
+    if (length(noAnnot) > 0 ) {
+      message("some measured samples have no annotation!")
+      message(paste(noAnnot,collapse = " "))
+    }
+    resPepProtAnnot <- inner_join(annotation, intensityData, by = fileName)
+    ###  Setup analysis ####
+  }
+  return(resPepProtAnnot)
+}
+
+
 #' correlation preprocessing
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
