@@ -35,9 +35,9 @@ used in Acetylation project p2916
 }
 \examples{
 library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config
+data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 
 xx <- LFQService::removeLarge_Q_Values(data, configur)
@@ -60,7 +60,9 @@ imputed <- fun("imputed")
 imputed
 
  meanArea <- fun("mean")
- stopifnot(sum(is.na(meanArea$mean.TimeT0)) == 46)
- stopifnot(sum(is.na(imputed$mean.imp.TimeT0))==0)
+ meanArea$
+ stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
+ stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
+
 }
 \keyword{internal}

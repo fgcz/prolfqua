@@ -21,9 +21,9 @@ Plot feature data and result of aggretation
 \examples{
 library( LFQService )
 library(tidyverse)
-dd <- LFQServiceData::skylinePRMSampleData_A
-config <- dd$config_f()
-data <- dd$analysis(dd$data, config)
+dd <- LFQService::ionstar$filtered()
+config <- dd$config
+data <- dd$data
 
 data <- LFQService::transform_work_intensity(data, config, log2)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)

@@ -16,9 +16,9 @@ visualize correlation among samples
 }
 \examples{
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-analysis <- bb$analysis(bb$data, bb$config_f())
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 
 analysis <- remove_small_intensities(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)

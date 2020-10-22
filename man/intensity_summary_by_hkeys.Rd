@@ -19,9 +19,9 @@ Summarizes the intensities within hierarchy
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config
+data <- bb$data
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 res <- x("unnest")
@@ -62,22 +62,10 @@ Other aggregation:
 
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{application_run_modelling_V2}()},
 \code{\link{compute_roc}()},
-\code{\link{contrasts_linfct_vis_write}()},
-\code{\link{contrasts_linfct_vis}()},
 \code{\link{medpolish_protein_quants}()},
-\code{\link{missigness_impute_contrasts}()},
-\code{\link{model_analyse_summarize_vis_write}()},
-\code{\link{model_analyse_summarize_vis}()},
-\code{\link{model_analyse_summarize_write}()},
-\code{\link{model_analyse_summarize}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_contrasts_linfct_V2}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()},
-\code{\link{workflow_missigness_impute_contrasts_V2}()},
-\code{\link{workflow_missigness_impute_contrasts}()},
-\code{\link{workflow_model_analyse}()}
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{aggregation}
 \concept{deprecated}

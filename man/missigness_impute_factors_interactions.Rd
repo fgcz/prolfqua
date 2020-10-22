@@ -31,20 +31,15 @@ should generalize at some stage
 }
 \examples{
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
-configur$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config
+data <- bb$data
 xx <- complete_cases(xx, configur)
 res <- missigness_impute_factors_interactions(xx, configur)
 head(res)
 res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-head(res)
-dim(res)
-dim(dplyr::distinct(res[,1:6]))
 fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-
+fun
 }
 \seealso{
 Other imputation: 

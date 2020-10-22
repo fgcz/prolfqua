@@ -10,14 +10,12 @@ missingness_per_condition(x, config, factors = config$table$fkeysDepth())
 Summarize missing in condtion as barplot
 }
 \examples{
-setNa <- function(x){ifelse(x < 100, NA, x)}
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
-data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config$clone(deep=TRUE)
+data <- bb$data
+
 res <- missingness_per_condition(data, configur)
-names(res)
-stopifnot(c(8,7) == dim(res$data))
+stopifnot(c(5,8) == dim(res$data))
 stopifnot("ggplot" \%in\% class(res$figure))
 print(res$figure)
 

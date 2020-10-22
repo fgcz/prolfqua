@@ -20,18 +20,19 @@ visualize intensity distributions
 visualize intensity distributions
 }
 \examples{
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-analysis <- bb$analysis(bb$data, bb$config_f())
+
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 
 plot_intensity_distribution_violin(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-analysis <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 plot_intensity_distribution_density(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_density(analysis, config)

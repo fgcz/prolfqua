@@ -12,17 +12,15 @@ imputation based on correlation assumption
 \examples{
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
-dim(data)
-data <- complete_cases(data, config)
-dim(data)
-mean(is.na(data$Area))
+
+bb <- LFQService::ionstar$normalized()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+mean(is.na(data$peptide.intensity))
 dataI <- impute_correlationBased(data, config)
 dim(dataI)
 stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
-mean(is.na(dataI$srm_ImputedIntensity)) == 0
+stopifnot(mean(is.na(dataI$srm_ImputedIntensity)) <= mean(is.na(data$peptide.intensity)))
 
 }
 \keyword{internal}

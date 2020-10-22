@@ -11,12 +11,11 @@ spreads isotope label heavy light into two columns
 }
 \examples{
 library(LFQService)
-setNa <- function(x){ifelse(x < 100, NA, x)}
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
 
-data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config$clone(deep=TRUE)
+data <- bb$data
+
 x<-spreadValueVarsIsotopeLabel(data,configur)
 head(x)
 

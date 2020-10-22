@@ -15,12 +15,15 @@ table_factors(pdata, configuration)
 table of distinct factors (sample annotation)
 }
 \examples{
+
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+
 xx <- table_factors(data,config )
-xx \%>\% dplyr::group_by(!!sym(config$table$factorKeys())) \%>\%
+xx
+xx \%>\% dplyr::group_by(!!!syms(config$table$factorKeys())) \%>\%
  dplyr::summarize(n = n())
 
 }

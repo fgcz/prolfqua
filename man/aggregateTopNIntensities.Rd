@@ -26,10 +26,9 @@ run \link{rankPrecursorsByIntensity} first
 
 library(LFQService)
 library(tidyverse)
-dd <- LFQServiceData::spectronautDIAData250_A
-config <- dd$config_f()
-data <- dd$analysis(dd$data,config)
-res <- removeLarge_Q_Values(data, config)
+dd <- LFQService::ionstar$filtered()
+config <- dd$config
+res <- dd$data
 ranked <- rankPrecursorsByIntensity(res,config)
 ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
 distinct() \%>\%
@@ -40,7 +39,7 @@ sum_f <- function(x, name =FALSE){ if(name){return("sum")};sum(x, na.rm = TRUE)}
 
 resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
 
-stopifnot(dim(resTOPN$data) == c(10423, 10))
+stopifnot(dim(resTOPN$data) == c(82900, 9))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
 #debug(plot_aggregation)

@@ -27,7 +27,8 @@ mod <- build_model(
  modelFunction,
  subject_Id = config$table$hkeysDepth())
 
- Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+ Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
+    "dil.e_vs_a" = "dilution.e - dilution.b" )
  #LFQService::Contrasts$debug("get_linfct")
 contrastX <- LFQService::Contrasts$new(mod$modelDF,
  Contr,

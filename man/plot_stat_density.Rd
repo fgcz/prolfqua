@@ -26,9 +26,9 @@ plot density distribution or ecdf of sd, mean or CV
 \examples{
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
+bb1 <- LFQService::ionstar$filtered()
+config <- bb1$config$clone( deep = TRUE)
+data2 <- bb1$data
 res <- summarize_cv(data, config)
 plot_stat_density(res, config, stat = "mean")
 plot_stat_density(res, config, stat = "sd")

@@ -19,9 +19,11 @@ Works for one isotope label level only
 \examples{
 
 library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config$clone(deep=TRUE)
+data <- bb$data
+
 LFQService:::summarize_protein(data, configur)
 
 }

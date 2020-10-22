@@ -20,6 +20,7 @@ and create new columns i sampleName column etc.
 }
 \examples{
 
+
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"

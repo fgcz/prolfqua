@@ -31,9 +31,9 @@ plot peptides by factors and it's levels.
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-analysis <- bb$analysis(bb$data, bb$config_f())
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 conf$table$hierarchyDepth
 conf$table$hkeysDepth()
 

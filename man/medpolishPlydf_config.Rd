@@ -16,9 +16,9 @@ medpolish Ply df config
 }
 \examples{
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-data <- bb$analysis(bb$data, conf)
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config
+data <- bb$data
 conf$table$hierarchyDepth = 1
 xnested <- data \%>\%
   group_by_at(conf$table$hkeysDepth()) \%>\% nest()

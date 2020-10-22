@@ -12,18 +12,19 @@ Extract intensity column in wide format
 \examples{
 library(dplyr)
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config
+data <- bb$data
+
 xnested <- data \%>\%
- group_by_at(configur$table$hkeysDepth()) \%>\%
+ group_by_at( configur$table$hkeysDepth() ) \%>\%
  tidyr::nest()
 x <- xnested$data[[1]]
 nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) \%>\%
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,configur)
-stopifnot(dim(xx)==c(nn,22))
+stopifnot(dim(xx)==c(nn,20))
 
 # change hierarchyDepth ###################
 conf <- configur$clone(deep=TRUE)
@@ -39,7 +40,7 @@ nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$
  distinct() \%>\% nrow()
 
 xx <- extractIntensities(x,conf)
-stopifnot(dim(xx)==c(nn,22))
+stopifnot(dim(xx)==c(nn,20))
 
 }
 \keyword{internal}

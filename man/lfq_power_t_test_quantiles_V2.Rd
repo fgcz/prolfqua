@@ -28,10 +28,11 @@ estimate sample sizes
 }
 \examples{
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
-data2 <- transform_work_intensity(data, config, log2)
+library(ggplot2)
+library(LFQService)
+bb1 <- LFQService::ionstar$normalized()
+config <- bb1$config$clone( deep = TRUE)
+data2 <- bb1$data
 stats_res <- summarize_cv(data2, config)
 xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
@@ -39,6 +40,6 @@ bbb <- dplyr::bind_rows(bbb)
 summary <- bbb \%>\%
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\%
  spread(delta, N, sep="=")
-#View(summary)
+summary
 }
 \keyword{internal}

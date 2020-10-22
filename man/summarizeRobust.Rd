@@ -39,9 +39,9 @@ summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleNam
 summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-data <- bb$analysis(bb$data, conf)
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config
+data <- bb$data
 conf$table$hierarchyDepth = 1
 xnested <- data \%>\%
   group_by_at(conf$table$hkeysDepth()) \%>\% nest()

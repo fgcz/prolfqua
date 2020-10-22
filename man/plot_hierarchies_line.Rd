@@ -28,9 +28,10 @@ extracts the relevant information from the configuration to make the plot.
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-analysis <- bb$analysis(bb$data, conf)
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config
+analysis <- bb$data
+
 xnested <- analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 

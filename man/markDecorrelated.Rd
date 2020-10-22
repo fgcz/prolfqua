@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{markDecorrelated}
 \alias{markDecorrelated}
-\title{marks uncorrelated elements}
+\title{marks uncorrelated peptides}
 \usage{
 markDecorrelated(data, config, minCorrelation = 0.7)
 }
 \description{
-marks uncorrelated elements
+marks uncorrelated peptides
 }
 \section{TODO}{
  do something with warnings of type "the standard deviation is zero".
@@ -17,11 +17,9 @@ marks uncorrelated elements
 
 \examples{
 library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-sample_analysis <- bb$analysis(bb$data, bb$config_f())
-data <- complete_cases(sample_analysis, conf)
-mean(is.na(data$Area))
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config$clone(deep=TRUE)
+data <- bb$data
 dataI <- markDecorrelated(data, conf)
 head(dataI)
 }

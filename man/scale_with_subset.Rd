@@ -10,12 +10,13 @@ scale_with_subset(data, subset, config)
 scale_with_subset
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-sample_analysis <- bb$analysis(bb$data, bb$config_f())
-conf$table$workIntensity <- "Area"
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config$clone(deep=TRUE)
+sample_analysis <- bb$data
+conf$table$workIntensity <- "peptide.intensity"
 
 res <- transform_work_intensity(sample_analysis, conf, log2)
 res <- scale_with_subset(res, res, conf)

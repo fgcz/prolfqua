@@ -25,32 +25,35 @@ config$parameter$min_nr_of_notNA  <- 20
 x <- sample(data$protein_Id,2)
 data <- data \%>\% dplyr::filter(protein_Id \%in\% x)
 res <- compute_roc(data, config)
+res
 i <- 2
 
 pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
  main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 unique(res$protein_Id)
 
+bb <- LFQService::ionstar$normalized()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+#config$parameter$min_nr_of_notNA  <- 20
+x <- sample(data$protein_Id,2)
+data <- data \%>\% dplyr::filter(protein_Id \%in\% x)
+res <- compute_roc(na.omit(data), config)
+i <- 1
+
+pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
+ main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
+unique(res$protein_Id)
+
+
 }
 \seealso{
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{application_run_modelling_V2}()},
-\code{\link{contrasts_linfct_vis_write}()},
-\code{\link{contrasts_linfct_vis}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_protein_quants}()},
-\code{\link{missigness_impute_contrasts}()},
-\code{\link{model_analyse_summarize_vis_write}()},
-\code{\link{model_analyse_summarize_vis}()},
-\code{\link{model_analyse_summarize_write}()},
-\code{\link{model_analyse_summarize}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_contrasts_linfct_V2}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()},
-\code{\link{workflow_missigness_impute_contrasts_V2}()},
-\code{\link{workflow_missigness_impute_contrasts}()},
-\code{\link{workflow_model_analyse}()}
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{deprecated}
 \keyword{internal}

@@ -21,15 +21,15 @@ apply Function To matrix
 \examples{
 
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-conf <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config$clone(deep=TRUE)
+data <- bb$data
 res <- applyToIntensityMatrix(data, conf, .func = base::scale)
-
-stopifnot("Area_base..scale" \%in\% colnames(res))
-stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
-conf <- bb$config_f()
-conf$table$workIntensity <- "Area"
+res
+stopifnot("peptide.intensity_base..scale" \%in\% colnames(res))
+stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
+conf <- bb$config$clone(deep=TRUE)
+conf$table$workIntensity <- "peptide.intensity"
 res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 
 }

@@ -30,24 +30,25 @@ compute missingness statistics per hierarchy and factor level
 library(tidyverse)
 library(LFQService)
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config
+data <- bb$data
 
 configur$parameter$qVal_individual_threshold <- 0.01
 xx <- LFQService::removeLarge_Q_Values(data,
    configur)
 xx <- complete_cases(xx, configur)
-nrow(xx)
+xx
 x <- interaction_missing_stats(xx, configur)$data \%>\% arrange(desc(nrNAs))
-stopifnot(nrow(x) == 7416)
-stopifnot(sum(is.na(x$meanArea)) == 249)
-stopifnot(length(unique(x$protein_Id)) == 37)
+x
+stopifnot(nrow(x) == 5540)
+stopifnot(sum(is.na(x$meanArea)) == 206)
+stopifnot(length(unique(x$protein_Id)) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
  factors= character(),
   hierarchy = configur$table$hierarchyKeys()[1])$data
-stopifnot(nrow(tmp) == 37)
+stopifnot(nrow(tmp) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
   hierarchy = configur$table$hierarchyKeys()[1])$data

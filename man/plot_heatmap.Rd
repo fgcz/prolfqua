@@ -11,11 +11,11 @@ plot heatmap with annotations
 }
 \examples{
 library(tidyverse)
-library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 
-analysis <- bb$analysis(bb$data, config)
+
 
 graphics.off()
 .Device

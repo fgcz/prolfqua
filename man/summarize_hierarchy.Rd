@@ -24,11 +24,13 @@ summarize_hierarchy(
 Summarize hierarchy counts
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config$clone(deep=TRUE)
+data <- bb$data
 
 summarize_hierarchy(data, configur)
 summarize_hierarchy(data, configur, factors = character())

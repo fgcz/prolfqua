@@ -16,12 +16,12 @@ Complete cases
 }
 \examples{
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
-dim(data)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
+
 xx <- complete_cases(data, config)
-stopifnot(nrow(data) < nrow(xx))
+stopifnot(nrow(data) <= nrow(xx))
 
 }
 \seealso{

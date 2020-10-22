@@ -19,14 +19,12 @@ Compute fold changes given Contrasts
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
-configur$parameter$qVal_individual_threshold <- 0.01
-data <- LFQService::removeLarge_Q_Values(data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config()
+data <- bb$data
 data <- complete_cases(data, configur)
 
-Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
 message("missigness_impute_factors_interactions : imputed")
 xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
 imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)

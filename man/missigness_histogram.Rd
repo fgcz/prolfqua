@@ -17,20 +17,17 @@ Histogram summarizing missigness
 \examples{
 library(tidyverse)
 library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar
+configur <- bb$config
+data <- bb$data
 
 xx <- complete_cases(data, configur)
-configur$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(data, configur)
-xx <- complete_cases(xx, configur)
 missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
 setNa <- function(x){ifelse(x < 100, NA, x)}
-data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
+data <- data \%>\% dplyr::mutate(peptide.intensity = setNa(peptide.intensity))
 missigness_histogram(data, configur)
 
 }

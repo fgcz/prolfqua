@@ -15,12 +15,13 @@ hierarchy_counts_sample(pdata, configuration)
 Count distinct elements for each level of hierarchy per sample
 }
 \examples{
+
 library(LFQService)
 library(tidyverse)
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
 
 res <- hierarchy_counts_sample(data, config)
 res()

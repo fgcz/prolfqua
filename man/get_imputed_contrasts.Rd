@@ -22,14 +22,14 @@ peptide fold change is computed based on the average of intensities in the condi
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar$normalized()
+configur <- bb$config
+data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 data <- LFQService::removeLarge_Q_Values(data, configur)
 data <- complete_cases(data, configur)
 
-Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 get_imputed_contrasts(data, configur, Contrasts)
 }
 \seealso{

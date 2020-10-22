@@ -21,7 +21,10 @@ Make reduced hierarchy configuration
 }
 \examples{
 
-conf <- LFQServiceData::skylinePRMSampleData_A$config_f()
+bb <- LFQService::ionstar$filtered()
+conf <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
+
 make_reduced_hierarchy_config(conf,
  "testintensity",
  conf$table$hierarchy[1:2])

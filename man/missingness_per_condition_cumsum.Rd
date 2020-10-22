@@ -15,13 +15,11 @@ cumulative sums of missing
 }
 \examples{
 
-setNa <- function(x){ifelse(x < 100, NA, x)}
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-configur <- bb$config_f()
-data <- bb$analysis(bb$data, configur)
+bb <- LFQService::ionstar$filtered()
+configur <- bb$config$clone(deep=TRUE)
+data <- bb$data
 
-data \%>\% dplyr::mutate(Area = setNa(Area)) -> data
 res <- missingness_per_condition_cumsum(data,configur)
 stopifnot("ggplot" \%in\% class(res$figure))
 print(res$figure)

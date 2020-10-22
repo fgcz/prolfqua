@@ -14,9 +14,9 @@ plot PCA
 library(tidyverse)
 library(LFQService)
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-analysis <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+analysis <- bb$data
 
 tmp <- plot_pca(analysis, config, add_txt= TRUE)
 

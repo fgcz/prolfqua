@@ -25,10 +25,12 @@ plot density distribution or ecdf of sd, mean or cv given intensity below and ab
 }
 \examples{
 
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
-res <- summarize_cv(data, config)
+library(LFQService)
+library(tidyverse)
+bb1 <- LFQService::ionstar$filtered()
+config <- bb1$config$clone( deep = TRUE)
+data2 <- bb1$data
+res <- summarize_cv(data2, config)
 plot_stat_density_median(res, config,"CV")
 plot_stat_density_median(res, config,"mean")
 plot_stat_density_median(res, config,"sd")

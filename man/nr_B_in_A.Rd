@@ -15,14 +15,16 @@ nr_B_in_A(pdata, config, merge = TRUE)
 Compute nr of B per A
 }
 \examples{
-library(LFQService)
-library(tidyverse)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
+
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data \%>\% select(-all_of("nr_peptide_Id_IN_protein_Id"))
 hierarchy <- config$table$hierarchyKeys()
 res <- nr_B_in_A(data, config)
-res$data \%>\% dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) \%>\% distinct() \%>\%
+
+res$data \%>\%
+  dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) \%>\%
+  distinct() \%>\%
   dplyr::pull() \%>\% table()
 
 

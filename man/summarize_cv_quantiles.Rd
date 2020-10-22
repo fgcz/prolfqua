@@ -25,19 +25,26 @@ summarize stats output (compute quantiles)
 }
 \examples{
 library(ggplot2)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, bb$config_f())
+library(LFQService)
+bb1 <- LFQService::ionstar$filtered()
+config <- bb1$config$clone( deep = TRUE)
+data <- bb1$data
 stats_res <- summarize_cv(data, config)
-head(stats_res)
 summarize_cv_quantiles(stats_res, config)
 summarize_cv_quantiles(stats_res, config, stats = "CV")
 
+bb <- LFQService::ionstar$normalized()
+config <- bb$config$clone(deep = TRUE)
+data <- bb$data
+config$table$getWorkIntensity()
+stats_res <- summarize_cv(data, config)
+summarize_cv_quantiles(stats_res, config)
+summarize_cv_quantiles(stats_res, config, stats = "sd")
 
-data2 <- transform_work_intensity(data, config, .func = log2)
-stats_res <- summarize_cv(data2, config)
+stats_res <- summarize_cv(data, config)
 xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
-ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = Time)) + geom_line() + geom_point()
+ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = dilution.)) + geom_line() + geom_point()
+
 
 }
 \keyword{internal}

@@ -17,9 +17,9 @@ Count distinct elements for each level of hierarchy
 \examples{
 library(tidyverse)
 library(LFQService)
-bb <- LFQServiceData::skylinePRMSampleData_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
 
 hierarchy_counts(data, config)
 }
