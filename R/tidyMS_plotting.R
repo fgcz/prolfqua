@@ -8,9 +8,10 @@
 #' @import ggplot2
 #' @family plotting
 #' @examples
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
+#'
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
 #' plot_intensity_distribution_violin(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
@@ -36,9 +37,9 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @rdname plot_intensity_distribution_violin
 #' @examples
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #' plot_intensity_distribution_density(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' plot_intensity_distribution_density(analysis, config)
@@ -62,9 +63,9 @@ plot_intensity_distribution_density <- function(pdata, config){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
 #' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
@@ -110,9 +111,9 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' conf <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' bb <- LFQService::ionstar$filtered()
+#' conf <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #' conf$table$hierarchyDepth
 #' conf$table$hkeysDepth()
 #'
@@ -254,10 +255,10 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
-#' analysis <- bb$analysis(bb$data, config)
 #' pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
 #' stopifnot("pheatmap" %in% class(pheat_map))
 #' pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
@@ -305,11 +306,11 @@ plot_heatmap_cor <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
-#' analysis <- bb$analysis(bb$data, config)
+#'
 #'
 #' graphics.off()
 #' .Device
@@ -358,14 +359,13 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#'
-#' analysis <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
 #' tmp <- plot_NA_heatmap(analysis, config)
 #' print(tmp)
-#' xx <- plot_NA_heatmap(analysis, config,distance = "euclidean")
+#' xx <- plot_NA_heatmap(analysis, config, distance = "euclidean")
 #' print(xx)
 #' dev.off()
 #' print(xx)
@@ -434,9 +434,9 @@ plot_NA_heatmap <- function(data,
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
 #'
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)
 #'

@@ -315,15 +315,15 @@ robust_scale <- function(data){
 #' @examples
 #'
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' conf <- bb$config_f()
-#' data <- bb$analysis(bb$data, bb$config_f())
+#' bb <- LFQService::ionstar$filtered()
+#' conf <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #' res <- applyToIntensityMatrix(data, conf, .func = base::scale)
-#'
-#' stopifnot("Area_base..scale" %in% colnames(res))
-#' stopifnot("Area_base..scale" == conf$table$getWorkIntensity())
-#' conf <- bb$config_f()
-#' conf$table$workIntensity <- "Area"
+#' res
+#' stopifnot("peptide.intensity_base..scale" %in% colnames(res))
+#' stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
+#' conf <- bb$config$clone(deep=TRUE)
+#' conf$table$workIntensity <- "peptide.intensity"
 #' res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
@@ -340,12 +340,13 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' @export
 #' @keywords internal
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' conf <- bb$config_f()
-#' sample_analysis <- bb$analysis(bb$data, bb$config_f())
-#' conf$table$workIntensity <- "Area"
+#' bb <- LFQService::ionstar$filtered()
+#' conf <- bb$config$clone(deep=TRUE)
+#' sample_analysis <- bb$data
+#' conf$table$workIntensity <- "peptide.intensity"
 #'
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset(res, res, conf)
@@ -380,18 +381,17 @@ scale_with_subset <- function(data, subset, config){
   tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
-#' marks uncorrelated elements
+#' marks uncorrelated peptides
+#'
 #' @export
 #' @keywords internal
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' conf <- bb$config_f()
-#' sample_analysis <- bb$analysis(bb$data, bb$config_f())
-#' data <- complete_cases(sample_analysis, conf)
-#' mean(is.na(data$Area))
+#' bb <- LFQService::ionstar$filtered()
+#' conf <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #' dataI <- markDecorrelated(data, conf)
 #' head(dataI)
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
@@ -431,17 +431,15 @@ simpleImpute <- function(data){
 #' @examples
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, bb$config_f())
-#' dim(data)
-#' data <- complete_cases(data, config)
-#' dim(data)
-#' mean(is.na(data$Area))
+#'
+#' bb <- LFQService::ionstar$normalized()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' mean(is.na(data$peptide.intensity))
 #' dataI <- impute_correlationBased(data, config)
 #' dim(dataI)
 #' stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
-#' mean(is.na(dataI$srm_ImputedIntensity)) == 0
+#' stopifnot(mean(is.na(dataI$srm_ImputedIntensity)) <= mean(is.na(data$peptide.intensity)))
 #'
 impute_correlationBased <- function(x , config){
   x <- complete_cases(x, config)
@@ -501,14 +499,16 @@ impute_correlationBased <- function(x , config){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
-#' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, bb$config_f())
+#'
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data %>% select(-all_of("nr_peptide_Id_IN_protein_Id"))
 #' hierarchy <- config$table$hierarchyKeys()
 #' res <- nr_B_in_A(data, config)
-#' res$data %>% dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) %>% distinct() %>%
+#'
+#' res$data %>%
+#'   dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) %>%
+#'   distinct() %>%
 #'   dplyr::pull() %>% table()
 #'
 #'

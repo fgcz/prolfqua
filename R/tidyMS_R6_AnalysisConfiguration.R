@@ -211,7 +211,10 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
 #'
-#' conf <- LFQServiceData::skylinePRMSampleData_A$config_f()
+#' bb <- LFQService::ionstar$filtered()
+#' conf <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
+#'
 #' make_reduced_hierarchy_config(conf,
 #'  "testintensity",
 #'  conf$table$hierarchy[1:2])
@@ -233,9 +236,10 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
+#'
 #' config$table$factorKeys()
 #' config$table$factorDepth <- 1
 #' make_interaction_column(analysis,
@@ -287,6 +291,7 @@ R6extractValues <- function(r6class){
 #' @keywords internal
 #' @family configuration
 #' @examples
+#'
 #'
 #' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
@@ -373,12 +378,12 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
-#' dim(data)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' analysis <- bb$data
+#'
 #' xx <- complete_cases(data, config)
-#' stopifnot(nrow(data) < nrow(xx))
+#' stopifnot(nrow(data) <= nrow(xx))
 #'
 complete_cases <- function(pdata, config) {
   message("completing cases")
@@ -418,12 +423,15 @@ sample_subset <- function(size, pdata, config){
 #' @keywords internal
 #' @family configuration
 #' @examples
+#'
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#'
 #' xx <- table_factors(data,config )
-#' xx %>% dplyr::group_by(!!sym(config$table$factorKeys())) %>%
+#' xx
+#' xx %>% dplyr::group_by(!!!syms(config$table$factorKeys())) %>%
 #'  dplyr::summarize(n = n())
 #'
 table_factors <- function(pdata, configuration){
@@ -447,9 +455,9 @@ table_factors <- function(pdata, configuration){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #'
 #' hierarchy_counts(data, config)
 hierarchy_counts <- function(pdata, config){
@@ -468,12 +476,13 @@ hierarchy_counts <- function(pdata, config){
 #' @keywords internal
 #' @family summary
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #'
 #' res <- hierarchy_counts_sample(data, config)
 #' res()
@@ -522,11 +531,13 @@ hierarchy_counts_sample <- function(pdata,
 #' @param factors which factors to include
 #'
 #' @examples
+#'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#'
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #'
 #' summarize_hierarchy(data, configur)
 #' summarize_hierarchy(data, configur, factors = character())
@@ -572,9 +583,11 @@ summarize_hierarchy <- function(pdata,
 #' @examples
 #'
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#'
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#'
 #' LFQService:::summarize_protein(data, configur)
 #'
 summarize_protein <- function(pdata, config ){
@@ -616,12 +629,11 @@ summarize_protein <- function(pdata, config ){
 #' @family configuration
 #' @examples
 #' library(LFQService)
-#' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
 #'
-#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#'
 #' x<-spreadValueVarsIsotopeLabel(data,configur)
 #' head(x)
 #'

@@ -340,10 +340,9 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
-#'
+#' bb <- LFQServiceData::ionstar$filtered()
+#' config <- bb$config()
+#' analysis <- bb$data$clone(deep = TRUE)
 #'
 #' lfqdata <- LFQData$new(analysis, config)
 #'

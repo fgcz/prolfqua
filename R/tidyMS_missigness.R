@@ -12,24 +12,25 @@
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config
+#' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #' xx <- LFQService::removeLarge_Q_Values(data,
 #'    configur)
 #' xx <- complete_cases(xx, configur)
-#' nrow(xx)
+#' xx
 #' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
-#' stopifnot(nrow(x) == 7416)
-#' stopifnot(sum(is.na(x$meanArea)) == 249)
-#' stopifnot(length(unique(x$protein_Id)) == 37)
+#' x
+#' stopifnot(nrow(x) == 5540)
+#' stopifnot(sum(is.na(x$meanArea)) == 206)
+#' stopifnot(length(unique(x$protein_Id)) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
 #'  factors= character(),
 #'   hierarchy = configur$table$hierarchyKeys()[1])$data
-#' stopifnot(nrow(tmp) == 37)
+#' stopifnot(nrow(tmp) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
 #'   hierarchy = configur$table$hierarchyKeys()[1])$data
@@ -74,9 +75,9 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config
+#' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #'
 #' xx <- LFQService::removeLarge_Q_Values(data, configur)
@@ -99,8 +100,10 @@ interaction_missing_stats <- function(pdata,
 #' imputed
 #'
 #'  meanArea <- fun("mean")
-#'  stopifnot(sum(is.na(meanArea$mean.TimeT0)) == 46)
-#'  stopifnot(sum(is.na(imputed$mean.imp.TimeT0))==0)
+#'  meanArea$
+#'  stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
+#'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
+#'
 .missigness_impute_interactions <- function(pdata,
                                             config,
                                             factors = config$table$fkeysDepth(),
@@ -220,20 +223,15 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(data, configur)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config
+#' data <- bb$data
 #' xx <- complete_cases(xx, configur)
 #' res <- missigness_impute_factors_interactions(xx, configur)
 #' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-#' head(res)
-#' dim(res)
-#' dim(dplyr::distinct(res[,1:6]))
 #' fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-#'
+#' fun
 missigness_impute_factors_interactions <-
   function(pdata,
            config,
@@ -284,14 +282,11 @@ missigness_impute_factors_interactions <-
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(data, configur)
-#' data <- complete_cases(data, configur)
+#' bb <- LFQService::ionstar$normalized()
+#' configur <- bb$config
+#' data <- bb$data
 #'
-#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
 #' mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
 #' head(mean)
@@ -314,8 +309,8 @@ missigness_impute_factors_interactions <-
 aggregate_contrast <- function(
   data,
   subject_Id ,
-  agg_func = list(median = function(x){ median(x, na.rm = TRUE) },
-                   mad = function(x){ mad(x, na.rm = TRUE)} ),
+  agg_func = list(median = function(x){ stats::median(x, na.rm = TRUE) },
+                   mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
   contrast = "contrast")
 {
   grouping_columns <- c(contrast, subject_Id, "c1_name","c2_name")
@@ -324,14 +319,16 @@ aggregate_contrast <- function(
 
   agg_func_c <- agg_func[1]
 
-  resE <- dataG %>% summarise(across(all_of(c("estimate")),
+  resE <- dataG %>% summarise(n = n(), across(all_of(c("estimate")),
                                      agg_func
                                     ), .groups = "drop")
   resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
-                                     agg_func_c,.names = "{col}"
-                                     ), .groups = "drop")
+                                     agg_func_c,
+                                     .names = "{col}"
+                                     ),
+                              .groups = "drop")
   res <- full_join(resC,resE, by = grouping_columns)
-  #resI <- full_join(resC,resE, by = xxx)
+
   return(res)
 
 }
@@ -347,14 +344,12 @@ aggregate_contrast <- function(
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(data, configur)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config()
+#' data <- bb$data
 #' data <- complete_cases(data, configur)
 #'
-#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
 #' message("missigness_impute_factors_interactions : imputed")
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
 #' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
@@ -414,14 +409,14 @@ get_contrast <- function(data,
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#' bb <- LFQService::ionstar$normalized()
+#' configur <- bb$config
+#' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #' data <- LFQService::removeLarge_Q_Values(data, configur)
 #' data <- complete_cases(data, configur)
 #'
-#' Contrasts <- c("TimeT168vsT2" = "TimeT168 - TimeT2","TimeT168vsT24" = "TimeT168 - TimeT24" )
+#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' get_imputed_contrasts(data, configur, Contrasts)
 get_imputed_contrasts <- function(data, config, contrasts){
   imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
@@ -437,20 +432,17 @@ get_imputed_contrasts <- function(data, config, contrasts){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#' bb <- LFQService::ionstar
+#' configur <- bb$config
+#' data <- bb$data
 #'
 #' xx <- complete_cases(data, configur)
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(data, configur)
-#' xx <- complete_cases(xx, configur)
 #' missigness_histogram(xx, configur)
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
 #' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' data <- data %>% dplyr::mutate(peptide.intensity = setNa(peptide.intensity))
 #' missigness_histogram(data, configur)
 #'
 missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysDepth()){
@@ -489,13 +481,11 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' @family imputation
 #' @examples
 #'
-#' setNa <- function(x){ifelse(x < 100, NA, x)}
 #'
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
 #'
-#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
 #' res <- missingness_per_condition_cumsum(data,configur)
 #' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
@@ -532,14 +522,12 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#' data %>% dplyr::mutate(Area = setNa(Area)) -> data
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#'
 #' res <- missingness_per_condition(data, configur)
-#' names(res)
-#' stopifnot(c(8,7) == dim(res$data))
+#' stopifnot(c(5,8) == dim(res$data))
 #' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #'
