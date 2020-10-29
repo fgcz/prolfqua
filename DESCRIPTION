@@ -58,7 +58,6 @@ Suggests:
     fgcz.gsea.ora,
     rmarkdown,
     testthat,
-    LFQServiceData,
     KernSmooth
 Remotes:
     bioc::3.9/limma
