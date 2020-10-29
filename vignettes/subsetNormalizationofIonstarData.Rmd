@@ -158,7 +158,7 @@ lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
 mqdata$data  <- inner_join(protein_Ids, mqdata$data)  
 ionstar <- IonstarData$new(mqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
 
-usethis::use_data(ionstar, overwrite = TRUE)
+#usethis::use_data(ionstar, overwrite = TRUE)
 
 ```
 
@@ -181,7 +181,7 @@ dataIonstarProtein_subsetNorm <- list(
 )
 
 dataIonstarProtein_subsetNorm$data
-usethis::use_data(dataIonstarProtein_subsetNorm, overwrite = TRUE)
+#usethis::use_data(dataIonstarProtein_subsetNorm, overwrite = TRUE)
 
 ```
 

@@ -32,19 +32,18 @@ R 3.6 or higher.
 
 ## 1.1. Install R
 
-a Windows/Linux/MacOSX x64 platform R 3.6.
+A Windows/Linux/MacOSX x64 platform R 4 
+
+Make sure you have installed the required packages. Start R session and run the following R code.
 
 ```{r}
-# requires install.packages(c(BiocManager, 'remotes'))
+#"C:\\Users\\wolski\\Documents\\R\\win-library\\4.0"
+<- tempdir()
 
-remotes::install_github("wolski/prolfqua")
-# BiocManager::install('wolski/prolfqua')
+#old <- Sys.getenv("R_LIBS_USER")
+#Sys.setenv(R_LIBS_USER = "C:\\Users\\wolski\\Documents\\R\\win-library\\4.0")
 
-```
 
-### 1.2. Required packages
-
-```{r}
 pkgs <- c('broom', 'bookdown', 'conflicted', 'corrplot', 'dplyr',
   'flextable', 'docopt',
   'ggplot2', 'ggbeeswarm', 'ggfortify', 'glue', 'GGally', 'pheatmap',
@@ -54,7 +53,23 @@ pkgs <- c('broom', 'bookdown', 'conflicted', 'corrplot', 'dplyr',
 
 pkgs <- pkgs[(!pkgs %in% unique(installed.packages()[,'Package']))]
 if(length(pkgs) > 0){install.packages(pkgs)}
+
+
+
 ```
+
+To install the package please execute:
+
+
+```
+install.packages(c('remotes'))
+
+# If you want to build the vignettes comment out the next line.
+# remotes::install_github('wolski/prolfquaData')
+remotes::install_github('wolski/LFQService')
+
+```
+
 
 
 

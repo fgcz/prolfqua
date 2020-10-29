@@ -54,6 +54,7 @@ Imports:
     yaml,
     writexl
 Suggests:
+    prolfquaData,
     knitr,
     fgcz.gsea.ora,
     rmarkdown,

@@ -100,7 +100,7 @@ setup <- function(data, config){
 #'
 spectronautDIAData250_A <- list(data = dataval, config_f = specnautconfig, analysis=setup )
 spectronautDIAData250_A$analysis(spectronautDIAData250_A$data, spectronautDIAData250_A$config_f())
-usethis::use_data( spectronautDIAData250_A , overwrite = TRUE )
+#usethis::use_data( spectronautDIAData250_A , overwrite = TRUE )
 
 ```
 
