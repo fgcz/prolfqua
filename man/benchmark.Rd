@@ -10,37 +10,36 @@ Benchmark R6 class
 }
 \examples{
 library(ggpubr)
-ttd <- ms_bench_preprocess(LFQService::resXXmedpolishTSV)
+library(LFQService)
+ttd <- ms_bench_preprocess(LFQService::benchmarkDataExample)
+ttd <- ms_bench_preprocess(benchmarkDataExample)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm"
 )
 medpol_benchmark$plot_score_distribution()
 
-ttd <- ms_bench_preprocess(LFQService::brmsBench)
-head(ttd)
-#Benchmark$debug("pAUC_summaries")
-# Benchmark$undebug("get_FDRvsFDP")
-#Benchmark$debug("get_confusion")
-#Benchmark$undebug("do_confusion")
 brms_benchmark <- make_benchmark(
   ttd$data,
-  toscale =  c("p.value", "regulation.probability"),
+  toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
   benchmark = list(list(sc = "estimate", desc = TRUE),
                    list(sc = "statistic", desc = TRUE),
-                   list(sc = "scaled.p.value", desc = TRUE),
-                   list(sc = "scaled.regulation.probability", desc = TRUE)
+                   list(sc = "scaled.moderated.p.value", desc = TRUE),
+                   list(sc = "scaled.moderated.p.value.adjusted", desc = TRUE)
   ),
   FDRvsFDP =
-    list(list(sc = "p.value.adjusted", desc = FALSE),
-         list(sc = "regulation.probability.adjusted", desc = FALSE)),
-  model_description = "protein level measurments, brms model",
-  model_name = "prot_brms"
+    list(list(sc = "moderated.p.value", desc = FALSE),
+         list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+  model_description = "protein level measurments, lm model",
+  model_name = "prot_lm"
 )
 brms_benchmark$complete()
-#debug(LFQService:::do_confusion_c)
+brms_benchmark$plot_score_distribution()
 bb <- brms_benchmark$get_confusion()
-dim(bb)
+brms_benchmark$get_FDR_summaries()
+brms_benchmark$plot_FDR_summaries()
+brms_benchmark$plot_FDRvsFDP()
+brms_benchmark$plot_scatter()
 head(bb)
 
 }

@@ -28,13 +28,15 @@ filter QVAlues and NA's and factor information
 library(LFQService)
 library(tidyverse)
 rm(list=ls())
-bb <- LFQServiceData::spectronautDIAData250_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
+bb <- LFQServiceData::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+data$nr_peptide_Id_IN_protein_Id <- NULL
+
 hierarchy_counts(data, config)
-tmp <-workflow_DIA_NA_preprocessing(data, config)
+tmp <- workflow_DIA_NA_preprocessing(data, config)
 hierarchy_counts(tmp$data, config)
-tmp <-workflow_DIA_NA_preprocessing(data, config, percent=70)
+tmp <- workflow_DIA_NA_preprocessing(data, config, percent=70)
 hierarchy_counts(tmp$data, config)
 stopifnot(FALSE==(is.grouped_df(tmp$data)))
 

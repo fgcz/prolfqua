@@ -11,7 +11,7 @@ Create various visualization of the data
 \examples{
 
 library(LFQService)
-istar <- LFQServiceData::dataIonstarProtein
+istar <- LFQService::dataIonstarProtein_subsetNorm
 
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 

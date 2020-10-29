@@ -17,7 +17,7 @@ Moderate p-value for long table
 \examples{
 
 library(LFQService)
-modelSummary_A <- LFQServiceData::modellingResult_A
+modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
@@ -30,7 +30,7 @@ plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
 abline(0,1, col = 2)
 
 # updating lmer model
-models_interaction <- LFQServiceData::models_interaction
+models_interaction <- LFQService::models_interaction
 
 m <- get_complete_model_fit(models_interaction$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])

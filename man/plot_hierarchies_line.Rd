@@ -38,7 +38,7 @@ xnested <- analysis \%>\%
 LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
 
-bb <- LFQServiceData::skylineSRM_HL_A
+bb <- LFQService::skylineSRM_HL_A
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 

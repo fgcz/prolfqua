@@ -21,13 +21,17 @@ workflow_correlation_preprocessing_protein_intensities(
 correlation preprocessing
 }
 \examples{
+
 library(LFQService)
+
 rm(list=ls())
-bb <- LFQServiceData::spectronautDIAData250_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
-config$parameter$min_nr_of_notNA  <- 20
-#undebug(workflow_correlation_preprocessing_protein_intensities)
+bb <- LFQServiceData::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+data$nr_peptide_Id_IN_protein_Id <- NULL
+
+config$parameter$min_nr_of_notNA  <- 3
+#debug(workflow_correlation_preprocessing_protein_intensities)
 res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 names(res)
 

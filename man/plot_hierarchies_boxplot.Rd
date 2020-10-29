@@ -59,7 +59,7 @@ p <- plot_hierarchies_boxplot(
    beeswarm = FALSE )
 stopifnot("ggplot" \%in\% class(p))
 
-bb <- LFQServiceData::skylineSRM_HL_A
+bb <- LFQService::skylineSRM_HL_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, config)
 data <- LFQService::transform_work_intensity(analysis, config, log2)

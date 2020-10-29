@@ -72,7 +72,7 @@ plot_hierarchies_line_default <- function(data,
 #' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
 #'
-#' bb <- LFQServiceData::skylineSRM_HL_A
+#' bb <- LFQService::skylineSRM_HL_A
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, conf)
 #'
@@ -674,7 +674,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #'
 #' resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
 #'
-#' stopifnot(dim(resTOPN$data) == c(82900, 9))
+#' stopifnot(dim(resTOPN$data) == c(3260, 8))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
 #' config$table$getWorkIntensity()
 #' #debug(plot_aggregation)
@@ -719,13 +719,13 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'
 #' res <- x("unnest")
 #' x("unnest")$data %>% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
-#' config <- bb$config_f()
+#' config <- bb$config$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 1
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 #'

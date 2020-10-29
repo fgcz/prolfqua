@@ -30,26 +30,12 @@
 #' @family deprecated
 #' @examples
 #'
-#' library(tidyverse)
-#' library(LFQService)
-#' bb <- LFQServiceData::skylinePRMSampleData_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, bb$config_f())
-#' config$parameter$min_nr_of_notNA  <- 20
-#' x <- sample(data$protein_Id,2)
-#' data <- data %>% dplyr::filter(protein_Id %in% x)
-#' res <- compute_roc(data, config)
-#' res
-#' i <- 2
-#'
-#' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
-#'  main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
-#' unique(res$protein_Id)
+#' FIXED <- FALSE
+#' if(FIXED){
 #'
 #' bb <- LFQService::ionstar$normalized()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
-#' #config$parameter$min_nr_of_notNA  <- 20
 #' x <- sample(data$protein_Id,2)
 #' data <- data %>% dplyr::filter(protein_Id %in% x)
 #' res <- compute_roc(na.omit(data), config)
@@ -58,14 +44,15 @@
 #' pROC::plot.roc(res$rocs[[i]], print.auc = TRUE,
 #'  main = paste(res$protein_Id[[i]], "\n",paste(res$rocs[[i]]$levels, collapse = " vs ")))
 #' unique(res$protein_Id)
-#'
+#' }
 #'
 compute_roc <- function(data, config){
   nested <- data %>% dplyr::group_by(!!!syms(config$table$hierarchyKeys())) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
-                                                .rocs,
+                                                LFQService:::.rocs,
                                                 response = config$table$fkeysDepth(),
                                                 predictor = config$table$getWorkIntensity() ))
+
   nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
     dplyr::filter(cls == FALSE)
 

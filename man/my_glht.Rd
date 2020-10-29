@@ -16,7 +16,7 @@ linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
 
-m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
+m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 

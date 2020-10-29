@@ -6,8 +6,8 @@ output:
   pdf_document: default
   html_document: default
 params:
-  configuration:  !r quote(LFQServiceData::skylineSRM_HL_A$config_f())
-  data: !r quote(LFQServiceData::skylineSRM_HL_A$analysis(LFQServiceData::skylineSRM_HL_A$data, LFQServiceData::skylineSRM_HL_A$config_f()))
+  configuration:  !r quote(LFQService::skylineSRM_HL_A$config_f())
+  data: !r quote(LFQService::skylineSRM_HL_A$analysis(LFQService::skylineSRM_HL_A$data, LFQService::skylineSRM_HL_A$config_f()))
 vignette: >
   %\VignetteIndexEntry{Summarize Peptide Level Measurements Heavy Light Data}
   %\VignetteEngine{knitr::rmarkdown}

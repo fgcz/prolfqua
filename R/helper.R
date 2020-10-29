@@ -4,7 +4,7 @@
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
+#' correlatedPeptideList <- LFQService::correlatedPeptideList
 #' transitionCorrelations(correlatedPeptideList[[1]])
 transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
@@ -22,7 +22,7 @@ transitionCorrelations <- function(dataX) {
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- LFQServiceData::correlatedPeptideList
+#' correlatedPeptideList <- LFQService::correlatedPeptideList
 #' transitionCorrelationsJack(correlatedPeptideList[[1]])
 transitionCorrelationsJack <- function(dataX,
                                        distmethod =

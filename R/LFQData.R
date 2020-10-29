@@ -340,9 +340,9 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' bb <- LFQServiceData::ionstar$filtered()
-#' config <- bb$config()
-#' analysis <- bb$data$clone(deep = TRUE)
+#' bb <- LFQService::ionstar$filtered()
+#' config <- bb$config$clone(deep = TRUE)
+#' analysis <- bb$data
 #'
 #' lfqdata <- LFQData$new(analysis, config)
 #'
@@ -551,7 +551,7 @@ LFQDataSummariser <- R6::R6Class(
 #' @examples
 #'
 #' library(LFQService)
-#' istar <- LFQServiceData::dataIonstarProtein
+#' istar <- LFQService::dataIonstarProtein_subsetNorm
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'

@@ -46,9 +46,9 @@ lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
 #Slightly different dataset
-bb <- LFQServiceData::ionstar$filtered()
-config <- bb$config()
-analysis <- bb$data$clone(deep = TRUE)
+bb <- LFQService::ionstar$filtered()
+config <- bb$config$clone(deep = TRUE)
+analysis <- bb$data
 
 lfqdata <- LFQData$new(analysis, config)
 

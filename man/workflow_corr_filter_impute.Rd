@@ -20,10 +20,12 @@ Apply correlation filtering and impute missing values
 rm(list=ls())
 library(tidyverse)
 library(LFQService)
-bb <- LFQServiceData::spectronautDIAData250_A
-config <- bb$config_f()
-data <- bb$analysis(bb$data, config)
-config$parameter$min_nr_of_notNA  <- 20
+bb <- LFQServiceData::ionstar$filtered()
+config <- bb$config$clone(deep=TRUE)
+data <- bb$data
+data$nr_peptide_Id_IN_protein_Id <- NULL
+
+config$parameter$min_nr_of_notNA  <- 3
 res <- workflow_corr_filter_impute(data,config)
 
 }

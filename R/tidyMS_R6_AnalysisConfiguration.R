@@ -380,7 +380,7 @@ separate_factors <- function(data, config) {
 #'
 #' bb <- LFQService::ionstar$filtered()
 #' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' data <- bb$data
 #'
 #' xx <- complete_cases(data, config)
 #' stopifnot(nrow(data) <= nrow(xx))
@@ -637,11 +637,11 @@ summarize_protein <- function(pdata, config ){
 #' x<-spreadValueVarsIsotopeLabel(data,configur)
 #' head(x)
 #'
-#' bb <- LFQServiceData::skylineSRM_HL_A
+#' bb <- LFQService::skylineSRM_HL_A
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
 #'
-#' bb <- LFQServiceData::skylineSRM_HL_A
+#' bb <- LFQService::skylineSRM_HL_A
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' x <- spreadValueVarsIsotopeLabel(analysis, conf)

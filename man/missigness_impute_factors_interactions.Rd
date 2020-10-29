@@ -34,7 +34,8 @@ should generalize at some stage
 bb <- LFQService::ionstar$filtered()
 configur <- bb$config
 data <- bb$data
-xx <- complete_cases(xx, configur)
+xx <- complete_cases(data, configur)
+
 res <- missigness_impute_factors_interactions(xx, configur)
 head(res)
 res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")

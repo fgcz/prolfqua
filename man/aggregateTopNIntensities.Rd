@@ -39,7 +39,7 @@ sum_f <- function(x, name =FALSE){ if(name){return("sum")};sum(x, na.rm = TRUE)}
 
 resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
 
-stopifnot(dim(resTOPN$data) == c(82900, 9))
+stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
 #debug(plot_aggregation)

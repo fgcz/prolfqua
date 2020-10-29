@@ -597,7 +597,7 @@ linfct_factors_contrasts <- function(m){
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -651,7 +651,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -709,7 +709,7 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' m
 #' my_contrast_V1(m, linfct, confint = 0.95)
@@ -738,7 +738,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- LFQServiceData::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
@@ -866,7 +866,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' @keywords internal
 #' @examples
 #'
-#' modelSummary_A <- LFQServiceData::modellingResult_A
+#' modelSummary_A <- LFQService::modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
@@ -879,7 +879,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'
 #' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 #'
-#' models_interaction <- LFQServiceData::models_interaction
+#' models_interaction <- LFQService::models_interaction
 #'
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
 #' m$linear_model[[1]]
@@ -991,7 +991,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' @examples
 #'
 #' library(LFQService)
-#' modelSummary_A <- LFQServiceData::modellingResult_A
+#' modelSummary_A <- LFQService::modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
@@ -1004,7 +1004,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' abline(0,1, col = 2)
 #'
 #' # updating lmer model
-#' models_interaction <- LFQServiceData::models_interaction
+#' models_interaction <- LFQService::models_interaction
 #'
 #' m <- get_complete_model_fit(models_interaction$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])

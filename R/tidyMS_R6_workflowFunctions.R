@@ -45,13 +45,17 @@ add_annotation <- function(intensityData,
 #' @family workflows
 #' @family deprecated
 #' @examples
+#'
 #' library(LFQService)
+#'
 #' rm(list=ls())
-#' bb <- LFQServiceData::spectronautDIAData250_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
-#' config$parameter$min_nr_of_notNA  <- 20
-#' #undebug(workflow_correlation_preprocessing_protein_intensities)
+#' bb <- LFQServiceData::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' data$nr_peptide_Id_IN_protein_Id <- NULL
+#'
+#' config$parameter$min_nr_of_notNA  <- 3
+#' #debug(workflow_correlation_preprocessing_protein_intensities)
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 #' names(res)
 #'
@@ -64,6 +68,9 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   # remove transitions with large numbers of NA's
   data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
   data_NA_QVal <- data_NA_QVal %>% dplyr::filter(srm_NrNotNAs > config$parameter$min_nr_of_notNA)
+  if(nrow(data_NA_QVal) == 0){
+    warning("no rows left after filtering for min_nr_of_notNA")
+  }
   stat_min_nr_of_notNA <- hierarchy_counts(data_NA_QVal, config)
 
   # remove single hit wonders
@@ -111,10 +118,12 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' rm(list=ls())
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::spectronautDIAData250_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
-#' config$parameter$min_nr_of_notNA  <- 20
+#' bb <- LFQServiceData::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' data$nr_peptide_Id_IN_protein_Id <- NULL
+#'
+#' config$parameter$min_nr_of_notNA  <- 3
 #' res <- workflow_corr_filter_impute(data,config)
 #'
 workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
@@ -168,13 +177,15 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' bb <- LFQServiceData::spectronautDIAData250_A
-#' config <- bb$config_f()
-#' data <- bb$analysis(bb$data, config)
+#' bb <- LFQServiceData::ionstar$filtered()
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' data$nr_peptide_Id_IN_protein_Id <- NULL
+#'
 #' hierarchy_counts(data, config)
-#' tmp <-workflow_DIA_NA_preprocessing(data, config)
+#' tmp <- workflow_DIA_NA_preprocessing(data, config)
 #' hierarchy_counts(tmp$data, config)
-#' tmp <-workflow_DIA_NA_preprocessing(data, config, percent=70)
+#' tmp <- workflow_DIA_NA_preprocessing(data, config, percent=70)
 #' hierarchy_counts(tmp$data, config)
 #' stopifnot(FALSE==(is.grouped_df(tmp$data)))
 #'

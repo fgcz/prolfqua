@@ -61,6 +61,37 @@ x <- R6extractValues(config)
 
 
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
+
+specnautconfig <- function(){
+spectronautDIAData250_config <- LFQService::create_config_Spectronaut_Peptide(
+isotopeLabel="Isotope.Label",
+ ident_qValue="EG.Qvalue")
+spectronautDIAData250_config$table$factors[["coding"]] = "coding"
+spectronautDIAData250_config$table$factors[["sex"]] = "sex"
+spectronautDIAData250_config$table$factors[["age"]] = "age"
+spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
+return(spectronautDIAData250_config)
+}
+config <- specnautconfig()
+
+config$table$factors
+config$table$hierarchy
+config$table$valueVars()
+config$table$idVars()
+
+#'
+data <- LFQServiceData::spectronautDIAData250
+xx <-  LFQServiceData::spectronautDIAData250_config
+#'
+setup <- function(data, config){
+ res <- setup_analysis(data,config)
+ res
+}
+#'
+spectronautDIAData250_A <- list(data = LFQServiceData::spectronautDIAData250, config_f =specnautconfig, analysis=setup )
+spectronautDIAData250_A$analysis(spectronautDIAData250_A$data, spectronautDIAData250_A$config_f())
+usethis::use_data( spectronautDIAData250_A , overwrite = TRUE )
+
 if(0){
   not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
            "PEP.GroupingKey", "PEP.GroupingKeyType", "PEP.IsProteotypic", "PEP.NrOfMissedCleavages",
@@ -76,18 +107,20 @@ if(0){
   
   longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
   colnames(longFormat) <- make.names(colnames(longFormat))
-  longFormat <- longFormat %>% select(which(!colnames(longFormat) %in% not))
+  longFormat <- longFormat %>% select(all_of( "PG.ProteinAccessions", ))
   spectronautDIAData250 <- longFormat
-  #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
-}
+  unique(spectronautDIAData250$R.FileName)
+  unique(spectronautDIAData250$PG.ProteinAccessions)
 
+    #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
+}
 ```
 
-Given a sample dataset and the configuration the `setup_analysis` function assures that all required columns are present.
+
+Given a sample DIA dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
 longFormat <- LFQServiceData::spectronautDIAData250_A$data
-
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 

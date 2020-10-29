@@ -28,7 +28,7 @@ res$data \%>\%
   dplyr::pull() \%>\% table()
 
 
-bb <- LFQServiceData::skylineSRM_HL_A
+bb <- LFQService::skylineSRM_HL_A
 config <- bb$config_f()
 resDataStart <- bb$analysis(bb$data, bb$config_f())
 

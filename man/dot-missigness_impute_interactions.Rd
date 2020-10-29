@@ -60,7 +60,7 @@ imputed <- fun("imputed")
 imputed
 
  meanArea <- fun("mean")
- meanArea$
+
  stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
 

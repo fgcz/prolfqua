@@ -18,7 +18,7 @@ Complete cases
 
 bb <- LFQService::ionstar$filtered()
 config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+data <- bb$data
 
 xx <- complete_cases(data, config)
 stopifnot(nrow(data) <= nrow(xx))

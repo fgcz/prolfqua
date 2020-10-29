@@ -16,7 +16,7 @@ used in p2621, p2109
 }
 \examples{
 
-modelSummary_A <- LFQServiceData::modellingResult_A
+modelSummary_A <- LFQService::modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
@@ -29,7 +29,7 @@ factor_levelContrasts <- contrasts_linfct( m,
 
 #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 
-models_interaction <- LFQServiceData::models_interaction
+models_interaction <- LFQService::models_interaction
 
 m <- get_complete_model_fit(models_interaction$modelProtein)
 m$linear_model[[1]]

@@ -17,7 +17,7 @@ transitionCorrelationsJack(
 Compute correlation matrix with jack
 }
 \examples{
-correlatedPeptideList <- LFQServiceData::correlatedPeptideList
+correlatedPeptideList <- LFQService::correlatedPeptideList
 transitionCorrelationsJack(correlatedPeptideList[[1]])
 }
 \seealso{

@@ -13,7 +13,7 @@ transitionCorrelations(dataX)
 Compute correlation matrix
 }
 \examples{
-correlatedPeptideList <- LFQServiceData::correlatedPeptideList
+correlatedPeptideList <- LFQService::correlatedPeptideList
 transitionCorrelations(correlatedPeptideList[[1]])
 }
 \seealso{
