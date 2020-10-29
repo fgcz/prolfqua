@@ -28,7 +28,7 @@ filter QVAlues and NA's and factor information
 library(LFQService)
 library(tidyverse)
 rm(list=ls())
-bb <- LFQServiceData::ionstar$filtered()
+bb <- LFQService::ionstar$filtered()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL

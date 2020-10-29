@@ -23,7 +23,7 @@ render_MQSummary_rmd(
 render MQ Summary.
 }
 \examples{
-bb <- LFQServiceData::skylinePRMSampleData_A
+bb <- LFQService::skylinePRMSampleData_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 render_MQSummary_rmd(analysis,

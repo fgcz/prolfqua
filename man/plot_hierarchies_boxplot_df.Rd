@@ -39,7 +39,7 @@ generates peptide level plots for all Proteins
                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
  res$boxplot[[1]]
 
- iostar <- LFQServiceData::dataIonstarProtein
+ iostar <- LFQService::dataIonstarProtein
  iostar$data <- iostar$data \%>\%
    dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
  unique(iostar$data$protein_Id)

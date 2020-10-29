@@ -10,7 +10,7 @@
 create all possible contrasts
 }
 \examples{
-m <- LFQServiceData::basicModel_p1807
+m <- LFQService::basicModel_p1807
 m
 linfct <- linfct_from_model(m)
 

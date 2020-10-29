@@ -19,7 +19,7 @@ remove rows where intensity lower then threshold
 }
 \examples{
 
-dd <- LFQServiceData::spectronautDIAData250_A
+dd <- LFQService::spectronautDIAData250_A
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 

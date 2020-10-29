@@ -59,7 +59,9 @@ split2table <- function(names,split="\\||\\_")
 #' library(ggplot2)
 #' library(tidyverse)
 #' library(ggrepel)
-#' multigroupVolcano(LFQServiceData::multigroupFCDATA,effect="logFC",p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
+#' multigroupVolcano(LFQService::multigroupFCDATA,
+#' effect="logFC",
+#' p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
 multigroupVolcano <- function(.data,
                               effect = "fc",
                               p.value = "p.adjust",

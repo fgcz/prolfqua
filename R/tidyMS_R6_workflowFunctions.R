@@ -49,14 +49,17 @@ add_annotation <- function(intensityData,
 #' library(LFQService)
 #'
 #' rm(list=ls())
-#' bb <- LFQServiceData::ionstar$filtered()
+#' bb <- LFQService::ionstar$filtered()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' data$nr_peptide_Id_IN_protein_Id <- NULL
 #'
 #' config$parameter$min_nr_of_notNA  <- 3
 #' #debug(workflow_correlation_preprocessing_protein_intensities)
+#' runLong <- FALSE
+#' if(runLong){
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
+#' }
 #' names(res)
 #'
 workflow_correlation_preprocessing_protein_intensities <- function(pdata, config, minCorrelation = 0.7){
@@ -118,7 +121,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' rm(list=ls())
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::ionstar$filtered()
+#' bb <- LFQService::ionstar$filtered()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' data$nr_peptide_Id_IN_protein_Id <- NULL
@@ -177,7 +180,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' library(LFQService)
 #' library(tidyverse)
 #' rm(list=ls())
-#' bb <- LFQServiceData::ionstar$filtered()
+#' bb <- LFQService::ionstar$filtered()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' data$nr_peptide_Id_IN_protein_Id <- NULL

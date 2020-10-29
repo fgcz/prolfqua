@@ -24,7 +24,7 @@ adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 srm_QValueNR - nr of precursors passing the threshold
 }
 \examples{
-dd <- LFQServiceData::spectronautDIAData250_A
+dd <- LFQService::spectronautDIAData250_A
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 res <- summariseQValues(analysis, config)

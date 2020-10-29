@@ -40,7 +40,7 @@ conflict_prefer("filter", "dplyr")
 
 ```{r prepData}
 outdir <- tempdir()
-skylinePRMSampleData <- LFQServiceData::skylinePRMSampleData_A$data
+skylinePRMSampleData <- LFQService::skylinePRMSampleData_A$data
 
 skylineconfig <-
   create_config_Skyline(isotopeLabel = "Isotope.Label.Type",

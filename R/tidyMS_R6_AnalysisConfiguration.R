@@ -297,7 +297,7 @@ R6extractValues <- function(r6class){
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(LFQServiceData::skylinePRMSampleData_A$data, skylineconfig)
+#' sample_analysis <- setup_analysis(LFQService::skylinePRMSampleData_A$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
@@ -555,8 +555,6 @@ hierarchy_counts_sample <- function(pdata,
 #' summarize_hierarchy(data, configur )
 #' configur$table$hierarchyDepth = 4
 #' summarize_hierarchy(data, configur )
-#' #summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,
-#' #LFQServiceData::dataIonstarFilteredPep$config)
 #'
 summarize_hierarchy <- function(pdata,
                                 config,

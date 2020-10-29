@@ -10,7 +10,7 @@ linfct_matrix_contrasts(linfct, contrasts)
 linfct_matrix_contrasts
 }
 \examples{
-m <- LFQServiceData::basicModel_p1807
+m <- LFQService::basicModel_p1807
 linfct <- linfct_from_model(m,as_list = FALSE)
 linfct
 

@@ -18,7 +18,7 @@ applies contrast computation using lmerTest::contest function
 }
 \examples{
 library(LFQService)
-mb <- LFQServiceData::basicModel_p1807
+mb <- LFQService::basicModel_p1807
 summary(mb)
 
 linfct <- linfct_from_model(mb)

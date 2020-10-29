@@ -9,9 +9,12 @@
 #' @keywords internal
 #' @family filtering
 #' @examples
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
+#'
+#'
+#'
 #' res <- removeLarge_Q_Values(analysis, config)
 removeLarge_Q_Values <- function(pdata, config){
   pdata <- pdata %>%
@@ -28,7 +31,7 @@ removeLarge_Q_Values <- function(pdata, config){
 #' @family filtering
 #' @examples
 #'
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -53,7 +56,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
@@ -114,7 +117,7 @@ transform_work_intensity <- function(pdata,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- summariseQValues(analysis, config)
@@ -155,7 +158,7 @@ summariseQValues <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -206,7 +209,7 @@ toWide <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- toWideConfig(analysis, config)
@@ -249,7 +252,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #'
 #' @keywords internal
 #' @examples
-#' dd <- LFQServiceData::spectronautDIAData250_A
+#' dd <- LFQService::spectronautDIAData250_A
 #' conf <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,conf)
 #' res <- toWideConfig(analysis, conf, as.matrix = TRUE)
@@ -562,7 +565,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQServiceData::spectronautDIAData250_A
+#' bb <- LFQService::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -597,7 +600,7 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQServiceData::spectronautDIAData250_A
+#' bb <- LFQService::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -636,7 +639,7 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' rm(list=ls())
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQServiceData::spectronautDIAData250_A
+#' bb <- LFQService::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20

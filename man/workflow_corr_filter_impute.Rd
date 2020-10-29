@@ -20,7 +20,7 @@ Apply correlation filtering and impute missing values
 rm(list=ls())
 library(tidyverse)
 library(LFQService)
-bb <- LFQServiceData::ionstar$filtered()
+bb <- LFQService::ionstar$filtered()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL

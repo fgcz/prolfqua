@@ -48,8 +48,6 @@ configur$table$hierarchyDepth = 3
 summarize_hierarchy(data, configur )
 configur$table$hierarchyDepth = 4
 summarize_hierarchy(data, configur )
-#summarize_hierarchy(LFQServiceData::dataIonstarFilteredPep$data,
-#LFQServiceData::dataIonstarFilteredPep$config)
 
 }
 \seealso{

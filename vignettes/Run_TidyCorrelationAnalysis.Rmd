@@ -80,47 +80,35 @@ config$table$valueVars()
 config$table$idVars()
 
 #'
-data <- LFQServiceData::spectronautDIAData250
-xx <-  LFQServiceData::spectronautDIAData250_config
-#'
+data <- LFQService::spectronautDIAData250_A
+colnames(data$data)
+data$data$EG.TotalQuantity..Settings.
+pIDS <- sample(unique(data$data$PG.ProteinAccessions),50)
+
+
+colnames(data$data)
+toremove <- c("EG.TotalQuantity..Settings.",
+ "EG.UsedForPeptideQuantity","EG.UsedForProteinGroupQuantity")
+dataval <- data$data %>% select(-all_of(toremove))
+dataval <- dataval %>% filter(PG.ProteinAccessions %in% pIDS)
+
+
 setup <- function(data, config){
  res <- setup_analysis(data,config)
  res
 }
 #'
-spectronautDIAData250_A <- list(data = LFQServiceData::spectronautDIAData250, config_f =specnautconfig, analysis=setup )
+spectronautDIAData250_A <- list(data = dataval, config_f = specnautconfig, analysis=setup )
 spectronautDIAData250_A$analysis(spectronautDIAData250_A$data, spectronautDIAData250_A$config_f())
 usethis::use_data( spectronautDIAData250_A , overwrite = TRUE )
 
-if(0){
-  not <- c("R.Condition", "R.Fraction", "R.Label", "R.Replicate", "PG.ProteinGroups" ,"PG.Cscore","PG.Qvalue","PG.RunEvidenceCount",
-           "PEP.GroupingKey", "PEP.GroupingKeyType", "PEP.IsProteotypic", "PEP.NrOfMissedCleavages",
-           "PEP.Rank",   "PEP.RunEvidenceCount", "PEP.UsedForProteinGroupQuantity",
-           "EG.iRTPredicted", "EG.IsDecoy" ,"EG.ModifiedPeptide",
-           "EG.UserGroup", "EG.Workflow",
-           "EG.IsUserPeak", "EG.IsVerified",  "EG.iRTEmpirical",
-           "EG.MeanApexRT", "EG.RTPredicted", "EG.AvgProfileQvalue", "EG.MaxProfileQvalue",
-           "EG.MinProfileQvalue", "EG.PercentileQvalue", "EG.ReferenceQuantity..Settings.", "EG.TargetQuantity..Settings.",
-           "FG.PrecMz", "FG.PrecMzCalibrated", "FG.ShapeQualityScore",
-           "Tube.Id","Extract.Name" ,"Species" ,"Condition","Resource_id", "EG.good")
-  
-  
-  longFormat <- readr::read_tsv("D:/projects/p2244_ProjectOrder_3687/inputData/preprocessing/withAnnotation_3687_DB_WithIsoforms.txt")
-  colnames(longFormat) <- make.names(colnames(longFormat))
-  longFormat <- longFormat %>% select(all_of( "PG.ProteinAccessions", ))
-  spectronautDIAData250 <- longFormat
-  unique(spectronautDIAData250$R.FileName)
-  unique(spectronautDIAData250$PG.ProteinAccessions)
-
-    #usethis::use_data(spectronautDIAData250,overwrite = TRUE)
-}
 ```
 
 
 Given a sample DIA dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
-longFormat <- LFQServiceData::spectronautDIAData250_A$data
+longFormat <- LFQService::spectronautDIAData250_A$data
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 

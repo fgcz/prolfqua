@@ -222,7 +222,7 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- LFQServiceData::interactionModel_p1807
+#' m <- LFQService::interactionModel_p1807
 #' plot_lmer_peptide_predictions(m)
 plot_lmer_peptide_predictions <- function(m){
   data <- m@frame
@@ -246,10 +246,10 @@ plot_lmer_peptide_predictions <- function(m){
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' m <- LFQServiceData::basicModel_p1807
+#' m <- LFQService::basicModel_p1807
 #' plot_lmer_peptide_noRandom(m)
 #'
-#' m <- LFQServiceData::interactionModel_p1807
+#' m <- LFQService::interactionModel_p1807
 #' plot_lmer_peptide_noRandom(m)
 plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   data <- m@frame
@@ -340,7 +340,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- LFQServiceData::interactionModel_p1807
+#' m <- LFQService::interactionModel_p1807
 #' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m,"dumm"),m)
 plot_lmer_predicted_interactions <- function(gg, m){
   cm <- .lmer4_coeff_matrix(m)
@@ -359,7 +359,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' @keywords internal
 #' @examples
 #' library(LFQService)
-#' m <- LFQServiceData::interactionModel_p1807
+#' m <- LFQService::interactionModel_p1807
 #' plot_lmer_model_and_data(m,"dumm")
 #'
 plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
@@ -446,14 +446,14 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' @examples
 #' #if(FALSE){
 #'
-#' m <- LFQServiceData::basicModel_p1807
+#' m <- LFQService::basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #'
-#' m <- LFQServiceData::interactionModel_p1807
+#' m <- LFQService::interactionModel_p1807
 #' linfct <- linfct_from_model(m)
 #' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
 #'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
@@ -499,7 +499,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- LFQServiceData::basicModel_p1807
+#' m <- LFQService::basicModel_p1807
 #' linfct <- linfct_from_model(m,as_list = FALSE)
 #' linfct
 #'
@@ -534,7 +534,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- LFQServiceData::basicModel_p1807
+#' m <- LFQService::basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
 #'
@@ -561,7 +561,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts){
 #' @keywords internal
 #' @examples
 #' library(LFQService)
-#' m <- LFQServiceData::basicModel_p1807
+#' m <- LFQService::basicModel_p1807
 #' xl <- linfct_factors_contrasts(m)
 #' xl
 #' m <- lm(Petal.Width ~ Species, data = iris)
@@ -592,7 +592,7 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #' library(LFQService)
-#' mb <- LFQServiceData::basicModel_p1807
+#' mb <- LFQService::basicModel_p1807
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
@@ -787,7 +787,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @keywords internal
 #' @examples
 #' library(LFQService)
-#' mb <- LFQServiceData::basicModel_p1807
+#' mb <- LFQService::basicModel_p1807
 #' summary(mb)
 #'
 #' linfct <- linfct_from_model(mb)
@@ -835,7 +835,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' dd <- LFQServiceData::factor_levelContrasts
+#' dd <- LFQService::factor_levelContrasts
 #' head(dd)
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
 #' tmp
@@ -1211,7 +1211,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(xx2$mad.estimate)
 #'
-#' summary_ROPECA_median_p.scaled(LFQServiceData::exampleDataForRopeca, contrast = "contrast")
+#' summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
 #' xx2$mad.estimate
 #'
 #'
