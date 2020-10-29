@@ -38,34 +38,23 @@ Make sure you have installed the required packages. Start R session and run the 
 
 ```{r}
 #"C:\\Users\\wolski\\Documents\\R\\win-library\\4.0"
-<- tempdir()
+#"C:/Users/wewol/OneDrive/Documents/R/win-library/4.0"
 
-#old <- Sys.getenv("R_LIBS_USER")
-#Sys.setenv(R_LIBS_USER = "C:\\Users\\wolski\\Documents\\R\\win-library\\4.0")
-
-
-pkgs <- c('broom', 'bookdown', 'conflicted', 'corrplot', 'dplyr',
-  'flextable', 'docopt',
-  'ggplot2', 'ggbeeswarm', 'ggfortify', 'glue', 'GGally', 'pheatmap',
-  'kableExtra', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp',
-  'plotly', 'purrr', 'readxl', 'tidyverse', 'yaml',
-  'tidyr', 'writexl')
-
-pkgs <- pkgs[(!pkgs %in% unique(installed.packages()[,'Package']))]
-if(length(pkgs) > 0){install.packages(pkgs)}
-
-
+old <- Sys.getenv("R_LIBS_USER")
+installDir <- tempdir()
+.libPaths(c(installDir,"C:/Program Files/R/R-4.0.2/library"))
+Sys.setenv(R_LIBS_USER = installDir)
 
 ```
+
 
 To install the package please execute:
 
 
 ```
-install.packages(c('remotes'))
-
+install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
-# remotes::install_github('wolski/prolfquaData')
+remotes::install_github('wolski/prolfquaData')
 remotes::install_github('wolski/LFQService')
 
 ```
