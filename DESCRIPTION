@@ -55,7 +55,6 @@ Imports:
     writexl,
     prolfquaData
 Suggests:
-    prolfquaData,
     knitr,
     fgcz.gsea.ora,
     rmarkdown,
@@ -63,7 +62,7 @@ Suggests:
     KernSmooth
 Remotes:
     bioc::3.12/limma,
-    github::wolski/prolfquaData
+    wolski/prolfquaData
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
