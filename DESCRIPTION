@@ -63,7 +63,7 @@ Suggests:
     KernSmooth
 Remotes:
     bioc::release/limma,
-    wolski/prolfquaData
+    github::wolski/prolfquaData
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
