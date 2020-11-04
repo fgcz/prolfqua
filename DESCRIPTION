@@ -51,7 +51,8 @@ Imports:
     tidyr,
     tibble,
     yaml,
-    writexl
+    writexl,
+    prolfquaData
 Suggests:
     brms,
     fgcz.gsea.ora,
@@ -61,7 +62,8 @@ Suggests:
     prolfquaData,
     testthat,
 Remotes:
-    bioc::3.9/limma
+    bioc::3.12/limma,
+    wolski/prolfquaData
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
