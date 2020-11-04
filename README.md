@@ -32,34 +32,19 @@ R 3.6 or higher.
 
 ## 1.1. Install R
 
-A Windows/Linux/MacOSX x64 platform R 4 
-
-Make sure you have installed the required packages. Start R session and run the following R code.
-
-```{r}
-#"C:\\Users\\wolski\\Documents\\R\\win-library\\4.0"
-#"C:/Users/wewol/OneDrive/Documents/R/win-library/4.0"
-
-old <- Sys.getenv("R_LIBS_USER")
-installDir <- tempdir()
-.libPaths(c(installDir,"C:/Program Files/R/R-4.0.2/library"))
-Sys.setenv(R_LIBS_USER = installDir)
-
-```
+A Windows/Linux/MacOSX x64 platform with R 4 
 
 
-To install the package please execute:
+To install the package please execute
 
 
 ```
 install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
-remotes::install_github('wolski/prolfquaData')
+# remotes::install_github('wolski/prolfquaData')
 remotes::install_github('wolski/LFQService')
 
 ```
-
-
 
 
 ## 2. Running R-scripts
@@ -73,15 +58,10 @@ lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
 ```
 
 
-## 3. Best of code snippets
-
-
 ```
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
 ```
-
-
 
 
 # How to get started
