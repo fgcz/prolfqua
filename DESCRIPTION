@@ -67,4 +67,4 @@ Remotes:
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
-    ◘R (>= 2.10)
+    R (>= 4.0)
