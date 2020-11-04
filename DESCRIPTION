@@ -15,7 +15,6 @@ Repository: CRAN
 Imports:
     bookdown,
     broom,
-    brms,
     conflicted,
     corrplot,
     docopt,
@@ -54,15 +53,16 @@ Imports:
     yaml,
     writexl
 Suggests:
-    prolfquaData,
-    knitr,
+    brms,
     fgcz.gsea.ora,
-    rmarkdown,
-    testthat,
     KernSmooth
+    knitr,
+    rmarkdown,
+    prolfquaData,
+    testthat,
 Remotes:
     bioc::3.9/limma
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
-    R (>= 2.10)
+    ◘R (>= 2.10)
