@@ -42,6 +42,7 @@ Imports:
     plotly,
     plyr,
     pROC,
+    prolfquaData
     purrr,
     readr,
     readxl,
@@ -52,14 +53,12 @@ Imports:
     tibble,
     yaml,
     writexl,
-    prolfquaData
 Suggests:
     brms,
     fgcz.gsea.ora,
-    KernSmooth
+    KernSmooth,
     knitr,
     rmarkdown,
-    prolfquaData,
     testthat,
 Remotes:
     bioc::3.12/limma,
