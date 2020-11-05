@@ -62,7 +62,7 @@ Suggests:
     testthat
 Remotes:
     bioc::3.12/limma,
-    wolski/prolfquaData
+    gitlab::gitlab.bfabric.org/wolski/prolfquaData
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
