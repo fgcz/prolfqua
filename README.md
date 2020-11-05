@@ -41,7 +41,7 @@ To install the package please execute
 ```
 install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
-# remotes::install_github('wolski/prolfquaData')
+# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
 remotes::install_github('wolski/LFQService')
 
 ```
