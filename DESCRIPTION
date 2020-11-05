@@ -61,8 +61,7 @@ Suggests:
     rmarkdown,
     testthat
 Remotes:
-    bioc::3.12/limma,
-    gitlab::gitlab.bfabric.org/wolski/prolfquaData
+    bioc::3.12/limma
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
