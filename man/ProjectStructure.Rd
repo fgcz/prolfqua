@@ -92,9 +92,9 @@ create ProjectStructure
 
 \item{\code{inputData}}{input data path}
 
-\item{\code{qc_path}}{qc folder}
+\item{\code{qc_dir}}{qc folder}
 
-\item{\code{modelling_path}}{modelling results folder}
+\item{\code{modelling_dir}}{modelling results folder}
 }
 \if{html}{\out{</div>}}
 }

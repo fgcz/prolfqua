@@ -69,8 +69,8 @@ ProjectStructure <-
     #' @param order_Id bfabric order_Id
     #' @param inputAnnotation input annotation path
     #' @param inputData input data path
-    #' @param qc_path qc folder
-    #' @param modelling_path modelling results folder
+    #' @param qc_dir qc folder
+    #' @param modelling_dir modelling results folder
 
     initialize = function(outpath,
                           project_Id,
