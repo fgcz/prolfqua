@@ -214,7 +214,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- LFQService::dataIonstarProtein
+#'  iostar <- LFQService::dataIonstarProtein_subsetNorm
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
