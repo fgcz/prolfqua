@@ -9,6 +9,8 @@ Limma moderated contrasts
 Limma moderated contrasts
 }
 \examples{
+
+library(LFQService)
 D <- LFQService::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-

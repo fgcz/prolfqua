@@ -472,7 +472,7 @@ Contrasts <- R6::R6Class(
       contrast_result <- dplyr::rename(contrast_result, contrast = lhs)
 
       xx <- dplyr::select(contrast_result, self$subject_Id, "contrast", "estimate")
-      xx <- xx %>% pivot_wider(names_from = "contrast", values_from = "estimate")
+      xx <- xx %>% tidyr::pivot_wider(names_from = "contrast", values_from = "estimate")
 
       contrast_result <- dplyr::filter(contrast_result, contrast %in% names(self$contrasts))
 
@@ -538,6 +538,8 @@ Contrasts <- R6::R6Class(
 #' @export
 #'
 #' @examples
+#'
+#' library(LFQService)
 #' D <- LFQService::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
@@ -572,13 +574,14 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- super$get_contrasts(all = TRUE)
       contrast_result <- moderated_p_limma_long(contrast_result , group_by_col = "contrast")
       if (!all) {
-        contrast_result <- select(contrast_result ,-all_of(c("sigma.model",
-                                                             "df.residual.model",
-                                                             "moderated.df.prior",
-                                                             "moderated.var.prior",
-                                                             "moderated.var.post",
-                                                             "moderated.statistic",
-                                                             "moderated.df.total" )))
+        contrast_result <- select(contrast_result ,
+                                  -all_of(c("sigma.model",
+                                            "df.residual.model",
+                                            "moderated.df.prior",
+                                            "moderated.var.prior",
+                                            "moderated.var.post",
+                                            "moderated.statistic",
+                                            "moderated.df.total" )))
       }
       contrast_result <- self$p.adjust(contrast_result,
                                        column = "moderated.p.value",
