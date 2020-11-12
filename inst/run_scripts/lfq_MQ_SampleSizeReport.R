@@ -22,8 +22,10 @@ Arguments:
   mqzip input file
 "
 
-if (TRUE) {
+if (FALSE) {
+
   dummyargs <- c( "c:/Users/wewol/prog/LFQServiceTestDataExtern/1675194.zip" )
+  dummyargs <- c("D:/TEMP/checkSampleSizeEstimation/1293562.zip","-p","3000","-q","9999032")
   opt <- docopt(doc, args = dummyargs)
 
 }else{
@@ -75,10 +77,10 @@ resPep$config$table$factorDepth <- 1
 resPep$data$QC <- "QC"
 resPep$data$isotope <- "light"
 
-
-config$project_Id <- project_Id
-config$order_Id <- order_Id
-config$workunit_Id <- workunit
+project_conf <- list()
+project_conf$project_Id <- project_Id
+project_conf$order_Id <- order_Id
+project_conf$workunit_Id <- workunit
 
 
 resPep$data <- setup_analysis(resPep$data, resPep$config)
@@ -88,10 +90,11 @@ resPep$data <- remove_small_intensities(resPep$data, resPep$config) %>%
 
 filename <- basename(tools::file_path_sans_ext(mqzip))
 
-
+# debug(render_MQSummary_rmd)
 LFQService::render_MQSummary_rmd(
-  resDataStart,
-  config$clone(deep = TRUE),
+  resPep$data,
+  resPep$config$clone(deep = TRUE),
+  project_conf,
   pep = TRUE,
   dest_path = outputDir,
   dest_file_name = paste0("r_", filename, "_Peptide"),
@@ -101,17 +104,18 @@ LFQService::render_MQSummary_rmd(
 
 
 
-peptideStats <- summarize_cv_raw_transformed(resDataStart, config)
-lfq_write_table(separate_hierarchy(peptideStats, config),
-                path = file.path(outputDir, paste0("r_", filename, "_PeptideStats.csv")))
+peptideStats <- summarize_cv_raw_transformed(resPep$data, resPep$config)
+lfq_write_table(separate_hierarchy(peptideStats, resPep$config),
+                path = outputDir,
+                name = paste0("r_", filename, "_PeptideStats"), format = "xlsx")
 
 
 # Perform filtering and Protein Aggregation...
 
 
 path <- ""
-res <- filter_proteins_by_peptide_count(resDataStart, config)
-results <- normalize_log2_robscale(res$data, res$config)
+res <- filter_proteins_by_peptide_count(resPep$data, resPep$config)
+results <- normalize_log2_robscale(res$data, resPep$config)
 
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())
@@ -129,14 +133,16 @@ data_wide <-
 
 
 lfq_write_table(
-  separate_hierarchy(data_wide, config),
-  path = file.path(outputDir, paste0("r_", filename, "_Protein.csv")),
+  separate_hierarchy(data_wide, xx$config),
+  path = outputDir,
+  name = paste0("r_", filename, "_Protein"),
   format = "xlsx"
 )
 
 lfq_write_table(
   toWideConfig(data, xx$config)$annotation,
-  path = file.path(outputDir, paste0("r_", filename, "_annotation.csv")),
+  path = outputDir,
+  name = paste0("r_", filename, "_annotation"),
   format = "xlsx"
 )
 
@@ -144,10 +150,10 @@ lfq_write_table(
 ##LFQService::plot_sample_correlation(dataTransformed, config)
 ##```
 
-
 LFQService::render_MQSummary_rmd(
   data,
   xx$config$clone(deep = TRUE),
+  project_conf = project_conf,
   pep = FALSE,
   dest_path = outputDir,
   dest_file_name = paste0("r_", filename, "_Protein"),
