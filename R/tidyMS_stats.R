@@ -293,7 +293,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' library(tidyverse)
 #' bb1 <- LFQService::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
-#' data2 <- bb1$data
+#' data <- bb1$data
 #' res <- summarize_cv(data, config)
 #' plot_stat_density(res, config, stat = "mean")
 #' plot_stat_density(res, config, stat = "sd")
@@ -349,8 +349,8 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' library(tidyverse)
 #' bb1 <- LFQService::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
-#' data2 <- bb1$data
-#' res <- summarize_cv(data2, config)
+#' data <- bb1$data
+#' res <- summarize_cv(data, config)
 #' res <- summarize_cv(data, config)
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
