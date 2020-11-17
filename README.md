@@ -99,3 +99,8 @@ What is a paired measurement.
 - [Bayesian essentials with R - R package](https://cran.r-project.org/web/packages/bayess/index.html)
 - [Contrasts in R - an example vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 
+# R packages to compute contrasts from linear models
+
+- [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
+-
+
