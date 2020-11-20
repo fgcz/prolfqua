@@ -115,8 +115,11 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' bb <- LFQService::skylinePRMSampleData_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
+#' projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
 #' render_MQSummary_rmd(analysis,
-#'   config , workdir= ".")# tempdir(check = FALSE))
+#'   config ,
+#'   projectConfig,
+#'   workdir= ".") # tempdir(check = FALSE))
 #'
 render_MQSummary_rmd <-
   function(pdata,
