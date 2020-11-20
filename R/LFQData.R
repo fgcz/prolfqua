@@ -99,23 +99,6 @@ LFQData <- R6::R6Class(
       invisible(self)
     },
     #' @description
-    #'
-    #' Render a QC document
-    #'
-    #' @param qc_path path to render to
-    #' @keywords todo
-    render = function(qc_path) {
-      LFQService::render_MQSummary_rmd(
-        self$data,
-        self$config$clone(deep = TRUE),
-        pep = self$is_pep,
-        workdir = ".",
-        dest_path = qc_path,
-        dest_file_name = if (self$is_pep) {"peptide_intensities_qc"} else {"protein_intensities_qc"},
-        format = "html"
-      )
-    },
-    #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
     #' @return data and annotation
