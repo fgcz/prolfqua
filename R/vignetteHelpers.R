@@ -102,7 +102,12 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' render MQ Summary.
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
+#' @param project_config list with workunit_Id project_Id order_Id
+#' @param pep are these peptide or protein deata
+#' @param dest_path destination path
+#' @param dest_file_name name of pdf file
+#' @param workdir working directory
+#' @param format either pdf or html
 #' @family vignetteHelpers
 #' @keywords internal
 #' @export
@@ -116,6 +121,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 render_MQSummary_rmd <-
   function(pdata,
            config,
+           project_conf,
            pep = TRUE,
            dest_path = ".",
            dest_file_name = "MQSummary2",
@@ -126,6 +132,7 @@ render_MQSummary_rmd <-
       list(
         data = pdata,
         configuration = config,
+        project_conf = project_conf,
         pep = pep
       ),
       markdown_path = c("rmarkdown/MQSummary2.Rmd", "rmarkdown/CVReport.Rmd"),

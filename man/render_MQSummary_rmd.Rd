@@ -7,6 +7,7 @@
 render_MQSummary_rmd(
   pdata,
   config,
+  project_conf,
   pep = TRUE,
   dest_path = ".",
   dest_file_name = "MQSummary2",
@@ -18,6 +19,18 @@ render_MQSummary_rmd(
 \item{pdata}{data.frame}
 
 \item{config}{AnalysisConfiguration}
+
+\item{pep}{are these peptide or protein deata}
+
+\item{dest_path}{destination path}
+
+\item{dest_file_name}{name of pdf file}
+
+\item{workdir}{working directory}
+
+\item{format}{either pdf or html}
+
+\item{project_config}{list with workunit_Id project_Id order_Id}
 }
 \description{
 render MQ Summary.

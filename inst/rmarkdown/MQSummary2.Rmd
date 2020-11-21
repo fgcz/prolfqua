@@ -11,6 +11,7 @@ output:
     toc_depth: 2
 params:
   configuration:  !r quote( LFQService::ionstar$filtered()$config$clone(deep=TRUE) )
+  project_conf: NULL
   data: !r quote( LFQService::ionstar$filtered()$data )
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
@@ -45,13 +46,18 @@ knitr::opts_chunk$set(
 )
 
 data <- eval(params$data)
+
+local_project_conf <- eval(params$project_conf)
 local_config <- eval(params$configuration)
 
+if (is.null(local_project_conf)) {
+  local_project_conf <- list()
+}
 
-if(is.null(params$plot_density)){
+if (is.null(params$plot_density)) {
   params$plot_density <- TRUE
 }
-if(is.null(params$plot_sd_vs_mean)){
+if (is.null(params$plot_sd_vs_mean)) {
   params$plot_sd_vs_mean <- FALSE
 }
 old.theme <- theme_set(theme_classic())
@@ -62,9 +68,9 @@ old.theme <- theme_set(theme_classic())
 
 # Introduction
 
-- Workunit: `r local_config$workunit_Id`
-- Project: `r local_config$project_Id`
-- Order : `r local_config$order_Id`
+- Workunit: `r local_project_conf$workunit_Id`
+- Project: `r local_project_conf$project_Id`
+- Order : `r local_project_conf$order_Id`
 
 <!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.-->
 
@@ -302,7 +308,7 @@ sampleSize <- lfq_power_t_test_quantiles(dataTransformed, local_config, delta=c(
 nudgeval <- max(sampleSize$long$N) * 0.05
 
 ggplot(sampleSize$long, aes(x = quantile, y = N)) +
-  geom_bar(stat="identity", color="black", fill="white") +
+  geom_bar(stat = "identity", color = "black", fill = "white") +
   geom_text(aes(label = N), nudge_y = nudgeval) + 
   facet_wrap(~ paste0("FC==", round(FC,digits=2), "~or~log[2](FC)==", delta), labeller = label_parsed)
 
