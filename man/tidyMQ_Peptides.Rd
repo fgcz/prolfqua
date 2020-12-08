@@ -15,12 +15,11 @@ parse MQ peptides.txt
 \examples{
 library(tidyverse)
 
-#peptide_txt <- "D:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"
-peptide_txt <- system.file("samples/maxquant_txt/MSQC1/peptides.txt",package = "LFQService")
-peptides_txt <- read.csv(peptide_txt, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
-mq_peptides <-tidyMQ_Peptides(peptides_txt)
-peptides_txt <- system.file("samples/maxquant_txt/tiny/peptides.txt",package = "LFQService")
-peptides_txt <- read.csv(peptides_txt, header = TRUE, stringsAsFactors = FALSE, sep = "\t")
+peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "LFQService")
+peptides_txt <- read.csv(unz(peptide_txt, "peptide.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
+mq_peptides <- tidyMQ_Peptides(peptides_txt)
+peptides_txt <- system.file("samples/maxquant_txt/tiny.zip",package = "LFQService")
+peptides_txt <- read.csv(unz(peptide_txt,"peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
 tmp <- strsplit(tmp, ";")
 length(unique(tmp[[1]]))
