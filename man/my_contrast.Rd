@@ -48,6 +48,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_custom_model_glm}()},
 \code{\link{make_custom_model_lmer}()},
 \code{\link{make_custom_model_lm}()},
 \code{\link{model_analyse}()},

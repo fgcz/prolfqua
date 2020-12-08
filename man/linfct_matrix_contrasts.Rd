@@ -4,7 +4,14 @@
 \alias{linfct_matrix_contrasts}
 \title{linfct_matrix_contrasts}
 \usage{
-linfct_matrix_contrasts(linfct, contrasts)
+linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
+}
+\arguments{
+\item{linfct}{linear functions as created by linfct_from_model}
+
+\item{p.message}{print messages default FALSE}
+
+\item{contrast}{contrasts to determine linear functions for}
 }
 \description{
 linfct_matrix_contrasts
@@ -31,6 +38,7 @@ Other modelling:
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
+\code{\link{make_custom_model_glm}()},
 \code{\link{make_custom_model_lmer}()},
 \code{\link{make_custom_model_lm}()},
 \code{\link{model_analyse}()},

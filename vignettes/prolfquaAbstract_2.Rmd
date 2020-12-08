@@ -3,9 +3,9 @@ title: "Untitled"
 author: "Witold Wolski"
 date: "16/11/2020"
 output:
+  html_document: default
   pdf_document: 
     keep_tex: yes
-  html_document: default
 ---
 
 The package for **pro**teomics **l**abel **f**ree **qua**ntification `prolfqua` (read: prolevka) evolved from functions and code snippets used to visualize and analyze label free quantification data. To compute protein fold changes among treatment conditions, we first used t-test or linear models, and then used functions implemented in the package limma to obtain moderated p-values. We evaluated [MSStats]( 10.18129/B9.bioc.MSstats), [ROPECA](10.1038/s41598-017-05949-y) or [MSqRob](https://github.com/statOmics/MSqRob) all implemented in R, with the idea to integrate the various approaches. Although all these packages are written in R, model specification, input and output formats among them differ widely and wildly, which made our first attempt to use the original implementations challenging. Therefore, and also to understand the algorithms used, we attempted to reimplement those methods, where possible. The R-package prolfqua is the outcome of this venture.

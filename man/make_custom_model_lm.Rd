@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{make_custom_model_lm}
 \alias{make_custom_model_lm}
-\title{Create custom ml model}
+\title{Create custom lm model}
 \usage{
 make_custom_model_lm(
   modelstr,
@@ -12,7 +12,7 @@ make_custom_model_lm(
 )
 }
 \description{
-Create custom ml model
+Create custom lm model
 }
 \examples{
 tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
@@ -32,6 +32,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_custom_model_glm}()},
 \code{\link{make_custom_model_lmer}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},

@@ -135,7 +135,7 @@ get both sides of contrasts
 \subsection{Method \code{get_linfct()}}{
 get linear functions from contrasts
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_linfct()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_linfct(global = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -145,13 +145,15 @@ get linear functions from contrasts
 \subsection{Method \code{get_contrasts()}}{
 get table with contrast estimates
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{all}}{should all columns be returned (default FALSE)}
+
+\item{\code{global}}{use a global linear function (determined by get_linfct)}
 }
 \if{html}{\out{</div>}}
 }

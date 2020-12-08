@@ -74,7 +74,7 @@ mod <- build_model(
 \subsection{Method \code{get_contrasts()}}{
 get contrasts
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
 }
 
 }

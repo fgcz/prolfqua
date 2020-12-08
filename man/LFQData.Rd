@@ -40,7 +40,6 @@ Other LFQData:
 \code{\link{LFQDataSummariser}}
 }
 \concept{LFQData}
-\keyword{todo}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -65,7 +64,6 @@ Other LFQData:
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
-\item \href{#method-render}{\code{LFQData$render()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
@@ -180,23 +178,6 @@ some software is reporting NA's as 0, you must remove it from your data
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{threshold}}{default 4.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-render"></a>}}
-\if{latex}{\out{\hypertarget{method-render}{}}}
-\subsection{Method \code{render()}}{
-Render a QC document
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$render(qc_path)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{qc_path}}{path to render to}
 }
 \if{html}{\out{</div>}}
 }

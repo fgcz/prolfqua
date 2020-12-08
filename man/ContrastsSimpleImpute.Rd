@@ -19,10 +19,14 @@ lfqdata <- LFQData$new(data, configur)
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 tmp$get_contrast_sides()
-bb <- tmp$get_contrasts()
 
-bb$estimate_mad == 0
-tmp$get_Plotter()
+bb <- tmp$get_contrasts()
+#bb$estimate_mad == 0
+pl <- tmp$get_Plotter()
+pl$histogram()
+pl$histogram_estimate()
+pl$ma_plot()
+pl$volcano()
 
 }
 \section{Methods}{
