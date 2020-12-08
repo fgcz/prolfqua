@@ -11,7 +11,7 @@
 #'
 tidyMQ_ProteinGroups <- function(MQProteinGroups){
   if (is.character(MQProteinGroups)) {
-    if (grepl("\\.zip$",MQProteinGroups)) {
+    if (grepl("\\.zip$",tolower(MQProteinGroups))) {
       message(MQProteinGroups)
       MQProteinGroups <- read.csv(unz(MQProteinGroups,"proteinGroups.txt"),
                            header = TRUE, sep = "\t", stringsAsFactors = FALSE)
@@ -107,7 +107,7 @@ tidyMQ_Evidence <- function(Evidence){
 #' allData <- tidyMQ_merged(txt_directory)
 #'
 tidyMQ_merged <- function(txt_directory){
-  if (grepl("\\.zip$",txt_directory)) {
+  if (grepl("\\.zip$",tolower(txt_directory))) {
     proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
                              header = TRUE, sep = "\t", stringsAsFactors  =  FALSE)
     peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
