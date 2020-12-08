@@ -25,7 +25,7 @@ make_custom_model_lmer <- function(modelstr,
                                                       "p.value.adjusted",
                                                       "moderated.p.value",
                                                       "moderated.p.value.adjusted")
-                                   ) {
+) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb , get_formula = FALSE){
     if (get_formula) {
@@ -47,7 +47,7 @@ make_custom_model_lmer <- function(modelstr,
   return(res)
 }
 
-#' Create custom ml model
+#' Create custom lm model
 #' @export
 #' @keywords internal
 #' @family modelling
@@ -62,7 +62,7 @@ make_custom_model_lm <- function(modelstr,
                                                     "p.value.adjusted",
                                                     "moderated.p.value",
                                                     "moderated.p.value.adjusted")
-                                 ) {
+) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE){
     if (get_formula) {
@@ -83,6 +83,47 @@ make_custom_model_lm <- function(modelstr,
               is_mixed = FALSE)
   return(res)
 }
+
+
+#' Create custom quasibinomial glm model
+#' @export
+#' @keywords internal
+#' @family modelling
+#' @examples
+#' tmp <- make_custom_model_glm("Intensity ~ condition", model_name = "parallel design")
+#' tmp$model_fun(get_formula = TRUE)
+#' tmp$isSingular
+make_custom_model_glm <- function(modelstr,
+                                  model_name = "Model",
+                                  report_columns = c("statistic",
+                                                     "p.value",
+                                                     "p.value.adjusted",
+                                                     "moderated.p.value",
+                                                     "moderated.p.value.adjusted")
+) {
+  formula <- as.formula(modelstr)
+  model_fun <- function(x, pb, get_formula = FALSE){
+    if (get_formula) {
+      return(formula)
+    }
+    if (!missing(pb)) {
+      pb$tick()
+    }
+    modelTest <- tryCatch(glm( formula ,
+                               data = x ,
+                               family = stats::quasibinomial),
+                          error = .ehandler)
+    return(modelTest)
+  }
+  res <- list(model_fun = model_fun,
+              isSingular = isSingular_lm,
+              contrast_fun = my_contrast_V2,
+              model_name = model_name,
+              report_columns = report_columns,
+              is_mixed = FALSE)
+  return(res)
+}
+
 
 
 .likelihood_ratio_test <- function(modelNO, model) {
@@ -169,7 +210,7 @@ model_analyse <- function(pepIntensity,
 
   pb <- progress::progress_bar$new(total = nrow(nestProtein))
   modelProtein <- nestProtein %>%
-      dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
+    dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
 
   modelProtein <- modelProtein %>% dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
 
@@ -394,7 +435,7 @@ plot_lmer_model_and_data_TWO <- function(m,
 # get matrix of indicator coefficients for each interaction
 .lmer4_coeff_matrix <- function(m){
   data <- NULL
-  if (class(m)  == "lm") {
+  if ("lm" %in% class(m)) {
     data <- m$model
   }else{
     # for "lmerModLmerTest"
@@ -496,6 +537,10 @@ linfct_from_model <- function(m, as_list = TRUE){
 
 #' linfct_matrix_contrasts
 #' @export
+#' @param linfct linear functions as created by linfct_from_model
+#' @param contrast contrasts to determine linear functions for
+#' @param p.message print messages default FALSE
+#'
 #' @family modelling
 #' @keywords internal
 #' @examples
@@ -507,7 +552,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' "someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 #' linfct_matrix_contrasts(linfct, Contrasts )
 #'
-linfct_matrix_contrasts <- function(linfct , contrasts){
+linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data,
@@ -515,7 +560,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts){
   {
     cnams <- setdiff(colnames(data),"interaction")
     for (i in 1:length(contrasts)) {
-      message(names(contrasts)[i], "=", contrasts[i],"\n")
+      if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
 
@@ -900,13 +945,31 @@ contrasts_linfct <- function(models,
                              subject_Id = "protein_Id" ,
                              contrastfun = LFQService::my_contest){
   #computeGroupAverages
+  message("computing contrasts.")
   modelcol <- "linear_model"
   models <- models %>% dplyr::filter(exists_lmer == TRUE)
 
+  if ("list" %in% class(linfct)) {
+    #stopifnot(length(linfct) == length(models[[modelcol]]))
+    #interaction_model_matrix <- models %>%
+    #  dplyr::mutate(contrast = purrr::map2(!!sym(modelcol) , linfct, function(x, y){ contrastfun(x, linfct = y) } ))
 
-  interaction_model_matrix <- models %>%
-    dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+    stopifnot(length(linfct) == length(models[[modelcol]]))
+    res <- vector(mode = "list", length = length(linfct))
+    for (i in 1:length(linfct)) {
+      res[[i]] <- contrast$contrastfun(models$linear_model[[i]], linfct = linfct[[i]])
+    }
 
+    rown <- lapply(res, rownames)
+    intersect <- Reduce(intersect, rown)
+    res <- lapply(res , function(x){ x[rownames(x) %in% intersect,]})
+    interaction_model_matrix <- models
+    interaction_model_matrix$contrast <- res
+  } else {
+    interaction_model_matrix <- models %>%
+      dplyr::mutate(contrast = purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+
+  }
 
   mclass <- function(x){
     class(x)[1]
@@ -933,35 +996,6 @@ contrasts_linfct <- function(models,
 }
 
 
-
-.multigroupVolcano <- function(data,
-                                effect = "fc",
-                                p.value = "p.adjust",
-                                condition = "condition",
-                                colour = "colour",
-                                xintercept = c(-2,2),
-                                pvalue = 0.05,
-                                text = NULL,
-                                ablines = data.frame(fc = c(0, 0), p = c(0.01, 0.05), Area = c("p = 0.01", "p = 0.05")),
-                                scales = "fixed",
-                                maxNrOfSignificantText = 20)
-{
-  colname = paste("-log10(", p.value, ")", sep = "")
-  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = text)) +
-    geom_point(alpha = 0.5)
-  p <- p + scale_colour_manual(values = c("black", "green",
-                                          "blue", "red"))
-  p <- p + facet_wrap(as.formula(paste("~", condition)),
-                      scales = scales) + labs(y = colname)
-  ablines$neg_log10p <- -log10(ablines$p)
-  p <- p + geom_abline(data = ablines, aes_string(slope = "fc",
-                                                  intercept = "neg_log10p", colour = "Area")) +
-    geom_vline(xintercept = xintercept, linetype = "dashed",
-               colour = "red") +
-    theme_light()
-
-  return(p)
-}
 
 # LIMMA ----
 
@@ -1019,8 +1053,8 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' abline(0,1, col = 2)
 #'
 moderated_p_limma_long <- function(mm ,
-                                    group_by_col = "lhs",
-                                    robust = FALSE){
+                                   group_by_col = "lhs",
+                                   robust = FALSE){
   dfg <- mm %>%
     dplyr::group_by_at(group_by_col) %>%
     dplyr::group_split()
@@ -1053,7 +1087,7 @@ adjust_p_values <- function(mm,
                             column = "p.value",
                             group_by_col = "contrast",
                             newname = NULL
-                            ){
+){
   if (is.null(newname)) {
     newname <- paste0(column, ".adjusted")
   }
