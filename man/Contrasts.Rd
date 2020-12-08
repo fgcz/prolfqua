@@ -42,7 +42,6 @@ contrastX$get_linfct()
 xx <- contrastX$get_contrasts()
 
 
-imputed <- get_imputed_contrasts(D$data, D$config, Contr)
 
 }
 \section{Public fields}{

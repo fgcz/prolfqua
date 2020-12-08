@@ -408,7 +408,6 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' xx <- contrastX$get_contrasts()
 #'
 #'
-#' imputed <- get_imputed_contrasts(D$data, D$config, Contr)
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -518,12 +517,11 @@ Contrasts <- R6::R6Class(
         contrast_result <- contrast_result %>% select(-all_of(c("sigma.model",
                                                                 "df.residual.model")))
       }
-
       self$contrast_result <- self$p.adjust(contrast_result,
                                             column = "p.value",
                                             group_by_col = "contrast",
                                             newname = "FDR")
-      self$contrast_results <- dplyr::ungroup(self$contrast_results )
+      self$contrast_result <- dplyr::ungroup(self$contrast_result )
       return(self$contrast_result)
     },
     write = function(path, format = "xlsx"){

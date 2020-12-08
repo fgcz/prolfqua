@@ -59,8 +59,9 @@ add_annotation <- function(intensityData,
 #' runLong <- FALSE
 #' if(runLong){
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
-#' }
 #' names(res)
+#' }
+#'
 #'
 workflow_correlation_preprocessing_protein_intensities <- function(pdata, config, minCorrelation = 0.7){
   stat_input <- hierarchy_counts(pdata, config)

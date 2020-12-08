@@ -19,10 +19,11 @@ sum$hierarchy_counts()
 sum$hierarchy_counts_sample("wide")
 sum$hierarchy_counts_sample("long")
 sum$hierarchy_counts_sample("plot")
-sum$summarize_hierarchy()
 sum$interaction_missing_stats()
 sum$missingness_per_condition()
 sum$missingness_per_condition_cumsum()
+sum$summarize_protein()
+
 
 }
 \seealso{
@@ -45,7 +46,6 @@ Other LFQData:
 \item \href{#method-new}{\code{LFQDataSummariser$new()}}
 \item \href{#method-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
 \item \href{#method-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
-\item \href{#method-summarize_hierarchy}{\code{LFQDataSummariser$summarize_hierarchy()}}
 \item \href{#method-summarize_protein}{\code{LFQDataSummariser$summarize_protein()}}
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
@@ -96,16 +96,6 @@ number of elements at each level in every sample
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-summarize_hierarchy"></a>}}
-\if{latex}{\out{\hypertarget{method-summarize_hierarchy}{}}}
-\subsection{Method \code{summarize_hierarchy()}}{
-e.g. number of peptides per protein etc
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$summarize_hierarchy()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-summarize_protein"></a>}}

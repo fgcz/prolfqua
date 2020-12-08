@@ -35,8 +35,9 @@ config$parameter$min_nr_of_notNA  <- 3
 runLong <- FALSE
 if(runLong){
 res <- workflow_correlation_preprocessing_protein_intensities(data,config)
-}
 names(res)
+}
+
 
 }
 \seealso{

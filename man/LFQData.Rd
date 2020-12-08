@@ -22,6 +22,7 @@ tmp <- lfqdata$to_wide(as.matrix = TRUE)
 stopifnot("matrix" \%in\% class(tmp$data))
 lfqdata$factors()
 stopifnot(lfqdata$is_transformed()==FALSE)
+lfqdata$summarize_hierarchy()
 
 stopifnot("LFQData" \%in\% class(lfqdata$get_copy()))
 stopifnot("LFQDataTransformer" \%in\% class(lfqdata$get_Transformer()))
@@ -66,6 +67,7 @@ Other LFQData:
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
+\item \href{#method-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
@@ -214,6 +216,16 @@ Annotation table.
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-summarize_hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-summarize_hierarchy}{}}}
+\subsection{Method \code{summarize_hierarchy()}}{
+e.g. number of peptides per protein etc
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$summarize_hierarchy()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}

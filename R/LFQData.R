@@ -17,6 +17,7 @@
 #' stopifnot("matrix" %in% class(tmp$data))
 #' lfqdata$factors()
 #' stopifnot(lfqdata$is_transformed()==FALSE)
+#' lfqdata$summarize_hierarchy()
 #'
 #' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 #' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
@@ -112,6 +113,11 @@ LFQData <- R6::R6Class(
     #' @return data.frame
     factors = function(){
       LFQService::table_factors(self$data, self$config)
+    },
+    #' @description
+    #' e.g. number of peptides per protein etc
+    summarize_hierarchy = function(){
+      LFQService::summarize_hierarchy(self$data, self$config)
     },
     #' @description
     #' get Plotter
@@ -468,10 +474,11 @@ LFQDataStats <- R6::R6Class(
 #' sum$hierarchy_counts_sample("wide")
 #' sum$hierarchy_counts_sample("long")
 #' sum$hierarchy_counts_sample("plot")
-#' sum$summarize_hierarchy()
 #' sum$interaction_missing_stats()
 #' sum$missingness_per_condition()
 #' sum$missingness_per_condition_cumsum()
+#' sum$summarize_protein()
+#'
 #'
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
@@ -496,11 +503,6 @@ LFQDataSummariser <- R6::R6Class(
       value <- match.arg(value)
       fun <- LFQService::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
       return(fun(value))
-    },
-    #' @description
-    #' e.g. number of peptides per protein etc
-    summarize_hierarchy = function(){
-      LFQService::summarize_hierarchy(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' e.g. number of peptides per protein overall
