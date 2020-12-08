@@ -276,7 +276,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' library(tidyverse)
 #'
 #' peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "LFQService")
-#' peptides_txt <- read.csv(unz(peptide_txt, "peptide.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
+#' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
 #' peptides_txt <- system.file("samples/maxquant_txt/tiny.zip",package = "LFQService")
 #' peptides_txt <- read.csv(unz(peptide_txt,"peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")

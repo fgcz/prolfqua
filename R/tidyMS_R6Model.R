@@ -290,6 +290,8 @@ build_model <- function(data,
 # Contrast simple ----
 
 #' compute contrasts with imputation
+#'
+#'
 #' @export
 #' @examples
 #'
@@ -511,7 +513,7 @@ Contrasts <- R6::R6Class(
                                       xx,
                                       contrast_sides,
                                       self$subject_Id)
-      contrast_result <- inner_join(contrast_sides,contrast_result)
+      contrast_result <- inner_join(contrast_sides, contrast_result)
       if (!all) {
         contrast_result <- contrast_result %>% select(-all_of(c("sigma.model",
                                                                 "df.residual.model")))
@@ -521,12 +523,13 @@ Contrasts <- R6::R6Class(
                                             column = "p.value",
                                             group_by_col = "contrast",
                                             newname = "FDR")
+      self$contrast_results <- dplyr::ungroup(self$contrast_results )
       return(self$contrast_result)
     },
     write = function(path, format = "xlsx"){
       lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("Contrasts_",self$modelName) ,
+                      name  = paste0("Contrasts_",self$modelName),
                       format = format)
     },
     #' @description
