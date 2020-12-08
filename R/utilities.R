@@ -38,6 +38,9 @@ split2table <- function(names,split="\\||\\_")
   return(protnam)
 }
 
+
+
+
 #' plot volcano given multiple conditions
 #' @param misspX data in long format
 #' @param effect column containing effect sizes
@@ -59,6 +62,7 @@ split2table <- function(names,split="\\||\\_")
 #' library(ggplot2)
 #' library(tidyverse)
 #' library(ggrepel)
+#' head(LFQService::multigroupFCDATA)
 #' multigroupVolcano(LFQService::multigroupFCDATA,
 #' effect="logFC",
 #' p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
@@ -77,24 +81,30 @@ multigroupVolcano <- function(.data,
                                 fc = c(0,0),
                                 p = c(0.01,0.05),
                                 Area = c('p=0.01','p=0.05')
-                              ), scales = "fixed",
+                              ),
+                              scales = "fixed",
                               maxNrOfSignificantText = 20)
 {
   misspX <- tidyr::unite(.data, "label", label)
-  colname = paste("-log10(", p.value , ")" , sep = "")
-  p <- ggplot( misspX, aes_string(x = effect , y = colname, color = colour  )  )  +
-    geom_point(alpha = 0.5)
-  p <- p + scale_colour_manual(values = c("black", "green", "blue","red"))
-  p <- p + facet_wrap(as.formula(paste("~",condition)),scales = scales) + labs(y = colname)
 
-  ablines$neg_log10p <- -log10(ablines$p)
-  p <- p + geom_abline(data = ablines, aes_string(slope = "fc", intercept = "neg_log10p",colour = "Area")) +
-    geom_vline(xintercept = xintercept,linetype = "dashed", colour = "red")
+  p <- .multigroupVolcano(misspX, effect = effect, p.value = p.value, condition = condition,
+                          colour = colour, xintercept = xintercept, pvalue = pvalue,
+                          text = "label", ablines = ablines, scales = scales)
+  colname = paste("-log10(", p.value , ")" , sep = "")
+  # p <- ggplot( misspX, aes_string(x = effect , y = colname, color = colour  )  )  +
+  #   geom_point(alpha = 0.5)
+  # p <- p + scale_colour_manual(values = c("black", "green", "blue","red"))
+  # p <- p + facet_wrap(as.formula(paste("~",condition)),scales = scales) + labs(y = colname)
+  #
+  # ablines$neg_log10p <- -log10(ablines$p)
+  # p <- p + geom_abline(data = ablines, aes_string(slope = "fc", intercept = "neg_log10p",colour = "Area")) +
+  #   geom_vline(xintercept = xintercept,linetype = "dashed", colour = "red")
 
   if (!is.null(label)) {
     effectX <- misspX[,effect]
     typeX <- misspX[,p.value]
-    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) %>% head(maxNrOfSignificantText)
+    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) %>%
+      head(maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
       p <- p + ggrepel::geom_text_repel(data = subsetData,
                                         aes_string(effect , colname , label = "label"),
@@ -103,6 +113,37 @@ multigroupVolcano <- function(.data,
                                         segment.alpha = segment.alpha)
     }
   }
+  return(p)
+}
+
+.multigroupVolcano <- function(data,
+                               effect = "fc",
+                               p.value = "p.adjust",
+                               condition = "condition",
+                               colour = "colour",
+                               xintercept = c(-2,2),
+                               pvalue = 0.05,
+                               text = NULL,
+                               ablines = data.frame(fc = c(0, 0),
+                                                    p = c(0.01, 0.05),
+                                                    Area = c("p = 0.01", "p = 0.05")),
+                               scales = "fixed")
+{
+  colname = paste("-log10(", p.value, ")", sep = "")
+  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = text)) +
+    geom_point(alpha = 0.5)
+  p <- p + scale_colour_manual(values = c("black", "green",
+                                          "blue", "red"))
+  p <- p + facet_wrap(as.formula(paste("~", condition)),
+                      scales = scales) + labs(y = colname)
+  ablines$neg_log10p <- -log10(ablines$p)
+  p <- p + geom_abline(data = ablines,
+                       aes_string(slope = "fc",
+                                  intercept = "neg_log10p", colour = "Area")) +
+    geom_vline(xintercept = xintercept, linetype = "dashed",
+               colour = "red") +
+    theme_light()
+
   return(p)
 }
 

@@ -302,10 +302,14 @@ build_model <- function(data,
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 #' tmp$get_contrast_sides()
-#' bb <- tmp$get_contrasts()
 #'
-#' bb$estimate_mad == 0
-#' tmp$get_Plotter()
+#' bb <- tmp$get_contrasts()
+#' #bb$estimate_mad == 0
+#' pl <- tmp$get_Plotter()
+#' pl$histogram()
+#' pl$histogram_estimate()
+#' pl$ma_plot()
+#' pl$volcano()
 #'
 ContrastsSimpleImpute <- R6::R6Class(
   "ContrastSimple",
@@ -321,6 +325,11 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$contrasts = contrasts
       self$modelName = modelName
       self$contrast_result = get_imputed_contrasts(lfqdata$data, lfqdata$config, contrasts)
+      self$contrast_result$isSingular <- TRUE
+      self$contrast_result <- mutate(self$contrast_result,
+                                     statistic = estimate_median / estimate_mad )
+      self$contrast_result <- mutate(self$contrast_result,
+                                     p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
     },
     get_contrast_sides = function(){
       self$contrast_result %>% select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
@@ -338,8 +347,8 @@ ContrastsSimpleImpute <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        volcano = NULL,
-        histogram = list(list(score = "estimate_mad", xlim = c(0,5,0.05))),
+        volcano = list(list(score = "p.value", fc = 1)),
+        histogram = list(list(score = "p.value", xlim = c(0,1,0.05))),
         modelName = self$modelName,
         estimate = "estimate_median",
         contrast = "contrast")
@@ -447,28 +456,42 @@ Contrasts <- R6::R6Class(
     },
     #' @description
     #' get linear functions from contrasts
-    get_linfct = function(){
-      models <- self$models %>% dplyr::filter(exists_lmer == TRUE)
-      m <- get_complete_model_fit(models)
-      linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-      linfct <- unique(linfct) # needed for single factor models
-      linfct_A <- linfct_matrix_contrasts(linfct, self$contrasts)
-      return(list(linfct = linfct, linfct_A = linfct_A))
+    get_linfct = function(global = TRUE){
+      linfct <- function(model, contrast){
+        linfct <- linfct_from_model(model, as_list = FALSE)
+        linfct <- unique(linfct) # needed for single factor models
+        linfct_A <- linfct_matrix_contrasts(linfct, self$contrasts)
+        return( rbind( linfct, linfct_A ) )
+      }
+      if(global){
+        models <- self$models %>% dplyr::filter(exists_lmer == TRUE)
+        model <- get_complete_model_fit(models)$linear_model[[1]]
+        return( linfct( model, self$contrasts ))
+      }else{
+        linfct <- purrr::map(self$models$linear_model,
+                             linfct, contrast = self$contrast)
+        return(linfct)
+      }
     },
     #' @description
     #' get table with contrast estimates
     #' @param all should all columns be returned (default FALSE)
+    #' @param global use a global linear function (determined by get_linfct)
     #' @return data.frame with contrasts
-    get_contrasts = function(all = FALSE){
+    get_contrasts = function(all = FALSE, global = TRUE){
       if (!is.null(self$contrast_result) ) {
         return(self$contrast_result)
       }
-      linfct <- self$get_linfct()
+
+      message("determine linear functions:")
+      linfct <- self$get_linfct(global = global)
       contrast_sides <- self$get_contrasts_sides()
+      message("compute contrasts:")
       contrast_result <- contrasts_linfct(self$models,
-                                          rbind(linfct$linfct, linfct$linfct_A),
+                                          linfct,
                                           subject_Id = self$subject_Id,
                                           contrastfun = self$contrastfun )
+
       contrast_result <- dplyr::rename(contrast_result, contrast = lhs)
 
       xx <- dplyr::select(contrast_result, self$subject_Id, "contrast", "estimate")
@@ -570,8 +593,8 @@ ContrastsModerated <- R6::R6Class(
   public = list(
     #' @description applies limma moderation
     #' @seealso \code{\link{moderated_p_limma_long}}
-    get_contrasts = function(all = FALSE){
-      contrast_result <- super$get_contrasts(all = TRUE)
+    get_contrasts = function(all = FALSE, global = TRUE){
+      contrast_result <- super$get_contrasts(all = TRUE, global = global)
       contrast_result <- moderated_p_limma_long(contrast_result , group_by_col = "contrast")
       if (!all) {
         contrast_result <- select(contrast_result ,
@@ -656,8 +679,8 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' get contrasts
     #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
-    get_contrasts = function(all=FALSE){
-      contrasts_data <- super$get_contrasts(all = TRUE)
+    get_contrasts = function(all=FALSE, global = TRUE){
+      contrasts_data <- super$get_contrasts(all = TRUE, global = global)
       res <- summary_ROPECA_median_p.scaled(
         contrasts_data,
         contrast = "contrast",
@@ -980,14 +1003,15 @@ Contrasts_Plotter <- R6::R6Class(
       for (score in scores) {
         column <- score$score
         fc <- score$fc
-        fig[[column]] <- LFQService:::.multigroupVolcano(contrasts,
-                                                         effect = self$estimate,
-                                                         p.value = column,
-                                                         condition = self$contrast,
-                                                         text = "subject_Id",
-                                                         xintercept = c(-fc, fc),
-                                                         colour = "isSingular",
-                                                         scales = "free_y")
+        fig[[column]] <- LFQService:::.multigroupVolcano(
+          contrasts,
+          effect = self$estimate,
+          p.value = column,
+          condition = self$contrast,
+          text = "subject_Id",
+          xintercept = c(-fc, fc),
+          colour = "isSingular",
+          scales = "free_y")
 
       }
       return(fig)
