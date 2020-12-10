@@ -524,10 +524,63 @@ impute_correlationBased <- function(x , config){
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
+#' bb <- LFQService::dataIonstarProtein_subsetNorm
+#' nr_B_in_A(bb$data, bb$config)
+#' undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
   levelA <- config$table$hkeysDepth()
   levelB <- config$table$hierarchyKeys()[length(levelA) + 1]
-  .nr_B_in_A(pdata, levelA, levelB , merge = merge)
+  if (is.na(levelB)) {
+    warning("here is no B in A")
+    return(NULL)
+  }else{
+    .nr_B_in_A(pdata, levelA, levelB , merge = merge)
+  }
+}
+
+
+
+#' how many peptides per protein in each sample
+#' @export
+#' @keywords internal
+#' @family summary
+#' @examples
+#' library(LFQService)
+#' library(tidyverse)
+#' bb <- LFQService::ionstar$filtered()
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#'
+#' nr_B_in_A_per_sample(data, configur, nested =FALSE)
+#' bb <- LFQService::dataIonstarProtein_subsetNorm
+#' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
+nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
+  cf <- config
+
+  levelA <- cf$table$hkeysDepth()
+  levelB <- cf$table$hierarchyKeys()[length(levelA) + 1]
+  if (is.na(levelB)) {
+    warning("here is no B in A")
+  }
+  data <- LFQService::complete_cases(data, cf)
+  data <- data %>%
+    dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$getWorkIntensity())) ~ 1,
+                                            TRUE ~ 0))
+  pepStats <- data %>% group_by_at(c(cf$table$hkeysDepth(), cf$table$sampleName)) %>%
+    summarize(nrPep = n(), present = sum(presentabsent), .groups = "drop")
+
+  annotColumns <- c(cf$table$fileName,
+                    cf$table$sampleName,
+                    cf$table$hkeysDepth(),
+                    cf$table$fkeysDepth(),
+                    cf$table$isotopeLabel)
+  annotation <- data %>%
+    dplyr::select(!!!syms(annotColumns) ) %>%
+    distinct()
+
+  res <- inner_join(annotation, pepStats, by = c(cf$table$sampleName, cf$table$hkeysDepth() ))
+  res <-  if (nested) {res %>% group_by_at(cf$table$hkeysDepth()) %>% nest()} else {res}
+  return(res)
 }
 
 

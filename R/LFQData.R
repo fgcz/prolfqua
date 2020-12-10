@@ -477,7 +477,6 @@ LFQDataStats <- R6::R6Class(
 #' sum$interaction_missing_stats()
 #' sum$missingness_per_condition()
 #' sum$missingness_per_condition_cumsum()
-#' sum$summarize_protein()
 #'
 #'
 LFQDataSummariser <- R6::R6Class(
@@ -503,11 +502,6 @@ LFQDataSummariser <- R6::R6Class(
       value <- match.arg(value)
       fun <- LFQService::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
       return(fun(value))
-    },
-    #' @description
-    #' e.g. number of peptides per protein overall
-    summarize_protein = function(){
-      LFQService::summarize_protein(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' missing per condition and protein

@@ -31,8 +31,8 @@ Other concrete_configuration:
 Other summary: 
 \code{\link{hierarchy_counts_sample}()},
 \code{\link{hierarchy_counts}()},
-\code{\link{summarize_hierarchy}()},
-\code{\link{summarize_protein}()}
+\code{\link{nr_B_in_A_per_sample}()},
+\code{\link{summarize_hierarchy}()}
 
 Other aggregation: 
 \code{\link{aggregateTopNIntensities}()},

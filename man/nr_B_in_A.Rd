@@ -37,5 +37,8 @@ nr_B_in_A(resDataStart, config, merge = FALSE)
 config$table$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
+bb <- LFQService::dataIonstarProtein_subsetNorm
+nr_B_in_A(bb$data, bb$config)
+undebug(nr_B_in_A)
 }
 \keyword{internal}

@@ -571,54 +571,6 @@ summarize_hierarchy <- function(pdata,
 }
 
 
-#' Summarize Protein counts
-#' Works for one isotope label level only
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @export
-#' @keywords internal
-#' @family summary
-#' @examples
-#'
-#' library(LFQService)
-#'
-#' bb <- LFQService::ionstar$filtered()
-#' configur <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#'
-#' LFQService:::summarize_protein(data, configur)
-#'
-summarize_protein <- function(pdata, config ){
-  warning("DEPRECATED use summarize_hierarchy instead")
-  rev_hierarchy <- config$table$hierarchyKeys(TRUE)
-  if (length(rev_hierarchy) < 4) {
-    warning("only usable for 4 level hierarchies : protein_Id, peptide_Id, precursor_Id, fragment_Id")
-    warning("your data has only: ", paste(config$table$hierarchyKeys(), collapse = ", ") )
-  }
-
-  precursorSum <- pdata %>% dplyr::select(rev_hierarchy) %>% dplyr::distinct() %>%
-    group_by_at(rev_hierarchy[-1]) %>%
-    dplyr::summarize(nrFragments = n())
-
-  peptideSum <- precursorSum %>% group_by_at(rev_hierarchy[-(1:2)]) %>%
-    dplyr::summarize(nrPrecursors = n(),
-                     minNrFragments = min(nrFragments),
-                     maxNrFragments = max(nrFragments))
-
-
-  proteinSum <- peptideSum %>% group_by_at(rev_hierarchy[-(1:3)])  %>%
-    dplyr::summarize(nrpeptides = n(),
-                     minNrPrecursors = min(nrPrecursors),
-                     maxNrPrecursors = max(nrPrecursors),
-                     minNrFragments = min(minNrFragments),
-                     maxNrFragments = max(maxNrFragments)
-    )
-  proteinPeptide <- proteinSum %>% tidyr::unite(Precursors ,minNrPrecursors , maxNrPrecursors, sep="-", remove=FALSE)
-  proteinPeptide <- proteinPeptide %>% tidyr::unite(Fragments ,minNrFragments , maxNrFragments, sep="-", remove=FALSE)
-  return(proteinPeptide)
-}
-
-
 # Functions - Handling isotopes ----
 
 #' spreads isotope label heavy light into two columns

@@ -75,7 +75,7 @@ Model <- R6::R6Class(
       modelProteinF <- get_complete_model_fit(self$modelDF)
       # ANOVA
       .anova_df <- function(x){
-        x <- anova(x)
+        x <- anova(x, test = "F")
         colnames(x) <- make.names(colnames(x))
         x <- data.frame(factor = rownames(x), x)
         return(x)
@@ -90,6 +90,7 @@ Model <- R6::R6Class(
 
 
       Model_Anova <- Model_Anova %>% dplyr::filter(factor != "Residuals")
+      Model_Anova <- Model_Anova %>% dplyr::filter(factor != "NULL")
 
       Model_Anova <- self$p.adjust(Model_Anova,
                                    column = "Pr..F.",
