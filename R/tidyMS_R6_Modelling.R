@@ -10,7 +10,6 @@
 #' Create custom lmer model
 #'
 #' @export
-#' @keywords internal
 #' @family modelling
 #' @examples
 #'
@@ -49,7 +48,6 @@ make_custom_model_lmer <- function(modelstr,
 
 #' Create custom lm model
 #' @export
-#' @keywords internal
 #' @family modelling
 #' @examples
 #' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
@@ -87,7 +85,6 @@ make_custom_model_lm <- function(modelstr,
 
 #' Create custom quasibinomial glm model
 #' @export
-#' @keywords internal
 #' @family modelling
 #' @examples
 #' tmp <- make_custom_model_glm("Intensity ~ condition", model_name = "parallel design")

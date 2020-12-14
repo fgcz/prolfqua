@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_ConcreteConfigurations.R
 \name{create_config_Skyline}
 \alias{create_config_Skyline}
-\title{This function sets up an example configuration}
+\title{create a Skyline configuration}
 \usage{
 create_config_Skyline(
   isotopeLabel = "Isotope.Label",
@@ -15,7 +15,7 @@ create_config_Skyline(
 \item{ident_qValue}{annotation_QValue}
 }
 \description{
-This function sets up an example configuration
+create a Skyline configuration
 }
 \examples{
 skylineconfig <- create_config_Skyline()

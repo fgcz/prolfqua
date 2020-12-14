@@ -2,14 +2,14 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{Model}
 \alias{Model}
-\title{Do Model}
+\title{R6 class representing modelling result}
 \description{
-Do Model
+R6 class representing modelling result
 
-Do Model
+R6 class representing modelling result
 }
 \examples{
-rm(list = ls())
+
 library(LFQService)
 library(tidyverse)
 D <- LFQService::ionstar$normalized()
@@ -38,11 +38,71 @@ mod$coef_pairs()
 mod$anova_histogram()
 
 }
+\seealso{
+Other modelling: 
+\code{\link{.linfct_all_possible_contrasts}()},
+\code{\link{ContrastsModerated}},
+\code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSimpleImpute}},
+\code{\link{Contrasts_Plotter}},
+\code{\link{Contrasts}},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{LR_test}()},
+\code{\link{build_model}()},
+\code{\link{get_complete_model_fit}()},
+\code{\link{get_imputed_contrasts}()},
+\code{\link{get_model_coefficients}()},
+\code{\link{get_p_values_pbeta}()},
+\code{\link{isSingular_lm}()},
+\code{\link{linfct_factors_contrasts}()},
+\code{\link{linfct_from_model}()},
+\code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_custom_model_glm}()},
+\code{\link{make_custom_model_lmer}()},
+\code{\link{make_custom_model_lm}()},
+\code{\link{model_analyse}()},
+\code{\link{moderated_p_limma_long}()},
+\code{\link{moderated_p_limma}()},
+\code{\link{ms_brms_model}()},
+\code{\link{ms_mcmc_checkzero}()},
+\code{\link{ms_mcmc_constrast}()},
+\code{\link{my_contest}()},
+\code{\link{my_contrast_V1}()},
+\code{\link{my_contrast_V2}()},
+\code{\link{my_contrast}()},
+\code{\link{my_glht}()},
+\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{plot_lmer_model_and_data_TWO}()},
+\code{\link{plot_lmer_model_and_data}()},
+\code{\link{plot_lmer_peptide_noRandom_TWO}()},
+\code{\link{plot_lmer_peptide_noRandom}()},
+\code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{summary_ROPECA_median_p.scaled}()}
+}
+\concept{modelling}
 \keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{modelDF}}{data.frame with modelling data and model.}
+
+\item{\code{modelName}}{name of model}
+
+\item{\code{subject_Id}}{e.g. protein_Id}
+
+\item{\code{function}}{to create the models}
+
+\item{\code{function}}{to adjust p-values}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{function}}{to create the models}
+
+\item{\code{function}}{to adjust p-values}
 }
 \if{html}{\out{</div>}}
 }
@@ -152,7 +212,7 @@ pairsplot of coefficients
 \subsection{Method \code{anova_histogram()}}{
 histogram of anova results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram(what = c("Pr..F.", "FDR.Pr..F."))}\if{html}{\out{</div>}}
 }
 
 }

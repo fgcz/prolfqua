@@ -1,0 +1,17 @@
+---
+title: "prolfqua - Proteomics Label Free Quantification"
+author: "Witold Wolski"
+date: "14/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Creating a configuration for a new long data format.
+
+```{r}
+
+
+```

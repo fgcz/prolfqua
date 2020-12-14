@@ -22,6 +22,7 @@ print(res$figure)
 }
 \seealso{
 Other plotting: 
+\code{\link{Contrasts_Plotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},

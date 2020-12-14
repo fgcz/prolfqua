@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataWriter}
 \alias{LFQDataWriter}
-\title{Write LFQ data, or provide outputs for writing.}
+\title{Write LFQData, or provide outputs for writing.}
 \description{
-Write LFQ data, or provide outputs for writing.
+Write LFQData, or provide outputs for writing.
 
-Write LFQ data, or provide outputs for writing.
+Write LFQData, or provide outputs for writing.
 }
 \concept{LFQData
 

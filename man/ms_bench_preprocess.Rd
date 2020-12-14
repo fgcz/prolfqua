@@ -12,3 +12,10 @@ ms_bench_preprocess(data)
 \description{
 prepare benchmark data
 }
+\seealso{
+Other benchmarking: 
+\code{\link{Benchmark}},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{ms_bench_auc}()}
+}
+\concept{benchmarking}

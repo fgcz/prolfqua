@@ -35,6 +35,7 @@ NULL
 #' @family deprecated
 #' @family transitionCorrelation
 #' @family preprocessing
+#' @family benchmarking
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

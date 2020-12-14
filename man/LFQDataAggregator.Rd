@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataAggregator}
 \alias{LFQDataAggregator}
-\title{LFQAggregator}
+\title{Decorates LFQData with methods to aggregate protein intensities}
 \description{
-LFQAggregator
+Decorates LFQData with methods to aggregate protein intensities
 
-LFQAggregator
+Decorates LFQData with methods to aggregate protein intensities
 }
 \details{
 aggregates intensities

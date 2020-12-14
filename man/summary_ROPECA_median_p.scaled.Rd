@@ -72,7 +72,14 @@ xx2$mad.estimate
 \seealso{
 Other modelling: 
 \code{\link{.linfct_all_possible_contrasts}()},
+\code{\link{ContrastsModerated}},
+\code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSimpleImpute}},
+\code{\link{Contrasts_Plotter}},
+\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{LR_test}()},
+\code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -102,8 +109,7 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
-\code{\link{plot_lmer_predicted_interactions}()},
-\code{\link{workflow_likelihood_ratio_test}()}
+\code{\link{plot_lmer_predicted_interactions}()}
 }
 \concept{modelling}
 \keyword{internal}

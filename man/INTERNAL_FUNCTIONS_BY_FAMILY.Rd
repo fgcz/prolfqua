@@ -50,6 +50,7 @@ Other aggregation:
 \code{\link{summarizeRobust}()}
 
 Other plotting: 
+\code{\link{Contrasts_Plotter}},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
@@ -77,6 +78,13 @@ Other utilities:
 
 Other modelling: 
 \code{\link{.linfct_all_possible_contrasts}()},
+\code{\link{ContrastsModerated}},
+\code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSimpleImpute}},
+\code{\link{Contrasts_Plotter}},
+\code{\link{Contrasts}},
+\code{\link{LR_test}()},
+\code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -107,8 +115,7 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{workflow_likelihood_ratio_test}()}
+\code{\link{summary_ROPECA_median_p.scaled}()}
 
 Other workflows: 
 \code{\link{workflow_DIA_NA_preprocessing}()},
@@ -129,8 +136,14 @@ Other deprecated:
 Other preprocessing: 
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{normalize_log2_robscale}()}
+
+Other benchmarking: 
+\code{\link{Benchmark}},
+\code{\link{ms_bench_auc}()},
+\code{\link{ms_bench_preprocess}()}
 }
 \concept{aggregation}
+\concept{benchmarking}
 \concept{concrete_configuration}
 \concept{configuration}
 \concept{deprecated}

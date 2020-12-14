@@ -1,5 +1,6 @@
 #' prepare benchmark data
 #' @export
+#' @family benchmarking
 #' @param data analysis results
 ms_bench_preprocess <- function(data) {
   tmp <- data %>%
@@ -59,6 +60,8 @@ ms_bench_preprocess <- function(data) {
 
 #' computes auc and pauc given output from ms_bench_add_FPRTPR
 #' using trapez rule
+#' @keywords internal
+#' @family benchmarking
 #' @export
 #' @param FPR array of FPR
 #' @param TPR array of corresponding TPR
@@ -246,11 +249,11 @@ do_confusion_c <- function(
 #' Benchmark R6 class
 #'
 #' @export
+#' @family benchmarking
 #' @examples
 #' library(ggpubr)
 #' library(LFQService)
 #' ttd <- ms_bench_preprocess(LFQService::benchmarkDataExample)
-#' ttd <- ms_bench_preprocess(benchmarkDataExample)
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"

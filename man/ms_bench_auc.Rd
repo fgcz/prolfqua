@@ -18,3 +18,11 @@ ms_bench_auc(FPR, TPR, fpr_threshold = 1)
 computes auc and pauc given output from ms_bench_add_FPRTPR
 using trapez rule
 }
+\seealso{
+Other benchmarking: 
+\code{\link{Benchmark}},
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{ms_bench_preprocess}()}
+}
+\concept{benchmarking}
+\keyword{internal}

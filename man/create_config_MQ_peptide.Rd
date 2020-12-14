@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_ConcreteConfigurations.R
 \name{create_config_MQ_peptide}
 \alias{create_config_MQ_peptide}
-\title{MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides}
+\title{MQ peptide file configuration - file must be read with tidyMQ_Peptides}
 \usage{
 create_config_MQ_peptide(
   ident_qValue = "pep",
@@ -18,7 +18,7 @@ create_config_MQ_peptide(
 \item{isotopeLabel}{isotope}
 }
 \description{
-MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
+MQ peptide file configuration - file must be read with tidyMQ_Peptides
 }
 \seealso{
 Other concrete_configuration: 

@@ -2,10 +2,13 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataStats}
 \alias{LFQDataStats}
-\title{compute stdv, mean and CV per peptide or protein and condition.}
+\title{Decorates LFQData with methods to compute statistics of interactions}
 \description{
-compute stdv, mean and CV per peptide or protein and condition.
+Decorates LFQData with methods to compute statistics of interactions
 
+Decorates LFQData with methods to compute statistics of interactions
+}
+\details{
 compute stdv, mean and CV per peptide or protein and condition.
 }
 \examples{

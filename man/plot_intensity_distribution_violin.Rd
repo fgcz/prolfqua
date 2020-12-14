@@ -40,6 +40,7 @@ plot_intensity_distribution_density(analysis, config)
 }
 \seealso{
 Other plotting: 
+\code{\link{Contrasts_Plotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
@@ -52,6 +53,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other plotting: 
+\code{\link{Contrasts_Plotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},

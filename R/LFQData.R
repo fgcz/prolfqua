@@ -174,7 +174,9 @@ LFQData <- R6::R6Class(
 )
 
 # LFQDataTransformer ----
-#' methods for transforming Intensities
+
+#' Decorate LFQData with Methods for transforming Intensities
+#'
 #' @export
 #'
 #' @examples
@@ -288,7 +290,11 @@ LFQDataTransformer <- R6::R6Class(
 )
 
 # LFQDataStats-----
+#'
+#' Decorates LFQData with methods to compute statistics of interactions
+#'
 #' compute stdv, mean and CV per peptide or protein and condition.
+#'
 #' @export
 #' @family LFQData
 #' @examples
@@ -460,7 +466,8 @@ LFQDataStats <- R6::R6Class(
 )
 
 # LFQDataSummariser ----
-#' generate dataset summaries.
+#' Summarize LFQData
+#'
 #' @export
 #' @family LFQData
 #' @examples
@@ -522,7 +529,7 @@ LFQDataSummariser <- R6::R6Class(
 )
 
 # LFQDataPlotter ----
-#' Create various visualization of the data
+#' Create various visualization of the LFQdata
 #' @export
 #'
 #' @family LFQData
@@ -764,7 +771,7 @@ LFQDataPlotter <- R6::R6Class(
   ))
 
 # LFQDataWriter -----
-#' Write LFQ data, or provide outputs for writing.
+#' Write LFQData, or provide outputs for writing.
 #' @family LFQData
 #'
 #' returns long and wide format for writing
@@ -843,7 +850,8 @@ LFQDataWriter <- R6::R6Class(
   ))
 
 # LFQDataAggregator ----
-#' LFQAggregator
+#'
+#' Decorates LFQData with methods to aggregate protein intensities
 #'
 #' aggregates intensities
 #'

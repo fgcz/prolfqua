@@ -12,7 +12,6 @@ Benchmark R6 class
 library(ggpubr)
 library(LFQService)
 ttd <- ms_bench_preprocess(LFQService::benchmarkDataExample)
-ttd <- ms_bench_preprocess(benchmarkDataExample)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm"
@@ -43,6 +42,13 @@ brms_benchmark$plot_scatter()
 head(bb)
 
 }
+\seealso{
+Other benchmarking: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{ms_bench_auc}()},
+\code{\link{ms_bench_preprocess}()}
+}
+\concept{benchmarking}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

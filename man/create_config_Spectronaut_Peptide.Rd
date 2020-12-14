@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_ConcreteConfigurations.R
 \name{create_config_Spectronaut_Peptide}
 \alias{create_config_Spectronaut_Peptide}
-\title{This function sets up an example spectronaut configuration}
+\title{Create Spectronaut configuration}
 \usage{
 create_config_Spectronaut_Peptide(
   isotopeLabel = "Isotope.Label",
@@ -15,7 +15,7 @@ create_config_Spectronaut_Peptide(
 \item{ident_qValue}{EG.Qvalue}
 }
 \description{
-This function sets up an example spectronaut configuration
+Create Spectronaut configuration
 }
 \examples{
 spectronautconfig <- create_config_Spectronaut_Peptide()

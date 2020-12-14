@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataTransformer}
 \alias{LFQDataTransformer}
-\title{methods for transforming Intensities}
+\title{Decorate LFQData with Methods for transforming Intensities}
 \description{
-methods for transforming Intensities
+Decorate LFQData with Methods for transforming Intensities
 
-methods for transforming Intensities
+Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
 library(tidyverse)

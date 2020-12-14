@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataPlotter}
 \alias{LFQDataPlotter}
-\title{Create various visualization of the data}
+\title{Create various visualization of the LFQdata}
 \description{
-Create various visualization of the data
+Create various visualization of the LFQdata
 
-Create various visualization of the data
+Create various visualization of the LFQdata
 }
 \examples{
 

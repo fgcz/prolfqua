@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataSummariser}
 \alias{LFQDataSummariser}
-\title{generate dataset summaries.}
+\title{Summarize LFQData}
 \description{
-generate dataset summaries.
+Summarize LFQData
 
-generate dataset summaries.
+Summarize LFQData
 }
 \examples{
 library(tidyverse)
