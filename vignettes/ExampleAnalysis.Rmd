@@ -9,9 +9,52 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Creating a configuration for a new long data format.
+# Creating a configuration for a file in long data format.
+
+Given an Spectronaut -> Normal Report -> Peptide Quant.
+
+The configuration object describes the columns in the long table.
 
 ```{r}
+library(tidyverse)
+library(LFQService)
+xx <- readr::read_tsv("inst/samples/spectronaut_PEPTIDE.xls")
+xx <- xx %>% rename(EG.TotalQuantity = "EG.TotalQuantity (Settings)")
+
+xx$Isotope.Label <- "light"
+
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "R.FileName"
+```
+
+The columns identifying the measured features, which are proteins, peptides or precursors, are the described using the named list hierarchy. The values of the list are the column names, while the names of your list are arbitrary as long as they are valid R column names (see function `make.names`). 
+
+The names list factors, is used to point to the columns containing the factors of you analysis.
+Here we rename the column "R.Condition" to "Marker". The data.frame can contain more than one factor. 
+```{r}
+atable$hierarchy[["PG.ProteinAccessions"]]    <-  "PG.ProteinAccessions"
+atable$hierarchy[["EG.PrecursorId"]]    <-  "EG.PrecursorId"
+atable$factors[["Marker"]] <- "R.Condition"
+
+
+```
+
+```{r}
+atable$ident_qValue = "EG.Qvalue"
+atable$workIntensity = "EG.TotalQuantity"
+atable$isotopeLabel = "Isotope.Label"
+anaparam <- AnalysisParameters$new()
+config <- AnalysisConfiguration$new(atable, anaparam)
+```
+
+Lastly the function `setup_analysis`, creates from data frame in long format an dataframe compatible with your configuration.
+
+```{r}
+analysis_data <- setup_analysis(xx, config)
+
+LFQService::summarize_hierarchy(analysis_data, config)
+str(analysis_data)
+str(xx)
 
 
 ```
