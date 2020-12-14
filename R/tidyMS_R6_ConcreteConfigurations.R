@@ -1,4 +1,4 @@
-#' This function sets up an example configuration
+#' create a Skyline configuration
 #'
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue annotation_QValue
@@ -28,7 +28,7 @@ create_config_Skyline <- function(isotopeLabel="Isotope.Label",
   AnalysisConfiguration$new(atable, anaparam)
 }
 
-#' This function sets up an example spectronaut configuration
+#' Create Spectronaut configuration
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue EG.Qvalue
 #' @export
@@ -60,7 +60,7 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
   AnalysisConfiguration$new(atable, anaparam)
 }
 
-#' MQ peptide file configuration - file most be read with tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
+#' MQ peptide file configuration - file must be read with tidyMQ_Peptides
 #' @param ident_qValue pep
 #' @param intensity peptide.intensity
 #' @param isotopeLabel isotope
