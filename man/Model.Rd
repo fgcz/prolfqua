@@ -130,7 +130,8 @@ Other modelling:
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$new(
   modelDF,
-  modelName = "Model",
+  modelFunction,
+  modelName,
   subject_Id = "protein_Id",
   p.adjust = LFQService::adjust_p_values
 )}\if{html}{\out{</div>}}

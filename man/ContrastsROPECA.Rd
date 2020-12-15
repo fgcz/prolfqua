@@ -33,11 +33,7 @@ mod <- build_model(
 
 
  #ContrastsROPECA$debug("get_Plotter")
- contrast <- LFQService::ContrastsROPECA$new(mod$modelDF,
- Contr,
- modelFunction$contrast_fun,
- subject_Id = config$table$hkeysDepth(),
- modelName = modelFunction$model_name)
+ contrast <- LFQService::ContrastsROPECA$new(mod, Contr)
 
  contrast$get_linfct()
  contrast$subject_Id

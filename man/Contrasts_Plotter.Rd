@@ -37,11 +37,8 @@ mod <- build_model(
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
 #Contrasts$debug("get_contrasts")
-contrast <- LFQService::Contrasts$new(mod$modelDF,
-  Contr,
-  modelFunction$contrast_fun,
-  subject_Id = config$table$hkeysDepth(),
-  modelName = modelFunction$modelName)
+contrast <- LFQService::Contrasts$new(mod,
+  Contr)
 tmp <- contrast$get_contrasts()
 
 cp <- Contrasts_Plotter$new(tmp ,

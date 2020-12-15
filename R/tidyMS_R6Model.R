@@ -45,10 +45,12 @@ Model <- R6::R6Class(
     #' @field function to adjust p-values
     p.adjust = NULL,
     initialize = function(modelDF,
-                          modelName = "Model",
+                          modelFunction,
+                          modelName,
                           subject_Id = "protein_Id",
                           p.adjust = LFQService::adjust_p_values){
       self$modelDF = modelDF
+      self$modelFunction = modelFunction
       self$modelName = modelName
       self$subject_Id = subject_Id
       self$p.adjust = p.adjust

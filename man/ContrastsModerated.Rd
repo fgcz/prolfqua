@@ -24,11 +24,8 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- contrast <- LFQService::ContrastsModerated$new(mod$modelDF,
- Contr,
- modelFunction$contrast_fun,
- subject_Id = config$table$hkeysDepth(),
- modelName = modelFunction$model_name)
+ contrast <- LFQService::ContrastsModerated$new(mod,
+ Contr)
  contrast$get_contrasts(all = TRUE)
  plotter <- contrast$get_Plotter()
  plotter$histogram()

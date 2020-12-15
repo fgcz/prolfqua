@@ -113,11 +113,8 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
 #'     "dil.e_vs_a" = "dilution.e - dilution.b" )
 #'  #LFQService::Contrasts$debug("get_linfct")
-#' contrastX <- LFQService::Contrasts$new(mod$modelDF,
-#'  Contr,
-#'  modelFunction$contrast_fun,
-#'  subject_Id = config$table$hkeysDepth(),
-#'  modelName = modelFunction$model_name)
+#' contrastX <- LFQService::Contrasts$new(mod,
+#'  Contr)
 #'
 #' contrastX$get_contrasts_sides()
 #'
@@ -291,11 +288,8 @@ Contrasts <- R6::R6Class(
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#'  contrast <- LFQService::ContrastsModerated$new(mod$modelDF,
-#'  Contr,
-#'  modelFunction$contrast_fun,
-#'  subject_Id = config$table$hkeysDepth(),
-#'  modelName = modelFunction$model_name)
+#'  contrast <- LFQService::ContrastsModerated$new(mod,
+#'  Contr)
 #'  contrast$get_contrasts(all = TRUE)
 #'  plotter <- contrast$get_Plotter()
 #'  plotter$histogram()
@@ -378,11 +372,7 @@ ContrastsModerated <- R6::R6Class(
 #'
 #'
 #'  #ContrastsROPECA$debug("get_Plotter")
-#'  contrast <- LFQService::ContrastsROPECA$new(mod$modelDF,
-#'  Contr,
-#'  modelFunction$contrast_fun,
-#'  subject_Id = config$table$hkeysDepth(),
-#'  modelName = modelFunction$model_name)
+#'  contrast <- LFQService::ContrastsROPECA$new(mod, Contr)
 #'
 #'  contrast$get_linfct()
 #'  contrast$subject_Id
@@ -503,11 +493,8 @@ ContrastsROPECA <- R6::R6Class(
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' #Contrasts$debug("get_contrasts")
-#' contrast <- LFQService::Contrasts$new(mod$modelDF,
-#'   Contr,
-#'   modelFunction$contrast_fun,
-#'   subject_Id = config$table$hkeysDepth(),
-#'   modelName = modelFunction$modelName)
+#' contrast <- LFQService::Contrasts$new(mod,
+#'   Contr)
 #' tmp <- contrast$get_contrasts()
 #'
 #' cp <- Contrasts_Plotter$new(tmp ,
