@@ -7,15 +7,15 @@ The R package contains functions for analyzing mass spectrometry based LFQ exper
 
 # What package name?
 
-Current R package name is __LFQService__, the repository is called __prolfqua__
+Current R package name is **LFQService**, the repository is called **prolfqua**
 To build the package you need to clone the repository using [https:/github.com/wolski/LFQService], or use `install_github("wolski/LFQService")`.
 
 
 What name should we use :
 
 - LFQService - we do proteomics services.
-- prolfqua - __pro__teomics LFQ package (read prolevka)
-- nalfqua - __n__ot __a__nother LFQ package (read nalewka)
+- prolfqua - **pro**teomics LFQ package (read prolevka)
+- nalfqua - **n**ot **a**nother LFQ package (read nalewka)
 
 
 
