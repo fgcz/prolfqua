@@ -1,12 +1,7 @@
 The R package name is **LFQService**, the repository is called **prolfqua**. We will be renaming the package in the near future.
-To build the package you need to clone the repository using [https:/github.com/wolski/LFQService], or use `install_github("wolski/LFQService")`.
-If you want to develop the package best would be to run:
+To build the package you need to clone the repository using `git clone https:/github.com/wolski/LFQService`, or use `install_github("wolski/LFQService")`.
+If you want to build the package on you machine first it is best to run `install_github("wolski/LFQService")`
 
-```
-> install_github("wolski/LFQService") # installs all the dependencies
-
-git clone https:/github.com/wolski/LFQService
-```
 
 
 # prolfqua - an R package for Proteomics Label Free Quantification Services
