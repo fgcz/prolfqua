@@ -1,4 +1,4 @@
-The R package name is **LFQService**, the repository is called **prolfqua**. We will be renaming the package in the near future.
+The R package name is **LFQService**, the repository is called **prolfqua**. We will be renaming the `package` in the near future.
 To build the package you need to clone the repository using `git clone https:/github.com/wolski/LFQService`, or use `install_github("wolski/LFQService")`.
 If you want to build the package on you machine first it is best to run `install_github("wolski/LFQService")`
 
@@ -21,7 +21,7 @@ What name should we use :
 - prolfqua - **pro**teomics LFQ package (read prolevka)
 - nalfqua - **n**ot **a**nother LFQ package (read nalewka)
 
-
+https://twitter.com/WitoldE/status/1338799648149041156
 
 ## Motivation
 
