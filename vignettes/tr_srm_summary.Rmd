@@ -44,17 +44,6 @@ knitr::kable(data.frame(NR = x), caption = "summary")
 ```
 
 
-```{r proteinSummaries}
-
-x2 <- summarize_protein(data, configuration)
-x3 <- summarize_hierarchy(data, configuration)
-tmp <- dplyr::inner_join(x3, x2)
-tmp <- tmp %>% select(-c(starts_with("min"), starts_with("max")))
-knitr::kable(tmp, caption = "Protein Summaries")
-
-```
-
-
 ```{r missingFigIntensityHistorgram, fig.cap="histogram of mean condition intensities per transition"}
 
 #interaction_missing_stats(data, configuration)
