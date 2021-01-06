@@ -245,7 +245,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #'
 #' @param pdata (matrix)
 #' @param value name of column to store values in. (see `gather`)
-#' @param AnalysisConfiguration
+#' @param config AnalysisConfiguration
 #' @param data lfqdata
 #' @param sep separater to unite the hierarchy keys.
 #' @export

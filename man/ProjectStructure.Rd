@@ -118,6 +118,13 @@ create qc dir
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$qc_path(qc_dir)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{qc_dir}}{QC directory}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-modelling_path"></a>}}
@@ -128,6 +135,13 @@ create modelling path
 \if{html}{\out{<div class="r">}}\preformatted{ProjectStructure$modelling_path(modelling_dir)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{modelling_dir}}{directory with modelling data}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create"></a>}}

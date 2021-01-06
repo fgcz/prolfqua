@@ -81,7 +81,6 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
-\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -91,18 +90,9 @@ Other modelling:
 
 \item{\code{subject_Id}}{e.g. protein_Id}
 
-\item{\code{function}}{to create the models}
+\item{\code{modelFunction}}{function to create the models}
 
-\item{\code{function}}{to adjust p-values}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{function}}{to create the models}
-
-\item{\code{function}}{to adjust p-values}
+\item{\code{p.adjust}}{function to adjust p-values}
 }
 \if{html}{\out{</div>}}
 }
@@ -127,6 +117,7 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$new(
   modelDF,
@@ -137,14 +128,27 @@ Other modelling:
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{modelDF}}{dataframe with modelling results}
+
+\item{\code{modelFunction}}{modelFunction see \code{\link{make_custom_model_lmer}}}
+
+\item{\code{modelName}}{name of model}
+
+\item{\code{subject_Id}}{subject column name}
+
+\item{\code{p.adjust}}{method to adjust p-values}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-get_coefficients}{}}}
 \subsection{Method \code{get_coefficients()}}{
 return model coefficient table
-return anova table
-writes results of `model_analyse`, anova table and all the coefficients with parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_coefficients()}\if{html}{\out{</div>}}
 }
@@ -154,6 +158,7 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 \if{html}{\out{<a id="method-get_anova"></a>}}
 \if{latex}{\out{\hypertarget{method-get_anova}{}}}
 \subsection{Method \code{get_anova()}}{
+return anova table
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_anova()}\if{html}{\out{</div>}}
 }
@@ -163,19 +168,39 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 \if{html}{\out{<a id="method-write_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-write_coefficients}{}}}
 \subsection{Method \code{write_coefficients()}}{
+writes model coefficients to file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$write_coefficients(path, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{folder to write to}
+
+\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_anova"></a>}}
 \if{latex}{\out{\hypertarget{method-write_anova}{}}}
 \subsection{Method \code{write_anova()}}{
+writes anova coefficients to file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$write_anova(path, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{folder to write to}
+
+\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-coef_histogram"></a>}}
@@ -201,7 +226,7 @@ volcano plot of non intercept coefficients
 \if{html}{\out{<a id="method-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
-pairsplot of coefficients
+pairs-splot of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$coef_pairs()}\if{html}{\out{</div>}}
 }
@@ -211,29 +236,60 @@ pairsplot of coefficients
 \if{html}{\out{<a id="method-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
-histogram of anova results
+histogram of ANOVA results
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram(what = c("Pr..F.", "FDR.Pr..F."))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_anova_figures"></a>}}
 \if{latex}{\out{\hypertarget{method-write_anova_figures}{}}}
 \subsection{Method \code{write_anova_figures()}}{
+write figures related to ANOVA into pdf file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$write_anova_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{folder name}
+
+\item{\code{width}}{figure width}
+
+\item{\code{height}}{figure height}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_coef_figures"></a>}}
 \if{latex}{\out{\hypertarget{method-write_coef_figures}{}}}
 \subsection{Method \code{write_coef_figures()}}{
+write figures related to Coefficients into pdf file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$write_coef_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{folder name}
+
+\item{\code{width}}{figure width}
+
+\item{\code{height}}{figure height}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

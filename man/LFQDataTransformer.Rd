@@ -39,6 +39,13 @@ plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{lfq}}{LFQData object}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -54,20 +61,35 @@ plotter$intensity_distribution_density()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$new(lfqdata)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData object to transform}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-log2_robscale"></a>}}
 \if{latex}{\out{\hypertarget{method-log2_robscale}{}}}
 \subsection{Method \code{log2_robscale()}}{
-log2 transform and robust scale datas
+log2 transform and robust scale data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale(colname = "tranformedIntensity")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colname}}{name of transformed column}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 LFQData
 }
@@ -87,6 +109,8 @@ log2 transform and robust scale data based on subset
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{lfqsubset}}{LFQData subset to use for normalization}
+
 \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
 }
 \if{html}{\out{</div>}}
@@ -119,6 +143,7 @@ LFQDataTransformer (self)
 \if{html}{\out{<a id="method-intensity_matrix"></a>}}
 \if{latex}{\out{\hypertarget{method-intensity_matrix}{}}}
 \subsection{Method \code{intensity_matrix()}}{
+pass a function which works with matrices see robust_scale for examples.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale)}\if{html}{\out{</div>}}
 }

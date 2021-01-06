@@ -48,9 +48,9 @@ Other LFQData:
 
 \item{\code{data}}{data.frame or tibble matching AnalysisConfiguration.}
 
-\item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
-
 \item{\code{is_pep}}{todo}
+
+\item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
 }
 \if{html}{\out{</div>}}
 }
@@ -120,12 +120,19 @@ samples subset of data
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{size of subset default 100}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-subject_id"></a>}}
 \if{latex}{\out{\hypertarget{method-subject_id}{}}}
 \subsection{Method \code{subject_id()}}{
-
+get subject ID columns
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_id()}\if{html}{\out{</div>}}
 }
@@ -135,10 +142,21 @@ samples subset of data
 \if{html}{\out{<a id="method-is_transformed"></a>}}
 \if{latex}{\out{\hypertarget{method-is_transformed}{}}}
 \subsection{Method \code{is_transformed()}}{
+is data trasfromed
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$is_transformed(is_transformed)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{is_transformed}}{logical}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+logical
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_small_intensities"></a>}}

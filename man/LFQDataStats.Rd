@@ -72,15 +72,6 @@ Other LFQData:
 \item{\code{lfq}}{LFQData}
 
 \item{\code{stat}}{either CV or sd (if is_transformed)}
-
-\item{\code{is_transformed}}{if TRUE data was transformed for stable variance}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{is_transformed}}{if TRUE data was transformed for stable variance}
 }
 \if{html}{\out{</div>}}
 }

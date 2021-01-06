@@ -76,10 +76,20 @@ Aggregate LFQ data}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataAggregator$new(lfq, prefix = "protein")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfq}}{LFQData}
+
+\item{\code{prefix}}{default protein}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-medpolish"></a>}}
@@ -185,7 +195,7 @@ data.frame
 \if{html}{\out{<a id="method-write_plots"></a>}}
 \if{latex}{\out{\hypertarget{method-write_plots}{}}}
 \subsection{Method \code{write_plots()}}{
-Writes plots to folder
+writes plots to folder
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataAggregator$write_plots(
   qcpath,
@@ -200,11 +210,11 @@ Writes plots to folder
 \describe{
 \item{\code{qcpath}}{qcpath}
 
+\item{\code{show.legend}}{legend}
+
 \item{\code{width}}{figure width}
 
 \item{\code{height}}{figure height}
-
-\item{\code{legend}}{legend}
 }
 \if{html}{\out{</div>}}
 }

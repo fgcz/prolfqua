@@ -33,12 +33,12 @@ LFQData <- R6::R6Class(
 
   public = list(
     #' @field config AnalysisConfiguration
-    #' @field data data.frame or tibble matching AnalysisConfiguration.
-    #' @field prefix e.g. "peptide_", "protein_", "compound_"
-    #' @field is_pep todo
     config = NULL,
+    #' @field data data.frame or tibble matching AnalysisConfiguration.
     data = NULL,
+    #' @field is_pep todo
     is_pep = FALSE,
+    #' @field prefix e.g. "peptide_", "protein_", "compound_"
     prefix = "",
     #' @description
     #' initialize
@@ -58,16 +58,19 @@ LFQData <- R6::R6Class(
       return(self$clone(deep = TRUE))
     },
     #' @description samples subset of data
+    #' @param size size of subset default 100
     get_sample = function(size = 100){
       subset <- LFQService::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config))
     },
     #' @description
-    #'
-    #' @param
+    #' get subject ID columns
     subject_id = function(){
       return(self$config$table$hkeysDepth())
     },
+    #' @description is data trasfromed
+    #' @param is_transformed logical
+    #' @return logical
     is_transformed = function(is_transformed){
       if (missing(is_transformed)) {
         return(self$config$table$is_intensity_transformed)
@@ -212,13 +215,15 @@ LFQData <- R6::R6Class(
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
+    #' @field lfq LFQData object
     lfq = NULL,
-
+    #' @description  initialize
+    #' @param lfqdata LFQData object to transform
     initialize = function(lfqdata){
       self$lfq = lfqdata$clone(deep = TRUE)
     },
-    #' @description
-    #' log2 transform and robust scale datas
+    #' @description log2 transform and robust scale data
+    #' @param colname name of transformed column
     #' @return LFQData
     log2_robscale = function(colname = "tranformedIntensity"){
       r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
@@ -234,7 +239,7 @@ LFQDataTransformer <- R6::R6Class(
     },
     #' @description
     #' log2 transform and robust scale data based on subset
-    #' @param LFQData
+    #' @param lfqsubset LFQData subset to use for normalization
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQData
     #'
@@ -273,6 +278,7 @@ LFQDataTransformer <- R6::R6Class(
       return(self)
     },
     #' @description
+    #' pass a function which works with matrices see robust_scale for examples.
     #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
     #' @return LFQDataTransformer (self)
     #'
@@ -348,12 +354,10 @@ LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
     #' @field lfq LFQData
-    #' @field stat either CV or sd (if is_transformed)
-    #' @field is_transformed if TRUE data was transformed for stable variance
     lfq = NULL,
+    #' @field stat either CV or sd (if is_transformed)
     stat = "CV",
-    #' @description
-    #' create analyse variances and CV
+    #' @description create analyse variances and CV
     #' @param lfqdata LFQData object
     initialize = function(lfqdata){
       self$lfq = lfqdata
@@ -896,12 +900,16 @@ LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",
   public = list(
     #' @field lfq LFQData
-    #' @field lfq_agg aggregation result
-    #' @field prefix to use for aggregation results e.g. protein
     lfq = NULL,
+    #' @field lfq_agg aggregation result
     lfq_agg = NULL,
+    #' @field prefix to use for aggregation results e.g. protein
     prefix = character(),
-    filepath = character(),
+    ## @field filepath
+    ## filepath = character(),
+    #' @description initialize
+    #' @param lfq LFQData
+    #' @param prefix default protein
     initialize = function(lfq, prefix = "protein"){
       if ( length(lfq$config$table$hierarchyKeys()) == 1 ) {
         stop("no hierarchies to aggregate from: ",  lfq$config$table$hierarchyKeys())
@@ -986,10 +994,9 @@ LFQDataAggregator <- R6::R6Class(
         show.legend = show.legend)
       invisible(df)
     },
-    #' @description
-    #' Writes plots to folder
+    #' @description writes plots to folder
     #' @param qcpath qcpath
-    #' @param legend legend
+    #' @param show.legend legend
     #' @param width figure width
     #' @param height figure height
     #' @return file path

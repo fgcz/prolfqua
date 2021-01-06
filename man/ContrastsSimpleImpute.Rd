@@ -4,6 +4,11 @@
 \alias{ContrastsSimpleImpute}
 \title{compute contrasts with data imputation (directly from data)}
 \description{
+compute contrasts with data imputation (directly from data)
+
+compute contrasts with data imputation (directly from data)
+}
+\details{
 if interaction average can not be computed infer it using the 10\%
  smallest interaction averages in the dataset. Based on these compute fold changes.
  Use median of peptide level fold changes as protein estimate.
@@ -72,6 +77,19 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{subject_Id}}{subject_id e.g. protein_ID column}
+
+\item{\code{contrasts}}{array with contrasts (see example)}
+
+\item{\code{modelName}}{model name}
+
+\item{\code{contrast_result}}{data frame with results of contrast computation}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -88,15 +106,28 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$new(lfqdata, contrasts, modelName = "groupAverage")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqdata}}{LFQData}
+
+\item{\code{contrasts}}{array of contrasts (see example)}
+
+\item{\code{modelName}}{default "groupAverage"}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+get contrasts sides
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_contrast_sides()}\if{html}{\out{</div>}}
 }
@@ -106,6 +137,7 @@ Other modelling:
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
+table with results of contrast computation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_contrasts()}\if{html}{\out{</div>}}
 }
@@ -115,15 +147,26 @@ Other modelling:
 \if{html}{\out{<a id="method-write"></a>}}
 \if{latex}{\out{\hypertarget{method-write}{}}}
 \subsection{Method \code{write()}}{
+write contrasts computation results to
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$write(path, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{folder to write to}
+
+\item{\code{format}}{default xlsx (can be csv or html)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
+get Contrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_Plotter()}\if{html}{\out{</div>}}
 }
@@ -133,10 +176,18 @@ Other modelling:
 \if{html}{\out{<a id="method-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
+convert contrast results to wide format
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$to_wide(columns = c("p.value", "FDR"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{columns}}{value column default p.value}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -11,6 +11,8 @@ gatherItBack(pdata, value, config, data = NULL, sep = "~lfq~")
 
 \item{value}{name of column to store values in. (see `gather`)}
 
+\item{config}{AnalysisConfiguration}
+
 \item{data}{lfqdata}
 
 \item{sep}{separater to unite the hierarchy keys.}

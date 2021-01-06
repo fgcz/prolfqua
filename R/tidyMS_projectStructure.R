@@ -96,6 +96,7 @@ ProjectStructure <-
     },
     #' @description
     #' create qc dir
+    #' @param qc_dir QC directory
     qc_path = function(qc_dir){
       if (!missing(qc_dir)) {
         self$qc_dir <- c(self$qc_dir, qc_dir)
@@ -105,6 +106,7 @@ ProjectStructure <-
     },
     #' @description
     #' create modelling path
+    #' @param modelling_dir directory with modelling data
     modelling_path = function(modelling_dir){
       if (!missing(modelling_dir)) {
         self$modelling_dir <- c(self$modelling_dir, modelling_dir)

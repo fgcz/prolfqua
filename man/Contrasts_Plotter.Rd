@@ -125,8 +125,9 @@ Other plotting:
 
 \item{\code{subject_Id}}{hierarchy key columns}
 
-\item{\code{prefix}}{default Contrasts - used to generate file names
-column with fold change estimates}
+\item{\code{prefix}}{default Contrasts - used to generate file names}
+
+\item{\code{estimate}}{column with fold change estimates}
 
 \item{\code{contrast}}{column with contrasts names, default "contrast"}
 
@@ -186,8 +187,6 @@ create Crontrast_Plotter
 \item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
 
 \item{\code{modelName}}{name of model}
-
-\item{\code{modelName}}{Model}
 
 \item{\code{estimate}}{estimate column}
 
@@ -293,19 +292,39 @@ generate all figures
 \if{html}{\out{<a id="method-write_pdf"></a>}}
 \if{latex}{\out{\hypertarget{method-write_pdf}{}}}
 \subsection{Method \code{write_pdf()}}{
+write figures in pdf format
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_pdf(path, width = 10, height = 10)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{path}
+
+\item{\code{width}}{figure with}
+
+\item{\code{height}}{figure height}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_plotly"></a>}}
 \if{latex}{\out{\hypertarget{method-write_plotly}{}}}
 \subsection{Method \code{write_plotly()}}{
+write figures into thml
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_plotly(path)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{path}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

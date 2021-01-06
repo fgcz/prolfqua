@@ -109,11 +109,21 @@ applies limma moderation
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{all}}{should all columns be returned (default FALSE)}
+
+\item{\code{global}}{use a global linear function (determined by get_linfct)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
+get \code{\link{Contrast_Plotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_Plotter()}\if{html}{\out{</div>}}
 }
@@ -123,10 +133,18 @@ applies limma moderation
 \if{html}{\out{<a id="method-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
+convert to wide format
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$to_wide(columns = c("moderated.p.value", "FDR.moderated"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{columns}}{value column default moderated.p.value}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

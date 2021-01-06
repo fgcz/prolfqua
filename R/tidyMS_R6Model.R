@@ -40,10 +40,17 @@ Model <- R6::R6Class(
     modelName = character(),
     #' @field subject_Id e.g. protein_Id
     subject_Id = character(),
-    #' @field function to create the models
+    #' @field modelFunction function to create the models
     modelFunction = NULL,
-    #' @field function to adjust p-values
+    #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
+    #' @description initialize
+    #' @param modelDF dataframe with modelling results
+    #' @param modelFunction modelFunction see \code{\link{make_custom_model_lmer}}
+    #' @param modelName name of model
+    #' @param subject_Id subject column name
+    #' @param p.adjust method to adjust p-values
+    #'
     initialize = function(modelDF,
                           modelFunction,
                           modelName,
@@ -73,7 +80,7 @@ Model <- R6::R6Class(
       Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
       return(Model_Coeff)
     },
-    #' return anova table
+    #' @description  return anova table
     get_anova = function(){
       lmermodel <- "linear_model"
       modelProteinF <- get_complete_model_fit(self$modelDF)
@@ -104,16 +111,18 @@ Model <- R6::R6Class(
       return(Model_Anova)
     },
 
-
-    #' writes results of `model_analyse`, anova table and all the coefficients with parameters.
-    #' @keywords internal
-    #' @export
+    #' @description writes model coefficients to file
+    #' @param path folder to write to
+    #' @param format default xlsx \code{\link{lfq_write_table}}
     write_coefficients  = function(path, format = "xlsx"){
       lfq_write_table(self$get_coefficients(),
                       path = path,
                       name  = paste0("Coef_",self$modelName),
                       format = format)
     },
+    #' @description writes anova coefficients to file
+    #' @param path folder to write to
+    #' @param format default xlsx \code{\link{lfq_write_table}}
     write_anova = function(path, format = "xlsx"){
       lfq_write_table(self$get_anova(),
                       path = path,
@@ -149,7 +158,7 @@ Model <- R6::R6Class(
           colour = "isSingular" )
       return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
     },
-    #' @description pairsplot of coefficients
+    #' @description pairs-splot of coefficients
     coef_pairs = function(){
       Model_Coeff <- self$get_coefficients()
       Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
@@ -162,7 +171,8 @@ Model <- R6::R6Class(
       return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
 
     },
-    #' @description histogram of anova results
+    #' @description histogram of ANOVA results
+    #' @param what show either "Pr..F." or "FDR.Pr..F."
     anova_histogram = function(what=c("Pr..F.", "FDR.Pr..F.")){
       ## Anova_p.values
       what <- match.arg(what)
@@ -174,9 +184,19 @@ Model <- R6::R6Class(
         facet_wrap(~factor)
       return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
     },
+    #' @description write figures related to ANOVA into pdf file
+    #' @param path folder name
+    #' @param width figure width
+    #' @param height figure height
+    #'
     write_anova_figures = function(path, width = 10, height =10){
       private$write_fig(self$anova_histogram(),path, width, height )
     },
+    #' @description write figures related to Coefficients into pdf file
+    #' @param path folder name
+    #' @param width figure width
+    #' @param height figure height
+    #'
     write_coef_figures = function(path, width = 10, height =10){
       private$write_fig(self$coef_histogram(),path, width, height )
       private$write_fig(self$coef_volcano(),path, width, height )
