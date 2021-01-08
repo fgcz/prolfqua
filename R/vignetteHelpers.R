@@ -103,7 +103,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @param project_config list with workunit_Id project_Id order_Id
-#' @param pep are these peptide or protein deata
+#' @param pep are these peptide or protein data
 #' @param dest_path destination path
 #' @param dest_file_name name of pdf file
 #' @param workdir working directory
@@ -116,11 +116,12 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
+#' if(FALSE){
 #' render_MQSummary_rmd(analysis,
 #'   config ,
 #'   projectConfig,
 #'   workdir= ".") # tempdir(check = FALSE))
-#'
+#' }
 render_MQSummary_rmd <-
   function(pdata,
            config,

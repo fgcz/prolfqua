@@ -16,9 +16,9 @@ build_model(
 
 \item{modelFunction}{model function}
 
-\item{modelName}{model name}
+\item{subject_Id}{grouping variable}
 
-\item{grouping}{variable}
+\item{modelName}{model name}
 }
 \value{
 a object of class \code{\link{Model}}

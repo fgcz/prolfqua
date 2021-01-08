@@ -11,6 +11,13 @@ make_custom_model_lmer(
     "moderated.p.value.adjusted")
 )
 }
+\arguments{
+\item{modelstr}{model formula}
+
+\item{model_name}{name of model}
+
+\item{report_columns}{columns to report}
+}
 \description{
 Create custom lmer model
 }

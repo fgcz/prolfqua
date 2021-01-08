@@ -30,21 +30,34 @@ dd <- LFQService::ionstar$filtered()
 config <- dd$config
 res <- dd$data
 ranked <- rankPrecursorsByIntensity(res,config)
-ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
+ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),
+"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
 distinct() \%>\%
 arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
 
-mean_f <- function(x, name = FALSE){ if(name){return("mean")};mean(x, na.rm=TRUE)}
-sum_f <- function(x, name =FALSE){ if(name){return("sum")};sum(x, na.rm = TRUE)}
+mean_f <- function(x, name = FALSE){
+ if(name){return("mean")};mean(x, na.rm=TRUE)
+ }
+sum_f <- function(x, name =FALSE){
+ if(name){return("sum")};sum(x, na.rm = TRUE)
+ }
 
-resTOPN <- aggregateTopNIntensities(ranked, config, .func = mean_f, N=3)
+resTOPN <- aggregateTopNIntensities(ranked,
+ config,
+ .func = mean_f,
+  N=3)
 
-stopifnot(dim(resTOPN$data) == c(3260, 8))
+print(dim(resTOPN$data))
+# stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$getWorkIntensity()
 #debug(plot_aggregation)
-tmpRob <- plot_aggregation(ranked, config, resTOPN$data, resTOPN$config, show.legen=TRUE)
-stopifnot("ggplot"\%in\%class(tmpRob$plots[[4]]))
+tmpRob <- plot_aggregation(ranked,
+ config,
+ resTOPN$data,
+ resTOPN$config,
+ show.legen=TRUE)
+stopifnot( "ggplot" \%in\% class(tmpRob$plots[[4]]) )
 
 }
 \seealso{

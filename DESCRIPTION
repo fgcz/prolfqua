@@ -42,6 +42,7 @@ Imports:
     plotly,
     plyr,
     pROC,
+    progress,
     purrr,
     readr,
     readxl,
@@ -54,6 +55,7 @@ Imports:
     writexl
 Suggests:
     brms,
+    coda,
     fgcz.gsea.ora,
     KernSmooth,
     knitr,

@@ -57,11 +57,10 @@ alldata <- fun("all")
 head(xxx)
 
 imputed <- fun("imputed")
-imputed
 
  meanArea <- fun("mean")
-
- stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
+ print(sum(is.na(meanArea$mean.dilution.a)))
+ #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
 
 }

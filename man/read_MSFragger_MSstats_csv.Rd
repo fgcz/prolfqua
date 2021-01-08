@@ -6,6 +6,9 @@
 \usage{
 read_MSFragger_MSstats_csv(file)
 }
+\arguments{
+\item{file}{MSstats formatted file}
+}
 \description{
 read MSFragger generated MSstats formatted csv files.
 }

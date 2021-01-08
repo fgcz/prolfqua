@@ -20,7 +20,7 @@ render_MQSummary_rmd(
 
 \item{config}{AnalysisConfiguration}
 
-\item{pep}{are these peptide or protein deata}
+\item{pep}{are these peptide or protein data}
 
 \item{dest_path}{destination path}
 
@@ -40,11 +40,12 @@ bb <- LFQService::skylinePRMSampleData_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
+if(FALSE){
 render_MQSummary_rmd(analysis,
   config ,
   projectConfig,
   workdir= ".") # tempdir(check = FALSE))
-
+}
 }
 \seealso{
 Other vignetteHelpers: 

@@ -267,7 +267,7 @@ LR_test <- function(modelProteinF,
 #'
 #' @param data data - a data frame
 #' @param modelFunction model function
-#' @param grouping variable
+#' @param subject_Id grouping variable
 #' @param modelName model name
 #' @return
 #' a object of class \code{\link{Model}}

@@ -193,8 +193,9 @@ do_confusion_c <- function(
     )
 
   ftable <- list(content = summaryS,
-                 caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description), digits = 2)
-
+                 caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description),
+                 digits = 2)
+  # TODO replace melt
   sumd <- reshape2::melt(summaryS)
   barp <- ggplot(sumd, aes(x = contrast , y = value, color = NULL , fill = what)) +
     geom_bar(stat = "identity", position = position_dodge()) +

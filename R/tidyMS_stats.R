@@ -115,7 +115,7 @@ summarize_cv_quantiles <- function(stats_res,
                          power = power,
                          sig.level = sig.level)$sd
   quantile_sd <- quantile_sd %>%
-    mutate(sdtrimmed = case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
+    mutate("sdtrimmed" := case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
 
   #, delta = delta, power = power, sig.level = sig.level
   getSampleSize <- function(sd){
@@ -124,7 +124,7 @@ summarize_cv_quantiles <- function(stats_res,
   #  return(getSampleSize)
 
   sampleSizes <- quantile_sd %>%
-    mutate( N_exact = purrr::map_dbl(sdtrimmed, getSampleSize), N = ceiling(N_exact))
+    mutate( N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
   return(sampleSizes)
 }
 #' estimate sample sizes
@@ -137,6 +137,7 @@ summarize_cv_quantiles <- function(stats_res,
 #' @export
 #' @keywords internal
 #' @examples
+#'
 #' library(tidyverse)
 #' library(ggplot2)
 #' library(LFQService)
@@ -149,7 +150,7 @@ summarize_cv_quantiles <- function(stats_res,
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb %>%
 #'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>%
-#'  spread(delta, N, sep="=")
+#'  spread(delta, N, sep = "=")
 #' summary
 lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd,

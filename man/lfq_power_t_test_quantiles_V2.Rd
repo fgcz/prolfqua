@@ -27,6 +27,7 @@ lfq_power_t_test_quantiles_V2(
 estimate sample sizes
 }
 \examples{
+
 library(tidyverse)
 library(ggplot2)
 library(LFQService)
@@ -39,7 +40,7 @@ bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb \%>\%
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\%
- spread(delta, N, sep="=")
+ spread(delta, N, sep = "=")
 summary
 }
 \keyword{internal}
