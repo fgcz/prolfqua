@@ -391,12 +391,15 @@ scale_with_subset <- function(data, subset, config){
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
+#'
 #' library(LFQService)
 #' bb <- LFQService::ionstar$filtered()
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
+#'
 #' dataI <- markDecorrelated(data, conf)
 #' head(dataI)
+#'
 markDecorrelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data %>%  dplyr::group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
   qvalFiltX <- qvalFiltX %>%

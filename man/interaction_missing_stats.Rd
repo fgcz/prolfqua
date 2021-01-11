@@ -29,10 +29,10 @@ compute missingness statistics per hierarchy and factor level
 \examples{
 library(tidyverse)
 library(LFQService)
-rm(list=ls())
-bb <- LFQService::ionstar$filtered()
 
-configur <- bb$config$clone(deep=TRUE)
+bb <- LFQService::ionstar$filtered()
+saveRDS(bb, file="c:/users/wolski/aaaaa.rds")
+configur <- bb$config
 data <- bb$data
 
 configur$parameter$qVal_individual_threshold <- 0.01
@@ -41,6 +41,7 @@ xx <- LFQService::removeLarge_Q_Values(data,
 xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data \%>\% arrange(desc(nrNAs))
 print(nrow(x))
+readr::write_tsv(x, file="c:/users/wolski/aaaaaa.tsv")
 stopifnot(nrow(x) == 5540)
 stopifnot(sum(is.na(x$meanArea)) == 206)
 stopifnot(length(unique(x$protein_Id)) == 162)

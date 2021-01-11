@@ -275,7 +275,7 @@ plot_lmer_peptide_predictions <- function(m){
   data$prediction <- predict(m)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
-  gg <- ggplot(data, aes(x = interaction , y= transformedIntensity)) + geom_point()
+  gg <- ggplot(data, aes(x = interaction , y = transformedIntensity)) + geom_point()
   gg <- gg + geom_point(aes(x = interaction, y = prediction), color = 2) + facet_wrap(~peptide_Id)
   gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))
   return(gg)

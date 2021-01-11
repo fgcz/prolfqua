@@ -25,8 +25,12 @@ rownames(dataX)<- paste("R",1:nrow(dataX),sep="")
 colnames(dataX)<- paste("C",1:ncol(dataX),sep="")
 tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
 
-jackknifeMatrix(dataX, cor)
-jackknifeMatrix(dataX, cor, method="spearman")
+res <- jackknifeMatrix(dataX, cor)
+res
+dim(res)
+res <- jackknifeMatrix(dataX, cor, method="spearman")
+dim(res)
+res
 }
 \seealso{
 Other utilities: 

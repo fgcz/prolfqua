@@ -16,11 +16,14 @@ marks uncorrelated peptides
 }
 
 \examples{
+
 library(LFQService)
 bb <- LFQService::ionstar$filtered()
 conf <- bb$config$clone(deep=TRUE)
 data <- bb$data
+
 dataI <- markDecorrelated(data, conf)
 head(dataI)
+
 }
 \keyword{internal}

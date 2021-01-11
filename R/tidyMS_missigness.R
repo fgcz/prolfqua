@@ -11,10 +11,10 @@
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' rm(list=ls())
-#' bb <- LFQService::ionstar$filtered()
 #'
-#' configur <- bb$config$clone(deep=TRUE)
+#' bb <- LFQService::ionstar$filtered()
+#' saveRDS(bb, file="c:/users/wolski/aaaaa.rds")
+#' configur <- bb$config
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -23,6 +23,7 @@
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
 #' print(nrow(x))
+#' readr::write_tsv(x, file="c:/users/wolski/aaaaaa.tsv")
 #' stopifnot(nrow(x) == 5540)
 #' stopifnot(sum(is.na(x$meanArea)) == 206)
 #' stopifnot(length(unique(x$protein_Id)) == 162)
@@ -53,7 +54,7 @@ interaction_missing_stats <- function(pdata,
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
                      medianArea = median(!!sym(workIntensity), na.rm = TRUE)) %>%
-    mutate(nrMeasured = nrReplicates - nrNAs) %>% dplyr::ungroup()
+    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) %>% dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea", "medianArea")))
 }
@@ -448,13 +449,16 @@ get_imputed_contrasts <- function(data, config, contrasts){
 missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
-  missingPrec <- missingPrec %>%  dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(nrNAs))
+  missingPrec <- missingPrec %>%
+    dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
     if (config$table$is_intensity_transformed) {
-      missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),1,meanArea))
+      missingPrec <- missingPrec %>%
+        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),1,.data$meanArea))
     }else{
-      missingPrec <- missingPrec %>% dplyr::mutate(meanArea = ifelse(is.na(meanArea),-20,meanArea))
+      missingPrec <- missingPrec %>%
+        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),-20,.data$meanArea))
     }
 
   }

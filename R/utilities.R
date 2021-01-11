@@ -231,8 +231,12 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' colnames(dataX)<- paste("C",1:ncol(dataX),sep="")
 #' tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
 #'
-#' jackknifeMatrix(dataX, cor)
-#' jackknifeMatrix(dataX, cor, method="spearman")
+#' res <- jackknifeMatrix(dataX, cor)
+#' res
+#' dim(res)
+#' res <- jackknifeMatrix(dataX, cor, method="spearman")
+#' dim(res)
+#' res
 jackknifeMatrix <- function(dataX, distmethod , ... ){
   if (is.null(colnames(dataX))) {
     colnames(dataX) <- paste("C", 1:ncol(dataX), sep = "")
@@ -243,10 +247,10 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- my_jackknife( dataX, distmethod, ... )
-    #x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
+    x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
     x <- purrr::map_df(tmp$jack.values, LFQService::matrix_to_tibble)
 
-    dd <- tidyr::gather(x, "col.names" , "correlation" , 3:ncol(x))
+    dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
     ddd <- dd %>%
       group_by(UQ(sym("row.names")), UQ(sym("col.names"))) %>%
       summarize_at(c("jcor" = "correlation"), function(x){max(x, na.rm = TRUE)})
