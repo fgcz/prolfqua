@@ -243,7 +243,9 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- my_jackknife( dataX, distmethod, ... )
-    x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
+    #x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
+    x <- purrr::map_df(tmp$jack.values, LFQService::matrix_to_tibble)
+
     dd <- tidyr::gather(x, "col.names" , "correlation" , 3:ncol(x))
     ddd <- dd %>%
       group_by(UQ(sym("row.names")), UQ(sym("col.names"))) %>%
