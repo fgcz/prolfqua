@@ -2,7 +2,12 @@
 title: "prolfqua - Proteomics Label Free Quantification"
 author: "Witold Wolski"
 date: "14/12/2020"
-output: html_document
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{prolfqua - Proteomics Label Free Quantification} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+
 ---
 
 ```{r setup, include=FALSE}
