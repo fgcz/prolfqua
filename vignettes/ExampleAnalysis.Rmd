@@ -79,6 +79,7 @@ lfqdata$filter_proteins_by_peptide_count()
 ## Visualization of not normalized data
 
 ```{r}
+lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 ```
 
