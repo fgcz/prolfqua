@@ -9,7 +9,6 @@
 #' @importFrom glue glue
 #' @importFrom graphics par rect hist
 #' @importFrom pheatmap pheatmap
-#' @importFrom plyr ldply
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := UQ sym syms .data
 #' @importFrom stats as.formula cor
