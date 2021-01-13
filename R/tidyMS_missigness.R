@@ -13,7 +13,9 @@
 #' library(LFQService)
 #'
 #' bb <- LFQService::ionstar$filtered()
-#' saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
+#' stopifnot(nrow(bb$data) == 25780)
+#' stopifnot(nrow(bb$data) == 25780)
+#' #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -22,8 +24,8 @@
 #'    configur)
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
-#' print(nrow(x))
-#' readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
+#'
+#' #readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
 #' stopifnot(nrow(x) == 5540)
 #' stopifnot(sum(is.na(x$meanArea)) == 206)
 #' stopifnot(length(unique(x$protein_Id)) == 162)
@@ -77,6 +79,7 @@ interaction_missing_stats <- function(pdata,
 #' @examples
 #' library(LFQService)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -224,6 +227,7 @@ interaction_missing_stats <- function(pdata,
 #' @examples
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
@@ -346,6 +350,7 @@ aggregate_contrast <- function(
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' data <- complete_cases(data, configur)
@@ -487,6 +492,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #'
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -527,6 +533,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @family imputation
 #' @examples
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'

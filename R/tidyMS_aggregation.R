@@ -63,6 +63,7 @@ plot_hierarchies_line_default <- function(data,
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' analysis <- bb$data
 #'
@@ -128,26 +129,26 @@ plot_hierarchies_line <- function(res,
 #' library(tidyverse)
 #' istar <- LFQService::ionstar$normalized()
 #'
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
+#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
 #'
 #' config$table$is_intensity_transformed <- FALSE
 #' #debug(plot_hierarchies_line_df)
-#' res <- plot_hierarchies_line_df(istar$data, config)
+#' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
 #' config$table$is_intensity_transformed <- TRUE
-#' res <- plot_hierarchies_line_df(istar$data, config)
+#' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
 #' istar <- LFQService::ionstar$filtered()
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
+#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
-#' res <- plot_hierarchies_line_df(istar$data, config)
+#' res <- plot_hierarchies_line_df(istar_data, config)
 #' config$table$is_intensity_transformed
 #' res[[1]]
 #' config$table$is_intensity_transformed <- TRUE
-#' res <- plot_hierarchies_line_df(istar$data, config)
+#' res <- plot_hierarchies_line_df(istar_data, config)
 #' config$table$is_intensity_transformed
 #' res[[1]]
 #'
@@ -248,6 +249,7 @@ medpolishPly <- function(x, name = FALSE){
 #' library(dplyr)
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -294,14 +296,15 @@ extractIntensities <- function(pdata, config ){
 #' @family aggregation
 #' @family plotting
 #' @examples
-#'
+#' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
 #'
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data %>%
-#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'   group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -326,13 +329,14 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' @keywords internal
 #' @export
 #' @examples
-#'
+#' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data %>%
-#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'   group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -439,6 +443,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' @importFrom MASS rlm
 #' @export
 #' @examples
+#' library(tidyverse)
 #' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 #'
 #' bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)
@@ -460,11 +465,12 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #'
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data %>%
-#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'   group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -489,13 +495,13 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @family aggregation
 #' @keywords internal
 #' @examples
-#'
+#' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data %>%
-#'   group_by_at(conf$table$hkeysDepth()) %>% nest()
+#'   group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -732,6 +738,7 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
@@ -823,11 +830,11 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @examples
 #' library(tidyverse)
 #' library(LFQService)
-#' data <- LFQService::ionstar$normalized()
+#' istar <- LFQService::ionstar$normalized()
 #'
-#' data$data <- data$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' res <- medpolish_protein_quants(data$data,
-#' data$config )
+#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' res <- medpolish_protein_quants(istar_data,
+#' istar$config )
 #'
 #' head(res("unnest")$data)
 #'

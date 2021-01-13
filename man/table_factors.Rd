@@ -18,6 +18,7 @@ table of distinct factors (sample annotation)
 
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 

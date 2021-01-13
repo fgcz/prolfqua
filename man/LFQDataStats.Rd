@@ -33,8 +33,8 @@ runallfuncs <- function(x){
 }
 
 istar <- LFQService::ionstar$filtered()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- LFQData$new(istar$data, istar$config)
+data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 x<-lfqstats
@@ -42,14 +42,15 @@ x<-lfqstats
 #study variance of normalized data
 istar <- LFQService::ionstar$normalized()
 istar$config$table$is_intensity_transformed
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- LFQData$new(istar$data, istar$config)
+data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+lfqdata <- LFQData$new(data, istar$config)
 lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
 #Slightly different dataset
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data
 

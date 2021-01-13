@@ -21,18 +21,20 @@ visualize intensity distributions
 }
 \examples{
 
-bb <- LFQService::ionstar$filtered()
-config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+stopifnot(nrow(istar$data) == 25780)
+config <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 
 plot_intensity_distribution_violin(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
 
-bb <- LFQService::ionstar$filtered()
-config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+stopifnot(nrow(istar$data) == 25780)
+config <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 plot_intensity_distribution_density(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_density(analysis, config)

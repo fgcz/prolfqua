@@ -14,6 +14,7 @@ scale_with_subset
 library(LFQService)
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data
 conf$table$workIntensity <- "peptide.intensity"

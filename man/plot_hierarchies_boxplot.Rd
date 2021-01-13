@@ -31,9 +31,10 @@ plot peptides by factors and it's levels.
 
 library(LFQService)
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
-conf <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+stopifnot(nrow(istar$data) == 25780)
+conf <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 conf$table$hierarchyDepth
 conf$table$hkeysDepth()
 

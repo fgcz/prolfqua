@@ -9,9 +9,10 @@
 #' @family plotting
 #' @examples
 #'
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #' plot_intensity_distribution_violin(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
@@ -37,9 +38,10 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @rdname plot_intensity_distribution_violin
 #' @examples
 #'
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #' plot_intensity_distribution_density(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' plot_intensity_distribution_density(analysis, config)
@@ -63,9 +65,10 @@ plot_intensity_distribution_density <- function(pdata, config){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
@@ -111,9 +114,10 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' library(LFQService)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
-#' conf <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' conf <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #' conf$table$hierarchyDepth
 #' conf$table$hkeysDepth()
 #'
@@ -255,9 +259,9 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #' pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
 #' stopifnot("pheatmap" %in% class(pheat_map))
@@ -306,9 +310,10 @@ plot_heatmap_cor <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #'
 #'
@@ -359,9 +364,9 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' library(tidyverse)
 #' library(LFQService)
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #' tmp <- plot_NA_heatmap(analysis, config)
 #' print(tmp)
@@ -434,9 +439,10 @@ plot_NA_heatmap <- function(data,
 #' library(tidyverse)
 #' library(LFQService)
 #'
-#' bb <- LFQService::ionstar$filtered()
-#' config <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' istar <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
 #'
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)
 #'

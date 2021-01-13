@@ -14,9 +14,10 @@ plot PCA
 library(tidyverse)
 library(LFQService)
 
-bb <- LFQService::ionstar$filtered()
-config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+stopifnot(nrow(istar$data) == 25780)
+config <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 
 tmp <- plot_pca(analysis, config, add_txt= TRUE)
 

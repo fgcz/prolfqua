@@ -31,7 +31,9 @@ library(tidyverse)
 library(LFQService)
 
 bb <- LFQService::ionstar$filtered()
-saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
+stopifnot(nrow(bb$data) == 25780)
+stopifnot(nrow(bb$data) == 25780)
+#saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
 configur <- bb$config
 data <- bb$data
 
@@ -40,8 +42,8 @@ xx <- LFQService::removeLarge_Q_Values(data,
    configur)
 xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data \%>\% arrange(desc(nrNAs))
-print(nrow(x))
-readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
+
+#readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
 stopifnot(nrow(x) == 5540)
 stopifnot(sum(is.na(x$meanArea)) == 206)
 stopifnot(length(unique(x$protein_Id)) == 162)

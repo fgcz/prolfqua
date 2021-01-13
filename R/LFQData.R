@@ -9,8 +9,8 @@
 #'
 #' istar <- LFQService::ionstar$filtered()
 #'
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' stopifnot("data.frame" %in% class(tmp$data))
 #' tmp <- lfqdata$to_wide(as.matrix = TRUE)
@@ -191,8 +191,8 @@ LFQData <- R6::R6Class(
 #' library(LFQService)
 #' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
 #' istar <- LFQService::ionstar$filtered()
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #'
 #' lfqcopy <- lfqdata$clone()
 #' lfqTrans <- lfqcopy$get_Transformer()
@@ -325,8 +325,8 @@ LFQDataTransformer <- R6::R6Class(
 #' }
 #'
 #' istar <- LFQService::ionstar$filtered()
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
 #' x<-lfqstats
@@ -334,14 +334,15 @@ LFQDataTransformer <- R6::R6Class(
 #' #study variance of normalized data
 #' istar <- LFQService::ionstar$normalized()
 #' istar$config$table$is_intensity_transformed
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
 #'
@@ -478,8 +479,8 @@ LFQDataStats <- R6::R6Class(
 #' library(tidyverse)
 #'
 #' istar <- LFQService::ionstar
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
 #' sum$hierarchy_counts()
 #' sum$hierarchy_counts_sample("wide")
@@ -868,8 +869,8 @@ LFQDataWriter <- R6::R6Class(
 #' library(LFQService)
 #'
 #' istar <- LFQService::ionstar$filtered()
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
 #'
 #' lfqTrans <- lfqdata$clone()$get_Transformer()$log2_robscale()
 #' lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")

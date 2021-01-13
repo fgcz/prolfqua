@@ -13,6 +13,7 @@ Extract intensity column in wide format
 library(dplyr)
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 

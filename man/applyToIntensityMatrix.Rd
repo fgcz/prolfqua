@@ -22,6 +22,7 @@ apply Function To matrix
 
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 data <- bb$data
 res <- applyToIntensityMatrix(data, conf, .func = base::scale)

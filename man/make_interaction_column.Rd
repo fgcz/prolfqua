@@ -16,6 +16,7 @@ x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 analysis <- bb$data
 

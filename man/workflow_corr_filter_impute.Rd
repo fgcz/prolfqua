@@ -21,6 +21,7 @@ rm(list=ls())
 library(tidyverse)
 library(LFQService)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL

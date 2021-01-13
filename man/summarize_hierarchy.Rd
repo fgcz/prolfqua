@@ -29,6 +29,7 @@ library(LFQService)
 library(tidyverse)
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
 

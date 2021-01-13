@@ -18,26 +18,26 @@ generates peptide level plots for all Proteins
 library(tidyverse)
 istar <- LFQService::ionstar$normalized()
 
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
 
 config$table$is_intensity_transformed <- FALSE
 #debug(plot_hierarchies_line_df)
-res <- plot_hierarchies_line_df(istar$data, config)
+res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
 config$table$is_intensity_transformed <- TRUE
-res <- plot_hierarchies_line_df(istar$data, config)
+res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
 istar <- LFQService::ionstar$filtered()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
-res <- plot_hierarchies_line_df(istar$data, config)
+res <- plot_hierarchies_line_df(istar_data, config)
 config$table$is_intensity_transformed
 res[[1]]
 config$table$is_intensity_transformed <- TRUE
-res <- plot_hierarchies_line_df(istar$data, config)
+res <- plot_hierarchies_line_df(istar_data, config)
 config$table$is_intensity_transformed
 res[[1]]
 

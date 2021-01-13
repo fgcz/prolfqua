@@ -25,12 +25,12 @@ library(LFQService)
 library(tidyverse)
 
 istar <- LFQService::ionstar$Pep()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-filterPep <- LFQService:::filter_proteins_by_peptide_count( istar$data ,  istar$config )
-tmp <- filter_difference(istar$data, filterPep$data, istar$config)
-stopifnot(nrow(istar$data )  - nrow(filterPep$data) == nrow(tmp))
-tmp <- filter_difference(filterPep$data, istar$data , istar$config)
-stopifnot(nrow(istar$data )  - nrow(filterPep$data) == nrow(tmp))
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+filterPep <- LFQService:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
+tmp <- filter_difference(istar_data, filterPep$data, istar$config)
+stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
+tmp <- filter_difference(filterPep$data, istar_data , istar$config)
+stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
 
 }
 \keyword{internal}

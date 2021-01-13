@@ -19,6 +19,7 @@ summarizeRobust(pdata, expression, feature, samples, maxIt = 20)
 summarize proteins using MASS:rlm
 }
 \examples{
+library(tidyverse)
 xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 
 bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)
@@ -40,11 +41,12 @@ summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleNam
 
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
 conf$table$hierarchyDepth = 1
 xnested <- data \%>\%
-  group_by_at(conf$table$hkeysDepth()) \%>\% nest()
+  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]

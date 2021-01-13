@@ -12,14 +12,14 @@ R6 class representing modelling result
 
 library(LFQService)
 library(tidyverse)
-D <- LFQService::ionstar$normalized()
-D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- LFQService::ionstar$normalized()
+istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
    model_name = modelName)
-pepIntensity <- D$data
-config <- D$config
+pepIntensity <- istar_data
+config <- istar$config
 config$table$hkeysDepth()
 mod <- LFQService::build_model(
  pepIntensity,

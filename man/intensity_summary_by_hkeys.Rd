@@ -20,6 +20,7 @@ Summarizes the intensities within hierarchy
 library(LFQService)
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)

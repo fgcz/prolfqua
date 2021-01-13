@@ -319,6 +319,7 @@ robust_scale <- function(data){
 #'
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' res <- applyToIntensityMatrix(data, conf, .func = base::scale)
@@ -347,6 +348,7 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
 #' conf$table$workIntensity <- "peptide.intensity"
@@ -394,6 +396,7 @@ scale_with_subset <- function(data, subset, config){
 #'
 #' library(LFQService)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -505,8 +508,9 @@ impute_correlationBased <- function(x , config){
 #' @export
 #' @keywords internal
 #' @examples
-#'
+#' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data %>% select(-all_of("nr_peptide_Id_IN_protein_Id"))
 #' hierarchy <- config$table$hierarchyKeys()
@@ -551,6 +555,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' library(LFQService)
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'

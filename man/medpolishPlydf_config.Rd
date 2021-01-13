@@ -15,13 +15,14 @@ medpolishPlydf_config(pdata, config, name = FALSE)
 medpolish Ply df config
 }
 \examples{
-
+library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
 conf$table$hierarchyDepth = 1
 xnested <- data \%>\%
-  group_by_at(conf$table$hkeysDepth()) \%>\% nest()
+  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]

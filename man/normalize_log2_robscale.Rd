@@ -20,8 +20,8 @@ normalize data by log2 and robust scaling
 \examples{
 
 istar <- LFQService::ionstar$filtered()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-xx <- normalize_log2_robscale(istar$data, istar$config)
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+xx <- normalize_log2_robscale(istar_data, istar$config)
 names(xx)
 xx$config$table$workIntensity
 

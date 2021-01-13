@@ -20,6 +20,7 @@ Compute fold changes given Contrasts
 library(LFQService)
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 data <- complete_cases(data, configur)

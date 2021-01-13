@@ -12,11 +12,11 @@ median polish from normalized peptide intensities
 \examples{
 library(tidyverse)
 library(LFQService)
-data <- LFQService::ionstar$normalized()
+istar <- LFQService::ionstar$normalized()
 
-data$data <- data$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-res <- medpolish_protein_quants(data$data,
-data$config )
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+res <- medpolish_protein_quants(istar_data,
+istar$config )
 
 head(res("unnest")$data)
 

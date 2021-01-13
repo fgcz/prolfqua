@@ -32,6 +32,7 @@ should generalize at some stage
 \examples{
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 xx <- complete_cases(data, configur)

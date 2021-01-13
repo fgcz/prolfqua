@@ -36,6 +36,7 @@ used in Acetylation project p2916
 \examples{
 library(LFQService)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01

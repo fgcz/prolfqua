@@ -29,6 +29,7 @@ extracts the relevant information from the configuration to make the plot.
 library(LFQService)
 library(tidyverse)
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data
 

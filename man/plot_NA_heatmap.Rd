@@ -13,9 +13,9 @@ plot heatmap of NA values
 
 library(tidyverse)
 library(LFQService)
-bb <- LFQService::ionstar$filtered()
-config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+config <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 
 tmp <- plot_NA_heatmap(analysis, config)
 print(tmp)

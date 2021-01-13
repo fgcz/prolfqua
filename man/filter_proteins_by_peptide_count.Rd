@@ -23,8 +23,8 @@ library(LFQService)
 library(tidyverse)
 
 istar <- LFQService::ionstar$Pep()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-filterPep <- LFQService::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+filterPep <- LFQService::filter_proteins_by_peptide_count( istar_data ,  istar$config )
  x <- LFQService::summarize_hierarchy(filterPep$data , istar$config)
 stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
 

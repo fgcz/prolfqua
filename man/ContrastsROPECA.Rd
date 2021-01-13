@@ -15,12 +15,12 @@ ROPECA optimizes the reproducibility of statistical testing
 }
 \examples{
 
-D <- LFQService::ionstar$normalized()
-D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- LFQService::ionstar$normalized()
+istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   make_custom_model_lm("transformedIntensity  ~ dilution.")
-pepIntensity <- D$data
-config <- D$config$clone(deep = TRUE)
+pepIntensity <- istar_data
+config <- istar$config$clone(deep = TRUE)
 config$table$hierarchyDepth <- 2
 config$table$hkeysDepth()
 

@@ -212,6 +212,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' @examples
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
 #'
@@ -237,6 +238,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' x <- make_interaction_column(xx, c("A"))
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
 #'
@@ -379,6 +381,7 @@ separate_factors <- function(data, config) {
 #' @examples
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -426,6 +429,7 @@ sample_subset <- function(size, pdata, config){
 #'
 #' library(tidyverse)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -456,6 +460,7 @@ table_factors <- function(pdata, configuration){
 #' library(tidyverse)
 #' library(LFQService)
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -536,6 +541,7 @@ hierarchy_counts_sample <- function(pdata,
 #' library(tidyverse)
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -581,6 +587,7 @@ summarize_hierarchy <- function(pdata,
 #' library(LFQService)
 #'
 #' bb <- LFQService::ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'

@@ -13,6 +13,7 @@ spreads isotope label heavy light into two columns
 library(LFQService)
 
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
 

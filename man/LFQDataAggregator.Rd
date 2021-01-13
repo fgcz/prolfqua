@@ -16,8 +16,8 @@ library(tidyverse)
 library(LFQService)
 
 istar <- LFQService::ionstar$filtered()
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- LFQData$new(istar$data, istar$config)
+data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+lfqdata <- LFQData$new(data, istar$config)
 
 lfqTrans <- lfqdata$clone()$get_Transformer()$log2_robscale()
 lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")

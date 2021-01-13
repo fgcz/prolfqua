@@ -11,12 +11,12 @@ Limma moderated contrasts
 \examples{
 
 library(LFQService)
-D <- LFQService::ionstar$normalized()
-D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- LFQService::ionstar$normalized()
+istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
-pepIntensity <- D$data
-config <- D$config$clone(deep = TRUE)
+pepIntensity <- istar_data
+config <- istar$config$clone(deep = TRUE)
 config$table$hkeysDepth()
 mod <- build_model(
  pepIntensity,

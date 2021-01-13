@@ -17,9 +17,9 @@ plot correlation heatmap with annotations
 }
 \examples{
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
-config <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+istar <- LFQService::ionstar$filtered()
+config <- istar$config$clone(deep=TRUE)
+analysis <- istar$data
 
 pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
 stopifnot("pheatmap" \%in\% class(pheat_map))

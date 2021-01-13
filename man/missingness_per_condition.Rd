@@ -11,6 +11,7 @@ Summarize missing in condtion as barplot
 }
 \examples{
 bb <- LFQService::ionstar$filtered()
+stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
 
