@@ -159,7 +159,6 @@ render_MQSummary_rmd <-
 #' @keywords internal
 #'
 #' @export
-#' @examples
 #'
 render_SummarizeFiltering_rmd <-
   function(results,

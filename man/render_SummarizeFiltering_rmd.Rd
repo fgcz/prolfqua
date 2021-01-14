@@ -19,9 +19,6 @@ render_SummarizeFiltering_rmd(
 \description{
 render Filtering Summary.
 }
-\examples{
-
-}
 \seealso{
 Other vignetteHelpers: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
