@@ -38,4 +38,41 @@ NULL
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL
-
+#' Model for debugging
+#' @format a linear model
+"basicModel_p1807"
+#' Benchmark data Example
+#' @format A data frame
+"benchmarkDataExample"
+#' example data for check
+'checksummarizationrobust87'
+#' example data for check
+'checksummarizerobust'
+#' example data for check
+'checksummarizerobust69'
+#' example data for check
+'correlatedPeptideList'
+#' example data for check
+'dataIonstarProtein_subsetNorm'
+#' example data for check
+'exampleDataForRopeca'
+#' example data for check
+'factor_levelContrasts'
+#' example data for check
+'interactionModel_p1807'
+#' example data for check
+'ionstar'
+#' example data for check
+'lm_models_to_test'
+#' example data for check
+'modellingResult_A'
+#' example data for check
+'models_interaction'
+#' example data for check
+'multigroupFCDATA'
+#' example data for check
+'skylinePRMSampleData_A'
+#' example data for check
+'skylineSRM_HL_A'
+#' example data for check
+'spectronautDIAData250_A'

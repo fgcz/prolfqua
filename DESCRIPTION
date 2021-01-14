@@ -60,7 +60,8 @@ Suggests:
     pROC,
     plyr,
     rmarkdown,
-    testthat
+    testthat,
+    prolfquaData
 Remotes:
     bioc::3.12/limma
 RoxygenNote: 7.1.1
