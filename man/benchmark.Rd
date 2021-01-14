@@ -17,7 +17,7 @@ medpol_benchmark <- make_benchmark(ttd$data,
                                    model_name = "prot_med_lm"
 )
 medpol_benchmark$plot_score_distribution()
-
+#Benchmark$debug("pAUC_summaries")
 brms_benchmark <- make_benchmark(
   ttd$data,
   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
@@ -32,6 +32,7 @@ brms_benchmark <- make_benchmark(
   model_description = "protein level measurments, lm model",
   model_name = "prot_lm"
 )
+bb <- brms_benchmark$pAUC_summaries()
 brms_benchmark$complete()
 brms_benchmark$plot_score_distribution()
 bb <- brms_benchmark$get_confusion()
