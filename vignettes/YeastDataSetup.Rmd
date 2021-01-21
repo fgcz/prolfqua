@@ -2,12 +2,11 @@
 title: "Data Preprocessing of Yeast data from the Combined Course FGCZ"
 author: "Witold Wolski"
 date: "06/10/2020"
-output: html_document
-vignette: >
-  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined Course FGCZ} 
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-
+output:
+  pdf_document: default
+  html_document: default
+vignette: |
+  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined Course FGCZ}  %\VignetteEncoding{UTF-8} %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, include=FALSE}
@@ -69,7 +68,7 @@ startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins
 
 
 annotation <- readxl::read_xlsx(inputAnnotation)
-annotation$experiment = 2691
+annotation$experiment = "p2691"
 
 ```
 
@@ -80,7 +79,7 @@ config <- create_MQ_peptide_Configuration()
 data <- inner_join(annotation, startdata)
 
 config$table$factors[["condition_"]] = "condition"
-config$table$factors[["experiment"]] = "experiment"
+config$table$factors[["batch_"]] = "experiment"
 config$table$factors[["Run_ID"]] = "Run_ID"
 config$table$factorDepth <- 1
 ```
@@ -126,7 +125,7 @@ startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.
 startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
 
 annotation <- readxl::read_xlsx(inputAnnotation)
-annotation$experiment <- 2370
+annotation$experiment <- "p2370"
 ```
 
 Code snipped below shows how to add annotation to the data and configuration.
@@ -137,7 +136,7 @@ data <- inner_join(annotation, startdata)
 config <- create_MQ_peptide_Configuration()
 
 config$table$factors[["condition_"]] = "condition"
-config$table$factors[["experiment"]] = "experiment"
+config$table$factors[["batch_"]] = "experiment"
 config$table$factors[["Run_ID"]] = "Run_ID"
 config$table$factorDepth <- 1
 ```
@@ -191,26 +190,39 @@ pl$intensity_distribution_density()
 ```
 
 
-```{r}
+```{r mergeData}
 pMerged <- LFQData$new(data, config)
 
 bb <- pMerged$complete_cases()
-sum(is.na(bb$protein_Id))
+```
+
+```{r examineDataAfterMerge}
 pl <- pMerged$get_Plotter()
 pl$sample_correlation()
 ph <- pl$heatmap_cor()
 pha <- pl$NA_heatmap()
+
+
 ```
 
-```{r fig.cap="sample correlation heatmap merged"}
+
+```{r plotHeatmap ,fig.cap="sample correlation heatmap merged"}
 print(ph)
 ```
 
-```{r fig.cap ="Missing data heatmap for merged data"}
+
+```{r plotNAheatmap, fig.cap ="Missing data heatmap for merged data"}
 print(pha)
 ```
 
-```{r}
+
+```{r plotBoxplot,fig.cap="Peptide level Boxplot"}
+bb <- pl$boxplots()
+bb$boxplot[[1]]
+
+```
+
+```{r summarizeCounts}
 su <- pMerged$get_Summariser()
 su$hierarchy_counts()
 ```
@@ -220,11 +232,40 @@ su$hierarchy_counts_sample("plot")
 ```
 
 
+##  Aggregate Protein Intensities
+
+```{r aggregate}
+pAgg <- pMerged$get_Aggregator()
+prot <- pAgg$medpolish()
+```
+
+generate diagnostik plots
+```{r createDiagnostics, fig.cap="summarize Aggration result"}
+tmp <- pAgg$plot()
+tmp$plots[[1]]
+```
+
+```{r plotBoxplotProt}
+pl <- prot$get_Plotter()
+pl$heatmap()
+```
+
+```{r protBP, fig.cap="Protein level boxplots"}
+bp <- pl$boxplots()
+bp$boxplot[[1]]
+```
+
+# Model Fitting
 
 ```{r}
+protdata <- pAgg$lfq_agg
+protdata$config$table$getWorkIntensity()
+
+formula_Batches <-
+  make_custom_model_lm("medpolish ~ condition_ * batch_ ")
+
 # specify model definition
 modelName  <- "Model"
-model <- "~ condition_*batch_ + (1|peptide_Id)  + (1|sampleName)"
 DEBUG <- TRUE
 
 Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
@@ -236,5 +277,44 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 
 
+```
+
+
+
+```{r}
+
+class(pAgg$lfq_agg)
+
+formula_Batches <-
+  make_custom_model_lm("medpolish ~ condition_ * batch_ ")
+
+mod <- LFQService::build_model(
+ pAgg$lfq_agg$data,
+  formula_Batches,
+  subject_Id = pAgg$lfq_agg$config$table$hierarchyKeys() )
+
+```
+
+
+```{r}
+
+mod$get_anova()
+mod$coef_histogram()
+mod$anova_histogram()
+
+```
+
+## compute contrasts
+
+```{r}
+contr <- ContrastsModerated$new(mod, Contrasts)
+contr$get_contrasts_sides()
+contrdf <- contr$get_contrasts()
+```
+
+```{r}
+plotter <- contr$get_Plotter()
+plotter$volcano()
+plotter$ma_plot()
 
 ```
