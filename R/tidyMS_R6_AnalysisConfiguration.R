@@ -337,6 +337,10 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   # Make implicit NA's explicit
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
 
+  if(length(configuration$table$isotopeLabel) == 0){
+    configuration$table$isotopeLabel <- "isotopeLabel"
+    data$isotopeLabel <- "light"
+  }
   if (cc) {
     data <- complete_cases( data , configuration)
   }
