@@ -11,7 +11,7 @@ vignette: |
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = TRUE,
+echo = FALSE,
 message = FALSE,
 warning = FALSE,
 fig.width = 10,
@@ -283,13 +283,12 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 ```{r}
 
-class(pAgg$lfq_agg)
 
 formula_Batches <-
   make_custom_model_lm("medpolish ~ condition_ * batch_ ")
 
 mod <- LFQService::build_model(
- pAgg$lfq_agg$data,
+  protdata$data,
   formula_Batches,
   subject_Id = pAgg$lfq_agg$config$table$hierarchyKeys() )
 
@@ -318,3 +317,17 @@ plotter$volcano()
 plotter$ma_plot()
 
 ```
+
+
+## Annalyse contrasts with missin gdata imputation
+
+```{r}
+contrSimple <- ContrastsSimpleImpute$new(protdata, Contrasts)
+contrdfSimple <- contrSimple$get_contrasts()
+pl <- contrSimple$get_Plotter()
+pl$histogram_estimate()
+
+```
+
+
+### compare estimate

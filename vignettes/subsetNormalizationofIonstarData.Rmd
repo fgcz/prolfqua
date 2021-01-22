@@ -47,6 +47,7 @@ inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
 mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+names
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 
@@ -76,7 +77,7 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 datafilt <- LFQService::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
 ```
 
-Create a sample N proteins to speed up computations.
+Create a sample of N proteins to speed up computations.
 
 ```{r}
 N <- 200
@@ -153,9 +154,9 @@ IonstarData <- R6::R6Class(
   )
 )
 
-#lfqdata$data <- inner_join(protein_Ids, lfqdata$data)
 lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
-mqdata$data  <- inner_join(protein_Ids, mqdata$data)  
+mqdata$data  <- inner_join(protein_Ids, mqdata$data)
+
 ionstar <- IonstarData$new(mqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
 
 #usethis::use_data(ionstar, overwrite = TRUE)
@@ -169,15 +170,15 @@ We will be using the `LFQDataAggregator` class. To estimate protein intensities 
 The figure below shows the the protein estimates (dashed line) and the peptide intensities.
 
 ```{r}
-lfqAggregator <- LFQDataAggregator$new(lfqdataNormalized, "protein")
-lfqAggregator$medpolish()
-xx <- lfqAggregator$plot()
+lfqAggMedpol <- LFQDataAggregator$new(lfqdataNormalized, "protein")
+lfqAggMedpol$medpolish()
+xx <- lfqAggMedpol$plot()
 xx$plots[[1]]
 
 
 dataIonstarProtein_subsetNorm <- list(
-  data = lfqAggregator$lfq_agg$data,
-  config = lfqAggregator$lfq_agg$config
+  data = lfqAggMedpol$lfq_agg$data,
+  config = lfqAggMedpol$lfq_agg$config
 )
 
 dataIonstarProtein_subsetNorm$data
@@ -192,6 +193,95 @@ lfqAggregator <- LFQDataAggregator$new(lfqdata, "protein_topN")
 lfqAggregator$mean_topN()
 topN <- lfqAggregator$plot()
 topN$plots[[1]]
+
+```
+
+
+# Fit model to protein level data
+
+```{r}
+DEBUG <- FALSE
+
+Contrasts <- c(
+  "dilution_(9/3)_3" =   "dilution.e - dilution.a",
+  "dilution_(9/4.5)_2" =   "dilution.e - dilution.b",
+  "dilution_(9/6)_1.5" =   "dilution.e - dilution.c",
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
+  
+  "dilution_(7.5/3)_2.5" =   "dilution.d - dilution.a",
+  "dilution_(7.5/4.5)_1.6(6)" =   "dilution.d - dilution.b",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
+  
+  "dilution_(6/3)_2" =   "dilution.c - dilution.a",
+  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
+  
+  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
+)
+
+
+tt <- quantable::split2table(names(Contrasts),split = "_")
+tt <- data.frame(tt)[,2:3]
+colnames(tt) <- c("ratio" , "expected fold-change")
+tt <- tibble::add_column(tt, contrast =  Contrasts, .before = 1)
+LFQService::table_facade(tt, caption = "All possible Contrasts given 5 E. coli dilutions of the Ionstar Dataset")
+
+```
+
+
+```{r usedContrasts}
+relevantContrasts <- c("dilution_(9/7.5)_1.2",
+                       "dilution_(7.5/6)_1.25",
+                       "dilution_(6/4.5)_1.3(3)",
+                       "dilution_(4.5/3)_1.5" )
+
+tt <- quantable::split2table(relevantContrasts,split = "_")
+tt <- data.frame(tt)[,2:3]
+colnames(tt) <- c("ratio" , "expected fold-change")
+tt <- tibble::add_column(tt, contrast =  Contrasts[names(Contrasts) %in% relevantContrasts], .before = 1)
+LFQService::table_facade(tt, caption = "Contrasts used for benchmark.")
+relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
+
+```
+
+
+# Fitting all the proteins based on protein intensities with linear models. 
+
+```{r buildModelLM}
+protLFQ <- lfqAggMedpol$lfq_agg
+
+lmmodel <- "~ dilution."
+lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
+
+modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
+
+mod <- LFQService::build_model(protLFQ$data, modelFunction)
+mod$coef_volcano()
+
+```
+
+```{r computeContrastsModerated}
+contr <- LFQService::ContrastsModerated$new(mod, relevantContrasts)
+contrdf <- contr$get_contrasts()
+cp <- contr$get_Plotter()
+cp$volcano()
+```
+
+# Benchmarking
+
+
+```{r benchmark}
+ttd <- LFQService::isostar_bench_preprocess(contrdf)
+medpol_benchmark <- make_benchmark(ttd$data,
+                                   model_description = "med. polish and lm. density",
+                                   model_name = "prot_med_lm",
+                                   FDRvsFDP =list(list(sc = "FDR", desc = FALSE),
+                                                  list(sc = "FDR.moderated", desc = FALSE))
+)
+medpol_benchmark$data()
+medpol_benchmark$plot_score_distribution()
+medpol_benchmark$plot_FDR_summaries()
+medpol_benchmark$plot_FDRvsFDP()
+
 ```
 
 

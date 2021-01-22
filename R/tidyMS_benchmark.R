@@ -2,7 +2,7 @@
 #' @export
 #' @family benchmarking
 #' @param data analysis results
-ms_bench_preprocess <- function(data) {
+isostar_bench_preprocess <- function(data) {
   tmp <- data %>%
     ungroup() %>%
     mutate(species  = case_when(
@@ -243,7 +243,7 @@ do_confusion_c <- function(
                            common.legend = TRUE,
                            legend = "bottom")
 
-  fig <- ggpubr::annotate_figure(fig, bottom = text_grob(annot, size = 10))
+  fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
   return(fig)
 }
 
@@ -469,7 +469,7 @@ Benchmark <-
                          nrow = 1,
                          common.legend = TRUE,
                          legend = "bottom")
-        fig <- annotate_figure(fig, bottom = text_grob(self$model_typ , size = 10))
+        fig <- annotate_figure(fig, bottom = ggpubr::text_grob(self$model_typ , size = 10))
         return(fig)
       }
 

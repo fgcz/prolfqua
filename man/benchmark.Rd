@@ -46,8 +46,8 @@ head(bb)
 \seealso{
 Other benchmarking: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{ms_bench_auc}()},
-\code{\link{ms_bench_preprocess}()}
+\code{\link{isostar_bench_preprocess}()},
+\code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}
 \section{Public fields}{
