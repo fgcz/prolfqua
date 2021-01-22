@@ -181,7 +181,6 @@ dataIonstarProtein_subsetNorm <- list(
   config = lfqAggMedpol$lfq_agg$config
 )
 
-dataIonstarProtein_subsetNorm$data
 #usethis::use_data(dataIonstarProtein_subsetNorm, overwrite = TRUE)
 
 ```
@@ -255,7 +254,7 @@ lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
 modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
 
 mod <- LFQService::build_model(protLFQ$data, modelFunction)
-mod$coef_volcano()
+mod$coef_pairs()$plot
 
 ```
 
