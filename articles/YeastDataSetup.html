@@ -54,10 +54,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -100,7 +106,8 @@
 
       
 
-      </header><script src="YeastDataSetup_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="YeastDataSetup_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="YeastDataSetup_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="YeastDataSetup_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Data Preprocessing of Yeast data from the Combined Course FGCZ</h1>
@@ -116,84 +123,12 @@
     
     
 <p>Create MaxQuant Configuration (only works with <code><a href="../reference/tidyMQ_Peptides.html">LFQService::tidyMQ_Peptides</a></code> function)</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/LFQService">LFQService</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span>
-
-
-<span class="co"># creates default configuration</span>
-<span class="va">create_MQ_peptide_Configuration</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ident_qValue</span> <span class="op">=</span> <span class="st">"pep"</span>,
-                                            <span class="va">intensity</span> <span class="op">=</span> <span class="st">"peptide.intensity"</span>
-<span class="op">)</span><span class="op">{</span>
-  <span class="va">atable</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-  <span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"raw.file"</span>
-  <span class="co"># measurement levels.</span>
-  <span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"top_protein"</span><span class="op">)</span>
-  <span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"peptide_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sequence"</span><span class="op">)</span>
-  <span class="va">atable</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-  <span class="co">#</span>
-  <span class="va">atable</span><span class="op">$</span><span class="va">ident_qValue</span> <span class="op">=</span> <span class="va">ident_qValue</span>
-  <span class="va">atable</span><span class="op">$</span><span class="fu">setWorkIntensity</span><span class="op">(</span><span class="va">intensity</span><span class="op">)</span>
-  
-  <span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-  <span class="va">anaparam</span><span class="op">$</span><span class="va">min_peptides_protein</span> <span class="op">&lt;-</span> <span class="fl">2</span>
-  <span class="va">configuration</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
-  
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">configuration</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
 <div id="prepare-p2691-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#prepare-p2691-dataset" class="anchor"></a>Prepare p2691 dataset</h1>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
-<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip"</span><span class="op">)</span>
-<span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_ComboCourse_p2691_March_2018_WU183012.xlsx"</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_Peptides.html">tidyMQ_Peptides</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>proteins <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">proteins</span> <span class="op">==</span> <span class="st">""</span> <span class="op">~</span> <span class="va">leading.razor.protein</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="va">proteins</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/debug.html">undebug</a></span><span class="op">(</span><span class="va">tidyMQ_top_protein_name</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_top_protein_name.html">tidyMQ_top_protein_name</a></span><span class="op">(</span><span class="va">startdata</span>, prot_col <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span>
-
-<span class="co">#startdata &lt;- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "leading.razor.protein")</span>
-<span class="co">#startdata &lt;- startdata %&gt;% mutate(top_protein = leading.razor.protein)</span>
-
-
-<span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
-<span class="va">annotation</span><span class="op">$</span><span class="va">experiment</span> <span class="op">=</span> <span class="fl">2691</span></pre></div>
 <p>Add annotation information data to configuration and data.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">create_MQ_peptide_Configuration</span><span class="op">(</span><span class="op">)</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span><span class="op">)</span>
-
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"experiment"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></pre></div>
 <p>Preprocess and normalize data.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/toWideConfig.html">toWideConfig</a></span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
-
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span>
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/remove_small_intensities.html">remove_small_intensities</a></span><span class="op">(</span><span class="va">adata</span>,<span class="va">config</span><span class="op">)</span>
-
-
-<span class="va">p2691</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">p2691</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
-<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-4-1.png" width="960"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">tr</span> <span class="op">&lt;-</span> <span class="va">p2691</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
-<span class="va">p2691</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale</span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">p2691</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
-<span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
-<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-4-2.png" width="960"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co">#dev.off()</span>
-<span class="va">pha2691</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">NA_heatmap</span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pha2691</span><span class="op">)</span></pre></div>
+<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-4-1.png" width="960"><img src="YeastDataSetup_files/figure-html/unnamed-chunk-4-2.png" width="960"></p>
 <div class="figure">
 <img src="YeastDataSetup_files/figure-html/unnamed-chunk-5-1.png" alt="missing value heatmap for project 2691" width="960"><p class="caption">
 missing value heatmap for project 2691
@@ -203,50 +138,13 @@ missing value heatmap for project 2691
 <div id="prepare-p2370-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#prepare-p2370-dataset" class="anchor"></a>Prepare p2370 dataset</h1>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
-<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip"</span><span class="op">)</span>
-<span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_ComboCourse_p2370_March_2017_WU183008.xlsx"</span><span class="op">)</span>
-
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_Peptides.html">tidyMQ_Peptides</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>proteins <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">proteins</span> <span class="op">==</span> <span class="st">""</span> <span class="op">~</span> <span class="va">leading.razor.protein</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="va">proteins</span><span class="op">)</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_top_protein_name.html">tidyMQ_top_protein_name</a></span><span class="op">(</span><span class="va">startdata</span>, prot_col <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span>
-
-<span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
-<span class="va">annotation</span><span class="op">$</span><span class="va">experiment</span> <span class="op">&lt;-</span> <span class="fl">2370</span></pre></div>
 <p>Code snipped below shows how to add annotation to the data and configuration.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span><span class="op">)</span>
-
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">create_MQ_peptide_Configuration</span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"experiment"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/toWideConfig.html">toWideConfig</a></span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span>
-<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/remove_small_intensities.html">remove_small_intensities</a></span><span class="op">(</span><span class="va">adata</span>,<span class="va">config</span><span class="op">)</span>
-
-<span class="va">p2370</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">p2370</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">tr</span> <span class="op">&lt;-</span> <span class="va">p2370</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
-<span class="va">p2370</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale</span><span class="op">(</span><span class="op">)</span>
-<span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">p2370</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
-<span class="va">ha2370</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">NA_heatmap</span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
 <div class="figure">
 <img src="YeastDataSetup_files/figure-html/unnamed-chunk-9-1.png" alt="Intensity distribution after normalization, p2370" width="960"><p class="caption">
 Intensity distribution after normalization, p2370
 </p>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ha2370</span><span class="op">)</span></pre></div>
 <div class="figure">
 <img src="YeastDataSetup_files/figure-html/unnamed-chunk-10-1.png" alt="Heatmap of missing values p2370." width="960"><p class="caption">
 Heatmap of missing values p2370.
@@ -257,78 +155,106 @@ Heatmap of missing values p2370.
 <h1 class="hasAnchor">
 <a href="#merge-both-dataset" class="anchor"></a>Merge both dataset</h1>
 <p>To simulate a factorial design we merge both datasets.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">outpath</span> <span class="op">&lt;-</span> <span class="st">"results_modelling"</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">p2691</span><span class="op">$</span><span class="va">data</span>, <span class="va">p2370</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">p2691</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">p2370</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="co"># creates default configuration</span>
-
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="va">p2691</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">2</span></pre></div>
 <div id="qc-for-merged-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#qc-for-merged-dataset" class="anchor"></a>QC for merged dataset</h2>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
-
-<span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">complete_cases</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
-<span class="va">pl</span><span class="op">$</span><span class="fu">sample_correlation</span><span class="op">(</span><span class="op">)</span></pre></div>
-<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-13-1.png" width="960"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="va">ph</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span><span class="op">)</span>
-<span class="va">pha</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">NA_heatmap</span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ph</span><span class="op">)</span></pre></div>
+<p><img src="YeastDataSetup_files/figure-html/examineDataAfterMerge-1.png" width="960"></p>
 <div class="figure">
-<img src="YeastDataSetup_files/figure-html/unnamed-chunk-14-1.png" alt="sample correlation heatmap merged" width="960"><p class="caption">
+<img src="YeastDataSetup_files/figure-html/plotHeatmap%20-1.png" alt="sample correlation heatmap merged" width="960"><p class="caption">
 sample correlation heatmap merged
 </p>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pha</span><span class="op">)</span></pre></div>
 <div class="figure">
-<img src="YeastDataSetup_files/figure-html/unnamed-chunk-15-1.png" alt="Missing data heatmap for merged data" width="960"><p class="caption">
+<img src="YeastDataSetup_files/figure-html/plotNAheatmap-1.png" alt="Missing data heatmap for merged data" width="960"><p class="caption">
 Missing data heatmap for merged data
 </p>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="va">su</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span>
-<span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></pre></div>
-<pre><code>## # A tibble: 1 x 2
-##   protein_Id peptide_Id
-##        &lt;int&gt;      &lt;int&gt;
-## 1       2651      25006</code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></pre></div>
 <div class="figure">
-<img src="YeastDataSetup_files/figure-html/unnamed-chunk-17-1.png" alt="Number of Proteins or peptides per sample in merged dataset" width="960"><p class="caption">
+<img src="YeastDataSetup_files/figure-html/plotBoxplot-1.png" alt="Peptide level Boxplot" width="960"><p class="caption">
+Peptide level Boxplot
+</p>
+</div>
+<pre><code>## # A tibble: 1 x 3
+##   isotopeLabel protein_Id peptide_Id
+##   &lt;chr&gt;             &lt;int&gt;      &lt;int&gt;
+## 1 light              2651      25006</code></pre>
+<div class="figure">
+<img src="YeastDataSetup_files/figure-html/unnamed-chunk-13-1.png" alt="Number of Proteins or peptides per sample in merged dataset" width="960"><p class="caption">
 Number of Proteins or peptides per sample in merged dataset
 </p>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="co"># specify model definition</span>
-<span class="va">modelName</span>  <span class="op">&lt;-</span> <span class="st">"Model"</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="st">"~ condition_*batch_ + (1|peptide_Id)  + (1|sampleName)"</span>
-<span class="va">DEBUG</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-
-<span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Glucose - Ethanol"</span> <span class="op">=</span> <span class="st">"condition_Glucose - condition_Ethanol"</span>,
-               <span class="st">"p2370 - p2691"</span> <span class="op">=</span> <span class="st">"batch_p2370 - batch_p2691"</span>,
-               <span class="st">"Glucose_vs_Ethanol_gv_p2370"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`"</span>,
-               <span class="st">"Glucose_vs_Ethanol_gv_p2691"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`"</span>,
-               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"</span>
-<span class="op">)</span></pre></div>
+</div>
+<div id="aggregate-protein-intensities" class="section level2">
+<h2 class="hasAnchor">
+<a href="#aggregate-protein-intensities" class="anchor"></a>Aggregate Protein Intensities</h2>
+generate diagnostik plots
+<div class="figure">
+<img src="YeastDataSetup_files/figure-html/createDiagnostics-1.png" alt="summarize Aggration result" width="960"><p class="caption">
+summarize Aggration result
+</p>
+</div>
+<p><img src="YeastDataSetup_files/figure-html/plotBoxplotProt-1.png" width="960"></p>
+<div class="figure">
+<img src="YeastDataSetup_files/figure-html/protBP-1.png" alt="Protein level boxplots" width="960"><p class="caption">
+Protein level boxplots
+</p>
+</div>
+</div>
+</div>
+<div id="model-fitting" class="section level1">
+<h1 class="hasAnchor">
+<a href="#model-fitting" class="anchor"></a>Model Fitting</h1>
+<pre><code>## [1] "medpolish"</code></pre>
+<pre><code>## # A tibble: 5,506 x 10
+## # Groups:   factor [3]
+##    protein_Id isSingular nrcoef factor    Df  Sum.Sq Mean.Sq F.value  Pr..F.
+##    &lt;chr&gt;      &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1 CON__P074~ FALSE           4 condi~     1 2.17e+1 2.17e+1 4.63e+0 0.0493 
+##  2 CON__P074~ FALSE           4 batch_     1 4.71e+1 4.71e+1 1.01e+1 0.00674
+##  3 CON__P074~ FALSE           4 condi~     1 5.10e+0 5.10e+0 1.09e+0 0.314  
+##  4 CON__Q86Y~ FALSE           4 condi~     1 1.44e+0 1.44e+0 6.55e-1 0.435  
+##  5 CON__Q86Y~ FALSE           4 batch_     1 2.83e-3 2.83e-3 1.29e-3 0.972  
+##  6 CON__Q86Y~ FALSE           4 condi~     1 5.42e+0 5.42e+0 2.47e+0 0.145  
+##  7 REV__sp|P~ FALSE           4 condi~     1 7.51e-1 7.51e-1 1.50e+0 0.249  
+##  8 REV__sp|P~ FALSE           4 batch_     1 9.44e-1 9.44e-1 1.88e+0 0.200  
+##  9 REV__sp|P~ FALSE           4 condi~     1 4.72e-1 4.72e-1 9.40e-1 0.355  
+## 10 REV__sp|P~ FALSE           4 condi~     1 7.02e-1 7.02e-1 1.30e+0 0.273  
+## # ... with 5,496 more rows, and 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
+<pre><code>## $plot</code></pre>
+<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-16-1.png" width="960"></p>
+<pre><code>## 
+## $name
+## [1] "Coef_Histogram_.pdf"</code></pre>
+<pre><code>## $plot</code></pre>
+<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-16-2.png" width="960"></p>
+<pre><code>## 
+## $name
+## [1] "Anova_p.values_.pdf"</code></pre>
+<div id="compute-contrasts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#compute-contrasts" class="anchor"></a>compute contrasts</h2>
+<pre><code>## # A tibble: 5 x 3
+##   contrast                  c1                         c2                       
+##   &lt;chr&gt;                     &lt;chr&gt;                      &lt;chr&gt;                    
+## 1 Glucose - Ethanol         condition_Glucose          condition_Ethanol        
+## 2 p2370 - p2691             batch_p2370                batch_p2691              
+## 3 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
+## 4 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
+## 5 Interaction               Glucose_vs_Ethanol_gv_p23~ Glucose_vs_Ethanol_gv_p2~</code></pre>
+<pre><code>## $FDR.moderated</code></pre>
+<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-18-1.png" width="960"><img src="YeastDataSetup_files/figure-html/unnamed-chunk-18-2.png" width="960"></p>
+</div>
+<div id="annalyse-contrasts-with-missin-gdata-imputation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#annalyse-contrasts-with-missin-gdata-imputation" class="anchor"></a>Annalyse contrasts with missin gdata imputation</h2>
+<p><img src="YeastDataSetup_files/figure-html/unnamed-chunk-19-1.png" width="960"></p>
+<div id="compare-estimate" class="section level3">
+<h3 class="hasAnchor">
+<a href="#compare-estimate" class="anchor"></a>compare estimate</h3>
+</div>
 </div>
 </div>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Do Model — Model • LFQService</title>
+<title>R6 class representing modelling result — Model • LFQService</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Do Model — Model" />
-<meta property="og:description" content="Do Model
-Do Model" />
+<meta property="og:title" content="R6 class representing modelling result — Model" />
+<meta property="og:description" content="R6 class representing modelling result
+R6 class representing modelling result" />
 
 
 
@@ -96,10 +96,16 @@ Do Model" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -145,22 +151,72 @@ Do Model" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Do Model</h1>
+    <h1>R6 class representing modelling result</h1>
     <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6Model.R'><code>R/tidyMS_R6Model.R</code></a></small>
     <div class="hidden name"><code>Model.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Do Model</p>
-<p>Do Model</p>
+    <p>R6 class representing modelling result</p>
+<p>R6 class representing modelling result</p>
     </div>
 
 
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other modelling: 
+<code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
+<code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
+<code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
+<code><a href='Contrasts.html'>Contrasts</a></code>,
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='LR_test.html'>LR_test</a>()</code>,
+<code><a href='build_model.html'>build_model</a>()</code>,
+<code><a href='get_complete_model_fit.html'>get_complete_model_fit</a>()</code>,
+<code><a href='get_imputed_contrasts.html'>get_imputed_contrasts</a>()</code>,
+<code><a href='get_model_coefficients.html'>get_model_coefficients</a>()</code>,
+<code><a href='get_p_values_pbeta.html'>get_p_values_pbeta</a>()</code>,
+<code><a href='isSingular_lm.html'>isSingular_lm</a>()</code>,
+<code><a href='linfct_all_possible_contrasts.html'>linfct_all_possible_contrasts</a>()</code>,
+<code><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a>()</code>,
+<code><a href='linfct_from_model.html'>linfct_from_model</a>()</code>,
+<code><a href='linfct_matrix_contrasts.html'>linfct_matrix_contrasts</a>()</code>,
+<code><a href='make_custom_model_glm.html'>make_custom_model_glm</a>()</code>,
+<code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a>()</code>,
+<code><a href='make_custom_model_lm.html'>make_custom_model_lm</a>()</code>,
+<code><a href='model_analyse.html'>model_analyse</a>()</code>,
+<code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a>()</code>,
+<code><a href='moderated_p_limma.html'>moderated_p_limma</a>()</code>,
+<code><a href='ms_brms_model.html'>ms_brms_model</a>()</code>,
+<code><a href='ms_mcmc_checkzero.html'>ms_mcmc_checkzero</a>()</code>,
+<code><a href='ms_mcmc_constrast.html'>ms_mcmc_constrast</a>()</code>,
+<code><a href='my_contest.html'>my_contest</a>()</code>,
+<code><a href='my_contrast_V1.html'>my_contrast_V1</a>()</code>,
+<code><a href='my_contrast_V2.html'>my_contrast_V2</a>()</code>,
+<code><a href='my_contrast.html'>my_contrast</a>()</code>,
+<code><a href='my_glht.html'>my_glht</a>()</code>,
+<code><a href='pivot_model_contrasts_2_Wide.html'>pivot_model_contrasts_2_Wide</a>()</code>,
+<code><a href='plot_lmer_model_and_data_TWO.html'>plot_lmer_model_and_data_TWO</a>()</code>,
+<code><a href='plot_lmer_model_and_data.html'>plot_lmer_model_and_data</a>()</code>,
+<code><a href='plot_lmer_peptide_noRandom_TWO.html'>plot_lmer_peptide_noRandom_TWO</a>()</code>,
+<code><a href='plot_lmer_peptide_noRandom.html'>plot_lmer_peptide_noRandom</a>()</code>,
+<code><a href='plot_lmer_peptide_predictions.html'>plot_lmer_peptide_predictions</a>()</code>,
+<code><a href='plot_lmer_predicted_interactions.html'>plot_lmer_predicted_interactions</a>()</code>,
+<code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
     <p><div class="r6-fields"></p><dl>
 <dt><code>modelDF</code></dt><dd><p>data.frame with modelling data and model.</p></dd>
+
+<dt><code>modelName</code></dt><dd><p>name of model</p></dd>
+
+<dt><code>subject_Id</code></dt><dd><p>e.g. protein_Id</p></dd>
+
+<dt><code>modelFunction</code></dt><dd><p>function to create the models</p></dd>
+
+<dt><code>p.adjust</code></dt><dd><p>function to adjust p-values</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -184,35 +240,62 @@ Do Model" />
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>initialize</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>modelDF</span>,
+  <span class='va'>modelFunction</span>,
+  <span class='va'>modelName</span>,
+  subject_Id <span class='op'>=</span> <span class='st'>"protein_Id"</span>,
+  p.adjust <span class='op'>=</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='adjust_p_values.html'>adjust_p_values</a></span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>modelDF</span>, <span class='va'>modelName</span>, subject_Id <span class='op'>=</span> <span class='st'>"protein_Id"</span><span class='op'>)</span></pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>modelDF</code></dt><dd><p>dataframe with modelling results</p></dd>
 
+<dt><code>modelFunction</code></dt><dd><p>modelFunction see <code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a></code></p></dd>
+
+<dt><code>modelName</code></dt><dd><p>name of model</p></dd>
+
+<dt><code>subject_Id</code></dt><dd><p>subject column name</p></dd>
+
+<dt><code>p.adjust</code></dt><dd><p>method to adjust p-values</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-get_coefficients"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_coefficients()</code></h3>
-<p>return model coefficient table
-return anova table
-writes results of `model_analyse`, anova table and all the coefficients with parameters.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>return model coefficient table</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>get_coefficients</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-get_anova"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_anova()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>return anova table</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>get_anova</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-write_coefficients"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>write_coefficients()</code></h3>
+<p>writes model coefficients to file</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_coefficients</span><span class='op'>(</span><span class='va'>path</span>, format <span class='op'>=</span> <span class='st'>"xlsx"</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_coefficients</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>path</code></dt><dd><p>folder to write to</p></dd>
 
+<dt><code>format</code></dt><dd><p>default xlsx <code><a href='lfq_write_table.html'>lfq_write_table</a></code></p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-write_anova"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>write_anova()</code></h3>
+<p>writes anova coefficients to file</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_anova</span><span class='op'>(</span><span class='va'>path</span>, format <span class='op'>=</span> <span class='st'>"xlsx"</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_anova</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>path</code></dt><dd><p>folder to write to</p></dd>
 
+<dt><code>format</code></dt><dd><p>default xlsx <code><a href='lfq_write_table.html'>lfq_write_table</a></code></p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-coef_histogram"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>coef_histogram()</code></h3>
 <p>histogram of model coefficient</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -225,26 +308,47 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 
 <p><hr>
 <a id="method-coef_pairs"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>coef_pairs()</code></h3>
-<p>pairsplot of coefficients</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>pairs-splot of coefficients</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>coef_pairs</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-anova_histogram"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>anova_histogram()</code></h3>
-<p>histogram of anova results</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>anova_histogram</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p>histogram of ANOVA results</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>anova_histogram</span><span class='op'>(</span>what <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Pr..F."</span>, <span class='st'>"FDR.Pr..F."</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>what</code></dt><dd><p>show either "Pr..F." or "FDR.Pr..F."</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-write_anova_figures"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>write_anova_figures()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>write figures related to ANOVA into pdf file</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_anova_figures</span><span class='op'>(</span><span class='va'>path</span>, width <span class='op'>=</span> <span class='fl'>10</span>, height <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>path</code></dt><dd><p>folder name</p></dd>
+
+<dt><code>width</code></dt><dd><p>figure width</p></dd>
+
+<dt><code>height</code></dt><dd><p>figure height</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-write_coef_figures"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>write_coef_figures()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>write figures related to Coefficients into pdf file</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>Model</span><span class='op'>$</span><span class='fu'>write_coef_figures</span><span class='op'>(</span><span class='va'>path</span>, width <span class='op'>=</span> <span class='fl'>10</span>, height <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>path</code></dt><dd><p>folder name</p></dd>
+
+<dt><code>width</code></dt><dd><p>figure width</p></dd>
+
+<dt><code>height</code></dt><dd><p>figure height</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -259,67 +363,68 @@ writes results of `model_analyse`, anova table and all the coefficients with par
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span>list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>D</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'>ionstar</span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>D</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>D</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>modelName</span> <span class='op'>&lt;-</span> <span class='st'>"f_condtion_r_peptide"</span>
 <span class='va'>formula_randomPeptide</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution. + (1 | peptide_Id)"</span>,
    model_name <span class='op'>=</span> <span class='va'>modelName</span><span class='op'>)</span>
-<span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>D</span><span class='op'>$</span><span class='va'>data</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>D</span><span class='op'>$</span><span class='va'>config</span>
+<span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>istar_data</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "protein_Id"</div><div class='input'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='fu'><a href='build_model.html'>build_model</a></span><span class='op'>(</span>
  <span class='va'>pepIntensity</span>,
  <span class='va'>formula_randomPeptide</span>,
  modelName <span class='op'>=</span> <span class='va'>modelName</span>,
  subject_Id <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='input'>
 <span class='va'>mod</span><span class='op'>$</span><span class='va'>modelDF</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 67 x 9</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [67]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 59 x 9</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [59]</span><span>
 #&gt;    protein_Id data  linear_model exists_lmer isSingular df.residual sigma nrcoef
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;lis&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> sp|O43660~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               79 0.367      5
-#&gt; </span><span style='color: #555555;'> 2</span><span> sp|P62857~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               53 0.695      5
+#&gt; </span><span style='color: #555555;'> 1</span><span> sp|Q13217~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               29 0.178      5
+#&gt; </span><span style='color: #555555;'> 2</span><span> sp|P0AC84~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               20 0.301      5
 #&gt; </span><span style='color: #555555;'> 3</span><span> sp|Q9Y3A5~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              172 0.287      5
-#&gt; </span><span style='color: #555555;'> 4</span><span> sp|Q13838~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              199 0.305      5
-#&gt; </span><span style='color: #555555;'> 5</span><span> sp|O00148~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              178 0.338      5
+#&gt; </span><span style='color: #555555;'> 4</span><span> sp|P01889~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              134 0.238      5
+#&gt; </span><span style='color: #555555;'> 5</span><span> sp|Q9Y2W2~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               55 0.591      5
 #&gt; </span><span style='color: #555555;'> 6</span><span> sp|P07602~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              202 0.357      5
 #&gt; </span><span style='color: #555555;'> 7</span><span> sp|P25789~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              142 0.435      5
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|P04150~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               61 0.311      5
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|Q07866~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              154 0.372      5
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|P41252~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              508 0.299      5
-#&gt; </span><span style='color: #555555;'># ... with 57 more rows, and 1 more variable: nrcoeff_not_NA </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span></div><div class='input'><span class='va'>aovtable</span>  <span class='op'>&lt;-</span> <span class='va'>mod</span><span class='op'>$</span><span class='fu'>get_anova</span><span class='op'>(</span><span class='op'>)</span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> sp|Q07866~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              154 0.372      5
+#&gt; </span><span style='color: #555555;'> 9</span><span> sp|P20042~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               49 0.248      5
+#&gt; </span><span style='color: #555555;'>10</span><span> sp|P02924~ </span><span style='color: #555555;'>&lt;tib</span><span>~ </span><span style='color: #555555;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               68 0.335      5
+#&gt; </span><span style='color: #555555;'># ... with 49 more rows, and 1 more variable: nrcoeff_not_NA </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span></div><div class='input'><span class='va'>aovtable</span>  <span class='op'>&lt;-</span> <span class='va'>mod</span><span class='op'>$</span><span class='fu'>get_anova</span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>aovtable</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [6]</span><span>
-#&gt;   protein_Id  isSingular nrcoef factor Sum.Sq Mean.Sq NumDF DenDF F.value Pr..F.
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> sp|O43660|~ FALSE           5 dilut~ 0.022</span><span style='text-decoration: underline;'>5</span><span> 0.005</span><span style='text-decoration: underline;'>63</span><span>     4  75.3  0.041</span><span style='text-decoration: underline;'>8</span><span>  0.997
-#&gt; </span><span style='color: #555555;'>2</span><span> sp|P62857|~ FALSE           5 dilut~ 2.45   0.612       4  53.   1.27    0.294
-#&gt; </span><span style='color: #555555;'>3</span><span> sp|Q9Y3A5|~ FALSE           5 dilut~ 0.329  0.082</span><span style='text-decoration: underline;'>2</span><span>      4 164.   1.00    0.408
-#&gt; </span><span style='color: #555555;'>4</span><span> sp|Q13838|~ FALSE           5 dilut~ 0.146  0.036</span><span style='text-decoration: underline;'>6</span><span>      4 191.   0.394   0.812
-#&gt; </span><span style='color: #555555;'>5</span><span> sp|O00148|~ FALSE           5 dilut~ 0.842  0.210       4 170.   1.84    0.124
-#&gt; </span><span style='color: #555555;'>6</span><span> sp|P07602|~ FALSE           5 dilut~ 0.583  0.146       4 193.   1.15    0.336</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>aovtable</span><span class='op'>$</span><span class='va'>factor</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 11</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   factor [1]</span><span>
+#&gt;   protein_Id isSingular nrcoef factor Sum.Sq Mean.Sq NumDF DenDF F.value  Pr..F.
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> sp|Q13217~ FALSE           5 dilut~ 0.068</span><span style='text-decoration: underline;'>6</span><span>  0.017</span><span style='text-decoration: underline;'>2</span><span>     4  30.0   0.542 7.06</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> sp|P0AC84~ FALSE           5 dilut~ 6.66    1.66       4  20.3  18.3   1.61</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-6</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> sp|Q9Y3A5~ FALSE           5 dilut~ 0.329   0.082</span><span style='text-decoration: underline;'>2</span><span>     4 164.    1.00  4.08</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> sp|P01889~ FALSE           5 dilut~ 0.162   0.040</span><span style='text-decoration: underline;'>6</span><span>     4 129.    0.718 5.81</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> sp|Q9Y2W2~ FALSE           5 dilut~ 0.740   0.185      4  54.0   0.530 7.14</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
+#&gt; </span><span style='color: #555555;'>6</span><span> sp|P07602~ FALSE           5 dilut~ 0.583   0.146      4 193.    1.15  3.36</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-1</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 1 more variable: FDR.Pr..F. </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>aovtable</span><span class='op'>$</span><span class='va'>factor</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "dilution."</div><div class='input'><span class='va'>mod</span><span class='op'>$</span><span class='fu'>get_coefficients</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 335 x 9</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [67]</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 295 x 9</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [59]</span><span>
 #&gt;    protein_Id isSingular nrcoef factor Estimate Std..Error    df t.value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> sp|O43660~ FALSE           5 (Inte~ -</span><span style='color: #BB0000;'>1.15</span><span>         0.200  8.14 -</span><span style='color: #BB0000;'>5.74</span><span>  
-#&gt; </span><span style='color: #555555;'> 2</span><span> sp|O43660~ FALSE           5 dilut~  0.026</span><span style='text-decoration: underline;'>6</span><span>       0.119 75.1   0.223 
-#&gt; </span><span style='color: #555555;'> 3</span><span> sp|O43660~ FALSE           5 dilut~ -</span><span style='color: #BB0000;'>0.012</span><span style='color: #BB0000;text-decoration: underline;'>8</span><span>       0.125 75.2  -</span><span style='color: #BB0000;'>0.102</span><span> 
-#&gt; </span><span style='color: #555555;'> 4</span><span> sp|O43660~ FALSE           5 dilut~  0.030</span><span style='text-decoration: underline;'>2</span><span>       0.123 75.2   0.245 
-#&gt; </span><span style='color: #555555;'> 5</span><span> sp|O43660~ FALSE           5 dilut~  0.003</span><span style='text-decoration: underline;'>59</span><span>      0.129 75.7   0.027</span><span style='text-decoration: underline;'>7</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> sp|P62857~ FALSE           5 (Inte~  2.39         1.19   2.09  2.01  
-#&gt; </span><span style='color: #555555;'> 7</span><span> sp|P62857~ FALSE           5 dilut~ -</span><span style='color: #BB0000;'>0.325</span><span>        0.284 53.   -</span><span style='color: #BB0000;'>1.15</span><span>  
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|P62857~ FALSE           5 dilut~ -</span><span style='color: #BB0000;'>0.570</span><span>        0.284 53.   -</span><span style='color: #BB0000;'>2.01</span><span>  
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|P62857~ FALSE           5 dilut~ -</span><span style='color: #BB0000;'>0.086</span><span style='color: #BB0000;text-decoration: underline;'>4</span><span>       0.284 53.   -</span><span style='color: #BB0000;'>0.305</span><span> 
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|P62857~ FALSE           5 dilut~ -</span><span style='color: #BB0000;'>0.155</span><span>        0.284 53.   -</span><span style='color: #BB0000;'>0.545</span><span> 
-#&gt; </span><span style='color: #555555;'># ... with 325 more rows, and 1 more variable: Pr...t.. </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='va'>mod</span><span class='op'>$</span><span class='fu'>coef_histogram</span><span class='op'>(</span><span class='op'>)</span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> sp|Q13217~ FALSE           5 (Inte~  -</span><span style='color: #BB0000;'>1.13</span><span>       0.661   1.02  -</span><span style='color: #BB0000;'>1.70</span><span> 
+#&gt; </span><span style='color: #555555;'> 2</span><span> sp|Q13217~ FALSE           5 dilut~   0.136      0.095</span><span style='text-decoration: underline;'>1</span><span> 30.     1.43 
+#&gt; </span><span style='color: #555555;'> 3</span><span> sp|Q13217~ FALSE           5 dilut~   0.087</span><span style='text-decoration: underline;'>2</span><span>     0.095</span><span style='text-decoration: underline;'>1</span><span> 30.     0.917
+#&gt; </span><span style='color: #555555;'> 4</span><span> sp|Q13217~ FALSE           5 dilut~   0.065</span><span style='text-decoration: underline;'>1</span><span>     0.095</span><span style='text-decoration: underline;'>1</span><span> 30.     0.685
+#&gt; </span><span style='color: #555555;'> 5</span><span> sp|Q13217~ FALSE           5 dilut~   0.087</span><span style='text-decoration: underline;'>9</span><span>     0.092</span><span style='text-decoration: underline;'>2</span><span> 30.0    0.953
+#&gt; </span><span style='color: #555555;'> 6</span><span> sp|P0AC84~ FALSE           5 (Inte~  -</span><span style='color: #BB0000;'>2.93</span><span>       0.303   4.71  -</span><span style='color: #BB0000;'>9.66</span><span> 
+#&gt; </span><span style='color: #555555;'> 7</span><span> sp|P0AC84~ FALSE           5 dilut~   0.391      0.233  20.2    1.68 
+#&gt; </span><span style='color: #555555;'> 8</span><span> sp|P0AC84~ FALSE           5 dilut~   1.02       0.223  20.2    4.57 
+#&gt; </span><span style='color: #555555;'> 9</span><span> sp|P0AC84~ FALSE           5 dilut~   1.23       0.228  20.3    5.40 
+#&gt; </span><span style='color: #555555;'>10</span><span> sp|P0AC84~ FALSE           5 dilut~   1.56       0.213  20.5    7.32 
+#&gt; </span><span style='color: #555555;'># ... with 285 more rows, and 1 more variable: Pr...t.. </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='va'>mod</span><span class='op'>$</span><span class='fu'>coef_histogram</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $plot</div><div class='img'><img src='Model-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
 #&gt; $name
 #&gt; [1] "Coef_Histogram_f_condtion_r_peptide.pdf"

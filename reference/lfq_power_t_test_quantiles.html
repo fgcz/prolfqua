@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -190,88 +196,86 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-<span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : log2_Area</span></div><div class='input'>
+<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
+
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>res</span>
 </div><div class='output co'>#&gt; $long
-#&gt;   quantile probs        sd delta   N_exact  N FC
-#&gt; 1      50%   0.5 0.4305257     1  4.130328  5  2
-#&gt; 2      60%   0.6 0.5574482     1  6.008707  7  2
-#&gt; 3      70%   0.7 0.7538682     1  9.979426 10  2
-#&gt; 4      80%   0.8 1.0249388     1 17.504796 18  2
-#&gt; 5      90%   0.9 1.3544766     1 29.790743 30  2
+#&gt;   quantile probs        sd delta  N_exact N FC
+#&gt; 1      50%   0.5 0.1964909     1 2.098698 3  2
+#&gt; 2      60%   0.6 0.2398376     1 2.348303 3  2
+#&gt; 3      70%   0.7 0.2951539     1 2.742047 3  2
+#&gt; 4      80%   0.8 0.3731692     1 3.464832 4  2
+#&gt; 5      90%   0.9 0.5566183     1 5.994641 6  2
 #&gt; 
 #&gt; $summary
 #&gt;   quantile probs        sd FC=2
-#&gt; 1      50%   0.5 0.4305257    5
-#&gt; 2      60%   0.6 0.5574482    7
-#&gt; 3      70%   0.7 0.7538682   10
-#&gt; 4      80%   0.8 1.0249388   18
-#&gt; 5      90%   0.9 1.3544766   30
+#&gt; 1      50%   0.5 0.1964909    3
+#&gt; 2      60%   0.6 0.2398376    3
+#&gt; 3      70%   0.7 0.2951539    3
+#&gt; 4      80%   0.8 0.3731692    4
+#&gt; 5      90%   0.9 0.5566183    6
 #&gt; </div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv.html'>summarize_cv</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>stats_res</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 7,275 x 9</span><span>
-#&gt;    protein_Id peptide_Id precursor_Id fragment_Id Time      n not_na     sd
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T0        3      3 0.330 
-#&gt; </span><span style='color: #555555;'> 2</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T168      3      3 0.135 
-#&gt; </span><span style='color: #555555;'> 3</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T2        3      3 0.592 
-#&gt; </span><span style='color: #555555;'> 4</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T24       3      3 0.468 
-#&gt; </span><span style='color: #555555;'> 5</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T240      2      2 0.010</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T336      3      3 0.218 
-#&gt; </span><span style='color: #555555;'> 7</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T72       2      2 0.743 
-#&gt; </span><span style='color: #555555;'> 8</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T8        3      3 0.534 
-#&gt; </span><span style='color: #555555;'> 9</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T0        3      3 0.273 
-#&gt; </span><span style='color: #555555;'>10</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T168      3      3 0.114 
-#&gt; </span><span style='color: #555555;'># ... with 7,265 more rows, and 1 more variable: mean </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6,445 x 7</span><span>
+#&gt;    protein_Id       peptide_Id      dilution.     n not_na     sd    mean
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA AELADQAASWLTR   a             4      1 </span><span style='color: #BB0000;'>NA</span><span>      -</span><span style='color: #BB0000;'>1.73</span><span> 
+#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P01030~9~NA AELADQAASWLTR   b             4      1 </span><span style='color: #BB0000;'>NA</span><span>      -</span><span style='color: #BB0000;'>2.40</span><span> 
+#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P01030~9~NA AELADQAASWLTR   c             4      0 </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>    
+#&gt; </span><span style='color: #555555;'> 4</span><span> CON__P01030~9~NA AELADQAASWLTR   d             4      0 </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>    
+#&gt; </span><span style='color: #555555;'> 5</span><span> CON__P01030~9~NA AELADQAASWLTR   e             4      2  0.647  -</span><span style='color: #BB0000;'>2.21</span><span> 
+#&gt; </span><span style='color: #555555;'> 6</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK a             4      4  0.499  -</span><span style='color: #BB0000;'>0.973</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK b             4      4  0.544  -</span><span style='color: #BB0000;'>1.03</span><span> 
+#&gt; </span><span style='color: #555555;'> 8</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK c             4      4  0.384  -</span><span style='color: #BB0000;'>1.15</span><span> 
+#&gt; </span><span style='color: #555555;'> 9</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK d             4      4  0.391  -</span><span style='color: #BB0000;'>1.41</span><span> 
+#&gt; </span><span style='color: #555555;'>10</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK e             4      4  0.403  -</span><span style='color: #BB0000;'>1.35</span><span> 
+#&gt; </span><span style='color: #555555;'># ... with 6,435 more rows</span><span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>res</span>
 </div><div class='output co'>#&gt; $long
 #&gt;   quantile probs        sd delta  N_exact N FC
-#&gt; 1      50%   0.5 0.4305257     2 2.201113 3  4
-#&gt; 2      60%   0.6 0.5574482     2 2.615425 3  4
-#&gt; 3      70%   0.7 0.7538682     2 3.504988 4  4
-#&gt; 4      80%   0.8 1.0249388     2 5.279867 6  4
-#&gt; 5      90%   0.9 1.3544766     2 8.279780 9  4
+#&gt; 1      50%   0.5 0.1964909     2 1.668069 2  4
+#&gt; 2      60%   0.6 0.2398376     2 1.751737 2  4
+#&gt; 3      70%   0.7 0.2951539     2 1.866111 2  4
+#&gt; 4      80%   0.8 0.3731692     2 2.047834 3  4
+#&gt; 5      90%   0.9 0.5566183     2 2.612338 3  4
 #&gt; 
 #&gt; $summary
 #&gt;   quantile probs        sd FC=4
-#&gt; 1      50%   0.5 0.4305257    3
-#&gt; 2      60%   0.6 0.5574482    3
-#&gt; 3      70%   0.7 0.7538682    4
-#&gt; 4      80%   0.8 1.0249388    6
-#&gt; 5      90%   0.9 1.3544766    9
+#&gt; 1      50%   0.5 0.1964909    2
+#&gt; 2      60%   0.6 0.2398376    2
+#&gt; 3      70%   0.7 0.2951539    2
+#&gt; 4      80%   0.8 0.3731692    3
+#&gt; 5      90%   0.9 0.5566183    3
 #&gt; </div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>res</span>
 </div><div class='output co'>#&gt; $long
-#&gt;    quantile probs        sd delta    N_exact   N   FC
-#&gt; 1       50%   0.5 0.4305257   0.5  12.674596  13 1.41
-#&gt; 2       60%   0.6 0.5574482   0.5  20.518337  21 1.41
-#&gt; 3       70%   0.7 0.7538682   0.5  36.670767  37 1.41
-#&gt; 4       80%   0.8 1.0249388   0.5  66.936003  67 1.41
-#&gt; 5       90%   0.9 1.3544766   0.5 116.165081 117 1.41
-#&gt; 6       50%   0.5 0.4305257   1.0   4.130328   5 2.00
-#&gt; 7       60%   0.6 0.5574482   1.0   6.008707   7 2.00
-#&gt; 8       70%   0.7 0.7538682   1.0   9.979426  10 2.00
-#&gt; 9       80%   0.8 1.0249388   1.0  17.504796  18 2.00
-#&gt; 10      90%   0.9 1.3544766   1.0  29.790743  30 2.00
-#&gt; 11      50%   0.5 0.4305257   2.0   2.201113   3 4.00
-#&gt; 12      60%   0.6 0.5574482   2.0   2.615425   3 4.00
-#&gt; 13      70%   0.7 0.7538682   2.0   3.504988   4 4.00
-#&gt; 14      80%   0.8 1.0249388   2.0   5.279867   6 4.00
-#&gt; 15      90%   0.9 1.3544766   2.0   8.279780   9 4.00
+#&gt;    quantile probs        sd delta   N_exact  N   FC
+#&gt; 1       50%   0.5 0.1964909   0.5  3.681683  4 1.41
+#&gt; 2       60%   0.6 0.2398376   0.5  4.791962  5 1.41
+#&gt; 3       70%   0.7 0.2951539   0.5  6.584286  7 1.41
+#&gt; 4       80%   0.8 0.3731692   0.5  9.803998 10 1.41
+#&gt; 5       90%   0.9 0.5566183   0.5 20.460423 21 1.41
+#&gt; 6       50%   0.5 0.1964909   1.0  2.098698  3 2.00
+#&gt; 7       60%   0.6 0.2398376   1.0  2.348303  3 2.00
+#&gt; 8       70%   0.7 0.2951539   1.0  2.742047  3 2.00
+#&gt; 9       80%   0.8 0.3731692   1.0  3.464832  4 2.00
+#&gt; 10      90%   0.9 0.5566183   1.0  5.994641  6 2.00
+#&gt; 11      50%   0.5 0.1964909   2.0  1.668069  2 4.00
+#&gt; 12      60%   0.6 0.2398376   2.0  1.751737  2 4.00
+#&gt; 13      70%   0.7 0.2951539   2.0  1.866111  2 4.00
+#&gt; 14      80%   0.8 0.3731692   2.0  2.047834  3 4.00
+#&gt; 15      90%   0.9 0.5566183   2.0  2.612338  3 4.00
 #&gt; 
 #&gt; $summary
 #&gt;   quantile probs        sd FC=1.41 FC=2 FC=4
-#&gt; 1      50%   0.5 0.4305257      13    5    3
-#&gt; 2      60%   0.6 0.5574482      21    7    3
-#&gt; 3      70%   0.7 0.7538682      37   10    4
-#&gt; 4      80%   0.8 1.0249388      67   18    6
-#&gt; 5      90%   0.9 1.3544766     117   30    9
+#&gt; 1      50%   0.5 0.1964909       4    3    2
+#&gt; 2      60%   0.6 0.2398376       5    3    2
+#&gt; 3      70%   0.7 0.2951539       7    3    2
+#&gt; 4      80%   0.8 0.3731692      10    4    3
+#&gt; 5      90%   0.9 0.5566183      21    6    3
 #&gt; </div><div class='input'>
 </div></span></pre>
   </div>

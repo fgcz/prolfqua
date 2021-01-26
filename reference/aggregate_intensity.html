@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -188,10 +194,10 @@
     <pre class="examples"><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span> <span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span> <span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+<span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='va'>config</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>
+
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: `funs()` is deprecated as of dplyr 0.8.0.</span>
 #&gt; <span class='warning'>Please use a list of either functions or lambdas: </span>
@@ -205,21 +211,25 @@
 #&gt; <span class='warning'>  # Using lambdas</span>
 #&gt; <span class='warning'>  list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'>Column added : log2_Area</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "Replicate.Name"     "sampleName"         "Time"              
-#&gt;  [4] "Isotope.Label.Type" "protein_Id"         "peptide_Id"        
-#&gt;  [7] "precursor_Id"       "fragment_Id"        "Area"              
-#&gt; [10] "Detection.Q.Value"  "log2_Area"         </div><div class='input'><span class='va'>bbMed</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_intensity</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, .func <span class='op'>=</span> <span class='va'>medpolishPlydf_config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='input'>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "protein_Id"                  "raw.file"                   
+#&gt;  [3] "sampleName"                  "dilution."                  
+#&gt;  [5] "run_Id"                      "isotope"                    
+#&gt;  [7] "peptide_Id"                  "peptide.intensity"          
+#&gt;  [9] "pep"                         "nr_peptide_Id_IN_protein_Id"
+#&gt; [11] "log2_peptide.intensity"     </div><div class='input'><span class='va'>bbMed</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_intensity</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, .func <span class='op'>=</span> <span class='va'>medpolishPlydf_config</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='input'>
 <span class='va'>bbRob</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_intensity</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, .func <span class='op'>=</span> <span class='va'>summarizeRobust_config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "protein_Id"         "sampleName"         "Time"              
-#&gt; [4] "Replicate.Name"     "Isotope.Label.Type" "medpolish"         </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "protein_Id"         "sampleName"         "Time"              
-#&gt; [4] "Replicate.Name"     "Isotope.Label.Type" "mean.log2_Area"    
-#&gt; [7] "weights"            "lmrob"             </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>medpolish</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 814</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>lmrob</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 814</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>medpolish</span>, <span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>lmrob</span>, log<span class='op'>=</span><span class='st'>"xy"</span>, pch<span class='op'>=</span><span class='st'>"."</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "protein_Id" "sampleName" "dilution."  "run_Id"     "raw.file"  
+#&gt; [6] "isotope"    "medpolish" </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "protein_Id"                  "sampleName"                 
+#&gt; [3] "dilution."                   "run_Id"                     
+#&gt; [5] "raw.file"                    "isotope"                    
+#&gt; [7] "mean.log2_peptide.intensity" "weights"                    
+#&gt; [9] "lmrob"                      </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>medpolish</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 3260</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>lmrob</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 3260</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>medpolish</span>, <span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>lmrob</span>, log<span class='op'>=</span><span class='st'>"xy"</span>, pch<span class='op'>=</span><span class='st'>"."</span><span class='op'>)</span>
 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>, col<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 </div><div class='img'><img src='aggregate_intensity-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>bbMed</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>medpolish</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>]</span>, <span class='va'>bbRob</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>lmrob</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>

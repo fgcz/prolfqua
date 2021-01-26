@@ -96,10 +96,16 @@ Limma moderated contrasts" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -146,7 +152,7 @@ Limma moderated contrasts" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Limma moderated contrasts</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6Model.R'><code>R/tidyMS_R6Model.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6Contrast.R'><code>R/tidyMS_R6Contrast.R</code></a></small>
     <div class="hidden name"><code>ContrastsModerated.Rd</code></div>
     </div>
 
@@ -159,7 +165,47 @@ Limma moderated contrasts" />
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a></code></p></div>
+    <div class='dont-index'><p><code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a></code></p>
+<p>Other modelling: 
+<code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
+<code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
+<code><a href='Contrasts.html'>Contrasts</a></code>,
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='LR_test.html'>LR_test</a>()</code>,
+<code><a href='Model.html'>Model</a></code>,
+<code><a href='build_model.html'>build_model</a>()</code>,
+<code><a href='get_complete_model_fit.html'>get_complete_model_fit</a>()</code>,
+<code><a href='get_imputed_contrasts.html'>get_imputed_contrasts</a>()</code>,
+<code><a href='get_model_coefficients.html'>get_model_coefficients</a>()</code>,
+<code><a href='get_p_values_pbeta.html'>get_p_values_pbeta</a>()</code>,
+<code><a href='isSingular_lm.html'>isSingular_lm</a>()</code>,
+<code><a href='linfct_all_possible_contrasts.html'>linfct_all_possible_contrasts</a>()</code>,
+<code><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a>()</code>,
+<code><a href='linfct_from_model.html'>linfct_from_model</a>()</code>,
+<code><a href='linfct_matrix_contrasts.html'>linfct_matrix_contrasts</a>()</code>,
+<code><a href='make_custom_model_glm.html'>make_custom_model_glm</a>()</code>,
+<code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a>()</code>,
+<code><a href='make_custom_model_lm.html'>make_custom_model_lm</a>()</code>,
+<code><a href='model_analyse.html'>model_analyse</a>()</code>,
+<code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a>()</code>,
+<code><a href='moderated_p_limma.html'>moderated_p_limma</a>()</code>,
+<code><a href='ms_brms_model.html'>ms_brms_model</a>()</code>,
+<code><a href='ms_mcmc_checkzero.html'>ms_mcmc_checkzero</a>()</code>,
+<code><a href='ms_mcmc_constrast.html'>ms_mcmc_constrast</a>()</code>,
+<code><a href='my_contest.html'>my_contest</a>()</code>,
+<code><a href='my_contrast_V1.html'>my_contrast_V1</a>()</code>,
+<code><a href='my_contrast_V2.html'>my_contrast_V2</a>()</code>,
+<code><a href='my_contrast.html'>my_contrast</a>()</code>,
+<code><a href='my_glht.html'>my_glht</a>()</code>,
+<code><a href='pivot_model_contrasts_2_Wide.html'>pivot_model_contrasts_2_Wide</a>()</code>,
+<code><a href='plot_lmer_model_and_data_TWO.html'>plot_lmer_model_and_data_TWO</a>()</code>,
+<code><a href='plot_lmer_model_and_data.html'>plot_lmer_model_and_data</a>()</code>,
+<code><a href='plot_lmer_peptide_noRandom_TWO.html'>plot_lmer_peptide_noRandom_TWO</a>()</code>,
+<code><a href='plot_lmer_peptide_noRandom.html'>plot_lmer_peptide_noRandom</a>()</code>,
+<code><a href='plot_lmer_peptide_predictions.html'>plot_lmer_peptide_predictions</a>()</code>,
+<code><a href='plot_lmer_predicted_interactions.html'>plot_lmer_predicted_interactions</a>()</code>,
+<code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code>LFQService::Contrast</code> -&gt; <code>ContrastsModerated</code></p>
@@ -169,30 +215,47 @@ Limma moderated contrasts" />
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
-<li><p><a href='#method-get_contrast'><code>ContrastsModerated$get_contrast()</code></a></p></li>
+<li><p><a href='#method-get_contrasts'><code>ContrastsModerated$get_contrasts()</code></a></p></li>
 <li><p><a href='#method-get_Plotter'><code>ContrastsModerated$get_Plotter()</code></a></p></li>
+<li><p><a href='#method-to_wide'><code>ContrastsModerated$to_wide()</code></a></p></li>
 <li><p><a href='#method-clone'><code>ContrastsModerated$clone()</code></a></p></li>
 </ul>
 <p><details open ><summary>Inherited methods</summary>
 <ul>
-<li><p><span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts"><a href='../../LFQService/html/Contrast.html#method-get_contrasts'><code>LFQService::Contrast$get_contrasts()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts_sides"><a href='../../LFQService/html/Contrast.html#method-get_contrasts_sides'><code>LFQService::Contrast$get_contrasts_sides()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_linfct"><a href='../../LFQService/html/Contrast.html#method-get_linfct'><code>LFQService::Contrast$get_linfct()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="initialize"><a href='../../LFQService/html/Contrast.html#method-initialize'><code>LFQService::Contrast$initialize()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="write"><a href='../../LFQService/html/Contrast.html#method-write'><code>LFQService::Contrast$write()</code></a></span></p></li>
 </ul>
 </details>
 
 <hr>
-<a id="method-get_contrast"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='get_contrast.html'>get_contrast()</a></code></h3>
+<a id="method-get_contrasts"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_contrasts()</code></h3>
 <p>applies limma moderation</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>get_contrast</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>FALSE</span>, global <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>all</code></dt><dd><p>should all columns be returned (default FALSE)</p></dd>
+
+<dt><code>global</code></dt><dd><p>use a global linear function (determined by get_linfct)</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-get_Plotter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_Plotter()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>get <code>Contrast_Plotter</code></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
+<p><hr>
+<a id="method-to_wide"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>to_wide()</code></h3>
+<p>convert to wide format</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>to_wide</span><span class='op'>(</span>columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"moderated.p.value"</span>, <span class='st'>"FDR.moderated"</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>columns</code></dt><dd><p>value column default moderated.p.value</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -207,12 +270,14 @@ Limma moderated contrasts" />
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>D</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'>ionstar</span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>D</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>D</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>modelFunction</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)"</span><span class='op'>)</span>
-<span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>D</span><span class='op'>$</span><span class='va'>data</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>D</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>istar_data</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "protein_Id"</div><div class='input'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_model.html'>build_model</a></span><span class='op'>(</span>
  <span class='va'>pepIntensity</span>,
@@ -220,13 +285,10 @@ Limma moderated contrasts" />
  subject_Id <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>boundary (singular) fit: see ?isSingular</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='input'>
  <span class='va'>Contr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dil.b_vs_a"</span> <span class='op'>=</span> <span class='st'>"dilution.a - dilution.b"</span><span class='op'>)</span>
- <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span><span class='op'>$</span><span class='va'>modelDF</span>,
- <span class='va'>Contr</span>,
- <span class='va'>modelFunction</span><span class='op'>$</span><span class='va'>contrast_fun</span>,
- subject_Id <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>,
- modelName <span class='op'>=</span> <span class='va'>modelFunction</span><span class='op'>$</span><span class='va'>model_name</span><span class='op'>)</span>
- <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrast</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dil.b_vs_a=dilution.a - dilution.b</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id")</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 60 x 25</span><span>
+ <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>,
+ <span class='va'>Contr</span><span class='op'>)</span>
+ <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>determine linear functions:</span></div><div class='output co'>#&gt; <span class='message'>compute contrasts:</span></div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id")</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 59 x 25</span><span>
 #&gt; </span><span style='color: #555555;'># Groups:   contrast [1]</span><span>
 #&gt;    contrast protein_Id     c1     c2 c1_name c2_name estimate std.error    df
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -237,15 +299,19 @@ Limma moderated contrasts" />
 #&gt; </span><span style='color: #555555;'> 5</span><span> dil.b_v~ sp|P07602~  1.05   0.976 diluti~ diluti~   0.076</span><span style='text-decoration: underline;'>8</span><span>    0.079</span><span style='text-decoration: underline;'>0</span><span> 193. 
 #&gt; </span><span style='color: #555555;'> 6</span><span> dil.b_v~ sp|Q07866~ -</span><span style='color: #BB0000;'>0.974</span><span> -</span><span style='color: #BB0000;'>1.03</span><span>  diluti~ diluti~   0.058</span><span style='text-decoration: underline;'>0</span><span>    0.101   12.9
 #&gt; </span><span style='color: #555555;'> 7</span><span> dil.b_v~ sp|P41252~ -</span><span style='color: #BB0000;'>0.146</span><span> -</span><span style='color: #BB0000;'>0.128</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.017</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span>    0.042</span><span style='text-decoration: underline;'>1</span><span> 483. 
-#&gt; </span><span style='color: #555555;'> 8</span><span> dil.b_v~ sp|P02924~ -</span><span style='color: #BB0000;'>2.18</span><span>  -</span><span style='color: #BB0000;'>1.41</span><span>  diluti~ diluti~  -</span><span style='color: #BB0000;'>0.772</span><span>     0.170   65.1
-#&gt; </span><span style='color: #555555;'> 9</span><span> dil.b_v~ sp|P0A6L2~ -</span><span style='color: #BB0000;'>0.919</span><span> -</span><span style='color: #BB0000;'>0.422</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.497</span><span>     0.074</span><span style='text-decoration: underline;'>1</span><span>  15.5
-#&gt; </span><span style='color: #555555;'>10</span><span> dil.b_v~ sp|P50570~ -</span><span style='color: #BB0000;'>0.814</span><span> -</span><span style='color: #BB0000;'>0.898</span><span> diluti~ diluti~   0.084</span><span style='text-decoration: underline;'>1</span><span>    0.062</span><span style='text-decoration: underline;'>5</span><span> 218. 
-#&gt; </span><span style='color: #555555;'># ... with 50 more rows, and 16 more variables: statistic </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> dil.b_v~ sp|P0A6L2~ -</span><span style='color: #BB0000;'>0.919</span><span> -</span><span style='color: #BB0000;'>0.422</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.497</span><span>     0.074</span><span style='text-decoration: underline;'>1</span><span>  15.5
+#&gt; </span><span style='color: #555555;'> 9</span><span> dil.b_v~ sp|P50570~ -</span><span style='color: #BB0000;'>0.814</span><span> -</span><span style='color: #BB0000;'>0.898</span><span> diluti~ diluti~   0.084</span><span style='text-decoration: underline;'>1</span><span>    0.062</span><span style='text-decoration: underline;'>5</span><span> 218. 
+#&gt; </span><span style='color: #555555;'>10</span><span> dil.b_v~ sp|Q03001~ -</span><span style='color: #BB0000;'>1.48</span><span>  -</span><span style='color: #BB0000;'>1.52</span><span>  diluti~ diluti~   0.039</span><span style='text-decoration: underline;'>4</span><span>    0.039</span><span style='text-decoration: underline;'>3</span><span> 499. 
+#&gt; </span><span style='color: #555555;'># ... with 49 more rows, and 16 more variables: statistic </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   conf.low </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, conf.high </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, p.value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, sigma </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   isSingular </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, sigma.model </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, df.residual.model </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, FDR </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   moderated.df.prior </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.var.prior </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   moderated.var.post </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.statistic </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   moderated.df.total </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.p.value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, FDR.moderated </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'>#   moderated.df.total </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.p.value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, FDR.moderated </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'> <span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
+ <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='ContrastsModerated-1.png' alt='' width='700' height='433' /></div><div class='input'> <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>ma_plot</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='ContrastsModerated-2.png' alt='' width='700' height='433' /></div><div class='input'> <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $FDR.moderated</div><div class='img'><img src='ContrastsModerated-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

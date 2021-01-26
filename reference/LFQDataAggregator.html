@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>LFQAggregator — LFQDataAggregator • LFQService</title>
+<title>Decorates LFQData with methods to aggregate protein intensities — LFQDataAggregator • LFQService</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="LFQAggregator — LFQDataAggregator" />
-<meta property="og:description" content="LFQAggregator
-LFQAggregator" />
+<meta property="og:title" content="Decorates LFQData with methods to aggregate protein intensities — LFQDataAggregator" />
+<meta property="og:description" content="Decorates LFQData with methods to aggregate protein intensities
+Decorates LFQData with methods to aggregate protein intensities" />
 
 
 
@@ -96,10 +96,16 @@ LFQAggregator" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -145,14 +151,14 @@ LFQAggregator" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>LFQAggregator</h1>
+    <h1>Decorates LFQData with methods to aggregate protein intensities</h1>
     <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/LFQData.R'><code>R/LFQData.R</code></a></small>
     <div class="hidden name"><code>LFQDataAggregator.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>LFQAggregator</p>
-<p>LFQAggregator</p>
+    <p>Decorates LFQData with methods to aggregate protein intensities</p>
+<p>Decorates LFQData with methods to aggregate protein intensities</p>
     </div>
 
 
@@ -187,10 +193,16 @@ LFQAggregator" />
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>initialize</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>LFQDataAggregator</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfq</span>, prefix <span class='op'>=</span> <span class='st'>"protein"</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>lfq</code></dt><dd><p>LFQData</p></dd>
+
+<dt><code>prefix</code></dt><dd><p>default protein</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-medpolish"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/medpolish.html'>medpolish()</a></code></h3>
 <p>aggregate using median polish</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -253,7 +265,7 @@ LFQAggregator" />
 <p>data.frame</p>
 <p><hr>
 <a id="method-write_plots"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>write_plots()</code></h3>
-<p>Writes plots to folder</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>writes plots to folder</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>LFQDataAggregator</span><span class='op'>$</span><span class='fu'>write_plots</span><span class='op'>(</span>
   <span class='va'>qcpath</span>,
   show.legend <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -265,11 +277,11 @@ LFQAggregator" />
 <p><div class="arguments"></p><dl>
 <dt><code>qcpath</code></dt><dd><p>qcpath</p></dd>
 
+<dt><code>show.legend</code></dt><dd><p>legend</p></dd>
+
 <dt><code>width</code></dt><dd><p>figure width</p></dd>
 
 <dt><code>height</code></dt><dd><p>figure height</p></dd>
-
-<dt><code>legend</code></dt><dd><p>legend</p></dd>
 
 </dl><p></div></p>
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
@@ -291,9 +303,9 @@ LFQAggregator" />
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
 
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'>ionstar</span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 
 <span class='va'>lfqTrans</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>log2_robscale</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>lfqAggregator</span> <span class='op'>&lt;-</span> <span class='va'>LFQDataAggregator</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqTrans</span>, <span class='st'>"protein"</span><span class='op'>)</span>
@@ -302,7 +314,7 @@ LFQAggregator" />
 </div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='input'><span class='va'>pmed</span> <span class='op'>&lt;-</span> <span class='va'>lfqAggregator</span><span class='op'>$</span><span class='fu'>plot</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>pmed</span><span class='op'>$</span><span class='va'>plots</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 54 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 14 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='LFQDataAggregator-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>lfqAggregator</span><span class='op'>$</span><span class='fu'>lmrob</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='va'>prob</span> <span class='op'>&lt;-</span> <span class='va'>lfqAggregator</span><span class='op'>$</span><span class='fu'>plot</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='va'>prob</span> <span class='op'>&lt;-</span> <span class='va'>lfqAggregator</span><span class='op'>$</span><span class='fu'>plot</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>prob</span><span class='op'>$</span><span class='va'>plots</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 54 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 14 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='LFQDataAggregator-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>lfqCopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span><span class='op'>)</span>

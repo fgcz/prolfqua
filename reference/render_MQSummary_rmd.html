@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -156,6 +162,7 @@
     <pre class="usage"><span class='fu'>render_MQSummary_rmd</span><span class='op'>(</span>
   <span class='va'>pdata</span>,
   <span class='va'>config</span>,
+  <span class='va'>project_conf</span>,
   pep <span class='op'>=</span> <span class='cn'>TRUE</span>,
   dest_path <span class='op'>=</span> <span class='st'>"."</span>,
   dest_file_name <span class='op'>=</span> <span class='st'>"MQSummary2"</span>,
@@ -174,6 +181,30 @@
       <th>config</th>
       <td><p>AnalysisConfiguration</p></td>
     </tr>
+    <tr>
+      <th>pep</th>
+      <td><p>are these peptide or protein data</p></td>
+    </tr>
+    <tr>
+      <th>dest_path</th>
+      <td><p>destination path</p></td>
+    </tr>
+    <tr>
+      <th>dest_file_name</th>
+      <td><p>name of pdf file</p></td>
+    </tr>
+    <tr>
+      <th>workdir</th>
+      <td><p>working directory</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p>either pdf or html</p></td>
+    </tr>
+    <tr>
+      <th>project_config</th>
+      <td><p>list with workunit_Id project_Id order_Id</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -183,255 +214,16 @@
 <code><a href='render_SummarizeFiltering_rmd.html'>render_SummarizeFiltering_rmd</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
+    <pre class="examples"><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>render_MQSummary_rmd</span><span class='op'>(</span><span class='va'>analysis</span>,
-  <span class='va'>config</span> , workdir<span class='op'>=</span> <span class='st'>"."</span><span class='op'>)</span><span class='co'># tempdir(check = FALSE))</span>
-</div><div class='output co'>#&gt; <span class='message'>copy C:/Users/wolski/Documents/R/win-library/4.0/LFQService/rmarkdown/MQSummary2.Rmd to ./MQSummary2.Rmd</span></div><div class='output co'>#&gt; <span class='message'>copy C:/Users/wolski/Documents/R/win-library/4.0/LFQService/rmarkdown/CVReport.Rmd to ./CVReport.Rmd</span></div><div class='output co'>#&gt; <span class='message'>your working directory now should contain:  2 new files :</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>processing file: MQSummary2.Rmd</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |.                                                                     |   2%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |...                                                                   |   4%
-#&gt; label: setup (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |....                                                                  |   6%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |.....                                                                 |   8%
-#&gt; label: hierarchy_counts
-#&gt;   |                                                                              |.......                                                               |  10%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |........                                                              |  12%
-#&gt; label: hierarchyCountsSampleBarplot (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "(ref:hierarchyCountsSampleBarplot)"
-#&gt;  $ fig.width : num 8
-#&gt;  $ fig.height: num 6
-#&gt; </div><div class='output co'>#&gt;   |                                                                              |.........                                                             |  13%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |...........                                                           |  15%
-#&gt; label: unnamed-chunk-1 (with options) 
-#&gt; List of 3
-#&gt;  $ fig.height: num 3.5
-#&gt;  $ fig.width : num 3.5
-#&gt;  $ fig.cap   : chr "Number of proteins with one or more peptides."
-#&gt; </div><div class='output co'>#&gt;   |                                                                              |............                                                          |  17%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |.............                                                         |  19%
-#&gt; label: missingFigIntensityHistorgram (with options) 
-#&gt; List of 3
-#&gt;  $ fig.width : num 7
-#&gt;  $ fig.height: num 7
-#&gt;  $ fig.cap   : chr "(ref:missingFigIntensityHistorgram)"
-#&gt; </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Isotope.Label.Type ~ Time</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Isotope.Label.Type ~ Time</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous x-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 149 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt;   |                                                                              |...............                                                       |  21%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |................                                                      |  23%
-#&gt; label: preparemissingnessHeatmap (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; </div><div class='output co'>#&gt; <span class='message'>rows with NA's: 131; all rows :928</span></div><div class='output co'>#&gt;   |                                                                              |..................                                                    |  25%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |...................                                                   |  27%
-#&gt; label: missingnessHeatmap (with options) 
-#&gt; List of 4
-#&gt;  $ fig.width : num 4.5
-#&gt;  $ fig.height: num 4.5
-#&gt;  $ fig.align : chr "center"
-#&gt;  $ fig.cap   : chr "(ref:missingnessHeatmap)"
-#&gt; 
-#&gt;   |                                                                              |....................                                                  |  29%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |......................                                                |  31%
-#&gt; label: checktransformation (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |.......................                                               |  33%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |........................                                              |  35%
-#&gt; label: conditional_print (with options) 
-#&gt; List of 2
-#&gt;  $ child: chr "CVReport.Rmd"
-#&gt;  $ eval : symbol show_text
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>processing file: ./CVReport.Rmd</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |.......                                                               |  10%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |..............                                                        |  20%
-#&gt; label: plotDistributions (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "Density plot of peptide level Coefficient of Variations (CV)."
-#&gt;  $ fig.height: num 6
-#&gt;  $ fig.width : num 8
-#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 170 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt;   |                                                                              |.....................                                                 |  30%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |............................                                          |  40%
-#&gt; label: unnamed-chunk-3
-#&gt;   |                                                                              |...................................                                   |  50%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |..........................................                            |  60%
-#&gt; label: computeCVQuantiles (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |.................................................                     |  70%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |........................................................              |  80%
-#&gt; label: printTable (with options) 
-#&gt; List of 1
-#&gt;  $ results: chr "asis"
-#&gt; 
-#&gt;   |                                                                              |...............................................................       |  90%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |......................................................................| 100%
-#&gt; label: intensityDistribution (with options) 
-#&gt; List of 1
-#&gt;  $ fig.cap: chr "Distribution of unnormalized intensities."
-#&gt; </div><div class='output co'>#&gt; 
-#&gt;   |                                                                              |..........................                                            |  37%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |...........................                                           |  38%
-#&gt; label: transformIntensities</div><div class='output co'>#&gt; <span class='message'>Column added : log2_Area</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("sampleName", "protein_Id", "peptide_Id", "precursor_Id", "fragment_Id")</span></div><div class='output co'>#&gt;   |                                                                              |............................                                          |  40%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |..............................                                        |  42%
-#&gt; label: plotTransformedIntensityDistributions (with options) 
-#&gt; List of 2
-#&gt;  $ fig.cap   : chr "(ref:plotTransformedIntensityDistributions)"
-#&gt;  $ fig.height: num 5
-#&gt; </div><div class='output co'>#&gt;   |                                                                              |...............................                                       |  44%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |................................                                      |  46%
-#&gt; label: preparecorrelationHeat (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |..................................                                    |  48%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |...................................                                   |  50%
-#&gt; label: correlationHeat (with options) 
-#&gt; List of 2
-#&gt;  $ fig.height: num 5
-#&gt;  $ fig.cap   : chr "(ref:correlationHeat)"
-#&gt; 
-#&gt;   |                                                                              |....................................                                  |  52%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |......................................                                |  54%
-#&gt; label: pairsplotSmooth (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "Pairsplot - scatterplot of samples."
-#&gt;  $ fig.height: num 12
-#&gt;  $ fig.width : num 12
-#&gt; </div><div class='output co'>#&gt;   |                                                                              |.......................................                               |  56%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |........................................                              |  58%
-#&gt; label: sdviolinplots (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "(ref:sdviolinplots)"
-#&gt;  $ fig.height: num 6
-#&gt;  $ fig.width : num 8
-#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 160 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt;   |                                                                              |..........................................                            |  60%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |...........................................                           |  62%
-#&gt; label: sdecdf (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "(ref:sdecdf)"
-#&gt;  $ fig.height: num 6
-#&gt;  $ fig.width : num 8
-#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 160 rows containing non-finite values (stat_ecdf).</span></div><div class='output co'>#&gt;   |                                                                              |............................................                          |  63%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |..............................................                        |  65%
-#&gt; label: unnamed-chunk-2 (with options) 
-#&gt; List of 1
-#&gt;  $ fig.cap: chr "Standard Deviation vs Mean"
-#&gt; 
-#&gt;   |                                                                              |...............................................                       |  67%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |................................................                      |  69%
-#&gt; label: computeSDQuantiles (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |..................................................                    |  71%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |...................................................                   |  73%
-#&gt; label: printSDTable
-#&gt;   |                                                                              |....................................................                  |  75%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |......................................................                |  77%
-#&gt; label: prepareoverviewHeat (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt;   |                                                                              |.......................................................               |  79%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |.........................................................             |  81%
-#&gt; label: overviewHeat (with options) 
-#&gt; List of 3
-#&gt;  $ fig.cap   : chr "(ref:overviewHeat)"
-#&gt;  $ fig.height: num 10
-#&gt;  $ fig.width : num 8
-#&gt; 
-#&gt;   |                                                                              |..........................................................            |  83%
-#&gt;    inline R code fragments
-#&gt; 
-#&gt;   |                                                                              |...........................................................           |  85%
-#&gt; label: figSampleSize (with options) 
-#&gt; List of 2
-#&gt;  $ fig.cap  : chr "(ref:figSampleSize)"
-#&gt;  $ fig.width: num 8
-#&gt; </div><div class='output co'>#&gt;   |                                                                              |.............................................................         |  87%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |..............................................................        |  88%
-#&gt; label: sampleSize
-#&gt;   |                                                                              |...............................................................       |  90%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |.................................................................     |  92%
-#&gt; label: sampleNameRawFileMapping
-#&gt;   |                                                                              |..................................................................    |  94%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |...................................................................   |  96%
-#&gt; label: hierarchyCountsSample
-#&gt;   |                                                                              |..................................................................... |  98%
-#&gt;   ordinary text without R code
-#&gt; 
-#&gt;   |                                                                              |......................................................................| 100%
-#&gt; label: resetTheme (with options) 
-#&gt; List of 1
-#&gt;  $ include: logi FALSE
-#&gt; 
-#&gt; </div><div class='output co'>#&gt; <span class='message'>output file: MQSummary2.knit.md</span></div><div class='output co'>#&gt; "C:/Program Files/RStudio/bin/pandoc/pandoc" +RTS -K512m -RTS MQSummary2.utf8.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output MQSummary2.tex --self-contained --table-of-contents --toc-depth 2 --number-sections --highlight-style tango --pdf-engine pdflatex --variable graphics --lua-filter "C:/Users/wolski/Documents/R/win-library/4.0/rmarkdown/rmd/lua/pagebreak.lua" --lua-filter "C:/Users/wolski/Documents/R/win-library/4.0/rmarkdown/rmd/lua/latex-div.lua" --wrap preserve --include-in-header "C:\Users\wolski\AppData\Local\Temp\RtmpktrLAD\rmarkdown-str23c025564256.html" --variable "geometry:margin=1in" --variable tables=yes --standalone -Mhas-frontmatter=false </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Output created: MQSummary2.pdf</span></div><div class='output co'>#&gt; <span class='message'>XXXX--------------------------------------XXXX</span></div><div class='output co'>#&gt; [1] "./MQSummary2.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>projectConfig</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>workunit_Id <span class='op'>=</span> <span class='st'>"xx"</span>, project_Id <span class='op'>=</span> <span class='st'>"xy"</span>, order_Id <span class='op'>=</span> <span class='st'>"z"</span><span class='op'>)</span>
+<span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
+<span class='fu'>render_MQSummary_rmd</span><span class='op'>(</span><span class='va'>analysis</span>,
+  <span class='va'>config</span> ,
+  <span class='va'>projectConfig</span>,
+  workdir<span class='op'>=</span> <span class='st'>"."</span><span class='op'>)</span> <span class='co'># tempdir(check = FALSE))</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

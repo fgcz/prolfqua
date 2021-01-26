@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average — get_imputed_contrasts • LFQService</title>
+<title>compute contrasts based on peptide fold changes — get_imputed_contrasts • LFQService</title>
 
 
 <!-- jquery -->
@@ -40,10 +39,9 @@ peptide fold change is comptuted based on interaction average — get_imputed_co
 
 
 
-<meta property="og:title" content="compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average — get_imputed_contrasts" />
-<meta property="og:description" content="compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average" />
+<meta property="og:title" content="compute contrasts based on peptide fold changes — get_imputed_contrasts" />
+<meta property="og:description" content="Computes median of fold peptide fold change to obtain protein fold change.
+peptide fold change is computed based on the average of intensities in the conditions." />
 
 
 
@@ -98,10 +96,16 @@ peptide fold change is comptuted based on interaction average" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -147,15 +151,14 @@ peptide fold change is comptuted based on interaction average" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average</h1>
+    <h1>compute contrasts based on peptide fold changes</h1>
     <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_missigness.R'><code>R/tidyMS_missigness.R</code></a></small>
     <div class="hidden name"><code>get_imputed_contrasts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>compute contrasts based on peptide fold changes - compute median of fold change for each protein.
-peptide fold change is comptuted based on interaction average</p>
+    <p>Computes median of fold peptide fold change to obtain protein fold change.
+peptide fold change is computed based on the average of intensities in the conditions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_imputed_contrasts</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>contrasts</span><span class='op'>)</span></pre>
@@ -180,16 +183,24 @@ peptide fold change is comptuted based on interaction average</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other modelling: 
-<code><a href='.linfct_all_possible_contrasts.html'>.linfct_all_possible_contrasts</a>()</code>,
+<code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
+<code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
+<code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
+<code><a href='Contrasts.html'>Contrasts</a></code>,
 <code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='LR_test.html'>LR_test</a>()</code>,
+<code><a href='Model.html'>Model</a></code>,
 <code><a href='build_model.html'>build_model</a>()</code>,
 <code><a href='get_complete_model_fit.html'>get_complete_model_fit</a>()</code>,
 <code><a href='get_model_coefficients.html'>get_model_coefficients</a>()</code>,
 <code><a href='get_p_values_pbeta.html'>get_p_values_pbeta</a>()</code>,
 <code><a href='isSingular_lm.html'>isSingular_lm</a>()</code>,
+<code><a href='linfct_all_possible_contrasts.html'>linfct_all_possible_contrasts</a>()</code>,
 <code><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a>()</code>,
 <code><a href='linfct_from_model.html'>linfct_from_model</a>()</code>,
 <code><a href='linfct_matrix_contrasts.html'>linfct_matrix_contrasts</a>()</code>,
+<code><a href='make_custom_model_glm.html'>make_custom_model_glm</a>()</code>,
 <code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a>()</code>,
 <code><a href='make_custom_model_lm.html'>make_custom_model_lm</a>()</code>,
 <code><a href='model_analyse.html'>model_analyse</a>()</code>,
@@ -210,37 +221,36 @@ peptide fold change is comptuted based on interaction average</p>
 <code><a href='plot_lmer_peptide_noRandom.html'>plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href='plot_lmer_peptide_predictions.html'>plot_lmer_peptide_predictions</a>()</code>,
 <code><a href='plot_lmer_predicted_interactions.html'>plot_lmer_predicted_interactions</a>()</code>,
-<code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code>,
-<code><a href='workflow_likelihood_ratio_test.html'>workflow_likelihood_ratio_test</a>()</code></p></div>
+<code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>parameter</span><span class='op'>$</span><span class='va'>qVal_individual_threshold</span> <span class='op'>&lt;-</span> <span class='fl'>0.01</span>
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
+<span class='va'>configur</span><span class='op'>$</span><span class='va'>parameter</span><span class='op'>$</span><span class='va'>qVal_individual_threshold</span> <span class='op'>&lt;-</span> <span class='fl'>0.01</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='fu'><a href='removeLarge_Q_Values.html'>removeLarge_Q_Values</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-<span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TimeT168vsT2"</span> <span class='op'>=</span> <span class='st'>"TimeT168 - TimeT2"</span>,<span class='st'>"TimeT168vsT24"</span> <span class='op'>=</span> <span class='st'>"TimeT168 - TimeT24"</span> <span class='op'>)</span>
+<span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dilution.b-a"</span> <span class='op'>=</span> <span class='st'>"dilution.b - dilution.a"</span>, <span class='st'>"dilution.c-e"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.e"</span><span class='op'>)</span>
 <span class='fu'>get_imputed_contrasts</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, <span class='va'>Contrasts</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>TimeT168vsT2=TimeT168 - TimeT2</span></div><div class='output co'>#&gt; <span class='message'>TimeT168vsT24=TimeT168 - TimeT24</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 74 x 8</span><span>
-#&gt;    contrast protein_Id c1_name c2_name     c1     c2 estimate_median
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> TimeT16~ CiRT stan~ TimeT1~ TimeT2  9.40</span><span style='color: #555555;'>e</span><span>6 1.35</span><span style='color: #555555;'>e</span><span>7       -</span><span style='color: #BB0000;'>3</span><span style='color: #BB0000;text-decoration: underline;'>343</span><span style='color: #BB0000;'>250.</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span> TimeT16~ iRT-C18 S~ TimeT1~ TimeT2  2.56</span><span style='color: #555555;'>e</span><span>7 2.70</span><span style='color: #555555;'>e</span><span>7        -</span><span style='color: #BB0000;text-decoration: underline;'>457</span><span style='color: #BB0000;'>289.</span><span>
-#&gt; </span><span style='color: #555555;'> 3</span><span> TimeT16~ sp|O60656~ TimeT1~ TimeT2  4.29</span><span style='color: #555555;'>e</span><span>5 4.50</span><span style='color: #555555;'>e</span><span>5          </span><span style='text-decoration: underline;'>11</span><span>128.
-#&gt; </span><span style='color: #555555;'> 4</span><span> TimeT16~ sp|P02768~ TimeT1~ TimeT2  9.87</span><span style='color: #555555;'>e</span><span>8 7.58</span><span style='color: #555555;'>e</span><span>8      176</span><span style='text-decoration: underline;'>831</span><span>403.
-#&gt; </span><span style='color: #555555;'> 5</span><span> TimeT16~ sp|P05177~ TimeT1~ TimeT2  8.32</span><span style='color: #555555;'>e</span><span>5 1.04</span><span style='color: #555555;'>e</span><span>6           </span><span style='text-decoration: underline;'>7</span><span>307.
-#&gt; </span><span style='color: #555555;'> 6</span><span> TimeT16~ sp|P09488~ TimeT1~ TimeT2  5.46</span><span style='color: #555555;'>e</span><span>4 1.36</span><span style='color: #555555;'>e</span><span>5         -</span><span style='color: #BB0000;text-decoration: underline;'>96</span><span style='color: #BB0000;'>524.</span><span>
-#&gt; </span><span style='color: #555555;'> 7</span><span> TimeT16~ sp|P10632~ TimeT1~ TimeT2  3.52</span><span style='color: #555555;'>e</span><span>5 2.26</span><span style='color: #555555;'>e</span><span>6       -</span><span style='color: #BB0000;'>1</span><span style='color: #BB0000;text-decoration: underline;'>893</span><span style='color: #BB0000;'>009.</span><span>
-#&gt; </span><span style='color: #555555;'> 8</span><span> TimeT16~ sp|P11509~ TimeT1~ TimeT2  1.34</span><span style='color: #555555;'>e</span><span>5 8.68</span><span style='color: #555555;'>e</span><span>5        -</span><span style='color: #BB0000;text-decoration: underline;'>756</span><span style='color: #BB0000;'>395.</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span> TimeT16~ sp|P11712~ TimeT1~ TimeT2  3.71</span><span style='color: #555555;'>e</span><span>6 6.35</span><span style='color: #555555;'>e</span><span>6       -</span><span style='color: #BB0000;'>2</span><span style='color: #BB0000;text-decoration: underline;'>632</span><span style='color: #BB0000;'>496.</span><span>
-#&gt; </span><span style='color: #555555;'>10</span><span> TimeT16~ sp|P16662~ TimeT1~ TimeT2  5.03</span><span style='color: #555555;'>e</span><span>6 7.42</span><span style='color: #555555;'>e</span><span>6       -</span><span style='color: #BB0000;'>2</span><span style='color: #BB0000;text-decoration: underline;'>334</span><span style='color: #BB0000;'>678.</span><span>
-#&gt; </span><span style='color: #555555;'># ... with 64 more rows, and 1 more variable: estimate_mad </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.e</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 324 x 9</span><span>
+#&gt;    contrast protein_Id c1_name c2_name     c1     c2     n estimate_median
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> dilutio~ CON__P010~ diluti~ diluti~ -</span><span style='color: #BB0000;'>1.03</span><span>  -</span><span style='color: #BB0000;'>0.973</span><span>     1       -</span><span style='color: #BB0000;'>0.055</span><span style='color: #BB0000;text-decoration: underline;'>7</span><span>  
+#&gt; </span><span style='color: #555555;'> 2</span><span> dilutio~ CON__P027~ diluti~ diluti~  3.49   3.43     33        0.000</span><span style='text-decoration: underline;'>881</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span> dilutio~ CON__P349~ diluti~ diluti~  2.91   2.78     13       -</span><span style='color: #BB0000;'>0.011</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>  
+#&gt; </span><span style='color: #555555;'> 4</span><span> dilutio~ CON__Q281~ diluti~ diluti~ -</span><span style='color: #BB0000;'>1.53</span><span>  -</span><span style='color: #BB0000;'>1.32</span><span>      4       -</span><span style='color: #BB0000;'>0.210</span><span>   
+#&gt; </span><span style='color: #555555;'> 5</span><span> dilutio~ CON__Q3SZ~ diluti~ diluti~  0.891  0.911     6       -</span><span style='color: #BB0000;'>0.020</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span>  
+#&gt; </span><span style='color: #555555;'> 6</span><span> dilutio~ sp|L0R819~ diluti~ diluti~ -</span><span style='color: #BB0000;'>0.331</span><span> -</span><span style='color: #BB0000;'>1.07</span><span>      1        0.740   
+#&gt; </span><span style='color: #555555;'> 7</span><span> dilutio~ sp|O00148~ diluti~ diluti~  1.19   1.20     11        0.067</span><span style='text-decoration: underline;'>3</span><span>  
+#&gt; </span><span style='color: #555555;'> 8</span><span> dilutio~ sp|O14548~ diluti~ diluti~ -</span><span style='color: #BB0000;'>0.790</span><span> -</span><span style='color: #BB0000;'>0.814</span><span>     2        0.024</span><span style='text-decoration: underline;'>4</span><span>  
+#&gt; </span><span style='color: #555555;'> 9</span><span> dilutio~ sp|O14745~ diluti~ diluti~ -</span><span style='color: #BB0000;'>0.439</span><span>  0.137     8       -</span><span style='color: #BB0000;'>0.093</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span>  
+#&gt; </span><span style='color: #555555;'>10</span><span> dilutio~ sp|O15145~ diluti~ diluti~  2.41   2.08      3       -</span><span style='color: #BB0000;'>0.016</span><span style='color: #BB0000;text-decoration: underline;'>4</span><span>  
+#&gt; </span><span style='color: #555555;'># ... with 314 more rows, and 1 more variable: estimate_mad </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

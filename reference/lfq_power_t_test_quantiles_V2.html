@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -188,12 +194,14 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : log2_Area</span></div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv.html'>summarize_cv</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
+<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
+<span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv.html'>summarize_cv</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv_quantiles.html'>summarize_cv_quantiles</a></span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>0.8</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>bbb</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles_V2</span><span class='op'>(</span><span class='va'>xx</span><span class='op'>$</span><span class='va'>long</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; i 1 delta_i 0.59 
@@ -201,9 +209,24 @@
 #&gt; i 3 delta_i 2 </div><div class='input'><span class='va'>bbb</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='va'>bbb</span><span class='op'>)</span>
 <span class='va'>summary</span> <span class='op'>&lt;-</span> <span class='va'>bbb</span> <span class='op'>%&gt;%</span>
  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span> <span class='op'>-</span><span class='va'>N_exact</span>, <span class='op'>-</span><span class='va'>quantiles</span>, <span class='op'>-</span><span class='va'>sdtrimmed</span> <span class='op'>)</span> <span class='op'>%&gt;%</span>
- <span class='fu'>spread</span><span class='op'>(</span><span class='va'>delta</span>, <span class='va'>N</span>, sep<span class='op'>=</span><span class='st'>"="</span><span class='op'>)</span>
-<span class='co'>#View(summary)</span>
-</div></pre>
+ <span class='fu'>spread</span><span class='op'>(</span><span class='va'>delta</span>, <span class='va'>N</span>, sep <span class='op'>=</span> <span class='st'>"="</span><span class='op'>)</span>
+<span class='va'>summary</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 12 x 5</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   dilution. [6]</span><span>
+#&gt;    dilution. probs `delta=0.59` `delta=1` `delta=2`
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> a           0.5            4         3         2
+#&gt; </span><span style='color: #555555;'> 2</span><span> a           0.8            8         4         3
+#&gt; </span><span style='color: #555555;'> 3</span><span> All         0.5            5         3         2
+#&gt; </span><span style='color: #555555;'> 4</span><span> All         0.8           14         6         3
+#&gt; </span><span style='color: #555555;'> 5</span><span> b           0.5            4         3         2
+#&gt; </span><span style='color: #555555;'> 6</span><span> b           0.8            8         4         3
+#&gt; </span><span style='color: #555555;'> 7</span><span> c           0.5            3         3         2
+#&gt; </span><span style='color: #555555;'> 8</span><span> c           0.8            7         4         3
+#&gt; </span><span style='color: #555555;'> 9</span><span> d           0.5            4         3         2
+#&gt; </span><span style='color: #555555;'>10</span><span> d           0.8            8         4         3
+#&gt; </span><span style='color: #555555;'>11</span><span> e           0.5            4         3         2
+#&gt; </span><span style='color: #555555;'>12</span><span> e           0.8            8         4         3</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -177,10 +183,13 @@
 <code><a href='remove_small_intensities.html'>remove_small_intensities</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/spectronautDIAData250_A.html'>spectronautDIAData250_A</a></span>
+    <pre class="examples"><div class='input'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='spectronautDIAData250_A.html'>spectronautDIAData250_A</a></span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>removeLarge_Q_Values</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+
+
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>removeLarge_Q_Values</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

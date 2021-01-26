@@ -54,10 +54,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -100,13 +106,14 @@
 
       
 
-      </header><script src="Run_TidyAnalysis_Skyline_PRM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Run_TidyAnalysis_Skyline_PRM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="Run_TidyAnalysis_Skyline_PRM_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="Run_TidyAnalysis_Skyline_PRM_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Example of data preprocessing for PRM data</h1>
                         <h4 class="author">Functional Genomics Center Zurich</h4>
             
-            <h4 class="date">16 October, 2020</h4>
+            <h4 class="date">26 January, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/LFQService/blob/master/vignettes/Run_TidyAnalysis_Skyline_PRM.Rmd"><code>vignettes/Run_TidyAnalysis_Skyline_PRM.Rmd</code></a></small>
       <div class="hidden name"><code>Run_TidyAnalysis_Skyline_PRM.Rmd</code></div>
@@ -116,39 +123,39 @@
     
     
 <p>Example of visualizing and normalizing PRM data using an internal CiRT peptides (S. Parker 2015 MCP).</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/conflicted">conflicted</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viking/r-yaml/">yaml</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/LFQService">LFQService</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">outdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">skylinePRMSampleData</span> <span class="op">&lt;-</span> <span class="fu">LFQServiceData</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html">skylinePRMSampleData_A</a></span><span class="op">$</span><span class="va">data</span>
+<span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">skylinePRMSampleData</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="va"><a href="../reference/skylinePRMSampleData_A.html">skylinePRMSampleData_A</a></span><span class="op">$</span><span class="va">data</span>
 
 <span class="va">skylineconfig</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/create_config_Skyline.html">create_config_Skyline</a></span><span class="op">(</span>isotopeLabel <span class="op">=</span> <span class="st">"Isotope.Label.Type"</span>,
                              ident_qValue <span class="op">=</span> <span class="st">"Detection.Q.Value"</span><span class="op">)</span>
 <span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Time"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Sampling.Time.Point"</span>
-<span class="va">resData</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">skylinePRMSampleData</span>, <span class="va">skylineconfig</span><span class="op">)</span></pre></div>
+<span class="va">resData</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">skylinePRMSampleData</span>, <span class="va">skylineconfig</span><span class="op">)</span></code></pre></div>
 <p>Reorder factors for improved display.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">resData</span><span class="op">$</span><span class="va">Time</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">resData</span><span class="op">$</span><span class="va">Time</span><span class="op">)</span>
 <span class="va">xxord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"T"</span>, <span class="st">""</span>, <span class="va">xx</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">resData</span><span class="op">$</span><span class="va">Time</span> <span class="op">&lt;-</span>
   <span class="fu">parse_factor</span><span class="op">(</span><span class="va">resData</span><span class="op">$</span><span class="va">Time</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">resData</span><span class="op">$</span><span class="va">Time</span><span class="op">)</span><span class="op">[</span><span class="va">xxord</span><span class="op">]</span><span class="op">)</span>
-<span class="va">resData</span><span class="op">$</span><span class="va">Area</span><span class="op">[</span><span class="va">resData</span><span class="op">$</span><span class="va">Area</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></pre></div>
+<span class="va">resData</span><span class="op">$</span><span class="va">Area</span><span class="op">[</span><span class="va">resData</span><span class="op">$</span><span class="va">Area</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></code></pre></div>
 <div id="generate-overview-plots" class="section level1">
 <h1 class="hasAnchor">
 <a href="#generate-overview-plots" class="anchor"></a>Generate overview plots</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">proteinIDsymbol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">sym</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">proteinIDsymbol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">sym</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">xnested</span> <span class="op">&lt;-</span>
   <span class="va">resData</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">xnested</span></pre></div>
+<span class="va">xnested</span></code></pre></div>
 <pre><code>## # A tibble: 37 x 2
 ## # Groups:   protein_Id [37]
 ##    protein_Id                data                
@@ -164,8 +171,8 @@
 ##  9 sp|P11712|CP2C9_HUMAN     &lt;tibble [352 x 9]&gt;  
 ## 10 sp|P16662|UD2B7_HUMAN     &lt;tibble [704 x 9]&gt;  
 ## # ... with 27 more rows</code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">figs</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">figs</span> <span class="op">&lt;-</span>
   <span class="va">xnested</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span>
     <span class="va">data</span>,
     <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span> ,
@@ -177,10 +184,10 @@
   <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,<span class="va">xnested</span><span class="op">[[</span><span class="va">proteinIDsymbol</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="va">skylineconfig</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">figs</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">figs</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/overviewPlot-1.png" width="960"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProteinsTransitions.pdf"</span><span class="op">)</span>,
     width <span class="op">=</span> <span class="fl">10</span>,
@@ -188,20 +195,20 @@
   <span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">figs</span><span class="op">$</span><span class="va">plot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="compute-protein-level-intensities-using-medpolish" class="section level1">
 <h1 class="hasAnchor">
 <a href="#compute-protein-level-intensities-using-medpolish" class="anchor"></a>Compute protein level intensities using medpolish</h1>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">resDataLog</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">resDataLog</span> <span class="op">&lt;-</span>
   <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/transform_work_intensity.html">transform_work_intensity</a></span><span class="op">(</span><span class="va">resData</span> , <span class="va">skylineconfig</span>, <span class="va">log2</span><span class="op">)</span>
 
 <span class="va">figs3</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/intensity_summary_by_hkeys.html">intensity_summary_by_hkeys</a></span><span class="op">(</span><span class="va">resDataLog</span>, <span class="va">skylineconfig</span>, <span class="va">medpolishPly</span><span class="op">)</span>
-<span class="va">figs3</span> <span class="op">&lt;-</span> <span class="fu">figs3</span><span class="op">(</span><span class="st">"nested"</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">figs3</span> <span class="op">&lt;-</span>
+<span class="va">figs3</span> <span class="op">&lt;-</span> <span class="fu">figs3</span><span class="op">(</span><span class="st">"nested"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">figs3</span> <span class="op">&lt;-</span>
   <span class="va">figs3</span><span class="op">$</span><span class="va">xnested</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plotlog <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span>
     <span class="va">data</span>,
     <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span> ,
@@ -211,10 +218,10 @@
 <span class="fu"><a href="../reference/plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a></span><span class="op">(</span><span class="va">figs3</span><span class="op">$</span><span class="va">plotlog</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
                                <span class="va">figs3</span><span class="op">$</span><span class="va">medpolishPly</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
                                <span class="st">"medpolish"</span>,
-                               <span class="va">skylineconfig</span><span class="op">)</span></pre></div>
+                               <span class="va">skylineconfig</span><span class="op">)</span></code></pre></div>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/plotData-1.png" width="960"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">figs3</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">figs3</span> <span class="op">&lt;-</span>
   <span class="va">figs3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     figsMed <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span>
       <span class="va">plotlog</span>,
@@ -224,31 +231,31 @@
       <span class="va">skylineconfig</span>
     <span class="op">)</span>
   <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">figs3</span><span class="op">$</span><span class="va">figsMed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">figs3</span><span class="op">$</span><span class="va">figsMed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/plotData-2.png" width="960"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span> , <span class="st">"allProteinsWithMed.pdf"</span><span class="op">)</span>,
     width <span class="op">=</span> <span class="fl">10</span>,
     height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">figs3</span><span class="op">$</span><span class="va">figsMed</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">table</span> <span class="op">&lt;-</span> <span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span>
 <span class="va">protIntensity</span> <span class="op">&lt;-</span>
   <span class="va">figs3</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">medpolishPly</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="st">"medpolishPly"</span><span class="op">)</span></pre></div>
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="st">"medpolishPly"</span><span class="op">)</span></code></pre></div>
 <div id="normalize-protein-instensities-using-cirt-peptides" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalize-protein-instensities-using-cirt-peptides" class="anchor"></a>Normalize Protein instensities using CiRT peptides</h2>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">CiRT</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">CiRT</span> <span class="op">&lt;-</span>
   <span class="va">protIntensity</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op">==</span> <span class="st">"CiRT standards"</span><span class="op">)</span>
 <span class="co"># Normalize py CiRT protein</span>
 <span class="va">proteinIntensity</span> <span class="op">&lt;-</span> <span class="va">protIntensity</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">CiRT</span>,
-                    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/generics/man/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">protIntensity</span><span class="op">)</span>,
+                    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">protIntensity</span><span class="op">)</span>,
                                         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span>, <span class="st">"medpolish"</span><span class="op">)</span><span class="op">)</span>,
                     suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">".CiRT"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>log2Med_log2MedCiRT <span class="op">=</span> <span class="va">medpolish</span> <span class="op">-</span> <span class="va">medpolish.CiRT</span><span class="op">)</span>
@@ -269,17 +276,17 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
         legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">frac</a></span><span class="op">(</span><span class="va">P</span>, <span class="va">CiRT</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">p</span></pre></div>
+<span class="va">p</span></code></pre></div>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/plotProtQuants-1.png" width="960"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProteinsOnePlot.pdf"</span><span class="op">)</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
   <span class="fu">write_tsv</span><span class="op">(</span><span class="va">proteinIntensity</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"ProteinQuants.tsv"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">protRez3</span> <span class="op">&lt;-</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">protRez3</span> <span class="op">&lt;-</span>
   <span class="va">proteinIntensity</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">protein_Id</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">tmp</span> <span class="op">&lt;-</span>
@@ -288,7 +295,7 @@
   <span class="op">}</span>
 
 <span class="va">protRez3</span> <span class="op">&lt;-</span> <span class="va">protRez3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>anova <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">data</span>, <span class="va">tmp</span><span class="op">)</span><span class="op">)</span>
-<span class="va">protRez3</span> <span class="op">&lt;-</span> <span class="va">protRez3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>ba <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">anova</span>, <span class="fu">broom</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/generics/man/tidy.html">tidy</a></span><span class="op">)</span><span class="op">)</span>
+<span class="va">protRez3</span> <span class="op">&lt;-</span> <span class="va">protRez3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>ba <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">anova</span>, <span class="fu">broom</span><span class="fu">::</span><span class="va"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">plotProt</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">title</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Time</span>, y <span class="op">=</span> <span class="va">log2Med_log2MedCiRT</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -305,17 +312,17 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">frac</a></span><span class="op">(</span><span class="va">P</span>, <span class="va">CiRT</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu">plotProt</span><span class="op">(</span><span class="va">protRez3</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">protRez3</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></pre></div>
+<span class="fu">plotProt</span><span class="op">(</span><span class="va">protRez3</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">protRez3</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/plotConditionAverages-1.png" width="960"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="va">protRez3</span> <span class="op">&lt;-</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">protRez3</span> <span class="op">&lt;-</span>
   <span class="va">protRez3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span><span class="va">data</span>, <span class="va">protein_Id</span>, <span class="va">plotProt</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProtFigsNorm.pdf"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">protRez3</span><span class="op">$</span><span class="va">plot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">plotProtMedian</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">title</span><span class="op">)</span> <span class="op">{</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plotProtMedian</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">title</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Time</span>, y <span class="op">=</span> <span class="va">log2Med_log2MedCiRT</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"red"</span>,
                color <span class="op">=</span> <span class="fl">2</span>,
@@ -333,13 +340,13 @@
 
 <span class="va">protRez3</span> <span class="op">&lt;-</span>
   <span class="va">protRez3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plotMedian <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span><span class="va">data</span>, <span class="va">protein_Id</span>, <span class="va">plotProtMedian</span><span class="op">)</span><span class="op">)</span>
-<span class="va">protRez3</span><span class="op">$</span><span class="va">plotMedian</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></pre></div>
+<span class="va">protRez3</span><span class="op">$</span><span class="va">plotMedian</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>## [[1]]</code></pre>
 <p><img src="Run_TidyAnalysis_Skyline_PRM_files/figure-html/plotProteinMedians-1.png" width="960"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProtFigsNormMedian.pdf"</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProtFigsNormMedian.pdf"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">protRez3</span><span class="op">$</span><span class="va">plotMedian</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

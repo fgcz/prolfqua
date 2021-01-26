@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create various visualization of the data — LFQDataPlotter • LFQService</title>
+<title>Create various visualization of the LFQdata — LFQDataPlotter • LFQService</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Create various visualization of the data — LFQDataPlotter" />
-<meta property="og:description" content="Create various visualization of the data
-Create various visualization of the data" />
+<meta property="og:title" content="Create various visualization of the LFQdata — LFQDataPlotter" />
+<meta property="og:description" content="Create various visualization of the LFQdata
+Create various visualization of the LFQdata" />
 
 
 
@@ -96,10 +96,16 @@ Create various visualization of the data" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -145,14 +151,14 @@ Create various visualization of the data" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create various visualization of the data</h1>
+    <h1>Create various visualization of the LFQdata</h1>
     <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/LFQData.R'><code>R/LFQData.R</code></a></small>
     <div class="hidden name"><code>LFQDataPlotter.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create various visualization of the data</p>
-<p>Create various visualization of the data</p>
+    <p>Create various visualization of the LFQdata</p>
+<p>Create various visualization of the LFQdata</p>
     </div>
 
 
@@ -390,7 +396,7 @@ Create various visualization of the data" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/dataIonstarProtein.html'>dataIonstarProtein</a></span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='dataIonstarProtein_subsetNorm.html'>dataIonstarProtein_subsetNorm</a></span>
 
 <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 
@@ -414,9 +420,9 @@ Create various visualization of the data" />
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>missingness_per_condition_cumsum</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='input'>
 <span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>NA_heatmap</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>rows with NA's: 14; all rows :99</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 83 rows containing non-finite values (stat_density).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_violin</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 83 rows containing non-finite values (stat_ydensity).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>pairs_smooth</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>rows with NA's: 17; all rows :82</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 72 rows containing non-finite values (stat_density).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_violin</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 72 rows containing non-finite values (stat_ydensity).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>pairs_smooth</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>sample_correlation</span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'>LFQService</span><span class='fu'>::</span><span class='fu'><a href='plot_sample_correlation.html'>plot_sample_correlation</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 

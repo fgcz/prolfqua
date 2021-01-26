@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -190,23 +196,21 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : log2_Area</span></div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv.html'>summarize_cv</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
+<span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_cv.html'>summarize_cv</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_proteins</span><span class='op'>(</span><span class='va'>stats_res</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 12</span><span>
-#&gt;   protein_Id peptide_Id precursor_Id fragment_Id Time      n not_na     sd  mean
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T0        3      3 0.330   20.8
-#&gt; </span><span style='color: #555555;'>2</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T168      3      3 0.135   21.0
-#&gt; </span><span style='color: #555555;'>3</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T2        3      3 0.592   21.8
-#&gt; </span><span style='color: #555555;'>4</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T24       3      3 0.468   21.4
-#&gt; </span><span style='color: #555555;'>5</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T240      2      2 0.010</span><span style='text-decoration: underline;'>4</span><span>  20.2
-#&gt; </span><span style='color: #555555;'>6</span><span> CiRT stan~ ATAGDTHLG~ ATAGDTHLGGE~ ATAGDTHLGG~ T336      3      3 0.218   21.3
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: delta </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, N_exact </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, N </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 10</span><span>
+#&gt;   protein_Id  peptide_Id dilution.     n not_na    sd   mean delta N_exact     N
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> CON__P0103~ AELADQAAS~ e             4      2 0.647 -</span><span style='color: #BB0000;'>2.21</span><span>   0.59   19.9     20
+#&gt; </span><span style='color: #555555;'>2</span><span> CON__P0103~ ILSLAQDQV~ a             4      4 0.499 -</span><span style='color: #BB0000;'>0.973</span><span>  0.59   12.3     13
+#&gt; </span><span style='color: #555555;'>3</span><span> CON__P0103~ ILSLAQDQV~ b             4      4 0.544 -</span><span style='color: #BB0000;'>1.03</span><span>   0.59   14.4     15
+#&gt; </span><span style='color: #555555;'>4</span><span> CON__P0103~ ILSLAQDQV~ c             4      4 0.384 -</span><span style='color: #BB0000;'>1.15</span><span>   0.59    7.74     8
+#&gt; </span><span style='color: #555555;'>5</span><span> CON__P0103~ ILSLAQDQV~ d             4      4 0.391 -</span><span style='color: #BB0000;'>1.41</span><span>   0.59    7.97     8
+#&gt; </span><span style='color: #555555;'>6</span><span> CON__P0103~ ILSLAQDQV~ e             4      4 0.403 -</span><span style='color: #BB0000;'>1.35</span><span>   0.59    8.40     9</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

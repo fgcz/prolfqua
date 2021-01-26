@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -172,38 +178,29 @@
 
     <div class='dont-index'><p>Other deprecated: 
 <code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href='application_run_modelling_V2.html'>application_run_modelling_V2</a>()</code>,
-<code><a href='contrasts_linfct_vis_write.html'>contrasts_linfct_vis_write</a>()</code>,
-<code><a href='contrasts_linfct_vis.html'>contrasts_linfct_vis</a>()</code>,
 <code><a href='intensity_summary_by_hkeys.html'>intensity_summary_by_hkeys</a>()</code>,
 <code><a href='medpolish_protein_quants.html'>medpolish_protein_quants</a>()</code>,
-<code><a href='missigness_impute_contrasts.html'>missigness_impute_contrasts</a>()</code>,
-<code><a href='model_analyse_summarize_vis_write.html'>model_analyse_summarize_vis_write</a>()</code>,
-<code><a href='model_analyse_summarize_vis.html'>model_analyse_summarize_vis</a>()</code>,
-<code><a href='model_analyse_summarize_write.html'>model_analyse_summarize_write</a>()</code>,
-<code><a href='model_analyse_summarize.html'>model_analyse_summarize</a>()</code>,
-<code><a href='workflow_contrasts_linfct_V2.html'>workflow_contrasts_linfct_V2</a>()</code>,
-<code><a href='workflow_missigness_impute_contrasts_V2.html'>workflow_missigness_impute_contrasts_V2</a>()</code>,
-<code><a href='workflow_missigness_impute_contrasts.html'>workflow_missigness_impute_contrasts</a>()</code>,
-<code><a href='workflow_model_analyse.html'>workflow_model_analyse</a>()</code></p></div>
+<code><a href='workflow_DIA_NA_preprocessing.html'>workflow_DIA_NA_preprocessing</a>()</code>,
+<code><a href='workflow_correlation_preprocessing_protein_intensities.html'>workflow_correlation_preprocessing_protein_intensities</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>parameter</span><span class='op'>$</span><span class='va'>min_nr_of_notNA</span>  <span class='op'>&lt;-</span> <span class='fl'>20</span>
+<span class='va'>FIXED</span> <span class='op'>&lt;-</span> <span class='cn'>FALSE</span>
+<span class='kw'>if</span><span class='op'>(</span><span class='va'>FIXED</span><span class='op'>)</span><span class='op'>{</span>
+
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>protein_Id</span>,<span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='va'>x</span><span class='op'>)</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>compute_roc</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-<span class='va'>i</span> <span class='op'>&lt;-</span> <span class='fl'>2</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>compute_roc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>, <span class='va'>config</span><span class='op'>)</span>
+<span class='va'>i</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 
 <span class='fu'>pROC</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pROC/man/plot.roc.html'>plot.roc</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>rocs</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>, print.auc <span class='op'>=</span> <span class='cn'>TRUE</span>,
  main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>protein_Id</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"\n"</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>rocs</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>levels</span>, collapse <span class='op'>=</span> <span class='st'>" vs "</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='compute_roc-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>protein_Id</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "sp|Q13547|HDAC1_HUMAN" "sp|Q9HAW9|UD18_HUMAN" </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>protein_Id</span><span class='op'>)</span>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

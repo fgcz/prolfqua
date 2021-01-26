@@ -2,8 +2,10 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  ExampleAnalysis: ExampleAnalysis.html
   ExDesignSurvey: ExDesignSurvey.html
   LFQSurvey: LFQSurvey.html
+  prolfquaAbstract_2: prolfquaAbstract_2.html
   Run_TidyAnalysis_HL_Skyline: Run_TidyAnalysis_HL_Skyline.html
   Run_TidyAnalysis_Skyline_PRM: Run_TidyAnalysis_Skyline_PRM.html
   Run_TidyCorrelationAnalysis: Run_TidyCorrelationAnalysis.html
@@ -11,5 +13,5 @@ articles:
   tr_srm_summary: tr_srm_summary.html
   tr_srm_summary_HL: tr_srm_summary_HL.html
   YeastDataSetup: YeastDataSetup.html
-last_built: 2020-10-16T10:27Z
+last_built: 2021-01-26T11:47Z
 

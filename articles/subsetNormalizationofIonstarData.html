@@ -54,10 +54,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -100,13 +106,14 @@
 
       
 
-      </header><script src="subsetNormalizationofIonstarData_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="subsetNormalizationofIonstarData_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="subsetNormalizationofIonstarData_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="subsetNormalizationofIonstarData_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Proprocessing the Ionstar dataset</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">16 October, 2020</h4>
+            <h4 class="date">26 January, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/LFQService/blob/master/vignettes/subsetNormalizationofIonstarData.Rmd"><code>vignettes/subsetNormalizationofIonstarData.Rmd</code></a></small>
       <div class="hidden name"><code>subsetNormalizationofIonstarData.Rmd</code></div>
@@ -119,148 +126,348 @@
 <h1 class="hasAnchor">
 <a href="#example-of-subset-normalization-of-the-ionstar-dataset-" class="anchor"></a>Example of subset normalization of the ionstar dataset.</h1>
 <p>Please download and install the <code>prolfquaData</code> package from github</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/conflicted">conflicted</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/LFQService">LFQService</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
 <p>We start by loading the IonStar dataset and the annotation from the <code>prolfquaData</code> package. The method <code>add_annotation</code> adds the annotation to the data.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
 <span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MaxQuant_Ionstar2018_PXD003881.zip"</span><span class="op">)</span>
 <span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_Ionstar2018_PXD003881.xlsx"</span><span class="op">)</span>
 
 <span class="va">mqdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tidyMQ_Peptides_Config.html">tidyMQ_Peptides_Config</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
-<span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
+<span class="va">names</span></code></pre></div>
+<pre><code>## function (x)  .Primitive("names")</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
 
 
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_annotation.html">add_annotation</a></span><span class="op">(</span>
   <span class="va">mqdata</span><span class="op">$</span><span class="va">data</span>,
   <span class="va">annotation</span>,
   fileName <span class="op">=</span> <span class="st">"raw.file"</span>
-<span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"dilution."</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"sample"</span>
+<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"dilution."</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"sample"</span>
 <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"run_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"run_ID"</span>
 <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 
-<span class="va">mqdata</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">datafilt</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span><span class="va">mqdata</span><span class="op">$</span><span class="va">data</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></pre></div>
-<p>Create a sample N proteins to speed up computations.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">200</span>
+<span class="va">mqdata</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datafilt</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span><span class="va">mqdata</span><span class="op">$</span><span class="va">data</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></code></pre></div>
+<p>Create a sample of N proteins to speed up computations.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">200</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">)</span>
 <span class="va">hk</span> <span class="op">&lt;-</span> <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span>
 <span class="va">protein_Ids</span> <span class="op">&lt;-</span> <span class="va">mqdata</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">hk</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">N</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">N</span><span class="op">)</span></code></pre></div>
 <div id="normalize-data-using-human-proteins-only" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalize-data-using-human-proteins-only" class="anchor"></a>Normalize data using HUMAN proteins only</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">datafilt</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">datafilt</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span>
 <span class="va">tr</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">subset_h</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
 <span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"HUMAN"</span>, <span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span>
-<span class="va">lfqdataNormalized</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale_subset</span><span class="op">(</span>lfqsubset <span class="op">=</span> <span class="va">subset_h</span><span class="op">)</span></pre></div>
+<span class="va">lfqdataNormalized</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale_subset</span><span class="op">(</span>lfqsubset <span class="op">=</span> <span class="va">subset_h</span><span class="op">)</span></code></pre></div>
 <p>The figures below show the intensity distribution before and after normalization.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
-<span class="va">before</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
-<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">after</span> <span class="op">&lt;-</span> <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
-<span class="va">after</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></pre></div>
-<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-7-2.png" width="960"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">before</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/PlotIntensityDistributions-1.png" width="960"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">after</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/PlotIntensityDistributions-2.png" width="960"></p>
 </div>
 </div>
 <div id="create-result-object-for-peptides" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-result-object-for-peptides" class="anchor"></a>Create result object for peptides</h1>
 <p>We collect all the relevant data for the Ionstar data in an R6 object.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">IonstarData</span> <span class="op">&lt;-</span> <span class="fu">R6</span><span class="fu">::</span><span class="kw"><a href="https://r6.r-lib.org/reference/R6Class.html">R6Class</a></span><span class="op">(</span>
-  <span class="st">"IonstarData"</span>,
-  public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="cn">NULL</span>,
-    config <span class="op">=</span> <span class="cn">NULL</span>,
-    data_N <span class="op">=</span> <span class="cn">NULL</span>,
-    config_N <span class="op">=</span> <span class="cn">NULL</span>,
-    
-    initialize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, <span class="va">data_N</span>, <span class="va">config_N</span><span class="op">)</span><span class="op">{</span>
-      <span class="va">self</span><span class="op">$</span><span class="va">data</span> <span class="op">=</span> <span class="va">data</span>
-      <span class="va">self</span><span class="op">$</span><span class="va">config</span> <span class="op">=</span> <span class="va">config</span>
-      <span class="va">self</span><span class="op">$</span><span class="va">data_N</span> <span class="op">=</span> <span class="va">data_N</span>
-      <span class="va">self</span><span class="op">$</span><span class="va">config_N</span> <span class="op">=</span> <span class="va">config_N</span>
-    <span class="op">}</span>,
-    Pep <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">data</span>, config <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>,
-    filtered <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
-      <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">:::</span><span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span> <span class="va">self</span><span class="op">$</span><span class="va">data</span> ,  <span class="va">self</span><span class="op">$</span><span class="va">config</span> <span class="op">)</span><span class="op">$</span><span class="va">data</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, config <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>,
-    normalized <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">data_N</span>, config <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">config_N</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>,
-    subset_normalized <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">data_N</span>, config <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">config_N</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co">#lfqdata$data &lt;- inner_join(protein_Ids, lfqdata$data)</span>
-<span class="va">lfqdataNormalized</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">protein_Ids</span>, <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
-<span class="va">mqdata</span><span class="op">$</span><span class="va">data</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">protein_Ids</span>, <span class="va">mqdata</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>  
-<span class="va">ionstar</span> <span class="op">&lt;-</span> <span class="va">IonstarData</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mqdata</span><span class="op">$</span><span class="va">data</span>, <span class="va">lfqdata</span><span class="op">$</span><span class="va">config</span>, <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="va">data</span>, <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="va">config</span><span class="op">)</span>
-
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span><span class="op">(</span><span class="va">ionstar</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 </div>
-<div id="protein-intensities" class="section level1">
+<div id="protein-intensities-using-tukeys-median-polish" class="section level1">
 <h1 class="hasAnchor">
-<a href="#protein-intensities" class="anchor"></a>Protein intensities</h1>
+<a href="#protein-intensities-using-tukeys-median-polish" class="anchor"></a>Protein intensities using Tukeys Median Polish</h1>
 <p>We will be using the <code>LFQDataAggregator</code> class. To estimate protein intensities using Tukey’s median polish we need to use normalized data. The figure below shows the the protein estimates (dashed line) and the peptide intensities.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">lfqAggregator</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQDataAggregator.html">LFQDataAggregator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdataNormalized</span>, <span class="st">"protein"</span><span class="op">)</span>
-<span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
-<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">dataIonstarProtein_subsetNorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="va">data</span>,
-  config <span class="op">=</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="va">config</span>
-<span class="op">)</span>
-
-<span class="va">dataIonstarProtein_subsetNorm</span><span class="op">$</span><span class="va">data</span></pre></div>
-<pre><code>## # A tibble: 3,260 x 7
-##    protein_Id     sampleName dilution. run_Id raw.file         isotope medpolish
-##    &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;       &lt;dbl&gt;
-##  1 sp|P21589|5NT~ b~02       b         02     b03_02_150304_h~ light        1.20
-##  2 sp|P21589|5NT~ c~03       c         03     b03_03_150304_h~ light        1.21
-##  3 sp|P21589|5NT~ d~04       d         04     b03_04_150304_h~ light        1.24
-##  4 sp|P21589|5NT~ e~05       e         05     b03_05_150304_h~ light        1.27
-##  5 sp|P21589|5NT~ e~06       e         06     b03_06_150304_h~ light        1.29
-##  6 sp|P21589|5NT~ d~07       d         07     b03_07_150304_h~ light        1.13
-##  7 sp|P21589|5NT~ c~08       c         08     b03_08_150304_h~ light        1.18
-##  8 sp|P21589|5NT~ b~09       b         09     b03_09_150304_h~ light        1.28
-##  9 sp|P21589|5NT~ a~10       a         10     b03_10_150304_h~ light        1.21
-## 10 sp|P21589|5NT~ a~11       a         11     b03_11_150304_h~ light        1.18
-## # ... with 3,250 more rows</code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_data.html">use_data</a></span><span class="op">(</span><span class="va">dataIonstarProtein_subsetNorm</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lfqAggMedpol</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQDataAggregator.html">LFQDataAggregator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdataNormalized</span>, <span class="st">"protein"</span><span class="op">)</span>
+<span class="va">lfqAggMedpol</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span>
+<span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">lfqAggMedpol</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span>
+<span class="va">xx</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-6-1.png" width="960"></p>
 <p>We can also estimate the protein intensities using the top N most abundant peptides. In this case we are using the untransformed protein intensities. The figure below shows the estimated protein intensities.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">lfqAggregator</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQDataAggregator.html">LFQDataAggregator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"protein_topN"</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lfqAggregator</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQDataAggregator.html">LFQDataAggregator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"protein_topN"</span><span class="op">)</span>
 <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">mean_topN</span><span class="op">(</span><span class="op">)</span>
 <span class="va">topN</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span>
-<span class="va">topN</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
-<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
+<span class="va">topN</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
+</div>
+<div id="fit-model-to-protein-level-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fit-model-to-protein-level-data" class="anchor"></a>Fit model to protein level data</h1>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">DEBUG</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
+
+<span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="st">"dilution_(9/3)_3"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.a"</span>,
+  <span class="st">"dilution_(9/4.5)_2"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.b"</span>,
+  <span class="st">"dilution_(9/6)_1.5"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.c"</span>,
+  <span class="st">"dilution_(9/7.5)_1.2"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.d"</span>,
+  
+  <span class="st">"dilution_(7.5/3)_2.5"</span> <span class="op">=</span>   <span class="st">"dilution.d - dilution.a"</span>,
+  <span class="st">"dilution_(7.5/4.5)_1.6(6)"</span> <span class="op">=</span>   <span class="st">"dilution.d - dilution.b"</span>,
+  <span class="st">"dilution_(7.5/6)_1.25"</span> <span class="op">=</span>   <span class="st">"dilution.d - dilution.c"</span>,
+  
+  <span class="st">"dilution_(6/3)_2"</span> <span class="op">=</span>   <span class="st">"dilution.c - dilution.a"</span>,
+  <span class="st">"dilution_(6/4.5)_1.3(3)"</span> <span class="op">=</span>   <span class="st">"dilution.c - dilution.b"</span>,
+  
+  <span class="st">"dilution_(4.5/3)_1.5"</span> <span class="op">=</span>   <span class="st">"dilution.b - dilution.a"</span>
+<span class="op">)</span>
+
+
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu">quantable</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantable/man/split2table.html">split2table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Contrasts</span><span class="op">)</span>,split <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ratio"</span> , <span class="st">"expected fold-change"</span><span class="op">)</span>
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span><span class="va">tt</span>, contrast <span class="op">=</span>  <span class="va">Contrasts</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">tt</span>, caption <span class="op">=</span> <span class="st">"All possible Contrasts given 5 E. coli dilutions of the Ionstar Dataset"</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<caption>All possible Contrasts given 5 E. coli dilutions of the Ionstar Dataset</caption>
+<thead><tr class="header">
+<th align="left">contrast</th>
+<th align="left">ratio</th>
+<th align="left">expected fold-change</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">dilution.e - dilution.a</td>
+<td align="left">(9/3)</td>
+<td align="left">3</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.e - dilution.b</td>
+<td align="left">(9/4.5)</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">dilution.e - dilution.c</td>
+<td align="left">(9/6)</td>
+<td align="left">1.5</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.e - dilution.d</td>
+<td align="left">(9/7.5)</td>
+<td align="left">1.2</td>
+</tr>
+<tr class="odd">
+<td align="left">dilution.d - dilution.a</td>
+<td align="left">(7.5/3)</td>
+<td align="left">2.5</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.d - dilution.b</td>
+<td align="left">(7.5/4.5)</td>
+<td align="left">1.6(6)</td>
+</tr>
+<tr class="odd">
+<td align="left">dilution.d - dilution.c</td>
+<td align="left">(7.5/6)</td>
+<td align="left">1.25</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.c - dilution.a</td>
+<td align="left">(6/3)</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">dilution.c - dilution.b</td>
+<td align="left">(6/4.5)</td>
+<td align="left">1.3(3)</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.b - dilution.a</td>
+<td align="left">(4.5/3)</td>
+<td align="left">1.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">relevantContrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dilution_(9/7.5)_1.2"</span>,
+                       <span class="st">"dilution_(7.5/6)_1.25"</span>,
+                       <span class="st">"dilution_(6/4.5)_1.3(3)"</span>,
+                       <span class="st">"dilution_(4.5/3)_1.5"</span> <span class="op">)</span>
+
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu">quantable</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantable/man/split2table.html">split2table</a></span><span class="op">(</span><span class="va">relevantContrasts</span>,split <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ratio"</span> , <span class="st">"expected fold-change"</span><span class="op">)</span>
+<span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span><span class="va">tt</span>, contrast <span class="op">=</span>  <span class="va">Contrasts</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Contrasts</span><span class="op">)</span> <span class="op">%in%</span> <span class="va">relevantContrasts</span><span class="op">]</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">tt</span>, caption <span class="op">=</span> <span class="st">"Contrasts used for benchmark."</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<caption>Contrasts used for benchmark.</caption>
+<thead><tr class="header">
+<th align="left">contrast</th>
+<th align="left">ratio</th>
+<th align="left">expected fold-change</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">dilution.e - dilution.d</td>
+<td align="left">(9/7.5)</td>
+<td align="left">1.2</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.d - dilution.c</td>
+<td align="left">(7.5/6)</td>
+<td align="left">1.25</td>
+</tr>
+<tr class="odd">
+<td align="left">dilution.c - dilution.b</td>
+<td align="left">(6/4.5)</td>
+<td align="left">1.3(3)</td>
+</tr>
+<tr class="even">
+<td align="left">dilution.b - dilution.a</td>
+<td align="left">(4.5/3)</td>
+<td align="left">1.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">relevantContrasts</span> <span class="op">&lt;-</span> <span class="va">Contrasts</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Contrasts</span><span class="op">)</span> <span class="op">%in%</span> <span class="va">relevantContrasts</span><span class="op">]</span></code></pre></div>
+</div>
+<div id="fitting-all-the-proteins-based-on-protein-intensities-with-linear-models-" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fitting-all-the-proteins-based-on-protein-intensities-with-linear-models-" class="anchor"></a>Fitting all the proteins based on protein intensities with linear models.</h1>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">protLFQ</span> <span class="op">&lt;-</span> <span class="va">lfqAggMedpol</span><span class="op">$</span><span class="va">lfq_agg</span>
+
+<span class="va">lmmodel</span> <span class="op">&lt;-</span> <span class="st">"~ dilution."</span>
+<span class="va">lmmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span> , <span class="va">lmmodel</span><span class="op">)</span>
+
+<span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_custom_model_lm.html">make_custom_model_lm</a></span><span class="op">(</span> <span class="va">lmmodel</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span>
+
+<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">data</span>, <span class="va">modelFunction</span><span class="op">)</span>
+<span class="va">mod</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">plot</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/buildModelLM-1.png" width="960"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">relevantContrasts</span><span class="op">)</span>
+<span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
+<span class="va">cp</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">cp</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## $FDR.moderated</code></pre>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/computeContrastsModerated-1.png" width="960"></p>
+</div>
+<div id="benchmarking" class="section level1">
+<h1 class="hasAnchor">
+<a href="#benchmarking" class="anchor"></a>Benchmarking</h1>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">contrdf</span><span class="op">)</span>
+<span class="va">medpol_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_benchmark.html">make_benchmark</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span>,
+                                   model_description <span class="op">=</span> <span class="st">"med. polish and lm. density"</span>,
+                                   model_name <span class="op">=</span> <span class="st">"prot_med_lm"</span>,
+                                   FDRvsFDP <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"FDR"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
+                                                  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"FDR.moderated"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 16,396 x 22
+##    contrast protein_Id     c1     c2 c1_name c2_name  sigma    df estimate
+##    &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
+##  1 dilutio~ sp|A0A0U1~ NA     -2.01  diluti~ diluti~ 0.191      1  NA     
+##  2 dilutio~ sp|A0AVT1~ -1.26  -1.34  diluti~ diluti~ 0.136     15   0.0836
+##  3 dilutio~ sp|A0FGR8~ -0.298 -0.381 diluti~ diluti~ 0.0864    15   0.0828
+##  4 dilutio~ sp|A0MZ66~ -1.31  -1.21  diluti~ diluti~ 0.119     15  -0.0921
+##  5 dilutio~ sp|A1L0T0~ -1.52  -1.55  diluti~ diluti~ 0.286     15   0.0277
+##  6 dilutio~ sp|A1X283~ -1.81  -1.57  diluti~ diluti~ 0.267     15  -0.238 
+##  7 dilutio~ sp|A2RRP1~ -2.60  -2.37  diluti~ diluti~ 0.159     14  -0.233 
+##  8 dilutio~ sp|A3KN83~ -1.97  -2.10  diluti~ diluti~ 0.323     15   0.123 
+##  9 dilutio~ sp|A4D1E9~ -1.35  -1.56  diluti~ diluti~ 0.163     15   0.209 
+## 10 dilutio~ sp|A5PLL7~ -2.18  -2.12  diluti~ diluti~ 0.295     15  -0.0607
+## # ... with 16,386 more rows, and 13 more variables: std.error &lt;dbl&gt;,
+## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,
+## #   isSingular &lt;lgl&gt;, FDR &lt;dbl&gt;, moderated.p.value &lt;dbl&gt;, FDR.moderated &lt;dbl&gt;,
+## #   species &lt;chr&gt;, TP &lt;lgl&gt;, scaled.p.value &lt;dbl&gt;,
+## #   scaled.moderated.p.value &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_score_distribution</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmark-1.png" width="960"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_ROC</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmark-2.png" width="960"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmark-3.png" width="960"></p>
+</div>
+<div id="imputation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#imputation" class="anchor"></a>Imputation</h1>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contrsimple</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdataNormalized</span>, <span class="va">relevantContrasts</span><span class="op">)</span>
+
+<span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">contrsimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
+<span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">cs</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">estimate_median</span><span class="op">)</span>
+<span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">LFQService</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">cs</span><span class="op">)</span>
+<span class="va">ttd</span><span class="op">$</span><span class="va">data</span></code></pre></div>
+<pre><code>## # A tibble: 16,396 x 14
+##    contrast protein_Id c1_name c2_name     c1     c2     n estimate estimate_mad
+##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+##  1 dilutio~ sp|A0A0U1~ diluti~ diluti~ -2.07  -2.16      2   0.0883       0.131 
+##  2 dilutio~ sp|A0AVT1~ diluti~ diluti~ -1.34  -1.35     12  -0.0314       0.165 
+##  3 dilutio~ sp|A0FGR8~ diluti~ diluti~ -0.663 -0.435    16   0.0767       0.436 
+##  4 dilutio~ sp|A0MZ66~ diluti~ diluti~ -1.22  -1.28     10  -0.0493       0.0931
+##  5 dilutio~ sp|A1L0T0~ diluti~ diluti~ -1.40  -1.64      5  -0.176        0.143 
+##  6 dilutio~ sp|A1X283~ diluti~ diluti~ -1.86  -1.76      5  -0.0468       0.587 
+##  7 dilutio~ sp|A2RRP1~ diluti~ diluti~ -2.53  -2.28      4  -0.192        0.355 
+##  8 dilutio~ sp|A3KN83~ diluti~ diluti~ -2.07  -2.06      5  -0.0177       0.0406
+##  9 dilutio~ sp|A4D1E9~ diluti~ diluti~ -1.39  -1.75      5   0.198        0.256 
+## 10 dilutio~ sp|A5PLL7~ diluti~ diluti~ -1.89  -2.07      3  -0.237        0.933 
+## # ... with 16,386 more rows, and 5 more variables: isSingular &lt;lgl&gt;,
+## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, species &lt;chr&gt;, TP &lt;lgl&gt;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_benchmark.html">make_benchmark</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span>,
+                                   model_description <span class="op">=</span> <span class="st">"imputed data"</span>,
+                                   model_name <span class="op">=</span> <span class="st">"pep_imputed_nonparam"</span>,
+                                   toscale <span class="op">=</span> <span class="cn">NULL</span>,
+                                   benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+                                     <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"estimate"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+                                     <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"statistic"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+                                   <span class="op">)</span>,
+                                   FDRvsFDP <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 16,396 x 14
+##    contrast protein_Id c1_name c2_name     c1     c2     n estimate estimate_mad
+##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+##  1 dilutio~ sp|A0A0U1~ diluti~ diluti~ -2.07  -2.16      2   0.0883       0.131 
+##  2 dilutio~ sp|A0AVT1~ diluti~ diluti~ -1.34  -1.35     12  -0.0314       0.165 
+##  3 dilutio~ sp|A0FGR8~ diluti~ diluti~ -0.663 -0.435    16   0.0767       0.436 
+##  4 dilutio~ sp|A0MZ66~ diluti~ diluti~ -1.22  -1.28     10  -0.0493       0.0931
+##  5 dilutio~ sp|A1L0T0~ diluti~ diluti~ -1.40  -1.64      5  -0.176        0.143 
+##  6 dilutio~ sp|A1X283~ diluti~ diluti~ -1.86  -1.76      5  -0.0468       0.587 
+##  7 dilutio~ sp|A2RRP1~ diluti~ diluti~ -2.53  -2.28      4  -0.192        0.355 
+##  8 dilutio~ sp|A3KN83~ diluti~ diluti~ -2.07  -2.06      5  -0.0177       0.0406
+##  9 dilutio~ sp|A4D1E9~ diluti~ diluti~ -1.39  -1.75      5   0.198        0.256 
+## 10 dilutio~ sp|A5PLL7~ diluti~ diluti~ -1.89  -2.07      3  -0.237        0.933 
+## # ... with 16,386 more rows, and 5 more variables: isSingular &lt;lgl&gt;,
+## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, species &lt;chr&gt;, TP &lt;lgl&gt;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_score_distribution</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmarkImputation-1.png" width="960"></p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_ROC</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmarkImputation-2.png" width="960"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">pAUC_summaries</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="va">barp</span></code></pre></div>
+<p><img src="subsetNormalizationofIonstarData_files/figure-html/benchmarkImputation-3.png" width="960"></p>
 </div>
   </div>
 

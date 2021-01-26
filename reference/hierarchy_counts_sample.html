@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -173,49 +179,59 @@
     <div class='dont-index'><p>Other summary: 
 <code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href='hierarchy_counts.html'>hierarchy_counts</a>()</code>,
-<code><a href='summarize_hierarchy.html'>summarize_hierarchy</a>()</code>,
-<code><a href='summarize_protein.html'>summarize_protein</a>()</code></p></div>
+<code><a href='nr_B_in_A_per_sample.html'>nr_B_in_A_per_sample</a>()</code>,
+<code><a href='summarize_hierarchy.html'>summarize_hierarchy</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQServiceData</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/LFQServiceData/man/skylinePRMSampleData_A.html'>skylinePRMSampleData_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
+
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='fu'>res</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22 x 6</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   Isotope.Label.Type [1]</span><span>
-#&gt;    Isotope.Label.Type sampleName protein_Id peptide_Id precursor_Id fragment_Id
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> light              T0                 37        117          120         848
-#&gt; </span><span style='color: #555555;'> 2</span><span> light              T0~1               37        117          120         876
-#&gt; </span><span style='color: #555555;'> 3</span><span> light              T0~2               37        117          120         852
-#&gt; </span><span style='color: #555555;'> 4</span><span> light              T168               37        117          120         881
-#&gt; </span><span style='color: #555555;'> 5</span><span> light              T168~1             37        117          120         866
-#&gt; </span><span style='color: #555555;'> 6</span><span> light              T168~2             37        117          120         877
-#&gt; </span><span style='color: #555555;'> 7</span><span> light              T2                 37        117          120         888
-#&gt; </span><span style='color: #555555;'> 8</span><span> light              T2~1               37        117          120         880
-#&gt; </span><span style='color: #555555;'> 9</span><span> light              T2~2               37        117          120         877
-#&gt; </span><span style='color: #555555;'>10</span><span> light              T24                37        117          120         884
-#&gt; </span><span style='color: #555555;'># ... with 12 more rows</span><span></div><div class='input'><span class='fu'>res</span><span class='op'>(</span><span class='st'>"long"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 88 x 4</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   Isotope.Label.Type [1]</span><span>
-#&gt;    Isotope.Label.Type sampleName key           nr
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> light              T0         protein_Id    37
-#&gt; </span><span style='color: #555555;'> 2</span><span> light              T0~1       protein_Id    37
-#&gt; </span><span style='color: #555555;'> 3</span><span> light              T0~2       protein_Id    37
-#&gt; </span><span style='color: #555555;'> 4</span><span> light              T168       protein_Id    37
-#&gt; </span><span style='color: #555555;'> 5</span><span> light              T168~1     protein_Id    37
-#&gt; </span><span style='color: #555555;'> 6</span><span> light              T168~2     protein_Id    37
-#&gt; </span><span style='color: #555555;'> 7</span><span> light              T2         protein_Id    37
-#&gt; </span><span style='color: #555555;'> 8</span><span> light              T2~1       protein_Id    37
-#&gt; </span><span style='color: #555555;'> 9</span><span> light              T2~2       protein_Id    37
-#&gt; </span><span style='color: #555555;'>10</span><span> light              T24        protein_Id    37
-#&gt; </span><span style='color: #555555;'># ... with 78 more rows</span><span></div><div class='input'><span class='fu'>res</span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 4</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   isotope [1]</span><span>
+#&gt;    isotope sampleName protein_Id peptide_Id
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> light   a~10              154       </span><span style='text-decoration: underline;'>1</span><span>021
+#&gt; </span><span style='color: #555555;'> 2</span><span> light   a~11              152       </span><span style='text-decoration: underline;'>1</span><span>006
+#&gt; </span><span style='color: #555555;'> 3</span><span> light   a~20              153        992
+#&gt; </span><span style='color: #555555;'> 4</span><span> light   a~21              155        982
+#&gt; </span><span style='color: #555555;'> 5</span><span> light   b~02              158       </span><span style='text-decoration: underline;'>1</span><span>047
+#&gt; </span><span style='color: #555555;'> 6</span><span> light   b~09              158       </span><span style='text-decoration: underline;'>1</span><span>029
+#&gt; </span><span style='color: #555555;'> 7</span><span> light   b~12              155       </span><span style='text-decoration: underline;'>1</span><span>043
+#&gt; </span><span style='color: #555555;'> 8</span><span> light   b~19              155        989
+#&gt; </span><span style='color: #555555;'> 9</span><span> light   c~03              160       </span><span style='text-decoration: underline;'>1</span><span>042
+#&gt; </span><span style='color: #555555;'>10</span><span> light   c~08              157       </span><span style='text-decoration: underline;'>1</span><span>019
+#&gt; </span><span style='color: #555555;'>11</span><span> light   c~13              155       </span><span style='text-decoration: underline;'>1</span><span>011
+#&gt; </span><span style='color: #555555;'>12</span><span> light   c~18              159       </span><span style='text-decoration: underline;'>1</span><span>018
+#&gt; </span><span style='color: #555555;'>13</span><span> light   d~04              159       </span><span style='text-decoration: underline;'>1</span><span>060
+#&gt; </span><span style='color: #555555;'>14</span><span> light   d~07              160       </span><span style='text-decoration: underline;'>1</span><span>038
+#&gt; </span><span style='color: #555555;'>15</span><span> light   d~14              160       </span><span style='text-decoration: underline;'>1</span><span>032
+#&gt; </span><span style='color: #555555;'>16</span><span> light   d~17              160       </span><span style='text-decoration: underline;'>1</span><span>043
+#&gt; </span><span style='color: #555555;'>17</span><span> light   e~05              158       </span><span style='text-decoration: underline;'>1</span><span>054
+#&gt; </span><span style='color: #555555;'>18</span><span> light   e~06              161       </span><span style='text-decoration: underline;'>1</span><span>046
+#&gt; </span><span style='color: #555555;'>19</span><span> light   e~15              158       </span><span style='text-decoration: underline;'>1</span><span>023
+#&gt; </span><span style='color: #555555;'>20</span><span> light   e~16              157       </span><span style='text-decoration: underline;'>1</span><span>021</div><div class='input'><span class='fu'>res</span><span class='op'>(</span><span class='st'>"long"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 40 x 4</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   isotope [1]</span><span>
+#&gt;    isotope sampleName key           nr
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> light   a~10       protein_Id   154
+#&gt; </span><span style='color: #555555;'> 2</span><span> light   a~11       protein_Id   152
+#&gt; </span><span style='color: #555555;'> 3</span><span> light   a~20       protein_Id   153
+#&gt; </span><span style='color: #555555;'> 4</span><span> light   a~21       protein_Id   155
+#&gt; </span><span style='color: #555555;'> 5</span><span> light   b~02       protein_Id   158
+#&gt; </span><span style='color: #555555;'> 6</span><span> light   b~09       protein_Id   158
+#&gt; </span><span style='color: #555555;'> 7</span><span> light   b~12       protein_Id   155
+#&gt; </span><span style='color: #555555;'> 8</span><span> light   b~19       protein_Id   155
+#&gt; </span><span style='color: #555555;'> 9</span><span> light   c~03       protein_Id   160
+#&gt; </span><span style='color: #555555;'>10</span><span> light   c~08       protein_Id   157
+#&gt; </span><span style='color: #555555;'># ... with 30 more rows</span><span></div><div class='input'><span class='fu'>res</span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>
 </div><div class='img'><img src='hierarchy_counts_sample-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

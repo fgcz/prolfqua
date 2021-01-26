@@ -54,10 +54,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -103,11 +109,23 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
+<p>The R package name is <strong>LFQService</strong>, the repository is called <strong>prolfqua</strong>. We will be renaming the <code>package</code> in the near future. To build the package you need to clone the repository using <code>git clone https:/github.com/wolski/LFQService</code>, or use <code>install_github("wolski/LFQService")</code>. If you want to build the package on you machine first it is best to run <code>install_github("wolski/LFQService")</code></p>
 <div id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="anchor"></a>prolfqua - an R package for Proteomics Label Free Quantification Services</h1></div>
 <p><img src="reference/figures/imgfile.png" alt="prolfqua"></p>
 <p>The R package contains functions for analyzing mass spectrometry based LFQ experiments at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
+</div>
+<div id="what-package-name" class="section level1">
+<h1 class="hasAnchor">
+<a href="#what-package-name" class="anchor"></a>What package name?</h1>
+<p>What name should we use :</p>
+<ul>
+<li>LFQService - we do proteomics services.</li>
+<li>prolfqua - <strong>pro</strong>teomics LFQ package (read prolevka)</li>
+<li>nalfqua - <strong>n</strong>ot <strong>a</strong>nother LFQ package (read nalewka)</li>
+</ul>
+<p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
 <div id="motivation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#motivation" class="anchor"></a>Motivation</h2>
@@ -127,35 +145,19 @@
 <div id="11-install-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#11-install-r" class="anchor"></a>1.1. Install R</h2>
-<p>a Windows/Linux/MacOSX x64 platform R 3.6.</p>
-<pre class="{r}"><code><a href="https://remotes.r-lib.org/reference/install_github.html"># requires install.packages(c(BiocManager, 'remotes'))
-
-remotes::install_github("wolski/prolfqua")
-# BiocManager::install('wolski/prolfqua')
+<p>A Windows/Linux/MacOSX x64 platform with R 4</p>
+<p>To install the package please execute</p>
+<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
+# If you want to build the vignettes comment out the next line.
+# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+remotes::install_github('wolski/LFQService')
 </a></code></pre>
-<div id="12-required-packages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#12-required-packages" class="anchor"></a>1.2. Required packages</h3>
-<pre class="{r}"><code>pkgs &lt;- c('broom', 'bookdown', 'conflicted', 'corrplot', 'dplyr',
-  'flextable', 'docopt',
-  'ggplot2', 'ggbeeswarm', 'ggfortify', 'glue', 'GGally', 'pheatmap',
-  'kableExtra', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp',
-  'plotly', 'purrr', 'readxl', 'tidyverse', 'yaml',
-  'tidyr', 'writexl')
-
-pkgs &lt;- pkgs[(!pkgs %in% unique(installed.packages()[,'Package']))]
-if(length(pkgs) &gt; 0){install.packages(pkgs)}</code></pre>
-</div>
 </div>
 <div id="2-running-r-scripts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#2-running-r-scripts" class="anchor"></a>2. Running R-scripts</h2>
 <p>Generate QC report from bat file. First add <code>&lt;LFQService_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
 <pre><code>lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip</code></pre>
-</div>
-<div id="3-best-of-code-snippets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#3-best-of-code-snippets" class="anchor"></a>3. Best of code snippets</h2>
 <pre><code>Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
 </div>
@@ -220,6 +222,16 @@ Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/
 <li><a href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis</a></li>
 <li><a href="https://cran.r-project.org/web/packages/bayess/index.html">Bayesian essentials with R - R package</a></li>
 <li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html">Contrasts in R - an example vignette by Rose Maier</a></li>
+</ul>
+</div>
+<div id="r-packages-to-compute-contrasts-from-linear-models" class="section level1">
+<h1 class="hasAnchor">
+<a href="#r-packages-to-compute-contrasts-from-linear-models" class="anchor"></a>R packages to compute contrasts from linear models</h1>
+<ul>
+<li>
+<a href="https://CRAN.R-project.org/package=emmeans">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
+<li>
+</li>
 </ul>
 </div>
 

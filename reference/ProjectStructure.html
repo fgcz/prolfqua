@@ -96,10 +96,16 @@ keep track of folder paths and create them if needed" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -219,9 +225,9 @@ keep track of folder paths and create them if needed" />
 
 <dt><code>inputData</code></dt><dd><p>input data path</p></dd>
 
-<dt><code>qc_path</code></dt><dd><p>qc folder</p></dd>
+<dt><code>qc_dir</code></dt><dd><p>qc folder</p></dd>
 
-<dt><code>modelling_path</code></dt><dd><p>modelling results folder</p></dd>
+<dt><code>modelling_dir</code></dt><dd><p>modelling results folder</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -234,11 +240,21 @@ keep track of folder paths and create them if needed" />
 <p>create qc dir</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>ProjectStructure</span><span class='op'>$</span><span class='fu'>qc_path</span><span class='op'>(</span><span class='va'>qc_dir</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>qc_dir</code></dt><dd><p>QC directory</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-modelling_path"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>modelling_path()</code></h3>
 <p>create modelling path</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>ProjectStructure</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='va'>modelling_dir</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>modelling_dir</code></dt><dd><p>directory with modelling data</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-create"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>create()</code></h3>
 <p>create all directories</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>

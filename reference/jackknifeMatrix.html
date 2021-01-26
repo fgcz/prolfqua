@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -197,17 +203,21 @@
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>dataX</span><span class='op'>)</span><span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"C"</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>dataX</span><span class='op'>)</span>,sep<span class='op'>=</span><span class='st'>""</span><span class='op'>)</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='my_jackknife.html'>my_jackknife</a></span><span class='op'>(</span><span class='va'>dataX</span>, <span class='va'>cor</span>, use<span class='op'>=</span><span class='st'>"pairwise.complete.obs"</span>, method<span class='op'>=</span><span class='st'>"pearson"</span><span class='op'>)</span>
 
-<span class='fu'>jackknifeMatrix</span><span class='op'>(</span><span class='va'>dataX</span>, <span class='va'>cor</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>jackknifeMatrix</span><span class='op'>(</span><span class='va'>dataX</span>, <span class='va'>cor</span><span class='op'>)</span>
+<span class='va'>res</span>
 </div><div class='output co'>#&gt;            C1         C2        C3         C4
-#&gt; C1  1.0000000  0.9633162 0.5749157 -0.5549265
-#&gt; C2  0.9633162  1.0000000 0.7164233 -0.1669724
-#&gt; C3  0.5749157  0.7164233 1.0000000  0.9919060
-#&gt; C4 -0.5549265 -0.1669724 0.9919060  1.0000000</div><div class='input'><span class='fu'>jackknifeMatrix</span><span class='op'>(</span><span class='va'>dataX</span>, <span class='va'>cor</span>, method<span class='op'>=</span><span class='st'>"spearman"</span><span class='op'>)</span>
+#&gt; C1  1.0000000  0.9192061 0.4270389 -0.2175259
+#&gt; C2  0.9192061  1.0000000 0.7786762 -0.8726780
+#&gt; C3  0.4270389  0.7786762 1.0000000  0.6973825
+#&gt; C4 -0.2175259 -0.8726780 0.6973825  1.0000000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 4 4</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>jackknifeMatrix</span><span class='op'>(</span><span class='va'>dataX</span>, <span class='va'>cor</span>, method<span class='op'>=</span><span class='st'>"spearman"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 4 4</div><div class='input'><span class='va'>res</span>
 </div><div class='output co'>#&gt;      C1   C2  C3   C4
-#&gt; C1  1.0  1.0 0.8 -0.4
-#&gt; C2  1.0  1.0 0.8 -0.4
-#&gt; C3  0.8  0.8 1.0  1.0
-#&gt; C4 -0.4 -0.4 1.0  1.0</div></pre>
+#&gt; C1  1.0  0.8 0.4 -0.4
+#&gt; C2  0.8  1.0 0.8 -1.0
+#&gt; C3  0.4  0.8 1.0  0.4
+#&gt; C4 -0.4 -1.0 0.4  1.0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

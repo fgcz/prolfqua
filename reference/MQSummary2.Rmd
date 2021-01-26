@@ -10,8 +10,8 @@ output:
     toc: yes
     toc_depth: 2
 params:
-  configuration:  !r quote(LFQServiceData::skylinePRMSampleData_A$config_f())
-  data: !r quote(LFQServiceData::skylinePRMSampleData_A$analysis(LFQServiceData::skylinePRMSampleData_A$data, LFQServiceData::skylinePRMSampleData_A$config_f()))
+  configuration:  !r quote( LFQService::ionstar$filtered()$config$clone(deep=TRUE) )
+  data: !r quote( LFQService::ionstar$filtered()$data )
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
   pep: TRUE
@@ -26,8 +26,6 @@ header-includes:
   - \usepackage{blindtext}
   - \usepackage{float}
 ---
-
-
 
 
 ```{r setup, include=FALSE}

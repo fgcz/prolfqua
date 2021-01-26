@@ -54,10 +54,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -100,13 +106,14 @@
 
       
 
-      </header><script src="tr_srm_summary_HL_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="tr_srm_summary_HL_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="tr_srm_summary_HL_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="tr_srm_summary_HL_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Summarize Peptide Level Measurements heave light</h1>
                         <h4 class="author"><a href="mailto:WEW@FGCZ.ETHZ.CH" class="email">WEW@FGCZ.ETHZ.CH</a></h4>
             
-            <h4 class="date">2020-10-16</h4>
+            <h4 class="date">2021-01-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/LFQService/blob/master/vignettes/tr_srm_summary_HL.Rmd"><code>vignettes/tr_srm_summary_HL.Rmd</code></a></small>
       <div class="hidden name"><code>tr_srm_summary_HL.Rmd</code></div>
@@ -118,9 +125,9 @@
 <div id="summarize-levels" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarize-levels" class="anchor"></a>Summarize levels</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span> <span class="va">data</span> , <span class="va">configuration</span> <span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>NR <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span> <span class="va">data</span> , <span class="va">configuration</span> <span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>NR <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>summary</caption>
 <thead><tr class="header">
@@ -147,188 +154,27 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_protein.html">summarize_protein</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_hierarchy.html">summarize_hierarchy</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">x3</span>, <span class="va">x2</span><span class="op">)</span>
-<span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">tmp</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"min"</span><span class="op">)</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"max"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">tmp</span>, caption <span class="op">=</span> <span class="st">"Protein Summaries"</span><span class="op">)</span></pre></div>
-<table class="table">
-<caption>Protein Summaries</caption>
-<colgroup>
-<col width="26%">
-<col width="13%">
-<col width="10%">
-<col width="12%">
-<col width="11%">
-<col width="9%">
-<col width="9%">
-<col width="8%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">protein_Id</th>
-<th align="right">Isotope.Label_n</th>
-<th align="right">peptide_Id_n</th>
-<th align="right">precursor_Id_n</th>
-<th align="right">fragment_Id_n</th>
-<th align="right">nrpeptides</th>
-<th align="left">Precursors</th>
-<th align="left">Fragments</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">iRT_Protein</td>
-<td align="right">1</td>
-<td align="right">11</td>
-<td align="right">11</td>
-<td align="right">55</td>
-<td align="right">11</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|O95477|ABCA1_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">14</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">4-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|P02786|TFR1_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|P04406|G3P_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|P08195|4F2_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|P49281|NRAM2_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">13</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">4-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|P63104|1433Z_HUMAN</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">10</td>
-<td align="right">2</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|Q01650|LAT1_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|Q15043|S39AE_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|Q15365|PCBP1_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|Q9C0K1|S39A8_HUMAN</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">10</td>
-<td align="right">2</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-<tr class="even">
-<td align="left">sp|Q9NP59|S40A1_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">11</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">3-5</td>
-</tr>
-<tr class="odd">
-<td align="left">sp|Q9UHI5|LAT2_HUMAN</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">15</td>
-<td align="right">3</td>
-<td align="left">1-1</td>
-<td align="left">5-5</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co">#interaction_missing_stats(data, configuration)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#interaction_missing_stats(data, configuration)</span>
 <span class="co">#interaction_missing_stats(data, configuration)</span>
 
-<span class="fu"><a href="../reference/missigness_histogram.html">missigness_histogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/missigness_histogram.html">missigness_histogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="tr_srm_summary_HL_files/figure-html/missingFigIntensityHistorgram-1.png" alt="histogram of mean condition intensities per transition" width="960"><p class="caption">
 histogram of mean condition intensities per transition
 </p>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition.html">missingness_per_condition</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition.html">missingness_per_condition</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
+<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></code></pre></div>
 <div class="figure">
 <img src="tr_srm_summary_HL_files/figure-html/missingFigBarplot-1.png" alt="nr of missing" width="960"><p class="caption">
 nr of missing
 </p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
+<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></code></pre></div>
 <div class="figure">
 <img src="tr_srm_summary_HL_files/figure-html/missingFigBarplotCumsum-1.png" alt="cumulative sum of missing" width="960"><p class="caption">
 cumulative sum of missing

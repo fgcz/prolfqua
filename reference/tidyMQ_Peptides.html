@@ -95,10 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+    </li>
+    <li>
       <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
       <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+    </li>
+    <li>
+      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
     </li>
     <li>
       <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
@@ -167,6 +173,7 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other MaxQuant: 
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href='plot_MQ_intensity_vs_retention_time.html'>plot_MQ_intensity_vs_retention_time</a>()</code>,
 <code><a href='tidyMQ_Evidence.html'>tidyMQ_Evidence</a>()</code>,
 <code><a href='tidyMQ_PeptideProtein.html'>tidyMQ_PeptideProtein</a>()</code>,
@@ -182,30 +189,29 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 
-<span class='co'>#peptide_txt &lt;- "D:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/peptides.txt"</span>
-<span class='va'>peptide_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/MSQC1/peptides.txt"</span>,package <span class='op'>=</span> <span class='st'>"LFQService"</span><span class='op'>)</span>
-<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='va'>peptide_txt</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep <span class='op'>=</span> <span class='st'>"\t"</span><span class='op'>)</span>
-<span class='va'>mq_peptides</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_Peptides</span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>)</span>
-<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/tiny/peptides.txt"</span>,package <span class='op'>=</span> <span class='st'>"LFQService"</span><span class='op'>)</span>
-<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='va'>peptides_txt</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep <span class='op'>=</span> <span class='st'>"\t"</span><span class='op'>)</span>
+<span class='va'>peptide_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/MSQC1.ZIP"</span>,package <span class='op'>=</span> <span class='st'>"LFQService"</span><span class='op'>)</span>
+<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>unz</a></span><span class='op'>(</span><span class='va'>peptide_txt</span>, <span class='st'>"peptides.txt"</span><span class='op'>)</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep <span class='op'>=</span> <span class='st'>"\t"</span><span class='op'>)</span>
+<span class='va'>mq_peptides</span> <span class='op'>&lt;-</span> <span class='fu'>tidyMQ_Peptides</span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>)</span>
+<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/tiny.zip"</span>,package <span class='op'>=</span> <span class='st'>"LFQService"</span><span class='op'>)</span>
+<span class='va'>peptides_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>unz</a></span><span class='op'>(</span><span class='va'>peptide_txt</span>,<span class='st'>"peptides.txt"</span><span class='op'>)</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep <span class='op'>=</span> <span class='st'>"\t"</span><span class='op'>)</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>$</span><span class='va'>Evidence.IDs</span>, collapse <span class='op'>=</span> <span class='st'>";"</span><span class='op'>)</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='st'>";"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 29</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 3444</div><div class='input'>
 <span class='va'>mq_peptides</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_Peptides</span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mq_peptides</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 16</span><span>
 #&gt;   peptide.id sequence proteins leading.razor.p~ protein.group.id peptide.score
 #&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>          0 AEVMVDS~ sp|O294~ sp|O29441|Y817_~                5          38.1
-#&gt; </span><span style='color: #555555;'>2</span><span>          1 ALDPEIS~ sp|Q085~ sp|Q08554|DSC1_~               12          32.9
-#&gt; </span><span style='color: #555555;'>3</span><span>          2 APCSCKS~ sp|Q003~ sp|Q00369|MT2_C~               11           0  
-#&gt; </span><span style='color: #555555;'>4</span><span>          3 CDGEDDC~ sp|P981~ sp|P98157|LRP1_~               10           0  
-#&gt; </span><span style='color: #555555;'>5</span><span>          4 DHFPFFR  sp|Q3BJ~ sp|Q3BJS0|FOXN5~                0          16.6
-#&gt; </span><span style='color: #555555;'>6</span><span>          5 DNGEDEH~ sp|B9DR~ sp|B9DRV0|ADDA_~                3          39.3
+#&gt; </span><span style='color: #555555;'>1</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #555555;'>2</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #555555;'>3</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #555555;'>4</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #555555;'>5</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #555555;'>6</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
 #&gt; </span><span style='color: #555555;'># ... with 10 more variables: pep </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, missed.cleavages </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   unique.groups </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, potential.contaminant </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, reverse </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   raw.file </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, peptide.intensity </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, id.type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, proteotypic </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   raw.file </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, peptide.intensity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, id.type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, proteotypic </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   isotope </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
