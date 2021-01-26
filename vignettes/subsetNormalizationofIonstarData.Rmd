@@ -291,7 +291,7 @@ medpol_benchmark$plot_FDRvsFDP()
 
 #
 
-```{r}
+```{r benchmark, eval=FALSE}
 contrsimple <- LFQService::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
 
 cs <- contrsimple$get_contrasts()
@@ -311,10 +311,8 @@ medpol_benchmark <- make_benchmark(ttd$data,
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
 medpol_benchmark$plot_ROC()
-medpol_benchmark$pAUC_summaries()
-medpol_benchmark$get_FDRvsFDP()
-medpol_benchmark$FDRvsFDP
-medpol_benchmark$plot_FDRvsFDP()
+x <- medpol_benchmark$pAUC_summaries()
+x$barp
 
 ```
 

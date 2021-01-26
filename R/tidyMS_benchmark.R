@@ -201,13 +201,12 @@ do_confusion_c <- function(
   #sumd <- reshape2::melt(summaryS)
   barp <- ggplot(sumd, aes(x = contrast , y = value, color = NULL , fill = what)) +
     geom_bar(stat = "identity", position = position_dodge()) +
-    facet_wrap(~ variable, scales = "free") +
+    facet_wrap(~ contrast, scales = "free") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     coord_cartesian(ylim = c(floor(min(sumd$value) / 10) * 10, 100))
 
   res <- list(
     barp = barp,
-    summaryS = summaryS,
     ftable = ftable)
 }
 
