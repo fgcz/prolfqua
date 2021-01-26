@@ -95,7 +95,7 @@ protein_Ids <- mqdata$data %>%
 
 
 
-```{r}
+```{r filterForHumans}
 
 lfqdata <- LFQData$new(datafilt, mqdata$config)
 tr <- lfqdata$get_Transformer()
@@ -109,7 +109,7 @@ lfqdataNormalized <- tr$log2_robscale_subset(lfqsubset = subset_h)
 
 The figures below show the intensity distribution before and after normalization.
 
-```{r}
+```{r PlotIntensityDistributions}
 before <- lfqdata$get_Plotter()
 before$intensity_distribution_density()
 
@@ -123,7 +123,7 @@ after$intensity_distribution_density()
 
 We collect all the relevant data for the Ionstar data in an R6 object.
 
-```{r}
+```{r R6Ionstar, echo =  FALSE}
 IonstarData <- R6::R6Class(
   "IonstarData",
   public = list(
@@ -153,18 +153,21 @@ IonstarData <- R6::R6Class(
     }
   )
 )
+lfqNormSubset <- lfqdataNormalized$get_copy()
 
-lfqdataNormalized$data <- inner_join(protein_Ids, lfqdataNormalized$data)
-mqdata$data  <- inner_join(protein_Ids, mqdata$data)
+lfqNormSubset$data <- inner_join(protein_Ids, lfqNormSubset$data)
+mqdataSubset <- mqdata
+mqdataSubset$data  <- inner_join(protein_Ids, mqdata$data)
 
-ionstar <- IonstarData$new(mqdata$data, lfqdata$config, lfqdataNormalized$data, lfqdataNormalized$config)
+ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config, 
+                           lfqNormSubset$data, lfqNormSubset$config)
 
 #usethis::use_data(ionstar, overwrite = TRUE)
 
 ```
 
 
-# Protein intensities
+# Protein intensities using Tukeys Median Polish
 
 We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use normalized data.
 The figure below shows the the protein estimates (dashed line) and the peptide intensities.
@@ -174,10 +177,13 @@ lfqAggMedpol <- LFQDataAggregator$new(lfqdataNormalized, "protein")
 lfqAggMedpol$medpolish()
 xx <- lfqAggMedpol$plot()
 xx$plots[[1]]
+```
 
 
+
+```{r echo=FALSE}
 dataIonstarProtein_subsetNorm <- list(
-  data = lfqAggMedpol$lfq_agg$data,
+  data = inner_join(protein_Ids,lfqAggMedpol$lfq_agg$data),
   config = lfqAggMedpol$lfq_agg$config
 )
 
@@ -269,7 +275,7 @@ cp$volcano()
 
 
 ```{r benchmark}
-ttd <- LFQService::isostar_bench_preprocess(contrdf)
+ttd <- LFQService::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm",
@@ -278,9 +284,37 @@ medpol_benchmark <- make_benchmark(ttd$data,
 )
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
-medpol_benchmark$plot_FDR_summaries()
+medpol_benchmark$plot_ROC()
 medpol_benchmark$plot_FDRvsFDP()
 
 ```
 
+#
+
+```{r}
+contrsimple <- LFQService::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
+
+cs <- contrsimple$get_contrasts()
+cs <- cs %>% rename(estimate = estimate_median)
+ttd <- LFQService::ionstar_bench_preprocess(cs)
+ttd$data
+medpol_benchmark <- make_benchmark(ttd$data,
+                                   model_description = "imputed data",
+                                   model_name = "pep_imputed_nonparam",
+                                   toscale = NULL,
+                                   benchmark = list(
+                                     list(sc = "estimate", desc = TRUE),
+                                     list(sc = "statistic", desc = TRUE)
+                                   ),
+                                   FDRvsFDP = NULL)
+
+medpol_benchmark$data()
+medpol_benchmark$plot_score_distribution()
+medpol_benchmark$plot_ROC()
+medpol_benchmark$pAUC_summaries()
+medpol_benchmark$get_FDRvsFDP()
+medpol_benchmark$FDRvsFDP
+medpol_benchmark$plot_FDRvsFDP()
+
+```
 

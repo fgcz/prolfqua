@@ -139,9 +139,24 @@ Other preprocessing:
 
 Other benchmarking: 
 \code{\link{Benchmark}},
-\code{\link{isostar_bench_preprocess}()},
+\code{\link{ionstar_bench_preprocess}()},
 \code{\link{ms_bench_auc}()}
+
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides_Config}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()},
+\code{\link{tidyMQ_top_protein_name}()}
 }
+\concept{MaxQuant}
 \concept{aggregation}
 \concept{benchmarking}
 \concept{concrete_configuration}

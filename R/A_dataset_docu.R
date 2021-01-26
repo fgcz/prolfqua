@@ -9,10 +9,10 @@
 #' @importFrom glue glue
 #' @importFrom graphics par rect hist
 #' @importFrom pheatmap pheatmap
-#' @importFrom purrr map map2 map2_dbl map_lgl map_chr reduce map_if map_dfc map_int map_df
+#' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := UQ sym syms .data
 #' @importFrom stats as.formula cor
-#' @importFrom tidyr gather nest nesting separate_rows spread unite unnest
+#' @importFrom tidyr gather nest nesting separate_rows spread unite unnest unnest_legacy separate
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
 #' @importFrom forcats fct_relevel
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
@@ -20,6 +20,7 @@
 #' @importFrom stats anova coef coefficients confint cor.test df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom utils combn data head read.csv tail unzip
+#' @importFrom stringr str_trim
 NULL
 #' Internal Functions by category
 #' @family configuration
@@ -35,6 +36,7 @@ NULL
 #' @family transitionCorrelation
 #' @family preprocessing
 #' @family benchmarking
+#' @family MaxQuant
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL

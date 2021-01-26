@@ -11,7 +11,7 @@ Benchmark R6 class
 \examples{
 library(ggpubr)
 library(LFQService)
-ttd <- ms_bench_preprocess(LFQService::benchmarkDataExample)
+ttd <- ionstar_bench_preprocess(LFQService::benchmarkDataExample)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm"
@@ -36,8 +36,9 @@ bb <- brms_benchmark$pAUC_summaries()
 brms_benchmark$complete()
 brms_benchmark$plot_score_distribution()
 bb <- brms_benchmark$get_confusion()
-brms_benchmark$get_FDR_summaries()
-brms_benchmark$plot_FDR_summaries()
+brms_benchmark$get_confusion_summaries()
+brms_benchmark$plot_ROC()
+brms_benchmark$plot_FDPvsTPR()
 brms_benchmark$plot_FDRvsFDP()
 brms_benchmark$plot_scatter()
 head(bb)
@@ -46,7 +47,7 @@ head(bb)
 \seealso{
 Other benchmarking: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{isostar_bench_preprocess}()},
+\code{\link{ionstar_bench_preprocess}()},
 \code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}
@@ -86,8 +87,9 @@ Other benchmarking:
 \item \href{#method-data}{\code{Benchmark$data()}}
 \item \href{#method-complete}{\code{Benchmark$complete()}}
 \item \href{#method-get_confusion}{\code{Benchmark$get_confusion()}}
-\item \href{#method-get_FDR_summaries}{\code{Benchmark$get_FDR_summaries()}}
-\item \href{#method-plot_FDR_summaries}{\code{Benchmark$plot_FDR_summaries()}}
+\item \href{#method-get_confusion_summaries}{\code{Benchmark$get_confusion_summaries()}}
+\item \href{#method-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
+\item \href{#method-plot_ROC}{\code{Benchmark$plot_ROC()}}
 \item \href{#method-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
 \item \href{#method-get_FDRvsFDP}{\code{Benchmark$get_FDRvsFDP()}}
 \item \href{#method-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
@@ -192,22 +194,32 @@ get confusion data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_FDR_summaries"></a>}}
-\if{latex}{\out{\hypertarget{method-get_FDR_summaries}{}}}
-\subsection{Method \code{get_FDR_summaries()}}{
+\if{html}{\out{<a id="method-get_confusion_summaries"></a>}}
+\if{latex}{\out{\hypertarget{method-get_confusion_summaries}{}}}
+\subsection{Method \code{get_confusion_summaries()}}{
 get FDR summaries
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDR_summaries()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion_summaries()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_FDR_summaries"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_FDR_summaries}{}}}
-\subsection{Method \code{plot_FDR_summaries()}}{
+\if{html}{\out{<a id="method-plot_FDPvsTPR"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_FDPvsTPR}{}}}
+\subsection{Method \code{plot_FDPvsTPR()}}{
+plot FDP vs TPR
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDPvsTPR(xlim = 0.5)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot_ROC"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_ROC}{}}}
+\subsection{Method \code{plot_ROC()}}{
 plot FDR summaries
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDR_summaries(xlim = 0.5)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_ROC(xlim = 0.5)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

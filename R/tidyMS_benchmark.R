@@ -2,7 +2,7 @@
 #' @export
 #' @family benchmarking
 #' @param data analysis results
-isostar_bench_preprocess <- function(data) {
+ionstar_bench_preprocess <- function(data) {
   tmp <- data %>%
     ungroup() %>%
     mutate(species  = case_when(
@@ -148,9 +148,17 @@ do_confusion_c <- function(
   return(xx)
 }
 
+.plot_FDPvsTPR <- function(pStats, xlim){
+  p1 <-
+    ggplot(pStats , aes(x = FDP, y = TPR, color = what)) +
+    geom_path()  +
+    labs(tag = "C") + xlim(0, xlim) +
+    facet_wrap( ~contrast )
+  return(p1)
+}
 
 # Visualizes data frame with columns FPR, TPR, FDP
-.plot_FDR_summaries <-
+.plot_ROC <-
   function(pStats, fpr_lim = 0.2) {
 
     p1 <-
@@ -165,23 +173,16 @@ do_confusion_c <- function(
       labs(tag = "B") +
       xlim(0, xlim = fpr_lim) +
       facet_wrap( ~contrast )
-    p3 <-
-      ggplot(pStats , aes(x = FDP, y = TPR, color = what)) +
-      geom_path()  +
-      labs(tag = "C") + xlim(0, fpr_lim) +
-      facet_wrap( ~contrast )
 
     rocp <-
       ggpubr::ggarrange(
         p1,
         p2,
-        p3,
         nrow = 1,
         common.legend = TRUE,
         legend = "bottom"
       )
     rocp = rocp
-
   }
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
@@ -255,7 +256,7 @@ do_confusion_c <- function(
 #' @examples
 #' library(ggpubr)
 #' library(LFQService)
-#' ttd <- ms_bench_preprocess(LFQService::benchmarkDataExample)
+#' ttd <- ionstar_bench_preprocess(LFQService::benchmarkDataExample)
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"
@@ -280,8 +281,9 @@ do_confusion_c <- function(
 #' brms_benchmark$complete()
 #' brms_benchmark$plot_score_distribution()
 #' bb <- brms_benchmark$get_confusion()
-#' brms_benchmark$get_FDR_summaries()
-#' brms_benchmark$plot_FDR_summaries()
+#' brms_benchmark$get_confusion_summaries()
+#' brms_benchmark$plot_ROC()
+#' brms_benchmark$plot_FDPvsTPR()
 #' brms_benchmark$plot_FDRvsFDP()
 #' brms_benchmark$plot_scatter()
 #' head(bb)
@@ -392,23 +394,31 @@ Benchmark <-
       },
       #' @description
       #' get FDR summaries
-      get_FDR_summaries = function(){
+      get_confusion_summaries = function(){
         self$get_confusion(arrange = self$benchmark)
+      },
+      #' @description plot FDP vs TPR
+      #'
+      plot_FDPvsTPR = function(xlim = 0.5){
+        confusion <- self$get_confusion_summaries()
+
+        p <- .plot_FDPvsTPR(confusion,xlim = 0.5)
+        return(p)
       },
       #' @description
       #' plot FDR summaries
       #' @param xlim limit x axis
       #' @return ggplot
-      plot_FDR_summaries = function(xlim = 0.5){
-        confusion <- self$get_FDR_summaries()
-        vissum <- .plot_FDR_summaries(confusion,
-                                      fpr_lim = xlim)
+      plot_ROC = function(xlim = 0.5){
+        confusion <- self$get_confusion_summaries()
+        vissum <- .plot_ROC(confusion,
+                              fpr_lim = xlim)
         return(vissum)
       },
       #' @description
       #' AUC summaries
       pAUC_summaries = function(){
-        confusion <- self$get_FDR_summaries()
+        confusion <- self$get_confusion_summaries()
         pauc <- .partial_AUC_summary(
           confusion,
           model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_description))
@@ -448,7 +458,7 @@ Benchmark <-
       #' plot intensity vs scores
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
-      plot_scatter = function(score =list(list(score = "estimate", ylim = c(-1,2) ),
+      plot_scatter = function(score = list(list(score = "estimate", ylim = c(-1,2) ),
                                           list(score = "statistic", ylim = c(-3,10) ))){
         x <- self$data()
 
