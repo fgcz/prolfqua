@@ -581,6 +581,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 
 
 #' create all possible contrasts
+#' @export
 #' @keywords internal
 #' @family modelling
 #' @examples
@@ -588,10 +589,10 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' m
 #' linfct <- linfct_from_model(m)
 #'
-#' xl <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- LFQService:::.linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' xl <- LFQService::linfct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- LFQService::linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
-.linfct_all_possible_contrasts <- function(lin_int ){
+linfct_all_possible_contrasts <- function(lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))

@@ -22,7 +22,6 @@ tmp
 }
 \seealso{
 Other modelling: 
-\code{\link{.linfct_all_possible_contrasts}()},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
@@ -37,6 +36,7 @@ Other modelling:
 \code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
+\code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},

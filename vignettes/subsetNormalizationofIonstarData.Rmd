@@ -289,9 +289,9 @@ medpol_benchmark$plot_FDRvsFDP()
 
 ```
 
-#
+# Imputation
 
-```{r benchmark, eval=FALSE}
+```{r benchmarkImputation, eval=TRUE}
 contrsimple <- LFQService::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
 
 cs <- contrsimple$get_contrasts()
