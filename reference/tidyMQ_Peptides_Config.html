@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>read from folder or zip with the content of the MQ txt folder. — tidyMQ_Peptides_Config • LFQService</title>
+<title>read from folder or zip with the content of the MQ txt folder. — tidyMQ_Peptides_Config • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>read from folder or zip with the content of the MQ txt folder.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_MQProteinGroups.R'><code>R/tidyMS_MQProteinGroups.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_MQProteinGroups.R'><code>R/tidyMS_MQProteinGroups.R</code></a></small>
     <div class="hidden name"><code>tidyMQ_Peptides_Config.Rd</code></div>
     </div>
 
@@ -162,8 +162,8 @@
     <pre class="usage"><span class='fu'>tidyMQ_Peptides_Config</span><span class='op'>(</span>
   <span class='va'>MQtxtfolder</span>,
   use <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"peptides"</span>, <span class='st'>"modificationSpecificPeptides"</span><span class='op'>)</span>,
-  id_extractor <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>{</span>     <span class='fu'>fgcz.gsea.ora</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/fgcz.gsea.ora/man/get_UniprotID_from_fasta_header.html'>get_UniprotID_from_fasta_header</a></span><span class='op'>(</span><span class='va'>df</span>,
-    idcolumn <span class='op'>=</span> <span class='st'>"top_protein"</span><span class='op'>)</span> <span class='op'>}</span>,
+  id_extractor <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>{</span>     <span class='fu'>prora</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/prora/man/get_UniprotID_from_fasta_header.html'>get_UniprotID_from_fasta_header</a></span><span class='op'>(</span><span class='va'>df</span>, idcolumn
+    <span class='op'>=</span> <span class='st'>"top_protein"</span><span class='op'>)</span> <span class='op'>}</span>,
   remove_rev <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 

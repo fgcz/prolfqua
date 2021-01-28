@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create custom lmer model — make_custom_model_lmer • LFQService</title>
+<title>Create custom lmer model — make_custom_model_lmer • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create custom lmer model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6_Modelling.R'><code>R/tidyMS_R6_Modelling.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_R6_Modelling.R'><code>R/tidyMS_R6_Modelling.R</code></a></small>
     <div class="hidden name"><code>make_custom_model_lmer.Rd</code></div>
     </div>
 
@@ -231,14 +231,14 @@
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>make_custom_model_lmer</span><span class='op'>(</span><span class='st'>"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class='op'>=</span> <span class='st'>"random_example"</span><span class='op'>)</span>
 <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Intensity ~ condition + (1 | peptide_Id)
-#&gt; &lt;environment: 0x000000000f839088&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
+#&gt; &lt;environment: 0x0000000048bae180&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
 </div><div class='output co'>#&gt; function (x, tol = 1e-04) 
 #&gt; {
 #&gt;     lwr &lt;- getME(x, "lower")
 #&gt;     theta &lt;- getME(x, "theta")
 #&gt;     any(theta[lwr == 0] &lt; tol)
 #&gt; }
-#&gt; &lt;bytecode: 0x000000004cb8c160&gt;
+#&gt; &lt;bytecode: 0x000000004a7e9b60&gt;
 #&gt; &lt;environment: namespace:lme4&gt;</div><div class='input'>
 </div></pre>
   </div>

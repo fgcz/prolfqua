@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get linfct from model — linfct_from_model • LFQService</title>
+<title>get linfct from model — linfct_from_model • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>get linfct from model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6_Modelling.R'><code>R/tidyMS_R6_Modelling.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_R6_Modelling.R'><code>R/tidyMS_R6_Modelling.R</code></a></small>
     <div class="hidden name"><code>linfct_from_model.Rd</code></div>
     </div>
 
@@ -216,7 +216,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>#if(FALSE){</span>
 
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='basicModel_p1807.html'>basicModel_p1807</a></span>
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='basicModel_p1807.html'>basicModel_p1807</a></span>
 <span class='va'>m</span>
 </div><div class='output co'>#&gt; Linear mixed model fit by REML ['lmerModLmerTest']
 #&gt; Formula: formula
@@ -252,7 +252,7 @@
 #&gt; class_therapyp.HU:CelltypeHSC                     0           1
 #&gt; class_therapyp.NO:CelltypeCMP/MEP                 1           0
 #&gt; class_therapyp.NO:CelltypeHSC                     1           1</div><div class='input'>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='interactionModel_p1807.html'>interactionModel_p1807</a></span>
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='interactionModel_p1807.html'>interactionModel_p1807</a></span>
 <span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span><span class='op'>[</span><span class='st'>"CelltypeCMP/MEP"</span>,<span class='op'>]</span> ,
  <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"CelltypeCMP/MEP"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>)</span><span class='op'>)</span>,<span class='op'>]</span>,<span class='fl'>2</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proteomics Label Free Quantification • LFQService</title>
+<title>Proteomics Label Free Quantification • prolfqua</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -30,7 +30,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">LFQService</a>
+        <a class="navbar-link" href="index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -91,8 +91,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,23 +109,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<p>The R package name is <strong>LFQService</strong>, the repository is called <strong>prolfqua</strong>. We will be renaming the <code>package</code> in the near future. To build the package you need to clone the repository using <code>git clone https:/github.com/wolski/LFQService</code>, or use <code>install_github("wolski/LFQService")</code>. If you want to build the package on you machine first it is best to run <code>install_github("wolski/LFQService")</code></p>
 <div id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="anchor"></a>prolfqua - an R package for Proteomics Label Free Quantification Services</h1></div>
 <p><img src="reference/figures/imgfile.png" alt="prolfqua"></p>
 <p>The R package contains functions for analyzing mass spectrometry based LFQ experiments at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
-</div>
-<div id="what-package-name" class="section level1">
-<h1 class="hasAnchor">
-<a href="#what-package-name" class="anchor"></a>What package name?</h1>
-<p>What name should we use :</p>
-<ul>
-<li>LFQService - we do proteomics services.</li>
-<li>prolfqua - <strong>pro</strong>teomics LFQ package (read prolevka)</li>
-<li>nalfqua - <strong>n</strong>ot <strong>a</strong>nother LFQ package (read nalewka)</li>
-</ul>
-<p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
+<p>To build the package you need to clone the repository using <code>git clone https:/github.com/wolski/prolfqua</code>.</p>
+<p>To install it please use <code><a href="https://remotes.r-lib.org/reference/install_github.html">remotes::install_github("wolski/prolfqua")</a></code>.</p>
+<p>Let us please know about any installation problems or errors when using the package <a href="https://github.com/wolski/prolfqua/issues" class="uri">https://github.com/wolski/prolfqua/issues</a></p>
 <div id="motivation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#motivation" class="anchor"></a>Motivation</h2>
@@ -140,7 +131,7 @@
 <div id="1-system-requirements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#1-system-requirements" class="anchor"></a>1. System Requirements</h2>
-<p>R 3.6 or higher.</p>
+<p>R 4.0 or higher.</p>
 </div>
 <div id="11-install-r" class="section level2">
 <h2 class="hasAnchor">
@@ -150,16 +141,16 @@
 <pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
 # remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
-remotes::install_github('wolski/LFQService')
+remotes::install_github('wolski/prolfqua')
 </a></code></pre>
 </div>
 <div id="2-running-r-scripts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#2-running-r-scripts" class="anchor"></a>2. Running R-scripts</h2>
-<p>Generate QC report from bat file. First add <code>&lt;LFQService_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
+<p>Generate QC report from bat file. First add <code>&lt;prolfqua_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
 <pre><code>lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip</code></pre>
-<pre><code>Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
-Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
+<pre><code>Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
+Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
 </div>
 </div>
 <div id="how-to-get-started" class="section level1">
@@ -234,6 +225,17 @@ Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/
 </li>
 </ul>
 </div>
+<div id="what-package-name" class="section level1">
+<h1 class="hasAnchor">
+<a href="#what-package-name" class="anchor"></a>What package name?</h1>
+<p>What name should we use :</p>
+<ul>
+<li>prolfqua - we do proteomics services.</li>
+<li>prolfqua - <strong>pro</strong>teomics LFQ package (read prolevka)</li>
+<li>nalfqua - <strong>n</strong>ot <strong>a</strong>nother LFQ package (read nalewka)</li>
+</ul>
+<p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
+</div>
 
   </div>
 
@@ -241,9 +243,9 @@ Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/wolski/LFQService/">https://​github.com/​wolski/​LFQService/​</a>
+<li>Browse source code at <br><a href="https://github.com/wolski/prolfqua/">https://​github.com/​wolski/​prolfqua/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/wolski/LFQService/issues">https://​github.com/​wolski/​LFQService/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/wolski/prolfqua/issues">https://​github.com/​wolski/​prolfqua/​issues</a>
 </li>
 </ul>
 </div>

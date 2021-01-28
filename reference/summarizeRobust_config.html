@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>same as summarize robust but with config — summarizeRobust_config • LFQService</title>
+<title>same as summarize robust but with config — summarizeRobust_config • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>same as summarize robust but with config</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_aggregation.R'><code>R/tidyMS_aggregation.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_aggregation.R'><code>R/tidyMS_aggregation.R</code></a></small>
     <div class="hidden name"><code>summarizeRobust_config.Rd</code></div>
     </div>
 
@@ -193,7 +193,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>conf</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
 <span class='va'>conf</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>1</span>
@@ -204,7 +204,7 @@
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>xnested</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>summarizeRobust_config</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>conf</span><span class='op'>)</span>
 
-<span class='fu'>LFQService</span><span class='fu'>:::</span><span class='fu'>.reestablish_condition</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>bb</span>, <span class='va'>conf</span><span class='op'>)</span>
+<span class='fu'>prolfqua</span><span class='fu'>:::</span><span class='fu'>.reestablish_condition</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>bb</span>, <span class='va'>conf</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 8</span><span>
 #&gt;    sampleName dilution. run_Id raw.file isotope mean.peptide.in~  weights  lmrob
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

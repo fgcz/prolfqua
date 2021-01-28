@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>generates peptide level plots for all Proteins — plot_hierarchies_boxplot_df • LFQService</title>
+<title>generates peptide level plots for all Proteins — plot_hierarchies_boxplot_df • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>generates peptide level plots for all Proteins</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_plotting.R'><code>R/tidyMS_plotting.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_plotting.R'><code>R/tidyMS_plotting.R</code></a></small>
     <div class="hidden name"><code>plot_hierarchies_boxplot_df.Rd</code></div>
     </div>
 
@@ -190,7 +190,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
- <span class='va'>iostar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+ <span class='va'>iostar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'> <span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span>
    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>protein_Id</span><span class='op'>)</span>
@@ -204,7 +204,7 @@
                                     facet_grid_on <span class='op'>=</span> <span class='va'>iostar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
  <span class='va'>res</span><span class='op'>$</span><span class='va'>boxplot</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 22 rows containing non-finite values (stat_boxplot).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4 rows containing missing values (position_quasirandom).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 18 rows containing missing values (position_quasirandom).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The default behavior of beeswarm has changed in version 0.6.0. In versions &lt;0.6.0, this plot would have been dodged on the y-axis.  In versions &gt;=0.6.0, grouponX=FALSE must be explicitly set to group on y-axis. Please set grouponX=TRUE/FALSE to avoid this warning and ensure proper axis choice.</span></div><div class='img'><img src='plot_hierarchies_boxplot_df-3.png' alt='' width='700' height='433' /></div><div class='input'>
- <span class='va'>iostar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='dataIonstarProtein_subsetNorm.html'>dataIonstarProtein_subsetNorm</a></span>
+ <span class='va'>iostar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='dataIonstarProtein_subsetNorm.html'>dataIonstarProtein_subsetNorm</a></span>
  <span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span>
    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>iostar</span><span class='op'>$</span><span class='va'>data</span><span class='op'>$</span><span class='va'>protein_Id</span><span class='op'>)</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plot volcano given multiple conditions — multigroupVolcano • LFQService</title>
+<title>plot volcano given multiple conditions — multigroupVolcano • prolfqua</title>
 
 
 <!-- jquery -->
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,8 +132,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>plot volcano given multiple conditions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
     <div class="hidden name"><code>multigroupVolcano.Rd</code></div>
     </div>
 
@@ -250,10 +250,10 @@
 <code><a href='table_facade.html'>table_facade</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://github.com/slowkow/ggrepel'>ggrepel</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/slowkow/ggrepel'>ggrepel</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt;         logFC adj.P.Val
 #&gt; 1 -0.05412905 0.9165288
 #&gt; 2 -0.29646881 0.4749545
@@ -274,7 +274,7 @@
 #&gt; 3 CC_000006
 #&gt; 4 CC_000006
 #&gt; 5 CC_000006
-#&gt; 6 CC_000006</div><div class='input'><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span>,
+#&gt; 6 CC_000006</div><div class='input'><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span>,
 effect<span class='op'>=</span><span class='st'>"logFC"</span>,
 p.value<span class='op'>=</span><span class='st'>"adj.P.Val"</span>,condition<span class='op'>=</span><span class='st'>"Condition"</span>,colour<span class='op'>=</span><span class='st'>"colour"</span>,label<span class='op'>=</span><span class='st'>"Name"</span> <span class='op'>)</span>
 </div><div class='img'><img src='multigroupVolcano-1.png' alt='' width='700' height='433' /></div></pre>

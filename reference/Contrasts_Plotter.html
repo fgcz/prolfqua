@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plot contrasts — Contrasts_Plotter • LFQService</title>
+<title>plot contrasts — Contrasts_Plotter • prolfqua</title>
 
 
 <!-- jquery -->
@@ -72,7 +72,7 @@ plot contrasts" />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">LFQService</a>
+        <a class="navbar-link" href="../index.html">prolfqua</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
@@ -81,7 +81,7 @@ plot contrasts" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -133,8 +133,8 @@ plot contrasts" />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/wolski/LFQService/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/wolski/prolfqua/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -152,7 +152,7 @@ plot contrasts" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>plot contrasts</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wolski/LFQService/blob/master/R/tidyMS_R6Contrast.R'><code>R/tidyMS_R6Contrast.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_R6Contrast.R'><code>R/tidyMS_R6Contrast.R</code></a></small>
     <div class="hidden name"><code>Contrasts_Plotter.Rd</code></div>
     </div>
 
@@ -382,10 +382,10 @@ plot contrasts" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span>list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/LFQService'>LFQService</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>modelName</span> <span class='op'>&lt;-</span> <span class='st'>"Model"</span>
 <span class='va'>modelFunction</span> <span class='op'>&lt;-</span>
@@ -408,7 +408,7 @@ plot contrasts" />
   <span class='st'>"dil.c_vs_b"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.b"</span>
  <span class='op'>)</span>
 <span class='co'>#Contrasts$debug("get_contrasts")</span>
-<span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>LFQService</span><span class='fu'>::</span><span class='va'><a href='Contrasts.html'>Contrasts</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>,
+<span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='Contrasts.html'>Contrasts</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>,
   <span class='va'>Contr</span><span class='op'>)</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>determine linear functions:</span></div><div class='output co'>#&gt; <span class='message'>compute contrasts:</span></div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id")</span></div><div class='input'>
@@ -423,33 +423,33 @@ histogram <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/
 <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='va'>res</span>
 </div><div class='output co'>#&gt; $FDR</div><div class='img'><img src='Contrasts_Plotter-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'><span class='va'>respltly</span> <span class='op'>&lt;-</span> <span class='va'>cp</span><span class='op'>$</span><span class='fu'>volcano_plotly</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `group_by_()` is deprecated as of dplyr 0.7.0.</span>
-#&gt; <span class='warning'>Please use `group_by()` instead.</span>
-#&gt; <span class='warning'>See vignette('programming') for more help</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>respltly</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>respltly</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='va'>cp</span><span class='op'>$</span><span class='fu'>ma_plot</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='Contrasts_Plotter-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>cp</span><span class='op'>$</span><span class='va'>ma_plotly</span>
-</div><div class='output co'>#&gt; function (fc = 1) 
-#&gt; {
-#&gt;     contrastDF &lt;- self$contrastDF
-#&gt;     if (!is.null(contrastDF$c1) &amp;&amp; !is.null(contrastDF$c2)) {
-#&gt;         contrastDF &lt;- contrastDF %&gt;% plotly::highlight_key(~subject_Id)
-#&gt;         fig_plotly &lt;- private$.ma_plot(contrastDF, self$contrast, 
-#&gt;             fc = fc) %&gt;% plotly::ggplotly(tooltip = "subject_Id")
-#&gt;         self$figures_plotly[["ma_plot"]] &lt;- list(fig = fig_plotly, 
-#&gt;             name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
+</div><div class='output co'>#&gt; function(fc =1){
+#&gt;       # html version
+#&gt;       contrastDF  &lt;- self$contrastDF
+#&gt;       if (!is.null(contrastDF$c1) &amp;&amp; !is.null(contrastDF$c2)) {
+#&gt; 
+#&gt;         contrastDF  &lt;- contrastDF %&gt;%
+#&gt;           plotly::highlight_key(~subject_Id)
+#&gt;         fig_plotly &lt;- private$.ma_plot(contrastDF, self$contrast, fc = fc) %&gt;%
+#&gt;           plotly::ggplotly(tooltip = "subject_Id")
+#&gt; 
+#&gt;         self$figures_plotly[["ma_plot"]] &lt;-
+#&gt;           list(fig = fig_plotly,
+#&gt;                name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
 #&gt;         return(fig_plotly)
-#&gt;     }
-#&gt;     else {
+#&gt; 
+#&gt;       }else{
 #&gt;         return(NULL)
+#&gt;       }
 #&gt;     }
-#&gt; }
-#&gt; &lt;environment: 0x000000004541e778&gt;</div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
+#&gt; &lt;environment: 0x0000000005bef0e8&gt;</div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
   <span class='va'>cp</span><span class='op'>$</span><span class='fu'>write_pdf</span><span class='op'>(</span><span class='st'>"c:/Temp"</span><span class='op'>)</span>
   <span class='va'>cp</span><span class='op'>$</span><span class='fu'>write_plotly</span><span class='op'>(</span><span class='st'>"c:/Temp"</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
