@@ -27,9 +27,9 @@ lfq_power_t_test_proteins(
 Compute theoretical sample sizes from factor level standard deviations
 }
 \examples{
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb1 <- LFQService::ionstar$normalized()
+bb1 <- prolfqua::ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 stats_res <- summarize_cv(data2, config, all = FALSE)

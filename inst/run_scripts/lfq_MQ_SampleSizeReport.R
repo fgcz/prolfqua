@@ -2,7 +2,7 @@
 
 suppressMessages(library(readr))
 suppressMessages(library(tidyverse))
-suppressMessages(library(LFQService))
+suppressMessages(library(prolfqua))
 suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
 suppressMessages(library(docopt))
@@ -24,7 +24,7 @@ Arguments:
 
 if (FALSE) {
 
-  dummyargs <- c( "c:/Users/wewol/prog/LFQServiceTestDataExtern/1675194.zip" )
+  dummyargs <- c( "c:/Users/wewol/prog/prolfquaTestDataExtern/1675194.zip" )
   dummyargs <- c("D:/TEMP/checkSampleSizeEstimation/1293562.zip","-p","3000","-q","9999032")
   opt <- docopt(doc, args = dummyargs)
 
@@ -56,7 +56,7 @@ summarize_cv_raw_transformed <- function(resDataStart, config){
                           by = config_tmp$table$hierarchyKeys())
 
   resDataStart <- transform_work_intensity(resDataStart, config_tmp, log2)
-  data <- LFQService::applyToIntensityMatrix(resDataStart, config_tmp, .func = robust_scale)
+  data <- prolfqua::applyToIntensityMatrix(resDataStart, config_tmp, .func = robust_scale)
 
   stats_res_transformed <- summarize_cv(data, config_tmp)
   wide <- toWideConfig( data,config_tmp)
@@ -91,7 +91,7 @@ resPep$data <- remove_small_intensities(resPep$data, resPep$config) %>%
 filename <- basename(tools::file_path_sans_ext(mqzip))
 
 # debug(render_MQSummary_rmd)
-LFQService::render_MQSummary_rmd(
+prolfqua::render_MQSummary_rmd(
   resPep$data,
   resPep$config$clone(deep = TRUE),
   project_conf,
@@ -121,7 +121,7 @@ results <- normalize_log2_robscale(res$data, resPep$config)
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())
 protintensity <- medpolish_protein_quants( results$data, results$config )
 xx <- protintensity("unnest")
-data <- LFQService::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
+data <- prolfqua::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
 stats_res <- summarize_cv(data, xx$config, all = FALSE)
 data_wide <-
   inner_join(
@@ -147,10 +147,10 @@ lfq_write_table(
 )
 
 ##```{r corrplot, fig.cap="Correlation plot."}
-##LFQService::plot_sample_correlation(dataTransformed, config)
+##prolfqua::plot_sample_correlation(dataTransformed, config)
 ##```
 
-LFQService::render_MQSummary_rmd(
+prolfqua::render_MQSummary_rmd(
   data,
   xx$config$clone(deep = TRUE),
   project_conf = project_conf,

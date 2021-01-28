@@ -40,7 +40,7 @@ library(conflicted)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(LFQService)
+library(prolfqua)
 conflict_prefer("filter", "dplyr")
 
 ```
@@ -63,14 +63,14 @@ x <- R6extractValues(config)
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
 
 specnautconfig <- function(){
-spectronautDIAData250_config <- LFQService::create_config_Spectronaut_Peptide(
-isotopeLabel="Isotope.Label",
- ident_qValue="EG.Qvalue")
-spectronautDIAData250_config$table$factors[["coding"]] = "coding"
-spectronautDIAData250_config$table$factors[["sex"]] = "sex"
-spectronautDIAData250_config$table$factors[["age"]] = "age"
-spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
-return(spectronautDIAData250_config)
+  spectronautDIAData250_config <- prolfqua::create_config_Spectronaut_Peptide(
+    isotopeLabel="Isotope.Label",
+    ident_qValue="EG.Qvalue")
+  spectronautDIAData250_config$table$factors[["coding"]] = "coding"
+  spectronautDIAData250_config$table$factors[["sex"]] = "sex"
+  spectronautDIAData250_config$table$factors[["age"]] = "age"
+  spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
+  return(spectronautDIAData250_config)
 }
 config <- specnautconfig()
 
@@ -80,7 +80,7 @@ config$table$valueVars()
 config$table$idVars()
 
 #'
-data <- LFQService::spectronautDIAData250_A
+data <- prolfqua::spectronautDIAData250_A
 colnames(data$data)
 data$data$EG.TotalQuantity..Settings.
 pIDS <- sample(unique(data$data$PG.ProteinAccessions),50)
@@ -89,7 +89,8 @@ pIDS <- sample(unique(data$data$PG.ProteinAccessions),50)
 colnames(data$data)
 toremove <- c("EG.TotalQuantity..Settings.",
  "EG.UsedForPeptideQuantity","EG.UsedForProteinGroupQuantity")
-dataval <- data$data %>% select(-all_of(toremove))
+
+dataval <- data$data# %>% select(-all_of(toremove))
 dataval <- dataval %>% filter(PG.ProteinAccessions %in% pIDS)
 
 
@@ -108,7 +109,7 @@ spectronautDIAData250_A$analysis(spectronautDIAData250_A$data, spectronautDIADat
 Given a sample DIA dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
-longFormat <- LFQService::spectronautDIAData250_A$data
+longFormat <- prolfqua::spectronautDIAData250_A$data
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 
@@ -128,13 +129,13 @@ config$parameter$qVal_individual_threshold
 longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
 longQSummaries <- summariseQValues(longNoDecoy, config)
 
-knitr::kable(head(LFQService::interaction_missing_stats(longQSummaries, config)$data))
+knitr::kable(head(prolfqua::interaction_missing_stats(longQSummaries, config)$data))
 
 ```
 
 
 ```{r}
-knitr::kable(LFQService::hierarchy_counts(longQSummaries, config))
+knitr::kable(prolfqua::hierarchy_counts(longQSummaries, config))
 ```
 
 Then we remove precrusors that do not pass the  `qVal_experiment_threshold`, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.
@@ -143,7 +144,7 @@ Then we remove precrusors that do not pass the  `qVal_experiment_threshold`, tha
 config$parameter$qVal_experiment_threshold 
 qvalFilt <- longQSummaries %>% 
   filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
-LFQService::hierarchy_counts(qvalFilt, config)
+prolfqua::hierarchy_counts(qvalFilt, config)
 ```
 
 # NA filtering
@@ -154,7 +155,7 @@ The next code snipped computes the number of observed values for each precursor,
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
 longQNASummaries <- longQNASummaries %>%
   dplyr::filter(srm_NrNotNAs > 20)
-knitr::kable(LFQService::hierarchy_counts(longQNASummaries, config))
+knitr::kable(prolfqua::hierarchy_counts(longQNASummaries, config))
 
 ```
 
@@ -172,7 +173,7 @@ print(res)
 
 ```{r}
 
-qvalFiltV <- LFQService::filter_proteins_by_peptide_count(longQNASummaries,config)
+qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries,config)
 qvalFiltV
 ```
 

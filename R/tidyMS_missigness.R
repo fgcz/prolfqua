@@ -10,9 +10,9 @@
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
+#' library(prolfqua)
 #'
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
 #' #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
@@ -20,7 +20,7 @@
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- LFQService::removeLarge_Q_Values(data,
+#' xx <- prolfqua::removeLarge_Q_Values(data,
 #'    configur)
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
@@ -77,14 +77,14 @@ interaction_missing_stats <- function(pdata,
 #' @keywords internal
 #' @return function
 #' @examples
-#' library(LFQService)
-#' bb <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #'
-#' xx <- LFQService::removeLarge_Q_Values(data, configur)
+#' xx <- prolfqua::removeLarge_Q_Values(data, configur)
 #' xx <- complete_cases(xx, configur)
 #'
 #' tmp <- interaction_missing_stats(xx, configur)
@@ -226,7 +226,7 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -285,9 +285,9 @@ missigness_impute_factors_interactions <-
 #'
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -347,9 +347,9 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -413,13 +413,13 @@ get_contrast <- function(data,
 #' @examples
 #'
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- LFQService::removeLarge_Q_Values(data, configur)
+#' data <- prolfqua::removeLarge_Q_Values(data, configur)
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
@@ -437,8 +437,8 @@ get_imputed_contrasts <- function(data, config, contrasts){
 #' @family imputation
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
-#' bb <- LFQService::ionstar
+#' library(prolfqua)
+#' bb <- prolfqua::ionstar
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -491,7 +491,7 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
 #' @examples
 #'
 #'
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -532,7 +532,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

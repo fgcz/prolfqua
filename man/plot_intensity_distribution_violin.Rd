@@ -21,7 +21,7 @@ visualize intensity distributions
 }
 \examples{
 
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
@@ -31,7 +31,7 @@ analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
 
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

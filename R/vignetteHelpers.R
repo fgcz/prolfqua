@@ -17,7 +17,7 @@
 .scriptCopyHelperVec <-
   function(runscripts,
            workdir = getwd(),
-           packagename = "LFQService") {
+           packagename = "prolfqua") {
     res <- NULL
     for (scripts in runscripts) {
       src_script <- file.path(find.package(packagename) , scripts)
@@ -69,7 +69,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
            dest_path,
            dest_file_name,
            workdir = tempdir(),
-           packagename = "LFQService",
+           packagename = "prolfqua",
            format = "pdf") {
     res <- .scriptCopyHelperVec(markdown_path,
                                 workdir = workdir,
@@ -112,7 +112,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' @keywords internal
 #' @export
 #' @examples
-#' bb <- LFQService::skylinePRMSampleData_A
+#' bb <- prolfqua::skylinePRMSampleData_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
@@ -143,7 +143,7 @@ render_MQSummary_rmd <-
       dest_path = dest_path,
       dest_file_name = dest_file_name,
       workdir = workdir,
-      packagename = "LFQService",
+      packagename = "prolfqua",
       format = match.arg(format)
     )
     return(dist_file_path)
@@ -172,6 +172,6 @@ render_SummarizeFiltering_rmd <-
       dest_path = dest_path,
       dest_file_name = dest_file_name,
       workdir = workdir,
-      packagename = "LFQService"
+      packagename = "prolfqua"
     )
   }

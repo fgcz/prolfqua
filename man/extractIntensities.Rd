@@ -12,7 +12,7 @@ Extract intensity column in wide format
 \examples{
 library(dplyr)
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data

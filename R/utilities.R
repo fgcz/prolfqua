@@ -62,8 +62,8 @@ split2table <- function(names,split="\\||\\_")
 #' library(ggplot2)
 #' library(tidyverse)
 #' library(ggrepel)
-#' head(LFQService::multigroupFCDATA)
-#' multigroupVolcano(LFQService::multigroupFCDATA,
+#' head(prolfqua::multigroupFCDATA)
+#' multigroupVolcano(prolfqua::multigroupFCDATA,
 #' effect="logFC",
 #' p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
 multigroupVolcano <- function(.data,
@@ -247,8 +247,8 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- my_jackknife( dataX, distmethod, ... )
-    x <- plyr::ldply(tmp$jack.values, LFQService::matrix_to_tibble)
-    x <- purrr::map_df(tmp$jack.values, LFQService::matrix_to_tibble)
+    x <- plyr::ldply(tmp$jack.values, prolfqua::matrix_to_tibble)
+    x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
 
     dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
     ddd <- dd %>%

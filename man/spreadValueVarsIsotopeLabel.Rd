@@ -10,9 +10,9 @@ spreadValueVarsIsotopeLabel(resData, config)
 spreads isotope label heavy light into two columns
 }
 \examples{
-library(LFQService)
+library(prolfqua)
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -20,11 +20,11 @@ data <- bb$data
 x<-spreadValueVarsIsotopeLabel(data,configur)
 head(x)
 
-bb <- LFQService::skylineSRM_HL_A
+bb <- prolfqua::skylineSRM_HL_A
 configur <- bb$config_f()
 data <- bb$analysis(bb$data, configur)
 
-bb <- LFQService::skylineSRM_HL_A
+bb <- prolfqua::skylineSRM_HL_A
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 x <- spreadValueVarsIsotopeLabel(analysis, conf)

@@ -10,8 +10,8 @@ Benchmark R6 class
 }
 \examples{
 library(ggpubr)
-library(LFQService)
-ttd <- ionstar_bench_preprocess(LFQService::benchmarkDataExample)
+library(prolfqua)
+ttd <- ionstar_bench_preprocess(prolfqua::benchmarkDataExample)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm"

@@ -30,8 +30,8 @@ estimate sample sizes
 
 library(tidyverse)
 library(ggplot2)
-library(LFQService)
-bb1 <- LFQService::ionstar$normalized()
+library(prolfqua)
+bb1 <- prolfqua::ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 stats_res <- summarize_cv(data2, config)

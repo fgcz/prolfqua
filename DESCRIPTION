@@ -1,4 +1,4 @@
-Package: LFQService
+Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
 Version: 0.1.5
@@ -9,8 +9,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-URL: https://github.com/wolski/LFQService
-BugReports: https://github.com/wolski/LFQService/issues
+URL: https://github.com/wolski/prolfqua
+BugReports: https://github.com/wolski/prolfqua/issues
 Repository: CRAN
 Imports:
     bookdown,
@@ -51,7 +51,7 @@ Suggests:
     coda,
     corrplot,
     docopt,
-    fgcz.gsea.ora,
+    prora,
     flextable,
     KernSmooth,
     knitr,

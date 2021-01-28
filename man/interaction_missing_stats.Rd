@@ -28,9 +28,9 @@ compute missingness statistics per hierarchy and factor level
 }
 \examples{
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 stopifnot(nrow(bb$data) == 25780)
 #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
@@ -38,7 +38,7 @@ configur <- bb$config
 data <- bb$data
 
 configur$parameter$qVal_individual_threshold <- 0.01
-xx <- LFQService::removeLarge_Q_Values(data,
+xx <- prolfqua::removeLarge_Q_Values(data,
    configur)
 xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data \%>\% arrange(desc(nrNAs))

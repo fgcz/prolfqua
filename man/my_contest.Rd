@@ -17,8 +17,8 @@ my_contest(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 applies contrast computation using lmerTest::contest function
 }
 \examples{
-library(LFQService)
-mb <- LFQService::basicModel_p1807
+library(prolfqua)
+mb <- prolfqua::basicModel_p1807
 summary(mb)
 
 linfct <- linfct_from_model(mb)

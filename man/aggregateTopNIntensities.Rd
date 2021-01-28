@@ -24,9 +24,9 @@ run \link{rankPrecursorsByIntensity} first
 \examples{
 
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-dd <- LFQService::ionstar$filtered()
+dd <- prolfqua::ionstar$filtered()
 config <- dd$config
 res <- dd$data
 ranked <- rankPrecursorsByIntensity(res,config)

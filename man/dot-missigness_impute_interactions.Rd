@@ -34,14 +34,14 @@ function
 used in Acetylation project p2916
 }
 \examples{
-library(LFQService)
-bb <- LFQService::ionstar$filtered()
+library(prolfqua)
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 
-xx <- LFQService::removeLarge_Q_Values(data, configur)
+xx <- prolfqua::removeLarge_Q_Values(data, configur)
 xx <- complete_cases(xx, configur)
 
 tmp <- interaction_missing_stats(xx, configur)

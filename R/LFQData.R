@@ -5,9 +5,9 @@
 #' @family LFQData
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
+#' library(prolfqua)
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #'
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -60,7 +60,7 @@ LFQData <- R6::R6Class(
     #' @description samples subset of data
     #' @param size size of subset default 100
     get_sample = function(size = 100){
-      subset <- LFQService::sample_subset(size = size, self$data, self$config)
+      subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config))
     },
     #' @description
@@ -82,7 +82,7 @@ LFQData <- R6::R6Class(
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
     remove_small_intensities = function(threshold = 4){
-      self$data <- LFQService::remove_small_intensities( self$data, self$config, threshold = threshold )
+      self$data <- prolfqua::remove_small_intensities( self$data, self$config, threshold = threshold )
       invisible(self)
     },
     #' @description
@@ -91,7 +91,7 @@ LFQData <- R6::R6Class(
       message("removing proteins with less than",
               self$config$parameter$min_peptides_protein,
               " peptpides")
-      self$data <- LFQService::filter_proteins_by_peptide_count(self$data, self$config)$data
+      self$data <- prolfqua::filter_proteins_by_peptide_count(self$data, self$config)$data
       invisible(self)
     },
     #' @description
@@ -99,7 +99,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #'
     complete_cases = function(){
-      self$data <- LFQService::complete_cases(self$data, self$config)
+      self$data <- prolfqua::complete_cases(self$data, self$config)
       invisible(self)
     },
     #' @description
@@ -107,7 +107,7 @@ LFQData <- R6::R6Class(
     #' @param as.matrix return as data.frame or matrix
     #' @return data and annotation
     to_wide = function(as.matrix = FALSE){
-      wide <- LFQService::toWideConfig(self$data, self$config, as.matrix = as.matrix)
+      wide <- prolfqua::toWideConfig(self$data, self$config, as.matrix = as.matrix)
       wide$config <- self$config
       return(wide)
     },
@@ -115,12 +115,12 @@ LFQData <- R6::R6Class(
     #' Annotation table.
     #' @return data.frame
     factors = function(){
-      LFQService::table_factors(self$data, self$config)
+      prolfqua::table_factors(self$data, self$config)
     },
     #' @description
     #' e.g. number of peptides per protein etc
     summarize_hierarchy = function(){
-      LFQService::summarize_hierarchy(self$data, self$config)
+      prolfqua::summarize_hierarchy(self$data, self$config)
     },
     #' @description
     #' get Plotter
@@ -169,7 +169,7 @@ LFQData <- R6::R6Class(
     #' @return LFQData
     #'
     filter_difference = function(other){
-      diffdata <- LFQService::filter_difference(self$data,other$data,self$config )
+      diffdata <- prolfqua::filter_difference(self$data,other$data,self$config )
       res <- LFQData$new(diffdata , self$config$clone(deep = TRUE))
       return(res)
     }
@@ -184,13 +184,13 @@ LFQData <- R6::R6Class(
 #'
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
+#' library(prolfqua)
 #'
 #'
 #' rm(list = ls())
-#' library(LFQService)
-#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-#' istar <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
+#' istar <- prolfqua::ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -226,7 +226,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname name of transformed column
     #' @return LFQData
     log2_robscale = function(colname = "tranformedIntensity"){
-      r <- LFQService::normalize_log2_robscale(self$lfq$data, self$lfq$config)
+      r <- prolfqua::normalize_log2_robscale(self$lfq$data, self$lfq$config)
       self$lfq$data <- r$data
       self$lfq$config <- r$config
       if (!is.null(colname)) {
@@ -249,11 +249,11 @@ LFQDataTransformer <- R6::R6Class(
         return(NULL)
       }
       if (self$lfq$is_transformed() == FALSE) {
-        self$lfq$data  <-  LFQService::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
-        lfqsubset$data <- LFQService::transform_work_intensity(lfqsubset$data, lfqsubset$config, log2)
+        self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
+        lfqsubset$data <- prolfqua::transform_work_intensity(lfqsubset$data, lfqsubset$config, log2)
         self$lfq$is_transformed(TRUE)
       }
-      self$lfq$data  <-  LFQService::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      self$lfq$data  <-  prolfqua::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data %>%
           dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
@@ -269,7 +269,7 @@ LFQDataTransformer <- R6::R6Class(
     #'
     intensity_array = function(.func = log2) {
       .call <- as.list( match.call() )
-      r <- LFQService::transform_work_intensity(
+      r <- prolfqua::transform_work_intensity(
         self$lfq$data,
         self$lfq$config,
         .func = .func,
@@ -284,7 +284,7 @@ LFQDataTransformer <- R6::R6Class(
     #'
     intensity_matrix = function(.func = robust_scale){
       .call <- as.list( match.call() )
-      r <- LFQService::applyToIntensityMatrix(
+      r <- prolfqua::applyToIntensityMatrix(
         self$lfq$data,
         self$lfq$config,
         .func = .func,
@@ -306,7 +306,7 @@ LFQDataTransformer <- R6::R6Class(
 #' @examples
 #'
 #' # study variance of not normalized data
-#' #source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#' #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 #' runallfuncs <- function(x){
 #'
 #'   stopifnot("data.frame" %in% class(x$cv()))
@@ -324,7 +324,7 @@ LFQDataTransformer <- R6::R6Class(
 #'   }
 #' }
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
@@ -332,7 +332,7 @@ LFQDataTransformer <- R6::R6Class(
 #' x<-lfqstats
 #'
 #' #study variance of normalized data
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #' istar$config$table$is_intensity_transformed
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -341,7 +341,7 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
@@ -368,13 +368,13 @@ LFQDataStats <- R6::R6Class(
     #' compute CV sd and mean of data
     #' @return data.frame
     cv = function(){
-      LFQService::summarize_cv(self$lfq$data, self$lfq$config)
+      prolfqua::summarize_cv(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' Determine CV or sd for the quantiles
     #' @param probs for which quantile to determine CV or sd
     cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
-      res <- LFQService::summarize_cv_quantiles(
+      res <- prolfqua::summarize_cv_quantiles(
         self$cv(),
         self$lfq$config,
         stats = self$stat,
@@ -386,7 +386,7 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density or ecdf
     #' @return ggplot
     density = function(ggstat = c("density", "ecdf")){
-      LFQService::plot_stat_density(
+      prolfqua::plot_stat_density(
         self$cv(),
         self$lfq$config,
         stat = self$stat,
@@ -397,14 +397,14 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")){
-      LFQService::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd
     #' @param ggstat either density of ecdf
     #' @return ggplot
     violin = function(){
-      LFQService::plot_stat_violin(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin(self$cv(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
@@ -412,7 +412,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     violin_median = function(){
-      LFQService::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot sd vs mean
@@ -420,7 +420,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     stdv_vs_mean = function(size= 200){
-      LFQService::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
+      prolfqua::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
     },
     #' @description
     #' compute sample size for entire dataset
@@ -460,7 +460,7 @@ LFQDataStats <- R6::R6Class(
         return()
       }
 
-      res <- LFQService::lfq_power_t_test_proteins(self$cv(),
+      res <- prolfqua::lfq_power_t_test_proteins(self$cv(),
                                 delta = delta,
                                 power = power,
                                 sig.level = sig.level,
@@ -478,7 +478,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #'
-#' istar <- LFQService::ionstar
+#' istar <- prolfqua::ionstar
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
@@ -505,30 +505,30 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function(){
-      LFQService::hierarchy_counts(self$lfq$data, self$lfq$config)
+      prolfqua::hierarchy_counts(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' number of elements at each level in every sample
     #' @param value wide - wide format, long - long format, plot - ggplot
     hierarchy_counts_sample = function(value = c("wide", "long", "plot")){
       value <- match.arg(value)
-      fun <- LFQService::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
+      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
       return(fun(value))
     },
     #' @description
     #' missing per condition and protein
     interaction_missing_stats = function(){
-      LFQService::interaction_missing_stats(self$lfq$data, self$lfq$config)
+      prolfqua::interaction_missing_stats(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' missing stats per condition
     missingness_per_condition = function(){
-      LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$data
+      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$data
     },
     #' @description
     #' missing stats per condition as cumulative sum
     missingness_per_condition_cumsum = function(){
-      LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
+      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
     }
   )
 )
@@ -541,8 +541,8 @@ LFQDataSummariser <- R6::R6Class(
 #' @import dplyr
 #' @examples
 #'
-#' library(LFQService)
-#' istar <- LFQService::dataIonstarProtein_subsetNorm
+#' library(prolfqua)
+#' istar <- prolfqua::dataIonstarProtein_subsetNorm
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
@@ -570,7 +570,7 @@ LFQDataSummariser <- R6::R6Class(
 #' lfqplotter$intensity_distribution_violin()
 #' lfqplotter$pairs_smooth()
 #' lfqplotter$sample_correlation()
-#' LFQService::plot_sample_correlation(istar$data, istar$config)
+#' prolfqua::plot_sample_correlation(istar$data, istar$config)
 #'
 LFQDataPlotter <- R6::R6Class(
   "LFQDataPlotter",
@@ -596,7 +596,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param na_fraction max fraction of NA's per row
     #' @return pheatmap
     heatmap = function(na_fraction = 0.3){
-      fig <- LFQService::plot_heatmap(self$lfq$data,
+      fig <- prolfqua::plot_heatmap(self$lfq$data,
                                       self$lfq$config,
                                       na_fraction = na_fraction)
       return(fig)
@@ -605,14 +605,14 @@ LFQDataPlotter <- R6::R6Class(
     #' heatmap of sample correlations
     #' @return pheatmap
     heatmap_cor = function(){
-      fig <- LFQService::plot_heatmap_cor(self$lfq$data, self$lfq$config)
+      fig <- prolfqua::plot_heatmap_cor(self$lfq$data, self$lfq$config)
       return(fig)
     },
     #' @description
     #' pca plot
     #' @return ggplot
     pca = function(){
-      fig <- LFQService::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
+      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
       return(fig)
     },
     #' @description
@@ -626,44 +626,44 @@ LFQDataPlotter <- R6::R6Class(
     #' boxplots for all proteins
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(){
-      bb <- LFQService::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
+      bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
       return(bb)
     },
     #' @description
     #' histogram of intensities given number of missing in conditions
     #' @return ggplot
     missigness_histogram = function(){
-      LFQService::missigness_histogram(self$lfq$data, self$lfq$config)
+      prolfqua::missigness_histogram(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' barplot with number of features with 1,2, etc missing in condition
     #' @return ggplot
     missingness_per_condition = function(){
-      LFQService::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
+      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
     },
     #' @description
     #' barplot with cumulative sum of features with 1,2, etc missing in condition
     #' @return ggplot
     missingness_per_condition_cumsum = function(){
-      LFQService::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
+      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
     },
     #' @description
     #' heatmap of features with missing values
     #' @return ggplot
     NA_heatmap = function(){
-      LFQService::plot_NA_heatmap(self$lfq$data, self$lfq$config)
+      prolfqua::plot_NA_heatmap(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' density distribution of intensities
     #' @return ggplot
     intensity_distribution_density = function(){
-      LFQService::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
+      prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' Violinplot showing distribution of intensities in all samples
     #' @return ggplot
     intensity_distribution_violin = function(){
-      LFQService::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
+      prolfqua::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' pairsplot of intensities
@@ -679,9 +679,9 @@ LFQDataPlotter <- R6::R6Class(
         limit <- samples %>% sample(max)
         ldata <- dataTransformed %>%
           dplyr::filter(!!sym(config$table$sampleName) %in% limit)
-        LFQService::pairs_smooth( LFQService::toWideConfig(ldata, config, as.matrix = TRUE)$data )
+        prolfqua::pairs_smooth( prolfqua::toWideConfig(ldata, config, as.matrix = TRUE)$data )
       }else{
-        LFQService::pairs_smooth( LFQService::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+        prolfqua::pairs_smooth( prolfqua::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
       }
       NULL
     },
@@ -689,7 +689,7 @@ LFQDataPlotter <- R6::R6Class(
     #' plot of sample correlations
     #' @return NULL
     sample_correlation = function(){
-      LFQService::plot_sample_correlation(self$lfq$data, self$lfq$config)
+      prolfqua::plot_sample_correlation(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' write boxplots to file
@@ -866,9 +866,9 @@ LFQDataWriter <- R6::R6Class(
 #' Aggregate LFQ data
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
+#' library(prolfqua)
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -987,7 +987,7 @@ LFQDataAggregator <- R6::R6Class(
       if (is.null(self$lfq_agg)) {
         stop("please aggregate the data first")
       }
-      df <- LFQService::plot_aggregation(
+      df <- prolfqua::plot_aggregation(
         self$lfq$data,
         self$lfq$config,
         self$lfq_agg$data,

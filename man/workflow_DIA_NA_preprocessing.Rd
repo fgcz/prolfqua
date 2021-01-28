@@ -25,10 +25,10 @@ filter QVAlues and NA's and factor information
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 rm(list=ls())
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

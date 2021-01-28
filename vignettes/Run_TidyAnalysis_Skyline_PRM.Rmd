@@ -32,7 +32,7 @@ library(conflicted)
 library(tidyverse)
 library(readxl)
 library(yaml)
-library(LFQService)
+library(prolfqua)
 conflict_prefer("filter", "dplyr")
 
 ```
@@ -40,7 +40,7 @@ conflict_prefer("filter", "dplyr")
 
 ```{r prepData}
 outdir <- tempdir()
-skylinePRMSampleData <- LFQService::skylinePRMSampleData_A$data
+skylinePRMSampleData <- prolfqua::skylinePRMSampleData_A$data
 
 skylineconfig <-
   create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
@@ -105,7 +105,7 @@ if (FALSE) {
 
 ```{r transformData}
 resDataLog <-
-  LFQService::transform_work_intensity(resData , skylineconfig, log2)
+  prolfqua::transform_work_intensity(resData , skylineconfig, log2)
 
 figs3 <-
   intensity_summary_by_hkeys(resDataLog, skylineconfig, medpolishPly)

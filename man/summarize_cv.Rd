@@ -18,9 +18,9 @@ applys func - a funciton workin on matrix for each protein and returning a vecto
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 config <- bb$config
 data <- bb$data
 

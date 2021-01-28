@@ -9,7 +9,7 @@
 #' @keywords internal
 #' @family filtering
 #' @examples
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -31,7 +31,7 @@ removeLarge_Q_Values <- function(pdata, config){
 #' @family filtering
 #' @examples
 #'
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -56,7 +56,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
@@ -117,7 +117,7 @@ transform_work_intensity <- function(pdata,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- summariseQValues(analysis, config)
@@ -158,7 +158,7 @@ summariseQValues <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -209,7 +209,7 @@ toWide <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- toWideConfig(analysis, config)
@@ -252,7 +252,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #'
 #' @keywords internal
 #' @examples
-#' dd <- LFQService::spectronautDIAData250_A
+#' dd <- prolfqua::spectronautDIAData250_A
 #' conf <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,conf)
 #' res <- toWideConfig(analysis, conf, as.matrix = TRUE)
@@ -318,7 +318,7 @@ robust_scale <- function(data){
 #' @examples
 #'
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -345,9 +345,9 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -360,7 +360,7 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 scale_with_subset <- function(data, subset, config){
   colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
   subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
-  scales <- LFQService:::robustscale(subset)
+  scales <- prolfqua:::robustscale(subset)
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat = sweep(mat, 2, scales$medians, "-")
   mat = sweep(mat, 2, scales$mads, "/")
@@ -381,7 +381,7 @@ scale_with_subset <- function(data, subset, config){
 }
 
 .decorelatedPly <- function(pdata, corThreshold = 0.7){
-  res <- LFQService::transitionCorrelationsJack(pdata)
+  res <- prolfqua::transitionCorrelationsJack(pdata)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
   tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
@@ -394,8 +394,8 @@ scale_with_subset <- function(data, subset, config){
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #'
-#' library(LFQService)
-#' bb <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -438,10 +438,10 @@ simpleImpute <- function(data){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
 #'
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' mean(is.na(data$peptide.intensity))
@@ -509,7 +509,7 @@ impute_correlationBased <- function(x , config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data %>% select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -522,7 +522,7 @@ impute_correlationBased <- function(x , config){
 #'   dplyr::pull() %>% table()
 #'
 #'
-#' bb <- LFQService::skylineSRM_HL_A
+#' bb <- prolfqua::skylineSRM_HL_A
 #' config <- bb$config_f()
 #' resDataStart <- bb$analysis(bb$data, bb$config_f())
 #'
@@ -531,7 +531,7 @@ impute_correlationBased <- function(x , config){
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-#' bb <- LFQService::dataIonstarProtein_subsetNorm
+#' bb <- prolfqua::dataIonstarProtein_subsetNorm
 #' nr_B_in_A(bb$data, bb$config)
 #' undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
@@ -552,15 +552,15 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @family summary
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
 #' nr_B_in_A_per_sample(data, configur, nested =FALSE)
-#' bb <- LFQService::dataIonstarProtein_subsetNorm
+#' bb <- prolfqua::dataIonstarProtein_subsetNorm
 #' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   cf <- config
@@ -570,7 +570,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   if (is.na(levelB)) {
     warning("here is no B in A")
   }
-  data <- LFQService::complete_cases(data, cf)
+  data <- prolfqua::complete_cases(data, cf)
   data <- data %>%
     dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$getWorkIntensity())) ~ 1,
                                             TRUE ~ 0))
@@ -625,8 +625,8 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
-#' bb <- LFQService::spectronautDIAData250_A
+#' library(prolfqua)
+#' bb <- prolfqua::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -638,7 +638,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  pdata <- LFQService:::.rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
+  pdata <- prolfqua:::.rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
@@ -661,7 +661,7 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::spectronautDIAData250_A
+#' bb <- prolfqua::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -698,9 +698,9 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' @examples
 #'
 #' rm(list=ls())
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::spectronautDIAData250_A
+#' bb <- prolfqua::spectronautDIAData250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20

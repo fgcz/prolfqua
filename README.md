@@ -1,9 +1,3 @@
-The R package name is **LFQService**, the repository is called **prolfqua**. We will be renaming the `package` in the near future.
-To build the package you need to clone the repository using `git clone https:/github.com/wolski/LFQService`, or use `install_github("wolski/LFQService")`.
-If you want to build the package on you machine first it is best to run `install_github("wolski/LFQService")`
-
-
-
 # prolfqua - an R package for Proteomics Label Free Quantification Services
 
 ![prolfqua](man/figures/imgfile.png)
@@ -11,17 +5,14 @@ If you want to build the package on you machine first it is best to run `install
 The R package contains functions for analyzing mass spectrometry based LFQ experiments at the [FGCZ](http://www.fgcz.ch/).
 
 
-# What package name?
+To build the package you need to clone the repository using `git clone https:/github.com/wolski/prolfqua`.
+
+To install it please use `remotes::install_github("wolski/prolfqua")`. 
+
+Let us please know about any installation problems or errors when using the package
+https://github.com/wolski/prolfqua/issues
 
 
-
-What name should we use :
-
-- LFQService - we do proteomics services.
-- prolfqua - **pro**teomics LFQ package (read prolevka)
-- nalfqua - **n**ot **a**nother LFQ package (read nalewka)
-
-https://twitter.com/WitoldE/status/1338799648149041156
 
 ## Motivation
 
@@ -45,7 +36,7 @@ To use `prolfqua` knowledge of the R regression model infrastructure is of advan
 
 ## 1. System Requirements  
 
-R 3.6 or higher.
+R 4.0 or higher.
 
 ## 1.1. Install R
 
@@ -59,7 +50,7 @@ To install the package please execute
 install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
 # remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
-remotes::install_github('wolski/LFQService')
+remotes::install_github('wolski/prolfqua')
 
 ```
 
@@ -67,7 +58,7 @@ remotes::install_github('wolski/LFQService')
 ## 2. Running R-scripts
 
 Generate QC report from bat file.
-First add `<LFQService_path>/win` to your path variable. Then you can generate a QC report from a maxquant QC by running.
+First add `<prolfqua_path>/win` to your path variable. Then you can generate a QC report from a maxquant QC by running.
 
 
 ```
@@ -76,8 +67,8 @@ lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
 
 
 ```
-Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
-Rscript ~/__checkouts/R/LFQService/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
+Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
+Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
 ```
 
 
@@ -121,3 +112,14 @@ What is a paired measurement.
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
 -
 
+
+
+# What package name?
+
+What name should we use :
+
+- prolfqua - we do proteomics services.
+- prolfqua - **pro**teomics LFQ package (read prolevka)
+- nalfqua - **n**ot **a**nother LFQ package (read nalewka)
+
+https://twitter.com/WitoldE/status/1338799648149041156

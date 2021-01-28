@@ -21,7 +21,7 @@ gatherItBack(pdata, value, config, data = NULL, sep = "~lfq~")
 make it long
 }
 \examples{
-dd <- LFQService::spectronautDIAData250_A
+dd <- prolfqua::spectronautDIAData250_A
 conf <- dd$config_f()
 analysis <- dd$analysis(dd$data,conf)
 res <- toWideConfig(analysis, conf, as.matrix = TRUE)

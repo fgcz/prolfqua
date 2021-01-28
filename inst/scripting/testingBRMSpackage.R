@@ -8,7 +8,7 @@ model <- "~ condition * batch + (1|peptide_Id)"
 
 data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
-datacomp <- LFQService::complete_cases(data, config)
+datacomp <- prolfqua::complete_cases(data, config)
 data <- datacomp %>% rename(condition = condition_, batch = batch_)
 
 

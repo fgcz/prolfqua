@@ -10,13 +10,13 @@ Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 
 
 rm(list = ls())
-library(LFQService)
-#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
-istar <- LFQService::ionstar$filtered()
+library(prolfqua)
+#source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
+istar <- prolfqua::ionstar$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 

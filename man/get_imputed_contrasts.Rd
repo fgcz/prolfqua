@@ -20,13 +20,13 @@ peptide fold change is computed based on the average of intensities in the condi
 \examples{
 
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 configur <- bb$config
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
-data <- LFQService::removeLarge_Q_Values(data, configur)
+data <- prolfqua::removeLarge_Q_Values(data, configur)
 data <- complete_cases(data, configur)
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")

@@ -40,7 +40,7 @@ summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleNam
 summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
@@ -55,7 +55,7 @@ bb <- summarizeRobust(x,
   feature = feature,
    samples = conf$table$sampleName)
 
-LFQService:::.reestablish_condition(x,bb, conf)
+prolfqua:::.reestablish_condition(x,bb, conf)
 
 }
 \seealso{

@@ -4,7 +4,7 @@
 #' @param MQProteinGroups data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @family MaxQuant
 #' @examples
-#' protein_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "LFQService")
+#' protein_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 #' protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
@@ -53,7 +53,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups){
 #' @family MaxQuant
 #' @examples
 #' library(tidyverse)
-#' evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "LFQService")
+#' evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 #' evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
 tidyMQ_Evidence <- function(Evidence){
@@ -103,7 +103,7 @@ tidyMQ_Evidence <- function(Evidence){
 #' @keywords internal
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "LFQService")
+#' txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
 #' allData <- tidyMQ_merged(txt_directory)
 #'
 tidyMQ_merged <- function(txt_directory){
@@ -136,7 +136,7 @@ tidyMQ_merged <- function(txt_directory){
 #' @keywords internal
 #' @examples
 #'
-#' #txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "LFQService")
+#' #txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
 #' #allData <- tidyMQ_PeptideProtein(txt_directory)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
@@ -275,10 +275,10 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @examples
 #' library(tidyverse)
 #'
-#' peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "LFQService")
+#' peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
-#' peptides_txt <- system.file("samples/maxquant_txt/tiny.zip",package = "LFQService")
+#' peptides_txt <- system.file("samples/maxquant_txt/tiny.zip",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt,"peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
 #' tmp <- strsplit(tmp, ";")
@@ -501,12 +501,12 @@ tidyMQ_from_Sites <- function(pDat){
 #' @export
 tidyMQ_Peptides_Config <- function(MQtxtfolder,
                                    use = c("peptides", "modificationSpecificPeptides" ),
-                                   id_extractor = function(df) {fgcz.gsea.ora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
+                                   id_extractor = function(df) {prora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
                                    remove_rev = TRUE)
   {
 
   # create default config
-  config <- LFQService::create_config_MQ_peptide()
+  config <- prolfqua::create_config_MQ_peptide()
   peptides <- match.arg(use)
   mqData <- NULL
   if (peptides == "modificationSpecificPeptides") {

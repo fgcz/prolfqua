@@ -7,8 +7,8 @@
 tidyMQ_Peptides_Config(
   MQtxtfolder,
   use = c("peptides", "modificationSpecificPeptides"),
-  id_extractor = function(df) {     fgcz.gsea.ora::get_UniprotID_from_fasta_header(df,
-    idcolumn = "top_protein") },
+  id_extractor = function(df) {     prora::get_UniprotID_from_fasta_header(df, idcolumn
+    = "top_protein") },
   remove_rev = TRUE
 )
 }

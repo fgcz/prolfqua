@@ -17,11 +17,11 @@ plot correlation heatmap with annotations
 }
 \examples{
 library(tidyverse)
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 
-pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
+pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
 stopifnot("pheatmap" \%in\% class(pheat_map))
 pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
 stopifnot("pheatmap" \%in\% class(pheat_map))

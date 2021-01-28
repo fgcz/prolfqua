@@ -10,13 +10,13 @@ my_glht(model, linfct, sep = TRUE)
 apply multcomp::glht method to linfct
 }
 \examples{
-library(LFQService)
-mb <- LFQService::basicModel_p1807
+library(prolfqua)
+mb <- prolfqua::basicModel_p1807
 linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
 
-m <- LFQService::modellingResult_A$modelProtein$linear_model[[1]]
+m <- prolfqua::modellingResult_A$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 

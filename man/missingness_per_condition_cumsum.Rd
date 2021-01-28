@@ -16,7 +16,7 @@ cumulative sums of missing
 \examples{
 
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data

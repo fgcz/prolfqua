@@ -31,7 +31,7 @@ fig.height = 10
 ```{r}
 rm(list = ls())
 library(conflicted)
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 library(dplyr)
 conflict_prefer("filter", "dplyr")
@@ -74,7 +74,7 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 
 ```{r}
-datafilt <- LFQService::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
+datafilt <- prolfqua::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
 ```
 
 Create a sample of N proteins to speed up computations.
@@ -142,7 +142,7 @@ IonstarData <- R6::R6Class(
       return(list(data = self$data, config = self$config$clone(deep = TRUE)))
     },
     filtered = function(){
-      data <- LFQService:::filter_proteins_by_peptide_count( self$data ,  self$config )$data
+      data <- prolfqua:::filter_proteins_by_peptide_count( self$data ,  self$config )$data
       return(list(data = data, config = self$config$clone(deep = TRUE)))
     },
     normalized = function(){
@@ -224,11 +224,11 @@ Contrasts <- c(
 )
 
 
-tt <- quantable::split2table(names(Contrasts),split = "_")
+tt <- Reduce(rbind, strsplit(names(Contrasts),split = "_"))
 tt <- data.frame(tt)[,2:3]
 colnames(tt) <- c("ratio" , "expected fold-change")
 tt <- tibble::add_column(tt, contrast =  Contrasts, .before = 1)
-LFQService::table_facade(tt, caption = "All possible Contrasts given 5 E. coli dilutions of the Ionstar Dataset")
+prolfqua::table_facade(tt, caption = "All possible Contrasts given 5 E. coli dilutions of the Ionstar Dataset")
 
 ```
 
@@ -239,11 +239,11 @@ relevantContrasts <- c("dilution_(9/7.5)_1.2",
                        "dilution_(6/4.5)_1.3(3)",
                        "dilution_(4.5/3)_1.5" )
 
-tt <- quantable::split2table(relevantContrasts,split = "_")
+tt <- Reduce(rbind, strsplit(relevantContrasts,split = "_"))
 tt <- data.frame(tt)[,2:3]
 colnames(tt) <- c("ratio" , "expected fold-change")
 tt <- tibble::add_column(tt, contrast =  Contrasts[names(Contrasts) %in% relevantContrasts], .before = 1)
-LFQService::table_facade(tt, caption = "Contrasts used for benchmark.")
+prolfqua::table_facade(tt, caption = "Contrasts used for benchmark.")
 relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
 
 ```
@@ -259,13 +259,13 @@ lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
 
 modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
 
-mod <- LFQService::build_model(protLFQ$data, modelFunction)
+mod <- prolfqua::build_model(protLFQ$data, modelFunction)
 mod$coef_pairs()$plot
 
 ```
 
 ```{r computeContrastsModerated}
-contr <- LFQService::ContrastsModerated$new(mod, relevantContrasts)
+contr <- prolfqua::ContrastsModerated$new(mod, relevantContrasts)
 contrdf <- contr$get_contrasts()
 cp <- contr$get_Plotter()
 cp$volcano()
@@ -275,11 +275,11 @@ cp$volcano()
 
 
 ```{r benchmark}
-ttd <- LFQService::ionstar_bench_preprocess(contrdf)
+ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm",
-                                   FDRvsFDP =list(list(sc = "FDR", desc = FALSE),
+                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE),
                                                   list(sc = "FDR.moderated", desc = FALSE))
 )
 medpol_benchmark$data()
@@ -292,11 +292,11 @@ medpol_benchmark$plot_FDRvsFDP()
 # Imputation
 
 ```{r benchmarkImputation, eval=TRUE}
-contrsimple <- LFQService::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
+contrsimple <- prolfqua::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
 
 cs <- contrsimple$get_contrasts()
-cs <- cs %>% rename(estimate = estimate_median)
-ttd <- LFQService::ionstar_bench_preprocess(cs)
+cs <- cs %>% rename(estimate = .data$estimate_median)
+ttd <- prolfqua::ionstar_bench_preprocess(cs)
 ttd$data
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "imputed data",

@@ -19,7 +19,7 @@ oldLibPaths
 Sys.setenv(R_LIBS_USER = tmpdir)
 
 .libPaths()
-library(LFQService)
+library(prolfqua)
 library(remotes)
 #unlink(tmpdir, recursive = TRUE)
 
@@ -30,7 +30,7 @@ library(remotes)
 install.packages('remotes')
 # If you want to build the vignettes comment out the next line.
 # remotes::install_github('wolski/prolfquaData')
-remotes::install_github('wolski/LFQService')
+remotes::install_github('wolski/prolfqua')
 
 ```
 

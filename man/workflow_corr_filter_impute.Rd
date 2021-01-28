@@ -19,8 +19,8 @@ Apply correlation filtering and impute missing values
 \examples{
 rm(list=ls())
 library(tidyverse)
-library(LFQService)
-bb <- LFQService::ionstar$filtered()
+library(prolfqua)
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

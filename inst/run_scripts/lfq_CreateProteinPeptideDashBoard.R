@@ -12,7 +12,7 @@ pep <- pep %>% dplyr::rename(fc = estimate)  %>% select(-rhs)
 #peptide <- pep %>%filter(lhs == "NR - c") %>% select(-rhs)
 pep <- pep %>% tidyr::unite("prot_pep", protein_Id, peptide_Id, remove=FALSE )
 
-file.copy("C:/Users/wolski/prog/LFQService/inst/plotly_reports/ProteinPeptideViewer.Rmd","ProteinPeptideViewer.Rmd")
+file.copy("C:/Users/wolski/prog/prolfqua/inst/plotly_reports/ProteinPeptideViewer.Rmd","ProteinPeptideViewer.Rmd")
 
 for(i in unique(pep$lhs)){
   print(i)

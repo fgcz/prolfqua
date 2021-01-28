@@ -8,9 +8,9 @@
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' config <- bb$config
 #' data <- bb$data
 #'
@@ -56,15 +56,15 @@ summarize_cv <- function(pdata, config, all = TRUE){
 #' @keywords internal
 #' @examples
 #' library(ggplot2)
-#' library(LFQService)
-#' bb1 <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' stats_res <- summarize_cv(data, config)
 #' summarize_cv_quantiles(stats_res, config)
 #' summarize_cv_quantiles(stats_res, config, stats = "CV")
 #'
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' config$table$getWorkIntensity()
@@ -140,8 +140,8 @@ summarize_cv_quantiles <- function(stats_res,
 #'
 #' library(tidyverse)
 #' library(ggplot2)
-#' library(LFQService)
-#' bb1 <- LFQService::ionstar$normalized()
+#' library(prolfqua)
+#' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' stats_res <- summarize_cv(data2, config)
@@ -185,7 +185,7 @@ lfq_power_t_test_quantiles_V2 <-
 #' @keywords internal
 #' @examples
 #'
-#' bb1 <- LFQService::ionstar$normalized()
+#' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #'
@@ -247,9 +247,9 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$normalized()
+#' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' stats_res <- summarize_cv(data2, config, all = FALSE)
@@ -290,9 +290,9 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$filtered()
+#' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_cv(data, config)
@@ -319,9 +319,9 @@ plot_stat_density <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$filtered()
+#' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' res <- summarize_cv(data2, config)
@@ -346,9 +346,9 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$filtered()
+#' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_cv(data, config)
@@ -370,9 +370,9 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$normalized()
+#' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_cv(data, config)
@@ -406,9 +406,9 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb1 <- LFQService::ionstar$filtered()
+#' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_cv(data, config)

@@ -1,3 +1,3 @@
 library(testthat)
-library(LFQService)
-test_check("LFQService")
+library(prolfqua)
+test_check("prolfqua")

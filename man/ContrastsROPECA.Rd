@@ -15,7 +15,7 @@ ROPECA optimizes the reproducibility of statistical testing
 }
 \examples{
 
-istar <- LFQService::ionstar$normalized()
+istar <- prolfqua::ionstar$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   make_custom_model_lm("transformedIntensity  ~ dilution.")
@@ -33,7 +33,7 @@ mod <- build_model(
 
 
  #ContrastsROPECA$debug("get_Plotter")
- contrast <- LFQService::ContrastsROPECA$new(mod, Contr)
+ contrast <- prolfqua::ContrastsROPECA$new(mod, Contr)
 
  contrast$get_linfct()
  contrast$subject_Id
@@ -91,7 +91,7 @@ Other modelling:
 }
 \concept{modelling}
 \section{Super classes}{
-\code{\link[LFQService:Contrast]{LFQService::Contrast}} -> \code{\link[LFQService:ContrastsModerated]{LFQService::ContrastsModerated}} -> \code{ContrastsROPECA}
+\code{\link[prolfqua:Contrast]{prolfqua::Contrast}} -> \code{\link[prolfqua:ContrastsModerated]{prolfqua::ContrastsModerated}} -> \code{ContrastsROPECA}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -105,10 +105,10 @@ Other modelling:
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../LFQService/html/Contrast.html#method-get_contrasts_sides}{\code{LFQService::Contrast$get_contrasts_sides()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="get_linfct">}\href{../../LFQService/html/Contrast.html#method-get_linfct}{\code{LFQService::Contrast$get_linfct()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="initialize">}\href{../../LFQService/html/Contrast.html#method-initialize}{\code{LFQService::Contrast$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="LFQService" data-topic="Contrast" data-id="write">}\href{../../LFQService/html/Contrast.html#method-write}{\code{LFQService::Contrast$write()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../prolfqua/html/Contrast.html#method-get_contrasts_sides}{\code{prolfqua::Contrast$get_contrasts_sides()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_linfct">}\href{../../prolfqua/html/Contrast.html#method-get_linfct}{\code{prolfqua::Contrast$get_linfct()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="initialize">}\href{../../prolfqua/html/Contrast.html#method-initialize}{\code{prolfqua::Contrast$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="write">}\href{../../prolfqua/html/Contrast.html#method-write}{\code{prolfqua::Contrast$write()}}\out{</span>}
 }
 \out{</details>}
 }

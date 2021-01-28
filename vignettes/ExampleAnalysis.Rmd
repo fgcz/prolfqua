@@ -21,8 +21,8 @@ The configuration object describes the columns in the long table so that the fun
 
 ```{r}
 library(tidyverse)
-library(LFQService)
-file <- LFQService:::.find.package.file("LFQService","samples/spectronaut_PEPTIDE.xls")
+library(prolfqua)
+file <- prolfqua:::.find.package.file("prolfqua","samples/spectronaut_PEPTIDE.xls")
 xx <- readr::read_tsv(file)
 xx <- xx %>% rename(EG.TotalQuantity = "EG.TotalQuantity (Settings)")
 xx$Isotope.Label <- "light"
@@ -57,7 +57,7 @@ anaparam <- AnalysisParameters$new()
 config <- AnalysisConfiguration$new(atable, anaparam)
 analysis_data <- setup_analysis(xx, config)
 
-LFQService::summarize_hierarchy(analysis_data, config)
+prolfqua::summarize_hierarchy(analysis_data, config)
 
 ```
 
@@ -68,7 +68,7 @@ peptide intensities and summarizing protein intensities
 
 ```{r filterdata}
 
-istar <- LFQService::ionstar$Pep()
+istar <- prolfqua::ionstar$Pep()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$remove_small_intensities()
 lfqdata$config$parameter$min_peptides_protein

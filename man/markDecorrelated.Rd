@@ -17,8 +17,8 @@ marks uncorrelated peptides
 
 \examples{
 
-library(LFQService)
-bb <- LFQService::ionstar$filtered()
+library(prolfqua)
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 data <- bb$data

@@ -46,10 +46,10 @@ add_annotation <- function(intensityData,
 #' @family deprecated
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #'
 #' rm(list=ls())
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -122,8 +122,8 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' @examples
 #' rm(list=ls())
 #' library(tidyverse)
-#' library(LFQService)
-#' bb <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -180,10 +180,10 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' @family deprecated
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
 #' rm(list=ls())
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

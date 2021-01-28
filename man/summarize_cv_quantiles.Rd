@@ -25,15 +25,15 @@ summarize stats output (compute quantiles)
 }
 \examples{
 library(ggplot2)
-library(LFQService)
-bb1 <- LFQService::ionstar$filtered()
+library(prolfqua)
+bb1 <- prolfqua::ionstar$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 stats_res <- summarize_cv(data, config)
 summarize_cv_quantiles(stats_res, config)
 summarize_cv_quantiles(stats_res, config, stats = "CV")
 
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 config$table$getWorkIntensity()

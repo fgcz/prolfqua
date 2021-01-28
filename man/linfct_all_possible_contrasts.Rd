@@ -10,12 +10,12 @@ linfct_all_possible_contrasts(lin_int)
 create all possible contrasts
 }
 \examples{
-m <- LFQService::basicModel_p1807
+m <- prolfqua::basicModel_p1807
 m
 linfct <- linfct_from_model(m)
 
-xl <- LFQService::linfct_all_possible_contrasts(linfct$linfct_factors)
-xx <- LFQService::linfct_all_possible_contrasts(linfct$linfct_interactions)
+xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 
 }
 \seealso{

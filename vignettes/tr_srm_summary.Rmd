@@ -6,8 +6,8 @@ output:
   pdf_document: default
   html_document: default
 params:
-  configuration:  !r quote(LFQService::skylinePRMSampleData_A$config_f())
-  data: !r quote(LFQService::skylinePRMSampleData_A$analysis(LFQService::skylinePRMSampleData_A$data, LFQService::skylinePRMSampleData_A$config_f()))
+  configuration:  !r quote(prolfqua::skylinePRMSampleData_A$config_f())
+  data: !r quote(prolfqua::skylinePRMSampleData_A$analysis(prolfqua::skylinePRMSampleData_A$data, prolfqua::skylinePRMSampleData_A$config_f()))
 vignette: >
   %\VignetteIndexEntry{Summarize Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +18,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 conflicted::conflict_prefer("filter", "dplyr")
 
 knitr::opts_chunk$set(

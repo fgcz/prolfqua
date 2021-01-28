@@ -36,7 +36,7 @@ render_MQSummary_rmd(
 render MQ Summary.
 }
 \examples{
-bb <- LFQService::skylinePRMSampleData_A
+bb <- prolfqua::skylinePRMSampleData_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")

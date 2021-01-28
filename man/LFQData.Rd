@@ -10,9 +10,9 @@ LFQData R6 class
 }
 \examples{
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)

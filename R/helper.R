@@ -4,7 +4,7 @@
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- LFQService::correlatedPeptideList
+#' correlatedPeptideList <- prolfqua::correlatedPeptideList
 #' transitionCorrelations(correlatedPeptideList[[1]])
 transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
@@ -22,7 +22,7 @@ transitionCorrelations <- function(dataX) {
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- LFQService::correlatedPeptideList
+#' correlatedPeptideList <- prolfqua::correlatedPeptideList
 #' transitionCorrelationsJack(correlatedPeptideList[[1]])
 transitionCorrelationsJack <- function(dataX,
                                        distmethod =
@@ -30,7 +30,7 @@ transitionCorrelationsJack <- function(dataX,
   if (nrow(dataX) > 1) {
     ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     xpep <- t(ordt)
-    LFQService::jackknifeMatrix(xpep, distmethod)
+    prolfqua::jackknifeMatrix(xpep, distmethod)
   }else{
     message("Could not compute correlation, nr rows : ", nrow(dataX))
   }

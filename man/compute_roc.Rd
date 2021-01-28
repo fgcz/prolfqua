@@ -19,7 +19,7 @@ deprecate function.
 FIXED <- FALSE
 if(FIXED){
 
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 x <- sample(data$protein_Id,2)

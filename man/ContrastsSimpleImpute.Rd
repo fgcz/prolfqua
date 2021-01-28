@@ -15,9 +15,9 @@ if interaction average can not be computed infer it using the 10\%
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 configur <- bb$config
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)

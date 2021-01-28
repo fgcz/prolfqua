@@ -16,7 +16,7 @@ medpolish Ply df config
 }
 \examples{
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
@@ -27,7 +27,7 @@ xnested <- data \%>\%
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
 bb <- medpolishPlydf_config(x,conf)
-LFQService:::.reestablish_condition(x,bb, conf)
+prolfqua:::.reestablish_condition(x,bb, conf)
 
 }
 \seealso{

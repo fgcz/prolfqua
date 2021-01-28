@@ -26,9 +26,9 @@ extracts the relevant information from the configuration to make the plot.
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data
@@ -36,19 +36,19 @@ analysis <- bb$data
 xnested <- analysis \%>\%
  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
 
-LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
 
-bb <- LFQService::skylineSRM_HL_A
+bb <- prolfqua::skylineSRM_HL_A
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 
 nest <- analysis \%>\% group_by(conf$table$hkeysDepth()) \%>\% nest()
-LFQService::plot_hierarchies_line(nest$data[[1]],
+prolfqua::plot_hierarchies_line(nest$data[[1]],
                                   "DUM",
                                   conf,
                                   separate = TRUE)
-LFQService::plot_hierarchies_line(nest$data[[1]],
+prolfqua::plot_hierarchies_line(nest$data[[1]],
 "DUM",
 conf,
 separate = TRUE,

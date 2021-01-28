@@ -16,7 +16,7 @@ same as summarize robust but with config
 }
 \examples{
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 conf <- bb$config
 data <- bb$data
 conf$table$hierarchyDepth = 1
@@ -27,7 +27,7 @@ feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
 bb <- summarizeRobust_config(x, conf)
 
-LFQService:::.reestablish_condition(x,bb, conf)
+prolfqua:::.reestablish_condition(x,bb, conf)
 }
 \seealso{
 Other aggregation: 

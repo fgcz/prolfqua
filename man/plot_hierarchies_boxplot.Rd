@@ -29,9 +29,9 @@ plot peptides by factors and it's levels.
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 conf <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
@@ -60,10 +60,10 @@ p <- plot_hierarchies_boxplot(
    beeswarm = FALSE )
 stopifnot("ggplot" \%in\% class(p))
 
-bb <- LFQService::skylineSRM_HL_A
+bb <- prolfqua::skylineSRM_HL_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, config)
-data <- LFQService::transform_work_intensity(analysis, config, log2)
+data <- prolfqua::transform_work_intensity(analysis, config, log2)
 res <- plot_hierarchies_boxplot_df(data, config)
 res$boxplot[[1]]
 

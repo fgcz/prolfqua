@@ -31,7 +31,7 @@ header-includes:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -74,7 +74,7 @@ Here we summarize the number of `r whatsThat$plural` measured in the QC experime
 lfqData$hierarchy_counts()
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
 
-LFQService::table_facade( 
+prolfqua::table_facade( 
   data.frame(NR = x),
   caption = paste0("Nr of",
                     whatsThat$plural ,
@@ -149,16 +149,16 @@ show_text <- !lfqData$config$table$is_intensity_transformed
 
 ## Variability of transformed intensities
 
-We $\log_2$ transformed and applied the `LFQService::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the `r whatsThat$singular` standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
+We $\log_2$ transformed and applied the `prolfqua::robust_scale()` transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure \@ref(fig:plotTransformedIntensityDistributions)). Because of this, we can't report CV anymore but report standard deviations (sd). Figure \@ref(fig:sdviolinplots) shows the distribution of the `r whatsThat$singular` standard deviations while Figure \@ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table \@ref(tab:printSDTable) summarises the sd. The heatmap in Figure \@ref(fig:correlationHeat) envisages the correlation between the QC samples.
 
 
 ```{r transformIntensities}
 if (!local_config$table$is_intensity_transformed) {
-  data_tf <- LFQService::transform_work_intensity(data_cc,
+  data_tf <- prolfqua::transform_work_intensity(data_cc,
                                                   local_config,
                                                   log2)
   dataTransformed <-
-    LFQService::applyToIntensityMatrix(data_tf, local_config, robust_scale)
+    prolfqua::applyToIntensityMatrix(data_tf, local_config, robust_scale)
   local_config$table$is_intensity_transformed = TRUE
 } else{
   dataTransformed <- data_cc
@@ -171,11 +171,11 @@ if (!local_config$table$is_intensity_transformed) {
 
 ```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
 if (params$plot_density) {
-  p1 <- LFQService::plot_intensity_distribution_density(dataTransformed, local_config) + 
+  p1 <- prolfqua::plot_intensity_distribution_density(dataTransformed, local_config) + 
     theme(legend.text = element_text(size = 5))
   p1
 } else {
-  p2 <- LFQService::plot_intensity_distribution_violin(dataTransformed, local_config) 
+  p2 <- prolfqua::plot_intensity_distribution_violin(dataTransformed, local_config) 
   p2
 }
 ```
@@ -196,9 +196,9 @@ samples <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% dis
 if (length(samples) > 10) {
   limit <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
   ldata <- dataTransformed %>% dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
-  LFQService::pairs_smooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
+  prolfqua::pairs_smooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
 }else{
-  LFQService::pairs_smooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
+  prolfqua::pairs_smooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
 }
 ```
 
@@ -212,18 +212,18 @@ stats_res <- summarize_cv(dataTransformed, local_config)
 
 if (params$plot_density) {
   p1 <-
-    LFQService::plot_stat_density(stats_res, local_config, stat = "sd") +
+    prolfqua::plot_stat_density(stats_res, local_config, stat = "sd") +
     labs(tag = "A") +
     theme(legend.position = "none")
   p2 <-
-    LFQService::plot_stat_density_median(stats_res, local_config, stat = "sd") +
+    prolfqua::plot_stat_density_median(stats_res, local_config, stat = "sd") +
     labs(tag = "B") +
     theme(legend.position = "bottom")
   gridExtra::grid.arrange(p1, p2)
 } else {
-  p1 <- LFQService::plot_stat_violin(stats_res, local_config, stat = "sd") + 
+  p1 <- prolfqua::plot_stat_violin(stats_res, local_config, stat = "sd") + 
     labs(tag = "A")
-  p2 <- LFQService::plot_stat_violin_median(stats_res, local_config, stat = "sd") + 
+  p2 <- prolfqua::plot_stat_violin_median(stats_res, local_config, stat = "sd") + 
     labs(tag = "B")
   gridExtra::grid.arrange(p1, p2)
 }
@@ -234,11 +234,11 @@ if (params$plot_density) {
 
 ```{r sdecdf,fig.cap="(ref:sdecdf)", fig.height=6, fig.width=8}
   p1 <-
-    LFQService::plot_stat_density(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
+    prolfqua::plot_stat_density(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
     labs(tag = "A") +
     theme(legend.position = "none")
   p2 <-
-    LFQService::plot_stat_density_median(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
+    prolfqua::plot_stat_density_median(stats_res, local_config, stat = "sd", ggstat = "ecdf") +
     labs(tag = "B") +
     theme(legend.position = "bottom")
   gridExtra::grid.arrange(p1, p2)
@@ -258,7 +258,7 @@ sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", 
 ```{r printSDTable}
 #knitr::kable(sd_quantile_res2,  digits = 3,
 #             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
-LFQService::table_facade(sd_quantile_res2,
+prolfqua::table_facade(sd_quantile_res2,
   caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
 
 ```
@@ -301,7 +301,7 @@ ggplot(sampleSize$long, aes(x = quantile, y = N)) +
 
 
 ```{r sampleSize}
-LFQService::table_facade(
+prolfqua::table_facade(
   dplyr::select( sampleSize$summary, -probs),
   caption = "Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.")
 
@@ -319,7 +319,7 @@ Fold change: Suppose you are comparing a treatment group to a placebo group, and
 # Appendix
 
 ```{r sampleNameRawFileMapping}
-LFQService::table_facade(
+prolfqua::table_facade(
   table_factors(data, local_config),
   caption = "Mapping of raw file names to sample names used throughout this report.")
 
@@ -328,7 +328,7 @@ LFQService::table_facade(
 ```{r hierarchyCountsSample}
 caption <- paste("Number of quantified ",
                  if (params$pep) { "peptides and proteins" } else {"peptides" }, " per sample.")
-LFQService::table_facade(
+prolfqua::table_facade(
   hierarchy_counts_sample(dataTransformed, configuration = local_config)("wide")
   , caption = caption)
 

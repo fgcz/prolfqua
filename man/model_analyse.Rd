@@ -17,13 +17,13 @@ used in project p2901
 \examples{
 
 library(tidyverse)
-library(LFQService)
-ionstar <- LFQService::ionstar$normalized()
+library(prolfqua)
+ionstar <- prolfqua::ionstar$normalized()
 ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
-LFQService::table_factors(ionstar$data, ionstar$config)
+prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-mr <- LFQService:::model_analyse( ionstar$data,
+mr <- prolfqua:::model_analyse( ionstar$data,
  formula_randomPeptide,
  subject_Id = ionstar$config$table$hkeysDepth())
 get_complete_model_fit(mr$modelProtein)

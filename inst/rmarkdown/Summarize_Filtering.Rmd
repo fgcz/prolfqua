@@ -36,7 +36,7 @@ print(ph)
 sumarStart <- dataStart$get_Summariser()
 sumarStart$hierarchy_counts()
 
-LFQService::table_facade(sumarStart$hierarchy_counts(),
+prolfqua::table_facade(sumarStart$hierarchy_counts(),
              caption = "Nr Proteins and peptides before missigness filtering.")
 
 ```
@@ -44,7 +44,7 @@ LFQService::table_facade(sumarStart$hierarchy_counts(),
 
 
 ```{r}
-LFQService::table_facade( sumarStart$hierarchy_counts_sample("wide"),
+prolfqua::table_facade( sumarStart$hierarchy_counts_sample("wide"),
              caption = "NR Proteins and peptides by sample.")
 
 ```
@@ -63,7 +63,7 @@ sumarStart$hierarchy_counts_sample("plot")
 ```{r}
 dataRemoved <- dataStart$filter_difference( dataEnd )
 remSum <- dataRemoved$get_Summariser()
-LFQService::table_facade(remSum$hierarchy_counts(),
+prolfqua::table_facade(remSum$hierarchy_counts(),
              caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
 ```
 
@@ -80,14 +80,14 @@ print(p)
 # Left Proteins
 
 ```{r}
-LFQService::table_facade(dataEnd$get_Summariser()$hierarchy_counts(),
+prolfqua::table_facade(dataEnd$get_Summariser()$hierarchy_counts(),
              caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein")
 
 ```
 
 
 ```{r}
-LFQService::table_facade(dataEnd$get_Summariser()$hierarchy_counts_sample("wide"),
+prolfqua::table_facade(dataEnd$get_Summariser()$hierarchy_counts_sample("wide"),
              caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample")
 
 ```

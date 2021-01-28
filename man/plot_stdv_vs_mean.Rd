@@ -18,9 +18,9 @@ plot stddev vs mean to asses stability of variance
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb1 <- LFQService::ionstar$filtered()
+bb1 <- prolfqua::ionstar$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 res <- summarize_cv(data, config)

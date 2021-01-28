@@ -28,9 +28,9 @@ build from data and modelFunction Model
 }
 \examples{
 rm(list = ls())
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-D <- LFQService::ionstar$normalized()
+D <- prolfqua::ionstar$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"
@@ -42,7 +42,7 @@ config <- D$config
 
 
 
-mod <- LFQService:::build_model(
+mod <- prolfqua:::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,

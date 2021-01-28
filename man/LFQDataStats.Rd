@@ -14,7 +14,7 @@ compute stdv, mean and CV per peptide or protein and condition.
 \examples{
 
 # study variance of not normalized data
-#source("c:/Users/wewol/prog/LFQService/R/LFQData.R")
+#source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 runallfuncs <- function(x){
 
   stopifnot("data.frame" \%in\% class(x$cv()))
@@ -32,7 +32,7 @@ runallfuncs <- function(x){
   }
 }
 
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
@@ -40,7 +40,7 @@ runallfuncs(lfqstats)
 x<-lfqstats
 
 #study variance of normalized data
-istar <- LFQService::ionstar$normalized()
+istar <- prolfqua::ionstar$normalized()
 istar$config$table$is_intensity_transformed
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -49,7 +49,7 @@ lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
 #Slightly different dataset
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data

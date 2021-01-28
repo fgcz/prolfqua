@@ -33,7 +33,7 @@
 #' FIXED <- FALSE
 #' if(FIXED){
 #'
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' x <- sample(data$protein_Id,2)
@@ -49,7 +49,7 @@
 compute_roc <- function(data, config){
   nested <- data %>% dplyr::group_by(!!!syms(config$table$hierarchyKeys())) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
-                                                LFQService:::.rocs,
+                                                prolfqua:::.rocs,
                                                 response = config$table$fkeysDepth(),
                                                 predictor = config$table$getWorkIntensity() ))
 

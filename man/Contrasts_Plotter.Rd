@@ -11,10 +11,10 @@ plot contrasts
 \examples{
 
 rm(list = ls())
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 
-istar <- LFQService::ionstar$normalized()
+istar <- prolfqua::ionstar$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "Model"
 modelFunction <-
@@ -37,7 +37,7 @@ mod <- build_model(
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
 #Contrasts$debug("get_contrasts")
-contrast <- LFQService::Contrasts$new(mod,
+contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
 

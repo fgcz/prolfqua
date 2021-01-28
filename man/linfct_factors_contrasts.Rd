@@ -10,8 +10,8 @@ linfct_factors_contrasts(m)
 create contrasts between factor levels
 }
 \examples{
-library(LFQService)
-m <- LFQService::basicModel_p1807
+library(prolfqua)
+m <- prolfqua::basicModel_p1807
 xl <- linfct_factors_contrasts(m)
 xl
 m <- lm(Petal.Width ~ Species, data = iris)

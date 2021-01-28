@@ -17,13 +17,13 @@ Summarizes the intensities within hierarchy
 }
 \examples{
 
-library( LFQService )
+library( prolfqua )
 library(tidyverse)
-dd <- LFQService::ionstar$filtered()
+dd <- prolfqua::ionstar$filtered()
 config <- dd$config
 data <- dd$data
 
-data <- LFQService::transform_work_intensity(data, config, log2)
+data <- prolfqua::transform_work_intensity(data, config, log2)
 colnames(data)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 

@@ -11,7 +11,7 @@ plot heatmap with annotations
 }
 \examples{
 library(tidyverse)
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

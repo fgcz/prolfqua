@@ -16,8 +16,8 @@ Count distinct elements for each level of hierarchy
 }
 \examples{
 library(tidyverse)
-library(LFQService)
-bb <- LFQService::ionstar$filtered()
+library(prolfqua)
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

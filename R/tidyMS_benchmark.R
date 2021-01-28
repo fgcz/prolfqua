@@ -110,7 +110,7 @@ do_confusion <-
                             list(sc = "statistic", desc = TRUE),
                             list(sc = "scaled.p" , desc = TRUE),
                             list(sc = "scaled.moderated.p", desc = TRUE))) {
-    # TODO add to LFQService
+    # TODO add to prolfqua
     est <- data %>% dplyr::select_at(c("TP",
                                        purrr::map_chr(arrangeby, "sc")))
     res <- list()
@@ -254,8 +254,8 @@ do_confusion_c <- function(
 #' @family benchmarking
 #' @examples
 #' library(ggpubr)
-#' library(LFQService)
-#' ttd <- ionstar_bench_preprocess(LFQService::benchmarkDataExample)
+#' library(prolfqua)
+#' ttd <- ionstar_bench_preprocess(prolfqua::benchmarkDataExample)
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"
@@ -385,7 +385,7 @@ Benchmark <-
         if (missing(arrange)) {
           arrange = self$FDRvsFDP
         }
-        confusion <- LFQService:::do_confusion_c(self$data(),
+        confusion <- prolfqua:::do_confusion_c(self$data(),
                                                  contrast = self$contrast,
                                                  arrangeby = arrange)
         confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)

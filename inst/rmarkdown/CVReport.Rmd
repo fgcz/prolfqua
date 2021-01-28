@@ -6,18 +6,18 @@ Without applying any intensity scaling and data preprocessing, the peptide inten
 ```{r plotDistributions, fig.cap="Density plot of peptide level Coefficient of Variations (CV).", fig.height=6, fig.width=8}
 stats_res <- summarize_cv(data_cc, local_config)
 if (params$plot_density) {
-  p1 <- LFQService::plot_stat_density(stats_res, local_config, stat="CV") + 
+  p1 <- prolfqua::plot_stat_density(stats_res, local_config, stat="CV") + 
     labs(tag = "A") + 
     xlim(0, 150) +
     theme(legend.position = "none")
-  p2 <- LFQService::plot_stat_density_median(stats_res, local_config, stat="CV") + 
+  p2 <- prolfqua::plot_stat_density_median(stats_res, local_config, stat="CV") + 
     labs(tag = "B") + 
     xlim(0, 150) +
     theme(legend.position = "bottom")
   gridExtra::grid.arrange(p1,p2)
 } else {
-  p1 <- LFQService::plot_stat_violin(stats_res, local_config, stat="CV") + labs(tag='A')
-  p2 <- LFQService::plot_stat_violin_median(stats_res, local_config, stat="CV") + labs(tag='B')
+  p1 <- prolfqua::plot_stat_violin(stats_res, local_config, stat="CV") + labs(tag='A')
+  p2 <- prolfqua::plot_stat_violin_median(stats_res, local_config, stat="CV") + labs(tag='B')
   gridExtra::grid.arrange(p1,p2)
 }
 ```
@@ -37,7 +37,7 @@ cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",p
 
 
 ```{r printTable, results="asis"}
-LFQService::table_facade(cv_quantiles_res,
+prolfqua::table_facade(cv_quantiles_res,
                          caption = "Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.")
 
 
@@ -45,11 +45,11 @@ LFQService::table_facade(cv_quantiles_res,
 
 ```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities."}
 if(params$plot_density){
-  p0 <- LFQService::plot_intensity_distribution_density(data_cc, local_config) + 
+  p0 <- prolfqua::plot_intensity_distribution_density(data_cc, local_config) + 
     theme(legend.text = element_text(size=5))
   p0
 } else{
-  p1 <- LFQService::plot_intensity_distribution_violin(data_cc, local_config)
+  p1 <- prolfqua::plot_intensity_distribution_violin(data_cc, local_config)
   p1
 }
 

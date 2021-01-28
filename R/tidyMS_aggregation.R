@@ -60,9 +60,9 @@ plot_hierarchies_line_default <- function(data,
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' analysis <- bb$data
@@ -70,19 +70,19 @@ plot_hierarchies_line_default <- function(data,
 #' xnested <- analysis %>%
 #'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
 #'
-#' LFQService::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+#' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
 #'
-#' bb <- LFQService::skylineSRM_HL_A
+#' bb <- prolfqua::skylineSRM_HL_A
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, conf)
 #'
 #' nest <- analysis %>% group_by(conf$table$hkeysDepth()) %>% nest()
-#' LFQService::plot_hierarchies_line(nest$data[[1]],
+#' prolfqua::plot_hierarchies_line(nest$data[[1]],
 #'                                   "DUM",
 #'                                   conf,
 #'                                   separate = TRUE)
-#' LFQService::plot_hierarchies_line(nest$data[[1]],
+#' prolfqua::plot_hierarchies_line(nest$data[[1]],
 #' "DUM",
 #' conf,
 #' separate = TRUE,
@@ -101,7 +101,7 @@ plot_hierarchies_line <- function(res,
   if (length(rev_hnames) > 2) {
     peptide <- rev_hnames[2]
   }
-  res <- LFQService:::plot_hierarchies_line_default(
+  res <- prolfqua:::plot_hierarchies_line_default(
     res,
     proteinName = proteinName,
     sample = config$table$sampleName,
@@ -127,7 +127,7 @@ plot_hierarchies_line <- function(res,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #'
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
@@ -141,7 +141,7 @@ plot_hierarchies_line <- function(res,
 #' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
 #' res <- plot_hierarchies_line_df(istar_data, config)
@@ -238,7 +238,7 @@ medpolishPly <- function(x, name = FALSE){
     dplyr::select_at( c( samples,
                          feature,
                          expression) ) %>%
-    tidyr::spread(key = samples , value = expression) %>% LFQService:::.ExtractMatrix()
+    tidyr::spread(key = samples , value = expression) %>% prolfqua:::.ExtractMatrix()
   return(pdata)
 }
 
@@ -248,7 +248,7 @@ medpolishPly <- function(x, name = FALSE){
 #' @examples
 #' library(dplyr)
 #'
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -297,7 +297,7 @@ extractIntensities <- function(pdata, config ){
 #' @family plotting
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -312,7 +312,7 @@ extractIntensities <- function(pdata, config ){
 #'  expression = conf$table$getWorkIntensity(),
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
-#' LFQService:::.reestablish_condition(x,bb, conf)
+#' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
 medpolishPlydf <- function(pdata, expression, feature, samples  ){
   bb <- .extractInt(pdata,
@@ -330,7 +330,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -341,7 +341,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolishPlydf_config(x,conf)
-#' LFQService:::.reestablish_condition(x,bb, conf)
+#' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
 medpolishPlydf_config <- function(pdata, config, name=FALSE){
   if (name) {
@@ -464,7 +464,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 #'
 #'
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -479,7 +479,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
 #'
-#' LFQService:::.reestablish_condition(x,bb, conf)
+#' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
 summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
   pdata <- unite(pdata, "feature", all_of(feature))
@@ -496,7 +496,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
@@ -507,7 +507,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' x <- xnested$data[[1]]
 #' bb <- summarizeRobust_config(x, conf)
 #'
-#' LFQService:::.reestablish_condition(x,bb, conf)
+#' prolfqua:::.reestablish_condition(x,bb, conf)
 summarizeRobust_config <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
@@ -530,13 +530,13 @@ summarizeRobust_config <- function(pdata, config, name= FALSE){
 #' @export
 #' @examples
 #'
-#' library( LFQService )
+#' library( prolfqua )
 #' library(tidyverse)
-#' dd <- LFQService::ionstar$filtered()
+#' dd <- prolfqua::ionstar$filtered()
 #' config <- dd$config
 #' data <- dd$data
 #'
-#' data <- LFQService::transform_work_intensity(data, config, log2)
+#' data <- prolfqua::transform_work_intensity(data, config, log2)
 #' colnames(data)
 #' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #'
@@ -589,13 +589,13 @@ aggregate_intensity <- function(data, config, .func)
 #' @keywords internal
 #' @export
 #' @examples
-#' library( LFQService )
+#' library( prolfqua )
 #' library(tidyverse)
-#' dd <- LFQService::ionstar$filtered()
+#' dd <- prolfqua::ionstar$filtered()
 #' config <- dd$config
 #' data <- dd$data
 #'
-#' data <- LFQService::transform_work_intensity(data, config, log2)
+#' data <- prolfqua::transform_work_intensity(data, config, log2)
 #' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 #' tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
@@ -665,9 +665,9 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' @examples
 #'
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' dd <- LFQService::ionstar$filtered()
+#' dd <- prolfqua::ionstar$filtered()
 #' config <- dd$config
 #' res <- dd$data
 #' ranked <- rankPrecursorsByIntensity(res,config)
@@ -735,9 +735,9 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #' @export
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$filtered()
+#' bb <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
@@ -801,7 +801,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
         dplyr::ungroup()
 
       if (value == "wide") {
-        wide <- LFQService::toWideConfig(unnested, newconfig)
+        wide <- prolfqua::toWideConfig(unnested, newconfig)
         wide$config <- newconfig
         return(wide)
       }
@@ -829,8 +829,8 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @family deprecated
 #' @examples
 #' library(tidyverse)
-#' library(LFQService)
-#' istar <- LFQService::ionstar$normalized()
+#' library(prolfqua)
+#' istar <- prolfqua::ionstar$normalized()
 #'
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' res <- medpolish_protein_quants(istar_data,
@@ -839,7 +839,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' head(res("unnest")$data)
 #'
 medpolish_protein_quants <- function(data, config){
-  protintensity <- LFQService::intensity_summary_by_hkeys(data ,
+  protintensity <- prolfqua::intensity_summary_by_hkeys(data ,
                                                           config,
                                                           medpolishPly)
   return(protintensity)

@@ -10,9 +10,9 @@ R6 class representing modelling result
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-istar <- LFQService::ionstar$normalized()
+istar <- prolfqua::ionstar$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
@@ -21,7 +21,7 @@ formula_randomPeptide <-
 pepIntensity <- istar_data
 config <- istar$config
 config$table$hkeysDepth()
-mod <- LFQService::build_model(
+mod <- prolfqua::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,
@@ -124,7 +124,7 @@ initialize
   modelFunction,
   modelName,
   subject_Id = "protein_Id",
-  p.adjust = LFQService::adjust_p_values
+  p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
 

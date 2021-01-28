@@ -21,7 +21,7 @@ Make reduced hierarchy configuration
 }
 \examples{
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 analysis <- bb$data

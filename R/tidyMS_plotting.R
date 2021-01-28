@@ -9,7 +9,7 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -38,7 +38,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @rdname plot_intensity_distribution_violin
 #' @examples
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -65,7 +65,7 @@ plot_intensity_distribution_density <- function(pdata, config){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -112,9 +112,9 @@ plot_sample_correlation <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' conf <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -143,10 +143,10 @@ plot_sample_correlation <- function(pdata, config){
 #'    beeswarm = FALSE )
 #' stopifnot("ggplot" %in% class(p))
 #'
-#' bb <- LFQService::skylineSRM_HL_A
+#' bb <- prolfqua::skylineSRM_HL_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, config)
-#' data <- LFQService::transform_work_intensity(analysis, config, log2)
+#' data <- prolfqua::transform_work_intensity(analysis, config, log2)
 #' res <- plot_hierarchies_boxplot_df(data, config)
 #' res$boxplot[[1]]
 #'
@@ -170,7 +170,7 @@ plot_hierarchies_boxplot <- function(pdata,
   isotopeLabel <- config$table$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
 
-  pdata <- LFQService::make_interaction_column( pdata , c(config$table$fkeysDepth()))
+  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$fkeysDepth()))
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
                               y = config$table$getWorkIntensity(),
@@ -204,7 +204,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  iostar <- LFQService::ionstar$filtered()
+#'  iostar <- prolfqua::ionstar$filtered()
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
@@ -218,7 +218,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- LFQService::dataIonstarProtein_subsetNorm
+#'  iostar <- prolfqua::dataIonstarProtein_subsetNorm
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
@@ -259,11 +259,11 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
-#' pheat_map <- LFQService::plot_heatmap_cor( analysis, config )
+#' pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
 #' stopifnot("pheatmap" %in% class(pheat_map))
 #' pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
 #' stopifnot("pheatmap" %in% class(pheat_map))
@@ -310,7 +310,7 @@ plot_heatmap_cor <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -338,7 +338,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   rownames(factors) <- annot$sampleName
 
   resdata <- t(scale(t(resdata)))
-  resdata <- LFQService::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+  resdata <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
 
   # not showing row dendrogram trick
@@ -363,8 +363,8 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' @examples
 #'
 #' library(tidyverse)
-#' library(LFQService)
-#' istar <- LFQService::ionstar$filtered()
+#' library(prolfqua)
+#' istar <- prolfqua::ionstar$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
@@ -437,9 +437,9 @@ plot_NA_heatmap <- function(data,
 #' @examples
 #'
 #' library(tidyverse)
-#' library(LFQService)
+#' library(prolfqua)
 #'
-#' istar <- LFQService::ionstar$filtered()
+#' istar <- prolfqua::ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data

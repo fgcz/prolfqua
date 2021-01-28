@@ -23,7 +23,7 @@ medpolish dataframe
 }
 \examples{
 library(tidyverse)
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
@@ -38,7 +38,7 @@ bb <- medpolishPlydf(x,
  expression = conf$table$getWorkIntensity(),
   feature = feature,
    samples = conf$table$sampleName)
-LFQService:::.reestablish_condition(x,bb, conf)
+prolfqua:::.reestablish_condition(x,bb, conf)
 
 }
 \seealso{

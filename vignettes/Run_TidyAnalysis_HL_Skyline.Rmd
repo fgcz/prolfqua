@@ -27,7 +27,7 @@ fig.height = 10
 rm(list = ls())
 library(conflicted)
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 ```
 
 
@@ -39,7 +39,7 @@ outdir <- tempdir()
 # Setting up the configuration
 
 ```{r loadDataCreateConfig}
-allDataM <- LFQService::skylineSRM_HL_A$data
+allDataM <- prolfqua::skylineSRM_HL_A$data
 
 
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label",
@@ -140,7 +140,7 @@ invisible(lapply(HLfigs$plot[1:3], print))
 ```{r summarizeProteinMedpolish}
 skylineconfigHL$table$hkeysDepth()
 
-HLfigs3 <- LFQService::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolishPly)
+HLfigs3 <- prolfqua::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolishPly)
 HLfigs3 <- HLfigs3("nested")
 HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hkeysDepth())
 

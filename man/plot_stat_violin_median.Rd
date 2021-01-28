@@ -17,9 +17,9 @@ plot_stat_violin_median(pdata, config, stat = c("CV", "mean", "sd"))
 plot Violin plot of sd CV or mean given intensity lower or above median
 }
 \examples{
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb1 <- LFQService::ionstar$normalized()
+bb1 <- prolfqua::ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 res <- summarize_cv(data, config)

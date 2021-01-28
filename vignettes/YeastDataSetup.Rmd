@@ -6,7 +6,9 @@ output:
   pdf_document: default
   html_document: default
 vignette: |
-  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined Course FGCZ}  %\VignetteEncoding{UTF-8} %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Data Preprocessing of Yeast data from the Combined Course FGCZ}  
+  %\VignetteEncoding{UTF-8}   
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, include=FALSE}
@@ -21,10 +23,10 @@ fig.height = 10
 
 
 
-Create MaxQuant Configuration (only works with `LFQService::tidyMQ_Peptides` function)
+Create MaxQuant Configuration (only works with `prolfqua::tidyMQ_Peptides` function)
 
 ```{r}
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
@@ -57,13 +59,13 @@ create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
-startdata <- LFQService::tidyMQ_Peptides(inputMQfile)
+startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
 startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
 
 undebug(tidyMQ_top_protein_name)
-startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
 
-#startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "leading.razor.protein")
+#startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "leading.razor.protein")
 #startdata <- startdata %>% mutate(top_protein = leading.razor.protein)
 
 
@@ -91,7 +93,7 @@ adata <- setup_analysis(data, config)
 xx <- toWideConfig(adata, config)
 
 adata <- filter_proteins_by_peptide_count(adata, config)$data
-adata <- LFQService::remove_small_intensities(adata,config)
+adata <- prolfqua::remove_small_intensities(adata,config)
 
 
 p2691 <- LFQData$new(adata, config)
@@ -120,9 +122,9 @@ datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
 
-startdata <- LFQService::tidyMQ_Peptides(inputMQfile)
+startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
 startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
-startdata <- LFQService::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
 
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment <- "p2370"
@@ -145,7 +147,7 @@ config$table$factorDepth <- 1
 adata <- setup_analysis(data, config)
 xx <- toWideConfig(adata, config)
 adata <- filter_proteins_by_peptide_count(adata, config)$data
-adata <- LFQService::remove_small_intensities(adata,config)
+adata <- prolfqua::remove_small_intensities(adata,config)
 
 p2370 <- LFQData$new(adata, config)
 p2370$get_Plotter()$intensity_distribution_density()
@@ -287,7 +289,7 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 formula_Batches <-
   make_custom_model_lm("medpolish ~ condition_ * batch_ ")
 
-mod <- LFQService::build_model(
+mod <- prolfqua::build_model(
   protdata$data,
   formula_Batches,
   subject_Id = pAgg$lfq_agg$config$table$hierarchyKeys() )

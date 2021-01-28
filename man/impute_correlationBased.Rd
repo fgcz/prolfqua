@@ -10,10 +10,10 @@ impute_correlationBased(x, config)
 imputation based on correlation assumption
 }
 \examples{
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))

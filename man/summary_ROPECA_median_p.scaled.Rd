@@ -27,7 +27,7 @@ takes p-value of the scaled p-value
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 nrPep <- 10000
 nrProtein <- 800
@@ -64,7 +64,7 @@ hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
 hist(xx2$mad.estimate)
 
-summary_ROPECA_median_p.scaled(LFQService::exampleDataForRopeca, contrast = "contrast")
+summary_ROPECA_median_p.scaled(prolfqua::exampleDataForRopeca, contrast = "contrast")
 xx2$mad.estimate
 
 

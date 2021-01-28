@@ -17,9 +17,9 @@ Compute fold changes given Contrasts
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
-bb <- LFQService::ionstar$normalized()
+bb <- prolfqua::ionstar$normalized()
 configur <- bb$config
 data <- bb$data
 

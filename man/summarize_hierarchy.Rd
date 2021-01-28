@@ -25,10 +25,10 @@ Summarize hierarchy counts
 }
 \examples{
 
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 
-bb <- LFQService::ionstar$filtered()
+bb <- prolfqua::ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data

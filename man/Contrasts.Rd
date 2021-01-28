@@ -11,10 +11,10 @@ Estimate contrasts using Wald Test
 \examples{
 
 rm(list = ls())
-library(LFQService)
+library(prolfqua)
 library(tidyverse)
 
-istar <- LFQService::ionstar$normalized()
+istar <- prolfqua::ionstar$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
@@ -29,8 +29,8 @@ mod <- build_model(
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
     "dil.e_vs_a" = "dilution.e - dilution.b" )
- #LFQService::Contrasts$debug("get_linfct")
-contrastX <- LFQService::Contrasts$new(mod,
+ #prolfqua::Contrasts$debug("get_linfct")
+contrastX <- prolfqua::Contrasts$new(mod,
  Contr)
 
 contrastX$get_contrasts_sides()
@@ -97,7 +97,7 @@ Other modelling:
 
 \item{\code{subject_Id}}{name of column containing e.g., protein Id's}
 
-\item{\code{p.adjust}}{function to adjust p-values (default LFQService::adjust_p_values)}
+\item{\code{p.adjust}}{function to adjust p-values (default prolfqua::adjust_p_values)}
 
 \item{\code{contrast_result}}{data frame containing results of contrast computation}
 }
@@ -123,7 +123,7 @@ Other modelling:
 initialize
 create Contrast
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(model, contrasts, p.adjust = LFQService::adjust_p_values)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(model, contrasts, p.adjust = prolfqua::adjust_p_values)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

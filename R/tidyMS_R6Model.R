@@ -4,9 +4,9 @@
 #' @family modelling
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -15,7 +15,7 @@
 #' pepIntensity <- istar_data
 #' config <- istar$config
 #' config$table$hkeysDepth()
-#' mod <- LFQService::build_model(
+#' mod <- prolfqua::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
@@ -55,7 +55,7 @@ Model <- R6::R6Class(
                           modelFunction,
                           modelName,
                           subject_Id = "protein_Id",
-                          p.adjust = LFQService::adjust_p_values){
+                          p.adjust = prolfqua::adjust_p_values){
       self$modelDF = modelDF
       self$modelFunction = modelFunction
       self$modelName = modelName
@@ -149,7 +149,7 @@ Model <- R6::R6Class(
       fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
       VolcanoPlot <- Model_Coeff %>%
         dplyr::filter(factor != "(Intercept)") %>%
-        LFQService::multigroupVolcano(
+        prolfqua::multigroupVolcano(
           effect = "Estimate",
           p.value = "Pr...t..",
           condition = "factor",
@@ -277,9 +277,9 @@ LR_test <- function(modelProteinF,
 #' @export
 #' @examples
 #' rm(list = ls())
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' D <- LFQService::ionstar$normalized()
+#' D <- prolfqua::ionstar$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #'
 #' modelName <- "f_condtion_r_peptide"
@@ -291,7 +291,7 @@ LR_test <- function(modelProteinF,
 #'
 #'
 #'
-#' mod <- LFQService:::build_model(
+#' mod <- prolfqua:::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
@@ -303,7 +303,7 @@ build_model <- function(data,
                         subject_Id = "protein_Id",
                         modelName = modelFunction$modelName){
 
-  modellingResult <- LFQService:::model_analyse(
+  modellingResult <- prolfqua:::model_analyse(
     data,
     modelFunction,
     modelName = modelName,

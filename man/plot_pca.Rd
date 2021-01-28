@@ -12,9 +12,9 @@ plot PCA
 \examples{
 
 library(tidyverse)
-library(LFQService)
+library(prolfqua)
 
-istar <- LFQService::ionstar$filtered()
+istar <- prolfqua::ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

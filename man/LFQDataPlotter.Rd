@@ -10,8 +10,8 @@ Create various visualization of the LFQdata
 }
 \examples{
 
-library(LFQService)
-istar <- LFQService::dataIonstarProtein_subsetNorm
+library(prolfqua)
+istar <- prolfqua::dataIonstarProtein_subsetNorm
 
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
@@ -39,7 +39,7 @@ lfqplotter$intensity_distribution_density()
 lfqplotter$intensity_distribution_violin()
 lfqplotter$pairs_smooth()
 lfqplotter$sample_correlation()
-LFQService::plot_sample_correlation(istar$data, istar$config)
+prolfqua::plot_sample_correlation(istar$data, istar$config)
 
 }
 \seealso{

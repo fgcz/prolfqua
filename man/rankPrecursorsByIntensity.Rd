@@ -19,8 +19,8 @@ ranks precursor - peptide by intensity.
 }
 \examples{
 library(tidyverse)
-library(LFQService)
-bb <- LFQService::spectronautDIAData250_A
+library(prolfqua)
+bb <- prolfqua::spectronautDIAData250_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 res <- removeLarge_Q_Values(analysis, config)

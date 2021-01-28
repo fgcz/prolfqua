@@ -16,8 +16,8 @@ Histogram summarizing missigness
 }
 \examples{
 library(tidyverse)
-library(LFQService)
-bb <- LFQService::ionstar
+library(prolfqua)
+bb <- prolfqua::ionstar
 configur <- bb$config
 data <- bb$data
 

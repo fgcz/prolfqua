@@ -11,9 +11,9 @@
 #' @export
 #' @examples
 #'
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
-#' bb <- LFQService::ionstar$normalized()
+#' bb <- prolfqua::ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
@@ -111,10 +111,10 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' @examples
 #'
 #' rm(list = ls())
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
@@ -129,8 +129,8 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
 #'     "dil.e_vs_a" = "dilution.e - dilution.b" )
-#'  #LFQService::Contrasts$debug("get_linfct")
-#' contrastX <- LFQService::Contrasts$new(mod,
+#'  #prolfqua::Contrasts$debug("get_linfct")
+#' contrastX <- prolfqua::Contrasts$new(mod,
 #'  Contr)
 #'
 #' contrastX$get_contrasts_sides()
@@ -153,7 +153,7 @@ Contrasts <- R6::R6Class(
     modelName = character(),
     #' @field subject_Id name of column containing e.g., protein Id's
     subject_Id = character(),
-    #' @field p.adjust function to adjust p-values (default LFQService::adjust_p_values)
+    #' @field p.adjust function to adjust p-values (default prolfqua::adjust_p_values)
     p.adjust = NULL,
     #' @field contrast_result data frame containing results of contrast computation
     contrast_result = NULL,
@@ -164,7 +164,7 @@ Contrasts <- R6::R6Class(
     #' @param p.adjust function to adjust the p-values
     initialize = function(model,
                           contrasts,
-                          p.adjust = LFQService::adjust_p_values
+                          p.adjust = prolfqua::adjust_p_values
     ){
       self$models = model$modelDF
       self$contrasts = contrasts
@@ -295,8 +295,8 @@ Contrasts <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' library(LFQService)
-#' istar <- LFQService::ionstar$normalized()
+#' library(prolfqua)
+#' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
@@ -309,7 +309,7 @@ Contrasts <- R6::R6Class(
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#'  contrast <- LFQService::ContrastsModerated$new(mod,
+#'  contrast <- prolfqua::ContrastsModerated$new(mod,
 #'  Contr)
 #'  contrast$get_contrasts(all = TRUE)
 #'  plotter <- contrast$get_Plotter()
@@ -380,7 +380,7 @@ ContrastsModerated <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   make_custom_model_lm("transformedIntensity  ~ dilution.")
@@ -398,7 +398,7 @@ ContrastsModerated <- R6::R6Class(
 #'
 #'
 #'  #ContrastsROPECA$debug("get_Plotter")
-#'  contrast <- LFQService::ContrastsROPECA$new(mod, Contr)
+#'  contrast <- prolfqua::ContrastsROPECA$new(mod, Contr)
 #'
 #'  contrast$get_linfct()
 #'  contrast$subject_Id
@@ -498,10 +498,10 @@ ContrastsROPECA <- R6::R6Class(
 #' @examples
 #'
 #' rm(list = ls())
-#' library(LFQService)
+#' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- LFQService::ionstar$normalized()
+#' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-
@@ -524,7 +524,7 @@ ContrastsROPECA <- R6::R6Class(
 #'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' #Contrasts$debug("get_contrasts")
-#' contrast <- LFQService::Contrasts$new(mod,
+#' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
 #'
@@ -751,7 +751,7 @@ Contrasts_Plotter <- R6::R6Class(
       for (score in scores) {
         column <- score$score
         fc <- score$fc
-        fig[[column]] <- LFQService:::.multigroupVolcano(
+        fig[[column]] <- prolfqua:::.multigroupVolcano(
           contrasts,
           effect = self$estimate,
           p.value = column,

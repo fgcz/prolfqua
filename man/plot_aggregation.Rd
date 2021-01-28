@@ -19,13 +19,13 @@ plot_aggregation(data, config, data_aggr, config_reduced, show.legend = FALSE)
 Plot feature data and result of aggretation
 }
 \examples{
-library( LFQService )
+library( prolfqua )
 library(tidyverse)
-dd <- LFQService::ionstar$filtered()
+dd <- prolfqua::ionstar$filtered()
 config <- dd$config
 data <- dd$data
 
-data <- LFQService::transform_work_intensity(data, config, log2)
+data <- prolfqua::transform_work_intensity(data, config, log2)
 bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
 tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
 stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
