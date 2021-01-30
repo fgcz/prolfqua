@@ -1,10 +1,10 @@
 ---
-title: "prolfqua - Proteomics Label Free Quantification"
+title: "Quality Control and Sample Size Estimation"
 author: "Witold Wolski"
 date: "14/12/2020"
 output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{prolfqua - Proteomics Label Free Quantification} 
+  %\VignetteIndexEntry{Quality Control and Sample Size Estimation} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 
