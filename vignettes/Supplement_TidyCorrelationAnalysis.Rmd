@@ -1,5 +1,5 @@
 ---
-title: "Analyse correlation among precursors"
+title: "Supplement - Filter precursors or fragments based on correlation."
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -164,6 +164,9 @@ Finally we plot a heatmap of the cleaned up data.
 
 ```{r}
 res <- plot_heatmap_cor(longQNASummaries, config)
+```
+
+```{r corrlationHeatmap, fig.cap="correlation among samples."}
 print(res)
 ```
 
@@ -174,7 +177,7 @@ print(res)
 ```{r}
 
 qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries,config)
-qvalFiltV
+
 ```
 
 
@@ -184,7 +187,6 @@ First mark de-correlated transitions using `markDecorrelated`.
 
 
 ```{r markdecorellated}
-#config$table$popWorkIntensity()
 qvalFiltV <- transform_work_intensity(qvalFiltV$data, config, log2)
 xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
@@ -195,7 +197,7 @@ mean(xx$srm_decorelated)
 nested <- xx %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
 
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
-  geom_line(aes_string(linetype = "srm_decorelated"), lwd=0.2) 
+  geom_line(aes_string(linetype = "srm_decorelated"), lwd = 0.2) 
 plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"))
 plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) + 
@@ -210,7 +212,7 @@ qvalFiltCorr <- dplyr::filter(xx, srm_decorelated == FALSE)
 knitr::kable(hierarchy_counts(qvalFiltCorr, config))
 ```
 
-```{r clusterOfCorrelatedData}
+```{r clusterOfCorrelatedData, fig.cap="correlation heatmap based on filtered data"}
 print(plot_heatmap_cor(qvalFiltCorr, config))
 ```
 
@@ -225,7 +227,9 @@ qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 
 
 ```{r aggregate}
-mean_na <- function(x, name = FALSE){if(name){return("mean_na")}; mean(x,na.rm = TRUE)}
+mean_na <- function(x, name = FALSE){
+  if(name){return("mean_na")};
+  mean(x,na.rm = TRUE)}
 proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
                                                config,
                                                .func = mean_na,

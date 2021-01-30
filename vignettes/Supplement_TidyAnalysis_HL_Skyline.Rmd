@@ -1,5 +1,5 @@
 ---
-title: "Example of data preprocessing of Heavy Light data"
+title: "Supplement - Data preprocessing of SRM Heavy Light data "
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
