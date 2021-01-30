@@ -1,12 +1,12 @@
 ---
-title: "Supplement - Filter precursors or fragments based on correlation."
+title: "Supplement - Filter precursors or fragments based on correlation"
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   pdf_document: default
   html_document: default
 vignette: >
-  %\VignetteIndexEntry{Analyse correlations among precursors}
+  %\VignetteIndexEntry{Supplement - Filter precursors or fragments based on correlation}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

@@ -1,5 +1,5 @@
 ---
-title: "Summarize Peptide Level Measurements"
+title: "Supplement - Summarize SRM Peptide Level Measurements"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
@@ -9,7 +9,7 @@ params:
   configuration:  !r quote(prolfqua::skylinePRMSampleData_A$config_f())
   data: !r quote(prolfqua::skylinePRMSampleData_A$analysis(prolfqua::skylinePRMSampleData_A$data, prolfqua::skylinePRMSampleData_A$config_f()))
 vignette: >
-  %\VignetteIndexEntry{Summarize Peptide Level Measurements}
+  %\VignetteIndexEntry{Supplement - Summarize Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

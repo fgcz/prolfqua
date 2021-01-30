@@ -1,12 +1,12 @@
 ---
-title: "Example of data preprocessing for PRM data"
+title: "Supplement - Data preprocessing for PRM"
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   pdf_document: default
   html_document: default
 vignette: >
-  %\VignetteIndexEntry{Example of data preprocessing for PRM data}
+  %\VignetteIndexEntry{Supplement - Data preprocessing for PRM}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
