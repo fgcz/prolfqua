@@ -1,12 +1,12 @@
 ---
-title: "Proprocessing the Ionstar dataset"
+title: "Benchmarking normalization, aggregation and models using the Ionstar Dataset"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
 papersize: a4
 geometry: margin=.5in
 vignette: >
-  %\VignetteIndexEntry{Proprocessing the Ionstar dataset} 
+  %\VignetteIndexEntry{Benchmarking normalization, aggregation and models using the Ionstar Dataset} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
   
