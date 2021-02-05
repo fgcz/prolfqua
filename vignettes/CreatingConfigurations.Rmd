@@ -1,10 +1,10 @@
 ---
-title: "Creating prolfqua configurations"
+title: "Creating prolfqua Configurations"
 author: "Witold Wolski"
 date: "14/12/2020"
 output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{Creating prolfqua configurations} 
+  %\VignetteIndexEntry{Creating prolfqua Configurations} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 

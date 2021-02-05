@@ -225,7 +225,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @description log2 transform and robust scale data
     #' @param colname name of transformed column
     #' @return LFQData
-    log2_robscale = function(colname = "tranformedIntensity"){
+    log2_robscale = function(colname = "transformedIntensity"){
       r <- prolfqua::normalize_log2_robscale(self$lfq$data, self$lfq$config)
       self$lfq$data <- r$data
       self$lfq$config <- r$config
@@ -368,13 +368,13 @@ LFQDataStats <- R6::R6Class(
     #' compute CV sd and mean of data
     #' @return data.frame
     cv = function(){
-      prolfqua::summarize_cv(self$lfq$data, self$lfq$config)
+      prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' Determine CV or sd for the quantiles
     #' @param probs for which quantile to determine CV or sd
     cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
-      res <- prolfqua::summarize_cv_quantiles(
+      res <- prolfqua::summarize_stats_quantiles(
         self$cv(),
         self$lfq$config,
         stats = self$stat,
