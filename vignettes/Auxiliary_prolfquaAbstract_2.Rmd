@@ -1,5 +1,5 @@
 ---
-title: "Euro Bioconductor 2020"
+title: "Auxiliary - Euro Bioconductor 2020"
 author: "Witold Wolski"
 date: "16/11/2020"
 output:
@@ -7,7 +7,7 @@ output:
   pdf_document: 
     keep_tex: yes
 vignette: >
-  %\VignetteIndexEntry{Euro Bioconductor 2020}
+  %\VignetteIndexEntry{Auxiliary - Euro Bioconductor 2020}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

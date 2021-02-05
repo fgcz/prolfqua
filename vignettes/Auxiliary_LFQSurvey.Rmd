@@ -1,10 +1,10 @@
 ---
-title: "Project meeting (bioinfo) Agenda"
+title: "Auxiliary - Project meeting (bioinfo) Agenda"
 author: "WEW"
 date: "17/09/2019"
 output: beamer_presentation
 vignette: >
-  %\VignetteIndexEntry{Project meeting (bioinfo) Agenda}
+  %\VignetteIndexEntry{Auxiliary - Project meeting (bioinfo) Agenda}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
   
