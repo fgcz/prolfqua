@@ -14,10 +14,10 @@
 #' config <- bb$config
 #' data <- bb$data
 #'
-#' res1 <- summarize_cv(data, config, all = FALSE)
-#' res2 <- summarize_cv(data, config, all = TRUE)
+#' res1 <- summarize_stats(data, config, all = FALSE)
+#' res2 <- summarize_stats(data, config, all = TRUE)
 #'
-summarize_cv <- function(pdata, config, all = TRUE){
+summarize_stats <- function(pdata, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
 
 
@@ -48,7 +48,7 @@ summarize_cv <- function(pdata, config, all = TRUE){
 }
 
 #' summarize stats output (compute quantiles)
-#' @param stats_res result of running `summarize_cv`
+#' @param stats_res result of running `summarize_stats`
 #' @param config AnalysisConfiguration
 #' @param stats summarize either sd or CV
 #' @param probs for which quantiles 10, 20 etc.
@@ -60,24 +60,24 @@ summarize_cv <- function(pdata, config, all = TRUE){
 #' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
-#' stats_res <- summarize_cv(data, config)
-#' summarize_cv_quantiles(stats_res, config)
-#' summarize_cv_quantiles(stats_res, config, stats = "CV")
-#'
+#' stats_res <- summarize_stats(data, config)
+#' summarize_stats_quantiles(stats_res, config)
+#' summarize_stats_quantiles(stats_res, config, stats = "CV")
+#'stats_res
 #' bb <- prolfqua::ionstar$normalized()
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' config$table$getWorkIntensity()
-#' stats_res <- summarize_cv(data, config)
-#' summarize_cv_quantiles(stats_res, config)
-#' summarize_cv_quantiles(stats_res, config, stats = "sd")
+#' stats_res <- summarize_stats(data, config)
+#' summarize_stats_quantiles(stats_res, config)
+#' summarize_stats_quantiles(stats_res, config, stats = "sd")
 #'
-#' stats_res <- summarize_cv(data, config)
-#' xx <- summarize_cv_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
+#' stats_res <- summarize_stats(data, config)
+#' xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 #' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = dilution.)) + geom_line() + geom_point()
 #'
 #'
-summarize_cv_quantiles <- function(stats_res,
+summarize_stats_quantiles <- function(stats_res,
                                    config,
                                    stats = c("sd","CV"),
                                    probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
@@ -128,7 +128,7 @@ summarize_cv_quantiles <- function(stats_res,
   return(sampleSizes)
 }
 #' estimate sample sizes
-#' @param quantile_sd output of `summarize_cv_quantiles`
+#' @param quantile_sd output of `summarize_stats_quantiles`
 #' @param delta effect size you are interested in
 #' @param power of test
 #' @param sigma.level P-Value
@@ -144,8 +144,8 @@ summarize_cv_quantiles <- function(stats_res,
 #' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
-#' stats_res <- summarize_cv(data2, config)
-#' xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
+#' stats_res <- summarize_stats(data2, config)
+#' xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb %>%
@@ -191,7 +191,7 @@ lfq_power_t_test_quantiles_V2 <-
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res
-#' stats_res <- summarize_cv(data2, config, all = FALSE)
+#' stats_res <- summarize_stats(data2, config, all = FALSE)
 #' stats_res
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 #' res
@@ -209,7 +209,7 @@ lfq_power_t_test_quantiles <- function(pdata,
     warning("Intensities are not transformed yet.")
   }
 
-  stats_res <- summarize_cv(pdata, config, all = FALSE)
+  stats_res <- summarize_stats(pdata, config, all = FALSE)
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
@@ -238,7 +238,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 }
 
 #' Compute theoretical sample sizes from factor level standard deviations
-#' @param stats_res data.frame `summarize_cv` output
+#' @param stats_res data.frame `summarize_stats` output
 #' @param delta effect size you are interested in
 #' @param power of test
 #' @param sigma.level P-Value
@@ -252,7 +252,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
-#' stats_res <- summarize_cv(data2, config, all = FALSE)
+#' stats_res <- summarize_stats(data2, config, all = FALSE)
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #' head(bb)
 lfq_power_t_test_proteins <- function(stats_res,
@@ -295,7 +295,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
-#' res <- summarize_cv(data, config)
+#' res <- summarize_stats(data, config)
 #' plot_stat_density(res, config, stat = "mean")
 #' plot_stat_density(res, config, stat = "sd")
 #' plot_stat_density(res, config, stat = "CV")
@@ -324,7 +324,7 @@ plot_stat_density <- function(pdata,
 #' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
-#' res <- summarize_cv(data2, config)
+#' res <- summarize_stats(data2, config)
 #' plot_stat_density_median(res, config,"CV")
 #' plot_stat_density_median(res, config,"mean")
 #' plot_stat_density_median(res, config,"sd")
@@ -351,8 +351,8 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
-#' res <- summarize_cv(data, config)
-#' res <- summarize_cv(data, config)
+#' res <- summarize_stats(data, config)
+#' res <- summarize_stats(data, config)
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
 #' plot_stat_violin(res, config, stat = "CV")
@@ -375,7 +375,7 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' bb1 <- prolfqua::ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
-#' res <- summarize_cv(data, config)
+#' res <- summarize_stats(data, config)
 #' plot_stat_violin_median(res, config, stat = "mean")
 plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")){
   median.quartile <- function(x){
@@ -411,16 +411,16 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' bb1 <- prolfqua::ionstar$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
-#' res <- summarize_cv(data, config)
+#' res <- summarize_stats(data, config)
 #'
 #' plot_stdv_vs_mean(res, config)
 #' datalog2 <- transform_work_intensity(data, config, log2)
-#' statlog2 <- summarize_cv(datalog2, config)
+#' statlog2 <- summarize_stats(datalog2, config)
 #' plot_stdv_vs_mean(statlog2, config)
 #' config$table$getWorkIntensity()
 #' config$table$popWorkIntensity()
 #' datasqrt <- transform_work_intensity(data, config, sqrt)
-#' ressqrt <- summarize_cv(datasqrt, config)
+#' ressqrt <- summarize_stats(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
 plot_stdv_vs_mean <- function(pdata, config, size=200){

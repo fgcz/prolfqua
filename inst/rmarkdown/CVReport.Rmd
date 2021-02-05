@@ -4,7 +4,7 @@
 Without applying any intensity scaling and data preprocessing, the peptide intensities in all samples should be similar. To asses this we plotted the distribution of the peptide intensities in the samples (Figure \@ref(fig:plotDistributions)) as well as the distribution of the coefficient of variation CV for all peptides in the samples (Figure \@ref(fig:intensityDistribution)). Table \@ref(tab:printTable) summarises the CV.
 
 ```{r plotDistributions, fig.cap="Density plot of peptide level Coefficient of Variations (CV).", fig.height=6, fig.width=8}
-stats_res <- summarize_cv(data_cc, local_config)
+stats_res <- summarize_stats(data_cc, local_config)
 if (params$plot_density) {
   p1 <- prolfqua::plot_stat_density(stats_res, local_config, stat="CV") + 
     labs(tag = "A") + 
@@ -32,7 +32,7 @@ if(!local_config$table$is_intensity_transformed){
 
 
 ```{r computeCVQuantiles, include=FALSE}
-cv_quantiles_res <- summarize_cv_quantiles(stats_res, local_config, stats="CV",probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
+cv_quantiles_res <- summarize_stats_quantiles(stats_res, local_config, stats="CV",probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 

@@ -13,7 +13,7 @@ lfq_power_t_test_proteins(
 )
 }
 \arguments{
-\item{stats_res}{data.frame `summarize_cv` output}
+\item{stats_res}{data.frame `summarize_stats` output}
 
 \item{delta}{effect size you are interested in}
 
@@ -32,7 +32,7 @@ library(tidyverse)
 bb1 <- prolfqua::ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
-stats_res <- summarize_cv(data2, config, all = FALSE)
+stats_res <- summarize_stats(data2, config, all = FALSE)
 bb <- lfq_power_t_test_proteins(stats_res)
 head(bb)
 }

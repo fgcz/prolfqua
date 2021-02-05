@@ -29,7 +29,7 @@ library(tidyverse)
 bb1 <- prolfqua::ionstar$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
-res <- summarize_cv(data, config)
+res <- summarize_stats(data, config)
 plot_stat_density(res, config, stat = "mean")
 plot_stat_density(res, config, stat = "sd")
 plot_stat_density(res, config, stat = "CV")

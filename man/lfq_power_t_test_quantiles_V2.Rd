@@ -13,7 +13,7 @@ lfq_power_t_test_quantiles_V2(
 )
 }
 \arguments{
-\item{quantile_sd}{output of `summarize_cv_quantiles`}
+\item{quantile_sd}{output of `summarize_stats_quantiles`}
 
 \item{delta}{effect size you are interested in}
 
@@ -34,8 +34,8 @@ library(prolfqua)
 bb1 <- prolfqua::ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
-stats_res <- summarize_cv(data2, config)
-xx <- summarize_cv_quantiles(stats_res, config, probs = c(0.5,0.8))
+stats_res <- summarize_stats(data2, config)
+xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb \%>\%

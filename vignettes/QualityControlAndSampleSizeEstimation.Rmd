@@ -1,0 +1,131 @@
+---
+title: "Creating prolfqua Configurations"
+author: "Witold Wolski"
+date: "14/12/2020"
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{Creating prolfqua Configurations} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+# The LFQData API
+
+peptide intensities and summarizing protein intensities
+
+
+```{r}
+library(prolfqua)
+library(tidyverse)
+conflicted::conflict_prefer("filter", "dplyr")
+
+
+# creates default configuration
+create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
+                                            intensity = "peptide.intensity"
+){
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = "raw.file"
+  # measurement levels.
+  atable$hierarchy[["protein_Id"]] <- c("top_protein")
+  atable$hierarchy[["peptide_Id"]] <- c("sequence")
+  atable$hierarchyDepth <- 1
+  #
+  atable$ident_qValue = ident_qValue
+  atable$setWorkIntensity(intensity)
+  
+  anaparam <- AnalysisParameters$new()
+  anaparam$min_peptides_protein <- 2
+  configuration <- AnalysisConfiguration$new(atable, anaparam)
+  
+  return(configuration)
+}
+
+```
+
+# Prepare p2691 dataset
+
+```{r}
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
+inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
+startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
+
+startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
+startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+annotation <- readxl::read_xlsx(inputAnnotation)
+annotation$experiment = "p2691"
+
+startdata <- inner_join(startdata, annotation)
+
+config <- create_MQ_peptide_Configuration()
+startdata <- inner_join(annotation, startdata)
+
+config$table$factors[["condition_"]] = "condition"
+config$table$factors[["batch_"]] = "experiment"
+config$table$factors[["Run_ID"]] = "Run_ID"
+config$table$factorDepth <- 1
+
+adata <- setup_analysis(startdata, config)
+
+xx <- toWideConfig(adata, config)
+
+adata <- adata %>% filter(condition_ == "Ethanol")
+
+```
+
+```{r filterdata}
+lfqdata <- LFQData$new(adata, config)
+lfqdata$remove_small_intensities()
+lfqdata$config$parameter$min_peptides_protein
+lfqdata$filter_proteins_by_peptide_count()
+
+```
+
+## Visualization of not normalized data
+
+```{r}
+lfqplotter <- lfqdata$get_Plotter()
+lfqplotter$intensity_distribution_density()
+nah <- lfqplotter$NA_heatmap()
+
+```
+
+```{r heatmap_an}
+nah
+```
+
+```{r}
+stats <- lfqdata$get_Stats()
+stats$cv_quantiles()
+stats$density()
+stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
+```
+
+## Normalize
+
+We normalize the data by log2 transforming and then z-scaling.
+
+```{r}
+lt <- lfqdata$get_Transformer()
+transformed <- lt$log2_robscale()
+transformed$config$table$is_intensity_transformed
+
+```
+
+```{r}
+stats <- transformed$get_Stats()
+stats$cv_quantiles()
+stats$density()
+stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
+
+```
+
+

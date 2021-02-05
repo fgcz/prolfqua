@@ -224,7 +224,7 @@ if (length(samples) > 10) {
 (ref:sdviolinplots) Visualization of `r if(params$pep){"peptide"}else{"protein"}` standard deviations. A) all. B) - for low (bottom 50) and high intensity (top 50).
 
 ```{r sdviolinplots,fig.cap="(ref:sdviolinplots)", fig.height=6, fig.width=8}
-stats_res <- summarize_cv(dataTransformed, local_config)
+stats_res <- summarize_stats(dataTransformed, local_config)
 
 if (params$plot_density) {
   p1 <-
@@ -268,7 +268,7 @@ if(params$plot_sd_vs_mean){
 
 
 ```{r computeSDQuantiles, include=FALSE}
-sd_quantile_res2 <- summarize_cv_quantiles(stats_res, local_config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
+sd_quantile_res2 <- summarize_stats_quantiles(stats_res, local_config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 ```{r printSDTable}

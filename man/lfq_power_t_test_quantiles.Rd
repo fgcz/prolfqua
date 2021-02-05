@@ -35,7 +35,7 @@ data2 <- bb1$data
 
 res <- lfq_power_t_test_quantiles(data2, config)
 res
-stats_res <- summarize_cv(data2, config, all = FALSE)
+stats_res <- summarize_stats(data2, config, all = FALSE)
 stats_res
 res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 res

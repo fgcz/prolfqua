@@ -80,7 +80,7 @@ initialize
 \subsection{Method \code{log2_robscale()}}{
 log2 transform and robust scale data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale(colname = "tranformedIntensity")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale(colname = "transformedIntensity")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

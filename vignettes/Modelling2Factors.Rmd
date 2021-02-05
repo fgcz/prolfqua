@@ -86,7 +86,7 @@ config$table$factors[["Run_ID"]] = "Run_ID"
 config$table$factorDepth <- 1
 ```
 
-Preprocess and normalize data.
+Preprocess and normalize Data.
 
 ```{r}
 adata <- setup_analysis(data, config)

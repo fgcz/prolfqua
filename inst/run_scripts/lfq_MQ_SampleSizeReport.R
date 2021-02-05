@@ -47,9 +47,9 @@ if (!dir.exists(outputDir)) {
   }
 }
 
-summarize_cv_raw_transformed <- function(resDataStart, config){
+summarize_stats_raw_transformed <- function(resDataStart, config){
   config_tmp <- config$clone(deep = TRUE)
-  stats_res <- summarize_cv(resDataStart, config_tmp)
+  stats_res <- summarize_stats(resDataStart, config_tmp)
   wide <- toWideConfig( resDataStart,config_tmp)
   stats_raw <- inner_join(stats_res,
                           wide$data,
@@ -58,7 +58,7 @@ summarize_cv_raw_transformed <- function(resDataStart, config){
   resDataStart <- transform_work_intensity(resDataStart, config_tmp, log2)
   data <- prolfqua::applyToIntensityMatrix(resDataStart, config_tmp, .func = robust_scale)
 
-  stats_res_transformed <- summarize_cv(data, config_tmp)
+  stats_res_transformed <- summarize_stats(data, config_tmp)
   wide <- toWideConfig( data,config_tmp)
   stats_transformed <- inner_join(stats_res_transformed,
                                   wide$data,
@@ -104,7 +104,7 @@ prolfqua::render_MQSummary_rmd(
 
 
 
-peptideStats <- summarize_cv_raw_transformed(resPep$data, resPep$config)
+peptideStats <- summarize_stats_raw_transformed(resPep$data, resPep$config)
 lfq_write_table(separate_hierarchy(peptideStats, resPep$config),
                 path = outputDir,
                 name = paste0("r_", filename, "_PeptideStats"), format = "xlsx")
@@ -122,7 +122,7 @@ results <- normalize_log2_robscale(res$data, resPep$config)
 protintensity <- medpolish_protein_quants( results$data, results$config )
 xx <- protintensity("unnest")
 data <- prolfqua::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
-stats_res <- summarize_cv(data, xx$config, all = FALSE)
+stats_res <- summarize_stats(data, xx$config, all = FALSE)
 data_wide <-
   inner_join(
     stats_res,
