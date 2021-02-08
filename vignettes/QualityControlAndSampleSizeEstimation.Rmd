@@ -18,54 +18,39 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # The LFQData API
 
-peptide intensities and summarizing protein intensities
+Create configuration for MQ peptide file or use function `create_config_MQ_peptide`
 
-
-```{r}
+```{r createConfig}
 library(prolfqua)
 library(tidyverse)
-conflicted::conflict_prefer("filter", "dplyr")
 
 
-# creates default configuration
-create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
-                                            intensity = "peptide.intensity"
-){
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "raw.file"
-  # measurement levels.
-  atable$hierarchy[["protein_Id"]] <- c("top_protein")
-  atable$hierarchy[["peptide_Id"]] <- c("sequence")
-  atable$hierarchyDepth <- 1
-  #
-  atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity(intensity)
-  
-  anaparam <- AnalysisParameters$new()
-  anaparam$min_peptides_protein <- 2
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
-  
-  return(configuration)
-}
+
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+# measurement levels.
+atable$hierarchy[["protein_Id"]] <- c("top_protein")
+atable$hierarchy[["peptide_Id"]] <- c("sequence")
+atable$hierarchyDepth <- 1
+atable$ident_qValue = "pep"
+atable$setWorkIntensity("peptide.intensity")
+anaparam <- AnalysisParameters$new()
+anaparam$min_peptides_protein <- 2
+config <- AnalysisConfiguration$new(atable, anaparam)
 
 ```
 
-# Prepare p2691 dataset
 
 ```{r}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
 startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
-
-startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
 startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
+
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
 
-startdata <- inner_join(startdata, annotation)
-
-config <- create_MQ_peptide_Configuration()
 startdata <- inner_join(annotation, startdata)
 
 config$table$factors[["condition_"]] = "condition"
@@ -81,6 +66,8 @@ adata <- adata %>% filter(condition_ == "Ethanol")
 
 ```
 
+Remove zeros from data, and filter for at least two peptides (proteins with a single peptide are dropped).
+
 ```{r filterdata}
 lfqdata <- LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
@@ -95,8 +82,13 @@ lfqdata$filter_proteins_by_peptide_count()
 lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 nah <- lfqplotter$NA_heatmap()
-
 ```
+
+```{r}
+lfqplotter$missingness_per_condition()
+```
+
+
 
 ```{r heatmap_an}
 nah
@@ -104,8 +96,9 @@ nah
 
 ```{r}
 stats <- lfqdata$get_Stats()
-stats$stats_quantiles()
-stats$density()
+prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
+
+stats$density_median()
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
@@ -113,7 +106,7 @@ stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 
 We normalize the data by $\log2$ transforming and then z-scaling.
 
-```{r}
+```{r normalizedata}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2_robscale()
 transformed$config$table$is_intensity_transformed
@@ -123,6 +116,19 @@ pl$intensity_distribution_density()
 ```
 
 ```{r}
+transformed$get_Plotter()$pairs_smooth()
+```
+
+```{r}
+p <- transformed$get_Plotter()$heatmap()
+```
+
+```{r heatmap}
+p
+```
+
+
+```{r showStandardDeviations}
 stats <- transformed$get_Stats()
 stats$stat
 prolfqua::table_facade(stats$stats_quantiles()$wide,"Standard deviations")
@@ -134,7 +140,7 @@ prolfqua::table_facade(stats$stats_quantiles()$wide,"Standard deviations")
 stats$density_median()
 ```
 
-```{r include = FALSE}
+```{r experiment, include = FALSE}
 transformed$factors()
 
 chsq <- na.omit(stats$statsdf$sd^2)
@@ -143,7 +149,9 @@ x <- seq(0,50, length = 1000)
 lines(x , dchisq(x, df = 4 ))
 ```
 
-```{r fig.cap="check if sd constant for all intensities"}
+Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
+
+```{r checkFor, fig.cap="check if sd constant for all intensities"}
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
@@ -153,13 +161,20 @@ stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 
 ```{r}
 sampleSize <- stats$power_t_test_quantiles() %>% filter(condition_ != "All")
-prolfqua::table_facade(sampleSize, "Sample sizes.")
-sampleSize %>% ggplot(aes(x = factor(probs) , y = N)) + facet_wrap(~delta) + geom_bar(stat = "identity")
+prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size")
+
+sampleSize %>%
+  ggplot(aes(x = factor(probs) , y = N)) +
+  facet_wrap(~delta) +
+  geom_bar(stat = "identity")
 ```
 
-Getting the sample size for all the proteins
+Getting the sample size for all the proteins (might take a while for all the proteins).
 
 
-```{r}
+```{r pwerforAll, eval = FALSE}
 stats$power_t_test()
 ```
+
+
+

@@ -12,6 +12,7 @@ vignette: >
   
 ---
 
+
 # Example of subset normalization of the ionstar dataset.
 
 
@@ -173,7 +174,7 @@ We will be using the `LFQDataAggregator` class. To estimate protein intensities 
 The figure below shows the the protein estimates (dashed line) and the peptide intensities.
 
 ```{r}
-lfqAggMedpol <- LFQDataAggregator$new(lfqdataNormalized, "protein")
+lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, "protein")
 lfqAggMedpol$medpolish()
 xx <- lfqAggMedpol$plot()
 xx$plots[[1]]
@@ -194,7 +195,8 @@ dataIonstarProtein_subsetNorm <- list(
 We can also estimate the protein intensities using the top N most abundant peptides. In this case we are using the untransformed protein intensities. The figure below shows the estimated protein intensities.
 
 ```{r}
-lfqAggregator <- LFQDataAggregator$new(lfqdata, "protein_topN")
+
+lfqAggregator <- LFQDataAggregator$new(LFQData$new(mqdataSubset$data, mqdataSubset$config), "protein_topN")
 lfqAggregator$mean_topN()
 topN <- lfqAggregator$plot()
 topN$plots[[1]]
