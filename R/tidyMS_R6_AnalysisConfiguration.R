@@ -335,12 +335,14 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   data <- data %>% dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
 
   # Make implicit NA's explicit
-  data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
 
   if(length(configuration$table$isotopeLabel) == 0){
     configuration$table$isotopeLabel <- "isotopeLabel"
     data$isotopeLabel <- "light"
   }
+
+  data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
+
   if (cc) {
     data <- complete_cases( data , configuration)
   }
