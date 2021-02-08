@@ -333,8 +333,8 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
   ggstat <- match.arg(ggstat)
   pdata <- pdata %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
   res <- pdata %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
-  p <- ggplot(top50, aes_string(x = stat, colour = config$table$factorKeys()[1])) +
-    geom_line(stat = ggstat) + facet_wrap("top")
+  p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
+    geom_line(stat = ggstat) + facet_wrap(config$table$factorKeys()[1])
   return(p)
 }
 

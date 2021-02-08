@@ -17,8 +17,8 @@ compute stdv, mean and CV per peptide or protein and condition.
 #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 runallfuncs <- function(x){
 
-  stopifnot("data.frame" \%in\% class(x$cv()))
-  stopifnot(c("long", "wide") \%in\% names(x$cv_quantiles()))
+  stopifnot("data.frame" \%in\% class(x$stats()))
+  stopifnot(c("long", "wide") \%in\% names(x$stats_quantiles()))
   stopifnot("ggplot" \%in\% class(x$density()))
   stopifnot("ggplot" \%in\% class(x$density_median()))
   stopifnot("ggplot" \%in\% class(x$density("ecdf")))
@@ -73,6 +73,15 @@ Other LFQData:
 \item{\code{lfq}}{LFQData}
 
 \item{\code{stat}}{either CV or sd (if is_transformed)}
+
+\item{\code{data}}{frame with statistics.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{data}}{frame with statistics.}
 }
 \if{html}{\out{</div>}}
 }
@@ -80,8 +89,8 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataStats$new()}}
-\item \href{#method-cv}{\code{LFQDataStats$cv()}}
-\item \href{#method-cv_quantiles}{\code{LFQDataStats$cv_quantiles()}}
+\item \href{#method-stats}{\code{LFQDataStats$stats()}}
+\item \href{#method-stats_quantiles}{\code{LFQDataStats$stats_quantiles()}}
 \item \href{#method-density}{\code{LFQDataStats$density()}}
 \item \href{#method-density_median}{\code{LFQDataStats$density_median()}}
 \item \href{#method-violin}{\code{LFQDataStats$violin()}}
@@ -110,12 +119,12 @@ create analyse variances and CV
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-cv"></a>}}
-\if{latex}{\out{\hypertarget{method-cv}{}}}
-\subsection{Method \code{cv()}}{
+\if{html}{\out{<a id="method-stats"></a>}}
+\if{latex}{\out{\hypertarget{method-stats}{}}}
+\subsection{Method \code{stats()}}{
 compute CV sd and mean of data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -123,12 +132,12 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-cv_quantiles"></a>}}
-\if{latex}{\out{\hypertarget{method-cv_quantiles}{}}}
-\subsection{Method \code{cv_quantiles()}}{
+\if{html}{\out{<a id="method-stats_quantiles"></a>}}
+\if{latex}{\out{\hypertarget{method-stats_quantiles}{}}}
+\subsection{Method \code{stats_quantiles()}}{
 Determine CV or sd for the quantiles
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$cv_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

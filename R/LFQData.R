@@ -309,8 +309,8 @@ LFQDataTransformer <- R6::R6Class(
 #' #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 #' runallfuncs <- function(x){
 #'
-#'   stopifnot("data.frame" %in% class(x$cv()))
-#'   stopifnot(c("long", "wide") %in% names(x$cv_quantiles()))
+#'   stopifnot("data.frame" %in% class(x$stats()))
+#'   stopifnot(c("long", "wide") %in% names(x$stats_quantiles()))
 #'   stopifnot("ggplot" %in% class(x$density()))
 #'   stopifnot("ggplot" %in% class(x$density_median()))
 #'   stopifnot("ggplot" %in% class(x$density("ecdf")))
@@ -358,8 +358,11 @@ LFQDataStats <- R6::R6Class(
     lfq = NULL,
     #' @field stat either CV or sd (if is_transformed)
     stat = "CV",
+    #' @field data frame with statistics.
+    statsdf = NULL,
     #' @description create analyse variances and CV
     #' @param lfqdata LFQData object
+    #'
     initialize = function(lfqdata){
       self$lfq = lfqdata
       self$stat <- if (!self$lfq$is_transformed()) {"CV"}else{"sd"}
@@ -367,15 +370,18 @@ LFQDataStats <- R6::R6Class(
     #' @description
     #' compute CV sd and mean of data
     #' @return data.frame
-    cv = function(){
-      prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+    stats = function(){
+      if (is.null(self$statsdf)) {
+       self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+      }
+      return(self$statsdf)
     },
     #' @description
     #' Determine CV or sd for the quantiles
     #' @param probs for which quantile to determine CV or sd
-    cv_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+    stats_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
       res <- prolfqua::summarize_stats_quantiles(
-        self$cv(),
+        self$stats(),
         self$lfq$config,
         stats = self$stat,
         probs = probs)
@@ -387,7 +393,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     density = function(ggstat = c("density", "ecdf")){
       prolfqua::plot_stat_density(
-        self$cv(),
+        self$stats(),
         self$lfq$config,
         stat = self$stat,
         ggstat = ggstat)
@@ -397,14 +403,14 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")){
-      prolfqua::plot_stat_density_median(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_density_median(self$stats(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd
     #' @param ggstat either density of ecdf
     #' @return ggplot
     violin = function(){
-      prolfqua::plot_stat_violin(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin(self$stats(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
@@ -412,7 +418,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     violin_median = function(){
-      prolfqua::plot_stat_violin_median(self$cv(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin_median(self$stats(), self$lfq$config, stat = self$stat)
     },
     #' @description
     #' plot sd vs mean
@@ -420,7 +426,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     stdv_vs_mean = function(size= 200){
-      prolfqua::plot_stdv_vs_mean(self$cv(), self$lfq$config, size = size)
+      prolfqua::plot_stdv_vs_mean(self$stats(), self$lfq$config, size = size)
     },
     #' @description
     #' compute sample size for entire dataset
@@ -438,7 +444,7 @@ LFQDataStats <- R6::R6Class(
         warning("data is not transformed - aborting")
         return()
       }
-      res <- self$cv_quantiles(probs)
+      res <- self$stats_quantiles(probs)
       res <- lfq_power_t_test_quantiles_V2(res$long,
                                            delta = delta,
                                            power = power,
@@ -460,7 +466,7 @@ LFQDataStats <- R6::R6Class(
         return()
       }
 
-      res <- prolfqua::lfq_power_t_test_proteins(self$cv(),
+      res <- prolfqua::lfq_power_t_test_proteins(self$stats(),
                                 delta = delta,
                                 power = power,
                                 sig.level = sig.level,

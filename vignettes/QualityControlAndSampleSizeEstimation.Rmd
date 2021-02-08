@@ -104,28 +104,62 @@ nah
 
 ```{r}
 stats <- lfqdata$get_Stats()
-stats$cv_quantiles()
+stats$stats_quantiles()
 stats$density()
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
 ## Normalize
 
-We normalize the data by log2 transforming and then z-scaling.
+We normalize the data by $\log2$ transforming and then z-scaling.
 
 ```{r}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2_robscale()
 transformed$config$table$is_intensity_transformed
+pl <- transformed$get_Plotter()
+pl$intensity_distribution_density()
 
 ```
 
 ```{r}
 stats <- transformed$get_Stats()
-stats$cv_quantiles()
-stats$density()
-stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
+stats$stat
+prolfqua::table_facade(stats$stats_quantiles()$wide,"Standard deviations")
 
 ```
 
 
+```{r sddensity, fig.cap="Density of the standard deviation"}
+stats$density_median()
+```
+
+```{r include = FALSE}
+transformed$factors()
+
+chsq <- na.omit(stats$statsdf$sd^2)
+plot(density(chsq[chsq < 10]))
+x <- seq(0,50, length = 1000)
+lines(x , dchisq(x, df = 4 ))
+```
+
+```{r fig.cap="check if sd constant for all intensities"}
+stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
+```
+
+
+## Estimate sample size for main experiment.
+
+
+```{r}
+sampleSize <- stats$power_t_test_quantiles() %>% filter(condition_ != "All")
+prolfqua::table_facade(sampleSize, "Sample sizes.")
+sampleSize %>% ggplot(aes(x = factor(probs) , y = N)) + facet_wrap(~delta) + geom_bar(stat = "identity")
+```
+
+Getting the sample size for all the proteins
+
+
+```{r}
+stats$power_t_test()
+```
