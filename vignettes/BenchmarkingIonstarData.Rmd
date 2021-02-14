@@ -13,7 +13,6 @@ vignette: >
 ---
 
 
-# Example of subset normalization of the ionstar dataset.
 
 
 Please download and install the `prolfquaData` package from github
@@ -48,7 +47,6 @@ inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
 mqdata <- tidyMQ_Peptides_Config(inputMQfile)
-names
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 
@@ -61,13 +59,10 @@ res <- add_annotation(
 ```
 
 
-
 ```{r}
-
 mqdata$config$table$factors[["dilution."]] = "sample"
 mqdata$config$table$factors[["run_Id"]] = "run_ID"
 mqdata$config$table$factorDepth <- 1
-
 mqdata$data <- setup_analysis(res, mqdata$config)
 
 ```
@@ -76,19 +71,6 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 ```{r}
 datafilt <- prolfqua::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
-```
-
-Create a sample of N proteins to speed up computations.
-
-```{r}
-N <- 200
-set.seed(2020)
-hk <- mqdata$config$table$hkeysDepth()
-protein_Ids <- mqdata$data %>%
-  select(all_of(hk)) %>%
-  distinct() %>%
-  sample_n(size = N)
-
 ```
 
 
@@ -120,9 +102,27 @@ after$intensity_distribution_density()
 ```
 
 
-# Create result object for peptides
+Create a sample of N proteins to speed up computations of models and contrasts.
 
-We collect all the relevant data for the Ionstar data in an R6 object.
+```{r}
+N <- 200
+set.seed(2020)
+hk <- mqdata$config$table$hkeysDepth()
+protein_Ids <- mqdata$data %>%
+  select(all_of(hk)) %>%
+  distinct() %>%
+  sample_n(size = N)
+
+lfqNormSubset <- lfqdataNormalized$get_copy()
+lfqNormSubset$data <- inner_join(protein_Ids, lfqNormSubset$data)
+mqdataSubset <- mqdata
+mqdataSubset$data  <- inner_join(protein_Ids, mqdata$data)
+
+
+```
+
+
+
 
 ```{r R6Ionstar, echo =  FALSE}
 IonstarData <- R6::R6Class(
@@ -154,11 +154,6 @@ IonstarData <- R6::R6Class(
     }
   )
 )
-lfqNormSubset <- lfqdataNormalized$get_copy()
-
-lfqNormSubset$data <- inner_join(protein_Ids, lfqNormSubset$data)
-mqdataSubset <- mqdata
-mqdataSubset$data  <- inner_join(protein_Ids, mqdata$data)
 
 ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config, 
                            lfqNormSubset$data, lfqNormSubset$config)
@@ -168,7 +163,7 @@ ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config,
 ```
 
 
-# Protein intensities using Tukeys Median Polish
+# Infer Protein intensities using Tukeys Median Polish
 
 We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use normalized data.
 The figure below shows the the protein estimates (dashed line) and the peptide intensities.
@@ -203,8 +198,9 @@ topN$plots[[1]]
 
 ```
 
+# Fitting a linear model to the protein intensities
 
-# Fit model to protein level data
+To fit the linear models we will be using the protein intensities estimated using the Tukeys median polish.
 
 ```{r}
 DEBUG <- FALSE
@@ -251,8 +247,6 @@ relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
 ```
 
 
-# Fitting all the proteins based on protein intensities with linear models. 
-
 ```{r buildModelLM}
 protLFQ <- lfqAggMedpol$lfq_agg
 
@@ -293,8 +287,10 @@ medpol_benchmark$plot_FDRvsFDP()
 
 # Imputation
 
+In order to estimate fold-changes of proteins for which linear models could not be fitted because of an excess of missing measurements, the following procedure is applied: The mean intensity of a peptide over all samples in a condition is computed. For the proteins with no observation in one condition, we imputed the peptide intensities using the mean of the 10% smallest average peptide intensities determined in step one. Then the fold changes between conditions were estimated for each peptide, and the median of the peptide fold change estimates was used to provide a per protein fold change. No p-values were estimated in this case. 
+
 ```{r benchmarkImputation, eval=TRUE}
-contrsimple <- prolfqua::ContrastsSimpleImpute$new(lfqdataNormalized, relevantContrasts)
+contrsimple <- prolfqua::ContrastsSimpleImpute$new(lfqNormSubset, relevantContrasts)
 
 cs <- contrsimple$get_contrasts()
 cs <- cs %>% rename(estimate = .data$estimate_median)
@@ -310,7 +306,6 @@ medpol_benchmark <- make_benchmark(ttd$data,
                                    ),
                                    FDRvsFDP = NULL)
 
-medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
 medpol_benchmark$plot_ROC()
 x <- medpol_benchmark$pAUC_summaries()
@@ -318,3 +313,17 @@ x$barp
 
 ```
 
+# Compare fold changes for both methods
+
+Plot scatter plots for fold changes obtained using the linear model and missing value imputation.
+
+```{r}
+cs <- cs %>% select(contrast, protein_Id, est_imp = estimate   )
+contrdf <- contrdf %>% select(contrast, protein_Id, est_lm = estimate )
+estimates_compare <- inner_join(contrdf, cs)
+
+estimates_compare %>% ggplot(aes(x = est_lm, y = est_imp)) + geom_point()  + 
+  geom_smooth(method = 'lm', formula = y~x)
+
+
+```

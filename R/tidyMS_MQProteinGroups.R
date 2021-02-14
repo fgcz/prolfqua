@@ -286,7 +286,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #'
 #' mq_peptides <-tidyMQ_Peptides(peptides_txt)
 #' head(mq_peptides)
-tidyMQ_Peptides <- function(MQPeptides){
+tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
   if (is.character(MQPeptides)) {
     if (grepl("\\.zip$",tolower(MQPeptides))) {
       MQPeptides <- read.csv(unz(MQPeptides,"peptides.txt"),
@@ -321,6 +321,7 @@ tidyMQ_Peptides <- function(MQPeptides){
     tidyr::gather(key = "raw.file", value = "peptide.intensity", starts_with("intensity.")) %>%
     dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
 
+  # review what happens here
   idtype <- dplyr::select(MQPeptides, "peptide.id" = "id", starts_with("identification.type."))
   if (ncol(idtype) > 1) { # if only one file no id type is provided
     PepIDType <- idtype %>%
@@ -330,12 +331,16 @@ tidyMQ_Peptides <- function(MQPeptides){
   }else{
     PepIntensities$id.type <- "By MS/MS"
   }
+
   xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
   xx$proteotypic <- !grepl(";", xx$protein.group.id)
   xx <- xx %>% separate_rows( protein.group.id, sep = ";", convert  = TRUE)
 
   xx <- xx %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
   xx$isotope <- "light"
+  if (proteotypic_only) {
+    xx <- xx %>% filter(.data$proteotypic == TRUE)
+  }
   return(xx)
 }
 
@@ -501,8 +506,9 @@ tidyMQ_from_Sites <- function(pDat){
 #' @export
 tidyMQ_Peptides_Config <- function(MQtxtfolder,
                                    use = c("peptides", "modificationSpecificPeptides" ),
-                                   id_extractor = function(df) {prora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")},
-                                   remove_rev = TRUE)
+                                   remove_rev = TRUE,
+                                   proteotypic_only = TRUE,
+                                   id_extractor = function(df) {prora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")})
   {
 
   # create default config
@@ -520,7 +526,7 @@ tidyMQ_Peptides_Config <- function(MQtxtfolder,
     }
   }else if (peptides ==  "peptides") {
     if ("peptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name) {
-      mqData <- tidyMQ_Peptides(MQtxtfolder)
+      mqData <- tidyMQ_Peptides(MQtxtfolder, proteotypic_only = proteotypic_only)
     } else {
       stop("peptides.txt does not exist")
     }

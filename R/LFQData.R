@@ -18,6 +18,7 @@
 #' lfqdata$factors()
 #' stopifnot(lfqdata$is_transformed()==FALSE)
 #' lfqdata$summarize_hierarchy()
+#' lfqdata$omit_NA_hierarchy()
 #'
 #' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 #' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
@@ -81,12 +82,14 @@ LFQData <- R6::R6Class(
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
+    #' @return self
     remove_small_intensities = function(threshold = 4){
       self$data <- prolfqua::remove_small_intensities( self$data, self$config, threshold = threshold )
       invisible(self)
     },
     #' @description
     #' remove proteins with less than X peptides
+    #' @return self
     filter_proteins_by_peptide_count = function(){
       message("removing proteins with less than",
               self$config$parameter$min_peptides_protein,
@@ -95,9 +98,21 @@ LFQData <- R6::R6Class(
       invisible(self)
     },
     #' @description
+    #' Omit NA from intensities per hierarchy, idea is to use it for normalization
+    #' For instance if a peptide has a missing value in any of the samples it will be rmoved.
+    #' @return LFQData with NA omitted.
+    omit_NA_hierarchy = function(){
+      missing <- interaction_missing_stats(self$data, self$config, factors = NULL)
+      notNA <- missing$data %>% filter(nrNAs == 0)
+      notNA <- notNA %>% select(self$config$table$hierarchyKeys())
+      notNAdata <- inner_join( notNA, self$data)
+      return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
+    },
+    #'
+    #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
-    #'
+    #' @return self
     complete_cases = function(){
       self$data <- prolfqua::complete_cases(self$data, self$config)
       invisible(self)
@@ -106,9 +121,10 @@ LFQData <- R6::R6Class(
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
     #' @return data and annotation
+    #' @return list with data, annotation, and configuration
     to_wide = function(as.matrix = FALSE){
       wide <- prolfqua::toWideConfig(self$data, self$config, as.matrix = as.matrix)
-      wide$config <- self$config
+      wide$config <- self$config$clone(deep = TRUE)
       return(wide)
     },
     #' @description
@@ -119,6 +135,7 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' e.g. number of peptides per protein etc
+    #' @return data.frame
     summarize_hierarchy = function(){
       prolfqua::summarize_hierarchy(self$data, self$config)
     },

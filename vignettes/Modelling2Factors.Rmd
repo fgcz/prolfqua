@@ -23,34 +23,13 @@ fig.height = 10
 
 
 
-Create MaxQuant Configuration (only works with `prolfqua::tidyMQ_Peptides` function)
-
 ```{r}
 library(prolfqua)
 library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
 
-# creates default configuration
-create_MQ_peptide_Configuration <- function(ident_qValue = "pep",
-                                            intensity = "peptide.intensity"
-){
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "raw.file"
-  # measurement levels.
-  atable$hierarchy[["protein_Id"]] <- c("top_protein")
-  atable$hierarchy[["peptide_Id"]] <- c("sequence")
-  atable$hierarchyDepth <- 1
-  #
-  atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity(intensity)
-  
-  anaparam <- AnalysisParameters$new()
-  anaparam$min_peptides_protein <- 2
-  configuration <- AnalysisConfiguration$new(atable, anaparam)
-  
-  return(configuration)
-}
+
 ```
 
 # Prepare p2691 dataset
@@ -60,15 +39,6 @@ datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
 startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
-startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
-
-undebug(tidyMQ_top_protein_name)
-startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
-
-#startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "leading.razor.protein")
-#startdata <- startdata %>% mutate(top_protein = leading.razor.protein)
-
-
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
 
@@ -77,7 +47,7 @@ annotation$experiment = "p2691"
 Add annotation information data to configuration and data.
 
 ```{r}
-config <- create_MQ_peptide_Configuration()
+config <- prolfqua::create_config_MQ_peptide()
 data <- inner_join(annotation, startdata)
 
 config$table$factors[["condition_"]] = "condition"
@@ -121,11 +91,7 @@ print(pha2691)
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
-
 startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
-startdata <- startdata %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
-startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
-
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment <- "p2370"
 ```
@@ -134,8 +100,7 @@ Code snipped below shows how to add annotation to the data and configuration.
 
 ```{r}
 data <- inner_join(annotation, startdata)
-
-config <- create_MQ_peptide_Configuration()
+config <- create_config_MQ_peptide()
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -175,13 +140,11 @@ To simulate a factorial design we merge both datasets.
 
 outpath <- "results_modelling"
 data <- bind_rows(p2691$data, p2370$data)
-sum(is.na(p2691$data$protein_Id))
-sum(is.na(p2370$data$protein_Id))
 
 
 # creates default configuration
 
-config <- p2691$config$clone(deep=TRUE)
+config <- p2691$config$clone(deep = TRUE)
 config$table$factorDepth <- 2
 ```
 
@@ -242,9 +205,9 @@ prot <- pAgg$medpolish()
 ```
 
 generate diagnostik plots
-```{r createDiagnostics, fig.cap="summarize Aggration result"}
+```{r createDiagnostics, fig.cap="summarize Aggration result", fig.width=8, fig.height=7}
 tmp <- pAgg$plot()
-tmp$plots[[1]]
+ggpubr::ggarrange(plotlist =  tmp$plots[1:6])
 ```
 
 ```{r plotBoxplotProt}
@@ -254,7 +217,7 @@ pl$heatmap()
 
 ```{r protBP, fig.cap="Protein level boxplots"}
 bp <- pl$boxplots()
-bp$boxplot[[1]]
+ggpubr::ggarrange(plotlist = bp$boxplot[1:6])
 ```
 
 # Model Fitting

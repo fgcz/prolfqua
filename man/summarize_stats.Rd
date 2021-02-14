@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{summarize_stats}
 \alias{summarize_stats}
-\title{applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples}
+\title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
 summarize_stats(pdata, config, all = TRUE)
 }
@@ -14,7 +14,7 @@ summarize_stats(pdata, config, all = TRUE)
 \item{all}{also compute for all samples (default), or only of conditions (set to FALSE)}
 }
 \description{
-applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 }
 \examples{
 

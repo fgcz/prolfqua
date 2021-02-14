@@ -1,10 +1,10 @@
 ---
-title: "Creating prolfqua Configurations"
+title: "QC and Sample Size Estimation."
 author: "Witold Wolski"
 date: "14/12/2020"
 output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{Creating prolfqua Configurations} 
+  %\VignetteIndexEntry{QC and Sample Size Estimation.} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 
@@ -41,7 +41,7 @@ config <- AnalysisConfiguration$new(atable, anaparam)
 ```
 
 
-```{r}
+```{r LoadDataAndConfigure}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
@@ -78,10 +78,14 @@ lfqdata$filter_proteins_by_peptide_count()
 
 ## Visualization of not normalized data
 
-```{r}
+```{r makeMissingHeatmap}
 lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 nah <- lfqplotter$NA_heatmap()
+```
+
+```{r printMissingHeatmap}
+nah
 ```
 
 ```{r}
@@ -89,12 +93,7 @@ lfqplotter$missingness_per_condition()
 ```
 
 
-
-```{r heatmap_an}
-nah
-```
-
-```{r}
+```{r PlotCVDistributions}
 stats <- lfqdata$get_Stats()
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
 
@@ -110,28 +109,34 @@ We normalize the data by $\log2$ transforming and then z-scaling.
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2_robscale()
 transformed$config$table$is_intensity_transformed
-pl <- transformed$get_Plotter()
-pl$intensity_distribution_density()
 
 ```
 
-```{r}
+```{r plotDensities}
+pl <- transformed$get_Plotter()
+pl$intensity_distribution_density()
+```
+
+```{r plotScatterMatrix}
 transformed$get_Plotter()$pairs_smooth()
 ```
 
-```{r}
+```{r createHeatmap}
 p <- transformed$get_Plotter()$heatmap()
 ```
 
-```{r heatmap}
+```{r plotheatmap}
 p
 ```
+
+There is also a function to create an heatmap based on the correlated samples.
+
 
 
 ```{r showStandardDeviations}
 stats <- transformed$get_Stats()
 stats$stat
-prolfqua::table_facade(stats$stats_quantiles()$wide,"Standard deviations")
+prolfqua::table_facade(stats$stats_quantiles()$wide, "Standard deviations")
 
 ```
 
@@ -141,17 +146,16 @@ stats$density_median()
 ```
 
 ```{r experiment, include = FALSE}
-transformed$factors()
-
 chsq <- na.omit(stats$statsdf$sd^2)
 plot(density(chsq[chsq < 10]))
 x <- seq(0,50, length = 1000)
-lines(x , dchisq(x, df = 4 ))
+lines(x*median(chsq) , dchisq(x, df = 4 ), col = 2)
+
 ```
 
 Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
 
-```{r checkFor, fig.cap="check if sd constant for all intensities"}
+```{r checkForHeteroskedasticity, fig.cap="check if sd constant for all intensities"}
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
@@ -159,7 +163,7 @@ stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ## Estimate sample size for main experiment.
 
 
-```{r}
+```{r estimateSampleSizes}
 sampleSize <- stats$power_t_test_quantiles() %>% filter(condition_ != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size")
 
@@ -169,12 +173,14 @@ sampleSize %>%
   geom_bar(stat = "identity")
 ```
 
-Getting the sample size for all the proteins (might take a while for all the proteins).
+Getting the sample size for all the peptides.
 
 
 ```{r pwerforAll, eval = FALSE}
 stats$power_t_test()
 ```
 
+
+Please note that these QC were made all on peptide level. Using the LFQDataAggregator you can estimate protein intensities. Sample sizes on protein level might be smaller.
 
 

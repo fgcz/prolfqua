@@ -4,7 +4,7 @@
 \alias{tidyMQ_Peptides}
 \title{parse MQ peptides.txt}
 \usage{
-tidyMQ_Peptides(MQPeptides)
+tidyMQ_Peptides(MQPeptides, proteotypic_only = TRUE)
 }
 \arguments{
 \item{MQPeptides}{data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)}

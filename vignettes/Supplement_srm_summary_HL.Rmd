@@ -1,5 +1,5 @@
 ---
-title: "Supplement - Summarize Peptide Level Measurements heave light"
+title: "Supplement - Summarize heavy light Peptide Level Measurements"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
@@ -9,11 +9,11 @@ params:
   configuration:  !r quote(prolfqua::skylineSRM_HL_A$config_f())
   data: !r quote(prolfqua::skylineSRM_HL_A$analysis(prolfqua::skylineSRM_HL_A$data, prolfqua::skylineSRM_HL_A$config_f()))
 vignette: >
-  %\VignetteIndexEntry{Supplement - Summarize Peptide Level Measurements heave light}
+  %\VignetteIndexEntry{Supplement - Summarize heavy light Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 
-```{r includeMissingInOne, child = "tr_srm_summary.Rmd"}
+```{r includeMissingInOne, child = "Supplement_srm_summary.Rmd"}
 ```

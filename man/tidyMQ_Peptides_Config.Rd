@@ -7,9 +7,10 @@
 tidyMQ_Peptides_Config(
   MQtxtfolder,
   use = c("peptides", "modificationSpecificPeptides"),
+  remove_rev = TRUE,
+  proteotypic_only = TRUE,
   id_extractor = function(df) {     prora::get_UniprotID_from_fasta_header(df, idcolumn
-    = "top_protein") },
-  remove_rev = TRUE
+    = "top_protein") }
 )
 }
 \arguments{
@@ -17,9 +18,9 @@ tidyMQ_Peptides_Config(
 
 \item{use}{either peptides.txt or modificationSpecificPeptides.txt}
 
-\item{id_extractor}{function to parse id's}
-
 \item{remove_rev}{should reverse sequences be removed}
+
+\item{id_extractor}{function to parse id's}
 }
 \description{
 read from folder or zip with the content of the MQ txt folder.

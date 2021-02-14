@@ -23,6 +23,7 @@ stopifnot("matrix" \%in\% class(tmp$data))
 lfqdata$factors()
 stopifnot(lfqdata$is_transformed()==FALSE)
 lfqdata$summarize_hierarchy()
+lfqdata$omit_NA_hierarchy()
 
 stopifnot("LFQData" \%in\% class(lfqdata$get_copy()))
 stopifnot("LFQDataTransformer" \%in\% class(lfqdata$get_Transformer()))
@@ -64,6 +65,7 @@ Other LFQData:
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
+\item \href{#method-omit_NA_hierarchy}{\code{LFQData$omit_NA_hierarchy()}}
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
@@ -174,6 +176,9 @@ some software is reporting NA's as 0, you must remove it from your data
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+self
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter_proteins_by_peptide_count"></a>}}
@@ -184,6 +189,23 @@ remove proteins with less than X peptides
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$filter_proteins_by_peptide_count()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-omit_NA_hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-omit_NA_hierarchy}{}}}
+\subsection{Method \code{omit_NA_hierarchy()}}{
+Omit NA from intensities per hierarchy, idea is to use it for normalization
+For instance if a peptide has a missing value in any of the samples it will be rmoved.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA_hierarchy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+LFQData with NA omitted.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-complete_cases"></a>}}
@@ -200,6 +222,9 @@ some software is reporting NA's as 0, you must remove it from your data
 \item{\code{threshold}}{default 4.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+self
 }
 }
 \if{html}{\out{<hr>}}
@@ -244,6 +269,9 @@ e.g. number of peptides per protein etc
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$summarize_hierarchy()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}

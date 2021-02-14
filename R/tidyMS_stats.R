@@ -1,5 +1,5 @@
 
-#' applys func - a funciton workin on matrix for each protein and returning a vector of the same length as the number of samples
+#' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration

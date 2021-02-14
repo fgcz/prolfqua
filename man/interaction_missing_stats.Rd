@@ -56,6 +56,9 @@ stopifnot(nrow(tmp) == 162)
 tmp <- interaction_missing_stats(xx, configur,
   hierarchy = configur$table$hierarchyKeys()[1])$data
 stopifnot(sum(is.na(tmp$nrMeasured))==0)
+tmp
+
+interaction_missing_stats(xx, configur, factors = NULL)
 
 }
 \keyword{internal}
