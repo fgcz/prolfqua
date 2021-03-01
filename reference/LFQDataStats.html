@@ -96,37 +96,40 @@ Decorates LFQData with methods to compute statistics of interactions" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -179,6 +182,14 @@ Decorates LFQData with methods to compute statistics of interactions" />
 
 <dt><code>stat</code></dt><dd><p>either CV or sd (if is_transformed)</p></dd>
 
+<dt><code>data</code></dt><dd><p>frame with statistics.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl>
+<dt><code>data</code></dt><dd><p>frame with statistics.</p></dd>
+
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
@@ -187,8 +198,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 
 <ul>
 <li><p><a href='#method-new'><code>LFQDataStats$new()</code></a></p></li>
-<li><p><a href='#method-cv'><code>LFQDataStats$cv()</code></a></p></li>
-<li><p><a href='#method-cv_quantiles'><code>LFQDataStats$cv_quantiles()</code></a></p></li>
+<li><p><a href='#method-stats'><code>LFQDataStats$stats()</code></a></p></li>
+<li><p><a href='#method-stats_quantiles'><code>LFQDataStats$stats_quantiles()</code></a></p></li>
 <li><p><a href='#method-density'><code>LFQDataStats$density()</code></a></p></li>
 <li><p><a href='#method-density_median'><code>LFQDataStats$density_median()</code></a></p></li>
 <li><p><a href='#method-violin'><code>LFQDataStats$violin()</code></a></p></li>
@@ -209,16 +220,16 @@ Decorates LFQData with methods to compute statistics of interactions" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-cv"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>cv()</code></h3>
+<a id="method-stats"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/stats-package.html'>stats()</a></code></h3>
 <p>compute CV sd and mean of data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>cv</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>stats</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>data.frame</p>
 <p><hr>
-<a id="method-cv_quantiles"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>cv_quantiles()</code></h3>
+<a id="method-stats_quantiles"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>stats_quantiles()</code></h3>
 <p>Determine CV or sd for the quantiles</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>cv_quantiles</span><span class='op'>(</span>probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>stats_quantiles</span><span class='op'>(</span>probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -334,8 +345,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 <span class='co'>#source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")</span>
 <span class='va'>runallfuncs</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span>
 
-  <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"data.frame"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>cv</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"long"</span>, <span class='st'>"wide"</span><span class='op'>)</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>cv_quantiles</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"data.frame"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>stats</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"long"</span>, <span class='st'>"wide"</span><span class='op'>)</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>stats_quantiles</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"ggplot"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>density</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"ggplot"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>density_median</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"ggplot"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='fu'>density</span><span class='op'>(</span><span class='st'>"ecdf"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>

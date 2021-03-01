@@ -1,17 +1,18 @@
-pandoc: 2.7.3
+pandoc: 2.11.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  ExampleAnalysis: ExampleAnalysis.html
-  ExDesignSurvey: ExDesignSurvey.html
-  LFQSurvey: LFQSurvey.html
-  prolfquaAbstract_2: prolfquaAbstract_2.html
-  Run_TidyAnalysis_HL_Skyline: Run_TidyAnalysis_HL_Skyline.html
-  Run_TidyAnalysis_Skyline_PRM: Run_TidyAnalysis_Skyline_PRM.html
-  Run_TidyCorrelationAnalysis: Run_TidyCorrelationAnalysis.html
-  subsetNormalizationofIonstarData: subsetNormalizationofIonstarData.html
-  tr_srm_summary: tr_srm_summary.html
-  tr_srm_summary_HL: tr_srm_summary_HL.html
-  YeastDataSetup: YeastDataSetup.html
-last_built: 2021-01-28T10:50Z
+  Auxiliary_ExDesignSurvey: Auxiliary_ExDesignSurvey.html
+  Auxiliary_LFQSurvey: Auxiliary_LFQSurvey.html
+  Auxiliary_prolfquaAbstract_2: Auxiliary_prolfquaAbstract_2.html
+  BenchmarkingIonstarData: BenchmarkingIonstarData.html
+  CreatingConfigurations: CreatingConfigurations.html
+  Modelling2Factors: Modelling2Factors.html
+  QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
+  Supplement_srm_summary: Supplement_srm_summary.html
+  Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
+  Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
+  Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
+  Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
+last_built: 2021-03-01T10:44Z
 

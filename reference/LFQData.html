@@ -96,37 +96,40 @@ LFQData R6 class" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -194,6 +197,7 @@ LFQData R6 class" />
 <li><p><a href='#method-is_transformed'><code>LFQData$is_transformed()</code></a></p></li>
 <li><p><a href='#method-remove_small_intensities'><code>LFQData$remove_small_intensities()</code></a></p></li>
 <li><p><a href='#method-filter_proteins_by_peptide_count'><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
+<li><p><a href='#method-omit_NA_hierarchy'><code>LFQData$omit_NA_hierarchy()</code></a></p></li>
 <li><p><a href='#method-complete_cases'><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href='#method-to_wide'><code>LFQData$to_wide()</code></a></p></li>
 <li><p><a href='#method-factors'><code>LFQData$factors()</code></a></p></li>
@@ -265,11 +269,23 @@ LFQData R6 class" />
 <dt><code>threshold</code></dt><dd><p>default 4.</p></dd>
 
 </dl><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>self</p>
 <p><hr>
 <a id="method-filter_proteins_by_peptide_count"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='filter_proteins_by_peptide_count.html'>filter_proteins_by_peptide_count()</a></code></h3>
 <p>remove proteins with less than X peptides</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>filter_proteins_by_peptide_count</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>self</p>
+<p><hr>
+<a id="method-omit_NA_hierarchy"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>omit_NA_hierarchy()</code></h3>
+<p>Omit NA from intensities per hierarchy, idea is to use it for normalization
+For instance if a peptide has a missing value in any of the samples it will be rmoved.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>omit_NA_hierarchy</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>LFQData with NA omitted.</p>
 <p><hr>
 <a id="method-complete_cases"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='complete_cases.html'>complete_cases()</a></code></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -280,6 +296,8 @@ LFQData R6 class" />
 <dt><code>threshold</code></dt><dd><p>default 4.</p></dd>
 
 </dl><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>self</p>
 <p><hr>
 <a id="method-to_wide"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>to_wide()</code></h3>
 <p>converts the data to wide</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -304,6 +322,8 @@ LFQData R6 class" />
 <p>e.g. number of peptides per protein etc</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>data.frame</p>
 <p><hr>
 <a id="method-get_Plotter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_Plotter()</code></h3>
 <p>get Plotter</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -392,44 +412,70 @@ LFQData R6 class" />
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>to_wide</span><span class='op'>(</span>as.matrix <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"matrix"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>factors</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 4</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span><span>
 #&gt;    raw.file                                          sampleName dilution. run_Id
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
-#&gt; </span><span style='color: #555555;'> 2</span><span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
-#&gt; </span><span style='color: #555555;'> 3</span><span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
-#&gt; </span><span style='color: #555555;'> 4</span><span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
-#&gt; </span><span style='color: #555555;'> 5</span><span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
-#&gt; </span><span style='color: #555555;'> 6</span><span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
-#&gt; </span><span style='color: #555555;'> 7</span><span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
-#&gt; </span><span style='color: #555555;'> 8</span><span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
-#&gt; </span><span style='color: #555555;'> 9</span><span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
-#&gt; </span><span style='color: #555555;'>10</span><span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
-#&gt; </span><span style='color: #555555;'>11</span><span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
-#&gt; </span><span style='color: #555555;'>12</span><span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
-#&gt; </span><span style='color: #555555;'>13</span><span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
-#&gt; </span><span style='color: #555555;'>14</span><span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
-#&gt; </span><span style='color: #555555;'>15</span><span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
-#&gt; </span><span style='color: #555555;'>16</span><span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
-#&gt; </span><span style='color: #555555;'>17</span><span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
-#&gt; </span><span style='color: #555555;'>18</span><span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
-#&gt; </span><span style='color: #555555;'>19</span><span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
-#&gt; </span><span style='color: #555555;'>20</span><span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>is_transformed</span><span class='op'>(</span><span class='op'>)</span><span class='op'>==</span><span class='cn'>FALSE</span><span class='op'>)</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
+#&gt; </span><span style='color: #BCBCBC;'>20</span><span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>is_transformed</span><span class='op'>(</span><span class='op'>)</span><span class='op'>==</span><span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 62 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 62 x 3</span><span>
 #&gt;    protein_Id                       isotope_n peptide_Id_n
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P02769~18~NA                        1           34
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P34955~32~NA                        1           13
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__Q3SZR3~50~NA                        1            7
-#&gt; </span><span style='color: #555555;'> 4</span><span> sp|O95373|IPO7_HUMAN~600~O95373          1           26
-#&gt; </span><span style='color: #555555;'> 5</span><span> sp|P02924|ARAF_ECOLI~705~P02924          1            6
-#&gt; </span><span style='color: #555555;'> 6</span><span> sp|P04150|GCR_HUMAN~721~P04150           1            5
-#&gt; </span><span style='color: #555555;'> 7</span><span> sp|P07602|SAP_HUMAN~814~P07602           1           12
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|P07951|TPM2_HUMAN~829~P07951          1           21
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|P08238|HS90B_HUMAN~837~P08238         1           41
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|P0A6L2|DAPA_ECOLI~914~P0A6L2          1            5
-#&gt; </span><span style='color: #555555;'># ... with 52 more rows</span><span></div><div class='input'>
+#&gt;  </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P02769~18~NA                        1           34
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P34955~32~NA                        1           13
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__Q3SZR3~50~NA                        1            7
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> sp|O95373|IPO7_HUMAN~600~O95373          1           26
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sp|P02924|ARAF_ECOLI~705~P02924          1            6
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|P04150|GCR_HUMAN~721~P04150           1            5
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|P07602|SAP_HUMAN~814~P07602           1           12
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|P07951|TPM2_HUMAN~829~P07951          1           21
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|P08238|HS90B_HUMAN~837~P08238         1           41
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|P0A6L2|DAPA_ECOLI~914~P0A6L2          1            5
+#&gt; </span><span style='color: #949494;'># ... with 52 more rows</span><span></div><div class='input'><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>omit_NA_hierarchy</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; &lt;LFQData&gt;
+#&gt;   Public:
+#&gt;     clone: function (deep = FALSE) 
+#&gt;     complete_cases: function () 
+#&gt;     config: AnalysisConfiguration, R6
+#&gt;     data: tbl_df, tbl, data.frame
+#&gt;     factors: function () 
+#&gt;     filter_difference: function (other) 
+#&gt;     filter_proteins_by_peptide_count: function () 
+#&gt;     get_Aggregator: function () 
+#&gt;     get_copy: function () 
+#&gt;     get_Plotter: function () 
+#&gt;     get_sample: function (size = 100) 
+#&gt;     get_Stats: function () 
+#&gt;     get_Summariser: function () 
+#&gt;     get_Transformer: function () 
+#&gt;     get_Writer: function (format = "xlsx") 
+#&gt;     initialize: function (data, config, is_pep = TRUE, prefix = "ms_") 
+#&gt;     is_pep: TRUE
+#&gt;     is_transformed: function (is_transformed) 
+#&gt;     omit_NA_hierarchy: function () 
+#&gt;     prefix: ms_
+#&gt;     remove_small_intensities: function (threshold = 4) 
+#&gt;     subject_id: function () 
+#&gt;     summarize_hierarchy: function () 
+#&gt;     to_wide: function (as.matrix = FALSE) </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"LFQData"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_copy</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"LFQDataTransformer"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"LFQDataStats"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Stats</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>

@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -205,29 +208,29 @@
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>summarizeRobust_config</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>conf</span><span class='op'>)</span>
 
 <span class='fu'>prolfqua</span><span class='fu'>:::</span><span class='fu'>.reestablish_condition</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>bb</span>, <span class='va'>conf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 8</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 8</span><span>
 #&gt;    sampleName dilution. run_Id raw.file isotope mean.peptide.in~  weights  lmrob
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> b~02       b         02     b03_02_~ light          70</span><span style='text-decoration: underline;'>845</span><span>993. 3.98</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.54</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 2</span><span> c~03       c         03     b03_03_~ light          69</span><span style='text-decoration: underline;'>363</span><span>043. 1.21</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.32</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 3</span><span> d~04       d         04     b03_04_~ light          67</span><span style='text-decoration: underline;'>994</span><span>529. 1.49</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.26</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 4</span><span> e~05       e         05     b03_05_~ light          62</span><span style='text-decoration: underline;'>812</span><span>643. 1.16</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.91</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 5</span><span> e~06       e         06     b03_06_~ light          67</span><span style='text-decoration: underline;'>705</span><span>308. 1.80</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.72</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 6</span><span> d~07       d         07     b03_07_~ light          54</span><span style='text-decoration: underline;'>308</span><span>813. 1.00</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.41</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 7</span><span> c~08       c         08     b03_08_~ light          61</span><span style='text-decoration: underline;'>674</span><span>100  8.96</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 5.78</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 8</span><span> b~09       b         09     b03_09_~ light          70</span><span style='text-decoration: underline;'>944</span><span>417. 3.09</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.67</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 9</span><span> a~10       a         10     b03_10_~ light          66</span><span style='text-decoration: underline;'>899</span><span>623. 8.27</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 5.87</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>10</span><span> a~11       a         11     b03_11_~ light          75</span><span style='text-decoration: underline;'>611</span><span>447. 1.13</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.37</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>11</span><span> b~12       b         12     b03_12_~ light          79</span><span style='text-decoration: underline;'>307</span><span>067. 6.70</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.34</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>12</span><span> c~13       c         13     b03_13_~ light          67</span><span style='text-decoration: underline;'>809</span><span>215. 3.96</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.77</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>13</span><span> d~14       d         14     b03_14_~ light          78</span><span style='text-decoration: underline;'>312</span><span>000  2.70</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.90</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>14</span><span> e~15       e         15     b03_15_~ light          77</span><span style='text-decoration: underline;'>760</span><span>429. 3.99</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.21</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>15</span><span> e~16       e         16     b03_16_~ light          70</span><span style='text-decoration: underline;'>743</span><span>500  7.85</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 6.87</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>16</span><span> d~17       d         17     b03_17_~ light          81</span><span style='text-decoration: underline;'>735</span><span>462. 9.39</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.08</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>17</span><span> c~18       c         18     b03_18_~ light          74</span><span style='text-decoration: underline;'>486</span><span>688. 3.50</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.06</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>18</span><span> b~19       b         19     b03_19_~ light          74</span><span style='text-decoration: underline;'>329</span><span>840  1.19</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.15</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>19</span><span> a~20       a         20     b03_20_~ light          73</span><span style='text-decoration: underline;'>915</span><span>533. 5.14</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.15</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>20</span><span> a~21       a         21     b03_21_~ light          70</span><span style='text-decoration: underline;'>448</span><span>067. 7.99</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-15</span><span> 6.78</span><span style='color: #555555;'>e</span><span>7</div></span></pre>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b~02       b         02     b03_02_~ light          70</span><span style='text-decoration: underline;'>845</span><span>993. 3.98</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.54</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> c~03       c         03     b03_03_~ light          69</span><span style='text-decoration: underline;'>363</span><span>043. 1.21</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.32</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> d~04       d         04     b03_04_~ light          67</span><span style='text-decoration: underline;'>994</span><span>529. 1.49</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.26</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> e~05       e         05     b03_05_~ light          62</span><span style='text-decoration: underline;'>812</span><span>643. 1.16</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.91</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> e~06       e         06     b03_06_~ light          67</span><span style='text-decoration: underline;'>705</span><span>308. 1.80</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.72</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> d~07       d         07     b03_07_~ light          54</span><span style='text-decoration: underline;'>308</span><span>813. 1.00</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.41</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> c~08       c         08     b03_08_~ light          61</span><span style='text-decoration: underline;'>674</span><span>100  8.96</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 5.78</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b~09       b         09     b03_09_~ light          70</span><span style='text-decoration: underline;'>944</span><span>417. 3.09</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.67</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> a~10       a         10     b03_10_~ light          66</span><span style='text-decoration: underline;'>899</span><span>623. 8.27</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 5.87</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> a~11       a         11     b03_11_~ light          75</span><span style='text-decoration: underline;'>611</span><span>447. 1.13</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.37</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b~12       b         12     b03_12_~ light          79</span><span style='text-decoration: underline;'>307</span><span>067. 6.70</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.34</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> c~13       c         13     b03_13_~ light          67</span><span style='text-decoration: underline;'>809</span><span>215. 3.96</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 5.77</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> d~14       d         14     b03_14_~ light          78</span><span style='text-decoration: underline;'>312</span><span>000  2.70</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 6.90</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> e~15       e         15     b03_15_~ light          77</span><span style='text-decoration: underline;'>760</span><span>429. 3.99</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.21</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> e~16       e         16     b03_16_~ light          70</span><span style='text-decoration: underline;'>743</span><span>500  7.85</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 6.87</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> d~17       d         17     b03_17_~ light          81</span><span style='text-decoration: underline;'>735</span><span>462. 9.39</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.08</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> c~18       c         18     b03_18_~ light          74</span><span style='text-decoration: underline;'>486</span><span>688. 3.50</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.06</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b~19       b         19     b03_19_~ light          74</span><span style='text-decoration: underline;'>329</span><span>840  1.19</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span> 7.15</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> a~20       a         20     b03_20_~ light          73</span><span style='text-decoration: underline;'>915</span><span>533. 5.14</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 7.15</span><span style='color: #949494;'>e</span><span>7
+#&gt; </span><span style='color: #BCBCBC;'>20</span><span> a~21       a         21     b03_21_~ light          70</span><span style='text-decoration: underline;'>448</span><span>067. 7.99</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> 6.78</span><span style='color: #949494;'>e</span><span>7</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

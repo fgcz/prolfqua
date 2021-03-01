@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -205,29 +208,29 @@
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>xnested</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>medpolishPlydf_config</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>conf</span><span class='op'>)</span>
 <span class='fu'>prolfqua</span><span class='fu'>:::</span><span class='fu'>.reestablish_condition</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>bb</span>, <span class='va'>conf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 6</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 6</span><span>
 #&gt;    sampleName dilution. run_Id raw.file                        isotope medpolish
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> b~02       b         02     b03_02_150304_human_ecoli_b_3u~ light   53</span><span style='text-decoration: underline;'>281</span><span>919.
-#&gt; </span><span style='color: #555555;'> 2</span><span> c~03       c         03     b03_03_150304_human_ecoli_c_3u~ light   53</span><span style='text-decoration: underline;'>108</span><span>622.
-#&gt; </span><span style='color: #555555;'> 3</span><span> d~04       d         04     b03_04_150304_human_ecoli_d_3u~ light   51</span><span style='text-decoration: underline;'>768</span><span>575 
-#&gt; </span><span style='color: #555555;'> 4</span><span> e~05       e         05     b03_05_150304_human_ecoli_e_3u~ light   48</span><span style='text-decoration: underline;'>923</span><span>212.
-#&gt; </span><span style='color: #555555;'> 5</span><span> e~06       e         06     b03_06_150304_human_ecoli_e_3u~ light   46</span><span style='text-decoration: underline;'>757</span><span>962.
-#&gt; </span><span style='color: #555555;'> 6</span><span> d~07       d         07     b03_07_150304_human_ecoli_d_3u~ light   43</span><span style='text-decoration: underline;'>139</span><span>562.
-#&gt; </span><span style='color: #555555;'> 7</span><span> c~08       c         08     b03_08_150304_human_ecoli_c_3u~ light   49</span><span style='text-decoration: underline;'>301</span><span>991.
-#&gt; </span><span style='color: #555555;'> 8</span><span> b~09       b         09     b03_09_150304_human_ecoli_b_3u~ light   46</span><span style='text-decoration: underline;'>173</span><span>388.
-#&gt; </span><span style='color: #555555;'> 9</span><span> a~10       a         10     b03_10_150304_human_ecoli_a_3u~ light   47</span><span style='text-decoration: underline;'>789</span><span>438.
-#&gt; </span><span style='color: #555555;'>10</span><span> a~11       a         11     b03_11_150304_human_ecoli_a_3u~ light   61</span><span style='text-decoration: underline;'>505</span><span>569.
-#&gt; </span><span style='color: #555555;'>11</span><span> b~12       b         12     b03_12_150304_human_ecoli_b_3u~ light   57</span><span style='text-decoration: underline;'>534</span><span>412.
-#&gt; </span><span style='color: #555555;'>12</span><span> c~13       c         13     b03_13_150304_human_ecoli_c_3u~ light   50</span><span style='text-decoration: underline;'>100</span><span>838.
-#&gt; </span><span style='color: #555555;'>13</span><span> d~14       d         14     b03_14_150304_human_ecoli_d_3u~ light   58</span><span style='text-decoration: underline;'>970</span><span>725 
-#&gt; </span><span style='color: #555555;'>14</span><span> e~15       e         15     b03_15_150304_human_ecoli_e_3u~ light   61</span><span style='text-decoration: underline;'>280</span><span>338.
-#&gt; </span><span style='color: #555555;'>15</span><span> e~16       e         16     b03_16_150304_human_ecoli_e_3u~ light   56</span><span style='text-decoration: underline;'>780</span><span>612.
-#&gt; </span><span style='color: #555555;'>16</span><span> d~17       d         17     b03_17_150304_human_ecoli_d_3u~ light   59</span><span style='text-decoration: underline;'>887</span><span>225 
-#&gt; </span><span style='color: #555555;'>17</span><span> c~18       c         18     b03_18_150304_human_ecoli_c_3u~ light   57</span><span style='text-decoration: underline;'>788</span><span>409.
-#&gt; </span><span style='color: #555555;'>18</span><span> b~19       b         19     b03_19_150304_human_ecoli_b_3u~ light   60</span><span style='text-decoration: underline;'>040</span><span>838.
-#&gt; </span><span style='color: #555555;'>19</span><span> a~20       a         20     b03_20_150304_human_ecoli_a_3u~ light   57</span><span style='text-decoration: underline;'>032</span><span>150 
-#&gt; </span><span style='color: #555555;'>20</span><span> a~21       a         21     b03_21_150304_human_ecoli_a_3u~ light   55</span><span style='text-decoration: underline;'>993</span><span>412.</div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b~02       b         02     b03_02_150304_human_ecoli_b_3u~ light   53</span><span style='text-decoration: underline;'>281</span><span>919.
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> c~03       c         03     b03_03_150304_human_ecoli_c_3u~ light   53</span><span style='text-decoration: underline;'>108</span><span>622.
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> d~04       d         04     b03_04_150304_human_ecoli_d_3u~ light   51</span><span style='text-decoration: underline;'>768</span><span>575 
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> e~05       e         05     b03_05_150304_human_ecoli_e_3u~ light   48</span><span style='text-decoration: underline;'>923</span><span>212.
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> e~06       e         06     b03_06_150304_human_ecoli_e_3u~ light   46</span><span style='text-decoration: underline;'>757</span><span>962.
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> d~07       d         07     b03_07_150304_human_ecoli_d_3u~ light   43</span><span style='text-decoration: underline;'>139</span><span>562.
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> c~08       c         08     b03_08_150304_human_ecoli_c_3u~ light   49</span><span style='text-decoration: underline;'>301</span><span>991.
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b~09       b         09     b03_09_150304_human_ecoli_b_3u~ light   46</span><span style='text-decoration: underline;'>173</span><span>388.
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> a~10       a         10     b03_10_150304_human_ecoli_a_3u~ light   47</span><span style='text-decoration: underline;'>789</span><span>438.
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> a~11       a         11     b03_11_150304_human_ecoli_a_3u~ light   61</span><span style='text-decoration: underline;'>505</span><span>569.
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b~12       b         12     b03_12_150304_human_ecoli_b_3u~ light   57</span><span style='text-decoration: underline;'>534</span><span>412.
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> c~13       c         13     b03_13_150304_human_ecoli_c_3u~ light   50</span><span style='text-decoration: underline;'>100</span><span>838.
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> d~14       d         14     b03_14_150304_human_ecoli_d_3u~ light   58</span><span style='text-decoration: underline;'>970</span><span>725 
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> e~15       e         15     b03_15_150304_human_ecoli_e_3u~ light   61</span><span style='text-decoration: underline;'>280</span><span>338.
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> e~16       e         16     b03_16_150304_human_ecoli_e_3u~ light   56</span><span style='text-decoration: underline;'>780</span><span>612.
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> d~17       d         17     b03_17_150304_human_ecoli_d_3u~ light   59</span><span style='text-decoration: underline;'>887</span><span>225 
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> c~18       c         18     b03_18_150304_human_ecoli_c_3u~ light   57</span><span style='text-decoration: underline;'>788</span><span>409.
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b~19       b         19     b03_19_150304_human_ecoli_b_3u~ light   60</span><span style='text-decoration: underline;'>040</span><span>838.
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> a~20       a         20     b03_20_150304_human_ecoli_a_3u~ light   57</span><span style='text-decoration: underline;'>032</span><span>150 
+#&gt; </span><span style='color: #BCBCBC;'>20</span><span> a~21       a         21     b03_21_150304_human_ecoli_a_3u~ light   55</span><span style='text-decoration: underline;'>993</span><span>412.</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

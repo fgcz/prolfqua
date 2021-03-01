@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -211,29 +214,29 @@
 <span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>mb</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "linfct_factors"      "linfct_interactions"</div><div class='input'><span class='fu'>my_glht</span><span class='op'>(</span><span class='va'>mb</span>, <span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: USE ONLY WITH LM models lmerModLmerTest</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 10</span><span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: USE ONLY WITH LM models lmerModLmerTest</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 10</span><span>
 #&gt;   contrast null.value estimate std.error statistic adj.p.value conf.low
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Celltyp~          0   -</span><span style='color: #BB0000;'>0.663</span><span>     0.343     -</span><span style='color: #BB0000;'>1.93</span><span>      0.053</span><span style='text-decoration: underline;'>5</span><span>    -</span><span style='color: #BB0000;'>1.34</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> Celltyp~          0   -</span><span style='color: #BB0000;'>0.529</span><span>     0.343     -</span><span style='color: #BB0000;'>1.54</span><span>      0.123     -</span><span style='color: #BB0000;'>1.20</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.535</span><span>     0.344     -</span><span style='color: #BB0000;'>1.55</span><span>      0.120     -</span><span style='color: #BB0000;'>1.21</span><span>
-#&gt; </span><span style='color: #555555;'>4</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.635</span><span>     0.344     -</span><span style='color: #BB0000;'>1.84</span><span>      0.065</span><span style='text-decoration: underline;'>3</span><span>    -</span><span style='color: #BB0000;'>1.31</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.618</span><span>     0.344     -</span><span style='color: #BB0000;'>1.80</span><span>      0.072</span><span style='text-decoration: underline;'>4</span><span>    -</span><span style='color: #BB0000;'>1.29</span><span>
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: conf.high </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, df </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, sigma </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Celltyp~          0   -</span><span style='color: #BB0000;'>0.663</span><span>     0.343     -</span><span style='color: #BB0000;'>1.93</span><span>      0.053</span><span style='text-decoration: underline;'>5</span><span>    -</span><span style='color: #BB0000;'>1.34</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Celltyp~          0   -</span><span style='color: #BB0000;'>0.529</span><span>     0.343     -</span><span style='color: #BB0000;'>1.54</span><span>      0.123     -</span><span style='color: #BB0000;'>1.20</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.535</span><span>     0.344     -</span><span style='color: #BB0000;'>1.55</span><span>      0.120     -</span><span style='color: #BB0000;'>1.21</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.635</span><span>     0.344     -</span><span style='color: #BB0000;'>1.84</span><span>      0.065</span><span style='text-decoration: underline;'>3</span><span>    -</span><span style='color: #BB0000;'>1.31</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> class_t~          0   -</span><span style='color: #BB0000;'>0.618</span><span>     0.344     -</span><span style='color: #BB0000;'>1.80</span><span>      0.072</span><span style='text-decoration: underline;'>4</span><span>    -</span><span style='color: #BB0000;'>1.29</span><span>
+#&gt; </span><span style='color: #949494;'># ... with 3 more variables: conf.high </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, df </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sigma </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='modellingResult_A.html'>modellingResult_A</a></span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>$</span><span class='va'>linear_model</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 <span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>$</span><span class='va'>linfct_factors</span>
 <span class='fu'>my_glht</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>linfct</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 7 x 10</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 7 x 10</span><span>
 #&gt;   contrast null.value estimate std.error statistic adj.p.value conf.low
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Interve~          0     3.38     0.128      26.3           0     3.13
-#&gt; </span><span style='color: #555555;'>2</span><span> Interve~          0     3.34     0.137      24.3           0     3.07
-#&gt; </span><span style='color: #555555;'>3</span><span> Mortali~          0     3.43     0.110      31.2           0     3.21
-#&gt; </span><span style='color: #555555;'>4</span><span> Mortali~          0     3.30     0.159      20.8           0     2.98
-#&gt; </span><span style='color: #555555;'>5</span><span> NRSNRS_3          0     3.40     0.162      21.0           0     3.08
-#&gt; </span><span style='color: #555555;'>6</span><span> NRSNRS_4          0     3.23     0.160      20.2           0     2.92
-#&gt; </span><span style='color: #555555;'>7</span><span> NRSNRS_5          0     3.45     0.160      21.6           0     3.14
-#&gt; </span><span style='color: #555555;'># ... with 3 more variables: conf.high </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, df </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, sigma </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Interve~          0     3.38     0.128      26.3           0     3.13
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Interve~          0     3.34     0.137      24.3           0     3.07
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Mortali~          0     3.43     0.110      31.2           0     3.21
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Mortali~          0     3.30     0.159      20.8           0     2.98
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> NRSNRS_3          0     3.40     0.162      21.0           0     3.08
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> NRSNRS_4          0     3.23     0.160      20.2           0     2.92
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> NRSNRS_5          0     3.45     0.160      21.6           0     3.14
+#&gt; </span><span style='color: #949494;'># ... with 3 more variables: conf.high </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, df </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, sigma </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

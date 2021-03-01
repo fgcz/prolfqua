@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -208,9 +211,9 @@
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>-- <span style='font-weight: bold;'>Attaching packages</span><span> --------------------------------------- tidyverse 1.3.0 --</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.3     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4</span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.5     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.3</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.6     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.4</span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>tidyr  </span><span> 1.1.2     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0</span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.4.0     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span></div><div class='output co'>#&gt; <span class='message'>-- </span><span style='font-weight: bold;'>Conflicts</span><span> ------------------------------------------ tidyverse_conflicts() --</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.4.0     </span><span style='color: #00BB00;'>v</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.1</span></div><div class='output co'>#&gt; <span class='message'>-- </span><span style='font-weight: bold;'>Conflicts</span><span> ------------------------------------------ tidyverse_conflicts() --</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span> masks </span><span style='color: #0000BB;'>stats</span><span>::filter()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>    masks </span><span style='color: #0000BB;'>stats</span><span>::lag()</span></div><div class='input'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='va'>config</span>
@@ -220,20 +223,20 @@
 <span class='st'>"srm_meanInt"</span>  ,<span class='st'>"srm_meanIntRank"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'>distinct</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'>arrange</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'>syms</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>,<span class='st'>"srm_meanIntRank"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,289 x 4</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1,289 x 4</span><span>
 #&gt;    protein_Id        peptide_Id      srm_meanInt srm_meanIntRank
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK    10</span><span style='text-decoration: underline;'>803</span><span>230               1
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P01030~9~NA  LLLFSPSVVR          6</span><span style='text-decoration: underline;'>566</span><span>270               2
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P01030~9~NA  AELADQAASWLTR       5</span><span style='text-decoration: underline;'>877</span><span>025               3
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__P02769~18~NA KVPQVSTPTLVEVSR  </span><span style='text-decoration: underline;'>2</span><span>948</span><span style='text-decoration: underline;'>500</span><span>000               1
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__P02769~18~NA HLVDEPQNLIK      </span><span style='text-decoration: underline;'>2</span><span>050</span><span style='text-decoration: underline;'>275</span><span>000               2
-#&gt; </span><span style='color: #555555;'> 6</span><span> CON__P02769~18~NA LVNELTEFAK       </span><span style='text-decoration: underline;'>1</span><span>884</span><span style='text-decoration: underline;'>675</span><span>000               3
-#&gt; </span><span style='color: #555555;'> 7</span><span> CON__P02769~18~NA FKDLGEEHFK       </span><span style='text-decoration: underline;'>1</span><span>118</span><span style='text-decoration: underline;'>469</span><span>000               4
-#&gt; </span><span style='color: #555555;'> 8</span><span> CON__P02769~18~NA LGEYGFQNALIVR     899</span><span style='text-decoration: underline;'>119</span><span>500               5
-#&gt; </span><span style='color: #555555;'> 9</span><span> CON__P02769~18~NA YLYEIAR           879</span><span style='text-decoration: underline;'>368</span><span>000               6
-#&gt; </span><span style='color: #555555;'>10</span><span> CON__P02769~18~NA TVMENFVAFVDK      781</span><span style='text-decoration: underline;'>287</span><span>500               7
-#&gt; </span><span style='color: #555555;'># ... with 1,279 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK    10</span><span style='text-decoration: underline;'>803</span><span>230               1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P01030~9~NA  LLLFSPSVVR          6</span><span style='text-decoration: underline;'>566</span><span>270               2
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P01030~9~NA  AELADQAASWLTR       5</span><span style='text-decoration: underline;'>877</span><span>025               3
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P02769~18~NA KVPQVSTPTLVEVSR  </span><span style='text-decoration: underline;'>2</span><span>948</span><span style='text-decoration: underline;'>500</span><span>000               1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P02769~18~NA HLVDEPQNLIK      </span><span style='text-decoration: underline;'>2</span><span>050</span><span style='text-decoration: underline;'>275</span><span>000               2
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P02769~18~NA LVNELTEFAK       </span><span style='text-decoration: underline;'>1</span><span>884</span><span style='text-decoration: underline;'>675</span><span>000               3
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P02769~18~NA FKDLGEEHFK       </span><span style='text-decoration: underline;'>1</span><span>118</span><span style='text-decoration: underline;'>469</span><span>000               4
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P02769~18~NA LGEYGFQNALIVR     899</span><span style='text-decoration: underline;'>119</span><span>500               5
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P02769~18~NA YLYEIAR           879</span><span style='text-decoration: underline;'>368</span><span>000               6
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P02769~18~NA TVMENFVAFVDK      781</span><span style='text-decoration: underline;'>287</span><span>500               7
+#&gt; </span><span style='color: #949494;'># ... with 1,279 more rows</span><span></div><div class='input'>
 <span class='va'>mean_f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>name</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
  <span class='kw'>if</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span><span class='op'>{</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='st'>"mean"</span><span class='op'>)</span><span class='op'>}</span>;<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
  <span class='op'>}</span>

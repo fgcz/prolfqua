@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -201,54 +204,54 @@
 
 <span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'>table_factors</span><span class='op'>(</span><span class='va'>data</span>,<span class='va'>config</span> <span class='op'>)</span>
 <span class='va'>xx</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 20 x 4</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span><span>
 #&gt;    raw.file                                          sampleName dilution. run_Id
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
-#&gt; </span><span style='color: #555555;'> 2</span><span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
-#&gt; </span><span style='color: #555555;'> 3</span><span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
-#&gt; </span><span style='color: #555555;'> 4</span><span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
-#&gt; </span><span style='color: #555555;'> 5</span><span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
-#&gt; </span><span style='color: #555555;'> 6</span><span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
-#&gt; </span><span style='color: #555555;'> 7</span><span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
-#&gt; </span><span style='color: #555555;'> 8</span><span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
-#&gt; </span><span style='color: #555555;'> 9</span><span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
-#&gt; </span><span style='color: #555555;'>10</span><span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
-#&gt; </span><span style='color: #555555;'>11</span><span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
-#&gt; </span><span style='color: #555555;'>12</span><span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
-#&gt; </span><span style='color: #555555;'>13</span><span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
-#&gt; </span><span style='color: #555555;'>14</span><span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
-#&gt; </span><span style='color: #555555;'>15</span><span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
-#&gt; </span><span style='color: #555555;'>16</span><span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
-#&gt; </span><span style='color: #555555;'>17</span><span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
-#&gt; </span><span style='color: #555555;'>18</span><span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
-#&gt; </span><span style='color: #555555;'>19</span><span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
-#&gt; </span><span style='color: #555555;'>20</span><span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='va'>xx</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>syms</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>factorKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
+#&gt; </span><span style='color: #BCBCBC;'>20</span><span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='va'>xx</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>syms</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>factorKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`summarise()` has grouped output by 'dilution.'. You can override using the `.groups` argument.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 20 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   dilution. [5]</span><span>
+</div><div class='output co'>#&gt; <span class='message'>`summarise()` has grouped output by 'dilution.'. You can override using the `.groups` argument.</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 20 x 3</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   dilution. [5]</span><span>
 #&gt;    dilution. run_Id     n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> a         10         1
-#&gt; </span><span style='color: #555555;'> 2</span><span> a         11         1
-#&gt; </span><span style='color: #555555;'> 3</span><span> a         20         1
-#&gt; </span><span style='color: #555555;'> 4</span><span> a         21         1
-#&gt; </span><span style='color: #555555;'> 5</span><span> b         02         1
-#&gt; </span><span style='color: #555555;'> 6</span><span> b         09         1
-#&gt; </span><span style='color: #555555;'> 7</span><span> b         12         1
-#&gt; </span><span style='color: #555555;'> 8</span><span> b         19         1
-#&gt; </span><span style='color: #555555;'> 9</span><span> c         03         1
-#&gt; </span><span style='color: #555555;'>10</span><span> c         08         1
-#&gt; </span><span style='color: #555555;'>11</span><span> c         13         1
-#&gt; </span><span style='color: #555555;'>12</span><span> c         18         1
-#&gt; </span><span style='color: #555555;'>13</span><span> d         04         1
-#&gt; </span><span style='color: #555555;'>14</span><span> d         07         1
-#&gt; </span><span style='color: #555555;'>15</span><span> d         14         1
-#&gt; </span><span style='color: #555555;'>16</span><span> d         17         1
-#&gt; </span><span style='color: #555555;'>17</span><span> e         05         1
-#&gt; </span><span style='color: #555555;'>18</span><span> e         06         1
-#&gt; </span><span style='color: #555555;'>19</span><span> e         15         1
-#&gt; </span><span style='color: #555555;'>20</span><span> e         16         1</div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a         10         1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a         11         1
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a         20         1
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a         21         1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> b         02         1
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b         09         1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b         12         1
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b         19         1
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> c         03         1
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> c         08         1
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> c         13         1
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> c         18         1
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> d         04         1
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> d         07         1
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> d         14         1
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> d         17         1
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> e         05         1
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> e         06         1
+#&gt; </span><span style='color: #BCBCBC;'>19</span><span> e         15         1
+#&gt; </span><span style='color: #BCBCBC;'>20</span><span> e         16         1</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

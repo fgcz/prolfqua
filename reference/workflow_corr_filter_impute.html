@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -197,129 +200,9 @@
 
 <span class='va'>config</span><span class='op'>$</span><span class='va'>parameter</span><span class='op'>$</span><span class='va'>min_nr_of_notNA</span>  <span class='op'>&lt;-</span> <span class='fl'>3</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>workflow_corr_filter_impute</span><span class='op'>(</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Columns added : srm_QValueMin, srm_QValueNR</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; <span class='message'>Columns added : srm_NrNotNAs srm_NrNotNARank</span></div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 75: row.names = "NCPHVVVGTPGR", col.names = "VNIVFNYDMPEDSDTYLHR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 95: row.names = "VNIVFNYDMPEDSDTYLHR", col.names = "NCPHVVVGTPGR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 141: row.names = "ETAPGDISPYTIPEEDR", col.names = "PVMQALLHIIR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 381: row.names = "PVMQALLHIIR", col.names = "ETAPGDISPYTIPEEDR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 87: row.names = "KAEAQIAAK", col.names = "MNLGVGAYRDDNGKPYVLPSVR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 107: row.names = "MNLGVGAYRDDNGKPYVLPSVR", col.names = "KAEAQIAAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 3: row.names = "MTEWETAAPAVAETPDIK", col.names = "QAVDVSPLRR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 15: row.names = "QAVDVSPLRR", col.names = "MTEWETAAPAVAETPDIK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 18: row.names = "QAVDVSPLRR", col.names = "RQAVDVSPLR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 24: row.names = "RQAVDVSPLR", col.names = "QAVDVSPLRR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 3: row.names = "LLDGFFIRPFYK", col.names = "RPTPQDNLTDAENGNIQLQAQR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 7: row.names = "RPTPQDNLTDAENGNIQLQAQR", col.names = "LLDGFFIRPFYK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 588: row.names = "DHRDNLEFFLAGIGR", col.names = "VMGLVPAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 1467: row.names = "GGPEVQQVPAGER", col.names = "PLFLVHPIEGSTTVFHSLASR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 1488: row.names = "GGPEVQQVPAGER", col.names = "VMGLVPAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 3095: row.names = "PLFLVHPIEGSTTVFHSLASR", col.names = "GGPEVQQVPAGER".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 4658: row.names = "VMGLVPAK", col.names = "DHRDNLEFFLAGIGR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 4670: row.names = "VMGLVPAK", col.names = "GGPEVQQVPAGER".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 21: row.names = "DMILQFISR", col.names = "RPLILQLIFSK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 93: row.names = "RPLILQLIFSK", col.names = "DMILQFISR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 335: row.names = "EKLCYVALDFEQEMATAASSSSLEK", col.names = "HQGVMVGMGQKDSYVGDEAQSK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 447: row.names = "HQGVMVGMGQKDSYVGDEAQSK", col.names = "EKLCYVALDFEQEMATAASSSSLEK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 125: row.names = "FMETTDPSTASSLQAK", col.names = "SIDELNSAWDSLNK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 437: row.names = "SIDELNSAWDSLNK", col.names = "FMETTDPSTASSLQAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 452: row.names = "SIDELNSAWDSLNK", col.names = "TAFSSLSNVSSER".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 530: row.names = "TAFSSLSNVSSER", col.names = "SIDELNSAWDSLNK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 374: row.names = "GPLEYVPSAK", col.names = "TAVFGFETSEAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 378: row.names = "GPLEYVPSAK", col.names = "VVAGDEWLFEGPGTYIPR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 608: row.names = "TAVFGFETSEAK", col.names = "GPLEYVPSAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 716: row.names = "VVAGDEWLFEGPGTYIPR", col.names = "GPLEYVPSAK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 32: row.names = "ALSINTLVK", col.names = "SVPNQPSTNEILQAVLK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 34: row.names = "ALSINTLVK", col.names = "VKHEVSGETVVFQGGALGK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 87: row.names = "SVPNQPSTNEILQAVLK", col.names = "ALSINTLVK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 96: row.names = "SVPNQPSTNEILQAVLK", col.names = "YQFDPNLGIR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 111: row.names = "VKHEVSGETVVFQGGALGK", col.names = "ALSINTLVK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 140: row.names = "YQFDPNLGIR", col.names = "SVPNQPSTNEILQAVLK".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 3: row.names = "DQQNLPYGVTPASPSGHSQGR", col.names = "TTPTPSTNSVLSTSTNR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 9: row.names = "TTPTPSTNSVLSTSTNR", col.names = "DQQNLPYGVTPASPSGHSQGR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 180: row.names = "VLPLEEAYR", col.names = "YLLEQDFPGMR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `srmDecor`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> no non-missing arguments to max; returning -Inf</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> Input `srmDecor` is `map(spreadMatrix, .decorelatedPly, minCorrelation)`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>i</span><span> The error occurred in group 222: row.names = "YLLEQDFPGMR", col.names = "VLPLEEAYR".</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `cols` is now required when using unnest().</span>
+</div><div class='output co'>#&gt; <span class='message'>Columns added : srm_QValueMin, srm_QValueNR</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; <span class='message'>Columns added : srm_NrNotNAs srm_NrNotNARank</span></div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `cols` is now required when using unnest().</span>
 #&gt; <span class='warning'>Please use `cols = c(srmDecor)`</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; <span class='message'>Columns added : srm_meanInt srm_meanIntRank</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

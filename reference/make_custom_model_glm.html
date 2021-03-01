@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -230,19 +233,21 @@
     <pre class="examples"><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>make_custom_model_glm</span><span class='op'>(</span><span class='st'>"Intensity ~ condition"</span>, model_name <span class='op'>=</span> <span class='st'>"parallel design"</span><span class='op'>)</span>
 <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Intensity ~ condition
-#&gt; &lt;environment: 0x000000000541eda0&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
-</div><div class='output co'>#&gt; function(m){
-#&gt;   anyNA &lt;- any(is.na(coefficients(m)))
-#&gt;   if (anyNA) {
-#&gt;     return(TRUE)
-#&gt;   } else {
-#&gt;     if (df.residual(m) &gt; 0) {
-#&gt;       return(FALSE)
+#&gt; &lt;environment: 0x00000000097707d0&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
+</div><div class='output co'>#&gt; function (m) 
+#&gt; {
+#&gt;     anyNA &lt;- any(is.na(coefficients(m)))
+#&gt;     if (anyNA) {
+#&gt;         return(TRUE)
 #&gt;     }
-#&gt;     return(TRUE)
-#&gt;   }
+#&gt;     else {
+#&gt;         if (df.residual(m) &gt; 0) {
+#&gt;             return(FALSE)
+#&gt;         }
+#&gt;         return(TRUE)
+#&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x0000000045ebb580&gt;
+#&gt; &lt;bytecode: 0x000000004b5b3408&gt;
 #&gt; &lt;environment: namespace:prolfqua&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -96,37 +96,40 @@ Limma moderated contrasts" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -288,26 +291,26 @@ Limma moderated contrasts" />
  <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'>ContrastsModerated</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>,
  <span class='va'>Contr</span><span class='op'>)</span>
  <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>determine linear functions:</span></div><div class='output co'>#&gt; <span class='message'>compute contrasts:</span></div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id")</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 59 x 25</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   contrast [1]</span><span>
+</div><div class='output co'>#&gt; <span class='message'>determine linear functions:</span></div><div class='output co'>#&gt; <span class='message'>compute contrasts:</span></div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id")</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 59 x 25</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   contrast [1]</span><span>
 #&gt;    contrast protein_Id     c1     c2 c1_name c2_name estimate std.error    df
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> dil.b_v~ sp|P21589~  0.883  0.981 diluti~ diluti~  -</span><span style='color: #BB0000;'>0.097</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span>    0.055</span><span style='text-decoration: underline;'>9</span><span> 263. 
-#&gt; </span><span style='color: #555555;'> 2</span><span> dil.b_v~ sp|Q9NZM3~ -</span><span style='color: #BB0000;'>1.61</span><span>  -</span><span style='color: #BB0000;'>1.91</span><span>  diluti~ diluti~   0.305     0.164   11.4
-#&gt; </span><span style='color: #555555;'> 3</span><span> dil.b_v~ sp|P0A908~ -</span><span style='color: #BB0000;'>1.55</span><span>  -</span><span style='color: #BB0000;'>0.553</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.997</span><span>     0.200   27.0
-#&gt; </span><span style='color: #555555;'> 4</span><span> dil.b_v~ sp|Q9Y3A5~ -</span><span style='color: #BB0000;'>0.130</span><span> -</span><span style='color: #BB0000;'>0.190</span><span> diluti~ diluti~   0.060</span><span style='text-decoration: underline;'>1</span><span>    0.069</span><span style='text-decoration: underline;'>4</span><span> 164. 
-#&gt; </span><span style='color: #555555;'> 5</span><span> dil.b_v~ sp|P07602~  1.05   0.976 diluti~ diluti~   0.076</span><span style='text-decoration: underline;'>8</span><span>    0.079</span><span style='text-decoration: underline;'>0</span><span> 193. 
-#&gt; </span><span style='color: #555555;'> 6</span><span> dil.b_v~ sp|Q07866~ -</span><span style='color: #BB0000;'>0.974</span><span> -</span><span style='color: #BB0000;'>1.03</span><span>  diluti~ diluti~   0.058</span><span style='text-decoration: underline;'>0</span><span>    0.101   12.9
-#&gt; </span><span style='color: #555555;'> 7</span><span> dil.b_v~ sp|P41252~ -</span><span style='color: #BB0000;'>0.146</span><span> -</span><span style='color: #BB0000;'>0.128</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.017</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span>    0.042</span><span style='text-decoration: underline;'>1</span><span> 483. 
-#&gt; </span><span style='color: #555555;'> 8</span><span> dil.b_v~ sp|P0A6L2~ -</span><span style='color: #BB0000;'>0.919</span><span> -</span><span style='color: #BB0000;'>0.422</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.497</span><span>     0.074</span><span style='text-decoration: underline;'>1</span><span>  15.5
-#&gt; </span><span style='color: #555555;'> 9</span><span> dil.b_v~ sp|P50570~ -</span><span style='color: #BB0000;'>0.814</span><span> -</span><span style='color: #BB0000;'>0.898</span><span> diluti~ diluti~   0.084</span><span style='text-decoration: underline;'>1</span><span>    0.062</span><span style='text-decoration: underline;'>5</span><span> 218. 
-#&gt; </span><span style='color: #555555;'>10</span><span> dil.b_v~ sp|Q03001~ -</span><span style='color: #BB0000;'>1.48</span><span>  -</span><span style='color: #BB0000;'>1.52</span><span>  diluti~ diluti~   0.039</span><span style='text-decoration: underline;'>4</span><span>    0.039</span><span style='text-decoration: underline;'>3</span><span> 499. 
-#&gt; </span><span style='color: #555555;'># ... with 49 more rows, and 16 more variables: statistic </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   conf.low </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, conf.high </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, p.value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, sigma </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   isSingular </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, sigma.model </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, df.residual.model </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, FDR </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   moderated.df.prior </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.var.prior </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   moderated.var.post </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.statistic </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   moderated.df.total </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, moderated.p.value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, FDR.moderated </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'> <span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> dil.b_v~ sp|P21589~  0.883  0.981 diluti~ diluti~  -</span><span style='color: #BB0000;'>0.097</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span>    0.055</span><span style='text-decoration: underline;'>9</span><span> 263. 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> dil.b_v~ sp|Q9NZM3~ -</span><span style='color: #BB0000;'>1.61</span><span>  -</span><span style='color: #BB0000;'>1.91</span><span>  diluti~ diluti~   0.305     0.164   11.4
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> dil.b_v~ sp|P0A908~ -</span><span style='color: #BB0000;'>1.55</span><span>  -</span><span style='color: #BB0000;'>0.553</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.997</span><span>     0.200   27.0
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> dil.b_v~ sp|Q9Y3A5~ -</span><span style='color: #BB0000;'>0.130</span><span> -</span><span style='color: #BB0000;'>0.190</span><span> diluti~ diluti~   0.060</span><span style='text-decoration: underline;'>1</span><span>    0.069</span><span style='text-decoration: underline;'>4</span><span> 164. 
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> dil.b_v~ sp|P07602~  1.05   0.976 diluti~ diluti~   0.076</span><span style='text-decoration: underline;'>8</span><span>    0.079</span><span style='text-decoration: underline;'>0</span><span> 193. 
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> dil.b_v~ sp|Q07866~ -</span><span style='color: #BB0000;'>0.974</span><span> -</span><span style='color: #BB0000;'>1.03</span><span>  diluti~ diluti~   0.058</span><span style='text-decoration: underline;'>0</span><span>    0.101   12.9
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> dil.b_v~ sp|P41252~ -</span><span style='color: #BB0000;'>0.146</span><span> -</span><span style='color: #BB0000;'>0.128</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.017</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span>    0.042</span><span style='text-decoration: underline;'>1</span><span> 483. 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> dil.b_v~ sp|P0A6L2~ -</span><span style='color: #BB0000;'>0.919</span><span> -</span><span style='color: #BB0000;'>0.422</span><span> diluti~ diluti~  -</span><span style='color: #BB0000;'>0.497</span><span>     0.074</span><span style='text-decoration: underline;'>1</span><span>  15.5
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> dil.b_v~ sp|P50570~ -</span><span style='color: #BB0000;'>0.814</span><span> -</span><span style='color: #BB0000;'>0.898</span><span> diluti~ diluti~   0.084</span><span style='text-decoration: underline;'>1</span><span>    0.062</span><span style='text-decoration: underline;'>5</span><span> 218. 
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> dil.b_v~ sp|Q03001~ -</span><span style='color: #BB0000;'>1.48</span><span>  -</span><span style='color: #BB0000;'>1.52</span><span>  diluti~ diluti~   0.039</span><span style='text-decoration: underline;'>4</span><span>    0.039</span><span style='text-decoration: underline;'>3</span><span> 499. 
+#&gt; </span><span style='color: #949494;'># ... with 49 more rows, and 16 more variables: statistic </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   conf.low </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, conf.high </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p.value </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, sigma </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   isSingular </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, sigma.model </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, df.residual.model </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, FDR </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   moderated.df.prior </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, moderated.var.prior </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   moderated.var.post </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, moderated.statistic </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   moderated.df.total </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, moderated.p.value </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, FDR.moderated </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'> <span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
  <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='ContrastsModerated-1.png' alt='' width='700' height='433' /></div><div class='input'> <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>ma_plot</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='ContrastsModerated-2.png' alt='' width='700' height='433' /></div><div class='input'> <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span><span class='op'>)</span>

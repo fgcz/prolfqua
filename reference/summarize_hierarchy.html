@@ -95,37 +95,40 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ExampleAnalysis.html">prolfqua - Proteomics Label Free Quantification</a>
+      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
     </li>
     <li>
-      <a href="../articles/ExDesignSurvey.html">Bioinformatics Project Meeting Agenda</a>
+      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
-      <a href="../articles/LFQSurvey.html">Project meeting (bioinfo) Agenda</a>
+      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
-      <a href="../articles/prolfquaAbstract_2.html">Euro Bioconductor 2020</a>
+      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_HL_Skyline.html">Example of data preprocessing of Heavy Light data</a>
+      <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyAnalysis_Skyline_PRM.html">Example of data preprocessing for PRM data</a>
+      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/Run_TidyCorrelationAnalysis.html">Analyse correlation among precursors</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
     </li>
     <li>
-      <a href="../articles/subsetNormalizationofIonstarData.html">Proprocessing the Ionstar dataset</a>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary.html">Summarize Peptide Level Measurements</a>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
     <li>
-      <a href="../articles/tr_srm_summary_HL.html">Summarize Peptide Level Measurements heave light</a>
+      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
-      <a href="../articles/YeastDataSetup.html">Data Preprocessing of Yeast data from the Combined Course FGCZ</a>
+      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
   </ul>
 </li>
@@ -206,124 +209,124 @@
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
 
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 163 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 163 x 3</span><span>
 #&gt;    protein_Id                       isotope_n peptide_Id_n
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA                         1            3
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P02769~18~NA                        1           34
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P34955~32~NA                        1           13
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__Q28107~41~NA                        1            4
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
-#&gt; </span><span style='color: #555555;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
-#&gt; </span><span style='color: #555555;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
-#&gt; </span><span style='color: #555555;'># ... with 153 more rows</span><span></div><div class='input'><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, factors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 163 x 3</span><span>
+#&gt;  </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA                         1            3
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P02769~18~NA                        1           34
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P34955~32~NA                        1           13
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__Q28107~41~NA                        1            4
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
+#&gt; </span><span style='color: #949494;'># ... with 153 more rows</span><span></div><div class='input'><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, factors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 163 x 3</span><span>
 #&gt;    protein_Id                       isotope_n peptide_Id_n
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA                         1            3
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P02769~18~NA                        1           34
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P34955~32~NA                        1           13
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__Q28107~41~NA                        1            4
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
-#&gt; </span><span style='color: #555555;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
-#&gt; </span><span style='color: #555555;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
-#&gt; </span><span style='color: #555555;'># ... with 153 more rows</span><span></div><div class='input'>
+#&gt;  </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA                         1            3
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P02769~18~NA                        1           34
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P34955~32~NA                        1           13
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__Q28107~41~NA                        1            4
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
+#&gt; </span><span style='color: #949494;'># ... with 153 more rows</span><span></div><div class='input'>
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>,
  hierarchy <span class='op'>=</span> <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 163 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 163 x 3</span><span>
 #&gt;    protein_Id                       isotope_n peptide_Id_n
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA                         1            3
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P02769~18~NA                        1           34
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P34955~32~NA                        1           13
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__Q28107~41~NA                        1            4
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
-#&gt; </span><span style='color: #555555;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
-#&gt; </span><span style='color: #555555;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
-#&gt; </span><span style='color: #555555;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
-#&gt; </span><span style='color: #555555;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
-#&gt; </span><span style='color: #555555;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
-#&gt; </span><span style='color: #555555;'># ... with 153 more rows</span><span></div><div class='input'><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>,
+#&gt;  </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA                         1            3
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P02769~18~NA                        1           34
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P34955~32~NA                        1           13
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__Q28107~41~NA                        1            4
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__Q3SZR3~50~NA                        1            7
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|O00148|DX39A_HUMAN~156~O00148         1           11
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|O14548|COX7R_HUMAN~221~O14548         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3
+#&gt; </span><span style='color: #949494;'># ... with 153 more rows</span><span></div><div class='input'><span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>,
  hierarchy <span class='op'>=</span> <span class='cn'>NULL</span>, factors <span class='op'>=</span> <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>fkeysDepth</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 4</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 4</span><span>
 #&gt;   dilution. isotope_n protein_Id_n peptide_Id_n
-#&gt; </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> a                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
-#&gt; </span><span style='color: #555555;'>2</span><span> b                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
-#&gt; </span><span style='color: #555555;'>3</span><span> c                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
-#&gt; </span><span style='color: #555555;'>4</span><span> d                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
-#&gt; </span><span style='color: #555555;'>5</span><span> e                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258</div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>1</span>
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> b                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> c                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> d                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> e                 1          163         </span><span style='text-decoration: underline;'>1</span><span>258</div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>1</span>
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>,
  factors <span class='op'>=</span> <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>fkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 815 x 4</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   dilution. [5]</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 815 x 4</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   dilution. [5]</span><span>
 #&gt;    dilution. protein_Id                       isotope_n peptide_Id_n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> a         CON__P01030~9~NA                         1            3
-#&gt; </span><span style='color: #555555;'> 2</span><span> a         CON__P02769~18~NA                        1           34
-#&gt; </span><span style='color: #555555;'> 3</span><span> a         CON__P34955~32~NA                        1           13
-#&gt; </span><span style='color: #555555;'> 4</span><span> a         CON__Q28107~41~NA                        1            4
-#&gt; </span><span style='color: #555555;'> 5</span><span> a         CON__Q3SZR3~50~NA                        1            7
-#&gt; </span><span style='color: #555555;'> 6</span><span> a         sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
-#&gt; </span><span style='color: #555555;'> 7</span><span> a         sp|O00148|DX39A_HUMAN~156~O00148         1           11
-#&gt; </span><span style='color: #555555;'> 8</span><span> a         sp|O14548|COX7R_HUMAN~221~O14548         1            2
-#&gt; </span><span style='color: #555555;'> 9</span><span> a         sp|O14745|NHRF1_HUMAN~240~O14745         1           11
-#&gt; </span><span style='color: #555555;'>10</span><span> a         sp|O15145|ARPC3_HUMAN~283~O15145         1            3
-#&gt; </span><span style='color: #555555;'># ... with 805 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>2</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a         CON__P01030~9~NA                         1            3
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a         CON__P02769~18~NA                        1           34
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a         CON__P34955~32~NA                        1           13
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a         CON__Q28107~41~NA                        1            4
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a         CON__Q3SZR3~50~NA                        1            7
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> a         sp|L0R819|ASURF_HUMAN~152~L0R819         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> a         sp|O00148|DX39A_HUMAN~156~O00148         1           11
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> a         sp|O14548|COX7R_HUMAN~221~O14548         1            2
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> a         sp|O14745|NHRF1_HUMAN~240~O14745         1           11
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> a         sp|O15145|ARPC3_HUMAN~283~O15145         1            3
+#&gt; </span><span style='color: #949494;'># ... with 805 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>2</span>
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,289 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [163]</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1,289 x 3</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   protein_Id [163]</span><span>
 #&gt;    protein_Id        peptide_Id              n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
-#&gt; </span><span style='color: #555555;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
-#&gt; </span><span style='color: #555555;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
-#&gt; </span><span style='color: #555555;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
-#&gt; </span><span style='color: #555555;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
-#&gt; </span><span style='color: #555555;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
-#&gt; </span><span style='color: #555555;'># ... with 1,279 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>3</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
+#&gt; </span><span style='color: #949494;'># ... with 1,279 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>3</span>
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,289 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [163]</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1,289 x 3</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   protein_Id [163]</span><span>
 #&gt;    protein_Id        peptide_Id              n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
-#&gt; </span><span style='color: #555555;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
-#&gt; </span><span style='color: #555555;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
-#&gt; </span><span style='color: #555555;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
-#&gt; </span><span style='color: #555555;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
-#&gt; </span><span style='color: #555555;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
-#&gt; </span><span style='color: #555555;'># ... with 1,279 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>4</span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
+#&gt; </span><span style='color: #949494;'># ... with 1,279 more rows</span><span></div><div class='input'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>4</span>
 <span class='fu'>summarize_hierarchy</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,289 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   protein_Id [163]</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1,289 x 3</span><span>
+#&gt; </span><span style='color: #949494;'># Groups:   protein_Id [163]</span><span>
 #&gt;    protein_Id        peptide_Id              n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
-#&gt; </span><span style='color: #555555;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
-#&gt; </span><span style='color: #555555;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
-#&gt; </span><span style='color: #555555;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
-#&gt; </span><span style='color: #555555;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
-#&gt; </span><span style='color: #555555;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
-#&gt; </span><span style='color: #555555;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
-#&gt; </span><span style='color: #555555;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
-#&gt; </span><span style='color: #555555;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
-#&gt; </span><span style='color: #555555;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
-#&gt; </span><span style='color: #555555;'># ... with 1,279 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA  AELADQAASWLTR           1
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P01030~9~NA  ILSLAQDQVGGSAEK         1
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P01030~9~NA  LLLFSPSVVR              1
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P02769~18~NA AEFVEVTK                1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P02769~18~NA DDPHACYSTVFDK           1
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P02769~18~NA DDPHACYSTVFDKLK         1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P02769~18~NA ECCHGDLLECADDRADLAK     1
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P02769~18~NA ETYGDMADCCEK            1
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P02769~18~NA EYEATLEECCAK            1
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P02769~18~NA FKDLGEEHFK              1
+#&gt; </span><span style='color: #949494;'># ... with 1,279 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
