@@ -1,10 +1,10 @@
 ---
-title: "QC and Sample Size Estimation."
+title: "QC and Sample Size Estimation"
 author: "Witold Wolski"
 date: "14/12/2020"
 output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{QC and Sample Size Estimation.} 
+  %\VignetteIndexEntry{QC and Sample Size Estimation} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
