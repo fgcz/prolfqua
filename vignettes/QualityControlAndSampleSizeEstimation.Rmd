@@ -7,7 +7,8 @@ vignette: >
   %\VignetteIndexEntry{QC and Sample Size Estimation.} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -25,19 +26,6 @@ library(prolfqua)
 library(tidyverse)
 
 
-
-atable <- AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
-# measurement levels.
-atable$hierarchy[["protein_Id"]] <- c("top_protein")
-atable$hierarchy[["peptide_Id"]] <- c("sequence")
-atable$hierarchyDepth <- 1
-atable$ident_qValue = "pep"
-atable$setWorkIntensity("peptide.intensity")
-anaparam <- AnalysisParameters$new()
-anaparam$min_peptides_protein <- 2
-config <- AnalysisConfiguration$new(atable, anaparam)
-
 ```
 
 
@@ -45,13 +33,40 @@ config <- AnalysisConfiguration$new(atable, anaparam)
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
-startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
-startdata <- prolfqua::tidyMQ_top_protein_name(startdata, prot_col = "proteins")
 
+startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
+head(startdata)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
+head(annotation)
 
-startdata <- inner_join(annotation, startdata)
+startdata <- inner_join(annotation, startdata, by= "raw.file")
+head(startdata)
+```
+
+For the sample size estimation we will use bio-reps from one condition. Also remove all proteins identified only by a single peptide.
+
+
+```{r}
+startdata <- startdata %>% filter(condition  == "Ethanol")
+startdata <- startdata %>% filter(nr.peptides > 1)
+
+```
+
+Telling `prolfqua` at which columns to look.
+
+
+```{r}
+
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
+atable$hierarchyDepth <- 1
+atable$setWorkIntensity("mq.protein.intensity")
+
+anaparam <- AnalysisParameters$new()
+config <- AnalysisConfiguration$new(atable, anaparam)
+
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -59,49 +74,78 @@ config$table$factors[["Run_ID"]] = "Run_ID"
 config$table$factorDepth <- 1
 
 adata <- setup_analysis(startdata, config)
-
-xx <- toWideConfig(adata, config)
-
-adata <- adata %>% filter(condition_ == "Ethanol")
-
 ```
 
-Remove zeros from data, and filter for at least two peptides (proteins with a single peptide are dropped).
+
+
+```{r}
+xx <- toWideConfig(adata, config)
+xx$data[1000:1003,1:3]
+xx$annotation
+```
+
+Create the LFQData class instance, remove zeros from data.
 
 ```{r filterdata}
 lfqdata <- LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
-lfqdata$config$parameter$min_peptides_protein
-lfqdata$filter_proteins_by_peptide_count()
-
+lfqdata$to_wide()$data[1000:1003,1:3]
 ```
+
 
 ## Visualization of not normalized data
 
 ```{r makeMissingHeatmap}
 lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
+```
+
+
+### Visualization of missing data
+
+```{r}
 nah <- lfqplotter$NA_heatmap()
 ```
 
-```{r printMissingHeatmap}
+```{r printMissingHeatmap, fig.cap="Heatmap, black - missing protein intensities, white - present"}
 nah
 ```
 
-```{r}
+
+
+```{r fig.cap="# of proteins with 0,1,...N missing values"}
 lfqplotter$missingness_per_condition()
 ```
+
+```{r fig.cap="Cumulative sum of the # of proteins with 0,1,...N missing values"}
+lfqplotter$missingness_per_condition_cumsum()
+```
+
+```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}
+lfqplotter$missigness_histogram()
+```
+
+# Computing standard deviations, mean and CV.
 
 
 ```{r PlotCVDistributions}
 stats <- lfqdata$get_Stats()
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
+```
 
+
+```{r fig.cap="Distribution of CV's"}
 stats$density_median()
+
+```
+
+
+```{r fig.cap="Scatter plot of standard deviation vs mean"}
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
-## Normalize
+
+## Normalize protein intensities
 
 We normalize the data by $\log2$ transforming and then z-scaling.
 
@@ -112,25 +156,32 @@ transformed$config$table$is_intensity_transformed
 
 ```
 
-```{r plotDensities}
+```{r plotDensities, fig.cap="Normalized intensities."}
 pl <- transformed$get_Plotter()
 pl$intensity_distribution_density()
 ```
 
-```{r plotScatterMatrix}
-transformed$get_Plotter()$pairs_smooth()
+```{r plotScatterMatrix, fig.cap = "Scatterplot matrix"}
+pl$pairs_smooth()
 ```
 
 ```{r createHeatmap}
-p <- transformed$get_Plotter()$heatmap()
+p <- pl$heatmap()
 ```
 
-```{r plotheatmap}
+```{r plotheatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
 p
 ```
 
-There is also a function to create an heatmap based on the correlated samples.
+There is also a function to create an heatmap based on the correlation among samples.
 
+```{r heatmapCor, fig.cap="Heatmap based on sample correlations, Rows - samples, Columns - samples", fig.align=5, fig.height=5}
+hc <- pl$heatmap_cor()
+```
+
+```{r plotHeatmapCor}
+hc
+```
 
 
 ```{r showStandardDeviations}
@@ -150,37 +201,49 @@ chsq <- na.omit(stats$statsdf$sd^2)
 plot(density(chsq[chsq < 10]))
 x <- seq(0,50, length = 1000)
 lines(x*median(chsq) , dchisq(x, df = 4 ), col = 2)
-
 ```
 
 Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
 
-```{r checkForHeteroskedasticity, fig.cap="check if sd constant for all intensities"}
+```{r checkForHeteroskedasticity, fig.cap="Scatter plot of sd vs mean of protein intensity"}
 stats$stdv_vs_mean(size = 400) + scale_x_log10() + scale_y_log10()
 ```
 
 
-## Estimate sample size for main experiment.
+## Estimate sample size
 
 
 ```{r estimateSampleSizes}
 sampleSize <- stats$power_t_test_quantiles() %>% filter(condition_ != "All")
-prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size")
+prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
 
 sampleSize %>%
   ggplot(aes(x = factor(probs) , y = N)) +
   facet_wrap(~delta) +
   geom_bar(stat = "identity")
+
 ```
 
-Getting the sample size for all the peptides.
+Getting statistics for each protein.
 
+```{r stats, eval = TRUE}
+stats$stats()
 
-```{r pwerforAll, eval = FALSE}
-stats$power_t_test()
 ```
 
 
-Please note that these QC were made all on peptide level. Using the LFQDataAggregator you can estimate protein intensities. Sample sizes on protein level might be smaller.
+Getting the sample size for each protein.
+
+```{r statsWithN, eval = TRUE, fig.cap = "Histogram of sample sizes per protein for three effect sizes."}
+
+x <- stats$power_t_test()
+x <- x %>% filter(condition_ == "Ethanol") %>% arrange(protein_Id)
+prolfqua::table_facade(x[1000:1007,], caption = "Sample size for each protein")
+
+x %>% ggplot(aes(x = N)) + geom_histogram() + facet_wrap(~delta) + xlim(0,100)
+
+```
+
+
 
 
