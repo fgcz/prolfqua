@@ -9,6 +9,8 @@ vignette: |
   %\VignetteIndexEntry{Modelling dataset with two Factors.}  
   %\VignetteEncoding{UTF-8}   
   %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -60,8 +62,6 @@ Preprocess and normalize Data.
 
 ```{r}
 adata <- setup_analysis(data, config)
-xx <- toWideConfig(adata, config)
-
 adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
 
@@ -110,7 +110,6 @@ config$table$factorDepth <- 1
 
 ```{r}
 adata <- setup_analysis(data, config)
-xx <- toWideConfig(adata, config)
 adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
 
@@ -137,15 +136,12 @@ print(ha2370)
 To simulate a factorial design we merge both datasets.
 
 ```{r}
-
 outpath <- "results_modelling"
 data <- bind_rows(p2691$data, p2370$data)
 
-
-# creates default configuration
-
 config <- p2691$config$clone(deep = TRUE)
 config$table$factorDepth <- 2
+
 ```
 
 ## QC for merged dataset 
@@ -157,7 +153,6 @@ pl$intensity_distribution_density()
 
 ```{r mergeData}
 pMerged <- LFQData$new(data, config)
-
 bb <- pMerged$complete_cases()
 ```
 
@@ -166,7 +161,6 @@ pl <- pMerged$get_Plotter()
 pl$sample_correlation()
 ph <- pl$heatmap_cor()
 pha <- pl$NA_heatmap()
-
 
 ```
 
@@ -181,16 +175,13 @@ print(pha)
 ```
 
 
-```{r plotBoxplot,fig.cap="Peptide level Boxplot"}
-bb <- pl$boxplots()
-bb$boxplot[[1]]
-
-```
-
 ```{r summarizeCounts}
 su <- pMerged$get_Summariser()
 su$hierarchy_counts()
+
 ```
+
+
 
 ```{r, fig.cap = "Number of Proteins or peptides per sample in merged dataset"}
 su$hierarchy_counts_sample("plot")
@@ -204,10 +195,12 @@ pAgg <- pMerged$get_Aggregator()
 prot <- pAgg$medpolish()
 ```
 
-generate diagnostik plots
+Generate diagnostic plots for Protein aggregation.
+
 ```{r createDiagnostics, fig.cap="summarize Aggration result", fig.width=8, fig.height=7}
 tmp <- pAgg$plot()
 ggpubr::ggarrange(plotlist =  tmp$plots[1:6])
+
 ```
 
 ```{r plotBoxplotProt}
@@ -246,7 +239,7 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 
 
-```{r}
+```{r specifyModel}
 
 
 formula_Batches <-
@@ -260,15 +253,25 @@ mod <- prolfqua::build_model(
 ```
 
 
-```{r}
 
-mod$get_anova()
-mod$coef_histogram()
+```{r anovaPvaluePlots, fig.cap="p-value distributions for ANOVA analysis."}
 mod$anova_histogram()
+```
+
+Examine proteins with a significant interaction between the two factors treatment and batch.
+
+```{r anovaAnalysis}
+ANOVA <- mod$get_anova()
+unique(ANOVA$factor)
+ANOVA %>% filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head(5)
+protIntSig <- ANOVA %>% filter(factor == "condition_:batch_") %>% filter(FDR.Pr..F. < 0.05)
+protInt <-  prot$get_copy()
+protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
+ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 
 ```
 
-## compute contrasts
+# Compute contrasts
 
 ```{r}
 contr <- ContrastsModerated$new(mod, Contrasts)
@@ -284,7 +287,21 @@ plotter$ma_plot()
 ```
 
 
-## Annalyse contrasts with missin gdata imputation
+```{r}
+sigInteraction <- contrdf %>% 
+  filter(contrast == "Interaction" & FDR.moderated < 0.1)
+protInt <-  prot$get_copy()
+protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
+hm <- protInt$get_Plotter()$heatmap()
+
+```
+
+```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
+hm
+```
+
+
+# Annalyse contrasts with missing data imputation
 
 ```{r}
 contrSimple <- ContrastsSimpleImpute$new(protdata, Contrasts)
@@ -295,4 +312,3 @@ pl$histogram_estimate()
 ```
 
 
-### compare estimate
