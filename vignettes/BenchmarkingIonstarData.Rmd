@@ -108,10 +108,18 @@ Create a sample of N proteins to speed up computations of models and contrasts.
 N <- 200
 set.seed(2020)
 hk <- mqdata$config$table$hkeysDepth()
+
+if (FALSE) {
 protein_Ids <- mqdata$data %>%
   select(all_of(hk)) %>%
   distinct() %>%
   sample_n(size = N)
+} else {
+protein_Ids <- mqdata$data %>%
+  select(all_of(hk)) %>%
+  distinct() #%>%
+  #sample_n(size = N)
+}
 
 lfqNormSubset <- lfqdataNormalized$get_copy()
 lfqNormSubset$data <- inner_join(protein_Ids, lfqNormSubset$data)
@@ -256,7 +264,7 @@ lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
 modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
 
 mod <- prolfqua::build_model(protLFQ$data, modelFunction)
-mod$coef_pairs()$plot
+
 
 ```
 
