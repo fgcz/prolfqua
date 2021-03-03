@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
@@ -115,7 +115,7 @@
       <h1 data-toc-skip>Benchmarking normalization, aggregation and models using the Ionstar Dataset</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">02 March, 2021</h4>
+            <h4 class="date">03 March, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/BenchmarkingIonstarData.Rmd"><code>vignettes/BenchmarkingIonstarData.Rmd</code></a></small>
       <div class="hidden name"><code>BenchmarkingIonstarData.Rmd</code></div>
@@ -178,10 +178,18 @@
 <code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">200</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">)</span>
 <span class="va">hk</span> <span class="op">&lt;-</span> <span class="va">mqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
 <span class="va">protein_Ids</span> <span class="op">&lt;-</span> <span class="va">mqdata</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">hk</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">N</span><span class="op">)</span>
+<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+<span class="va">protein_Ids</span> <span class="op">&lt;-</span> <span class="va">mqdata</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">hk</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="co">#%&gt;%</span>
+  <span class="co">#sample_n(size = N)</span>
+<span class="op">}</span>
 
 <span class="va">lfqNormSubset</span> <span class="op">&lt;-</span> <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
 <span class="va">lfqNormSubset</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">protein_Ids</span>, <span class="va">lfqNormSubset</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
@@ -362,9 +370,7 @@
 
 <span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_custom_model_lm.html">make_custom_model_lm</a></span><span class="op">(</span> <span class="va">lmmodel</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span>
 
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">data</span>, <span class="va">modelFunction</span><span class="op">)</span>
-<span class="va">mod</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">plot</span></code></pre></div>
-<p><img src="BenchmarkingIonstarData_files/figure-html/buildModelLM-1.png" width="960"></p>
+<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">data</span>, <span class="va">modelFunction</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">relevantContrasts</span><span class="op">)</span>
 <span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
@@ -385,20 +391,20 @@
                                                   <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"FDR.moderated"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 652 x 22
+<pre><code>## # A tibble: 16,120 x 22
 ##    contrast protein_Id     c1     c2 c1_name c2_name  sigma    df estimate
 ##    &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
-##  1 dilutio~ sp|P11498~ -1.59  -1.57  diluti~ diluti~ 0.228     15 -0.0209 
-##  2 dilutio~ sp|P07395~ -2.28  -2.54  diluti~ diluti~ 0.166     10  0.260  
-##  3 dilutio~ sp|Q9NZU5~ -0.247 -0.106 diluti~ diluti~ 0.340     14 -0.141  
-##  4 dilutio~ sp|O43615~ -0.810 -0.808 diluti~ diluti~ 0.0566    15 -0.00209
-##  5 dilutio~ sp|P0AG51~ -0.125 -0.668 diluti~ diluti~ 0.304     15  0.543  
-##  6 dilutio~ sp|Q6UWU4~ -2.65  -3.53  diluti~ diluti~ 1.32       2  0.877  
-##  7 dilutio~ sp|P62829~  2.40   2.32  diluti~ diluti~ 0.113     15  0.0865 
-##  8 dilutio~ sp|Q13185~  1.12   1.16  diluti~ diluti~ 0.0958    15 -0.0391 
-##  9 dilutio~ sp|P45973~  0.111  0.238 diluti~ diluti~ 0.275     15 -0.127  
-## 10 dilutio~ sp|Q6GMV3~ -0.875 -0.822 diluti~ diluti~ 0.141     15 -0.0528 
-## # ... with 642 more rows, and 13 more variables: std.error &lt;dbl&gt;,
+##  1 dilutio~ sp|A0A0U1~ NA     -1.94  diluti~ diluti~ 0.192      1  NA     
+##  2 dilutio~ sp|A0AVT1~ -1.19  -1.27  diluti~ diluti~ 0.135     15   0.0852
+##  3 dilutio~ sp|A0FGR8~ -0.231 -0.311 diluti~ diluti~ 0.0848    15   0.0791
+##  4 dilutio~ sp|A0MZ66~ -1.23  -1.14  diluti~ diluti~ 0.115     15  -0.0907
+##  5 dilutio~ sp|A1L0T0~ -1.45  -1.48  diluti~ diluti~ 0.287     15   0.0326
+##  6 dilutio~ sp|A1X283~ -1.74  -1.51  diluti~ diluti~ 0.267     15  -0.235 
+##  7 dilutio~ sp|A2RRP1~ -2.53  -2.30  diluti~ diluti~ 0.155     14  -0.228 
+##  8 dilutio~ sp|A3KN83~ -1.90  -2.03  diluti~ diluti~ 0.323     15   0.128 
+##  9 dilutio~ sp|A4D1E9~ -1.28  -1.49  diluti~ diluti~ 0.163     15   0.212 
+## 10 dilutio~ sp|A5PLL7~ -2.11  -2.05  diluti~ diluti~ 0.296     15  -0.0595
+## # ... with 16,110 more rows, and 13 more variables: std.error &lt;dbl&gt;,
 ## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,
 ## #   isSingular &lt;lgl&gt;, FDR &lt;dbl&gt;, moderated.p.value &lt;dbl&gt;, FDR.moderated &lt;dbl&gt;,
 ## #   species &lt;chr&gt;, TP &lt;lgl&gt;, scaled.p.value &lt;dbl&gt;,
@@ -424,20 +430,20 @@
 <span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">cs</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">estimate_median</span><span class="op">)</span>
 <span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">cs</span><span class="op">)</span>
 <span class="va">ttd</span><span class="op">$</span><span class="va">data</span></code></pre></div>
-<pre><code>## # A tibble: 652 x 14
+<pre><code>## # A tibble: 16,120 x 14
 ##    contrast protein_Id c1_name c2_name     c1     c2     n estimate estimate_mad
 ##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;
-##  1 dilutio~ sp|E9PAV3~ diluti~ diluti~  3.46   3.41      6  -0.0808       0.153 
-##  2 dilutio~ sp|O00115~ diluti~ diluti~ -1.34  -1.05      2  -0.284        0.486 
-##  3 dilutio~ sp|O14617~ diluti~ diluti~ -1.40  -1.44     10   0.0255       0.311 
-##  4 dilutio~ sp|O15127~ diluti~ diluti~ -1.10  -0.959     2  -0.140        0.254 
-##  5 dilutio~ sp|O15446~ diluti~ diluti~ -1.17  -1.07      5  -0.148        0.615 
-##  6 dilutio~ sp|O43169~ diluti~ diluti~  0.546  1.02      7  -0.0602       0.251 
-##  7 dilutio~ sp|O43615~ diluti~ diluti~ -0.775 -0.650    10  -0.120        0.0636
-##  8 dilutio~ sp|O43920~ diluti~ diluti~ -0.472 -0.436     2  -0.0360       0.134 
-##  9 dilutio~ sp|O60573~ diluti~ diluti~ -1.84  -1.68      5  -0.165        0.767 
-## 10 dilutio~ sp|O75886~ diluti~ diluti~ -0.287 -0.113     4  -0.105        0.0763
-## # ... with 642 more rows, and 5 more variables: isSingular &lt;lgl&gt;,
+##  1 dilutio~ sp|A0A0U1~ diluti~ diluti~ -2.02  -2.10      2   0.0762       0.113 
+##  2 dilutio~ sp|A0AVT1~ diluti~ diluti~ -1.27  -1.28     12  -0.0292       0.164 
+##  3 dilutio~ sp|A0FGR8~ diluti~ diluti~ -0.594 -0.367    16   0.0760       0.427 
+##  4 dilutio~ sp|A0MZ66~ diluti~ diluti~ -1.15  -1.21     10  -0.0484       0.0942
+##  5 dilutio~ sp|A1L0T0~ diluti~ diluti~ -1.33  -1.57      5  -0.172        0.147 
+##  6 dilutio~ sp|A1X283~ diluti~ diluti~ -1.78  -1.69      5  -0.0226       0.612 
+##  7 dilutio~ sp|A2RRP1~ diluti~ diluti~ -2.46  -2.22      4  -0.200        0.353 
+##  8 dilutio~ sp|A3KN83~ diluti~ diluti~ -2.02  -2.00      5  -0.0153       0.0227
+##  9 dilutio~ sp|A4D1E9~ diluti~ diluti~ -1.32  -1.68      5   0.197        0.253 
+## 10 dilutio~ sp|A5PLL7~ diluti~ diluti~ -1.82  -2.02      3  -0.236        0.889 
+## # ... with 16,110 more rows, and 5 more variables: isSingular &lt;lgl&gt;,
 ## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, species &lt;chr&gt;, TP &lt;lgl&gt;</code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">medpol_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_benchmark.html">make_benchmark</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span>,

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
-      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation.</a>
+      <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
@@ -171,11 +171,6 @@ sample correlation heatmap merged
 Missing data heatmap for merged data
 </p>
 </div>
-<div class="figure">
-<img src="Modelling2Factors_files/figure-html/plotBoxplot-1.png" alt="Peptide level Boxplot" width="960"><p class="caption">
-Peptide level Boxplot
-</p>
-</div>
 <pre><code>## # A tibble: 1 x 3
 ##   isotope protein_Id peptide_Id
 ## * &lt;chr&gt;        &lt;int&gt;      &lt;int&gt;
@@ -189,7 +184,7 @@ Number of Proteins or peptides per sample in merged dataset
 <div id="aggregate-protein-intensities" class="section level2">
 <h2 class="hasAnchor">
 <a href="#aggregate-protein-intensities" class="anchor"></a>Aggregate Protein Intensities</h2>
-generate diagnostik plots
+<p>Generate diagnostic plots for Protein aggregation.</p>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/createDiagnostics-1.png" alt="summarize Aggration result" width="768"><p class="caption">
 summarize Aggration result
@@ -207,34 +202,32 @@ Protein level boxplots
 <h1 class="hasAnchor">
 <a href="#model-fitting" class="anchor"></a>Model Fitting</h1>
 <pre><code>## [1] "medpolish"</code></pre>
-<pre><code>## # A tibble: 5,348 x 10
-## # Groups:   factor [3]
-##    protein_Id isSingular nrcoef factor    Df  Sum.Sq Mean.Sq F.value  Pr..F.
-##    &lt;chr&gt;      &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-##  1 CON__P074~ FALSE           4 condi~     1 21.5    21.5    4.68e+0 0.0484 
-##  2 CON__P074~ FALSE           4 batch_     1 47.1    47.1    1.03e+1 0.00638
-##  3 CON__P074~ FALSE           4 condi~     1  5.17    5.17   1.13e+0 0.306  
-##  4 CON__Q86Y~ FALSE           4 condi~     1  1.37    1.37   6.23e-1 0.447  
-##  5 CON__Q86Y~ FALSE           4 batch_     1  0.0109  0.0109 4.97e-3 0.945  
-##  6 CON__Q86Y~ FALSE           4 condi~     1  5.43    5.43   2.48e+0 0.144  
-##  7 REV__sp|P~ FALSE           4 condi~     1  0.728   0.728  1.48e+0 0.251  
-##  8 REV__sp|P~ FALSE           4 batch_     1  1.04    1.04   2.13e+0 0.176  
-##  9 REV__sp|P~ FALSE           4 condi~     1  0.468   0.468  9.54e-1 0.352  
-## 10 REV__sp|P~ FALSE           4 condi~     1  0.729   0.729  1.35e+0 0.264  
-## # ... with 5,338 more rows, and 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
 <pre><code>## $plot</code></pre>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-1.png" width="960"></p>
-<pre><code>## 
-## $name
-## [1] "Coef_Histogram_.pdf"</code></pre>
-<pre><code>## $plot</code></pre>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-2.png" width="960"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/anovaPvaluePlots-1.png" alt="p-value distributions for ANOVA analysis." width="960"><p class="caption">
+p-value distributions for ANOVA analysis.
+</p>
+</div>
 <pre><code>## 
 ## $name
 ## [1] "Anova_p.values_.pdf"</code></pre>
-<div id="compute-contrasts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#compute-contrasts" class="anchor"></a>compute contrasts</h2>
+<p>Examine proteins with a significant interaction between the two factors treatment and batch.</p>
+<pre><code>## [1] "condition_"        "batch_"            "condition_:batch_"</code></pre>
+<pre><code>## # A tibble: 5 x 10
+## # Groups:   factor [1]
+##   protein_Id isSingular nrcoef factor    Df Sum.Sq Mean.Sq F.value  Pr..F.
+##   &lt;chr&gt;      &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 sp|P47069~ FALSE           4 condi~     1   2.68    2.68   274.  4.79e-8
+## 2 sp|P36095~ FALSE           4 condi~     1   8.67    8.67    75.6 1.13e-5
+## 3 sp|P38695~ FALSE           4 condi~     1   6.77    6.77    33.9 5.92e-5
+## 4 sp|Q06287~ FALSE           4 condi~     1   2.84    2.84    35.8 4.57e-5
+## 5 sp|Q12125~ FALSE           4 condi~     1   4.86    4.86    33.7 6.14e-5
+## # ... with 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
+<p><img src="Modelling2Factors_files/figure-html/anovaAnalysis-1.png" width="960"></p>
+</div>
+<div id="compute-contrasts" class="section level1">
+<h1 class="hasAnchor">
+<a href="#compute-contrasts" class="anchor"></a>Compute contrasts</h1>
 <pre><code>## # A tibble: 5 x 3
 ##   contrast                  c1                         c2                       
 ##   &lt;chr&gt;                     &lt;chr&gt;                      &lt;chr&gt;                    
@@ -244,17 +237,17 @@ Protein level boxplots
 ## 4 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
 ## 5 Interaction               Glucose_vs_Ethanol_gv_p23~ Glucose_vs_Ethanol_gv_p2~</code></pre>
 <pre><code>## $FDR.moderated</code></pre>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-18-1.png" width="960"><img src="Modelling2Factors_files/figure-html/unnamed-chunk-18-2.png" width="960"></p>
-</div>
-<div id="annalyse-contrasts-with-missin-gdata-imputation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#annalyse-contrasts-with-missin-gdata-imputation" class="anchor"></a>Annalyse contrasts with missin gdata imputation</h2>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-19-1.png" width="960"></p>
-<div id="compare-estimate" class="section level3">
-<h3 class="hasAnchor">
-<a href="#compare-estimate" class="anchor"></a>compare estimate</h3>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-1.png" width="960"><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-2.png" width="960"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteins with significant Interactions" width="960"><p class="caption">
+Proteins with significant Interactions
+</p>
 </div>
 </div>
+<div id="annalyse-contrasts-with-missing-data-imputation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#annalyse-contrasts-with-missing-data-imputation" class="anchor"></a>Annalyse contrasts with missing data imputation</h1>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-18-1.png" width="960"></p>
 </div>
   </div>
 
