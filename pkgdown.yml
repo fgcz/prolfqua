@@ -6,6 +6,7 @@ articles:
   Auxiliary_LFQSurvey: Auxiliary_LFQSurvey.html
   Auxiliary_prolfquaAbstract_2: Auxiliary_prolfquaAbstract_2.html
   BenchmarkingIonstarData: BenchmarkingIonstarData.html
+  Comparing2Groups: Comparing2Groups.html
   CreatingConfigurations: CreatingConfigurations.html
   Modelling2Factors: Modelling2Factors.html
   QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
@@ -14,5 +15,5 @@ articles:
   Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
   Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
   Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
-last_built: 2021-03-02T23:42Z
+last_built: 2021-03-04T18:22Z
 

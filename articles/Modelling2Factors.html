@@ -66,6 +66,9 @@
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
+    </li>
+    <li>
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
@@ -124,75 +127,159 @@
 
     
     
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
 <div id="prepare-p2691-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#prepare-p2691-dataset" class="anchor"></a>Prepare p2691 dataset</h1>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
+<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip"</span><span class="op">)</span>
+<span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_ComboCourse_p2691_March_2018_WU183012.xlsx"</span><span class="op">)</span>
+
+<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_ProteinGroups.html">tidyMQ_ProteinGroups</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
+<span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
+<span class="va">annotation</span><span class="op">$</span><span class="va">experiment</span> <span class="op">=</span> <span class="st">"p2691"</span>
+
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span>, by <span class="op">=</span> <span class="st">"raw.file"</span><span class="op">)</span></code></pre></div>
 <p>Add annotation information data to configuration and data.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">atable</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"raw.file"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"majority.protein.ids"</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">atable</span><span class="op">$</span><span class="fu">setWorkIntensity</span><span class="op">(</span><span class="st">"mq.protein.intensity"</span><span class="op">)</span>
+
+<span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
+
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"batch_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></code></pre></div>
 <p>Preprocess and normalize Data.</p>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-4-1.png" width="960"><img src="Modelling2Factors_files/figure-html/unnamed-chunk-4-2.png" width="960"></p>
-<div class="figure">
-<img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" alt="missing value heatmap for project 2691" width="960"><p class="caption">
-missing value heatmap for project 2691
-</p>
-</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
+<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/remove_small_intensities.html">remove_small_intensities</a></span><span class="op">(</span><span class="va">adata</span>,<span class="va">config</span><span class="op">)</span>
+
+<span class="va">p2691</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
+<span class="va">p2691</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/preprocessp2691-1.png" width="960"></p>
 </div>
 <div id="prepare-p2370-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#prepare-p2370-dataset" class="anchor"></a>Prepare p2370 dataset</h1>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
+<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip"</span><span class="op">)</span>
+<span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_ComboCourse_p2370_March_2017_WU183008.xlsx"</span><span class="op">)</span>
+<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_ProteinGroups.html">tidyMQ_ProteinGroups</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
+
+<span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span>
+<span class="va">annotation</span><span class="op">$</span><span class="va">experiment</span> <span class="op">&lt;-</span> <span class="st">"p2370"</span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span> , by <span class="op">=</span> <span class="st">"raw.file"</span><span class="op">)</span></code></pre></div>
 <p>Code snipped below shows how to add annotation to the data and configuration.</p>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
-<div class="figure">
-<img src="Modelling2Factors_files/figure-html/unnamed-chunk-9-1.png" alt="Intensity distribution after normalization, p2370" width="960"><p class="caption">
-Intensity distribution after normalization, p2370
-</p>
-</div>
-<div class="figure">
-<img src="Modelling2Factors_files/figure-html/unnamed-chunk-10-1.png" alt="Heatmap of missing values p2370." width="960"><p class="caption">
-Heatmap of missing values p2370.
-</p>
-</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">atable</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"raw.file"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"majority.protein.ids"</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">atable</span><span class="op">$</span><span class="fu">setWorkIntensity</span><span class="op">(</span><span class="st">"mq.protein.intensity"</span><span class="op">)</span>
+
+<span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
+
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"batch_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
+<span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/remove_small_intensities.html">remove_small_intensities</a></span><span class="op">(</span><span class="va">adata</span>,<span class="va">config</span><span class="op">)</span>
+
+<span class="va">p2370</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
+<span class="va">p2370</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/transformp2370-1.png" width="960"></p>
 </div>
 <div id="merge-both-dataset" class="section level1">
 <h1 class="hasAnchor">
 <a href="#merge-both-dataset" class="anchor"></a>Merge both dataset</h1>
 <p>To simulate a factorial design we merge both datasets.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outpath</span> <span class="op">&lt;-</span> <span class="st">"results_modelling"</span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">p2691</span><span class="op">$</span><span class="va">data</span>, <span class="va">p2370</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
+
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="va">p2691</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">2</span></code></pre></div>
 <div id="qc-for-merged-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#qc-for-merged-dataset" class="anchor"></a>QC for merged dataset</h2>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-12-1.png" width="960"></p>
-<p><img src="Modelling2Factors_files/figure-html/examineDataAfterMerge-1.png" width="960"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span>
+<span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">complete_cases</span><span class="op">(</span><span class="op">)</span>
+<span class="va">tr</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/examineDataAfterMerge-1.png" alt="Correlation among samples." width="960"><p class="caption">
+Correlation among samples.
+</p>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pl</span><span class="op">$</span><span class="fu">sample_correlation</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-1.png" alt="sample correlations" width="960"><p class="caption">
+sample correlations
+</p>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ph</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pha</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">NA_heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ph</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/plotHeatmap%20-1.png" alt="sample correlation heatmap merged" width="960"><p class="caption">
 sample correlation heatmap merged
 </p>
 </div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pha</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/plotNAheatmap-1.png" alt="Missing data heatmap for merged data" width="960"><p class="caption">
 Missing data heatmap for merged data
 </p>
 </div>
-<pre><code>## # A tibble: 1 x 3
-##   isotope protein_Id peptide_Id
-## * &lt;chr&gt;        &lt;int&gt;      &lt;int&gt;
-## 1 light         2583      24109</code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">su</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span>
+<span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##   isotopeLabel protein_Id
+## * &lt;chr&gt;             &lt;int&gt;
+## 1 light              3339</code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/unnamed-chunk-13-1.png" alt="Number of Proteins or peptides per sample in merged dataset" width="960"><p class="caption">
+<img src="Modelling2Factors_files/figure-html/unnamed-chunk-4-1.png" alt="Number of Proteins or peptides per sample in merged dataset" width="960"><p class="caption">
 Number of Proteins or peptides per sample in merged dataset
 </p>
 </div>
-</div>
-<div id="aggregate-protein-intensities" class="section level2">
-<h2 class="hasAnchor">
-<a href="#aggregate-protein-intensities" class="anchor"></a>Aggregate Protein Intensities</h2>
-<p>Generate diagnostic plots for Protein aggregation.</p>
-<div class="figure">
-<img src="Modelling2Factors_files/figure-html/createDiagnostics-1.png" alt="summarize Aggration result" width="768"><p class="caption">
-summarize Aggration result
-</p>
-</div>
-<p><img src="Modelling2Factors_files/figure-html/plotBoxplotProt-1.png" width="960"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pl</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/protBP-1.png" alt="Protein level boxplots" width="960"><p class="caption">
+Protein level boxplots
+</p>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bp</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span>
+<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">bp</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[</span><span class="fl">1001</span><span class="op">:</span><span class="fl">1006</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/protBP-2.png" alt="Protein level boxplots" width="960"><p class="caption">
 Protein level boxplots
 </p>
 </div>
@@ -201,7 +288,30 @@ Protein level boxplots
 <div id="model-fitting" class="section level1">
 <h1 class="hasAnchor">
 <a href="#model-fitting" class="anchor"></a>Model Fitting</h1>
-<pre><code>## [1] "medpolish"</code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "transformedIntensity"</code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formula_Batches</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="../reference/make_custom_model_lm.html">make_custom_model_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ condition_ * batch_ "</span><span class="op">)</span>
+
+<span class="co"># specify model definition</span>
+<span class="va">modelName</span>  <span class="op">&lt;-</span> <span class="st">"Model"</span>
+<span class="va">DEBUG</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+
+<span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Glucose - Ethanol"</span> <span class="op">=</span> <span class="st">"condition_Glucose - condition_Ethanol"</span>,
+               <span class="st">"p2370 - p2691"</span> <span class="op">=</span> <span class="st">"batch_p2370 - batch_p2691"</span>,
+               <span class="st">"Glucose_vs_Ethanol_gv_p2370"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`"</span>,
+               <span class="st">"Glucose_vs_Ethanol_gv_p2691"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`"</span>,
+               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"</span>
+<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span>
+  <span class="va">pMerged</span><span class="op">$</span><span class="va">data</span>,
+  <span class="va">formula_Batches</span>,
+  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $plot</code></pre>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/anovaPvaluePlots-1.png" alt="p-value distributions for ANOVA analysis." width="960"><p class="caption">
@@ -212,22 +322,35 @@ p-value distributions for ANOVA analysis.
 ## $name
 ## [1] "Anova_p.values_.pdf"</code></pre>
 <p>Examine proteins with a significant interaction between the two factors treatment and batch.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">ANOVA</span><span class="op">$</span><span class="va">factor</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "condition_"        "batch_"            "condition_:batch_"</code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 10
 ## # Groups:   factor [1]
 ##   protein_Id isSingular nrcoef factor    Df Sum.Sq Mean.Sq F.value  Pr..F.
 ##   &lt;chr&gt;      &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 sp|P47069~ FALSE           4 condi~     1   2.68    2.68   274.  4.79e-8
-## 2 sp|P36095~ FALSE           4 condi~     1   8.67    8.67    75.6 1.13e-5
-## 3 sp|P38695~ FALSE           4 condi~     1   6.77    6.77    33.9 5.92e-5
-## 4 sp|Q06287~ FALSE           4 condi~     1   2.84    2.84    35.8 4.57e-5
-## 5 sp|Q12125~ FALSE           4 condi~     1   4.86    4.86    33.7 6.14e-5
+## 1 sp|P00331~ FALSE           4 condi~     1  50.1    50.1    172.  2.96e-9
+## 2 sp|P32583~ FALSE           4 condi~     1   2.78    2.78   193.  7.33e-8
+## 3 sp|Q12487~ FALSE           4 condi~     1   9.91    9.91   121.  5.82e-8
+## 4 sp|P00330~ FALSE           4 condi~     1   2.38    2.38    46.6 8.20e-6
+## 5 sp|P36095~ FALSE           4 condi~     1  11.0    11.0     79.0 9.46e-6
 ## # ... with 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span>
+<span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
+<span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span>
+<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">)</span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/anovaAnalysis-1.png" width="960"></p>
 </div>
 <div id="compute-contrasts" class="section level1">
 <h1 class="hasAnchor">
 <a href="#compute-contrasts" class="anchor"></a>Compute contrasts</h1>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contr</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span>
+<span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts_sides</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 3
 ##   contrast                  c1                         c2                       
 ##   &lt;chr&gt;                     &lt;chr&gt;                      &lt;chr&gt;                    
@@ -236,8 +359,24 @@ p-value distributions for ANOVA analysis.
 ## 3 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
 ## 4 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
 ## 5 Interaction               Glucose_vs_Ethanol_gv_p23~ Glucose_vs_Ethanol_gv_p2~</code></pre>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $FDR.moderated</code></pre>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-1.png" width="960"><img src="Modelling2Factors_files/figure-html/unnamed-chunk-16-2.png" width="960"></p>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-2.png" width="960"></p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">contrdf</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"Interaction"</span> <span class="op">&amp;</span> <span class="va">FDR.moderated</span> <span class="op">&lt;</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
+<span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">sigInteraction</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span>
+<span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">hm</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteins with significant Interactions" width="960"><p class="caption">
 Proteins with significant Interactions
@@ -247,7 +386,12 @@ Proteins with significant Interactions
 <div id="annalyse-contrasts-with-missing-data-imputation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#annalyse-contrasts-with-missing-data-imputation" class="anchor"></a>Annalyse contrasts with missing data imputation</h1>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-18-1.png" width="960"></p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span>
+<span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
+<span class="va">pl</span><span class="op">$</span><span class="fu">histogram_estimate</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
 </div>
   </div>
 
