@@ -1,4 +1,4 @@
-<img src="man/figures/imgfile.png" width="200" height="200">
+<img src="man/figures/imgfile.png" width="200">
 
 # prolfqua - an R package for Proteomics Label Free Quantification Services
 
