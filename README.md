@@ -41,17 +41,6 @@ For more informations about the package visit:
 
 https://wolski.github.io/prolfqua/index.html
 
-## Parallel design (TODO)
-What is parallel design.
-- See vignettes.
-
-## Repeated measurements (TODO)
-What is a paired measurement.
-- See vignettes.
-
-## Contrasts (TODO)
-- See vignettes.
-
 
 ## Motivation
 
