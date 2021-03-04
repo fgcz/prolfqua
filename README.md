@@ -1,7 +1,6 @@
 # prolfqua - an R package for Proteomics Label Free Quantification Services
 
-![prolfqua](man/figures/imgfile.png =250x250)
-
+<img src="https://github.com/favicon.ico" width="250" height="250">
 The R package contains functions for analyzing mass spectrometry based LFQ experiments.
 This package was developed at the [FGCZ](http://www.fgcz.ch/).
 
