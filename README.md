@@ -2,16 +2,55 @@
 
 ![prolfqua](man/figures/imgfile.png)
 
-The R package contains functions for analyzing mass spectrometry based LFQ experiments at the [FGCZ](http://www.fgcz.ch/).
-
-
-To build the package you need to clone the repository using `git clone https:/github.com/wolski/prolfqua`.
-
-To install it please use `remotes::install_github("wolski/prolfqua")`. 
+The R package contains functions for analyzing mass spectrometry based LFQ experiments.
+This package was developed at the [FGCZ](http://www.fgcz.ch/).
 
 Let us please know about any installation problems or errors when using the package
 https://github.com/wolski/prolfqua/issues
 
+
+
+
+## 1.1. Install R
+
+
+A Windows/Linux/MacOSX x64 platform with R 4 
+
+
+To install the package please execute
+
+
+```
+install.packages('remotes')
+# If you want to build the vignettes comment out the next line.
+# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+remotes::install_github('wolski/prolfqua')
+
+```
+
+
+# How to get started
+
+
+- [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
+- [QC and sample size estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
+- [Analysing factorial designs](https://wolski.github.io/prolfqua/articles/Modelling2Factors.html)
+- [Benchmarking LFQ pipeline with prolfqua](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)
+
+For more informations about the package visit:
+
+https://wolski.github.io/prolfqua/index.html
+
+## Parallel design (TODO)
+What is parallel design.
+- See vignettes.
+
+## Repeated measurements (TODO)
+What is a paired measurement.
+- See vignettes.
+
+## Contrasts (TODO)
+- See vignettes.
 
 
 ## Motivation
@@ -34,25 +73,6 @@ It also implements various protein intensity summarization and inference methods
 
 To use `prolfqua` knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface,  we provide an  MSstats emulator, where the model specification is generated based on the annotation file structure. 
 
-## 1. System Requirements  
-
-R 4.0 or higher.
-
-## 1.1. Install R
-
-A Windows/Linux/MacOSX x64 platform with R 4 
-
-
-To install the package please execute
-
-
-```
-install.packages('remotes')
-# If you want to build the vignettes comment out the next line.
-# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
-remotes::install_github('wolski/prolfqua')
-
-```
 
 
 ## 2. Running R-scripts
@@ -71,22 +91,6 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --he
 Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
 ```
 
-
-# How to get started
-
-## 2 grp analysis (TODO)
-- See vignettes.
-
-## Parallel design (TODO)
-What is parallel design.
-- See vignettes.
-
-## Repeated measurements (TODO)
-What is a paired measurement.
-- See vignettes.
-
-## Contrasts (TODO)
-- See vignettes.
 
 # Related resources
 
