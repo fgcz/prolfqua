@@ -35,14 +35,14 @@ inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_W
 
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ncol(startdata)
-
+str(startdata)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
 View(annotation)
 ncol(annotation)
 
 
-startdata <- inner_join(annotation, startdata, by= "raw.file")
+startdata <- inner_join(annotation, startdata, by = "raw.file")
 ncol(startdata)
 str(startdata)
 ```
@@ -51,7 +51,7 @@ For the sample size estimation we will use bio-reps from one condition. Also rem
 
 
 ```{r}
-startdata <- startdata %>% filter(nr.peptides > 1)
+startdata <- filter(startdata, nr.peptides > 1)
 
 ```
 
@@ -73,18 +73,20 @@ Then you need to add the intensity column.
 atable <- AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
+
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
+
 anaparam <- AnalysisParameters$new()
 config <- AnalysisConfiguration$new(atable, anaparam)
 
 
-config$table$factors[["condition_"]] = "condition"
-config$table$factors[["Run_ID"]] = "Run_ID"
+config$table$factors[["Condition_"]] = "condition"
+config$table$factors[["run"]] = "Run_ID"
 config$table$factorDepth <- 1
 
 adata <- setup_analysis(startdata, config)
-
+str(adata)
 ```
 
 
@@ -93,12 +95,13 @@ Create the LFQData class instance, remove zeros from data.
 ```{r filterdata}
 lfqdata <- LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
+lfqdata$factors()
 ```
 
 You can convert the data into wide format.
 
 ```{r}
-lfqdata$to_wide()$data[1000:1003,1:3]
+lfqdata$to_wide()$data
 ```
 
 
@@ -119,6 +122,7 @@ lfqplotter$missingness_per_condition()
 
 ```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}
 lfqplotter$missigness_histogram()
+lfqplotter$intensity_distribution_density()
 ```
 
 # Computing standard deviations, mean and CV.
@@ -126,6 +130,7 @@ lfqplotter$missigness_histogram()
 
 ```{r PlotCVDistributions}
 stats <- lfqdata$get_Stats()
+stats$violin()
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
 ```
 
@@ -165,20 +170,18 @@ p <- pl$heatmap_cor()
 p
 ```
 
-
 # Model specification
 
 ```{r}
 transformed$config$table$getWorkIntensity()
 
-formula_Condition <-  make_custom_model_lm("transformedIntensity ~ condition_")
+formula_Condition <-  make_custom_model_lm("transformedIntensity ~ Condition_")
 
 # specify model definition
 modelName  <- "Model"
-DEBUG <- TRUE
-
-Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol")
-Contrasts <- c("GvsE" = "condition_Glucose - condition_Ethanol")
+unique(transformed$data$Condition_)
+Contrasts <- c("Glucose - Ethanol" = "Condition_Glucose - Condition_Ethanol")
+Contrasts <- c("GvsE" = "Condition_Glucose - Condition_Ethanol")
 
 
 ```
@@ -190,6 +193,7 @@ mod <- prolfqua::build_model(
   transformed$data,
   formula_Condition,
   subject_Id = transformed$config$table$hierarchyKeys() )
+
 ```
 
 
@@ -200,6 +204,8 @@ mod <- prolfqua::build_model(
 contr <- ContrastsModerated$new(mod, Contrasts)
 #contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
+dim(contrdf)
+View(contrdf)
 ```
 
 
@@ -208,15 +214,22 @@ contrdf <- contr$get_contrasts()
 plotter <- contr$get_Plotter()
 plotter$volcano()
 plotter$ma_plot()
-
+plotter$ma_plotly()
 ```
 
 
 ```{r}
 myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
-
-contrdf %>% filter(protein_Id %in% myProteinIDS)
+filter(contrdf, protein_Id %in% myProteinIDS)
 
 ```
 
+
+# Missing values
+
+```{r}
+mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
+dim(mC$get_contrasts())
+
+```
 

@@ -15,7 +15,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = FALSE,
+echo = TRUE,
 message = FALSE,
 warning = FALSE,
 fig.width = 10,
@@ -36,7 +36,7 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 # Prepare p2691 dataset
 
-```{r}
+```{r preparep2691}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
@@ -48,7 +48,7 @@ annotation$experiment = "p2691"
 
 Add annotation information data to configuration and data.
 
-```{r}
+```{r configp2691}
 config <- prolfqua::create_config_MQ_peptide()
 data <- inner_join(annotation, startdata)
 
@@ -60,7 +60,7 @@ config$table$factorDepth <- 1
 
 Preprocess and normalize Data.
 
-```{r}
+```{r preprocessp2691}
 adata <- setup_analysis(data, config)
 adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
@@ -68,26 +68,14 @@ adata <- prolfqua::remove_small_intensities(adata,config)
 
 p2691 <- LFQData$new(adata, config)
 p2691$get_Plotter()$intensity_distribution_density()
-
-tr <- p2691$get_Transformer()
-p2691 <- tr$log2_robscale()
-
-pl <- p2691$get_Plotter()
-pl$intensity_distribution_density()
-#dev.off()
-pha2691 <- pl$NA_heatmap()
-
 ```
 
-```{r fig.cap="missing value heatmap for project 2691"}
-print(pha2691)
-```
 
 
 # Prepare p2370 dataset
 
 
-```{r}
+```{r loadp2370}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
@@ -98,7 +86,7 @@ annotation$experiment <- "p2370"
 
 Code snipped below shows how to add annotation to the data and configuration.
 
-```{r}
+```{r configp2370}
 data <- inner_join(annotation, startdata)
 config <- create_config_MQ_peptide()
 
@@ -108,7 +96,7 @@ config$table$factors[["Run_ID"]] = "Run_ID"
 config$table$factorDepth <- 1
 ```
 
-```{r}
+```{r transformp2370}
 adata <- setup_analysis(data, config)
 adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
@@ -116,20 +104,7 @@ adata <- prolfqua::remove_small_intensities(adata,config)
 p2370 <- LFQData$new(adata, config)
 p2370$get_Plotter()$intensity_distribution_density()
 
-tr <- p2370$get_Transformer()
-p2370 <- tr$log2_robscale()
-pl <- p2370$get_Plotter()
-ha2370 <- pl$NA_heatmap()
 ```
-
-```{r, fig.cap="Intensity distribution after normalization, p2370"}
-pl$intensity_distribution_density()
-```
-
-```{r, fig.cap="Heatmap of missing values p2370."}
-print(ha2370)
-```
-
 
 # Merge both dataset
 
@@ -146,18 +121,21 @@ config$table$factorDepth <- 2
 
 ## QC for merged dataset 
 
-```{r}
-pl$intensity_distribution_density()
-```
 
 
 ```{r mergeData}
 pMerged <- LFQData$new(data, config)
 bb <- pMerged$complete_cases()
+tr <- pMerged$get_Transformer()
+pMerged <- tr$log2_robscale()
 ```
 
-```{r examineDataAfterMerge}
+```{r examineDataAfterMerge, fig.cap="Correlation among samples."}
 pl <- pMerged$get_Plotter()
+pl$intensity_distribution_density()
+```
+
+```{r fig.cap="sample correlations"}
 pl$sample_correlation()
 ph <- pl$heatmap_cor()
 pha <- pl$NA_heatmap()
@@ -239,7 +217,7 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 
 
-```{r specifyModel}
+```{r buildModel}
 
 
 mod <- prolfqua::build_model(
@@ -270,7 +248,7 @@ ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 
 # Compute contrasts
 
-```{r}
+```{r computeModeratedContrasts}
 contr <- ContrastsModerated$new(mod, Contrasts)
 contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
