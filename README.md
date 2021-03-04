@@ -11,20 +11,22 @@ https://github.com/wolski/prolfqua/issues
 
 
 
-## 1.1. Install R
+# How to install prolfqua
 
-
-A Windows/Linux/MacOSX x64 platform with R 4 
-
-
-To install the package please execute
-
+Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher
+To install the package please execute in R
 
 ```
 install.packages('remotes')
-# If you want to build the vignettes comment out the next line.
-# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
 remotes::install_github('wolski/prolfqua')
+```
+
+If you want to build the vignettes
+
+```
+install.packages('remotes')
+remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
 
 ```
 
