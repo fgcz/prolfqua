@@ -109,7 +109,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 What name should we use :
 
-- prolfqua - we do proteomics services.
+- LFQService - we do proteomics LFQ services.
 - prolfqua - **pro**teomics LFQ package (read prolevka)
 - nalfqua - **n**ot **a**nother LFQ package (read nalewka)
 
