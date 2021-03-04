@@ -1,14 +1,9 @@
+<img src="man/figures/imgfile.png" width="200" height="200">
+
 # prolfqua - an R package for Proteomics Label Free Quantification Services
 
-<img src="https://github.com/favicon.ico" width="250" height="250">
 The R package contains functions for analyzing mass spectrometry based LFQ experiments.
 This package was developed at the [FGCZ](http://www.fgcz.ch/).
-
-Let us please know about any installation problems or errors when using the package
-https://github.com/wolski/prolfqua/issues
-
-
-
 
 # How to install prolfqua
 
@@ -29,9 +24,11 @@ remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
 
 ```
 
+Let us please know about any installation problems or errors when using the package
+https://github.com/wolski/prolfqua/issues
+
 
 # How to get started
-
 
 - [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and sample size estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
