@@ -84,6 +84,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 - [Triqler](https://github.com/statisticalbiotechnology/triqler)
 - [MSQRob](https://github.com/statOmics/MSqRob)
 - [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- [MSstats](https://www.bioconductor.org/packages/release/bioc/html/MSstats.html)
 - PEPA test - analysis including shared peptides
   - [DAPAR](https://github.com/samWieczorek/DAPAR/)
   - [DAPARData](https://github.com/samWieczorek/DAPARdata/)
