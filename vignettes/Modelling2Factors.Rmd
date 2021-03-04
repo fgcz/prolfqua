@@ -40,17 +40,27 @@ conflicted::conflict_prefer("filter", "dplyr")
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
-startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
+
+startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
+
+data <- inner_join(annotation, startdata, by = "raw.file")
 
 ```
 
 Add annotation information data to configuration and data.
 
 ```{r configp2691}
-config <- prolfqua::create_config_MQ_peptide()
-data <- inner_join(annotation, startdata)
+
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
+atable$hierarchyDepth <- 1
+atable$setWorkIntensity("mq.protein.intensity")
+
+anaparam <- AnalysisParameters$new()
+config <- AnalysisConfiguration$new(atable, anaparam)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -62,12 +72,11 @@ Preprocess and normalize Data.
 
 ```{r preprocessp2691}
 adata <- setup_analysis(data, config)
-adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
-
 
 p2691 <- LFQData$new(adata, config)
 p2691$get_Plotter()$intensity_distribution_density()
+
 ```
 
 
@@ -79,16 +88,24 @@ p2691$get_Plotter()$intensity_distribution_density()
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
-startdata <- prolfqua::tidyMQ_Peptides(inputMQfile)
+startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
+
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment <- "p2370"
+data <- inner_join(annotation, startdata , by = "raw.file")
 ```
 
 Code snipped below shows how to add annotation to the data and configuration.
 
 ```{r configp2370}
-data <- inner_join(annotation, startdata)
-config <- create_config_MQ_peptide()
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
+atable$hierarchyDepth <- 1
+atable$setWorkIntensity("mq.protein.intensity")
+
+anaparam <- AnalysisParameters$new()
+config <- AnalysisConfiguration$new(atable, anaparam)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -98,7 +115,6 @@ config$table$factorDepth <- 1
 
 ```{r transformp2370}
 adata <- setup_analysis(data, config)
-adata <- filter_proteins_by_peptide_count(adata, config)$data
 adata <- prolfqua::remove_small_intensities(adata,config)
 
 p2370 <- LFQData$new(adata, config)
@@ -166,39 +182,20 @@ su$hierarchy_counts_sample("plot")
 ```
 
 
-##  Aggregate Protein Intensities
-
-```{r aggregate}
-pAgg <- pMerged$get_Aggregator()
-prot <- pAgg$medpolish()
-```
-
-Generate diagnostic plots for Protein aggregation.
-
-```{r createDiagnostics, fig.cap="summarize Aggration result", fig.width=8, fig.height=7}
-tmp <- pAgg$plot()
-ggpubr::ggarrange(plotlist =  tmp$plots[1:6])
-
-```
-
-```{r plotBoxplotProt}
-pl <- prot$get_Plotter()
-pl$heatmap()
-```
-
 ```{r protBP, fig.cap="Protein level boxplots"}
+pl <- pMerged$get_Plotter()
+pl$heatmap()
 bp <- pl$boxplots()
-ggpubr::ggarrange(plotlist = bp$boxplot[1:6])
+ggpubr::ggarrange(plotlist = bp$boxplot[1001:1006])
 ```
 
 # Model Fitting
 
 ```{r specifyModel}
-protdata <- pAgg$lfq_agg
-protdata$config$table$getWorkIntensity()
+pMerged$config$table$getWorkIntensity()
 
 formula_Batches <-
-  make_custom_model_lm("medpolish ~ condition_ * batch_ ")
+  make_custom_model_lm("transformedIntensity ~ condition_ * batch_ ")
 
 # specify model definition
 modelName  <- "Model"
@@ -221,9 +218,9 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 
 mod <- prolfqua::build_model(
-  protdata$data,
+  pMerged$data,
   formula_Batches,
-  subject_Id = pAgg$lfq_agg$config$table$hierarchyKeys() )
+  subject_Id = pMerged$config$table$hierarchyKeys() )
 
 ```
 
@@ -240,7 +237,7 @@ ANOVA <- mod$get_anova()
 unique(ANOVA$factor)
 ANOVA %>% filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head(5)
 protIntSig <- ANOVA %>% filter(factor == "condition_:batch_") %>% filter(FDR.Pr..F. < 0.05)
-protInt <-  prot$get_copy()
+protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 
@@ -264,7 +261,7 @@ plotter$ma_plot()
 ```{r}
 sigInteraction <- contrdf %>% 
   filter(contrast == "Interaction" & FDR.moderated < 0.1)
-protInt <-  prot$get_copy()
+protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
 hm <- protInt$get_Plotter()$heatmap()
 
@@ -278,7 +275,7 @@ hm
 # Annalyse contrasts with missing data imputation
 
 ```{r}
-contrSimple <- ContrastsSimpleImpute$new(protdata, Contrasts)
+contrSimple <- ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
 pl$histogram_estimate()
