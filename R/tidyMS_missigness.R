@@ -325,11 +325,11 @@ aggregate_contrast <- function(
   dataG <- data %>%
     group_by(across(all_of(grouping_columns)))
 
-  agg_func_c <- agg_func[1]
 
   resE <- dataG %>% summarise(n = n(), across(all_of(c("estimate")),
                                      agg_func
                                     ), .groups = "drop")
+  agg_func_c <- agg_func[1]
   resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
                                      agg_func_c,
                                      .names = "{col}"

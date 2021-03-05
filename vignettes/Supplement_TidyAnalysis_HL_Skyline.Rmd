@@ -3,8 +3,8 @@ title: "Supplement - Data preprocessing of SRM Heavy Light data"
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Supplement - Data preprocessing of SRM Heavy Light data}
   %\VignetteEncoding{UTF-8}

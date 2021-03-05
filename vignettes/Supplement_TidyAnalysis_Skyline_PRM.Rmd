@@ -3,8 +3,8 @@ title: "Supplement - Data preprocessing for PRM"
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Supplement - Data preprocessing for PRM}
   %\VignetteEncoding{UTF-8}

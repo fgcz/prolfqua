@@ -3,8 +3,8 @@ title: "Supplement - Filter precursors or fragments based on correlation"
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Supplement - Filter precursors or fragments based on correlation}
   %\VignetteEncoding{UTF-8}

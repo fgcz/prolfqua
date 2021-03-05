@@ -3,8 +3,8 @@ title: "Supplement - Summarize heavy light Peptide Level Measurements"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 params:
   configuration:  !r quote(prolfqua::skylineSRM_HL_A$config_f())
   data: !r quote(prolfqua::skylineSRM_HL_A$analysis(prolfqua::skylineSRM_HL_A$data, prolfqua::skylineSRM_HL_A$config_f()))

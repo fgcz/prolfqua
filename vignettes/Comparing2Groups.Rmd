@@ -2,7 +2,7 @@
 title: "Comparing Two Groups"
 author: "Witold Wolski"
 date: "14/12/2020"
-output: pdf_document
+output: html_document
 vignette: >
   %\VignetteIndexEntry{Comparing Two Groups} 
   %\VignetteEncoding{UTF-8}
@@ -200,7 +200,7 @@ mod <- prolfqua::build_model(
 
 # Compute contrasts
 
-```{r}
+```{r contrModerated}
 contr <- ContrastsModerated$new(mod, Contrasts)
 #contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
@@ -210,15 +210,14 @@ dim(contrdf)
 
 
 
-```{r}
+```{r plotVolcanos}
 plotter <- contr$get_Plotter()
-plotter$volcano()
-plotter$ma_plot()
+plotter$volcano_plotly()
 plotter$ma_plotly()
 ```
 
 
-```{r}
+```{r checkProteinsInOutput}
 myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
 filter(contrdf, protein_Id %in% myProteinIDS)
 
@@ -227,7 +226,7 @@ filter(contrdf, protein_Id %in% myProteinIDS)
 
 # Missing values
 
-```{r}
+```{r computeMissing}
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 dim(mC$get_contrasts())
 

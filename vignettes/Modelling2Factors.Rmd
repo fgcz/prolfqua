@@ -3,8 +3,8 @@ title: "Modelling Dataset with two Factors."
 author: "Witold Wolski"
 date: "06/10/2020"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 vignette: |
   %\VignetteIndexEntry{Modelling dataset with two Factors.}  
   %\VignetteEncoding{UTF-8}   
