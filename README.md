@@ -5,7 +5,7 @@
 The R package contains functions for analyzing mass spectrometry based LFQ experiments.
 This package was developed at the [FGCZ](http://www.fgcz.ch/).
 
-# How to install prolfqua
+# How to install prolfqua?
 
 Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher
 To install the package please execute in R
@@ -30,14 +30,22 @@ https://github.com/wolski/prolfqua/issues
 
 # How to get started
 
+Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
+
+Detailed documentation about:
+
 - [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and sample size estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 - [Analysing factorial designs](https://wolski.github.io/prolfqua/articles/Modelling2Factors.html)
 - [Benchmarking LFQ pipeline with prolfqua](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)
 
-For more informations about the package visit:
+More Documentation https://wolski.github.io/prolfqua/index.html
 
-https://wolski.github.io/prolfqua/index.html
+
+# How to cite?
+
+If you are using the package in your work please cite:
+https://f1000research.com/slides/9-1476
 
 
 ## Motivation
@@ -62,7 +70,7 @@ To use `prolfqua` knowledge of the R regression model infrastructure is of advan
 
 
 
-## 2. Running R-scripts
+## Running R-scripts
 
 Generate QC report from bat file.
 First add `<prolfqua_path>/win` to your path variable. Then you can generate a QC report from a maxquant QC by running.
