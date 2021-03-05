@@ -236,7 +236,7 @@
     <pre class="examples"><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>make_custom_model_glm</span><span class='op'>(</span><span class='st'>"Intensity ~ condition"</span>, model_name <span class='op'>=</span> <span class='st'>"parallel design"</span><span class='op'>)</span>
 <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Intensity ~ condition
-#&gt; &lt;environment: 0x0000000006f26d88&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
+#&gt; &lt;environment: 0x0000000043c915d8&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
 </div><div class='output co'>#&gt; function(m){
 #&gt;   anyNA &lt;- any(is.na(coefficients(m)))
 #&gt;   if (anyNA) {
@@ -248,7 +248,7 @@
 #&gt;     return(TRUE)
 #&gt;   }
 #&gt; }
-#&gt; &lt;bytecode: 0x000000004e802590&gt;
+#&gt; &lt;bytecode: 0x0000000042194b30&gt;
 #&gt; &lt;environment: namespace:prolfqua&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

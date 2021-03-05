@@ -115,14 +115,42 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
+<p><img src="reference/figures/imgfile.png" width="200"></p>
 <div id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="anchor"></a>prolfqua - an R package for Proteomics Label Free Quantification Services</h1></div>
-<p><img src="reference/figures/imgfile.png" alt="prolfqua"></p>
-<p>The R package contains functions for analyzing mass spectrometry based LFQ experiments at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
-<p>To build the package you need to clone the repository using <code>git clone https:/github.com/wolski/prolfqua</code>.</p>
-<p>To install it please use <code><a href="https://remotes.r-lib.org/reference/install_github.html">remotes::install_github("wolski/prolfqua")</a></code>.</p>
+<p>The R package contains functions for analyzing mass spectrometry based LFQ experiments. This package was developed at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
+</div>
+<div id="how-to-install-prolfqua" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-to-install-prolfqua" class="anchor"></a>How to install prolfqua?</h1>
+<p>Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher To install the package please execute in R</p>
+<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
+remotes::install_github('wolski/prolfqua')</a></code></pre>
+<p>If you want to build the vignettes</p>
+<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
+remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
+</a></code></pre>
 <p>Let us please know about any installation problems or errors when using the package <a href="https://github.com/wolski/prolfqua/issues" class="uri">https://github.com/wolski/prolfqua/issues</a></p>
+</div>
+<div id="how-to-get-started" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-to-get-started" class="anchor"></a>How to get started</h1>
+<p>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t">EuroBioc2020</a> on YouTube.</p>
+<p>Detailed documentation about:</p>
+<ul>
+<li><a href="https://wolski.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two Conditions</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size estimation</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/Modelling2Factors.html">Analysing factorial designs</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html">Benchmarking LFQ pipeline with prolfqua</a></li>
+</ul>
+<p>More Documentation <a href="https://wolski.github.io/prolfqua/index.html" class="uri">https://wolski.github.io/prolfqua/index.html</a></p>
+</div>
+<div id="how-to-cite" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-to-cite" class="anchor"></a>How to cite?</h1>
+<p>If you are using the package in your work please cite: <a href="https://f1000research.com/slides/9-1476" class="uri">https://f1000research.com/slides/9-1476</a></p>
 <div id="motivation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#motivation" class="anchor"></a>Motivation</h2>
@@ -134,63 +162,13 @@
 <p>Last but not least <em>prolfqua</em> supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc. It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish etc. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed.</p>
 <p>To use <code>prolfqua</code> knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface, we provide an MSstats emulator, where the model specification is generated based on the annotation file structure.</p>
 </div>
-<div id="1-system-requirements" class="section level2">
+<div id="running-r-scripts" class="section level2">
 <h2 class="hasAnchor">
-<a href="#1-system-requirements" class="anchor"></a>1. System Requirements</h2>
-<p>R 4.0 or higher.</p>
-</div>
-<div id="11-install-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#11-install-r" class="anchor"></a>1.1. Install R</h2>
-<p>A Windows/Linux/MacOSX x64 platform with R 4</p>
-<p>To install the package please execute</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
-# If you want to build the vignettes comment out the next line.
-# remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
-remotes::install_github('wolski/prolfqua')
-</a></code></pre>
-</div>
-<div id="2-running-r-scripts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#2-running-r-scripts" class="anchor"></a>2. Running R-scripts</h2>
+<a href="#running-r-scripts" class="anchor"></a>Running R-scripts</h2>
 <p>Generate QC report from bat file. First add <code>&lt;prolfqua_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
 <pre><code>lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip</code></pre>
 <pre><code>Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
-</div>
-</div>
-<div id="how-to-get-started" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-get-started" class="anchor"></a>How to get started</h1>
-<div id="2-grp-analysis-todo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#2-grp-analysis-todo" class="anchor"></a>2 grp analysis (TODO)</h2>
-<ul>
-<li>See vignettes.</li>
-</ul>
-</div>
-<div id="parallel-design-todo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#parallel-design-todo" class="anchor"></a>Parallel design (TODO)</h2>
-<p>What is parallel design.</p>
-<ul>
-<li>See vignettes.</li>
-</ul>
-</div>
-<div id="repeated-measurements-todo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#repeated-measurements-todo" class="anchor"></a>Repeated measurements (TODO)</h2>
-<p>What is a paired measurement.</p>
-<ul>
-<li>See vignettes.</li>
-</ul>
-</div>
-<div id="contrasts-todo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contrasts-todo" class="anchor"></a>Contrasts (TODO)</h2>
-<ul>
-<li>See vignettes.</li>
-</ul>
 </div>
 </div>
 <div id="related-resources" class="section level1">
@@ -200,6 +178,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <li><a href="https://github.com/statisticalbiotechnology/triqler">Triqler</a></li>
 <li><a href="https://github.com/statOmics/MSqRob">MSQRob</a></li>
 <li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html">PECA/ROPECA</a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/MSstats.html">MSstats</a></li>
 <li>PEPA test - analysis including shared peptides
 <ul>
 <li><a href="https://github.com/samWieczorek/DAPAR/">DAPAR</a></li>
@@ -236,7 +215,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <a href="#what-package-name" class="anchor"></a>What package name?</h1>
 <p>What name should we use :</p>
 <ul>
-<li>prolfqua - we do proteomics services.</li>
+<li>LFQService - we do proteomics LFQ services.</li>
 <li>prolfqua - <strong>pro</strong>teomics LFQ package (read prolevka)</li>
 <li>nalfqua - <strong>n</strong>ot <strong>a</strong>nother LFQ package (read nalewka)</li>
 </ul>
