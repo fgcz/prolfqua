@@ -38,7 +38,7 @@ ncol(startdata)
 str(startdata)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
-View(annotation)
+#View(annotation)
 ncol(annotation)
 
 
@@ -205,7 +205,7 @@ contr <- ContrastsModerated$new(mod, Contrasts)
 #contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
 dim(contrdf)
-View(contrdf)
+#View(contrdf)
 ```
 
 
