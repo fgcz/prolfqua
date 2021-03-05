@@ -226,7 +226,7 @@ filter(contrdf, protein_Id %in% myProteinIDS)
 
 # Missing values
 
-```{r computeMissing, eval=FALSE}
+```{r computeMissing, eval=TRUE}
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 dim(mC$get_contrasts())
 
