@@ -43,7 +43,7 @@ We start by loading the IonStar dataset and the annotation from the `prolfquaDat
 
 ```{r}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
-inputMQfile <-  file.path(datadir, "MaxQuant_Ionstar2018_PXD003881.zip")
+inputMQfile <-  file.path(datadir, "MAXQuant_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
 mqdata <- tidyMQ_Peptides_Config(inputMQfile)
