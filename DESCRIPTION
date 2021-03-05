@@ -51,7 +51,6 @@ Suggests:
     coda,
     corrplot,
     docopt,
-    prora,
     flextable,
     KernSmooth,
     knitr,

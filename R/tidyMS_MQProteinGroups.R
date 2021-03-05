@@ -508,7 +508,7 @@ tidyMQ_Peptides_Config <- function(MQtxtfolder,
                                    use = c("peptides", "modificationSpecificPeptides" ),
                                    remove_rev = TRUE,
                                    proteotypic_only = TRUE,
-                                   id_extractor = function(df) {prora::get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")})
+                                   id_extractor = function(df) {get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")})
   {
 
   # create default config

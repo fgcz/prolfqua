@@ -1,3 +1,23 @@
+#' Extracts uniprot ID
+#' @export
+#' @keywords internal
+#' @family utilities
+#' @return data.frame
+#' @param obj data.frame
+#' @param idcol columns to extrac uniprot id's from
+get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
+{
+  map <- df %>% dplyr::select(idcolumn) %>% distinct() %>%
+    dplyr::filter(grepl(pattern = "^sp|^tr", !!sym(idcolumn))) %>%
+    tidyr::separate(col = !!sym(idcolumn), sep = "_", into = c("begin",
+                                                               "end"), remove = FALSE) %>% tidyr::separate(col = !!sym("begin"),
+                                                                                                           sep = "\\|", into = c("prefix", "UniprotID", "Symbol")) %>%
+    dplyr::select(-!!sym("prefix"), -!!sym("Symbol"), -!!sym("end"))
+  res <- dplyr::right_join(map, df, by = idcolumn)
+  return(res)
+}
+
+
 #' Removes rows with more than thresh NA's from matrix
 #' @export
 #' @keywords internal
