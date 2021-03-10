@@ -1,4 +1,4 @@
-name: R-CMD-check-prolfqua
+name: R-CMD-check-prolfqua-1
 env:
     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 on:
