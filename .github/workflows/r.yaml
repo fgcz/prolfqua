@@ -31,8 +31,9 @@ jobs:
       - name: Install required R packages from CRAN and Bioconductor
         if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
         run: |
-          install.packages(c("broom"), repos='https://cloud.r-project.org')
-          install.packages(c("protViz"), repos='https://cloud.r-project.org')
+          install.packages(c("remotes"), repos='https://cloud.r-project.org')
+          remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+          remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
         shell: Rscript {0}
 
       - name: Cache R packages
