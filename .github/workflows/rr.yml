@@ -39,7 +39,7 @@ jobs:
             path: ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV2
       - name: sessionInfo
-        run: .libPaths("~/work/_temp/Library/"); library(broom); sessionInfo()
+        run: .libPaths("~/work/_temp/Library/"); installed.packages(); sessionInfo()
         shell: Rscript {0}
         
       - name: roxygen2::roxygenise
