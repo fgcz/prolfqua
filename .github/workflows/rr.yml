@@ -38,9 +38,9 @@ jobs:
         with:
             path: ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV2
-      - name: rcmdcheck::rcmdcheck
-        run: rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
+#      - name: rcmdcheck::rcmdcheck
+#        run: rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
+#        shell: Rscript {0}
 
       - name: List files in home directory
         run: find ~/ -type f > files.txt
