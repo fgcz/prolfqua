@@ -39,15 +39,15 @@ jobs:
             path: ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV2
       - name: sessionInfo
-        run: library(broom); sessionInfo()
+        run: .libPaths("~/work/_temp/Library/"); library(broom); sessionInfo()
         shell: Rscript {0}
         
       - name: roxygen2::roxygenise
-        run: roxygen2::roxygenise(clean=TRUE);
+        run: .libPaths("~/work/_temp/Library/");roxygen2::roxygenise(clean=TRUE);
         shell: Rscript {0}
         
       - name: rcmdcheck::rcmdcheck
-        run: rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
+        run: .libPaths("~/work/_temp/Library/");rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: List files in home directory
