@@ -1,0 +1,67 @@
+name: R-CMD-check-prolfqua-v0
+env:                        
+    ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+on:
+  push:
+    branches: [ Modelling2R6 ]
+  pull_request:
+    branches: [ Modelling2R6 ]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        r-version: [4.0.3]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up R ${{ matrix.r-version }}
+        uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: ${{ matrix.r-version }}
+      - name: Install Linux packages
+        run: sudo apt-get install -y libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
+      - name: Cache R packages
+        id: cache-rpkgs
+        uses: actions/cache@v2
+        with:
+            path: ~/work/_temp/Library/
+            key: ${{ runner.os }}-RpkgsV2-prolfqua
+
+      - name: Install required R packages from CRAN and Bioconductor
+        if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
+        run: |
+          install.packages(c("broom"), repos='https://cloud.r-project.org')
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        id: cache-rpkgs-cran-bioc
+        uses: actions/cache@v2
+        with:
+            path: ~/work/_temp/Library/
+            key: ${{ runner.os }}-RpkgsV2-prolfqua
+      - name: sessionInfo
+        run: .libPaths("~/work/_temp/Library/"); installed.packages(); sessionInfo()
+        shell: Rscript {0}
+        
+      - name: roxygen2::roxygenise
+        run: .libPaths("~/work/_temp/Library/");roxygen2::roxygenise(clean=TRUE);
+        shell: Rscript {0}
+        
+      - name: rcmdcheck::rcmdcheck
+        run: .libPaths("~/work/_temp/Library/");rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: List files in home directory
+        run: find ~/ -type f > files.txt
+      - uses: actions/upload-artifact@v2
+        with:
+            name: files
+            path: files.txt
+            if-no-files-found: warn
+
+#      - uses: actions/upload-artifact@v2
+#        with:
+##            name: prolfqua_manual
+# #           path: check/prolfqua.Rcheck/prolfqua-manual.pdf
+#            if-no-files-found: warn
