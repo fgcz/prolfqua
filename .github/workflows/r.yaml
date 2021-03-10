@@ -32,6 +32,7 @@ jobs:
         if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
         run: |
           install.packages(c("broom"), repos='https://cloud.r-project.org')
+          install.packages(c("protViz"), repos='https://cloud.r-project.org')
         shell: Rscript {0}
 
       - name: Cache R packages
