@@ -50,8 +50,8 @@ jobs:
             path: files.txt
             if-no-files-found: warn
 
-      - uses: actions/upload-artifact@v2
-        with:
-            name: prolfqua_manual
-            path: check/prolfqua.Rcheck/prolfqua-manual.pdf
-            if-no-files-found: warn
+#      - uses: actions/upload-artifact@v2
+#        with:
+##            name: prolfqua_manual
+# #           path: check/prolfqua.Rcheck/prolfqua-manual.pdf
+#            if-no-files-found: warn
