@@ -1,37 +1,57 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-#
-# See https://github.com/r-lib/actions/tree/master/examples#readme for
-# additional example workflows available for the R community.
-
-name: R
-
+name: R-CMD-check-prolfqua
+env:
+    ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 on:
   push:
-    branches: [ Modelling2R6 ]
+    branches: [ master ]
   pull_request:
-    branches: [ Modelling2R6 ]
-
+    branches: [ master ]
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        r-version: [3.5, 3.6]
-
+        r-version: [4.0.3]
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up R ${{ matrix.r-version }}
-        uses: r-lib/actions/setup-r@ffe45a39586f073cc2e9af79c4ba563b657dc6e3
+        uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.r-version }}
-      - name: Install dependencies
-        run: |
-          install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_deps(dependencies = TRUE)
+      - name: Install Linux packages
+        run: sudo apt-get install -y libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
+      - name: Cache R packages
+        id: cache-rpkgs
+        uses: actions/cache@v2
+        with:
+            path: ~/work/_temp/Library/
+            key: ${{ runner.os }}-RpkgsV2
+
+      - name: Install required R packages from CRAN and Bioconductor
+        if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
+        run: install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org'); pkgs <- c('DT', 'GGally', 'KernSmooth', 'MASS','bookdown', 'broom', 'coda', 'conflicted', 'corrplot', 'docopt', 'dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2', 'ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC', 'pheatmap', 'plotly', 'plyr', 'progress', 'purrr', 'readr', 'readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr', 'tidyverse', 'yaml') ; pkgs <- pkgs[(!pkgs %in% unique(installed.packages()[,'Package']))] ; remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
         shell: Rscript {0}
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+      - name: Cache R packages
+        id: cache-rpkgs-cran-bioc
+        uses: actions/cache@v2
+        with:
+            path: ~/work/_temp/Library/
+            key: ${{ runner.os }}-RpkgsV2
+      - name: rcmdcheck::rcmdcheck
+        run: rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
         shell: Rscript {0}
+
+      - name: List files in home directory
+        run: find ~/ -type f > files.txt
+      - uses: actions/upload-artifact@v2
+        with:
+            name: files
+            path: files.txt
+            if-no-files-found: warn
+
+      - uses: actions/upload-artifact@v2
+        with:
+            name: prolfqua_manual
+            path: check/prolfqua.Rcheck/prolfqua-manual.pdf
+            if-no-files-found: warn
