@@ -37,6 +37,7 @@ jobs:
           remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
         shell: Rscript {0}
 #        run: install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org'); pkgs <- c('DT', 'GGally', 'KernSmooth', 'MASS','bookdown', 'broom', 'coda', 'conflicted', 'corrplot', 'docopt', 'dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2', 'ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC', 'pheatmap', 'plotly', 'plyr', 'progress', 'purrr', 'readr', 'readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr', 'tidyverse', 'yaml') ; lapply(pkgs, function(i){if (!i %in% installed.packages()){install.packages(i)}}) ; remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+# ‘ggpubr’, ‘plotly’, ‘tidyverse’, ‘writexl’
       - name: Cache R packages
         id: cache-rpkgs-cran-bioc
         uses: actions/cache@v2
@@ -44,7 +45,7 @@ jobs:
             path: ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV2-prolfqua
       - name: sessionInfo
-        run: .libPaths("~/work/_temp/Library/"); installed.packages(); sessionInfo()
+        run: install.packages(c('ggpubr', 'plotly', 'tidyverse', 'writexl'), repos='https://cloud.r-project.org'); .libPaths("~/work/_temp/Library/"); installed.packages(); sessionInfo()
         shell: Rscript {0}
         
    #   - name: roxygen2::roxygenise
