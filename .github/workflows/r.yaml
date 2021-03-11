@@ -20,7 +20,7 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
       - name: Install Linux packages
-        run: sudo apt-get install -y libcurl4 libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
+        run: sudo apt-get install -y curl libcurl4 libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
       - name: Cache R packages
         id: cache-rpkgs
         uses: actions/cache@v2
@@ -31,7 +31,7 @@ jobs:
       - name: Install required R packages from CRAN and Bioconductor
         if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
         run: |
-          install.packages(c("remotes"), repos='https://cloud.r-project.org')
+          install.packages(c("remotes", "curl"), repos='https://cloud.r-project.org')
           remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
           remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
         shell: Rscript {0}
