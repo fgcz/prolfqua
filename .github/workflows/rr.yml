@@ -33,14 +33,14 @@ jobs:
         if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
         run: |
           install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org');
-          pkgs <- c('DT', 'GGally', 'KernSmooth', 'MASS','bookdown', 'broom', 'coda', 'conflicted', 'corrplot', 'docopt', 'dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2', 'ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC', 'pheatmap', 'plotly', 'plyr', 'progress', 'purrr', 'readr', 'readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr', 'tidyverse', 'yaml') ;
+          pkgs <- c('DT', 'GGally', 'KernSmooth', 'MASS','bookdown', 'broom', 'coda', 'conflicted', 'corrplot', 'docopt', 'dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2', 'ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC', 'pheatmap', 'plotly', 'plyr', 'progress', 'purrr', 'readr', 'readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr', 'tidyverse', 'yaml', 'writexl') ;
           lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}}); 
         shell: Rscript {0}
       - name: Cache R packages
         id: cache-rpkgs-cran-bioc
         uses: actions/cache@v2
         with:
-            path: ~/work/_temp/Library/
+            path: ${{ R_LIBS_SITE }}
             key: ${{ runner.os }}-RpkgsV3-prolfqua
 
       - name: Install prolfqua
@@ -49,7 +49,7 @@ jobs:
         shell: Rscript {0}
 
       - name: rcmdcheck::rcmdcheck
-        run: .libPaths(); rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
 
       - name: List files in home directory
@@ -63,5 +63,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
             name: prolfqua CI Rcheck directory
-            path: check/prolfqua.Rcheck/prolfqua-manual.pdf
+            path: check/prolfqua.Rcheck
             if-no-files-found: warn
