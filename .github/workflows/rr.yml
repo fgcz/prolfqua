@@ -46,21 +46,22 @@ jobs:
       - name: Install prolfqua
         run: |
           remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+        shell: Rscript {0}
 
       - name: rcmdcheck::rcmdcheck
         run: .libPaths(); rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
 
       - name: List files in home directory
-        run: find ~/ -type f > files.txt
+        run: find $R_LIBS_SITE -type f > files.txt
       - uses: actions/upload-artifact@v2
         with:
             name: files
             path: files.txt
             if-no-files-found: warn
 
-#      - uses: actions/upload-artifact@v2
-#        with:
-##            name: prolfqua_manual
-# #           path: check/prolfqua.Rcheck/prolfqua-manual.pdf
-#            if-no-files-found: warn
+      - uses: actions/upload-artifact@v2
+        with:
+            name: prolfqua CI Rcheck directory
+            path: check/prolfqua.Rcheck/prolfqua-manual.pdf
+            if-no-files-found: warn
