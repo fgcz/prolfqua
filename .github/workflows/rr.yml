@@ -53,7 +53,7 @@ jobs:
    #     shell: Rscript {0}
         
       - name: rcmdcheck::rcmdcheck
-        run: .libPaths("~/work/_temp/Library/");rcmdcheck::rcmdcheck(error_on = "warning", check_dir = "check")
+        run: .libPaths("~/work/_temp/Library/");rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
 
       - name: List files in home directory
