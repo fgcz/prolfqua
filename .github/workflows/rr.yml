@@ -40,7 +40,7 @@ jobs:
         id: cache-rpkgs-cran-bioc
         uses: actions/cache@v2
         with:
-            path: ${{ R_LIBS_SITE }}
+            path:  ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV3-prolfqua
 
       - name: Install prolfqua
