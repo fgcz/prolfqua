@@ -47,14 +47,12 @@ Imports:
     yaml,
     writexl
 Suggests:
-    brms,
     coda,
     corrplot,
     docopt,
     flextable,
     KernSmooth,
     knitr,
-    MCMCvis,
     multcomp,
     pROC,
     plyr,
