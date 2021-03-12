@@ -1,0 +1,193 @@
+---
+title: "Benchmarking normalization, aggregation and models using the Ionstar Dataset"
+author: "FGCZ - (Draft)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+papersize: a4
+geometry: margin=.5in
+vignette: >
+  %\VignetteIndexEntry{Benchmarking normalization, aggregation and models using the Ionstar Dataset} 
+  %\VignetteEncoding{UTF-8}
+  
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+Please download and install the `prolfquaData` package from github
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+echo = TRUE,
+message = FALSE,
+warning = FALSE,
+fig.width = 10,
+fig.height = 10
+)
+```
+
+
+```{r}
+rm(list = ls())
+library(conflicted)
+library(prolfqua)
+library(tidyverse)
+library(dplyr)
+conflict_prefer("filter", "dplyr")
+
+```
+
+
+We start by loading the IonStar dataset and the annotation from the `prolfquaData` package. The method `add_annotation` adds the annotation to the data.
+
+```{r}
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir, "IonstarWithMSFragger.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
+annotation <- readxl::read_xlsx(inputAnnotation)
+
+
+unzip(inputMQfile, list = TRUE)$Name
+MQPeptides <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
+                             header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+colnames(MQPeptides) <- tolower(colnames(MQPeptides))
+colnames(MQPeptides)[1:14]
+plot(table(MQPeptides$"unique.stripped.peptides"))
+MQPeptides <- MQPeptides %>% filter(unique.stripped.peptides > 1)
+sum(duplicated(select(MQPeptides, protein.group, subgroup)))
+
+
+annot <- MQPeptides %>% select(colnames(MQPeptides)[1:14]) 
+head(annot)
+
+extractDataLong <- function(MQPeptides, what = "total.intensity"){
+  gg <- MQPeptides %>% select( protein.group, subgroup, ends_with(what))
+  gg <- gg %>% pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
+  gg <- gg %>% mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
+  gg
+}
+
+res <- vector( mode = "list", length = 9)
+
+intnames <- c("total.intensity",
+              "unique.intensity",
+              "razor.intensity",
+              "total.ion.count",
+              "unique.ion.count",
+              "razor.ion.count",
+              "total.spectral.count",
+              "unique.spectral.count", 
+              "razor.spectral.count")
+
+names(res)  <- intnames
+
+for (i in 1:length(intnames)) {
+  res[[intnames[i]]] <- extractDataLong(MQPeptides, what = intnames[i] )
+}
+
+merged <- Reduce(inner_join, res)
+merged <- inner_join(annot, merged)
+merged <- inner_join(annotation, merged)
+head(annotation)
+plot(merged$total.ion.count, merged$total.intensity, pch = "." )
+
+```
+
+
+```{r setupConfigs}
+
+atable <- AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+atable$hierarchy[["protein_Id"]] <- c("protein")
+
+atable$hierarchyDepth <- 1
+atable$setWorkIntensity("total.intensity")
+
+anaparam <- AnalysisParameters$new()
+config <- AnalysisConfiguration$new(atable, anaparam)
+
+
+config$table$factors[["dilution."]] = "sample"
+config$table$factors[["run"]] = "run_ID"
+config$table$factorDepth <- 1
+
+adata <- setup_analysis(merged, config)
+lfqdata <- LFQData$new(adata, config)
+lfqdata$remove_small_intensities()
+```
+
+
+```{r}
+pl <- lfqdata$get_Plotter()
+pl$intensity_distribution_density()
+
+subset_h <- lfqdata$get_copy()
+subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
+tr <- lfqdata$get_Transformer()
+lfqdataNormalized <- tr$log2_robscale_subset(lfqsubset = subset_h)
+
+pl <- lfqdataNormalized$get_Plotter()
+pl$intensity_distribution_density()
+
+hm <- pl$NA_heatmap()
+```
+
+```{r}
+hm
+```
+
+```{r}
+lfqdataNormalized$summarize_hierarchy()
+summariz <- lfqdataNormalized$get_Summariser()
+summariz$hierarchy_counts()
+summariz$hierarchy_counts_sample()
+summariz$interaction_missing_stats()
+summariz$missingness_per_condition()
+summariz$missingness_per_condition_cumsum()
+summariz$hierarchy_counts()
+summariz$hierarchy_counts_sample()
+
+```
+
+```{r}
+Contrasts <- c(
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
+  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
+  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
+)
+
+
+lmmodel <- "~ dilution."
+lmmodel <- paste0(lfqdataNormalized$config$table$getWorkIntensity() , lmmodel)
+
+modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
+
+mod <- prolfqua::build_model(lfqdataNormalized$data, modelFunction)
+
+contr <- prolfqua::ContrastsModerated$new(mod, Contrasts)
+contrdf <- contr$get_contrasts()
+cp <- contr$get_Plotter()
+cp$volcano()
+
+```
+
+
+```{r}
+ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
+medpol_benchmark <- make_benchmark(ttd$data,
+                                   model_description = "med. polish and lm. density",
+                                   model_name = "prot_med_lm",
+                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE),
+                                                  list(sc = "FDR.moderated", desc = FALSE))
+)
+medpol_benchmark$data()
+medpol_benchmark$plot_score_distribution()
+medpol_benchmark$plot_ROC()
+medpol_benchmark$plot_FDRvsFDP()
+medpol_benchmark$get_confusion()
+medpol_benchmark$get_FDRvsFDP()
+medpol_benchmark$FDRvsFDP
+
+```
