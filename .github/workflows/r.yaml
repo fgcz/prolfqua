@@ -1,4 +1,4 @@
-name: R-CMD-check-prolfqua-II
+name: R-CMD-check-prolfqua
 env:
     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     R_LIBS_SITE: '/home/runner/work/_temp/Library/'
@@ -64,4 +64,10 @@ jobs:
         with:
             name: prolfqua CI Rcheck directory
             path: check/prolfqua.Rcheck
+            if-no-files-found: warn
+
+      - uses: actions/upload-artifact@v2
+        with:
+            name: R_LIBS_SITE directory
+            path: work/_temp/Library
             if-no-files-found: warn
