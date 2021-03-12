@@ -1,3 +1,5 @@
+[![R-CMD-check-prolfqua](https://github.com/wolski/prolfqua/actions/workflows/r.yml/badge.svg)](https://github.com/wolski/prolfqua/actions/workflows/r.yml)
+
 <img src="man/figures/imgfile.png" width="200">
 
 # prolfqua - an R package for Proteomics Label Free Quantification Services
