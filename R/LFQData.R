@@ -252,7 +252,7 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$config$table$popWorkIntensity()
         self$lfq$config$table$setWorkIntensity(colname)
       }
-      return(self$lfq)
+      invisible(self$lfq)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
@@ -263,7 +263,7 @@ LFQDataTransformer <- R6::R6Class(
     log2_robscale_subset = function(lfqsubset, colname = "transformedIntensity"){
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
-        return(NULL)
+        invisible(NULL)
       }
       if (self$lfq$is_transformed() == FALSE) {
         self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data , self$lfq$config, log2)
@@ -277,7 +277,7 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$config$table$popWorkIntensity()
         self$lfq$config$table$setWorkIntensity(colname)
       }
-      return(self$lfq)
+      invisible(self$lfq)
     },
     #' @description
     #' Transforms intensities
@@ -292,7 +292,7 @@ LFQDataTransformer <- R6::R6Class(
         .func = .func,
         .funcname = deparse(.call$.func))
       self$lfq$data <- r
-      return(self)
+      invisible(self)
     },
     #' @description
     #' pass a function which works with matrices see robust_scale for examples.
@@ -307,7 +307,7 @@ LFQDataTransformer <- R6::R6Class(
         .func = .func,
         .funcname = deparse(.call$.func))
       self$lfq$data <- r
-      return(self)
+      invisible(self)
     }
   )
 )
