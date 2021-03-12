@@ -1,4 +1,4 @@
-[![R-CMD-check-prolfqua](https://github.com/wolski/prolfqua/actions/workflows/r.yml/badge.svg)](https://github.com/wolski/prolfqua/actions/workflows/r.yml)
+[![R-CMD-check-prolfqua](https://github.com/wolski/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/wolski/prolfqua/actions/workflows/r.yaml)
 
 <img src="man/figures/imgfile.png" width="200">
 
