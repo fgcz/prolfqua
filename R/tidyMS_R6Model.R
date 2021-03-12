@@ -108,7 +108,7 @@ Model <- R6::R6Class(
                                    group_by_col = "factor",
                                    newname = "FDR.Pr..F.")
       #tidyr::unnest(cols = "Anova_model")
-      return(Model_Anova)
+      return(dplyr::ungroup(Model_Anova))
     },
 
     #' @description writes model coefficients to file
@@ -158,7 +158,7 @@ Model <- R6::R6Class(
           colour = "isSingular" )
       return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
     },
-    #' @description pairs-splot of coefficients
+    #' @description pairs-plot of coefficients
     coef_pairs = function(){
       Model_Coeff <- self$get_coefficients()
       Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
