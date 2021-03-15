@@ -1,3 +1,4 @@
+# author C.Panse
 name: R-CMD-check-prolfqua
 env:
     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
@@ -66,8 +67,8 @@ jobs:
             path: check/prolfqua.Rcheck
             if-no-files-found: warn
 
-      - uses: actions/upload-artifact@v2
-        with:
-            name: R_LIBS_SITE directory
-            path: /home/runner/work/_temp/Library/
-            if-no-files-found: warn
+#      - uses: actions/upload-artifact@v2
+#        with:
+#            name: R_LIBS_SITE directory
+#            path: /home/runner/work/_temp/Library/
+#            if-no-files-found: warn
