@@ -63,6 +63,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other utilities: 
+\code{\link{get_UniprotID_from_fasta_header}()},
 \code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroupVolcano}()},

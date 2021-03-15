@@ -28,6 +28,7 @@ my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{get_UniprotID_from_fasta_header}()},
 \code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroupVolcano}()},

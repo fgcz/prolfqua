@@ -1,7 +1,7 @@
 ---
 title: "Modelling Dataset with two Factors."
 author: "Witold Wolski"
-date: "06/10/2020"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
   pdf_document: default
@@ -239,6 +239,10 @@ ANOVA %>% filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head
 protIntSig <- ANOVA %>% filter(factor == "condition_:batch_") %>% filter(FDR.Pr..F. < 0.05)
 protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
+```
+
+
+```{r fig.with=15, fig.height=15}
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 
 ```
