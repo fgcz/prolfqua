@@ -226,7 +226,7 @@ volcano plot of non intercept coefficients
 \if{html}{\out{<a id="method-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
-pairs-splot of coefficients
+pairs-plot of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$coef_pairs()}\if{html}{\out{</div>}}
 }

@@ -26,6 +26,7 @@ matrix_to_tibble(x)
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{get_UniprotID_from_fasta_header}()},
 \code{\link{jackknifeMatrix}()},
 \code{\link{multigroupVolcano}()},
 \code{\link{my_jackknife}()},
