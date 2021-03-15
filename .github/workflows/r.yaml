@@ -1,3 +1,4 @@
+# author C.Panse
 name: R-CMD-check-prolfqua
 env:
     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
