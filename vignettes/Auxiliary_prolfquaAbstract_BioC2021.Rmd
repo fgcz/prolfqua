@@ -1,11 +1,9 @@
 ---
 title: "Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data"
 author: "Witold Wolski"
-date: "16/11/2020"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
-  pdf_document:
-    keep_tex: yes
 vignette: >
   %\VignetteIndexEntry{Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data}
   %\VignetteEncoding{UTF-8}

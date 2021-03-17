@@ -1,7 +1,7 @@
 ---
 title: "Auxiliary - Euro Bioconductor 2020"
 author: "Witold Wolski"
-date: "16/11/2020"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
   pdf_document: 
