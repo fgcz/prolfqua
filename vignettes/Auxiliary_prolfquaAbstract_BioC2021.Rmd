@@ -3,11 +3,11 @@ title: "Auxiliary - Prolfqua - R package for visualization and modelling of prot
 author: "Witold Wolski"
 date: "16/11/2020"
 output:
+  html_document: default
   pdf_document:
     keep_tex: yes
-  html_document: default
 vignette: >
-  %\VignetteIndexEntry{Prolfqua - R package for visualization and modelling of proteomics label-free quantification data}
+  %\VignetteIndexEntry{Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
