@@ -14,7 +14,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 Please download and install the `prolfquaData` package from github
 
 ```{r setup, include=FALSE}
@@ -27,7 +26,6 @@ fig.height = 10
 )
 ```
 
-
 ```{r}
 rm(list = ls())
 library(conflicted)
@@ -37,7 +35,6 @@ library(dplyr)
 conflict_prefer("filter", "dplyr")
 
 ```
-
 
 We start by loading the IonStar dataset and the annotation from the `prolfquaData` package. The method `add_annotation` adds the annotation to the data.
 
@@ -52,14 +49,11 @@ unzip(inputMQfile, list = TRUE)$Name
 MQPeptides <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 colnames(MQPeptides) <- tolower(colnames(MQPeptides))
-colnames(MQPeptides)[1:14]
-plot(table(MQPeptides$"unique.stripped.peptides"))
+# Keep only proteins with 2 id's
 MQPeptides <- MQPeptides %>% filter(unique.stripped.peptides > 1)
 sum(duplicated(select(MQPeptides, protein.group, subgroup)))
 
-
 annot <- MQPeptides %>% select(colnames(MQPeptides)[1:14]) 
-head(annot)
 
 extractDataLong <- function(MQPeptides, what = "total.intensity"){
   gg <- MQPeptides %>% select( protein.group, subgroup, ends_with(what))
@@ -90,10 +84,8 @@ merged <- Reduce(inner_join, res)
 merged <- inner_join(annot, merged)
 merged <- inner_join(annotation, merged)
 head(annotation)
-plot(merged$total.ion.count, merged$total.intensity, pch = "." )
 
 ```
-
 
 ```{r setupConfigs}
 
@@ -117,8 +109,7 @@ lfqdata <- LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 ```
 
-
-```{r}
+```{r createPlotter}
 pl <- lfqdata$get_Plotter()
 pl$intensity_distribution_density()
 
@@ -133,11 +124,11 @@ pl$intensity_distribution_density()
 hm <- pl$NA_heatmap()
 ```
 
-```{r}
+```{r showHeatmap}
 hm
 ```
 
-```{r}
+```{r useSummarizer}
 lfqdataNormalized$summarize_hierarchy()
 summariz <- lfqdataNormalized$get_Summariser()
 summariz$hierarchy_counts()
@@ -150,7 +141,7 @@ summariz$hierarchy_counts_sample()
 
 ```
 
-```{r}
+```{r specifyContrasts}
 Contrasts <- c(
   "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
   "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
@@ -172,7 +163,6 @@ cp <- contr$get_Plotter()
 cp$volcano()
 
 ```
-
 
 ```{r}
 ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
