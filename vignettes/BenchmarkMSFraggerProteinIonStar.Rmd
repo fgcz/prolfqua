@@ -40,7 +40,7 @@ We start by loading the IonStar dataset and the annotation from the `prolfquaDat
 
 ```{r}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
-inputMQfile <-  file.path(datadir, "IonstarWithMSFragger.zip")
+inputMQfile <-  file.path(datadir, "MSFragger_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 annotation <- readxl::read_xlsx(inputAnnotation)
 
