@@ -198,7 +198,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' prolfqua::table_factors(ionstar$data, ionstar$config)
 #' formula_randomPeptide <-
 #'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-#' mr <- prolfqua:::model_analyse( ionstar$data,
+#' mr <- model_analyse( ionstar$data,
 #'  formula_randomPeptide,
 #'  subject_Id = ionstar$config$table$hkeysDepth())
 #' get_complete_model_fit(mr$modelProtein)
@@ -521,10 +521,10 @@ plot_lmer_model_and_data_TWO <- function(m,
 
 linfct_from_model <- function(m, as_list = TRUE){
 
-  cm <- prolfqua:::.lmer4_coeff_matrix(m)
+  cm <- .lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
-  l_factors <- prolfqua:::.coeff_weights_factor_levels(cm_mm)
+  l_factors <- .coeff_weights_factor_levels(cm_mm)
   linfct_factors <- l_factors %>%
     dplyr::select(-factor_level) %>%
     data.matrix()

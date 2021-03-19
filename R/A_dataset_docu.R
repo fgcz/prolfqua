@@ -21,6 +21,13 @@
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom stringr str_trim
+#' @importFrom GGally ggpairs
+#' @importFrom conflicted conflict_prefer
+#' @importFrom htmlwidgets saveWidget
+#' @importFrom plotly ggplotly
+#' @import tidyverse
+#' @importFrom yaml write_yaml
+#' @importFrom stats .lm.fit glm model.matrix residuals
 NULL
 #' Internal Functions by category
 #' @family configuration

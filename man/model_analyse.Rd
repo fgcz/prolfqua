@@ -23,7 +23,7 @@ ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protei
 prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-mr <- prolfqua:::model_analyse( ionstar$data,
+mr <- model_analyse( ionstar$data,
  formula_randomPeptide,
  subject_Id = ionstar$config$table$hkeysDepth())
 get_complete_model_fit(mr$modelProtein)

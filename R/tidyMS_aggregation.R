@@ -101,7 +101,7 @@ plot_hierarchies_line <- function(res,
   if (length(rev_hnames) > 2) {
     peptide <- rev_hnames[2]
   }
-  res <- prolfqua:::plot_hierarchies_line_default(
+  res <- plot_hierarchies_line_default(
     res,
     proteinName = proteinName,
     sample = config$table$sampleName,
@@ -238,7 +238,7 @@ medpolishPly <- function(x, name = FALSE){
     dplyr::select_at( c( samples,
                          feature,
                          expression) ) %>%
-    tidyr::spread(key = samples , value = expression) %>% prolfqua:::.ExtractMatrix()
+    tidyr::spread(key = samples , value = expression) %>% .ExtractMatrix()
   return(pdata)
 }
 

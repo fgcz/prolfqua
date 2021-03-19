@@ -49,7 +49,7 @@
 compute_roc <- function(data, config){
   nested <- data %>% dplyr::group_by(!!!syms(config$table$hierarchyKeys())) %>% nest()
   nested <- nested %>% dplyr::mutate(rocs = map(data ,
-                                                prolfqua:::.rocs,
+                                                .rocs,
                                                 response = config$table$fkeysDepth(),
                                                 predictor = config$table$getWorkIntensity() ))
 

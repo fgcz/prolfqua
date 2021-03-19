@@ -303,7 +303,7 @@ build_model <- function(data,
                         subject_Id = "protein_Id",
                         modelName = modelFunction$modelName){
 
-  modellingResult <- prolfqua:::model_analyse(
+  modellingResult <- model_analyse(
     data,
     modelFunction,
     modelName = modelName,

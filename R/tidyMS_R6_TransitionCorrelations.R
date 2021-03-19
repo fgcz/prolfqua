@@ -638,7 +638,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  pdata <- prolfqua:::.rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
+  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
