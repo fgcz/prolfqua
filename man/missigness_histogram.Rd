@@ -7,7 +7,7 @@
 missigness_histogram(
   x,
   config,
-  showempty = TRUE,
+  showempty = FALSE,
   factors = config$table$fkeysDepth()
 )
 }
@@ -20,16 +20,19 @@ library(prolfqua)
 bb <- prolfqua::ionstar
 configur <- bb$config
 data <- bb$data
-
 xx <- complete_cases(data, configur)
 missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
-setNa <- function(x){ifelse(x < 100, NA, x)}
-data <- data \%>\% dplyr::mutate(peptide.intensity = setNa(peptide.intensity))
-missigness_histogram(data, configur)
+bx <- prolfqua::ionstar$normalized()
+configur <- bx$config
+data <- bx$data
+data <- complete_cases(data, configur)
+missingPrecNorm <- interaction_missing_stats(data, configur)
 
+missigness_histogram(data, configur, showempty=FALSE)
+missigness_histogram(data, configur, showempty=TRUE)
 }
 \seealso{
 Other plotting: 

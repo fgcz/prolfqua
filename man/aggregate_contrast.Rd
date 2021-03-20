@@ -26,8 +26,6 @@ data <- bb$data
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
 mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
-head(mean)
-
 meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
 
 imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
@@ -39,7 +37,6 @@ plot(imputedProt$c1 - imputedProt$c2, imputedProt$estimate_median)
 abline(c(0,1), col=2, pch = "*")
 dim(meanProt)
 sum(is.na(meanProt$estimate_median)) == 0
-dim(imputedProt)
 sum(is.na(imputedProt$estimate_median)) == 0
 plot(meanProt$estimate_median - imputedProt$estimate_median )
 

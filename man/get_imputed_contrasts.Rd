@@ -31,6 +31,16 @@ data <- complete_cases(data, configur)
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 get_imputed_contrasts(data, configur, Contrasts)
+if(FALSE){
+debug(get_imputed_contrasts)
+config <- configur
+contrasts <- Contrasts
+imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
+dim(imputed)
+debug(aggregate_contrast)
+imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+}
 }
 \seealso{
 Other modelling: 

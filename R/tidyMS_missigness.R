@@ -266,7 +266,7 @@ missigness_impute_factors_interactions <-
       }
     }
 
-    fac_res <- vector(mode = "list",length = length(fac_fun))
+    fac_res <- vector(mode = "list", length = length(fac_fun))
     names(fac_res) <- names(fac_fun)
     for (fun_name in names(fac_fun)) {
       fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
@@ -297,8 +297,6 @@ missigness_impute_factors_interactions <-
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
 #' mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
-#' head(mean)
-#'
 #' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
 #'
 #' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
@@ -310,7 +308,6 @@ missigness_impute_factors_interactions <-
 #' abline(c(0,1), col=2, pch = "*")
 #' dim(meanProt)
 #' sum(is.na(meanProt$estimate_median)) == 0
-#' dim(imputedProt)
 #' sum(is.na(imputedProt$estimate_median)) == 0
 #' plot(meanProt$estimate_median - imputedProt$estimate_median )
 #'
@@ -323,20 +320,21 @@ aggregate_contrast <- function(
 {
   grouping_columns <- c(contrast, subject_Id, "c1_name","c2_name")
   dataG <- data %>%
-    group_by(across(all_of(grouping_columns)))
+    group_by(!!!syms(grouping_columns))
 
-
-  resE <- dataG %>% summarise(n = n(), across(all_of(c("estimate")),
+  resN <- dataG %>% dplyr::summarise(n = n(), .groups="drop")
+  resE <- dataG %>% dplyr::summarise(across(.data$estimate,
                                      agg_func
                                     ), .groups = "drop")
   agg_func_c <- agg_func[1]
-  resC <- dataG %>% summarise(across(all_of(c("c1", "c2")),
+  resC <- dataG %>% dplyr::summarise(across(all_of(c("c1", "c2")),
                                      agg_func_c,
                                      .names = "{col}"
                                      ),
                               .groups = "drop")
-  res <- full_join(resC,resE, by = grouping_columns)
-
+  #res <- dplyr::full_join(ungroup(resC),ungroup(resE), by = grouping_columns)
+  res <- Reduce(function(x,y){ dplyr::full_join(x , y , by = grouping_columns)},
+                list(resN,resE,resC) )
   return(res)
 
 }
@@ -397,7 +395,8 @@ get_contrast <- function(data,
     res[[names(contrasts)[i]]] <- df
   }
   res <- dplyr::bind_rows(res)
-  return(res)
+
+  return(ungroup(res))
 }
 
 #' compute contrasts based on peptide fold changes
@@ -427,10 +426,20 @@ get_contrast <- function(data,
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' get_imputed_contrasts(data, configur, Contrasts)
+#' if(FALSE){
+#' debug(get_imputed_contrasts)
+#' config <- configur
+#' contrasts <- Contrasts
+#' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+#' imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
+#' dim(imputed)
+#' debug(aggregate_contrast)
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+#' }
 get_imputed_contrasts <- function(data, config, contrasts){
   imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
-  imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
-  imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+  imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
+  imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
   return(imputedProt)
 }
 #' Histogram summarizing missigness
@@ -444,17 +453,23 @@ get_imputed_contrasts <- function(data, config, contrasts){
 #' bb <- prolfqua::ionstar
 #' configur <- bb$config
 #' data <- bb$data
-#'
 #' xx <- complete_cases(data, configur)
 #' missigness_histogram(xx, configur)
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' setNa <- function(x){ifelse(x < 100, NA, x)}
-#' data <- data %>% dplyr::mutate(peptide.intensity = setNa(peptide.intensity))
-#' missigness_histogram(data, configur)
+#' bx <- prolfqua::ionstar$normalized()
+#' configur <- bx$config
+#' data <- bx$data
+#' data <- complete_cases(data, configur)
+#' missingPrecNorm <- interaction_missing_stats(data, configur)
 #'
-missigness_histogram <- function(x, config, showempty = TRUE, factors = config$table$fkeysDepth()){
+#' missigness_histogram(data, configur, showempty=FALSE)
+#' missigness_histogram(data, configur, showempty=TRUE)
+missigness_histogram <- function(x,
+                                 config,
+                                 showempty = FALSE,
+                                 factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
   missingPrec <- missingPrec %>%
@@ -463,10 +478,11 @@ missigness_histogram <- function(x, config, showempty = TRUE, factors = config$t
   if (showempty) {
     if (config$table$is_intensity_transformed) {
       missingPrec <- missingPrec %>%
-        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),1,.data$meanArea))
+        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 1,
+                                        .data$meanArea))
     }else{
       missingPrec <- missingPrec %>%
-        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),-20,.data$meanArea))
+        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),min(.data$meanArea, na.rm = TRUE) - 20,.data$meanArea))
     }
 
   }
