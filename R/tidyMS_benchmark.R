@@ -10,8 +10,8 @@ ionstar_bench_preprocess <- function(data) {
       grepl("ECOLI", protein_Id) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
-  res <- tmp %>% dplyr::filter(!species == "OTHER")
-  res <- res %>% mutate(TP = (species == "ECOLI"))
+  res <- tmp %>% dplyr::filter(!.data$species == "OTHER")
+  res <- res %>% mutate(TP = (.data$species == "ECOLI"))
   return(list(data = res , table = table(tmp$species)))
 }
 
@@ -39,20 +39,25 @@ ionstar_bench_preprocess <- function(data) {
   }
   data <- data %>% select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
+  data$F_NA <- sum(!data$TP)
+  data$T_NA <- sum(data$TP)
+  data$N_NA <- nrow(data)
+
+  data <- na.omit(data)
   data$F_ <- sum(!data$TP)
   data$T_ <- sum(data$TP)
 
-  data <- na.omit(data)
   data <- data %>% mutate(
-    R = 1:n()
-    , FDP = cummean(!TP)
-    , TP_hits = cumsum(TP)
-    , FN_hits = T_ - TP_hits
-    , FP_hits = cumsum(!TP)
-    , TN_hits = F_ - FP_hits
-    , FPR = FP_hits / F_
-    , TPR  = TP_hits / T_
-    , ACC = (TP_hits + TN_hits) / (T_ + F_)
+    R = 1:dplyr::n()
+    , FDP = dplyr::cummean(!.data$TP)
+    , TP_hits = cumsum(.data$TP)
+    , FN_hits = .data$T_ - .data$TP_hits
+    , FP_hits = cumsum(!.data$TP)
+    , TN_hits = .data$F_ - .data$FP_hits
+    , FPR = .data$FP_hits / .data$F_
+    , TPR  = .data$TP_hits / .data$T_
+    , ACC = (.data$TP_hits + .data$TN_hits) / (.data$T_ + .data$F_)
+    , FDP_ = .data$FDP * 1/max(.data$FDP)
   ) %>% ungroup
   return(data)
 }
@@ -111,8 +116,9 @@ do_confusion <-
                             list(sc = "scaled.p" , desc = TRUE),
                             list(sc = "scaled.moderated.p", desc = TRUE))) {
     # TODO add to prolfqua
-    est <- data %>% dplyr::select_at(c("TP",
-                                       purrr::map_chr(arrangeby, "sc")))
+    est <- data %>% ungroup %>%
+      dplyr::select_at(c("TP",
+                         purrr::map_chr(arrangeby, "sc")))
     res <- list()
     for (arrange in arrangeby) {
       score <- arrange$sc
@@ -132,6 +138,7 @@ do_confusion_c <- function(
   contrast = "contrast",
   arrangeby = list(list(sc = "p.value.adjusted", desc = FALSE),
                    list(sc = "moderated.p.value.adjusted", desc = FALSE))) {
+
   txx <- data %>% group_by_at(contrast) %>% nest()
   txx <- txx %>% mutate(out  = map(data,
                                    do_confusion,
@@ -280,8 +287,12 @@ do_confusion_c <- function(
 #' brms_benchmark$complete()
 #' brms_benchmark$plot_score_distribution()
 #' bb <- brms_benchmark$get_confusion()
+#' bb$contrast %>% unique()
+#' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
+#' max(xb$TPR)
+#' max(xb$TP_hits)/ max(xb$T_)
 #' brms_benchmark$get_confusion_summaries()
-#' brms_benchmark$plot_ROC()
+#' brms_benchmark$plot_ROC(xlim = 0.1)
 #' brms_benchmark$plot_FDPvsTPR()
 #' brms_benchmark$plot_FDRvsFDP()
 #' brms_benchmark$plot_scatter()
@@ -292,28 +303,28 @@ Benchmark <-
     "Benchmark",
     public = list(
       #' @field .data data.frame
-      #' @field is_complete todo
-      #' @field contrast column name
-      #' @field toscale which columns to scale
-      #' @field benchmark todo
-      #' @field model_description describe model
-      #' @field model_name model description
-      #' @field hierarchy todo
-      #' @field smc summarize missing contrasts
-      #' @field confusion todo
-      #' @field species todo
-      #' @field FDRvsFDP todo
       .data = NULL,
+      #' @field is_complete todo
       is_complete = FALSE,
+      #' @field contrast column name
       contrast = "",
+      #' @field toscale which columns to scale
       toscale = c(""),
+      #' @field benchmark todo
       benchmark = list(),
+      #' @field model_description describe model
       model_description = "",
+      #' @field model_name model description
       model_name = "",
+      #' @field hierarchy todo
       hierarchy = "",
+      #' @field smc summarize missing contrasts
       smc = NULL,
+      #' @field confusion todo
       confusion = NULL,
+      #' @field species todo
       species = "",
+      #' @field FDRvsFDP todo
       FDRvsFDP = NULL,
       #' @description
       #' create Benchmark
@@ -361,7 +372,7 @@ Benchmark <-
       #' @return data.frame
       data = function(){
         if (self$is_complete) {
-          nr_na <- self$smc$nr_na %>% filter(n == n - nr_na)
+          nr_na <- self$smc$nr_na %>% filter(n == n - .data$nr_na)
           return(dplyr::inner_join(self$.data, nr_na, by = self$hierarchy))
         } else {
           return(self$.data)
@@ -386,9 +397,12 @@ Benchmark <-
           arrange = self$FDRvsFDP
         }
         confusion <- prolfqua:::do_confusion_c(self$data(),
-                                                 contrast = self$contrast,
-                                                 arrangeby = arrange)
-        confusion <- tibble::add_column(confusion , model_name = self$model_name, .before = self$contrast)
+                                               contrast = self$contrast,
+                                               arrangeby = arrange)
+        confusion <- tibble::add_column(
+          confusion ,
+          model_name = self$model_name,
+          .before = self$contrast)
         return(confusion)
       },
       #' @description
@@ -411,7 +425,7 @@ Benchmark <-
       plot_ROC = function(xlim = 0.5){
         confusion <- self$get_confusion_summaries()
         vissum <- .plot_ROC(confusion,
-                              fpr_lim = xlim)
+                            fpr_lim = xlim)
         return(vissum)
       },
       #' @description
@@ -435,9 +449,12 @@ Benchmark <-
       plot_FDRvsFDP = function(){
         xx <- self$get_FDRvsFDP()
         #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
-        p <- ggplot(xx, aes(x = scorecol, y = FDP, color = !!sym(self$contrast))) +
+        p <- ggplot(xx,
+                    aes(x = scorecol,
+                        y = FDP_,
+                        color = !!sym(self$contrast))) +
           geom_line() +
-          geom_abline(slope = max(xx$FDP), col = 2) +
+          geom_abline(slope = max(xx$FDP_), col = 2) +
           facet_wrap(~what)
         return(p)
       },
@@ -458,7 +475,7 @@ Benchmark <-
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
       plot_scatter = function(score = list(list(score = "estimate", ylim = c(-1,2) ),
-                                          list(score = "statistic", ylim = c(-3,10) ))){
+                                           list(score = "statistic", ylim = c(-3,10) ))){
         x <- self$data()
 
         x <- x %>% arrange(desc(!!sym(self$species)))
