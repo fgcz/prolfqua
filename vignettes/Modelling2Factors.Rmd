@@ -195,7 +195,7 @@ ggpubr::ggarrange(plotlist = bp$boxplot[1001:1006])
 pMerged$config$table$getWorkIntensity()
 
 formula_Batches <-
-  make_custom_model_lm("transformedIntensity ~ condition_ * batch_ ")
+  strategy_lm("transformedIntensity ~ condition_ * batch_ ")
 
 # specify model definition
 modelName  <- "Model"

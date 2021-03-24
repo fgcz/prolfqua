@@ -14,7 +14,7 @@ library(prolfqua)
 istar <- prolfqua::ionstar$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
-  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
+  strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
 config$table$hkeysDepth()
@@ -54,9 +54,6 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{make_custom_model_glm}()},
-\code{\link{make_custom_model_lmer}()},
-\code{\link{make_custom_model_lm}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
@@ -75,6 +72,9 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{strategy_glm}()},
+\code{\link{strategy_lmer}()},
+\code{\link{strategy_lm}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}

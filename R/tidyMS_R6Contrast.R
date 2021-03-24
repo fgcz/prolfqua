@@ -117,7 +117,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
+#' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 #' pepIntensity <- istar$data
 #' config <- istar$config
 #' config$table$hkeysDepth()
@@ -299,7 +299,7 @@ Contrasts <- R6::R6Class(
 #' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
 #' config$table$hkeysDepth()
@@ -383,7 +383,7 @@ ContrastsModerated <- R6::R6Class(
 #' istar <- prolfqua::ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
-#'   make_custom_model_lm("transformedIntensity  ~ dilution.")
+#'   strategy_lm("transformedIntensity  ~ dilution.")
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 2
@@ -505,7 +505,7 @@ ContrastsROPECA <- R6::R6Class(
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
 #'    model_name = modelName)
 #' pepIntensity <- istar_data
 #' config <- istar$config

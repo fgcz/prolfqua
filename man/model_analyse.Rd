@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{model_analyse}
 \alias{model_analyse}
-\title{analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`}
+\title{analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`}
 \usage{
 model_analyse(
   pepIntensity,
@@ -22,7 +22,7 @@ ionstar <- prolfqua::ionstar$normalized()
 ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
 prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
-  make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
+  strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
 mr <- model_analyse( ionstar$data,
  formula_randomPeptide,
  subject_Id = ionstar$config$table$hkeysDepth())
@@ -48,9 +48,6 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{make_custom_model_glm}()},
-\code{\link{make_custom_model_lmer}()},
-\code{\link{make_custom_model_lm}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{ms_brms_model}()},
@@ -68,6 +65,9 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{strategy_glm}()},
+\code{\link{strategy_lmer}()},
+\code{\link{strategy_lm}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}

@@ -15,11 +15,11 @@
 #' @family modelling
 #' @examples
 #'
-#' tmp <- make_custom_model_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
+#' tmp <- strategy_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 #'
-make_custom_model_lmer <- function(modelstr,
+strategy_lmer <- function(modelstr,
                                    model_name = "Model",
                                    report_columns = c("statistic",
                                                       "p.value",
@@ -35,7 +35,7 @@ make_custom_model_lmer <- function(modelstr,
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch(lmerTest::lmer( formula , data = x ),
+    modelTest <- tryCatch( lmerTest::lmer( formula , data = x ),
                           error = .ehandler)
     return(modelTest)
   }
@@ -55,10 +55,10 @@ make_custom_model_lmer <- function(modelstr,
 #' @param report_columns columns to report
 #' @family modelling
 #' @examples
-#' tmp <- make_custom_model_lm("Intensity ~ condition", model_name = "parallel design")
+#' tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-make_custom_model_lm <- function(modelstr,
+strategy_lm <- function(modelstr,
                                  model_name = "Model",
                                  report_columns = c("statistic",
                                                     "p.value",
@@ -95,10 +95,10 @@ make_custom_model_lm <- function(modelstr,
 #' @param report_columns columns to report
 #' @family modelling
 #' @examples
-#' tmp <- make_custom_model_glm("Intensity ~ condition", model_name = "parallel design")
+#' tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-make_custom_model_glm <- function(modelstr,
+strategy_glm <- function(modelstr,
                                   model_name = "Model",
                                   report_columns = c("statistic",
                                                      "p.value",
@@ -182,7 +182,7 @@ get_complete_model_fit <- function(modelProteinF){
 }
 
 
-#' analyses lmer4 and lm models created using help function `make_custom_model_lm` or `make_custom_model_lmer`
+#' analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`
 #'
 #' used in project p2901
 #'
@@ -197,7 +197,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' ionstar$data <- ionstar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id,10))
 #' prolfqua::table_factors(ionstar$data, ionstar$config)
 #' formula_randomPeptide <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
 #' mr <- model_analyse( ionstar$data,
 #'  formula_randomPeptide,
 #'  subject_Id = ionstar$config$table$hkeysDepth())

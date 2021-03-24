@@ -10,7 +10,7 @@
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
 #'    model_name = modelName)
 #' pepIntensity <- istar_data
 #' config <- istar$config
@@ -46,7 +46,7 @@ Model <- R6::R6Class(
     p.adjust = NULL,
     #' @description initialize
     #' @param modelDF dataframe with modelling results
-    #' @param modelFunction modelFunction see \code{\link{make_custom_model_lmer}}
+    #' @param modelFunction modelFunction see \code{\link{strategy_lmer}}
     #' @param modelName name of model
     #' @param subject_Id subject column name
     #' @param p.adjust method to adjust p-values
@@ -272,7 +272,7 @@ LR_test <- function(modelProteinF,
 #' @return
 #' a object of class \code{\link{Model}}
 #' @family modelling
-#' @seealso \code{\link{model_analyse}}, \code{\link{make_custom_model_lmer}} \code{\link{make_custom_model_lm}}
+#' @seealso \code{\link{model_analyse}}, \code{\link{strategy_lmer}} \code{\link{strategy_lm}}
 #'
 #' @export
 #' @examples
@@ -284,7 +284,7 @@ LR_test <- function(modelProteinF,
 #'
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
-#'   make_custom_model_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
 #'    model_name = modelName)
 #' pepIntensity <- D$data
 #' config <- D$config

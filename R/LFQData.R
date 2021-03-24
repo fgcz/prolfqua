@@ -120,7 +120,6 @@ LFQData <- R6::R6Class(
     #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
-    #' @return data and annotation
     #' @return list with data, annotation, and configuration
     to_wide = function(as.matrix = FALSE){
       wide <- prolfqua::toWideConfig(self$data, self$config, as.matrix = as.matrix)
@@ -375,7 +374,7 @@ LFQDataStats <- R6::R6Class(
     lfq = NULL,
     #' @field stat either CV or sd (if is_transformed)
     stat = "CV",
-    #' @field data frame with statistics.
+    #' @field statsdf frame with statistics.
     statsdf = NULL,
     #' @description create analyse variances and CV
     #' @param lfqdata LFQData object

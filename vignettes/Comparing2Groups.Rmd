@@ -175,7 +175,7 @@ p
 ```{r}
 transformed$config$table$getWorkIntensity()
 
-formula_Condition <-  make_custom_model_lm("transformedIntensity ~ Condition_")
+formula_Condition <-  strategy_lm("transformedIntensity ~ Condition_")
 
 # specify model definition
 modelName  <- "Model"

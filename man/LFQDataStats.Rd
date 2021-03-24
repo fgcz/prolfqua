@@ -74,14 +74,7 @@ Other LFQData:
 
 \item{\code{stat}}{either CV or sd (if is_transformed)}
 
-\item{\code{data}}{frame with statistics.}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data}}{frame with statistics.}
+\item{\code{statsdf}}{frame with statistics.}
 }
 \if{html}{\out{</div>}}
 }

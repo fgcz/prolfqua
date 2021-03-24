@@ -29,6 +29,7 @@
 #' @importFrom yaml write_yaml
 #' @importFrom stats .lm.fit glm model.matrix residuals
 NULL
+
 #' Internal Functions by category
 #' @family configuration
 #' @family concrete_configuration

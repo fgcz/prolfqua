@@ -261,7 +261,7 @@ protLFQ <- lfqAggMedpol$lfq_agg
 lmmodel <- "~ dilution."
 lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
 
-modelFunction <- make_custom_model_lm( lmmodel, model_name = "Model")
+modelFunction <- strategy_lm( lmmodel, model_name = "Model")
 
 mod <- prolfqua::build_model(protLFQ$data, modelFunction)
 

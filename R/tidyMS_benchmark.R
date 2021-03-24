@@ -39,13 +39,18 @@ ionstar_bench_preprocess <- function(data) {
   }
   data <- data %>% select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
-  data$F_NA <- sum(!data$TP)
-  data$T_NA <- sum(data$TP)
-  data$N_NA <- nrow(data)
 
-  data <- na.omit(data)
-  data$F_ <- sum(!data$TP)
-  data$T_ <- sum(data$TP)
+  if(TRUE){ # drop missing so that TPR goes up to 1.
+    data <- na.omit(data)
+    data$F_ <- sum(!data$TP)
+    data$T_ <- sum(data$TP)
+  }else{
+    data$F_ <- sum(!data$TP)
+    data$T_ <- sum(data$TP)
+    data <- na.omit(data)
+  }
+
+
 
   data <- data %>% mutate(
     R = 1:dplyr::n()
@@ -411,7 +416,7 @@ Benchmark <-
         self$get_confusion(arrange = self$benchmark)
       },
       #' @description plot FDP vs TPR
-      #'
+      #' @param xlim limit x axis
       plot_FDPvsTPR = function(xlim = 0.5){
         confusion <- self$get_confusion_summaries()
 

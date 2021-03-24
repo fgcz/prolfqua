@@ -244,7 +244,7 @@ converts the data to wide
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-data and annotation
+list with data, annotation, and configuration
 }
 }
 \if{html}{\out{<hr>}}
