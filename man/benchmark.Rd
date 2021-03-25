@@ -216,6 +216,13 @@ plot FDP vs TPR
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDPvsTPR(xlim = 0.5)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xlim}}{limit x axis}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-plot_ROC"></a>}}

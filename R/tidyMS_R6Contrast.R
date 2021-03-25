@@ -620,15 +620,13 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
 
     },
-    #' @description plotly volcano plots (fold change vs FDR)
+    #' @description volcano plots (fold change vs FDR)
     volcano = function(){
       fig <- private$.volcano(self$contrastDF, self$volcano_spec )
       self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
       return(fig)
     },
     #' @description plotly volcano plots
-    #' @param scores for which scores to generate volcano plot
-    #' @param fc fold change abline
     volcano_plotly = function(){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec )
@@ -746,7 +744,7 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores){
+    .volcano = function(contrasts, scores, colour){
       fig <- list()
       for (score in scores) {
         column <- score$score
@@ -758,7 +756,7 @@ Contrasts_Plotter <- R6::R6Class(
           condition = self$contrast,
           text = "subject_Id",
           xintercept = c(-fc, fc),
-          colour = "isSingular",
+          colour = colour,
           scales = "free_y")
 
       }

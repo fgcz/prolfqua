@@ -198,11 +198,11 @@ do_confusion_c <- function(
   }
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
-  summaryS <- pStats %>% dplyr::group_by(contrast, what) %>%
+  summaryS <- pStats %>% dplyr::group_by(contrast, .data$what) %>%
     dplyr::summarize(
-      AUC = ms_bench_auc(FPR, TPR),
-      pAUC_10 =  ms_bench_auc(FPR, TPR, 0.1),
-      pAUC_20 = ms_bench_auc(FPR, TPR, 0.2)
+      AUC = ms_bench_auc(.data$FPR, .data$TPR),
+      pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
+      pAUC_20 = ms_bench_auc(.data$FPR, .data$TPR, 0.2)
     )
 
   ftable <- list(content = summaryS,
