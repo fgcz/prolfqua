@@ -220,7 +220,7 @@ plot histogram of estimated fold change
 \if{html}{\out{<a id="method-volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-volcano}{}}}
 \subsection{Method \code{volcano()}}{
-plotly volcano plots (fold change vs FDR)
+volcano plots (fold change vs FDR)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano()}\if{html}{\out{</div>}}
 }
@@ -235,15 +235,6 @@ plotly volcano plots
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{scores}}{for which scores to generate volcano plot}
-
-\item{\code{fc}}{fold change abline}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ma_plot"></a>}}

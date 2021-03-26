@@ -82,10 +82,16 @@ split2table <- function(names,split="\\||\\_")
 #' library(ggplot2)
 #' library(tidyverse)
 #' library(ggrepel)
-#' head(prolfqua::multigroupFCDATA)
-#' multigroupVolcano(prolfqua::multigroupFCDATA,
+#' head()
+#' show <- prolfqua::multigroupFCDATA %>% filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
+#' prolfqua::multigroupVolcano(show,
 #' effect="logFC",
-#' p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
+#' p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
+#' maxNrOfSignificantText = 300)
+#' .multigroupVolcano(show,condition="Condition",
+#' effect="logFC",
+#' p.value="adj.P.Val",
+#'  colour="colour")
 multigroupVolcano <- function(.data,
                               effect = "fc",
                               p.value = "p.adjust",
@@ -97,11 +103,7 @@ multigroupVolcano <- function(.data,
                               size = 1,
                               segment.size = 0.3,
                               segment.alpha = 0.3,
-                              ablines = data.frame(
-                                fc = c(0,0),
-                                p = c(0.01,0.05),
-                                Area = c('p=0.01','p=0.05')
-                              ),
+                              yintercept = 0.1,
                               scales = "fixed",
                               maxNrOfSignificantText = 20)
 {
@@ -109,22 +111,14 @@ multigroupVolcano <- function(.data,
 
   p <- .multigroupVolcano(misspX, effect = effect, p.value = p.value, condition = condition,
                           colour = colour, xintercept = xintercept, pvalue = pvalue,
-                          text = "label", ablines = ablines, scales = scales)
+                          text = "label", yintercept = yintercept, scales = scales)
   colname = paste("-log10(", p.value , ")" , sep = "")
-  # p <- ggplot( misspX, aes_string(x = effect , y = colname, color = colour  )  )  +
-  #   geom_point(alpha = 0.5)
-  # p <- p + scale_colour_manual(values = c("black", "green", "blue","red"))
-  # p <- p + facet_wrap(as.formula(paste("~",condition)),scales = scales) + labs(y = colname)
-  #
-  # ablines$neg_log10p <- -log10(ablines$p)
-  # p <- p + geom_abline(data = ablines, aes_string(slope = "fc", intercept = "neg_log10p",colour = "Area")) +
-  #   geom_vline(xintercept = xintercept,linetype = "dashed", colour = "red")
 
   if (!is.null(label)) {
     effectX <- misspX[,effect]
     typeX <- misspX[,p.value]
     subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) %>%
-      head(maxNrOfSignificantText)
+      head(n = maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
       p <- p + ggrepel::geom_text_repel(data = subsetData,
                                         aes_string(effect , colname , label = "label"),
@@ -144,9 +138,7 @@ multigroupVolcano <- function(.data,
                                xintercept = c(-2,2),
                                pvalue = 0.05,
                                text = NULL,
-                               ablines = data.frame(fc = c(0, 0),
-                                                    p = c(0.01, 0.05),
-                                                    Area = c("p = 0.01", "p = 0.05")),
+                               yintercept = c(0.1),
                                scales = "fixed")
 {
   colname = paste("-log10(", p.value, ")", sep = "")
@@ -156,16 +148,19 @@ multigroupVolcano <- function(.data,
                                           "blue", "red"))
   p <- p + facet_wrap(as.formula(paste("~", condition)),
                       scales = scales) + labs(y = colname)
-  ablines$neg_log10p <- -log10(ablines$p)
-  p <- p + geom_abline(data = ablines,
-                       aes_string(slope = "fc",
-                                  intercept = "neg_log10p", colour = "Area")) +
-    geom_vline(xintercept = xintercept, linetype = "dashed",
-               colour = "red") +
-    theme_light()
+  log2FC <- effect
+  p <- p + geom_vline(xintercept = xintercept,linetype = "dashed",
+               colour = "red")
+  p_value <- paste0("-log10(",yintercept,")")
+  p <- p + geom_hline(aes(yintercept = -log10(yintercept),
+               linetype = p_value),linetype = "dashed",
+               color = "blue",
+               show.legend = FALSE)
+  p <- p + theme_light()
 
   return(p)
 }
+
 
 
 #' matrix or data.frame to tibble (taken from tidyquant)

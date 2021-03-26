@@ -143,11 +143,18 @@ pheatmap
 \if{html}{\out{<a id="method-pca"></a>}}
 \if{latex}{\out{\hypertarget{method-pca}{}}}
 \subsection{Method \code{pca()}}{
-pca plot
+PCA plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(add_txt = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{add_txt}}{show sample names}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 ggplot
 }
@@ -158,7 +165,7 @@ ggplot
 \subsection{Method \code{pca_plotly()}}{
 pca plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(add_txt = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

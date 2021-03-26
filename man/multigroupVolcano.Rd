@@ -16,7 +16,7 @@ multigroupVolcano(
   size = 1,
   segment.size = 0.3,
   segment.alpha = 0.3,
-  ablines = data.frame(fc = c(0, 0), p = c(0.01, 0.05), Area = c("p=0.01", "p=0.05")),
+  yintercept = 0.1,
   scales = "fixed",
   maxNrOfSignificantText = 20
 )
@@ -42,11 +42,11 @@ multigroupVolcano(
 
 \item{segment.alpha}{controls visibility of lines}
 
-\item{ablines}{adds ablines horizontal and vertical}
-
 \item{scales}{parameter to ggplot2::facet_wrap}
 
 \item{misspX}{data in long format}
+
+\item{ablines}{adds ablines horizontal and vertical}
 }
 \description{
 plot volcano given multiple conditions
@@ -55,10 +55,16 @@ plot volcano given multiple conditions
 library(ggplot2)
 library(tidyverse)
 library(ggrepel)
-head(prolfqua::multigroupFCDATA)
-multigroupVolcano(prolfqua::multigroupFCDATA,
+head()
+show <- prolfqua::multigroupFCDATA \%>\% filter(Condition  \%in\% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
+prolfqua::multigroupVolcano(show,
 effect="logFC",
-p.value="adj.P.Val",condition="Condition",colour="colour",label="Name" )
+p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
+maxNrOfSignificantText = 300)
+.multigroupVolcano(show,condition="Condition",
+effect="logFC",
+p.value="adj.P.Val",
+ colour="colour")
 }
 \seealso{
 Other utilities: 
