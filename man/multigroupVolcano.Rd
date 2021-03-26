@@ -60,10 +60,10 @@ prolfqua::multigroupVolcano(show,
 effect="logFC",
 p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
 maxNrOfSignificantText = 300)
-.multigroupVolcano(show,condition="Condition",
-effect="logFC",
-p.value="adj.P.Val",
- colour="colour")
+#.multigroupVolcano(show,condition="Condition",
+#effect="logFC",
+#p.value="adj.P.Val",
+# colour="colour")
 }
 \seealso{
 Other utilities: 

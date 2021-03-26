@@ -87,10 +87,10 @@ split2table <- function(names,split="\\||\\_")
 #' effect="logFC",
 #' p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
 #' maxNrOfSignificantText = 300)
-#' .multigroupVolcano(show,condition="Condition",
-#' effect="logFC",
-#' p.value="adj.P.Val",
-#'  colour="colour")
+#' #.multigroupVolcano(show,condition="Condition",
+#' #effect="logFC",
+#' #p.value="adj.P.Val",
+#' # colour="colour")
 multigroupVolcano <- function(.data,
                               effect = "fc",
                               p.value = "p.adjust",
