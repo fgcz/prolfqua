@@ -8,5 +8,5 @@
 ^docs$
 ^pkgdown$
 ^.github\$
-vignettes/Grp2Analysis_MissingInOneCondition.Rmd
-vignettes/Grp2Analysis.Rmd
+vignettes/Grp2Analysis_MissingInOneCondition\.Rmd$
+vignettes/Grp2Analysis\.Rmd$
