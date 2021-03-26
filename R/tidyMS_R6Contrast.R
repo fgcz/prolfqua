@@ -744,7 +744,7 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores, colour){
+    .volcano = function(contrasts, scores, colour = NULL){
       fig <- list()
       for (score in scores) {
         column <- score$score

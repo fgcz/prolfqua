@@ -631,17 +631,18 @@ LFQDataPlotter <- R6::R6Class(
       return(fig)
     },
     #' @description
-    #' pca plot
+    #' PCA plot
+    #' @param add_txt show sample names
     #' @return ggplot
-    pca = function(){
-      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, add_txt = FALSE)
+    pca = function(add_txt = TRUE){
+      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, add_txt = add_txt)
       return(fig)
     },
     #' @description
     #' pca plot
     #' @return plotly
-    pca_plotly = function(){
-      fig <- plotly::ggplotly(self$pca(), tooltip = self$lfq$config$table$sampleName)
+    pca_plotly = function(add_txt = FALSE){
+      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$table$sampleName)
       return(fig)
     },
     #' @description
