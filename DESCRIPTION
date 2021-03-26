@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.1.5.1
+Version: 0.1.5.2
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
 Description: Analysing complex label free quantification (LFQ) experiments using linear models.
