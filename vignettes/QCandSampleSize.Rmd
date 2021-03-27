@@ -3,12 +3,13 @@ title: "Quality Control & Sample Size Estimation"
 author: "WEW@FGCZ.ETHZ.CH"
 date: "`r Sys.Date()`"
 output:
-  bookdown::pdf_document2:
-    toc: yes
-    toc_depth: 2
   bookdown::html_document2:
     toc: yes
     toc_depth: 2
+  bookdown::pdf_document2:
+    toc: yes
+    toc_depth: 2
+  
 params:
   configuration:  !r quote( prolfqua::ionstar$filtered()$config$clone(deep=TRUE) )
   project_conf: NULL
@@ -17,7 +18,7 @@ params:
   plot_sd_vs_mean: FALSE
   pep: TRUE
 vignette: >
-  %\VignetteIndexEntry{Quality Control & Sample Size Estimation - V2}
+  %\VignetteIndexEntry{Quality Control & Sample Size Estimation}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
   editor_options:

@@ -5,7 +5,7 @@
 # prolfqua - an R package for Proteomics Label Free Quantification Services
 
 The R package contains functions for analyzing mass spectrometry based LFQ experiments.
-This package was developed at the [FGCZ](http://www.fgcz.ch/).
+This package is developed at the [FGCZ](http://www.fgcz.ch/).
 
 # How to install prolfqua?
 
@@ -34,7 +34,7 @@ https://github.com/wolski/prolfqua/issues
 
 Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
 
-Detailed documentation about:
+Detailed documentation with R code:
 
 - [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and sample size estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
