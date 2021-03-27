@@ -34,6 +34,10 @@ https://github.com/wolski/prolfqua/issues
 
 Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
 
+Or read the pkgdown generate website https://wolski.github.io/prolfqua/index.html
+
+
+
 Detailed documentation with R code:
 
 - [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
@@ -41,7 +45,10 @@ Detailed documentation with R code:
 - [Analysing factorial designs](https://wolski.github.io/prolfqua/articles/Modelling2Factors.html)
 - [Benchmarking LFQ pipeline with prolfqua](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)
 
-More Documentation https://wolski.github.io/prolfqua/index.html
+Example QC and sample size report
+
+- [QC and sample size Report](https://wolski.github.io/prolfqua/articles/QCandSampleSize.html)
+
 
 
 # How to cite?

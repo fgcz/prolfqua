@@ -158,7 +158,7 @@ show_text <- !local_config$table$is_intensity_transformed
 ```
 
 
-```{r conditional_print, child='CVReport.Rmd', eval = show_text}
+```{r conditional_print, child='_CVReport.Rmd', eval = show_text}
 ```
 
 ## Variability of transformed intensities
