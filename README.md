@@ -112,16 +112,18 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 # R packages to compute contrasts from linear models
 
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
--
+- [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
 
 
 
 # What package name?
 
-What name should we use :
-
-- LFQService - we do proteomics LFQ services.
-- prolfqua - **pro**teomics LFQ package (read prolevka)
-- nalfqua - **n**ot **a**nother LFQ package (read nalewka)
+What name should we use?
 
 https://twitter.com/WitoldE/status/1338799648149041156
+
+- prolfqua - PROteomics Label Free QUAntification package (read prolewka)
+
+- LFQService - we do proteomics LFQ services at the FGCZ.
+- nalfqua - Not Another Label Free QUAntification package (read nalewka)
+
