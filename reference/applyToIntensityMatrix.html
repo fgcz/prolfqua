@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -199,21 +208,21 @@
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>applyToIntensityMatrix</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>conf</span>, .func <span class='op'>=</span> <span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>res</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 25,780 x 11</span><span>
-#&gt;    protein_Id raw.file sampleName dilution. run_Id isotope peptide_Id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   AKGPLASQI~
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   FPILSANIK 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   GAEVAHFMN~
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   GPLASQISG~
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   GVDVVVGGH~
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   HDSGDQDIN~
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   IIALGHSGF~
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   IIALGHSGF~
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   KVPVVQAYA~
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|P21589~ b03_02_~ b~02       b         02     light   TIVYLDGSS~
-#&gt; </span><span style='color: #949494;'># ... with 25,770 more rows, and 4 more variables: peptide.intensity </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   pep </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, nr_peptide_Id_IN_protein_Id </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   peptide.intensity_base..scale </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"peptide.intensity_base..scale"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;    protein_Id    raw.file        sampleName dilution. run_Id isotope peptide_Id 
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   AKGPLASQIS~
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   FPILSANIK  
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GAEVAHFMNA~
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GPLASQISGL~
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GVDVVVGGHS~
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   HDSGDQDINV~
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   KVPVVQAYAF~
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   TIVYLDGSSQ~
+#&gt; </span><span style='color: #949494;'># ... with 25,770 more rows, and 4 more variables: peptide.intensity &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   pep &lt;dbl&gt;, nr_peptide_Id_IN_protein_Id &lt;int&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   peptide.intensity_base..scale &lt;dbl&gt;</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"peptide.intensity_base..scale"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"peptide.intensity_base..scale"</span> <span class='op'>==</span> <span class='va'>conf</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>conf</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>conf</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>workIntensity</span> <span class='op'>&lt;-</span> <span class='st'>"peptide.intensity"</span>

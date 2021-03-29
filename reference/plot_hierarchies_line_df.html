@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -220,11 +229,11 @@
 <span class='co'>#debug(plot_hierarchies_line_df)</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 7 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 121 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 88 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='img'><img src='plot_hierarchies_line_df-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span>  <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span>

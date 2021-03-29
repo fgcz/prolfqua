@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -63,7 +63,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -73,6 +79,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -112,13 +121,13 @@
 
       
 
-      </header><script src="BenchmarkingIonstarData_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="BenchmarkingIonstarData_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benchmarking normalization, aggregation and models using the Ionstar Dataset</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">05 March, 2021</h4>
+            <h4 class="date">29 March, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/BenchmarkingIonstarData.Rmd"><code>vignettes/BenchmarkingIonstarData.Rmd</code></a></small>
       <div class="hidden name"><code>BenchmarkingIonstarData.Rmd</code></div>
@@ -138,7 +147,7 @@
 <p>We start by loading the IonStar dataset and the annotation from the <code>prolfquaData</code> package. The method <code>add_annotation</code> adds the annotation to the data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
-<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MaxQuant_Ionstar2018_PXD003881.zip"</span><span class="op">)</span>
+<span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"MAXQuant_IonStar2018_PXD003881.zip"</span><span class="op">)</span>
 <span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_Ionstar2018_PXD003881.xlsx"</span><span class="op">)</span>
 
 <span class="va">mqdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tidyMQ_Peptides_Config.html">tidyMQ_Peptides_Config</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span>
@@ -371,7 +380,7 @@
 <span class="va">lmmodel</span> <span class="op">&lt;-</span> <span class="st">"~ dilution."</span>
 <span class="va">lmmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span> , <span class="va">lmmodel</span><span class="op">)</span>
 
-<span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_custom_model_lm.html">make_custom_model_lm</a></span><span class="op">(</span> <span class="va">lmmodel</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span>
+<span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strategy_lm.html">strategy_lm</a></span><span class="op">(</span> <span class="va">lmmodel</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span>
 
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">protLFQ</span><span class="op">$</span><span class="va">data</span>, <span class="va">modelFunction</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -395,18 +404,18 @@
 <span class="op">)</span>
 <span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 16,120 x 22
-##    contrast protein_Id     c1     c2 c1_name c2_name  sigma    df estimate
-##    &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
-##  1 dilutio~ sp|A0A0U1~ NA     -1.94  diluti~ diluti~ 0.192      1  NA     
-##  2 dilutio~ sp|A0AVT1~ -1.19  -1.27  diluti~ diluti~ 0.135     15   0.0852
-##  3 dilutio~ sp|A0FGR8~ -0.231 -0.311 diluti~ diluti~ 0.0848    15   0.0791
-##  4 dilutio~ sp|A0MZ66~ -1.23  -1.14  diluti~ diluti~ 0.115     15  -0.0907
-##  5 dilutio~ sp|A1L0T0~ -1.45  -1.48  diluti~ diluti~ 0.287     15   0.0326
-##  6 dilutio~ sp|A1X283~ -1.74  -1.51  diluti~ diluti~ 0.267     15  -0.235 
-##  7 dilutio~ sp|A2RRP1~ -2.53  -2.30  diluti~ diluti~ 0.155     14  -0.228 
-##  8 dilutio~ sp|A3KN83~ -1.90  -2.03  diluti~ diluti~ 0.323     15   0.128 
-##  9 dilutio~ sp|A4D1E9~ -1.28  -1.49  diluti~ diluti~ 0.163     15   0.212 
-## 10 dilutio~ sp|A5PLL7~ -2.11  -2.05  diluti~ diluti~ 0.296     15  -0.0595
+##    contrast   protein_Id         c1     c2 c1_name c2_name  sigma    df estimate
+##    &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
+##  1 dilution_~ sp|A0A0U1RRL7~ NA     -1.94  diluti~ diluti~ 0.192      1  NA     
+##  2 dilution_~ sp|A0AVT1|UBA~ -1.19  -1.27  diluti~ diluti~ 0.135     15   0.0852
+##  3 dilution_~ sp|A0FGR8|ESY~ -0.231 -0.311 diluti~ diluti~ 0.0848    15   0.0791
+##  4 dilution_~ sp|A0MZ66|SHO~ -1.23  -1.14  diluti~ diluti~ 0.115     15  -0.0907
+##  5 dilution_~ sp|A1L0T0|ILV~ -1.45  -1.48  diluti~ diluti~ 0.287     15   0.0326
+##  6 dilution_~ sp|A1X283|SPD~ -1.74  -1.51  diluti~ diluti~ 0.267     15  -0.235 
+##  7 dilution_~ sp|A2RRP1|NBA~ -2.53  -2.30  diluti~ diluti~ 0.155     14  -0.228 
+##  8 dilution_~ sp|A3KN83|SBN~ -1.90  -2.03  diluti~ diluti~ 0.323     15   0.128 
+##  9 dilution_~ sp|A4D1E9|GTP~ -1.28  -1.49  diluti~ diluti~ 0.163     15   0.212 
+## 10 dilution_~ sp|A5PLL7|TM1~ -2.11  -2.05  diluti~ diluti~ 0.296     15  -0.0595
 ## # ... with 16,110 more rows, and 13 more variables: std.error &lt;dbl&gt;,
 ## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,
 ## #   isSingular &lt;lgl&gt;, FDR &lt;dbl&gt;, moderated.p.value &lt;dbl&gt;, FDR.moderated &lt;dbl&gt;,
@@ -434,18 +443,18 @@
 <span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">cs</span><span class="op">)</span>
 <span class="va">ttd</span><span class="op">$</span><span class="va">data</span></code></pre></div>
 <pre><code>## # A tibble: 16,120 x 14
-##    contrast protein_Id c1_name c2_name     c1     c2     n estimate estimate_mad
-##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;
-##  1 dilutio~ sp|A0A0U1~ diluti~ diluti~ -2.02  -2.10      2   0.0762       0.113 
-##  2 dilutio~ sp|A0AVT1~ diluti~ diluti~ -1.27  -1.28     12  -0.0292       0.164 
-##  3 dilutio~ sp|A0FGR8~ diluti~ diluti~ -0.594 -0.367    16   0.0760       0.427 
-##  4 dilutio~ sp|A0MZ66~ diluti~ diluti~ -1.15  -1.21     10  -0.0484       0.0942
-##  5 dilutio~ sp|A1L0T0~ diluti~ diluti~ -1.33  -1.57      5  -0.172        0.147 
-##  6 dilutio~ sp|A1X283~ diluti~ diluti~ -1.78  -1.69      5  -0.0226       0.612 
-##  7 dilutio~ sp|A2RRP1~ diluti~ diluti~ -2.46  -2.22      4  -0.200        0.353 
-##  8 dilutio~ sp|A3KN83~ diluti~ diluti~ -2.02  -2.00      5  -0.0153       0.0227
-##  9 dilutio~ sp|A4D1E9~ diluti~ diluti~ -1.32  -1.68      5   0.197        0.253 
-## 10 dilutio~ sp|A5PLL7~ diluti~ diluti~ -1.82  -2.02      3  -0.236        0.889 
+##    contrast protein_Id c1_name c2_name     n estimate estimate_mad     c1     c2
+##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 dilutio~ sp|A0A0U1~ diluti~ diluti~     2   0.0762       0.113  -2.02  -2.10 
+##  2 dilutio~ sp|A0AVT1~ diluti~ diluti~    12  -0.0292       0.164  -1.27  -1.28 
+##  3 dilutio~ sp|A0FGR8~ diluti~ diluti~    16   0.0760       0.427  -0.594 -0.367
+##  4 dilutio~ sp|A0MZ66~ diluti~ diluti~    10  -0.0484       0.0942 -1.15  -1.21 
+##  5 dilutio~ sp|A1L0T0~ diluti~ diluti~     5  -0.172        0.147  -1.33  -1.57 
+##  6 dilutio~ sp|A1X283~ diluti~ diluti~     5  -0.0226       0.612  -1.78  -1.69 
+##  7 dilutio~ sp|A2RRP1~ diluti~ diluti~     4  -0.200        0.353  -2.46  -2.22 
+##  8 dilutio~ sp|A3KN83~ diluti~ diluti~     5  -0.0153       0.0227 -2.02  -2.00 
+##  9 dilutio~ sp|A4D1E9~ diluti~ diluti~     5   0.197        0.253  -1.32  -1.68 
+## 10 dilutio~ sp|A5PLL7~ diluti~ diluti~     3  -0.236        0.889  -1.82  -2.02 
 ## # ... with 16,110 more rows, and 5 more variables: isSingular &lt;lgl&gt;,
 ## #   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, species &lt;chr&gt;, TP &lt;lgl&gt;</code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">

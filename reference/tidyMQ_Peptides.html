@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -207,18 +216,18 @@
 <span class='va'>mq_peptides</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_Peptides</span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mq_peptides</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 16</span><span>
-#&gt;   peptide.id sequence proteins leading.razor.p~ protein.group.id peptide.score
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>          0 AADGGMF~ sp|Q28C~ sp|Q28C44|C19L2~              236          60.6
-#&gt; </span><span style='color: #949494;'># ... with 10 more variables: pep </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, missed.cleavages </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   unique.groups </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, potential.contaminant </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, reverse </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   raw.file </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, peptide.intensity </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, id.type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, proteotypic </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   isotope </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
+#&gt;   peptide.id sequence  proteins  leading.razor.p~ protein.group.id peptide.score
+#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
+#&gt; </span><span style='color: #949494;'># ... with 10 more variables: pep &lt;dbl&gt;, missed.cleavages &lt;int&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   unique.groups &lt;lgl&gt;, potential.contaminant &lt;lgl&gt;, reverse &lt;lgl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   raw.file &lt;chr&gt;, peptide.intensity &lt;dbl&gt;, id.type &lt;chr&gt;, proteotypic &lt;lgl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   isotope &lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

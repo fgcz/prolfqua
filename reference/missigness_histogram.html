@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -168,7 +177,7 @@
     <pre class="usage"><span class='fu'>missigness_histogram</span><span class='op'>(</span>
   <span class='va'>x</span>,
   <span class='va'>config</span>,
-  showempty <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  showempty <span class='op'>=</span> <span class='cn'>FALSE</span>,
   factors <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>fkeysDepth</span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -200,17 +209,20 @@
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span>
 <span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-
 <span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>missigness_histogram</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous x-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 393 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='missigness_histogram-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 393 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='missigness_histogram-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>missingPrec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='interaction_missing_stats.html'>interaction_missing_stats</a></span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-<span class='va'>setNa</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>&lt;</span> <span class='fl'>100</span>, <span class='cn'>NA</span>, <span class='va'>x</span><span class='op'>)</span><span class='op'>}</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>peptide.intensity <span class='op'>=</span> <span class='fu'>setNa</span><span class='op'>(</span><span class='va'>peptide.intensity</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>missigness_histogram</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous x-axis</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 393 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='missigness_histogram-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='va'>bx</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bx</span><span class='op'>$</span><span class='va'>config</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bx</span><span class='op'>$</span><span class='va'>data</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>missingPrecNorm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='interaction_missing_stats.html'>interaction_missing_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+<span class='fu'>missigness_histogram</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, showempty<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 368 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='missigness_histogram-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>missigness_histogram</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, showempty<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='missigness_histogram-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -194,9 +203,6 @@
 <code><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a>()</code>,
 <code><a href='linfct_from_model.html'>linfct_from_model</a>()</code>,
 <code><a href='linfct_matrix_contrasts.html'>linfct_matrix_contrasts</a>()</code>,
-<code><a href='make_custom_model_glm.html'>make_custom_model_glm</a>()</code>,
-<code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a>()</code>,
-<code><a href='make_custom_model_lm.html'>make_custom_model_lm</a>()</code>,
 <code><a href='model_analyse.html'>model_analyse</a>()</code>,
 <code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a>()</code>,
 <code><a href='moderated_p_limma.html'>moderated_p_limma</a>()</code>,
@@ -214,45 +220,49 @@
 <code><a href='plot_lmer_peptide_noRandom.html'>plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href='plot_lmer_peptide_predictions.html'>plot_lmer_peptide_predictions</a>()</code>,
 <code><a href='plot_lmer_predicted_interactions.html'>plot_lmer_predicted_interactions</a>()</code>,
+<code><a href='strategy_glm.html'>strategy_glm</a>()</code>,
+<code><a href='strategy_lmer.html'>strategy_lmer</a>()</code>,
+<code><a href='strategy_lm.html'>strategy_lm</a>()</code>,
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='factor_levelContrasts.html'>factor_levelContrasts</a></span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dd</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 14</span><span>
-#&gt;   Compound lhs   sigma    df estimate std.error statistic p.value conf.low
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 4.85_64~ Mort~ 0.987   115   0.128      0.193     0.659   0.511   -</span><span style='color: #BB0000;'>0.256</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 4.85_64~ Inte~ 0.987   115   0.038</span><span style='text-decoration: underline;'>4</span><span>     0.183     0.210   0.834   -</span><span style='color: #BB0000;'>0.324</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> 4.85_64~ NRSN~ 0.987   115   0.173      0.222     0.777   0.439   -</span><span style='color: #BB0000;'>0.268</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> 4.85_64~ NRSN~ 0.987   115  -</span><span style='color: #BB0000;'>0.047</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span>     0.222    -</span><span style='color: #BB0000;'>0.212</span><span>   0.833   -</span><span style='color: #BB0000;'>0.487</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> 4.85_64~ NRSN~ 0.987   115  -</span><span style='color: #BB0000;'>0.220</span><span>      0.221    -</span><span style='color: #BB0000;'>0.993</span><span>   0.323   -</span><span style='color: #BB0000;'>0.658</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> 5.05_63~ Mort~ 0.719   115   0.104      0.141     0.741   0.460   -</span><span style='color: #BB0000;'>0.175</span><span>
-#&gt; </span><span style='color: #949494;'># ... with 5 more variables: conf.high </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, isSingular </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   sigma.model </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, df.residual.model </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p.value.adjusted </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>pivot_model_contrasts_2_Wide</span><span class='op'>(</span><span class='va'>dd</span>, subject_Id <span class='op'>=</span> <span class='st'>"Compound"</span><span class='op'>)</span>
+#&gt;   Compound    lhs      sigma    df estimate std.error statistic p.value conf.low
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 4.85_649.0~ Mortali~ 0.987   115   0.128      0.193     0.659   0.511   -</span><span style='color: #BB0000;'>0.256</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 4.85_649.0~ Interve~ 0.987   115   0.038</span><span style='text-decoration: underline;'>4</span><span>     0.183     0.210   0.834   -</span><span style='color: #BB0000;'>0.324</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> 4.85_649.0~ NRSNRS_~ 0.987   115   0.173      0.222     0.777   0.439   -</span><span style='color: #BB0000;'>0.268</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> 4.85_649.0~ NRSNRS_~ 0.987   115  -</span><span style='color: #BB0000;'>0.047</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span>     0.222    -</span><span style='color: #BB0000;'>0.212</span><span>   0.833   -</span><span style='color: #BB0000;'>0.487</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> 4.85_649.0~ NRSNRS_~ 0.987   115  -</span><span style='color: #BB0000;'>0.220</span><span>      0.221    -</span><span style='color: #BB0000;'>0.993</span><span>   0.323   -</span><span style='color: #BB0000;'>0.658</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> 5.05_635.0~ Mortali~ 0.719   115   0.104      0.141     0.741   0.460   -</span><span style='color: #BB0000;'>0.175</span><span>
+#&gt; </span><span style='color: #949494;'># ... with 5 more variables: conf.high &lt;dbl&gt;, isSingular &lt;lgl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   sigma.model &lt;dbl&gt;, df.residual.model &lt;dbl&gt;, p.value.adjusted &lt;dbl&gt;</span><span></div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>pivot_model_contrasts_2_Wide</span><span class='op'>(</span><span class='va'>dd</span>, subject_Id <span class='op'>=</span> <span class='st'>"Compound"</span><span class='op'>)</span>
 <span class='va'>tmp</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 30 x 17</span><span>
-#&gt;    Compound isSingular `estimate.Inter~ `estimate.Morta~ `estimate.NRSNR~
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 4.85_64~ FALSE               0.038</span><span style='text-decoration: underline;'>4</span><span>            0.128            0.173 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 5.05_63~ FALSE               0.009</span><span style='text-decoration: underline;'>72</span><span>           0.104            0.118 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 5.11_36~ FALSE               0.245            -</span><span style='color: #BB0000;'>0.278</span><span>            0.367 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 5.12_26~ FALSE               0.160            -</span><span style='color: #BB0000;'>0.431</span><span>            0.077</span><span style='text-decoration: underline;'>2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 5.12_30~ FALSE               0.370            -</span><span style='color: #BB0000;'>0.253</span><span>            0.303 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 5.12_47~ FALSE              -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>71</span><span>           0.436           -</span><span style='color: #BB0000;'>0.025</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 5.13_36~ FALSE              -</span><span style='color: #BB0000;'>0.626</span><span>            -</span><span style='color: #BB0000;'>0.255</span><span>           -</span><span style='color: #BB0000;'>0.403</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 5.16_16~ FALSE               0.236            -</span><span style='color: #BB0000;'>0.283</span><span>           -</span><span style='color: #BB0000;'>0.346</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 5.16_24~ FALSE               0.176            -</span><span style='color: #BB0000;'>0.071</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>          -</span><span style='color: #BB0000;'>0.270</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 5.16_27~ FALSE              -</span><span style='color: #BB0000;'>0.034</span><span style='color: #BB0000;text-decoration: underline;'>2</span><span>           -</span><span style='color: #BB0000;'>0.132</span><span>            0.099</span><span style='text-decoration: underline;'>9</span><span>
-#&gt; </span><span style='color: #949494;'># ... with 20 more rows, and 12 more variables: `estimate.NRSNRS_3 -</span><span>
-#&gt; </span><span style='color: #949494;'>#   NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `estimate.NRSNRS_4 - NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   `p.value.InterventionCTRL - InterventionINT` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.MortalityM0 -</span><span>
-#&gt; </span><span style='color: #949494;'>#   MortalityM1` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.NRSNRS_3 - NRSNRS_4` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.NRSNRS_3</span><span>
-#&gt; </span><span style='color: #949494;'>#   - NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.NRSNRS_4 - NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   `p.value.adjusted.InterventionCTRL - InterventionINT` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   `p.value.adjusted.MortalityM0 - MortalityM1` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   `p.value.adjusted.NRSNRS_3 - NRSNRS_4` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.adjusted.NRSNRS_3 -</span><span>
-#&gt; </span><span style='color: #949494;'>#   NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, `p.value.adjusted.NRSNRS_4 - NRSNRS_5` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
+#&gt;    Compound   isSingular `estimate.Interven~ `estimate.Mortal~ `estimate.NRSNRS~
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>                    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 4.85_649.~ FALSE                  0.038</span><span style='text-decoration: underline;'>4</span><span>             0.128             0.173 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 5.05_635.~ FALSE                  0.009</span><span style='text-decoration: underline;'>72</span><span>            0.104             0.118 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 5.11_366.~ FALSE                  0.245             -</span><span style='color: #BB0000;'>0.278</span><span>             0.367 
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 5.12_260.~ FALSE                  0.160             -</span><span style='color: #BB0000;'>0.431</span><span>             0.077</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 5.12_302.~ FALSE                  0.370             -</span><span style='color: #BB0000;'>0.253</span><span>             0.303 
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 5.12_476.~ FALSE                 -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>71</span><span>            0.436            -</span><span style='color: #BB0000;'>0.025</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 5.13_363.~ FALSE                 -</span><span style='color: #BB0000;'>0.626</span><span>             -</span><span style='color: #BB0000;'>0.255</span><span>            -</span><span style='color: #BB0000;'>0.403</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 5.16_166.~ FALSE                  0.236             -</span><span style='color: #BB0000;'>0.283</span><span>            -</span><span style='color: #BB0000;'>0.346</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 5.16_242.~ FALSE                  0.176             -</span><span style='color: #BB0000;'>0.071</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>           -</span><span style='color: #BB0000;'>0.270</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 5.16_277.~ FALSE                 -</span><span style='color: #BB0000;'>0.034</span><span style='color: #BB0000;text-decoration: underline;'>2</span><span>            -</span><span style='color: #BB0000;'>0.132</span><span>             0.099</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #949494;'># ... with 20 more rows, and 12 more variables:</span><span>
+#&gt; </span><span style='color: #949494;'>#   estimate.NRSNRS_3 - NRSNRS_5 &lt;dbl&gt;, estimate.NRSNRS_4 - NRSNRS_5 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.InterventionCTRL - InterventionINT &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.MortalityM0 - MortalityM1 &lt;dbl&gt;, p.value.NRSNRS_3 - NRSNRS_4 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.NRSNRS_3 - NRSNRS_5 &lt;dbl&gt;, p.value.NRSNRS_4 - NRSNRS_5 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.adjusted.InterventionCTRL - InterventionINT &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.adjusted.MortalityM0 - MortalityM1 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.adjusted.NRSNRS_3 - NRSNRS_4 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.adjusted.NRSNRS_3 - NRSNRS_5 &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   p.value.adjusted.NRSNRS_4 - NRSNRS_5 &lt;dbl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

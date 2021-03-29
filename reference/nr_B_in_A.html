@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -205,28 +214,28 @@
 <span class='fu'>nr_B_in_A</span><span class='op'>(</span><span class='va'>resDataStart</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='output co'>#&gt; $data
 #&gt; <span style='color: #949494;'># A tibble: 5,715 x 12</span><span>
-#&gt;    Replicate.Name sampleName treatment_c time_c Isotope.Label protein_Id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 04_S172853_lo~ lowG~p06   lowG        p06    heavy         sp|O95477~
-#&gt; </span><span style='color: #949494;'># ... with 5,705 more rows, and 6 more variables: peptide_Id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   precursor_Id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, fragment_Id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, Area </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, annotation_QValue </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   nr_peptide_Id_IN_protein_Id </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt;    Replicate.Name       sampleName treatment_c time_c Isotope.Label protein_Id  
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 04_S172853_lowG_p06~ lowG~p06   lowG        p06    heavy         sp|O95477|A~
+#&gt; </span><span style='color: #949494;'># ... with 5,705 more rows, and 6 more variables: peptide_Id &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   precursor_Id &lt;chr&gt;, fragment_Id &lt;chr&gt;, Area &lt;dbl&gt;, annotation_QValue &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   nr_peptide_Id_IN_protein_Id &lt;int&gt;</span><span>
 #&gt; 
 #&gt; $name
 #&gt; [1] "nr_peptide_Id_IN_protein_Id"
 #&gt; </div><div class='input'><span class='fu'>nr_B_in_A</span><span class='op'>(</span><span class='va'>resDataStart</span>, <span class='va'>config</span>, merge <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 13 x 2</span><span>
 #&gt;    protein_Id            nr_peptide_Id_IN_protein_Id
-#&gt;  </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> iRT_Protein                                    11
 #&gt; </span><span style='color: #BCBCBC;'> 2</span><span> sp|O95477|ABCA1_HUMAN                           3
 #&gt; </span><span style='color: #BCBCBC;'> 3</span><span> sp|P02786|TFR1_HUMAN                            3

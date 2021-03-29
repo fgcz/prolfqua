@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -63,7 +63,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -73,6 +79,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -112,13 +121,13 @@
 
       
 
-      </header><script src="Modelling2Factors_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="Modelling2Factors_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Modelling Dataset with two Factors.</h1>
                         <h4 class="author">Witold Wolski</h4>
             
-            <h4 class="date">06/10/2020</h4>
+            <h4 class="date">29 March, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Modelling2Factors.Rmd"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -258,7 +267,7 @@ Missing data heatmap for merged data
 <span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   isotopeLabel protein_Id
-## * &lt;chr&gt;             &lt;int&gt;
+##   &lt;chr&gt;             &lt;int&gt;
 ## 1 light              3339</code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">su</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></code></pre></div>
@@ -293,7 +302,7 @@ Protein level boxplots
 <pre><code>## [1] "transformedIntensity"</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">formula_Batches</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/make_custom_model_lm.html">make_custom_model_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ condition_ * batch_ "</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/strategy_lm.html">strategy_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ condition_ * batch_ "</span><span class="op">)</span>
 
 <span class="co"># specify model definition</span>
 <span class="va">modelName</span>  <span class="op">&lt;-</span> <span class="st">"Model"</span>
@@ -329,26 +338,26 @@ p-value distributions for ANOVA analysis.
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 10
-## # Groups:   factor [1]
-##   protein_Id isSingular nrcoef factor    Df Sum.Sq Mean.Sq F.value  Pr..F.
-##   &lt;chr&gt;      &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 sp|P00331~ FALSE           4 condi~     1  50.1    50.1    172.  2.96e-9
-## 2 sp|P32583~ FALSE           4 condi~     1   2.78    2.78   193.  7.33e-8
-## 3 sp|Q12487~ FALSE           4 condi~     1   9.91    9.91   121.  5.82e-8
-## 4 sp|P00330~ FALSE           4 condi~     1   2.38    2.38    46.6 8.20e-6
-## 5 sp|P36095~ FALSE           4 condi~     1  11.0    11.0     79.0 9.46e-6
+##   protein_Id    isSingular nrcoef factor      Df Sum.Sq Mean.Sq F.value   Pr..F.
+##   &lt;chr&gt;         &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;    &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 sp|P00331|AD~ FALSE           4 conditi~     1  50.1    50.1    172.   2.96e-9
+## 2 sp|P32583|SR~ FALSE           4 conditi~     1   2.78    2.78   193.   7.33e-8
+## 3 sp|Q12487|RM~ FALSE           4 conditi~     1   9.91    9.91   121.   5.82e-8
+## 4 sp|P00330|AD~ FALSE           4 conditi~     1   2.38    2.38    46.6  8.20e-6
+## 5 sp|P36095|VP~ FALSE           4 conditi~     1  11.0    11.0     79.0  9.46e-6
 ## # ... with 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span>
 <span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
-<span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span>
-<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">)</span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/anovaAnalysis-1.png" width="960"></p>
+<span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
 </div>
 <div id="compute-contrasts" class="section level1">
 <h1 class="hasAnchor">
 <a href="#compute-contrasts" class="anchor"></a>Compute contrasts</h1>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">contr</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span>
 <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts_sides</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 3
@@ -359,23 +368,23 @@ p-value distributions for ANOVA analysis.
 ## 3 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
 ## 4 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
 ## 5 Interaction               Glucose_vs_Ethanol_gv_p23~ Glucose_vs_Ethanol_gv_p2~</code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $FDR.moderated</code></pre>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-2.png" width="960"></p>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-6-1.png" width="960"></p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-6-2.png" width="960"></p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">contrdf</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"Interaction"</span> <span class="op">&amp;</span> <span class="va">FDR.moderated</span> <span class="op">&lt;</span> <span class="fl">0.1</span><span class="op">)</span>
 <span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
 <span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">sigInteraction</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span>
 <span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hm</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteins with significant Interactions" width="960"><p class="caption">
@@ -386,12 +395,12 @@ Proteins with significant Interactions
 <div id="annalyse-contrasts-with-missing-data-imputation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#annalyse-contrasts-with-missing-data-imputation" class="anchor"></a>Annalyse contrasts with missing data imputation</h1>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span>
 <span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pl</span><span class="op">$</span><span class="fu">histogram_estimate</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
 </div>
   </div>
 

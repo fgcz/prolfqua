@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -63,7 +63,13 @@
       <a href="articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -73,6 +79,9 @@
     </li>
     <li>
       <a href="articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -115,11 +124,12 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
+
 <p><img src="reference/figures/imgfile.png" width="200"></p>
 <div id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="anchor"></a>prolfqua - an R package for Proteomics Label Free Quantification Services</h1></div>
-<p>The R package contains functions for analyzing mass spectrometry based LFQ experiments. This package was developed at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
+<p>The R package contains functions for analyzing mass spectrometry based LFQ experiments. This package is developed at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
 </div>
 <div id="how-to-install-prolfqua" class="section level1">
 <h1 class="hasAnchor">
@@ -138,14 +148,18 @@ remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
 <h1 class="hasAnchor">
 <a href="#how-to-get-started" class="anchor"></a>How to get started</h1>
 <p>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t">EuroBioc2020</a> on YouTube.</p>
-<p>Detailed documentation about:</p>
+<p>Or read the pkgdown generate website <a href="https://wolski.github.io/prolfqua/index.html" class="uri">https://wolski.github.io/prolfqua/index.html</a></p>
+<p>Detailed documentation with R code:</p>
 <ul>
 <li><a href="https://wolski.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two Conditions</a></li>
 <li><a href="https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size estimation</a></li>
 <li><a href="https://wolski.github.io/prolfqua/articles/Modelling2Factors.html">Analysing factorial designs</a></li>
 <li><a href="https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html">Benchmarking LFQ pipeline with prolfqua</a></li>
 </ul>
-<p>More Documentation <a href="https://wolski.github.io/prolfqua/index.html" class="uri">https://wolski.github.io/prolfqua/index.html</a></p>
+<p>Example QC and sample size report</p>
+<ul>
+<li><a href="https://wolski.github.io/prolfqua/articles/QCandSampleSize.html">QC and sample size Report</a></li>
+</ul>
 </div>
 <div id="how-to-cite" class="section level1">
 <h1 class="hasAnchor">
@@ -207,19 +221,19 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <li>
 <a href="https://CRAN.R-project.org/package=emmeans">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
 <li>
-</li>
+<a href="https://CRAN.R-project.org/package=lmerTest">lmerTest</a> computes contrast for <a href="https://CRAN.R-project.org/package=lme4">lme4</a> models</li>
 </ul>
 </div>
 <div id="what-package-name" class="section level1">
 <h1 class="hasAnchor">
 <a href="#what-package-name" class="anchor"></a>What package name?</h1>
-<p>What name should we use :</p>
-<ul>
-<li>LFQService - we do proteomics LFQ services.</li>
-<li>prolfqua - <strong>pro</strong>teomics LFQ package (read prolevka)</li>
-<li>nalfqua - <strong>n</strong>ot <strong>a</strong>nother LFQ package (read nalewka)</li>
-</ul>
+<p>What name should we use?</p>
 <p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
+<ul>
+<li><p>prolfqua - PROteomics Label Free QUAntification package (read prolewka)</p></li>
+<li><p>LFQService - we do proteomics LFQ services at the FGCZ.</p></li>
+<li><p>nalfqua - Not Another Label Free QUAntification package (read nalewka)</p></li>
+</ul>
 </div>
 
   </div>
@@ -248,7 +262,13 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/wolski/prolfqua/actions/workflows/r.yaml"><img src="https://github.com/wolski/prolfqua/actions/workflows/r.yaml/badge.svg" alt="R-CMD-check-prolfqua"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

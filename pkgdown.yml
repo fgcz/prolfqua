@@ -5,15 +5,18 @@ articles:
   Auxiliary_ExDesignSurvey: Auxiliary_ExDesignSurvey.html
   Auxiliary_LFQSurvey: Auxiliary_LFQSurvey.html
   Auxiliary_prolfquaAbstract_2: Auxiliary_prolfquaAbstract_2.html
+  Auxiliary_prolfquaAbstract_BioC2021: Auxiliary_prolfquaAbstract_BioC2021.html
   BenchmarkingIonstarData: BenchmarkingIonstarData.html
+  BenchmarkMSFraggerProteinIonStar: BenchmarkMSFraggerProteinIonStar.html
   Comparing2Groups: Comparing2Groups.html
   CreatingConfigurations: CreatingConfigurations.html
   Modelling2Factors: Modelling2Factors.html
+  QCandSampleSize: QCandSampleSize.html
   QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
   Supplement_srm_summary: Supplement_srm_summary.html
   Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
   Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
   Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
   Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
-last_built: 2021-03-05T09:27Z
+last_built: 2021-03-29T14:00Z
 

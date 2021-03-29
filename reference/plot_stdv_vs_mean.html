@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -195,15 +204,15 @@
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 
 <span class='fu'>plot_stdv_vs_mean</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 144 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 144 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>datalog2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 139 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 139 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>datalog2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='input'><span class='va'>statlog2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>datalog2</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='fu'>plot_stdv_vs_mean</span><span class='op'>(</span><span class='va'>statlog2</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 129 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 129 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 119 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 119 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "log2_peptide.intensity"</div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>popWorkIntensity</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "log2_peptide.intensity"</div><div class='input'><span class='va'>datasqrt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, <span class='va'>sqrt</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : sqrt_peptide.intensity</span></div><div class='input'><span class='va'>ressqrt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>datasqrt</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='fu'>plot_stdv_vs_mean</span><span class='op'>(</span><span class='va'>ressqrt</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 143 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 143 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 155 rows containing non-finite values (stat_smooth).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 155 rows containing missing values (geom_point).</span></div><div class='img'><img src='plot_stdv_vs_mean-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

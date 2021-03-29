@@ -73,7 +73,7 @@ Estimate contrasts using Wald Test" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -105,7 +105,13 @@ Estimate contrasts using Wald Test" />
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -115,6 +121,9 @@ Estimate contrasts using Wald Test" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -189,9 +198,6 @@ Estimate contrasts using Wald Test" />
 <code><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a>()</code>,
 <code><a href='linfct_from_model.html'>linfct_from_model</a>()</code>,
 <code><a href='linfct_matrix_contrasts.html'>linfct_matrix_contrasts</a>()</code>,
-<code><a href='make_custom_model_glm.html'>make_custom_model_glm</a>()</code>,
-<code><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a>()</code>,
-<code><a href='make_custom_model_lm.html'>make_custom_model_lm</a>()</code>,
 <code><a href='model_analyse.html'>model_analyse</a>()</code>,
 <code><a href='moderated_p_limma_long.html'>moderated_p_limma_long</a>()</code>,
 <code><a href='moderated_p_limma.html'>moderated_p_limma</a>()</code>,
@@ -210,6 +216,9 @@ Estimate contrasts using Wald Test" />
 <code><a href='plot_lmer_peptide_noRandom.html'>plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href='plot_lmer_peptide_predictions.html'>plot_lmer_peptide_predictions</a>()</code>,
 <code><a href='plot_lmer_predicted_interactions.html'>plot_lmer_predicted_interactions</a>()</code>,
+<code><a href='strategy_glm.html'>strategy_glm</a>()</code>,
+<code><a href='strategy_lmer.html'>strategy_lmer</a>()</code>,
+<code><a href='strategy_lm.html'>strategy_lm</a>()</code>,
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
@@ -337,7 +346,7 @@ create Contrast</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='
 <span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>modelFunction</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='make_custom_model_lmer.html'>make_custom_model_lmer</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)"</span><span class='op'>)</span>
+<span class='fu'><a href='strategy_lmer.html'>strategy_lmer</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)"</span><span class='op'>)</span>
 <span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -177,7 +186,7 @@
   size <span class='op'>=</span> <span class='fl'>1</span>,
   segment.size <span class='op'>=</span> <span class='fl'>0.3</span>,
   segment.alpha <span class='op'>=</span> <span class='fl'>0.3</span>,
-  ablines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>fc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>, p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.05</span><span class='op'>)</span>, Area <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"p=0.01"</span>, <span class='st'>"p=0.05"</span><span class='op'>)</span><span class='op'>)</span>,
+  yintercept <span class='op'>=</span> <span class='fl'>0.1</span>,
   scales <span class='op'>=</span> <span class='st'>"fixed"</span>,
   maxNrOfSignificantText <span class='op'>=</span> <span class='fl'>20</span>
 <span class='op'>)</span></pre>
@@ -226,10 +235,6 @@
       <td><p>controls visibility of lines</p></td>
     </tr>
     <tr>
-      <th>ablines</th>
-      <td><p>adds ablines horizontal and vertical</p></td>
-    </tr>
-    <tr>
       <th>scales</th>
       <td><p>parameter to ggplot2::facet_wrap</p></td>
     </tr>
@@ -237,12 +242,17 @@
       <th>misspX</th>
       <td><p>data in long format</p></td>
     </tr>
+    <tr>
+      <th>ablines</th>
+      <td><p>adds ablines horizontal and vertical</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other utilities: 
 <code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='get_UniprotID_from_fasta_header.html'>get_UniprotID_from_fasta_header</a>()</code>,
 <code><a href='jackknifeMatrix.html'>jackknifeMatrix</a>()</code>,
 <code><a href='matrix_to_tibble.html'>matrix_to_tibble</a>()</code>,
 <code><a href='my_jackknife.html'>my_jackknife</a>()</code>,
@@ -259,31 +269,16 @@
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/slowkow/ggrepel'>ggrepel</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt;         logFC adj.P.Val
-#&gt; 1 -0.05412905 0.9165288
-#&gt; 2 -0.29646881 0.4749545
-#&gt; 3 -0.27289919 0.6504914
-#&gt; 4 -0.09706135 0.8377251
-#&gt; 5 -0.07349173 0.9207106
-#&gt; 6 -0.08775884 0.8569359
-#&gt;                                                         Condition  colour
-#&gt; 1                                   TTB7_38h_test - TTB7_16h_test forward
-#&gt; 2                                    TTB7_96h_test - TTB7_96h_sys forward
-#&gt; 3 (TTB7_96h_test - TTB7_16h_test) - (TTB7_96h_sys - TTB7_16h_sys) forward
-#&gt; 4                                    TTB7_38h_test - TTB7_38h_sys forward
-#&gt; 5 (TTB7_38h_test - TTB7_16h_test) - (TTB7_38h_sys - TTB7_16h_sys) forward
-#&gt; 6                                   TTB7_96h_test - TTB7_16h_test forward
-#&gt;        Name
-#&gt; 1 CC_000006
-#&gt; 2 CC_000006
-#&gt; 3 CC_000006
-#&gt; 4 CC_000006
-#&gt; 5 CC_000006
-#&gt; 6 CC_000006</div><div class='input'><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span>,
+<span class='va'>show</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='multigroupFCDATA.html'>multigroupFCDATA</a></span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Condition</span>  <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TTB7_38h_test - TTB7_16h_test"</span>,<span class='st'>"TTB7_96h_test - TTB7_96h_sys"</span><span class='op'>)</span> <span class='op'>)</span>
+<span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='va'>show</span>,
 effect<span class='op'>=</span><span class='st'>"logFC"</span>,
-p.value<span class='op'>=</span><span class='st'>"adj.P.Val"</span>,condition<span class='op'>=</span><span class='st'>"Condition"</span>,colour<span class='op'>=</span><span class='st'>"colour"</span>,label<span class='op'>=</span><span class='st'>"Name"</span> <span class='op'>)</span>
-</div><div class='img'><img src='multigroupVolcano-1.png' alt='' width='700' height='433' /></div></pre>
+p.value<span class='op'>=</span><span class='st'>"adj.P.Val"</span>,condition<span class='op'>=</span><span class='st'>"Condition"</span>,colour<span class='op'>=</span><span class='cn'>NULL</span>,label<span class='op'>=</span><span class='st'>"Name"</span>,
+maxNrOfSignificantText <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span>
+</div><div class='img'><img src='multigroupVolcano-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#.multigroupVolcano(show,condition="Condition",</span>
+<span class='co'>#effect="logFC",</span>
+<span class='co'>#p.value="adj.P.Val",</span>
+<span class='co'># colour="colour")</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

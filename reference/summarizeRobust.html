@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
       </span>
     </div>
 
@@ -104,7 +104,13 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
     </li>
     <li>
+      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
+    </li>
+    <li>
       <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
@@ -114,6 +120,9 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -211,18 +220,18 @@
 
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx</span> , <span class='st'>"expression"</span>, <span class='st'>"feature"</span>, <span class='st'>"samples"</span>, maxIt <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
 <span class='va'>bb</span>
-</div><div class='output co'>#&gt;   samples mean.expression    weights      lmrob
-#&gt; 1       a       0.4075089 0.02495136  0.4075089
-#&gt; 2       b       0.7065735 0.03052288  0.7065735
-#&gt; 3       c       1.9043136 0.02612366  1.9043136
-#&gt; 4       d      -2.7182330 0.02951936 -2.7182330</div><div class='input'>
+</div><div class='output co'>#&gt;   samples mean.expression     weights      lmrob
+#&gt; 1       a      -5.3187054 0.005092024 -7.4590968
+#&gt; 2       b      -0.2201945 0.013660599 -0.2201945
+#&gt; 3       c       1.1668590 0.017798631  1.1668590
+#&gt; 4       d       1.6257668 0.020935897  1.6257668</div><div class='input'>
 <span class='va'>xx2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>log2Area <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>20</span>,<span class='fl'>0</span>,<span class='fl'>10</span><span class='op'>)</span>, peptide_Id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,<span class='fl'>4</span><span class='op'>)</span>, sampleName <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx2</span>, <span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   sampleName mean.log2Area    weights     lmrob
-#&gt; 1          a     2.0968256 0.04214166  2.096826
-#&gt; 2          b     0.7567641 0.02047672  0.234511
-#&gt; 3          c    -9.9231841 0.03128543 -9.923184
-#&gt; 4          d     1.3273042 0.03887666  1.204804</div><div class='input'>
+</div><div class='output co'>#&gt;   sampleName mean.log2Area    weights      lmrob
+#&gt; 1          a    -10.789894 0.03606054 -11.446687
+#&gt; 2          b      2.991147 0.02949673   2.174438
+#&gt; 3          c      1.108332 0.01037821  -1.900753
+#&gt; 4          d      4.459587 0.15798659   4.459587</div><div class='input'>
 <span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>checksummarizationrobust87</span>,<span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   sampleName mean.log2Area weights      lmrob
 #&gt; 1          a    -7.1898238       1 -7.1898238
@@ -239,16 +248,16 @@
   <span class='va'>xx3</span><span class='op'>$</span><span class='va'>log2Area</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>,<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>15</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
   <span class='va'>res</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>xx3</span>, summary <span class='op'>=</span> <span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx3</span>, <span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx2</span><span class='op'>[</span><span class='va'>xx2</span><span class='op'>$</span><span class='va'>peptide_Id</span> <span class='op'>==</span> <span class='st'>'A'</span>,<span class='op'>]</span>,<span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'rlm' failed to converge in 20 steps</span></div><div class='input'><span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx2</span><span class='op'>[</span><span class='va'>xx2</span><span class='op'>$</span><span class='va'>peptide_Id</span> <span class='op'>==</span> <span class='st'>'A'</span>,<span class='op'>]</span>,<span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    sampleName mean.log2Area      lmrob weights
-#&gt; 1           a     -3.306149  -3.306149       1
-#&gt; 6           b     -2.811271  -2.811271       1
-#&gt; 11          c    -19.553754 -19.553754       1
-#&gt; 16          d     -3.068281  -3.068281       1</div><div class='input'><span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx2</span><span class='op'>[</span><span class='va'>xx2</span><span class='op'>$</span><span class='va'>sampleName</span> <span class='op'>==</span> <span class='st'>'a'</span>,<span class='op'>]</span>,<span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
+#&gt; 1           a    -6.1943241 -6.1943241       1
+#&gt; 6           b     0.3067797  0.3067797       1
+#&gt; 11          c     0.2134777  0.2134777       1
+#&gt; 16          d    10.4962420 10.4962420       1</div><div class='input'><span class='fu'>summarizeRobust</span><span class='op'>(</span><span class='va'>xx2</span><span class='op'>[</span><span class='va'>xx2</span><span class='op'>$</span><span class='va'>sampleName</span> <span class='op'>==</span> <span class='st'>'a'</span>,<span class='op'>]</span>,<span class='st'>"log2Area"</span>, <span class='st'>"peptide_Id"</span>, <span class='st'>"sampleName"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 4</span><span>
 #&gt;   sampleName lmrob mean.log2Area weights
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a           2.10          2.10       1</div><div class='input'>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a          -</span><span style='color: #BB0000;'>10.8</span><span>         -</span><span style='color: #BB0000;'>10.8</span><span>       1</div><div class='input'>
 
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
