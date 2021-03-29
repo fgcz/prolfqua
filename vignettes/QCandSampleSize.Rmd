@@ -82,20 +82,19 @@ This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variab
 # Quality Control: Identifications
 
 Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins `r if(params$pep){", and between a few hundred to up to some few tens of thousands of peptides"}else{""}`.
-While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
+While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility). Table \@ref(tab:hierarchyCounts) summarizes the number of `r if(params$pep){"proteins and peptides"} else {"proteins"} ` of proteins and peptides in all samples.
 
-
-```{r hierarchy_counts}
+```{r prep_hierarchy_counts}
 x <- hierarchy_counts(data, local_config)
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
+caption <- paste0("Nr of ", if(params$pep){"proteins and peptides"} else {"proteins"} ," detected in all samples.")
+dxy <- data.frame(NR = x)
+```
 
+```{r hierarchyCounts}
 prolfqua::table_facade( 
-  data.frame(NR = x),
-  caption = paste0("Nr of",
-                   if(params$pep){"proteins and peptides"}
-                   else
-                   {"proteins"} ,
-                   " detected in all samples."))
+  dxy,
+  caption = caption)
 
 ```
 
