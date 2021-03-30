@@ -1,42 +1,21 @@
-FROM rocker/r-ver:3.6.1
+FROM rocker/rstudio
 MAINTAINER Christian Panse <Christian.Panse@gmail.com>
 
-RUN apt-get update && apt-get install apt-utils curl vim -y
-
-RUN Rscript -e 'install.packages(c("bookdown", \
-  "broom", \
-  "conflicted", \
-  "corrplot", \
-  "dplyr", \
-  "GGally", \
-  "ggbeeswarm", "ggfortify", "ggplot2", "glue"), repos="https://stat.ethz.ch/CRAN/")' \
-  && Rscript -e 'install.packages(c("heatmap3", "kableExtra", "lme4"), repos="https://stat.ethz.ch/CRAN/")' \
-  && Rscript -e 'install.packages(c("lmerTest", "magrittr", "multcomp", "protViz", "purrr", "readxl", "tidyr"), repos="https://stat.ethz.ch/CRAN/")' \
-  && Rscript -e 'install.packages(c("writexl", "yaml", "shiny", "testthat"), repos="https://stat.ethz.ch/CRAN/")' \
-  && Rscript -e 'install.packages(c("tidyverse"), repos="https://stat.ethz.ch/CRAN/")'
-
-
-# wew@fgcz.ethz.ch packages
-# RUN Rscript -e 'install.packages(c("quantable"), repos="https://stat.ethz.ch/CRAN/")'
-
-#  plotly \
-  #limma \
+RUN apt-get update && apt-get install apt-utils curl libcurl4-openssl-dev libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern vim -y
 
 LABEL description="1.0"
 LABEL description="deploy WEW's sample size estimation."
-RUN Rscript -e 'install.packages(c("BiocManager"), repos="https://stat.ethz.ch/CRAN/")' \
-  && Rscript -e 'BiocManager::install("limma")'
-RUN  Rscript -e 'BiocManager::install(c("specL", "msqc1", "NestLink", "tartare"))'
 
 
+RUN R -e "install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org'); pkgs <- c('DT', 'GGally', 'KernSmooth', 'MASS','bookdown', 'broom', 'coda', 'conflicted', 'corrplot', 'docopt', 'dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2', 'ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr', 'limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC', 'pheatmap', 'plotly', 'plyr', 'progress', 'purrr', 'readr', 'readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr', 'tidyverse', 'yaml', 'writexl') ; lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}}); "
 
-RUN apt-get install libxml2-dev libcurl4-openssl-dev libssl-dev zlib1g-dev pandoc  libfontconfig1-dev libcairo2-dev -y
-RUN Rscript -e 'install.packages(c("data.table", "kableExtra", "plotly", "tidyverse", "writexl"), repos="https://stat.ethz.ch/CRAN/")'
-RUN Rscript -e 'install.packages(c("gdtools", "flextable"), repos="https://stat.ethz.ch/CRAN/")'
+RUN R -e "remotes::install_gitlab('wolski/prolfquaData', host='gitlab.bfabric.org')"
 
 RUN mkdir /tmp/prolfqua
 COPY . /tmp/prolfqua/
-RUN cd /tmp/ && R CMD build prolfqua --no-build-vignettes && R CMD INSTALL LFQS*z
+RUN cd /tmp/ && R CMD build prolfqua && R CMD INSTALL prolfqua*z
 
-## docker run -v /srv/www/htdocs//p2370/bfabric/Proteomics/MaxQuant/2019/2019-10/2019-10-19/workunit_222404/:/scratch/workunit_222404 -a stdin -a stdout -i -t d29638c801af Rscript /usr/local/lib/R/site-library/prolfqua/run_scripts/lfq_MQ_SampleSizeReport.R /scratch/workunit_222404/1361948.zip --outdir=/tmp/WU222404/
+# ADD DOCKER FILE CODE HERE
+RUN R -e "'install.packages('protViz')"
 
+# DOCKERID=9e39049d81a5 && docker run -e PASSWORD=prolfqua -p 8787:8787 -e ADD=shiny -ti -v /scratch/:/scratch/  $DOCKERID 
