@@ -1,3 +1,23 @@
+.poolvar <- function(res1, config){
+  resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
+  compute_pooled <- function(x){
+    x <- x %>% dplyr::filter(.data$not_na > 1)
+    var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
+    res <- data.frame(
+      n = sum(x$n),
+      not_na  = sum(x$not_na),
+      sd = sqrt(var),
+      var = var,
+      mean = sum(x$mean * x$not_na)/sum(x$not_na)
+    )
+    return(res)
+  }
+  pooled =  purrr::map_df(resp$data, compute_pooled )
+  resp$data <- NULL
+  resp <- bind_cols(resp, pooled)
+  resp <- resp %>% mutate(!!config$table$factorKeys()[1] := "pooled")
+  return(resp)
+}
 
 #' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
@@ -15,27 +35,30 @@
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config, all = FALSE)
+#' res1 %>% dplyr::filter(dilution. == "pooled")
 #' res2 <- summarize_stats(data, config, all = TRUE)
 #'
 summarize_stats <- function(pdata, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
-
-
   hierarchyFactor <- pdata %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
     dplyr::summarize(n = n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym, na.rm = T),
-                     mean = mean(!!intsym, na.rm = T)) %>%  dplyr::ungroup()
+                     var = var(!!intsym, na.rm = T),
+                     mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>% dplyr::mutate_at(config$table$fkeysDepth(), funs(as.character) )
-
+  hierarchyFactor <- hierarchyFactor %>%
+    dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
+  hierPool <- .poolvar(hierarchyFactor, config )
+  hierarchyFactor <- bind_rows(hierarchyFactor, hierPool)
   if (all) {
     hierarchy <- pdata %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       dplyr::summarize(n = n(),
                        not_na = sum(!is.na(!!intsym)),
                        sd = sd(!!intsym,na.rm = T),
+                       var = sd(!!intsym,na.rm = T),
                        mean = mean(!!intsym,na.rm = T))
 
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")

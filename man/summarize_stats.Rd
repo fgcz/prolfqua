@@ -25,6 +25,7 @@ config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config, all = FALSE)
+res1 \%>\% dplyr::filter(dilution. == "pooled")
 res2 <- summarize_stats(data, config, all = TRUE)
 
 }
