@@ -193,7 +193,7 @@ get_complete_model_fit <- function(modelProteinF){
 #'
 #' library(tidyverse)
 #' library(prolfqua)
-#' ionstar <- prolfqua::ionstar$normalized()
+#' ionstar <- prolfqua::data_ionstar$normalized()
 #' ionstar$data <- ionstar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id,10))
 #' prolfqua::table_factors(ionstar$data, ionstar$config)
 #' formula_randomPeptide <-
@@ -268,7 +268,7 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua::interactionModel_p1807
+#' m <- prolfqua::data_interactionModel_p1807
 #' plot_lmer_peptide_predictions(m)
 plot_lmer_peptide_predictions <- function(m){
   data <- m@frame
@@ -292,10 +292,10 @@ plot_lmer_peptide_predictions <- function(m){
 #' @examples
 #' library(tidyverse)
 #' library(prolfqua)
-#' m <- prolfqua::basicModel_p1807
+#' m <- prolfqua::data_basicModel_p1807
 #' plot_lmer_peptide_noRandom(m)
 #'
-#' m <- prolfqua::interactionModel_p1807
+#' m <- prolfqua::data_interactionModel_p1807
 #' plot_lmer_peptide_noRandom(m)
 plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   data <- m@frame
@@ -386,7 +386,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- prolfqua::interactionModel_p1807
+#' m <- prolfqua::data_interactionModel_p1807
 #' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m,"dumm"),m)
 plot_lmer_predicted_interactions <- function(gg, m){
   cm <- .lmer4_coeff_matrix(m)
@@ -405,7 +405,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' @keywords internal
 #' @examples
 #' library(prolfqua)
-#' m <- prolfqua::interactionModel_p1807
+#' m <- prolfqua::data_interactionModel_p1807
 #' plot_lmer_model_and_data(m,"dumm")
 #'
 plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
@@ -492,14 +492,14 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' @examples
 #' #if(FALSE){
 #'
-#' m <- prolfqua::basicModel_p1807
+#' m <- prolfqua::data_basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #'
-#' m <- prolfqua::interactionModel_p1807
+#' m <- prolfqua::data_interactionModel_p1807
 #' linfct <- linfct_from_model(m)
 #' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
 #'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
@@ -549,7 +549,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua::basicModel_p1807
+#' m <- prolfqua::data_basicModel_p1807
 #' linfct <- linfct_from_model(m,as_list = FALSE)
 #' linfct
 #'
@@ -585,7 +585,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- prolfqua::basicModel_p1807
+#' m <- prolfqua::data_basicModel_p1807
 #' m
 #' linfct <- linfct_from_model(m)
 #'
@@ -612,7 +612,7 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @keywords internal
 #' @examples
 #' library(prolfqua)
-#' m <- prolfqua::basicModel_p1807
+#' m <- prolfqua::data_basicModel_p1807
 #' xl <- linfct_factors_contrasts(m)
 #' xl
 #' m <- lm(Petal.Width ~ Species, data = iris)
@@ -643,12 +643,12 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #' library(prolfqua)
-#' mb <- prolfqua::basicModel_p1807
+#' mb <- prolfqua::data_basicModel_p1807
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- prolfqua::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- prolfqua::data_modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -702,7 +702,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- prolfqua::data_modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -760,7 +760,7 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- prolfqua::data_modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' m
 #' my_contrast_V1(m, linfct, confint = 0.95)
@@ -789,7 +789,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua::modellingResult_A$modelProtein$linear_model[[1]]
+#' m <- prolfqua::data_modellingResult_A$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
@@ -838,7 +838,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @keywords internal
 #' @examples
 #' library(prolfqua)
-#' mb <- prolfqua::basicModel_p1807
+#' mb <- prolfqua::data_basicModel_p1807
 #' summary(mb)
 #'
 #' linfct <- linfct_from_model(mb)
@@ -886,7 +886,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua::factor_levelContrasts
+#' dd <- prolfqua::data_factor_levelContrasts
 #' head(dd)
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
 #' tmp
@@ -917,7 +917,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' @keywords internal
 #' @examples
 #'
-#' modelSummary_A <- prolfqua::modellingResult_A
+#' modelSummary_A <- prolfqua::data_modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
@@ -930,9 +930,9 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'
 #' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 #'
-#' models_interaction <- prolfqua::models_interaction
+#' data_models_interaction <- prolfqua::data_models_interaction
 #'
-#' m <- get_complete_model_fit(models_interaction$modelProtein)
+#' m <- get_complete_model_fit(data_models_interaction$modelProtein)
 #' m$linear_model[[1]]
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct( m,
@@ -1031,7 +1031,7 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' @examples
 #'
 #' library(prolfqua)
-#' modelSummary_A <- prolfqua::modellingResult_A
+#' modelSummary_A <- prolfqua::data_modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
@@ -1044,9 +1044,9 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE){
 #' abline(0,1, col = 2)
 #'
 #' # updating lmer model
-#' models_interaction <- prolfqua::models_interaction
+#' data_models_interaction <- prolfqua::data_models_interaction
 #'
-#' m <- get_complete_model_fit(models_interaction$modelProtein)
+#' m <- get_complete_model_fit(data_models_interaction$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #'
 #' factor_levelContrasts <- contrasts_linfct(m,
@@ -1251,7 +1251,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(xx2$mad.estimate)
 #'
-#' summary_ROPECA_median_p.scaled(prolfqua::exampleDataForRopeca, contrast = "contrast")
+#' summary_ROPECA_median_p.scaled(prolfqua::data_exampleForRopeca, contrast = "contrast")
 #' xx2$mad.estimate
 #'
 #'

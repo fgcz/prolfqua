@@ -27,7 +27,7 @@ plot density distribution or ecdf of sd, mean or cv given intensity below and ab
 
 library(prolfqua)
 library(tidyverse)
-bb1 <- prolfqua::ionstar$filtered()
+bb1 <- prolfqua::data_ionstar$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 res <- summarize_stats(data2, config)

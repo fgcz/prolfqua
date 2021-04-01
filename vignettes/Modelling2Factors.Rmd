@@ -133,6 +133,8 @@ data <- bind_rows(p2691$data, p2370$data)
 config <- p2691$config$clone(deep = TRUE)
 config$table$factorDepth <- 2
 
+
+
 ```
 
 ## QC for merged dataset 
@@ -141,10 +143,18 @@ config$table$factorDepth <- 2
 
 ```{r mergeData}
 pMerged <- LFQData$new(data, config)
+
+
 bb <- pMerged$complete_cases()
 tr <- pMerged$get_Transformer()
 pMerged <- tr$log2_robscale()
+set.seed(1001)
+data_Yeast2Factor <- pMerged$get_sample(size = 500)
+#usethis::use_data(data_Yeast2Factor)
+
 ```
+
+
 
 ```{r examineDataAfterMerge, fig.cap="Correlation among samples."}
 pl <- pMerged$get_Plotter()

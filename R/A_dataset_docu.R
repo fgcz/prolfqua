@@ -48,41 +48,185 @@ NULL
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL
+
+#' Package Data
+#' @family data
+#' @name PACKAGE_DATA
+NULL
+
+# data_basicModel_p1807 <- prolfqua::basicModel_p1807
+# usethis::use_data(data_basicModel_p1807, compress = TRUE, overwrite = TRUE)
+# file.remove("data/basicModel_p1807.rda")
+
 #' Model for debugging
+#' @family data
+#' @keywords internal
 #' @format a linear model
-"basicModel_p1807"
+"data_basicModel_p1807"
+
+# data_benchmarkExample <- prolfqua::benchmarkDataExample
+# usethis::use_data(data_benchmarkExample, compress = TRUE, overwrite = TRUE)
+# file.remove("data/benchmarkDataExample.rda")
+
 #' Benchmark data Example
 #' @format A data frame
-"benchmarkDataExample"
+#' @family data
+#' @keywords internal
+"data_benchmarkExample"
+
+# data_checksummarizationrobust87 <- prolfqua::checksummarizationrobust87
+# usethis::use_data(data_checksummarizationrobust87, compress = TRUE, overwrite = TRUE)
+# file.remove("data/checksummarizationrobust87.rda")
+
 #' example data for check
-'checksummarizationrobust87'
+#' @family data
+#' @keywords internal
+'data_checksummarizationrobust87'
+
+# data_checksummarizerobust <- prolfqua::checksummarizerobust
+# usethis::use_data(data_checksummarizerobust, compress = TRUE, overwrite = TRUE)
+# file.remove("data/checksummarizerobust.rda")
+
 #' example data for check
-'checksummarizerobust'
+#' @family data
+#' @keywords internal
+'data_checksummarizerobust'
+
+# data_checksummarizerobust69 <- prolfqua::checksummarizerobust69
+# usethis::use_data(data_checksummarizerobust69, compress = TRUE, overwrite = TRUE)
+# file.remove("data/checksummarizerobust69.rda")
+
 #' example data for check
-'checksummarizerobust69'
+#' @family data
+#' @keywords internal
+#'
+'data_checksummarizerobust69'
+
+#data_correlatedPeptideList <- prolfqua::correlatedPeptideList
+#usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
+#file.remove("data/correlatedPeptideList.rda")
+
 #' example data for check
-'correlatedPeptideList'
+#' @family data
+#' @keywords internal
+#'
+'data_correlatedPeptideList'
+
+# data_IonstarProtein_subsetNorm <- prolfqua::dataIonstarProtein_subsetNorm
+# usethis::use_data(data_IonstarProtein_subsetNorm, compress = TRUE, overwrite = TRUE)
+# file.remove("data/dataIonstarProtein_subsetNorm.rda")
+
 #' example data for check
-'dataIonstarProtein_subsetNorm'
+#' @family data
+#' @keywords internal
+#'
+'data_IonstarProtein_subsetNorm'
+
+# data_exampleForRopeca <- exampleDataForRopeca
+# usethis::use_data(data_exampleForRopeca, compress = TRUE, overwrite = TRUE)
+# file.remove("data/exampleDataForRopeca")
+
 #' example data for check
-'exampleDataForRopeca'
+#' @family data
+#' @keywords internal
+'data_exampleForRopeca'
+
+# data_factor_levelContrasts <- factor_levelContrasts
+# usethis::use_data(data_factor_levelContrasts, compress = TRUE, overwrite = TRUE)
+# file.remove("data/factor_levelContrasts.rda")
+
 #' example data for check
-'factor_levelContrasts'
+#' @family data
+#' @keywords internal
+'data_factor_levelContrasts'
+
+# data_interactionModel_p1807 <- interactionModel_p1807
+# usethis::use_data(data_interactionModel_p1807, compress = TRUE, overwrite = TRUE)
+# file.remove("data/interactionModel_p1807.rda")
+
 #' example data for check
-'interactionModel_p1807'
+#' @family data
+#' @keywords internal
+'data_interactionModel_p1807'
+
+#data_ionstar <- ionstar
+#usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
+#file.remove("data/ionstar.rda")
+
 #' example data for check
-'ionstar'
+#' @family data
+#' @keywords internal
+'data_ionstar'
+
+#data_lm_models_to_test <- lm_models_to_test
+#usethis::use_data(data_lm_models_to_test, compress = TRUE, overwrite = TRUE)
+#file.remove("data/lm_models_to_test.rda")
+
 #' example data for check
-'lm_models_to_test'
+#' @family data
+#' @keywords internal
+'data_lm_models_to_test'
+
+# data_modellingResult_A <- modellingResult_A
+# usethis::use_data(data_modellingResult_A, compress = TRUE, overwrite = TRUE)
+# file.remove("data/modellingResult_A.rda")
+
 #' example data for check
-'modellingResult_A'
+#' @family data
+#' @keywords internal
+'data_modellingResult_A'
+
+#data_models_interaction <- models_interaction
+#usethis::use_data(data_models_interaction,compress = TRUE, overwrite = TRUE)
+#file.remove("data/models_interaction.rda")
+
 #' example data for check
-'models_interaction'
+#' @family data
+#' @keywords internal
+'data_models_interaction'
+
+# data_multigroupFC <- multigroupFCDATA
+# usethis::use_data(data_multigroupFC,compress = TRUE, overwrite = TRUE)
+# file.remove("data/multigroupFCDATA.rda")
+
 #' example data for check
-'multigroupFCDATA'
+#' @family data
+#' @keywords internal
+'data_multigroupFC'
+
+
+# data_skylinePRMSample_A <- skylinePRMSampleData_A
+# usethis::use_data(data_skylinePRMSample_A,compress = TRUE, overwrite = TRUE)
+# file.remove("data/skylinePRMSampleData_A.rda")
+
 #' example data for check
-'skylinePRMSampleData_A'
+#' @family data
+#' @keywords internal
+'data_skylinePRMSample_A'
+
+
+# data_skylineSRM_HL_A <- skylineSRM_HL_A
+# usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
+# file.remove("data/skylineSRM_HL_A.rda")
+
 #' example data for check
-'skylineSRM_HL_A'
+#' @family data
+#' @keywords internal
+'data_skylineSRM_HL_A'
+
+
+#data_spectronautDIA250_A <- spectronautDIAData250_A
+#usethis::use_data(data_spectronautDIA250_A,compress = TRUE, overwrite = TRUE)
+#file.remove("data/spectronautDIAData250_A.rda")
+
 #' example data for check
-'spectronautDIAData250_A'
+#' @family
+#' @keywards internal
+'data_spectronautDIA250_A'
+
+
+#' example of 2 Factor data
+#' @family data
+#' @format LFQData
+'data_Yeast2Factor'
+

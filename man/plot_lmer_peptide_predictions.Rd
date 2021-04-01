@@ -10,7 +10,7 @@ plot_lmer_peptide_predictions(m)
 Plot prdictions
 }
 \examples{
-m <- prolfqua::interactionModel_p1807
+m <- prolfqua::data_interactionModel_p1807
 plot_lmer_peptide_predictions(m)
 }
 \seealso{

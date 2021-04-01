@@ -267,7 +267,7 @@ do_confusion_c <- function(
 #' @examples
 #' library(ggpubr)
 #' library(prolfqua)
-#' ttd <- ionstar_bench_preprocess(prolfqua::benchmarkDataExample)
+#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"

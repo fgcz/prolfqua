@@ -4,8 +4,8 @@
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- prolfqua::correlatedPeptideList
-#' transitionCorrelations(correlatedPeptideList[[1]])
+#' data_correlatedPeptideList <- prolfqua::data_correlatedPeptideList
+#' transitionCorrelations(data_correlatedPeptideList[[1]])
 transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
     ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
@@ -22,8 +22,8 @@ transitionCorrelations <- function(dataX) {
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' correlatedPeptideList <- prolfqua::correlatedPeptideList
-#' transitionCorrelationsJack(correlatedPeptideList[[1]])
+#' data_correlatedPeptideList <- prolfqua::data_correlatedPeptideList
+#' transitionCorrelationsJack(data_correlatedPeptideList[[1]])
 transitionCorrelationsJack <- function(dataX,
                                        distmethod =
                                          function(x){cor(x, use = "pairwise.complete.obs", method = "pearson")}) {

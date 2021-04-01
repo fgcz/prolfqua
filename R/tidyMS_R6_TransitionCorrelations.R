@@ -9,7 +9,7 @@
 #' @keywords internal
 #' @family filtering
 #' @examples
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -31,7 +31,7 @@ removeLarge_Q_Values <- function(pdata, config){
 #' @family filtering
 #' @examples
 #'
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -56,7 +56,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
@@ -117,7 +117,7 @@ transform_work_intensity <- function(pdata,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- summariseQValues(analysis, config)
@@ -158,7 +158,7 @@ summariseQValues <- function(pdata,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
@@ -209,7 +209,7 @@ toWide <- function(data,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' res <- toWideConfig(analysis, config)
@@ -252,7 +252,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #'
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua::spectronautDIAData250_A
+#' dd <- prolfqua::data_spectronautDIA250_A
 #' conf <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,conf)
 #' res <- toWideConfig(analysis, conf, as.matrix = TRUE)
@@ -318,7 +318,7 @@ robust_scale <- function(data){
 #' @examples
 #'
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -347,7 +347,7 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -395,7 +395,7 @@ scale_with_subset <- function(data, subset, config){
 #' @examples
 #'
 #' library(prolfqua)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -441,7 +441,7 @@ simpleImpute <- function(data){
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' bb <- prolfqua::ionstar$normalized()
+#' bb <- prolfqua::data_ionstar$normalized()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' mean(is.na(data$peptide.intensity))
@@ -509,7 +509,7 @@ impute_correlationBased <- function(x , config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data %>% select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -522,7 +522,7 @@ impute_correlationBased <- function(x , config){
 #'   dplyr::pull() %>% table()
 #'
 #'
-#' bb <- prolfqua::skylineSRM_HL_A
+#' bb <- prolfqua::data_skylineSRM_HL_A
 #' config <- bb$config_f()
 #' resDataStart <- bb$analysis(bb$data, bb$config_f())
 #'
@@ -531,7 +531,7 @@ impute_correlationBased <- function(x , config){
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-#' bb <- prolfqua::dataIonstarProtein_subsetNorm
+#' bb <- prolfqua::data_IonstarProtein_subsetNorm
 #' nr_B_in_A(bb$data, bb$config)
 #' undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
@@ -554,13 +554,13 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
 #' nr_B_in_A_per_sample(data, configur, nested =FALSE)
-#' bb <- prolfqua::dataIonstarProtein_subsetNorm
+#' bb <- prolfqua::data_IonstarProtein_subsetNorm
 #' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   cf <- config
@@ -626,7 +626,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' @examples
 #' library(tidyverse)
 #' library(prolfqua)
-#' bb <- prolfqua::spectronautDIAData250_A
+#' bb <- prolfqua::data_spectronautDIA250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -661,7 +661,7 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- prolfqua::spectronautDIAData250_A
+#' bb <- prolfqua::data_spectronautDIA250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- removeLarge_Q_Values(analysis, config)
@@ -700,7 +700,7 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' rm(list=ls())
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::spectronautDIAData250_A
+#' bb <- prolfqua::data_spectronautDIA250_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20

@@ -22,7 +22,7 @@ Keep only those proteins with 2 IDENTIFIED peptides
 library(prolfqua)
 library(tidyverse)
 
-istar <- prolfqua::ionstar$Pep()
+istar <- prolfqua::data_ionstar$Pep()
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)

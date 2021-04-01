@@ -13,7 +13,7 @@
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$normalized()
+#' bb <- prolfqua::data_ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
@@ -50,12 +50,22 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
       self$modelName = modelName
-      self$contrast_result = get_imputed_contrasts(lfqdata$data, lfqdata$config, contrasts)
-      self$contrast_result$isSingular <- TRUE
-      self$contrast_result <- mutate(self$contrast_result,
-                                     statistic = estimate_median / estimate_mad )
-      self$contrast_result <- mutate(self$contrast_result,
-                                     p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
+
+      result = get_imputed_contrasts(lfqdata$data, lfqdata$config, contrasts)
+
+      if (lfqdata$config$table$hierarchyDepth < length(lfqdata$config$table$hierarchyKeys())) {
+        result$isSingular <- TRUE
+        result <- mutate(result,
+                         statistic = estimate_median / estimate_mad )
+        result <- mutate(result,
+                         p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
+      } else {
+        result$isSingular <- TRUE
+        summarize_stats(lfqdata$data, lfqdata$config)
+      }
+
+      result <- result %>% rename(estimate = estimate_median)
+      self$contrast_result <- result
     },
     #' @description get contrasts sides
     #'
@@ -83,7 +93,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         volcano = list(list(score = "p.value", fc = 1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "estimate_median",
+        estimate = "estimate",
         contrast = "contrast")
       return(res)
     },
@@ -93,7 +103,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("estimate_median"),
+                                                     columns = c("estimate"),
                                                      contrast = 'contrast')
       return(contrasts_wide)
     }
@@ -114,7 +124,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
@@ -296,7 +306,7 @@ Contrasts <- R6::R6Class(
 #' @examples
 #'
 #' library(prolfqua)
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
@@ -380,7 +390,7 @@ ContrastsModerated <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   strategy_lm("transformedIntensity  ~ dilution.")
@@ -501,7 +511,7 @@ ContrastsROPECA <- R6::R6Class(
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-

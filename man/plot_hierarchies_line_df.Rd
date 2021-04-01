@@ -16,7 +16,7 @@ generates peptide level plots for all Proteins
 }
 \examples{
 library(tidyverse)
-istar <- prolfqua::ionstar$normalized()
+istar <- prolfqua::data_ionstar$normalized()
 
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
@@ -30,7 +30,7 @@ config$table$is_intensity_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
 res <- plot_hierarchies_line_df(istar_data, config)

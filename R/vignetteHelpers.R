@@ -112,7 +112,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' @keywords internal
 #' @export
 #' @examples
-#' bb <- prolfqua::skylinePRMSampleData_A
+#' bb <- prolfqua::data_skylinePRMSample_A
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
@@ -128,7 +128,7 @@ render_MQSummary_rmd <-
            project_conf,
            pep = TRUE,
            dest_path = ".",
-           dest_file_name = "MQSummary2",
+           dest_file_name = "QCandSampleSize.Rmd",
            workdir = tempdir(),
            format = c("pdf", "html"))
   {
@@ -139,7 +139,7 @@ render_MQSummary_rmd <-
         project_conf = project_conf,
         pep = pep
       ),
-      markdown_path = c("rmarkdown/MQSummary2.Rmd", "rmarkdown/CVReport.Rmd"),
+      markdown_path = c("doc/QCandSampleSize.Rmd", "doc/_CVReport.Rmd"),
       dest_path = dest_path,
       dest_file_name = dest_file_name,
       workdir = workdir,

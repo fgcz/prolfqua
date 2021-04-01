@@ -20,7 +20,7 @@ Apply correlation filtering and impute missing values
 rm(list=ls())
 library(tidyverse)
 library(prolfqua)
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

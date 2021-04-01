@@ -31,7 +31,7 @@ should generalize at some stage
 }
 \examples{
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data

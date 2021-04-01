@@ -17,7 +17,7 @@ if interaction average can not be computed infer it using the 10\%
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::ionstar$normalized()
+bb <- prolfqua::data_ionstar$normalized()
 configur <- bb$config
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)

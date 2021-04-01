@@ -17,7 +17,7 @@ plot correlation heatmap with annotations
 }
 \examples{
 library(tidyverse)
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 

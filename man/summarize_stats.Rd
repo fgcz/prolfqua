@@ -20,7 +20,7 @@ Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::ionstar$normalized()
+bb <- prolfqua::data_ionstar$normalized()
 config <- bb$config
 data <- bb$data
 

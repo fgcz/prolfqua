@@ -14,7 +14,7 @@ plot PCA
 library(tidyverse)
 library(prolfqua)
 
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

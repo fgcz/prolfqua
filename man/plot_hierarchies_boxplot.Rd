@@ -31,7 +31,7 @@ plot peptides by factors and it's levels.
 
 library(prolfqua)
 library(tidyverse)
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 conf <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
@@ -60,7 +60,7 @@ p <- plot_hierarchies_boxplot(
    beeswarm = FALSE )
 stopifnot("ggplot" \%in\% class(p))
 
-bb <- prolfqua::skylineSRM_HL_A
+bb <- prolfqua::data_skylineSRM_HL_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, config)
 data <- prolfqua::transform_work_intensity(analysis, config, log2)

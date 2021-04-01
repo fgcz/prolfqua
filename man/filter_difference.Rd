@@ -24,7 +24,7 @@ get the difference of two dataset where one is a subset of the other.
 library(prolfqua)
 library(tidyverse)
 
-istar <- prolfqua::ionstar$Pep()
+istar <- prolfqua::data_ionstar$Pep()
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 tmp <- filter_difference(istar_data, filterPep$data, istar$config)

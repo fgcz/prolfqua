@@ -19,7 +19,7 @@ Count distinct elements for each level of hierarchy per sample
 library(prolfqua)
 library(tidyverse)
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 

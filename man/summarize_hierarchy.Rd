@@ -28,7 +28,7 @@ Summarize hierarchy counts
 library(prolfqua)
 library(tidyverse)
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data

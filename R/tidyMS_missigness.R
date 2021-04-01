@@ -12,7 +12,7 @@
 #' library(tidyverse)
 #' library(prolfqua)
 #'
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
 #' #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
@@ -81,7 +81,7 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #' library(prolfqua)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -229,7 +229,7 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -290,7 +290,7 @@ missigness_impute_factors_interactions <-
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$normalized()
+#' bb <- prolfqua::data_ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -350,7 +350,7 @@ aggregate_contrast <- function(
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -417,7 +417,7 @@ get_contrast <- function(data,
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$normalized()
+#' bb <- prolfqua::data_ionstar$normalized()
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -450,7 +450,7 @@ get_imputed_contrasts <- function(data, config, contrasts){
 #' @examples
 #' library(tidyverse)
 #' library(prolfqua)
-#' bb <- prolfqua::ionstar
+#' bb <- prolfqua::data_ionstar
 #' configur <- bb$config
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
@@ -458,7 +458,7 @@ get_imputed_contrasts <- function(data, config, contrasts){
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' bx <- prolfqua::ionstar$normalized()
+#' bx <- prolfqua::data_ionstar$normalized()
 #' configur <- bx$config
 #' data <- bx$data
 #' data <- complete_cases(data, configur)
@@ -510,7 +510,7 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -551,7 +551,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

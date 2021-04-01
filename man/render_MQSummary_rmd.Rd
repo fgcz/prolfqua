@@ -10,7 +10,7 @@ render_MQSummary_rmd(
   project_conf,
   pep = TRUE,
   dest_path = ".",
-  dest_file_name = "MQSummary2",
+  dest_file_name = "QCandSampleSize.Rmd",
   workdir = tempdir(),
   format = c("pdf", "html")
 )
@@ -36,7 +36,7 @@ render_MQSummary_rmd(
 render MQ Summary.
 }
 \examples{
-bb <- prolfqua::skylinePRMSampleData_A
+bb <- prolfqua::data_skylinePRMSample_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")

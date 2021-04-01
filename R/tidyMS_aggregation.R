@@ -62,7 +62,7 @@ plot_hierarchies_line_default <- function(data,
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' analysis <- bb$data
@@ -73,7 +73,7 @@ plot_hierarchies_line_default <- function(data,
 #' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
 #'
-#' bb <- prolfqua::skylineSRM_HL_A
+#' bb <- prolfqua::data_skylineSRM_HL_A
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, conf)
 #'
@@ -127,7 +127,7 @@ plot_hierarchies_line <- function(res,
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #'
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
@@ -141,7 +141,7 @@ plot_hierarchies_line <- function(res,
 #' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 20))
 #' config <-  istar$config
 #' res <- plot_hierarchies_line_df(istar_data, config)
@@ -248,7 +248,7 @@ medpolishPly <- function(x, name = FALSE){
 #' @examples
 #' library(dplyr)
 #'
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -297,7 +297,7 @@ extractIntensities <- function(pdata, config ){
 #' @family plotting
 #' @examples
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -330,7 +330,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' @export
 #' @examples
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -452,8 +452,8 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
 #' summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
 #'
-#' summarizeRobust(checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust(data_checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
+#' summarizeRobust(data_checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
 #' res <- vector(100,mode = "list")
 #' for (i in 1:100) {
 #'   xx3 <- xx2
@@ -464,7 +464,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 #'
 #'
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -496,7 +496,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @keywords internal
 #' @examples
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
@@ -532,7 +532,7 @@ summarizeRobust_config <- function(pdata, config, name= FALSE){
 #'
 #' library( prolfqua )
 #' library(tidyverse)
-#' dd <- prolfqua::ionstar$filtered()
+#' dd <- prolfqua::data_ionstar$filtered()
 #' config <- dd$config
 #' data <- dd$data
 #'
@@ -591,7 +591,7 @@ aggregate_intensity <- function(data, config, .func)
 #' @examples
 #' library( prolfqua )
 #' library(tidyverse)
-#' dd <- prolfqua::ionstar$filtered()
+#' dd <- prolfqua::data_ionstar$filtered()
 #' config <- dd$config
 #' data <- dd$data
 #'
@@ -667,7 +667,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' dd <- prolfqua::ionstar$filtered()
+#' dd <- prolfqua::data_ionstar$filtered()
 #' config <- dd$config
 #' res <- dd$data
 #' ranked <- rankPrecursorsByIntensity(res,config)
@@ -737,7 +737,7 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
@@ -830,7 +830,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @examples
 #' library(tidyverse)
 #' library(prolfqua)
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #'
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' res <- medpolish_protein_quants(istar_data,

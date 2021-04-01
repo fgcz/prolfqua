@@ -29,7 +29,7 @@ Compute theoretical sample sizes from factor level standard deviations
 }
 \examples{
 
-bb1 <- prolfqua::ionstar$normalized()
+bb1 <- prolfqua::data_ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 

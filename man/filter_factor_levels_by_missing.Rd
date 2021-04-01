@@ -22,7 +22,7 @@ removes measurments with less than percent=60 missing values in factor_level = 1
 rm(list=ls())
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::spectronautDIAData250_A
+bb <- prolfqua::data_spectronautDIA250_A
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 config$parameter$min_nr_of_notNA  <- 20

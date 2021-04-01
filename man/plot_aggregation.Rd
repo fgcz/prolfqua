@@ -21,7 +21,7 @@ Plot feature data and result of aggretation
 \examples{
 library( prolfqua )
 library(tidyverse)
-dd <- prolfqua::ionstar$filtered()
+dd <- prolfqua::data_ionstar$filtered()
 config <- dd$config
 data <- dd$data
 

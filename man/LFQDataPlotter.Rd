@@ -11,7 +11,7 @@ Create various visualization of the LFQdata
 \examples{
 
 library(prolfqua)
-istar <- prolfqua::dataIonstarProtein_subsetNorm
+istar <- prolfqua::data_IonstarProtein_subsetNorm
 
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 

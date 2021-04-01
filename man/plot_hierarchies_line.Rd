@@ -28,7 +28,7 @@ extracts the relevant information from the configuration to make the plot.
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data
@@ -39,7 +39,7 @@ xnested <- analysis \%>\%
 prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
 
-bb <- prolfqua::skylineSRM_HL_A
+bb <- prolfqua::data_skylineSRM_HL_A
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 

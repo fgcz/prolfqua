@@ -19,7 +19,7 @@ Compute fold changes given Contrasts
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::ionstar$normalized()
+bb <- prolfqua::data_ionstar$normalized()
 configur <- bb$config
 data <- bb$data
 

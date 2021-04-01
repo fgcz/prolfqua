@@ -13,7 +13,7 @@ scale_with_subset
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data

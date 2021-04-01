@@ -7,7 +7,7 @@
 #' library(tidyverse)
 #' library(prolfqua)
 #'
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #'
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -206,7 +206,7 @@ LFQData <- R6::R6Class(
 #' rm(list = ls())
 #' library(prolfqua)
 #' #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -340,7 +340,7 @@ LFQDataTransformer <- R6::R6Class(
 #'   }
 #' }
 #'
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
@@ -348,7 +348,7 @@ LFQDataTransformer <- R6::R6Class(
 #' x<-lfqstats
 #'
 #' #study variance of normalized data
-#' istar <- prolfqua::ionstar$normalized()
+#' istar <- prolfqua::data_ionstar$normalized()
 #' istar$config$table$is_intensity_transformed
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -357,7 +357,7 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' bb <- prolfqua::ionstar$filtered()
+#' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
@@ -500,7 +500,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::ionstar
+#' istar <- prolfqua::data_ionstar
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
@@ -564,7 +564,7 @@ LFQDataSummariser <- R6::R6Class(
 #' @examples
 #'
 #' library(prolfqua)
-#' istar <- prolfqua::dataIonstarProtein_subsetNorm
+#' istar <- prolfqua::data_IonstarProtein_subsetNorm
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
@@ -891,7 +891,7 @@ LFQDataWriter <- R6::R6Class(
 #' library(tidyverse)
 #' library(prolfqua)
 #'
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'

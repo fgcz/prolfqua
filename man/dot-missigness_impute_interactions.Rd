@@ -35,7 +35,7 @@ used in Acetylation project p2916
 }
 \examples{
 library(prolfqua)
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data

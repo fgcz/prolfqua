@@ -13,7 +13,7 @@ imputation based on correlation assumption
 library(prolfqua)
 library(tidyverse)
 
-bb <- prolfqua::ionstar$normalized()
+bb <- prolfqua::data_ionstar$normalized()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))

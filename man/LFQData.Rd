@@ -12,7 +12,7 @@ LFQData R6 class
 library(tidyverse)
 library(prolfqua)
 
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)

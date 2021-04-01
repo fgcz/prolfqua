@@ -16,7 +16,7 @@ Complete cases
 }
 \examples{
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

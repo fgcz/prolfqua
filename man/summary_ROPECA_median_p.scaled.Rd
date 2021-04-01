@@ -64,7 +64,7 @@ hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
 hist(xx2$mad.estimate)
 
-summary_ROPECA_median_p.scaled(prolfqua::exampleDataForRopeca, contrast = "contrast")
+summary_ROPECA_median_p.scaled(prolfqua::data_exampleForRopeca, contrast = "contrast")
 xx2$mad.estimate
 
 

@@ -33,7 +33,7 @@
 #' FIXED <- FALSE
 #' if(FIXED){
 #'
-#' bb <- prolfqua::ionstar$normalized()
+#' bb <- prolfqua::data_ionstar$normalized()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' x <- sample(data$protein_Id,2)

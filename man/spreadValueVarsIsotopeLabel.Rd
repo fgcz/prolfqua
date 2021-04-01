@@ -12,7 +12,7 @@ spreads isotope label heavy light into two columns
 \examples{
 library(prolfqua)
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -20,11 +20,11 @@ data <- bb$data
 x<-spreadValueVarsIsotopeLabel(data,configur)
 head(x)
 
-bb <- prolfqua::skylineSRM_HL_A
+bb <- prolfqua::data_skylineSRM_HL_A
 configur <- bb$config_f()
 data <- bb$analysis(bb$data, configur)
 
-bb <- prolfqua::skylineSRM_HL_A
+bb <- prolfqua::data_skylineSRM_HL_A
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 x <- spreadValueVarsIsotopeLabel(analysis, conf)

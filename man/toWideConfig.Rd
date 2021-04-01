@@ -11,7 +11,7 @@ transform long to wide
 }
 \examples{
 library(tidyverse)
-dd <- prolfqua::spectronautDIAData250_A
+dd <- prolfqua::data_spectronautDIA250_A
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 res <- toWideConfig(analysis, config)

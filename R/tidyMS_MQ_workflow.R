@@ -12,7 +12,7 @@
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::ionstar$Pep()
+#' istar <- prolfqua::data_ionstar$Pep()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #'  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
@@ -40,7 +40,7 @@ filter_proteins_by_peptide_count <-
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- prolfqua::ionstar$filtered()
+#' istar <- prolfqua::data_ionstar$filtered()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' xx <- normalize_log2_robscale(istar_data, istar$config)
 #' names(xx)
@@ -77,7 +77,7 @@ normalize_log2_robscale <- function(pdata, config){
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::ionstar$Pep()
+#' istar <- prolfqua::data_ionstar$Pep()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #' tmp <- filter_difference(istar_data, filterPep$data, istar$config)

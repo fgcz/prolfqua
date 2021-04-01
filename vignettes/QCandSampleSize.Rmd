@@ -11,9 +11,9 @@ output:
     toc_depth: 2
   
 params:
-  configuration:  !r quote( prolfqua::ionstar$filtered()$config$clone(deep=TRUE) )
+  configuration:  !r quote( prolfqua::data_ionstar$filtered()$config$clone(deep=TRUE) )
   project_conf: NULL
-  data: !r quote( prolfqua::ionstar$filtered()$data )
+  data: !r quote( prolfqua::data_ionstar$filtered()$data )
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
   pep: TRUE

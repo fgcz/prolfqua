@@ -9,16 +9,16 @@ test_that("check config", {
 
 
 test_that("my_contrast_V2 works",{
-  lm_models_to_test <- prolfqua::lm_models_to_test
-  linfct_lm <- linfct_from_model(lm_models_to_test$lm_complete)
+  data_lm_models_to_test <- prolfqua::data_lm_models_to_test
+  linfct_lm <- linfct_from_model(data_lm_models_to_test$lm_complete)
   linfct_interaction <- linfct_lm$linfct_interactions
 
-  for (model in lm_models_to_test) {
+  for (model in data_lm_models_to_test) {
     print(my_contrast_V2(model, linfct_interaction))
   }
-  linfct_contrasts <- linfct_factors_contrasts(lm_models_to_test$lm_complete)
+  linfct_contrasts <- linfct_factors_contrasts(data_lm_models_to_test$lm_complete)
 
-  for (model in lm_models_to_test) {
+  for (model in data_lm_models_to_test) {
     print(my_contrast_V2(model, linfct_contrasts))
   }
 

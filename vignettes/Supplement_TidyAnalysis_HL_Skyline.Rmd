@@ -39,7 +39,7 @@ outdir <- tempdir()
 # Setting up the configuration
 
 ```{r loadDataCreateConfig}
-allDataM <- prolfqua::skylineSRM_HL_A$data
+allDataM <- prolfqua::data_skylineSRM_HL_A$data
 
 
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label",

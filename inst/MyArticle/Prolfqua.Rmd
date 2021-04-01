@@ -210,7 +210,7 @@ Figure \@ref(fig:scaling) shows the distribution of the peptide intensities with
 ```{r scaling, fig.cap="(ref:scaling)", fig.width=7, fig.height=7}
 library(prolfqua)
 library(ggplot2)
-is <- prolfqua::ionstar
+is <- prolfqua::data_ionstar
 pepsum <- is$filtered()
 summarised <- is$subset_normalized()
 

@@ -17,7 +17,7 @@ Histogram summarizing missigness
 \examples{
 library(tidyverse)
 library(prolfqua)
-bb <- prolfqua::ionstar
+bb <- prolfqua::data_ionstar
 configur <- bb$config
 data <- bb$data
 xx <- complete_cases(data, configur)
@@ -25,7 +25,7 @@ missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
-bx <- prolfqua::ionstar$normalized()
+bx <- prolfqua::data_ionstar$normalized()
 configur <- bx$config
 data <- bx$data
 data <- complete_cases(data, configur)

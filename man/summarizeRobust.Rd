@@ -28,8 +28,8 @@ bb
 xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
 summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
 
-summarizeRobust(checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
-summarizeRobust(checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(data_checksummarizationrobust87,"log2Area", "peptide_Id", "sampleName")
+summarizeRobust(data_checksummarizerobust69,"log2Area", "peptide_Id", "sampleName")
 res <- vector(100,mode = "list")
 for (i in 1:100) {
   xx3 <- xx2
@@ -40,7 +40,7 @@ summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleNam
 summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
 
-bb <- prolfqua::ionstar$filtered()
+bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data

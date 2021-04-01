@@ -13,7 +13,7 @@ plot heatmap of NA values
 
 library(tidyverse)
 library(prolfqua)
-istar <- prolfqua::ionstar$filtered()
+istar <- prolfqua::data_ionstar$filtered()
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 
