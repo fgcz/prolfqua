@@ -10,4 +10,4 @@
 *.bib.sav
 *.docx
 ExDesignSurvey/*
-*_files/
+*_files/*
