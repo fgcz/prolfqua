@@ -43,7 +43,7 @@ prolfqua::table_facade(cv_quantiles_res,
 
 ```
 
-```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities."}
+```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities.",fig.height = 6, fig.width=width}
 if(params$plot_density){
   p0 <- prolfqua::plot_intensity_distribution_density(data_cc, local_config) + 
     theme(legend.text = element_text(size=5))
