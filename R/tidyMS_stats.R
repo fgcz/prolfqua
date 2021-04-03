@@ -1,18 +1,24 @@
+#
+#
+# x <- data.frame(not_na =c(2,2,1), var = c(3,4,4), mean = c(3,3,3))
+# .compute_pooled(x)
+.compute_pooled <- function(x){
+  x <- x %>% dplyr::filter(.data$not_na > 1)
+  var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
+  res <- data.frame(
+    n = sum(x$n) - nrow(x),
+    not_na  = sum(x$not_na),
+    sd = sqrt(var),
+    var = var,
+    mean = sum(x$mean * x$not_na)/sum(x$not_na)
+  )
+  return(res)
+}
+
+
 .poolvar <- function(res1, config){
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
-  compute_pooled <- function(x){
-    x <- x %>% dplyr::filter(.data$not_na > 1)
-    var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
-    res <- data.frame(
-      n = sum(x$n),
-      not_na  = sum(x$not_na),
-      sd = sqrt(var),
-      var = var,
-      mean = sum(x$mean * x$not_na)/sum(x$not_na)
-    )
-    return(res)
-  }
-  pooled =  purrr::map_df(resp$data, compute_pooled )
+  pooled =  purrr::map_df(resp$data, .compute_pooled )
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp %>% mutate(!!config$table$factorKeys()[1] := "pooled")
@@ -35,6 +41,7 @@
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config, all = FALSE)
+#' d <- res1 %>% filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "ILSLAQDQVGGSAEK")
 #' res1 %>% dplyr::filter(dilution. == "pooled")
 #' res2 <- summarize_stats(data, config, all = TRUE)
 #'
@@ -42,7 +49,7 @@ summarize_stats <- function(pdata, config, all = TRUE){
   intsym <- sym(config$table$getWorkIntensity())
   hierarchyFactor <- pdata %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
-    dplyr::summarize(n = n(),
+    dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym, na.rm = T),
                      var = var(!!intsym, na.rm = T),
@@ -55,7 +62,7 @@ summarize_stats <- function(pdata, config, all = TRUE){
   if (all) {
     hierarchy <- pdata %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-      dplyr::summarize(n = n(),
+      dplyr::summarize(n = dplyr::n(),
                        not_na = sum(!is.na(!!intsym)),
                        sd = sd(!!intsym,na.rm = T),
                        var = sd(!!intsym,na.rm = T),
@@ -213,13 +220,12 @@ lfq_power_t_test_quantiles_V2 <-
 #' data2 <- bb1$data
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
-#' res
+#' res$summary
 #' stats_res <- summarize_stats(data2, config, all = FALSE)
-#' stats_res
+#' unique(stats_res$dilution.)
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
-#' res
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
-#' res
+#'
 #'
 lfq_power_t_test_quantiles <- function(pdata,
                                        config,
