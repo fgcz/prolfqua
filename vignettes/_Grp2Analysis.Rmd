@@ -14,7 +14,8 @@ header-includes:
   \fancyfoot[CO,CE]{\textbf{FGCZ} - www.fgcz.ch - 2018}
   \fancyfoot[LE,RO]{\thepage} 
 params:
-  grp: !r quote(SRMService::mqQuantMatrixGRP2)
+  #grp: !r quote(SRMService::mqQuantMatrixGRP2)
+  grp: NULL
 vignette: >
   %\VignetteIndexEntry{FGCZ Two-Group Analysis}
   %\VignetteEncoding{UTF-8}
