@@ -9,7 +9,6 @@ output:
   bookdown::pdf_document2:
     toc: yes
     toc_depth: 2
-  
 params:
   configuration:  !r quote( prolfqua::data_ionstar$filtered()$config$clone(deep=TRUE) )
   project_conf: NULL
@@ -82,25 +81,32 @@ This document summarizes the `r if(params$pep){"peptide"}else{"protein"}` variab
 # Quality Control: Identifications
 
 Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins `r if(params$pep){", and between a few hundred to up to some few tens of thousands of peptides"}else{""}`.
-While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility). Table \@ref(tab:hierarchyCounts) summarizes the number of `r if(params$pep){"proteins and peptides"} else {"proteins"} ` of proteins and peptides in all samples.
+While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
-```{r prep_hierarchy_counts}
+
+```{r hierarchy_counts}
 x <- hierarchy_counts(data, local_config)
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
-caption <- paste0("Nr of ", if(params$pep){"proteins and peptides"} else {"proteins"} ," detected in all samples.")
-dxy <- data.frame(NR = x)
+
+prolfqua::table_facade( 
+  data.frame(NR = x),
+  caption = paste0("Nr of",
+                   if(params$pep){"proteins and peptides"}
+                   else
+                   {"proteins"} ,
+                   " detected in all samples."))
+
 ```
 
-```{r hierarchyCounts}
-prolfqua::table_facade( 
-  dxy,
-  caption = caption)
-
+```{r}
+nrSamples <- nrow(prolfqua::table_factors(data, local_config) )
+width = max(8, nrSamples*0.2)
 ```
 
 (ref:hierarchyCountsSampleBarplot) Number of quantified `r if(params$pep){"peptides"}else{"proteins"}` per sample.
 
-```{r hierarchyCountsSampleBarplot, fig.cap="(ref:hierarchyCountsSampleBarplot)", fig.width=8, fig.height=6}
+
+```{r hierarchyCountsSampleBarplot, fig.cap="(ref:hierarchyCountsSampleBarplot)", fig.width=width, fig.height=6}
 hcs <- hierarchy_counts_sample(data, configuration = local_config)
 hcs("plot")
 
@@ -118,7 +124,7 @@ if (ncol(x3) >= 4) {
     count(protein_with)
   nudgeval <- max(pltdt$n) * 0.05
   ggplot(pltdt, aes(x = protein_with, y = n)) + 
-    geom_col(color="black", fill="white") +
+    geom_col(color="black", fill = "white") +
     geom_text(aes(label = n), nudge_y = nudgeval)
 }
 ```
@@ -129,9 +135,13 @@ if (ncol(x3) >= 4) {
 
 Ideally, we identify each `r if(params$pep){"peptide"}else{"protein"}` in all of the samples. However, because of the limit of detection (LOD) low-intensity `r if(params$pep){"peptides"}else{"proteins"}` might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data.
 
+```{r}
+height <- max(7, nrSamples * 0.1)
+```
+
 (ref:missingFigIntensityHistorgram) Top - intensity distribution of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1 etc. missing values. B - number of `r if(params$pep){"peptides"}else{"proteins"}` with 0, 1, 2 etc. missing value.
 
-```{r missingFigIntensityHistorgram, fig.width=7, fig.height=7, fig.cap="(ref:missingFigIntensityHistorgram)"}
+```{r missingFigIntensityHistorgram, fig.width=height, fig.height=height, fig.cap="(ref:missingFigIntensityHistorgram)"}
 data_cc <- data
 p <- missigness_histogram(data_cc, local_config)
 xx3 <- missingness_per_condition(data_cc, local_config)
@@ -144,9 +154,11 @@ gridExtra::grid.arrange(p, xx3$figure, xx4$figure, ncol=1)
 
 ```{r preparemissingnessHeatmap, include=FALSE}
 pNAmap <- plot_NA_heatmap(data = data_cc, config = local_config)
+width <- max(8, nrSamples * 0.15)
 ```
 
-```{r missingnessHeatmap, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
+
+```{r missingnessHeatmap, fig.width=width, fig.height=width, fig.align='center', fig.cap="(ref:missingnessHeatmap)"}
 print(pNAmap)
 ```
 
@@ -182,7 +194,7 @@ if (!local_config$table$is_intensity_transformed) {
 
 (ref:plotTransformedIntensityDistributions) `r if(params$pep){"Peptide"}else{"Protein"}` intensity distribution after transformation.
 
-```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 5}
+```{r plotTransformedIntensityDistributions, fig.cap="(ref:plotTransformedIntensityDistributions)", fig.height = 6, fig.width= width}
 if (params$plot_density) {
   p1 <- prolfqua::plot_intensity_distribution_density(dataTransformed, local_config) + 
     theme(legend.text = element_text(size = 5))
@@ -200,9 +212,10 @@ chmap <- plot_heatmap_cor(dataTransformed,
                        local_config,
                        R2 = TRUE, 
                        col = colorRampPalette(c("white", "red"))(1024))
+width <- max(8, nrSamples * 0.15)
 ```
 
-```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.height = 5}
+```{r correlationHeat, fig.height = 5, fig.cap="(ref:correlationHeat)", fig.width=width, fig.height=width}
 print(chmap)
 ```
 
@@ -261,14 +274,14 @@ if (params$plot_density) {
 ```
 
 ```{r fig.cap="Standard Deviation vs Mean"}
-if(params$plot_sd_vs_mean){
-  p0 <- plot_stdv_vs_mean(stats_res, local_config) + labs(tag="A")
+if (params$plot_sd_vs_mean) {
+  p0 <- plot_stdv_vs_mean(stats_res, local_config) + labs(tag = "A")
 }
 ```
 
 
 ```{r computeSDQuantiles, include=FALSE}
-sd_quantile_res2 <- summarize_stats_quantiles(stats_res, local_config, stats="sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
+sd_quantile_res2 <- summarize_stats_quantiles(stats_res, local_config, stats = "sd", probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 ```{r printSDTable}
@@ -283,9 +296,10 @@ prolfqua::table_facade(sd_quantile_res2,
 
 ```{r prepareoverviewHeat, include = FALSE}
 hm <- plot_heatmap(dataTransformed, local_config)
+width = max(10, nrSamples * 0.15)
 ```
 
-```{r overviewHeat, fig.cap="(ref:overviewHeat)", fig.height=10, fig.width=8}
+```{r overviewHeat, fig.cap="(ref:overviewHeat)", fig.height=10, fig.width=width}
 print(hm)
 ```
 
@@ -303,7 +317,8 @@ Table \@ref(tab:sampleSize) and Figure \@ref(fig:figSampleSize) summarizes how m
 
 ```{r figSampleSize, fig.cap="(ref:figSampleSize)", fig.width=8}
 
-sampleSize <- lfq_power_t_test_quantiles(dataTransformed, local_config, delta=c(0.59,1,2))
+sampleSize <- lfq_power_t_test_quantiles(dataTransformed, local_config, delta = c(0.59,1,2))
+
 
 nudgeval <- max(sampleSize$long$N) * 0.05
 
