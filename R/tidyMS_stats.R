@@ -1,10 +1,10 @@
 .poolvar <- function(res1, config){
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
   compute_pooled <- function(x){
-    x <- x %>% dplyr::filter(.data$not_na > 1)
-    var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
+    x <- x %>% dplyr::filter(.data$not_na > 0)
+    var <- sum((x$var * (x$not_na - 1)), na.rm = TRUE)/(sum(x$not_na, na.rm = TRUE) - nrow(x))
     res <- data.frame(
-      n = sum(x$n),
+      n = sum(x$not_na) - nrow(x),
       not_na  = sum(x$not_na),
       sd = sqrt(var),
       var = var,
@@ -39,6 +39,7 @@
 #' res2 <- summarize_stats(data, config, all = TRUE)
 #'
 summarize_stats <- function(pdata, config, all = TRUE){
+  pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$getWorkIntensity())
   hierarchyFactor <- pdata %>%
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%

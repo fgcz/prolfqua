@@ -1010,15 +1010,22 @@ contrasts_linfct <- function(models,
 #' @family modelling
 #' @keywords internal
 #'
-moderated_p_limma <- function(mm, df = "df", robust = FALSE){
+moderated_p_limma <- function(mm, df = "df", robust = FALSE, confint = 0.95){
   sv <- limma::squeezeVar(mm$sigma^2, df = mm[[df]],robust = robust)
   sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
   mm <- dplyr::bind_cols(mm, sv)
-  mm <- mm %>% dplyr::mutate(moderated.statistic  =  statistic * sigma /  sqrt(moderated.var.post))
-  mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + moderated.df.prior)
-  mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(moderated.statistic), df = moderated.df.total, lower.tail = FALSE) )
+  mm <- mm %>% dplyr::mutate(moderated.statistic  =  .data$statistic * .data$sigma /  sqrt(.data$moderated.var.post))
+  mm <- mm %>% dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
+  mm <- mm %>% dplyr::mutate(moderated.p.value = 2*pt( abs(.data$moderated.statistic),
+                                                       df = .data$moderated.df.total, lower.tail = FALSE) )
+
+  prqt <- -qt((1 - confint)/2, df = mm$moderated.df.total)
+  mm$moderated.conf.low <- mm$estimate  - prqt * sqrt(mm$moderated.var.post)
+  mm$moderated.conf.high <- mm$estimate + prqt * sqrt(mm$moderated.var.post)
   mm <-  dplyr::ungroup(mm)
+
+
   return(mm)
 }
 

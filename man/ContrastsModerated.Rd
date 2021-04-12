@@ -24,9 +24,10 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- contrast <- prolfqua::ContrastsModerated$new(mod,
+ contrast <- prolfqua::Contrasts$new(mod,
  Contr)
- contrast$get_contrasts(all = TRUE)
+ contrast <- ContrastsModerated$new(contrast)
+ bb <- contrast$get_contrasts()
  plotter <- contrast$get_Plotter()
  plotter$histogram()
  plotter$ma_plot()
@@ -78,27 +79,62 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
-\section{Super class}{
-\code{\link[prolfqua:Contrast]{prolfqua::Contrast}} -> \code{ContrastsModerated}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{ContrastsModerated$new()}}
+\item \href{#method-get_contrasts_sides}{\code{ContrastsModerated$get_contrasts_sides()}}
+\item \href{#method-get_linfct}{\code{ContrastsModerated$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{ContrastsModerated$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsModerated$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsModerated$to_wide()}}
+\item \href{#method-write}{\code{ContrastsModerated$write()}}
 \item \href{#method-clone}{\code{ContrastsModerated$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../prolfqua/html/Contrast.html#method-get_contrasts_sides}{\code{prolfqua::Contrast$get_contrasts_sides()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_linfct">}\href{../../prolfqua/html/Contrast.html#method-get_linfct}{\code{prolfqua::Contrast$get_linfct()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="initialize">}\href{../../prolfqua/html/Contrast.html#method-initialize}{\code{prolfqua::Contrast$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="write">}\href{../../prolfqua/html/Contrast.html#method-write}{\code{prolfqua::Contrast$write()}}\out{</span>}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+initialize
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(Contrast, modelName = "Moderated")}\if{html}{\out{</div>}}
 }
-\out{</details>}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{Contrast}}{class implementing a method get_contrasts e.g. Contrasts}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_contrasts_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-get_contrasts_sides}{}}}
+\subsection{Method \code{get_contrasts_sides()}}{
+get both sides of contrasts
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_contrasts_sides()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-get_linfct}{}}}
+\subsection{Method \code{get_linfct()}}{
+get linear functions from contrasts
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_linfct(global = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{global}}{logical TRUE - get the a linear functions for all models, FALSE - linear function for each model}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
@@ -106,7 +142,7 @@ Other modelling:
 \subsection{Method \code{get_contrasts()}}{
 applies limma moderation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -135,13 +171,32 @@ get \code{\link{Contrast_Plotter}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$to_wide(columns = c("moderated.p.value", "FDR.moderated"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$to_wide(columns = c("p.value", "FDR"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{columns}}{value column default moderated.p.value}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write"></a>}}
+\if{latex}{\out{\hypertarget{method-write}{}}}
+\subsection{Method \code{write()}}{
+write results
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$write(path, format = "xlsx")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{directory}
+
+\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
 }
 \if{html}{\out{</div>}}
 }

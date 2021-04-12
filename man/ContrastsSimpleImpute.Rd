@@ -18,15 +18,17 @@ if interaction average can not be computed infer it using the 10\%
 library(prolfqua)
 library(tidyverse)
 bb <- prolfqua::data_ionstar$normalized()
-configur <- bb$config
+configur <- bb$config$clone(deep=TRUE)
+configur$table$hierarchyDepth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
-Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
+Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
+"dilution.c-e" = "dilution.c - dilution.e")
+#ContrastsSimpleImpute$debug("get_contrasts")
 tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+bb <- tmp$get_contrasts()
 tmp$get_contrast_sides()
 
-bb <- tmp$get_contrasts()
-#bb$estimate_mad == 0
 pl <- tmp$get_Plotter()
 pl$histogram()
 pl$histogram_estimate()
@@ -87,6 +89,8 @@ Other modelling:
 \item{\code{modelName}}{model name}
 
 \item{\code{contrast_result}}{data frame with results of contrast computation}
+
+\item{\code{lfqdata}}{data frame}
 }
 \if{html}{\out{</div>}}
 }
@@ -108,7 +112,13 @@ Other modelling:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$new(lfqdata, contrasts, modelName = "groupAverage")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$new(
+  lfqdata,
+  contrasts,
+  confint = 0.95,
+  p.adjust = prolfqua::adjust_p_values,
+  modelName = "groupAverage"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -139,7 +149,7 @@ get contrasts sides
 \subsection{Method \code{get_contrasts()}}{
 table with results of contrast computation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_contrasts()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 }

@@ -4,7 +4,7 @@
 \alias{moderated_p_limma}
 \title{Moderate p-values - limma approach}
 \usage{
-moderated_p_limma(mm, df = "df", robust = FALSE)
+moderated_p_limma(mm, df = "df", robust = FALSE, confint = 0.95)
 }
 \description{
 Moderate p-values - limma approach

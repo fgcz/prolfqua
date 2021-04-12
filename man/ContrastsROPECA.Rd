@@ -33,12 +33,13 @@ mod <- build_model(
 
 
  #ContrastsROPECA$debug("get_Plotter")
- contrast <- prolfqua::ContrastsROPECA$new(mod, Contr)
-
+ contrM <- prolfqua::Contrasts$new(mod, Contr)
+ #ContrastsROPECA$undebug("get_contrasts")
+ contrast <- prolfqua::ContrastsROPECA$new(contrM)
  contrast$get_linfct()
- contrast$subject_Id
+ contrast$contrast$subject_Id
  tmp <- contrast$get_contrasts(all = TRUE)
-
+ tmp <- contrast$get_contrasts()
  pl <- contrast$get_Plotter()
 
  pl$histogram()
@@ -90,27 +91,39 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
-\section{Super classes}{
-\code{\link[prolfqua:Contrast]{prolfqua::Contrast}} -> \code{\link[prolfqua:ContrastsModerated]{prolfqua::ContrastsModerated}} -> \code{ContrastsROPECA}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{ContrastsROPECA$new()}}
+\item \href{#method-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsROPECA$to_wide()}}
+\item \href{#method-write}{\code{ContrastsROPECA$write()}}
 \item \href{#method-clone}{\code{ContrastsROPECA$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_contrasts_sides">}\href{../../prolfqua/html/Contrast.html#method-get_contrasts_sides}{\code{prolfqua::Contrast$get_contrasts_sides()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="get_linfct">}\href{../../prolfqua/html/Contrast.html#method-get_linfct}{\code{prolfqua::Contrast$get_linfct()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="initialize">}\href{../../prolfqua/html/Contrast.html#method-initialize}{\code{prolfqua::Contrast$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="Contrast" data-id="write">}\href{../../prolfqua/html/Contrast.html#method-write}{\code{prolfqua::Contrast$write()}}\out{</span>}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$new(
+  contrast,
+  modelName = "ROPECA",
+  p.adjust = prolfqua::adjust_p_values
+)}\if{html}{\out{</div>}}
 }
-\out{</details>}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-get_linfct}{}}}
+\subsection{Method \code{get_linfct()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_linfct()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
@@ -118,7 +131,7 @@ Other modelling:
 \subsection{Method \code{get_contrasts()}}{
 get contrasts
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -156,6 +169,25 @@ convert to wide format
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{columns}}{value column default beta.based.significance}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write"></a>}}
+\if{latex}{\out{\hypertarget{method-write}{}}}
+\subsection{Method \code{write()}}{
+write results
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$write(path, format = "xlsx")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{directory}
+
+\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
 }
 \if{html}{\out{</div>}}
 }

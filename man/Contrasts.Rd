@@ -100,6 +100,8 @@ Other modelling:
 \item{\code{p.adjust}}{function to adjust p-values (default prolfqua::adjust_p_values)}
 
 \item{\code{contrast_result}}{data frame containing results of contrast computation}
+
+\item{\code{global}}{use a global linear function (determined by get_linfct)}
 }
 \if{html}{\out{</div>}}
 }
@@ -123,7 +125,12 @@ Other modelling:
 initialize
 create Contrast
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(model, contrasts, p.adjust = prolfqua::adjust_p_values)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$new(
+  model,
+  contrasts,
+  p.adjust = prolfqua::adjust_p_values,
+  global = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -171,15 +178,13 @@ get linear functions from contrasts
 \subsection{Method \code{get_contrasts()}}{
 get table with contrast estimates
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE, global = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{all}}{should all columns be returned (default FALSE)}
-
-\item{\code{global}}{use a global linear function (determined by get_linfct)}
 }
 \if{html}{\out{</div>}}
 }
