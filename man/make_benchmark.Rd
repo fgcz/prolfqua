@@ -7,7 +7,7 @@
 make_benchmark(
   prpr,
   contrast = "contrast",
-  toscale = c("p.value", "moderated.p.value"),
+  toscale = c("p.value"),
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
     TRUE), list(sc = "p.value", desc = TRUE)),
   FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),

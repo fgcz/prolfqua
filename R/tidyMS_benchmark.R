@@ -348,11 +348,9 @@ Benchmark <-
                             benchmark = list(
                               list(sc = "estimate", desc = TRUE),
                               list(sc = "statistic", desc = TRUE),
-                              list(sc = "scaled.p.value", desc = TRUE),
-                              list(sc = "scaled.moderated.p.value", desc = TRUE)
+                              list(sc = "p.value", desc = TRUE)
                             ),
-                            FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE),
-                                            list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+                            FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
                             model_description = "protein level measurments, linear model",
                             model_name = "medpolish_lm",
                             contrast = "contrast",
