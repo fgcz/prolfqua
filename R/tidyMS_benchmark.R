@@ -521,15 +521,13 @@ Benchmark <-
 #' @return Benchmark
 make_benchmark <- function(prpr,
                            contrast = "contrast",
-                           toscale = c("p.value", "moderated.p.value"),
+                           toscale = c("p.value"),
                            benchmark = list(
                              list(sc = "estimate", desc = TRUE),
                              list(sc = "statistic", desc = TRUE),
-                             list(sc = "scaled.p.value", desc = TRUE),
-                             list(sc = "scaled.moderated.p.value", desc = TRUE)
+                             list(sc = "p.value", desc = TRUE)
                            ),
-                           FDRvsFDP = list(list(sc = "p.value.adjusted", desc = FALSE),
-                                           list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+                           FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
                            model_description = "protein level measurments, linear model",
                            model_name = "prot_med_lm",
                            hierarchy = c("protein_Id")

@@ -179,7 +179,7 @@ ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config,
 We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use normalized data.
 The figure below shows the the protein estimates (dashed line) and the peptide intensities.
 
-```{r}
+```{r aggregateMedpolish}
 lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, "protein")
 lfqAggMedpol$medpolish()
 xx <- lfqAggMedpol$plot()
@@ -188,7 +188,7 @@ xx$plots[[1]]
 
 
 
-```{r echo=FALSE}
+```{r storeProteinAggregates, echo = FALSE}
 data_IonstarProtein_subsetNorm <- list(
   data = inner_join(protein_Ids,lfqAggMedpol$lfq_agg$data),
   config = lfqAggMedpol$lfq_agg$config
@@ -200,7 +200,7 @@ data_IonstarProtein_subsetNorm <- list(
 
 We can also estimate the protein intensities using the top N most abundant peptides. In this case we are using the untransformed protein intensities. The figure below shows the estimated protein intensities.
 
-```{r}
+```{r topNAggregation, echo = TRUE}
 
 lfqAggregator <- LFQDataAggregator$new(LFQData$new(mqdataSubset$data, mqdataSubset$config), "protein_topN")
 lfqAggregator$mean_topN()
@@ -213,7 +213,7 @@ topN$plots[[1]]
 
 To fit the linear models we will be using the protein intensities estimated using the Tukeys median polish.
 
-```{r}
+```{r defineContrasts}
 DEBUG <- FALSE
 
 Contrasts <- c(
@@ -272,10 +272,12 @@ mod <- prolfqua::build_model(protLFQ$data, modelFunction)
 ```
 
 ```{r computeContrastsModerated}
-contr <- prolfqua::ContrastsModerated$new(mod, relevantContrasts)
+contr <- prolfqua::Contrasts$new(mod, relevantContrasts)
+contr <- prolfqua::ContrastsModerated$new(contr)
 contrdf <- contr$get_contrasts()
 cp <- contr$get_Plotter()
 cp$volcano()
+
 ```
 
 # Benchmarking
@@ -286,9 +288,10 @@ ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm",
-                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE),
-                                                  list(sc = "FDR.moderated", desc = FALSE))
+                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
+
+
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
 medpol_benchmark$plot_ROC()

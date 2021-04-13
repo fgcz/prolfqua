@@ -260,7 +260,7 @@ ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 # Compute contrasts
 
 ```{r computeModeratedContrasts}
-contr <- ContrastsModerated$new(mod, Contrasts)
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
 contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
 ```
@@ -269,12 +269,14 @@ contrdf <- contr$get_contrasts()
 plotter <- contr$get_Plotter()
 plotter$volcano()
 plotter$ma_plot()
+
 ```
 
 
 ```{r}
+
 sigInteraction <- contrdf %>% 
-  filter(contrast == "Interaction" & FDR.moderated < 0.1)
+  filter(contrast == "Interaction" & FDR < 0.1)
 protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
 hm <- protInt$get_Plotter()$heatmap()
@@ -293,6 +295,7 @@ contrSimple <- ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
 pl$histogram_estimate()
+pl$volcano()
 
 ```
 

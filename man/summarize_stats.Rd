@@ -25,6 +25,7 @@ config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config, all = FALSE)
+d <- res1 \%>\% filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "ILSLAQDQVGGSAEK")
 res1 \%>\% dplyr::filter(dilution. == "pooled")
 res2 <- summarize_stats(data, config, all = TRUE)
 

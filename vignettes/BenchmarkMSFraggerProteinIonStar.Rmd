@@ -157,20 +157,19 @@ modelFunction <- strategy_lm( lmmodel, model_name = "Model")
 
 mod <- prolfqua::build_model(lfqdataNormalized$data, modelFunction)
 
-contr <- prolfqua::ContrastsModerated$new(mod, Contrasts)
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
 contrdf <- contr$get_contrasts()
 cp <- contr$get_Plotter()
 cp$volcano()
 
 ```
 
-```{r}
+```{r bnechmark}
 ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm",
-                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE),
-                                                  list(sc = "FDR.moderated", desc = FALSE))
+                                   FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
@@ -178,6 +177,5 @@ medpol_benchmark$plot_ROC()
 medpol_benchmark$plot_FDRvsFDP()
 medpol_benchmark$get_confusion()
 medpol_benchmark$get_FDRvsFDP()
-medpol_benchmark$FDRvsFDP
 
 ```

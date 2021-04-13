@@ -201,7 +201,7 @@ mod <- prolfqua::build_model(
 # Compute contrasts
 
 ```{r contrModerated}
-contr <- ContrastsModerated$new(mod, Contrasts)
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
 #contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
 dim(contrdf)

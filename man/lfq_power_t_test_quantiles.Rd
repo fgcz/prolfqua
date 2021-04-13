@@ -34,13 +34,12 @@ config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 
 res <- lfq_power_t_test_quantiles(data2, config)
-res
+res$summary
 stats_res <- summarize_stats(data2, config, all = FALSE)
-stats_res
+unique(stats_res$dilution.)
 res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
-res
 res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
-res
+
 
 }
 \keyword{internal}
