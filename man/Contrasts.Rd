@@ -129,7 +129,8 @@ create Contrast
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  global = TRUE
+  global = TRUE,
+  modelName = "WaldTest"
 )}\if{html}{\out{</div>}}
 }
 

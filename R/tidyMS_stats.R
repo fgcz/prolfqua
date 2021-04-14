@@ -1,6 +1,6 @@
 #
 #
-# x <- data.frame(not_na =c(2,2,1), var = c(3,4,4), mean = c(3,3,3))
+# x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 # .compute_pooled(x)
 .compute_pooled <- function(x){
   x <- x %>% dplyr::filter(.data$not_na > 0)
