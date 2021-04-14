@@ -13,195 +13,12 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-echo = TRUE,
-message = FALSE,
-warning = FALSE,
-fig.width = 10,
-fig.height = 10
-)
-```
-
-
-
-```{r}
-library(prolfqua)
-library(tidyverse)
-conflicted::conflict_prefer("filter", "dplyr")
-
-
-
-```
-
-# Prepare p2691 dataset
-
-```{r preparep2691}
-datadir <- file.path(find.package("prolfquaData") , "quantdata")
-inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
-inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
-
-startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-annotation <- readxl::read_xlsx(inputAnnotation)
-annotation$experiment = "p2691"
-
-data <- inner_join(annotation, startdata, by = "raw.file")
-
-```
-
-Add annotation information data to configuration and data.
-
-```{r configp2691}
-
-atable <- AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
-atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
-atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
-
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
-
-config$table$factors[["condition_"]] = "condition"
-config$table$factors[["batch_"]] = "experiment"
-config$table$factors[["Run_ID"]] = "Run_ID"
-config$table$factorDepth <- 1
-```
-
-Preprocess and normalize Data.
-
-```{r preprocessp2691}
-adata <- setup_analysis(data, config)
-adata <- prolfqua::remove_small_intensities(adata,config)
-
-p2691 <- LFQData$new(adata, config)
-p2691$get_Plotter()$intensity_distribution_density()
-
-```
-
-
-
-# Prepare p2370 dataset
-
-
-```{r loadp2370}
-datadir <- file.path(find.package("prolfquaData") , "quantdata")
-inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
-inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
-startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-
-annotation <- readxl::read_xlsx(inputAnnotation)
-annotation$experiment <- "p2370"
-data <- inner_join(annotation, startdata , by = "raw.file")
-```
-
-Code snipped below shows how to add annotation to the data and configuration.
-
-```{r configp2370}
-atable <- AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
-atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
-atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
-
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
-
-config$table$factors[["condition_"]] = "condition"
-config$table$factors[["batch_"]] = "experiment"
-config$table$factors[["Run_ID"]] = "Run_ID"
-config$table$factorDepth <- 1
-```
-
-```{r transformp2370}
-adata <- setup_analysis(data, config)
-adata <- prolfqua::remove_small_intensities(adata,config)
-
-p2370 <- LFQData$new(adata, config)
-p2370$get_Plotter()$intensity_distribution_density()
-
-```
-
-# Merge both dataset
-
-To simulate a factorial design we merge both datasets.
-
-```{r}
-outpath <- "results_modelling"
-data <- bind_rows(p2691$data, p2370$data)
-
-config <- p2691$config$clone(deep = TRUE)
-config$table$factorDepth <- 2
-
-
-
-```
-
-## QC for merged dataset 
-
-
-
-```{r mergeData}
-pMerged <- LFQData$new(data, config)
-
-
-bb <- pMerged$complete_cases()
-tr <- pMerged$get_Transformer()
-pMerged <- tr$log2_robscale()
-set.seed(1001)
-data_Yeast2Factor <- pMerged$get_sample(size = 500)
-#usethis::use_data(data_Yeast2Factor)
-
-```
-
-
-
-```{r examineDataAfterMerge, fig.cap="Correlation among samples."}
-pl <- pMerged$get_Plotter()
-pl$intensity_distribution_density()
-```
-
-```{r fig.cap="sample correlations"}
-pl$sample_correlation()
-ph <- pl$heatmap_cor()
-pha <- pl$NA_heatmap()
-
-```
-
-
-```{r plotHeatmap ,fig.cap="sample correlation heatmap merged"}
-print(ph)
-```
-
-
-```{r plotNAheatmap, fig.cap ="Missing data heatmap for merged data"}
-print(pha)
-```
-
-
-```{r summarizeCounts}
-su <- pMerged$get_Summariser()
-su$hierarchy_counts()
-
-```
-
-
-
-```{r, fig.cap = "Number of Proteins or peptides per sample in merged dataset"}
-su$hierarchy_counts_sample("plot")
-```
-
-
-```{r protBP, fig.cap="Protein level boxplots"}
-pl <- pMerged$get_Plotter()
-pl$heatmap()
-bp <- pl$boxplots()
-ggpubr::ggarrange(plotlist = bp$boxplot[1001:1006])
-```
 
 # Model Fitting
 
 ```{r specifyModel}
+
+pMerged <- prolfqua::data_Yeast2Factor
 pMerged$config$table$getWorkIntensity()
 
 formula_Batches <-
@@ -288,7 +105,7 @@ hm
 ```
 
 
-# Annalyse contrasts with missing data imputation
+## Annalyse contrasts with missing data imputation
 
 ```{r}
 contrSimple <- ContrastsSimpleImpute$new(pMerged, Contrasts)
@@ -299,4 +116,23 @@ pl$volcano()
 
 ```
 
+```{r}
+contrSimpleMod <- ContrastsModerated$new(contrSimple)
+contrdfSimpleMod <- contrSimpleMod$get_contrasts()
+dim(contrdfSimple)
+dim(contrdfSimpleMod)
 
+plm <- contrSimpleMod$get_Plotter()
+
+plm$histogram_estimate()
+plm$volcano()
+
+```
+
+## Merge nonimputed and imputed data.
+
+```{r}
+dim(contr$get_contrasts())
+dim(contrSimpleMod$get_contrasts())
+
+```
