@@ -93,7 +93,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
           pooled <- var %>% filter(!!sym(self$lfqdata$config$table$fkeysDepth()[1]) == "pooled")
-          pooled <- select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
+          pooled <- select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
 
           result <- inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
           result <- mutate(result, statistic = .data$estimate_median / sd,
