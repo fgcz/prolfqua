@@ -112,7 +112,7 @@ N <- 200
 set.seed(2020)
 hk <- mqdata$config$table$hkeysDepth()
 
-if (FALSE) {
+if (TRUE) {
 protein_Ids <- mqdata$data %>%
   select(all_of(hk)) %>%
   distinct() %>%
@@ -304,12 +304,11 @@ medpol_benchmark$plot_FDRvsFDP()
 In order to estimate fold-changes of proteins for which linear models could not be fitted because of an excess of missing measurements, the following procedure is applied: The mean intensity of a peptide over all samples in a condition is computed. For the proteins with no observation in one condition, we imputed the peptide intensities using the mean of the 10% smallest average peptide intensities determined in step one. Then the fold changes between conditions were estimated for each peptide, and the median of the peptide fold change estimates was used to provide a per protein fold change. No p-values were estimated in this case. 
 
 ```{r benchmarkImputation, eval=TRUE}
-contrsimple <- prolfqua::ContrastsSimpleImpute$new(lfqNormSubset, relevantContrasts)
+contrsimple <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts)
 
 cs <- contrsimple$get_contrasts()
 cs <- cs %>% rename(estimate = .data$estimate)
 ttd <- prolfqua::ionstar_bench_preprocess(cs)
-ttd$data
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "imputed data",
                                    model_name = "pep_imputed_nonparam",

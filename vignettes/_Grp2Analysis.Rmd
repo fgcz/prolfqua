@@ -40,12 +40,10 @@ if(!exists("progress")){
 }
 
 grp2 <- list()
-grp2$nrPeptides <- 1000
 grp2$projectID <- 3000
 grp2$projectName <- "testtest"
 grp2$workunitID <- "WU444"
 grp2$nrPeptides <- 2
-grp2$maxNA <- 5
 grp2$totalNrOfProteins <- 1000
 grp2$NrOfProteinsNoDecoys <- 900
 #`r round(mean(grepl("CON__",grp2$proteinAnnotation$ProteinName)) * 100, digits=1)`

@@ -17,7 +17,9 @@ editor_options:
 # Model Fitting
 
 ```{r specifyModel}
-
+library(prolfqua)
+library(tidyverse)
+conflicted::conflict_prefer("filter", "dplyr")
 pMerged <- prolfqua::data_Yeast2Factor
 pMerged$config$table$getWorkIntensity()
 
@@ -42,7 +44,6 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 
 
 ```{r buildModel}
-
 
 mod <- prolfqua::build_model(
   pMerged$data,
