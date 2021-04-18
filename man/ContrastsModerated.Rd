@@ -98,7 +98,11 @@ Other modelling:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(Contrast, modelName = "Moderated")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
+  Contrast,
+  modelName = "Moderated",
+  p.adjust = prolfqua::adjust_p_values
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

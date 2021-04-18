@@ -32,14 +32,17 @@ mod <- build_model(
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
 
 
- #ContrastsROPECA$debug("get_Plotter")
- contrM <- prolfqua::Contrasts$new(mod, Contr)
- #ContrastsROPECA$undebug("get_contrasts")
+ contr <- prolfqua::Contrasts$new(mod, Contr)
+ dim(contr$get_contrasts())
+ contrM <- prolfqua::ContrastsModerated$new(contr)
+ dim(contrM$get_contrasts())
+#ContrastsROPECA$debug("get_contrasts")
  contrast <- prolfqua::ContrastsROPECA$new(contrM)
- contrast$get_linfct()
- contrast$contrast$subject_Id
- tmp <- contrast$get_contrasts(all = TRUE)
+ contrast$get_contrasts()
+
+ contrast <- prolfqua::ContrastsROPECA$new(contr)
  tmp <- contrast$get_contrasts()
+ dim(tmp)
  pl <- contrast$get_Plotter()
 
  pl$histogram()
@@ -109,7 +112,7 @@ Other modelling:
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$new(
-  contrast,
+  Contrast,
   modelName = "ROPECA",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}

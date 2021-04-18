@@ -1,4 +1,5 @@
-.requiredContrastColumns <- c("contrast" , "c1" , "c2" , "c1_name" , "c2_name" , "sigma","df","estimate","statistic","p.value","conf.low","conf.high","FDR")
+.requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
+                              "c1_name" , "c2_name" , "sigma","df","estimate","statistic","p.value","conf.low","conf.high","FDR")
 # Contrast simple impute----
 
 #' compute contrasts with data imputation (directly from data)
@@ -92,13 +93,13 @@ ContrastsSimpleImpute <- R6::R6Class(
           result <- select(result , -all_of(c("n","estimate_mad")))
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
-          pooled <- var %>% filter(!!sym(self$lfqdata$config$table$fkeysDepth()[1]) == "pooled")
-          pooled <- select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
+          pooled <- var %>% dplyr::filter(!!sym(self$lfqdata$config$table$fkeysDepth()[1]) == "pooled")
+          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
 
-          result <- inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
-          result <- mutate(result, statistic = .data$estimate_median / sd,
+          result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
+          result <- dplyr::mutate(result, statistic = .data$estimate_median / sd,
                            p.value = 2*pt(abs(.data$statistic), df = .data$n, lower.tail = FALSE))
-          result <- rename(result, df = n)
+          result <- dplyr::rename(result, df = n)
           prqt <- -qt((1 - self$confint)/2, df = result$df)
           result$conf.low <- result$estimate_median  - prqt * result$sd
           result$conf.high <- result$estimate_median + prqt * result$sd
@@ -384,30 +385,38 @@ ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
 
   public = list(
-    contrast = NULL,
+    Contrast = NULL,
     #' @description initialize
     #' @param Contrast class implementing a method get_contrasts e.g. Contrasts
     modelName = character(),
-    initialize = function(Contrast, modelName = "Moderated"){
-      self$contrast = Contrast
+    subject_Id = character(),
+    p.adjust = NULL,
+    initialize = function(Contrast,
+                          modelName = "Moderated",
+                          p.adjust = prolfqua::adjust_p_values
+    ){
+      self$Contrast = Contrast
+      self$subject_Id = Contrast$subject_Id
       self$modelName = modelName
+      self$p.adjust = p.adjust
     },
     #' @description get both sides of contrasts
     get_contrasts_sides = function(){
-      self$contrast$get_contrasts_sides()
+      self$Contrast$get_contrasts_sides()
     },
     #' @description get linear functions from contrasts
     #' @param global logical TRUE - get the a linear functions for all models, FALSE - linear function for each model
     get_linfct = function(global = TRUE){
-      self$contrast$get_linfct()
+      self$Contrast$get_linfct()
     },
     #' @description applies limma moderation
     #' @seealso \code{\link{moderated_p_limma_long}}
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
-      contrast_result <- self$contrast$get_contrasts(all = FALSE)
-      contrast_result <- moderated_p_limma_long(contrast_result , group_by_col = "contrast")
+      contrast_result <- self$Contrast$get_contrasts(all = FALSE)
+      contrast_result <- moderated_p_limma_long(contrast_result ,
+                                                group_by_col = "contrast")
       if (!all) {
         contrast_result <- contrast_result %>% select(-c( "sigma","df",
                                              "statistic", "p.value","conf.low","conf.high",
@@ -421,11 +430,11 @@ ContrastsModerated <- R6::R6Class(
           df = "moderated.df.total",
           p.value = "moderated.p.value"
         )
-        contrast_result <- self$contrast$p.adjust(contrast_result, column = "p.value",
+        contrast_result <- self$p.adjust(contrast_result, column = "p.value",
                                          group_by_col = "contrast",
                                          newname = "FDR")
       }else{
-        contrast_result <- self$contrast$p.adjust(contrast_result,
+        contrast_result <- self$p.adjust(contrast_result,
                                          column = "moderated.p.value",
                                          group_by_col = "contrast",
                                          newname = "FDR.moderated")
@@ -438,7 +447,7 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
         contrast_result,
-        subject_Id = self$contrast$subject_Id,
+        subject_Id = self$subject_Id,
         volcano = list(list(score = "FDR", fc = 1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
@@ -452,7 +461,7 @@ ContrastsModerated <- R6::R6Class(
     to_wide = function(columns = c("p.value", "FDR")){
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$contrast$subject_Id,
+                                                     subject_Id = self$subject_Id,
                                                      columns = c("estimate", columns),
                                                      contrast = 'contrast')
     },
@@ -499,14 +508,17 @@ ContrastsModerated <- R6::R6Class(
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
 #'
 #'
-#'  #ContrastsROPECA$debug("get_Plotter")
-#'  contrM <- prolfqua::Contrasts$new(mod, Contr)
-#'  #ContrastsROPECA$undebug("get_contrasts")
+#'  contr <- prolfqua::Contrasts$new(mod, Contr)
+#'  dim(contr$get_contrasts())
+#'  contrM <- prolfqua::ContrastsModerated$new(contr)
+#'  dim(contrM$get_contrasts())
+#' #ContrastsROPECA$debug("get_contrasts")
 #'  contrast <- prolfqua::ContrastsROPECA$new(contrM)
-#'  contrast$get_linfct()
-#'  contrast$contrast$subject_Id
-#'  tmp <- contrast$get_contrasts(all = TRUE)
+#'  contrast$get_contrasts()
+#'
+#'  contrast <- prolfqua::ContrastsROPECA$new(contr)
 #'  tmp <- contrast$get_contrasts()
+#'  dim(tmp)
 #'  pl <- contrast$get_Plotter()
 #'
 #'  pl$histogram()
@@ -516,18 +528,19 @@ ContrastsROPECA <- R6::R6Class(
   "ContrastsROPECA",
 
   public = list(
-    contrast = NULL,
+    Contrast = NULL,
     contrasts_data = NULL,
     modelName = character(),
     subject_Id = character(),
     p.adjust = NULL,
-    initialize = function(contrast,
+    initialize = function(Contrast,
                           modelName = "ROPECA",
                           p.adjust = prolfqua::adjust_p_values
                           ){
-      self$contrast = contrast
+      self$Contrast = Contrast
+      stopifnot(length(Contrast$subject_Id) > 1)
       self$modelName = modelName
-      self$subject_Id = contrast$subject_Id
+      self$subject_Id = Contrast$subject_Id
       self$p.adjust = p.adjust
     },
 
@@ -542,12 +555,12 @@ ContrastsROPECA <- R6::R6Class(
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
       if(is.null(self$contrasts_data)){
-        contrasts_data <- self$contrast$get_contrasts(all = FALSE)
+        contrasts_data <- self$Contrast$get_contrasts(all = FALSE)
         contrasts_data <- summary_ROPECA_median_p.scaled(
 
           contrasts_data,
           contrast = "contrast",
-          subject_Id = self$subject_Id[1],
+          subject_Id = self$subject_Id[length(self$subject_Id) - 1],
           estimate = "estimate",
           statistic = "statistic",
           p.value = "p.value",

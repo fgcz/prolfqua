@@ -103,9 +103,9 @@ LFQData <- R6::R6Class(
     #' @return LFQData with NA omitted.
     omit_NA_hierarchy = function(){
       missing <- interaction_missing_stats(self$data, self$config, factors = NULL)
-      notNA <- missing$data %>% filter(nrNAs == 0)
-      notNA <- notNA %>% select(self$config$table$hierarchyKeys())
-      notNAdata <- inner_join( notNA, self$data)
+      notNA <- missing$data %>% dplyr::filter(nrNAs == 0)
+      notNA <- notNA %>% dplyr::select(self$config$table$hierarchyKeys())
+      notNAdata <- dplyr::inner_join( notNA, self$data)
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
     #'
