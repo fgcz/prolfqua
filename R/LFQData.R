@@ -60,7 +60,9 @@ LFQData <- R6::R6Class(
     },
     #' @description samples subset of data
     #' @param size size of subset default 100
-    get_sample = function(size = 100){
+    #' @param seed set seed
+    get_sample = function(size = 100, seed = NULL){
+      if(!is.null(seed)){ set.seed( seed )}
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config))
     },

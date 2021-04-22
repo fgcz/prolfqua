@@ -16,8 +16,8 @@ editor_options:
 
 
 
-
 Please download and install the `prolfquaData` package from github
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -105,32 +105,16 @@ after$intensity_distribution_density()
 ```
 
 
-Create a sample of N proteins to speed up computations of models and contrasts.
+Create sample from entire data so that remainder of vignette runs faster.
 
 ```{r}
-N <- 200
-set.seed(2020)
-hk <- mqdata$config$table$hkeysDepth()
-
-if (TRUE) {
-protein_Ids <- mqdata$data %>%
-  select(all_of(hk)) %>%
-  distinct() %>%
-  sample_n(size = N)
-} else {
-protein_Ids <- mqdata$data %>%
-  select(all_of(hk)) %>%
-  distinct() #%>%
-  #sample_n(size = N)
-}
-
-lfqNormSubset <- lfqdataNormalized$get_copy()
-lfqNormSubset$data <- inner_join(protein_Ids, lfqNormSubset$data)
-mqdataSubset <- mqdata
-mqdataSubset$data  <- inner_join(protein_Ids, mqdata$data)
-
+mqdataSubset <- LFQData::lfqdataNormalized$get_sample(size = 200, seed = 2020)
 
 ```
+
+
+Create a sample of N proteins to speed up computations of models and contrasts.
+
 
 
 

@@ -119,13 +119,15 @@ get deep copy
 \subsection{Method \code{get_sample()}}{
 samples subset of data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100, seed = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{size}}{size of subset default 100}
+
+\item{\code{seed}}{set seed}
 }
 \if{html}{\out{</div>}}
 }
