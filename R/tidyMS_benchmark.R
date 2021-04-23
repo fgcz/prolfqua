@@ -160,10 +160,10 @@ do_confusion_c <- function(
 
 .plot_FDPvsTPR <- function(pStats, xlim){
   p1 <-
-    ggplot(pStats , ggplot::aes(x = .data$FDP, y = .data$TPR, color = .data$what)) +
-    ggplot::geom_path()  +
-    ggplot::labs(tag = "C") + xlim(0, xlim) +
-    ggplot::facet_wrap( ~contrast )
+    ggplot(pStats , ggplot2::aes(x = .data$FDP, y = .data$TPR, color = .data$what)) +
+    ggplot2::geom_path()  +
+    ggplot2::labs(tag = "C") + xlim(0, xlim) +
+    ggplot2::facet_wrap( ~contrast )
   return(p1)
 }
 
