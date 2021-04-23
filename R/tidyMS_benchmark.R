@@ -40,7 +40,7 @@ ionstar_bench_preprocess <- function(data) {
   data <- data %>% select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
 
-  if(TRUE){ # drop missing so that TPR goes up to 1.
+  if (TRUE) { # drop missing so that TPR goes up to 1.
     data <- na.omit(data)
     data$F_ <- sum(!data$TP)
     data$T_ <- sum(data$TP)
@@ -118,8 +118,7 @@ do_confusion <-
   function(data,
            arrangeby = list(list(sc = "estimate", desc = TRUE),
                             list(sc = "statistic", desc = TRUE),
-                            list(sc = "scaled.p" , desc = TRUE),
-                            list(sc = "scaled.moderated.p", desc = TRUE))) {
+                            list(sc = "scaled.p.value" , desc = TRUE))) {
     # TODO add to prolfqua
     est <- data %>% ungroup %>%
       dplyr::select_at(c("TP",
@@ -141,8 +140,7 @@ do_confusion <-
 do_confusion_c <- function(
   data,
   contrast = "contrast",
-  arrangeby = list(list(sc = "p.value.adjusted", desc = FALSE),
-                   list(sc = "moderated.p.value.adjusted", desc = FALSE))) {
+  arrangeby = list(list(sc = "scaled.p.value", desc = FALSE))) {
 
   txx <- data %>% group_by_at(contrast) %>% nest()
   txx <- txx %>% mutate(out  = map(data,
@@ -162,10 +160,10 @@ do_confusion_c <- function(
 
 .plot_FDPvsTPR <- function(pStats, xlim){
   p1 <-
-    ggplot(pStats , aes(x = FDP, y = TPR, color = what)) +
-    geom_path()  +
-    labs(tag = "C") + xlim(0, xlim) +
-    facet_wrap( ~contrast )
+    ggplot(pStats , ggplot::aes(x = .data$FDP, y = .data$TPR, color = .data$what)) +
+    ggplot::geom_path()  +
+    ggplot::labs(tag = "C") + xlim(0, xlim) +
+    ggplot::facet_wrap( ~contrast )
   return(p1)
 }
 
@@ -344,11 +342,11 @@ Benchmark <-
       #' @param species species (todo rename)
       #' @param hierarchy e.g. protein_Id
       initialize = function(data,
-                            toscale = c("p.value", "moderated.p.value"),
+                            toscale = c("p.value"),
                             benchmark = list(
                               list(sc = "estimate", desc = TRUE),
                               list(sc = "statistic", desc = TRUE),
-                              list(sc = "p.value", desc = TRUE)
+                              list(sc = "scaled.p.value", desc = TRUE)
                             ),
                             FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
                             model_description = "protein level measurments, linear model",
@@ -523,7 +521,7 @@ make_benchmark <- function(prpr,
                            benchmark = list(
                              list(sc = "estimate", desc = TRUE),
                              list(sc = "statistic", desc = TRUE),
-                             list(sc = "p.value", desc = TRUE)
+                             list(sc = "scaled.p.value", desc = TRUE)
                            ),
                            FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
                            model_description = "protein level measurments, linear model",

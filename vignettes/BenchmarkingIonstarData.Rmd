@@ -30,7 +30,7 @@ fig.height = 10
 ```
 
 
-```{r}
+```{r loadRequiredPackages}
 rm(list = ls())
 library(conflicted)
 library(prolfqua)
@@ -43,7 +43,7 @@ conflict_prefer("filter", "dplyr")
 
 We start by loading the IonStar dataset and the annotation from the `prolfquaData` package. The method `add_annotation` adds the annotation to the data.
 
-```{r}
+```{r loadMQData}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir,
                           "MAXQuant_IonStar2018_PXD003881.zip")
@@ -61,8 +61,10 @@ res <- add_annotation(
 
 ```
 
+The `setup_analysis` asserts that all columns specified in the configruation are present in the data. For more details about the proflqua configuration see the vignette "Creating Configurations".
 
-```{r}
+
+```{r annotateData}
 mqdata$config$table$factors[["dilution."]] = "sample"
 mqdata$config$table$factors[["run_Id"]] = "run_ID"
 mqdata$config$table$factorDepth <- 1
@@ -72,13 +74,16 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 
 
-```{r}
+```{r filterProteinsByPeptideCount}
 datafilt <- prolfqua::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
 ```
 
 
-## Normalize data using HUMAN proteins only
+## Data normalization
 
+
+We will normalize the data using the 'LFQTransformer' class. Since we know that the Human proteins are the Matrix in the experiment we will normalize the data using HUMAN proteins only.
+To this task we subset the dataset by filtering for HUMAN proteins only and then use the 'log2_robscale_subset' method.
 
 
 ```{r filterForHumans}
@@ -95,7 +100,8 @@ lfqdataNormalized <- tr$log2_robscale_subset(lfqsubset = subset_h)
 
 The figures below show the intensity distribution before and after normalization.
 
-```{r PlotIntensityDistributions}
+```{r plotIntensityDistributions}
+
 before <- lfqdata$get_Plotter()
 before$intensity_distribution_density()
 
@@ -105,21 +111,21 @@ after$intensity_distribution_density()
 ```
 
 
-Create sample from entire data so that remainder of vignette runs faster.
+Create a sample of N proteins to speed up computations of models and contrasts.
 
-```{r}
-mqdataSubset <- LFQData::lfqdataNormalized$get_sample(size = 200, seed = 2020)
+```{r createDataSubset}
+N <- 200
+mqdataSubset <- lfqdata$get_sample(size = N, seed = 2020)
+lfqNormSubset <- lfqdataNormalized$get_sample(size = N, seed = 2020)
+lfqNormSubset$hierarchy_counts()
 
 ```
 
 
-Create a sample of N proteins to speed up computations of models and contrasts.
 
 
 
-
-
-```{r R6Ionstar, echo =  FALSE}
+```{r R6Ionstar, echo =  FALSE, include = FALSE}
 IonstarData <- R6::R6Class(
   "IonstarData",
   public = list(
@@ -161,7 +167,7 @@ ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config,
 # Infer Protein intensities using Tukeys Median Polish
 
 We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use normalized data.
-The figure below shows the the protein estimates (dashed line) and the peptide intensities.
+The figure below shows the the protein estimates (dashed line) and the peptide intensities used for estimation.
 
 ```{r aggregateMedpolish}
 lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, "protein")
@@ -172,9 +178,9 @@ xx$plots[[1]]
 
 
 
-```{r storeProteinAggregates, echo = FALSE}
+```{r storeProteinAggregates, echo = FALSE, include = FALSE}
 data_IonstarProtein_subsetNorm <- list(
-  data = inner_join(protein_Ids,lfqAggMedpol$lfq_agg$data),
+  data = lfqAggMedpol$lfq_agg$data,
   config = lfqAggMedpol$lfq_agg$config
 )
 
@@ -186,16 +192,69 @@ We can also estimate the protein intensities using the top N most abundant pepti
 
 ```{r topNAggregation, echo = TRUE}
 
-lfqAggregator <- LFQDataAggregator$new(LFQData$new(mqdataSubset$data, mqdataSubset$config), "protein_topN")
+lfqAggregator <- LFQDataAggregator$new(mqdataSubset, "protein_topN")
 lfqAggregator$mean_topN()
 topN <- lfqAggregator$plot()
 topN$plots[[1]]
 
 ```
 
-# Fitting a linear model to the protein intensities
+# Model Fitting
 
-To fit the linear models we will be using the protein intensities estimated using the Tukeys median polish.
+## Model 1 : Fitting a linear model to the protein intensities
+
+
+```{r buildModelLM}
+protLFQ <- lfqAggMedpol$lfq_agg
+
+lmmodel <- "~ dilution."
+lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
+
+lfqNormSubset$config$table$hierarchyDepth <- 1
+modelFunction <- strategy_lm( lmmodel, model_name = "Model")
+
+modLinearProt <- prolfqua::build_model(protLFQ$data, modelFunction)
+modLinearProt$anova_histogram()
+
+```
+
+## Model 2: Fitting a mixed effects model to peptide intensities
+
+
+```{r buildModelLMer}
+
+
+lmmodel <- "~ dilution. + (1|peptide_Id) + (1|sampleName)"
+lmmodel <- paste0(lfqNormSubset$config$table$getWorkIntensity() , lmmodel)
+lfqNormSubset$config$table$hierarchyDepth <- 1
+modelFunction <- strategy_lmer( lmmodel, model_name = "Model")
+modMixedProtLevel <- prolfqua::build_model(lfqNormSubset$data, modelFunction)
+modMixedProtLevel$anova_histogram()
+
+```
+
+## Model 3: Fitting peptide level models
+
+```{r buildModelPeptide}
+
+lmmodel <- "~ dilution."
+
+lfqNormSubset$config$table$hierarchyDepth
+lfqNormSubset$config$table$hierarchyDepth <- 2
+
+lmmodel <- paste0(lfqNormSubset$config$table$getWorkIntensity() , lmmodel)
+
+modelFunction <- strategy_lm( lmmodel, model_name = "Model")
+modLMPepLevel <- prolfqua::build_model(lfqNormSubset$data,
+                                       modelFunction,
+                                       subject_Id = lfqNormSubset$subject_id())
+modLMPepLevel$anova_histogram()
+
+```
+
+
+#  Computing Contrasts
+
 
 ```{r defineContrasts}
 DEBUG <- FALSE
@@ -242,85 +301,171 @@ relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
 ```
 
 
-```{r buildModelLM}
-protLFQ <- lfqAggMedpol$lfq_agg
-
-lmmodel <- "~ dilution."
-lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
-
-modelFunction <- strategy_lm( lmmodel, model_name = "Model")
-
-mod <- prolfqua::build_model(protLFQ$data, modelFunction)
+There are four contrasts classes in the package 'Contrast' (uses Wald test), `ContrastModerated` (applies variance moderation), 
+`ContrastROPECA` (p-value aggregation), `ContrastSimpleImputed` (contrast computation with p-value imputation using pooled variance to compute t-statistics).
 
 
-```
+## Contrasts with Imputation
 
-```{r computeContrastsModerated}
-contr <- prolfqua::Contrasts$new(mod, relevantContrasts)
-contr <- prolfqua::ContrastsModerated$new(contr)
-contrdf <- contr$get_contrasts()
-cp <- contr$get_Plotter()
-cp$volcano()
+In order to estimate fold-changes, statistics and p-values of proteins for which linear models could not be fitted because of an excess of missing measurements, the following procedure is applied. The mean intensity of a protein over all samples in a condition is computed. For the proteins with no observation in one condition, we imputed their intensities using the mean of the 10% smallest average peptide intensities. The standard deviation is estimated in the condition where the peptide is observed.
+
+
+```{r contrastImputed}
+contrImp <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts)
+pl <- contrImp$get_Plotter()
+bb <- contrImp$get_contrasts()
+contrImp$get_Plotter()$volcano()
 
 ```
 
-# Benchmarking
 
+```{r benchmarkImputed}
+ttd <- prolfqua::ionstar_bench_preprocess(contrImp$get_contrasts())
 
-```{r benchmark}
-ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
-medpol_benchmark <- make_benchmark(ttd$data,
-                                   model_description = "med. polish and lm. density",
-                                   model_name = "prot_med_lm",
+imp_benchmark <- make_benchmark(ttd$data,
+                                   model_description = "med. polish and lm. imputation",
+                                   model_name = "prot_med_lm_imputation",
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
 
 
-medpol_benchmark$data()
-medpol_benchmark$plot_score_distribution()
-medpol_benchmark$plot_ROC()
-medpol_benchmark$plot_FDRvsFDP()
+imp_benchmark$plot_ROC()
+imp_benchmark$plot_FDRvsFDP()
 
 ```
 
-# Imputation
 
-In order to estimate fold-changes of proteins for which linear models could not be fitted because of an excess of missing measurements, the following procedure is applied: The mean intensity of a peptide over all samples in a condition is computed. For the proteins with no observation in one condition, we imputed the peptide intensities using the mean of the 10% smallest average peptide intensities determined in step one. Then the fold changes between conditions were estimated for each peptide, and the median of the peptide fold change estimates was used to provide a per protein fold change. No p-values were estimated in this case. 
+## Contrasts from Model 1
 
-```{r benchmarkImputation, eval=TRUE}
-contrsimple <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts)
+```{r contrastModel1}
+contrProt <- prolfqua::Contrasts$new(modLinearProt, relevantContrasts)
+pl <- contrProt$get_Plotter()
+pl$volcano()
+pl$histogram()
+```
 
-cs <- contrsimple$get_contrasts()
-cs <- cs %>% rename(estimate = .data$estimate)
-ttd <- prolfqua::ionstar_bench_preprocess(cs)
-medpol_benchmark <- make_benchmark(ttd$data,
-                                   model_description = "imputed data",
-                                   model_name = "pep_imputed_nonparam",
-                                   toscale = NULL,
-                                   benchmark = list(
-                                     list(sc = "estimate", desc = TRUE),
-                                     list(sc = "statistic", desc = TRUE)
-                                   ),
-                                   FDRvsFDP = NULL)
 
-medpol_benchmark$plot_score_distribution()
-medpol_benchmark$plot_ROC()
-x <- medpol_benchmark$pAUC_summaries()
-x$barp
+```{r benchmarkModel1}
+ttd <- prolfqua::ionstar_bench_preprocess(contrProt$get_contrasts())
+
+benchmark_Prot <- make_benchmark(ttd$data,
+                                   model_description = "med. polish and lm",
+                                   model_name = "prot_med_lm"
+)
+
+benchmark_Prot$plot_score_distribution()
+benchmark_Prot$plot_FDRvsFDP()
 
 ```
 
-# Compare fold changes for both methods
 
-Plot scatter plots for fold changes obtained using the linear model and missing value imputation.
+### Adding Moderation
 
-```{r}
-cs <- cs %>% select(contrast, protein_Id, est_imp = estimate   )
-contrdf <- contrdf %>% select(contrast, protein_Id, est_lm = estimate )
-estimates_compare <- inner_join(contrdf, cs)
+```{r contrastModel1Moderation}
 
-estimates_compare %>% ggplot(aes(x = est_lm, y = est_imp)) + geom_point()  + 
-  geom_smooth(method = 'lm', formula = y~x)
+contrProtModerated <- ContrastsModerated$new(contrProt)
+contrProtModerated$get_Plotter()$volcano()
+```
+
+
+```{r benchmarkModel1Moderation}
+
+ttd <- prolfqua::ionstar_bench_preprocess(contrProtModerated$get_contrasts())
+
+benchmark_ProtModerated <- make_benchmark(ttd$data,
+                                   model_description = "med. polish and lm moderated",
+                                   model_name = "prot_med_lm_moderated")
+
+benchmark_ProtModerated$plot_score_distribution()
+benchmark_ProtModerated$plot_FDRvsFDP()
 
 
 ```
+
+## Contrasts from Model 2
+
+```{r contrastModel2}
+contrProtMixed <- prolfqua::Contrasts$new(modMixedProtLevel, relevantContrasts,modelName = "WaldTestMixed")
+pl <- contrProtMixed$get_Plotter()
+pl$volcano()
+pl$histogram()
+```
+
+
+```{r benchmarkModel2}
+ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixed$get_contrasts())
+
+benchmark_mixed <- make_benchmark(ttd$data,
+                                   model_description = "mixed effect model",
+                                   model_name = "prot_mixed_effect"
+)
+
+benchmark_mixed$plot_score_distribution()
+benchmark_mixed$plot_FDRvsFDP()
+
+```
+
+
+
+```{r distributionOfDFModel2, fig.cap="distribution of degrees of freedom for mixed model"}
+ctr <- contrProtMixed$get_contrasts()
+hist(ctr$df, breaks = 1000, xlim = c(0,100))
+
+```
+
+Since moderation requires a good degrees of freedom estimate 
+
+```{r contrastModel2Moderation}
+
+contrProtMixedModerated <- ContrastsModerated$new(contrProtMixed)
+contrProtMixedModerated$get_Plotter()$volcano()
+```
+
+
+```{r benchmarkModel2Moderation}
+
+ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixedModerated$get_contrasts())
+
+benchmark_mixedModerated <- make_benchmark(ttd$data,
+                                   model_description = "mixed effect model moderated",
+                                   model_name = "prot_mixed_effect_moderated")
+
+benchmark_mixedModerated$plot_score_distribution()
+benchmark_mixedModerated$plot_FDRvsFDP()
+
+```
+
+
+## Protein level Contrasts from Model 3
+
+
+```{r contrastROPECA}
+contrROPECA <- prolfqua::Contrasts$new(modLMPepLevel, relevantContrasts) %>%
+  ContrastsModerated$new() %>%
+  ContrastsROPECA$new()
+contrROPECA$get_Plotter()$volcano()
+
+```
+
+
+```{r benchmarkROPECA}
+ttd <- prolfqua::ionstar_bench_preprocess(contrROPECA$get_contrasts())
+
+benchmark_ropeca <- make_benchmark(ttd$data,
+                                toscale = c("beta.based.significance"),
+                                benchmark = list(
+                                  list(sc = "estimate", desc = TRUE),
+                                  list(sc = "statistic", desc = TRUE),
+                                  list(sc = "scaled.beta.based.significance", desc = TRUE)
+                                ),  
+                                model_description = "Ropeca",
+                                model_name = "ropeca",
+                                FDRvsFDP = list(list(sc = "FDR.beta.based.significance", desc = FALSE))
+)
+
+benchmark_ropeca$plot_ROC()
+benchmark_ropeca$plot_FDRvsFDP()
+
+```
+
+

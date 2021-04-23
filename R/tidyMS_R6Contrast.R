@@ -105,7 +105,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           result$conf.high <- result$estimate_median + prqt * result$sd
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
           if (!all) {
-            result <- select(result, -all_of(c("isSingular","not_na" , "mean")) )
+            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" ) ) )
           }
 
         }
@@ -128,9 +128,9 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @description get Contrast_Plotter
     get_Plotter = function(){
       res <- Contrasts_Plotter$new(
-        self$contrast_result,
+        self$get_contrasts(),
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "p.value", fc = 1)),
+        volcano = list(list(score = "FDR", fc = 1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,

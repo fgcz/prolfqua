@@ -110,9 +110,9 @@ create Benchmark
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$new(
   data,
-  toscale = c("p.value", "moderated.p.value"),
+  toscale = c("p.value"),
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
-    TRUE), list(sc = "p.value", desc = TRUE)),
+    TRUE), list(sc = "scaled.p.value", desc = TRUE)),
   FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
   model_description = "protein level measurments, linear model",
   model_name = "medpolish_lm",

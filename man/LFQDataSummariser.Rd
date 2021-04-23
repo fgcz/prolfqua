@@ -43,7 +43,6 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataSummariser$new()}}
-\item \href{#method-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
 \item \href{#method-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
@@ -67,16 +66,6 @@ initialize
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-hierarchy_counts"></a>}}
-\if{latex}{\out{\hypertarget{method-hierarchy_counts}{}}}
-\subsection{Method \code{hierarchy_counts()}}{
-number of elements at each level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-hierarchy_counts_sample"></a>}}

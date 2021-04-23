@@ -69,6 +69,7 @@ Other LFQData:
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
+\item \href{#method-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
 \item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
@@ -261,6 +262,16 @@ Annotation table.
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-hierarchy_counts"></a>}}
+\if{latex}{\out{\hypertarget{method-hierarchy_counts}{}}}
+\subsection{Method \code{hierarchy_counts()}}{
+number of elements at each level
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy_counts()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-summarize_hierarchy"></a>}}

@@ -9,7 +9,7 @@ make_benchmark(
   contrast = "contrast",
   toscale = c("p.value"),
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
-    TRUE), list(sc = "p.value", desc = TRUE)),
+    TRUE), list(sc = "scaled.p.value", desc = TRUE)),
   FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
   model_description = "protein level measurments, linear model",
   model_name = "prot_med_lm",

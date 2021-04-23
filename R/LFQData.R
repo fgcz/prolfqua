@@ -135,6 +135,11 @@ LFQData <- R6::R6Class(
       prolfqua::table_factors(self$data, self$config)
     },
     #' @description
+    #' number of elements at each level
+    hierarchy_counts = function(){
+      prolfqua::hierarchy_counts(self$data, self$config)
+    },
+    #' @description
     #' e.g. number of peptides per protein etc
     #' @return data.frame
     summarize_hierarchy = function(){
@@ -525,11 +530,6 @@ LFQDataSummariser <- R6::R6Class(
     #' @param lfqdata LFQData
     initialize = function(lfqdata ) {
       self$lfq <- lfqdata
-    },
-    #' @description
-    #' number of elements at each level
-    hierarchy_counts = function(){
-      prolfqua::hierarchy_counts(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' number of elements at each level in every sample
