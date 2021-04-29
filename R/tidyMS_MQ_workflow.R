@@ -24,10 +24,15 @@ filter_proteins_by_peptide_count <-
            config){
 
     # remove single hit wonders
-    pdata <- nr_B_in_A(pdata,config)
-    res <- dplyr::filter(pdata$data, !!sym(pdata$name) >= config$parameter$min_peptides_protein )
-
-    return(list(data = res, name = pdata$name))
+    tmp <- nr_B_in_A(pdata,config)
+    if(!is.null(tmp)){
+      res <- dplyr::filter(tmp$data, !!sym(tmp$name) >= config$parameter$min_peptides_protein )
+      name <- tmp$name
+    }else{
+      res <- pdata
+      name <- NULL
+    }
+    return(list(data = res, name = name))
   }
 
 #' normalize data by log2 and robust scaling
