@@ -95,6 +95,7 @@ Other benchmarking:
 \item \href{#method-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
 \item \href{#method-plot_ROC}{\code{Benchmark$plot_ROC()}}
 \item \href{#method-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
+\item \href{#method-pAUC}{\code{Benchmark$pAUC()}}
 \item \href{#method-get_FDRvsFDP}{\code{Benchmark$get_FDRvsFDP()}}
 \item \href{#method-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
 \item \href{#method-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
@@ -249,6 +250,16 @@ ggplot
 AUC summaries
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$pAUC_summaries()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-pAUC"></a>}}
+\if{latex}{\out{\hypertarget{method-pAUC}{}}}
+\subsection{Method \code{pAUC()}}{
+AUC summaries as table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$pAUC()}\if{html}{\out{</div>}}
 }
 
 }

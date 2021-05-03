@@ -81,11 +81,11 @@ ContrastsSimpleImpute <- R6::R6Class(
         if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchyKeys())) {
           # more than experimental
           stop("hierarchy depth < hierarchyKeys(). Please aggregate first.")
-          result$isSingular <- TRUE
-          result <- mutate(result,
-                           statistic = estimate_median / estimate_mad )
-          result <- mutate(result,
-                           p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
+          #result$isSingular <- TRUE
+          #result <- mutate(result,
+          #                 statistic = estimate_median / estimate_mad )
+          #result <- mutate(result,
+          #                 p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
         } else {
           # compute statistics using pooled variance
           result$isSingular <- TRUE
@@ -97,7 +97,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
 
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
-          result <- dplyr::mutate(result, statistic = .data$estimate_median / sd,
+          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
                            p.value = 2*pt(abs(.data$statistic), df = .data$n, lower.tail = FALSE))
           result <- dplyr::rename(result, df = n)
           prqt <- -qt((1 - self$confint)/2, df = result$df)

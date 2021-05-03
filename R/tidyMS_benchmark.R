@@ -196,7 +196,7 @@ do_confusion_c <- function(
   }
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
-  summaryS <- pStats %>% dplyr::group_by(contrast, .data$what) %>%
+  summaryS <- pStats %>% dplyr::group_by(.data$contrast, .data$what) %>%
     dplyr::summarize(
       AUC = ms_bench_auc(.data$FPR, .data$TPR),
       pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
@@ -435,8 +435,23 @@ Benchmark <-
         confusion <- self$get_confusion_summaries()
         pauc <- .partial_AUC_summary(
           confusion,
-          model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "), self$model_description))
+          model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "),
+                                     self$model_description))
         return(pauc)
+      },
+      #' @description
+      #' AUC summaries as table
+      #'
+      pAUC = function(){
+        pStats <- self$get_confusion_summaries()
+        summaryS <- pStats %>% dplyr::group_by(.data$contrast, .data$what) %>%
+          dplyr::summarize(
+            AUC = ms_bench_auc(.data$FPR, .data$TPR),
+            pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
+            pAUC_20 = ms_bench_auc(.data$FPR, .data$TPR, 0.2)
+          )
+        summaryS$Name <- self$model_name
+        return(summaryS)
       },
       #' @description
       #' FDR vs FDP data
