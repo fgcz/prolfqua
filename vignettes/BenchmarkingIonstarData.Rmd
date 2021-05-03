@@ -361,7 +361,6 @@ benchmark_imputation <- make_benchmark(ttd$data,
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
 
-prolfqua:::.summarise_missing_contrasts(ttd$data)
 benchmark_imputation$plot_ROC()
 benchmark_imputation$plot_FDRvsFDP()
 
@@ -378,6 +377,8 @@ allBenchmarks$benchmark_imputation <- benchmark_imputation
 ## Contrasts from Model 1
 
 ```{r contrastModel1}
+dim(modLinearProt$modelDF)
+
 contrProt <- prolfqua::Contrasts$new(modLinearProt, relevantContrasts)
 pl <- contrProt$get_Plotter()
 pl$volcano()
@@ -386,15 +387,17 @@ pl$histogram()
 
 
 ```{r benchmarkModel1}
+debug( prolfqua::ionstar_bench_preprocess)
 ttd <- prolfqua::ionstar_bench_preprocess(contrProt$get_contrasts())
-ttd$data %>% filter(protein_Id == "sp|A0A0U1RRL7|MMPOS_HUMAN~A0A0U1RRL7")
+ttd$data$protein_Id %>% unique %>% length
 
 benchmark_Prot <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm",
                                    model_name = "prot_med_lm"
 )
-
 prolfqua::table_facade(benchmark_Prot$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+
+benchmark_mixed$complete(TRUE)
 
 #benchmark_Prot$plot_score_distribution()
 benchmark_Prot$plot_FDRvsFDP()
@@ -408,6 +411,8 @@ allBenchmarks$benchmark_Prot <- benchmark_Prot
 
 contrProtModerated <- ContrastsModerated$new(contrProt)
 contrProtModerated$get_Plotter()$volcano()
+contrProtModerated$get_contrasts()$protein_Id %>% unique %>% length
+
 ```
 
 
@@ -430,22 +435,25 @@ allBenchmarks$benchmark_ProtModerated <- benchmark_ProtModerated
 ## Contrasts from Model 2
 
 ```{r contrastModel2}
-contrProtMixed <- prolfqua::Contrasts$new(modMixedProtLevel, relevantContrasts,modelName = "WaldTestMixed")
+contrProtMixed <- prolfqua::Contrasts$new(modMixedProtLevel, relevantContrasts, modelName = "WaldTestMixed")
+
 pl <- contrProtMixed$get_Plotter()
 pl$volcano()
 pl$histogram()
 
+pl <- contrProtMixed$get_contrasts()
+pl$protein_Id %>% unique %>% length
 ```
 
 
 ```{r benchmarkModel2}
-ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixed$get_contrasts())
 
+ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixed$get_contrasts())
 benchmark_mixed <- make_benchmark(ttd$data,
                                    model_description = "mixed effect model",
                                    model_name = "prot_mixed_effect"
 )
-
+benchmark_mixed$complete(FALSE)
 prolfqua::table_facade(benchmark_mixed$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
 
 #benchmark_mixed$plot_score_distribution()
@@ -541,25 +549,31 @@ The table below summarizes the contrast estimates produced which will be benchma
 ```{r}
 names(allBenchmarks)
   
-lapply(allBenchmarks, function(x){x$complete(TRUE)})
+lapply(allBenchmarks, function(x){x$complete(FALSE)})
 bb <- (allBenchmarks$benchmark_imputation$data())
 bb <- (allBenchmarks$benchmark_Prot$data())
 
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
 resAll <- res %>% filter(contrast == "all")
 
-lapply(allBenchmarks, function(x){x$complete(TRUE)})
+lapply(allBenchmarks, function(x){x$complete(FALSE)})
 dim(allBenchmarks$benchmark_imputation$get_confusion())
 
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
 resAllB <- res %>% filter(contrast == "all")
 
-
-ggplot(resAll, aes(x = Name, y = pAUC_10)) + geom_bar(stat = "identity") +
-  facet_wrap(~what)  + coord_cartesian(ylim = c(60,90)) + 
+ggplot(resAll, aes(x = Name, y = pAUC_10)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~what)  + 
+  coord_cartesian(ylim = c(65,85)) + 
   theme_minimal() + 
   theme(axis.text.x=element_text(angle = -90, vjust = 0.5))  
 
-
+ggplot(resAll, aes(x = Name, y = pAUC_20)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~what)  +
+  coord_cartesian(ylim = c(80,87.5)) + 
+  theme_minimal() + 
+  theme(axis.text.x=element_text(angle = -90, vjust = 0.5))  
 
 ```
