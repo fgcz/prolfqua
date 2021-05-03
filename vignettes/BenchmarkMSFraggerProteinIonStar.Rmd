@@ -130,13 +130,13 @@ hm
 
 ```{r useSummarizer}
 lfqdataNormalized$summarize_hierarchy()
+
+
 summariz <- lfqdataNormalized$get_Summariser()
-summariz$hierarchy_counts()
 summariz$hierarchy_counts_sample()
 summariz$interaction_missing_stats()
 summariz$missingness_per_condition()
 summariz$missingness_per_condition_cumsum()
-summariz$hierarchy_counts()
 summariz$hierarchy_counts_sample()
 
 ```
