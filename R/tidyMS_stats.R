@@ -1,9 +1,12 @@
-#
-#
-# x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
-# .compute_pooled(x)
-.compute_pooled <- function(x){
-  x <- x %>% dplyr::filter(.data$not_na > 0)
+#' compute pooled variance
+#' @export
+#' @examples
+#' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
+#' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+#' .compute_pooled(x)
+#'
+compute_pooled <- function(x){
+  x <- x %>% dplyr::filter(.data$not_na > 1)
   var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
   res <- data.frame(
     #n = sum(x$n) - nrow(x), #
@@ -20,7 +23,7 @@
 
 .poolvar <- function(res1, config){
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
-  pooled =  purrr::map_df(resp$data, .compute_pooled )
+  pooled =  purrr::map_df(resp$data, compute_pooled )
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp %>% mutate(!!config$table$factorKeys()[1] := "pooled")
