@@ -1294,9 +1294,9 @@ summary_ROPECA_median_p.scaled <- function(
       group_by_at(c(subject_Id, contrast)) %>%
       dplyr::summarize(
         c1_name = unique(c1_name),
-        c1 = median(c1),
+        c1 = median(c1, na.rm = TRUE),
         c2_name = unique(c2_name),
-        c2 = median(c2) )
+        c2 = median(c2, na.rm = TRUE) )
     summarized.protein <- inner_join(summarized.protein, ccsummary, by = c(subject_Id, contrast))
   }
 
