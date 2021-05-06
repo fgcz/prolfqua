@@ -1,0 +1,40 @@
+---
+title: ''
+author: 'Witold Wolski Std Nr:'
+date: "5/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Read in MaxQuant files
+proteinGroups <- read.table("proteinGroups.txt", sep="\t", header=TRUE)
+
+infile <- read.table("evidence.txt", sep="\t", header=TRUE)
+
+# Read in annotation including condition and biological replicates per run.
+# Users should make this annotation file. It is not the output from MaxQuant.
+annot <- read.csv("annotation.csv", header=TRUE)
+
+raw <- MaxQtoMSstatsFormat(evidence=infile, 
+                           annotation=annot, 
+                           proteinGroups=proteinGroups)
+```
+
+
+```{r}
+QuantData <- dataProcess(SRMRawData)
+QuantData <- dataProcess(SRMRawData)
+
+# Profile plot
+dataProcessPlots(data=QuantData, type = "ProfilePlot")
+
+# Quality control plot 
+dataProcessPlots(data=QuantData, type = "QCPlot") 
+
+# Quantification plot for conditions
+dataProcessPlots(data=QuantData, type = "ConditionPlot")
+```
