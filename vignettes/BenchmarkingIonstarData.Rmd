@@ -13,7 +13,6 @@ geometry: margin=.5in
 vignette: >
   %\VignetteIndexEntry{Benchmarking normalization, aggregation and models using the Ionstar Dataset} 
   %\VignetteEncoding{UTF-8}
-  
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
@@ -60,8 +59,9 @@ datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir,
                           "MAXQuant_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
-
 mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+mean(grepl("CON_", mqdata$data$top_protein))
+
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 
@@ -88,6 +88,8 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 ```{r filterProteinsByPeptideCount}
 datafilt <- prolfqua::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
+length(unique(datafilt$protein_Id))
+
 ```
 
 
@@ -338,7 +340,9 @@ bb <- contrImp$get_contrasts()
 plc <- contrImp$get_Plotter()
 plc$volcano()
 plc$histogram()
+```
 
+```{r include = FALSE}
 dummy <- protLFQ$clone()
 dummy$data <- protLFQ$data %>% filter(protein_Id == "sp|A0A0U1RRL7|MMPOS_HUMAN~A0A0U1RRL7")
 #prolfqua::ContrastsSimpleImpute$debug("get_contrasts")
@@ -347,7 +351,6 @@ contrImp2 <- prolfqua::ContrastsSimpleImpute$new(dummy, relevantContrasts)
 #debug(summarize_stats)
 #var = summarize_stats(dummy$data, dummy$config, all = FALSE)
 x2 <- contrImp2$get_contrasts()
-x2
 
 ```
 
@@ -505,11 +508,15 @@ contrROPECA <- prolfqua::Contrasts$new(modLMPepLevel, relevantContrasts) %>%
   ContrastsROPECA$new()
 
 contrROPECA$get_Plotter()$volcano()
+contrROPECA$get_Plotter()$histogram()
 
 ```
 
 
 ```{r benchmarkROPECA}
+View(contrROPECA$get_contrasts())
+dim(na.omit(contrROPECA$get_contrasts()))
+
 ttd <- prolfqua::ionstar_bench_preprocess(contrROPECA$get_contrasts())
 benchmark_ropeca <- make_benchmark(ttd$data,
                                 toscale = c("beta.based.significance"),
@@ -532,22 +539,52 @@ allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
 ```
 
+
+## Merging contrasts
+
+
+```{r}
+
+modPmod <- contrProtModerated$get_contrasts()
+modImp <- contrImp$get_contrasts()
+modPmod <- filter(modPmod,!is.na(statistic))
+
+more <- setdiff(select(modImp, protein_Id, contrast) , select(modPmod, protein_Id, contrast))
+xx <- inner_join(more, modImp )
+
+merged <- bind_rows(modPmod, xx)
+
+
+
+ttd <- prolfqua::ionstar_bench_preprocess(merged)
+
+benchmark_merged <- make_benchmark(ttd$data,
+                                   model_description = "merge of prot moderated and imputed",
+                                   model_name = "prot_merged")
+
+prolfqua::table_facade(benchmark_merged$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+
+#benchmark_mixedModerated$plot_score_distribution()
+benchmark_merged$plot_FDRvsFDP()
+benchmark_merged$plot_ROC()
+allBenchmarks$benchmark_merged <- benchmark_merged
+
+```
+
 # Benchmarking
 
 The table below summarizes the contrast estimates produced which will be benchmarked.
 
 |                    | Model                   | Contrast   | Moderation   | Aggregation  |
 |--------------------|:-----------------------:|------------|--------------|--------------|
-| Protein Intensity  |  lm                     | o          |  o |   |
-| Protein Intensity Imputed | pooled variance  | o   |  o |   |
-| Peptide Intensity  |  lmer                   | o   |  o |   |
-| Peptide Intensity  |  lm                     |     |    |  o |
+| Protein Intensity  |  lm                     | o          |  o           |              |
+| Protein Intensity Imputed | pooled variance  | o          |  o           |              |
+| Peptide Intensity  |  lmer                   | o          |  o           |              |
+| Peptide Intensity  |  lm                     |            |              |  o           |
 
 
-```{r}
-
-
-lapply(allBenchmarks, function(x){x$complete(FALSE)})
+```{r fig.cap="Partial area under the ROC curve at 10% FPR."}
+ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
 resAllB <- res %>% filter(contrast == "all")
 
@@ -558,23 +595,48 @@ ggplot(bb, aes(x = Name, y = pAUC_10)) +
   facet_wrap(~whatfix)  + 
   coord_cartesian(ylim = c(65,82.5)) + 
   theme_minimal() + 
-  theme(axis.text.x=element_text(angle = -90, vjust = 0.5))  
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 
+```
+
+```{r fig.caption="Partial area under the ROC curve at 20% FPR."}
 ggplot(bb, aes(x = Name, y = pAUC_20)) +
   geom_bar(stat = "identity") +
   facet_wrap(~whatfix)  +
   coord_cartesian(ylim = c(80,87.5)) + 
   theme_minimal() + 
-
-  
-    theme(axis.text.x=element_text(angle = -90, vjust = 0.5))  
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))  
 
 ```
 
 
-### Look at FDP vs FDR plots.
+### Look at the nr of estimated contrasts.
 
-```{r}
+```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=5}
+dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
+dd$nr_missing <- as.integer(dd$nr_missing) - 1
+dd <- dd %>% mutate(nrcontrasts = protein_Id * (4-nr_missing))
+dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
+
+dds %>% ggplot(aes(x = name, y = (nrcontrasts - min(nrcontrasts)))) + 
+  geom_bar(stat="identity") + 
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_text(aes(label=nrcontrasts), position=position_dodge(width=0.9), vjust=-0.25)
+
+```
+
+### Plot FDR vs FDP
+
+```{r FDRfdp, fig.cap = "Compare FDR estimate with false discovery proportion (FDP).", fig.width=8, fig.height=8}
+dd <- map_df(allBenchmarks, function(x){res <- x$get_FDRvsFDP(); res$name <- x$model_name;res})
+
+dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
+  geom_line(aes(color = model_name)) +
+  facet_wrap(~contrast) + 
+   geom_abline(intercept = 0, slope = 1, color=2)
+
+  
+  
 
 
 ```

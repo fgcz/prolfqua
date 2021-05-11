@@ -1,40 +1,156 @@
 ---
-title: ''
-author: 'Witold Wolski Std Nr:'
-date: "5/6/2021"
-output: html_document
+title: "Benchmarking MSstats using the Ionstar Dataset"
+author: "FGCZ - (Draft)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      toc_collapsed: true
+papersize: a4
+geometry: margin=.5in
+vignette: >
+  %\VignetteIndexEntry{Benchmarking MSstats using the Ionstar Dataset} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+evalAll <- FALSE
 ```
 
-```{r}
+```{r eval=evalAll}
+library(MSstats)
+library(magrittr)
 # Read in MaxQuant files
-proteinGroups <- read.table("proteinGroups.txt", sep="\t", header=TRUE)
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir,
+                          "MAXQuant_IonStar2018_PXD003881.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
-infile <- read.table("evidence.txt", sep="\t", header=TRUE)
+proteinGroups <- read.table(unz(inputMQfile,"proteinGroups.txt"), sep = "\t", header = TRUE)
 
+infile <- read.table(unz(inputMQfile,"evidence.txt"), sep="\t", header = TRUE)
+dim(infile)
+
+annotation <- readxl::read_xlsx(inputAnnotation)
+msstas_annotation <- annotation %>% dplyr::select(raw.file, Condition = sample, BioReplicate = run_ID)
+msstas_annotation$IsotopeLabelType <- "L"
+msstas_annotation <- msstas_annotation %>% tidyr::unite("Experiment", Condition, BioReplicate, sep="_", remove = FALSE)
 # Read in annotation including condition and biological replicates per run.
 # Users should make this annotation file. It is not the output from MaxQuant.
-annot <- read.csv("annotation.csv", header=TRUE)
 
-raw <- MaxQtoMSstatsFormat(evidence=infile, 
-                           annotation=annot, 
-                           proteinGroups=proteinGroups)
+rf <- unique(infile$Raw.file)
+rf <- data.frame(Raw.file = rf, raw.file = tolower(rf))
+msstas_annotation <- dplyr::inner_join(rf, msstas_annotation)
+msstas_annotation$raw.file <- NULL
+raw <- MaxQtoMSstatsFormat(evidence = infile, 
+                           annotation = msstas_annotation, 
+                           proteinGroups = proteinGroups,
+                           removeProtein_with1Peptide = TRUE)
+
+dim(raw)
+
 ```
 
 
-```{r}
-QuantData <- dataProcess(SRMRawData)
-QuantData <- dataProcess(SRMRawData)
+```{r dataPreprocess, eval = evalAll}
 
+QuantData <- dataProcess(raw)
 # Profile plot
-dataProcessPlots(data=QuantData, type = "ProfilePlot")
-
+#dataProcessPlots(data=QuantData, type = "ProfilePlot")
 # Quality control plot 
-dataProcessPlots(data=QuantData, type = "QCPlot") 
-
+#dataProcessPlots(data=QuantData, type = "QCPlot") 
 # Quantification plot for conditions
-dataProcessPlots(data=QuantData, type = "ConditionPlot")
+#dataProcessPlots(data=QuantData, type = "ConditionPlot")
+
+QuantData$RunlevelData$Protein
+
+```
+
+```{r computeContrasts, eval = evalAll}
+
+Contrasts <- c(
+  "dilution_(9/3)_3" =   "dilution.e - dilution.a",
+  "dilution_(9/4.5)_2" =   "dilution.e - dilution.b",
+  "dilution_(9/6)_1.5" =   "dilution.e - dilution.c",
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
+  
+  "dilution_(7.5/3)_2.5" =   "dilution.d - dilution.a",
+  "dilution_(7.5/4.5)_1.6(6)" =   "dilution.d - dilution.b",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
+  
+  "dilution_(6/3)_2" =   "dilution.c - dilution.a",
+  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
+  
+  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
+)
+relevantContrasts <- c("dilution_(9/7.5)_1.2",
+                       "dilution_(7.5/6)_1.25",
+                       "dilution_(6/4.5)_1.3(3)",
+                       "dilution_(4.5/3)_1.5" )
+Contrasts[names(Contrasts) %in% relevantContrasts]
+
+levels(QuantData$ProcessedData$GROUP_ORIGINAL)
+
+# based on multiple comparisons  (T1 vs T3; T1 vs T7; T1 vs T9)
+comparison1 <- matrix(c(0,0,0,-1,1),nrow = 1)
+comparison2 <- matrix(c(0,0,-1,1,0),nrow = 1)
+comparison3 <- matrix(c(0,-1,1,0,0),nrow = 1)
+comparison4 <- matrix(c(-1,1,0,0,0),nrow = 1)
+comparison <- rbind(comparison1,comparison2, comparison3, comparison4)
+row.names(comparison) <- c("dilution_(9/7.5)_1.2","dilution_(7.5/6)_1.25","dilution_(6/4.5)_1.3(3)","dilution_(4.5/3)_1.5")
+
+testResultMultiComparisons <- groupComparison(contrast.matrix=comparison, data=QuantData)
+
+names(testResultMultiComparisons)
+length(testResultMultiComparisons$fittedmodel)
+bb <- testResultMultiComparisons$ComparisonResult
+
+length(unique(bb$Protein))
+
+
+```
+
+# Benchmarking
+
+```{r setUPBenchmark, eval = evalAll}
+library(prolfqua)
+bb <- readRDS(file = "bb.RDS")
+mean(is.na(bb$pvalue))
+mean(is.na(bb$Tvalue))
+mean(is.na(bb$log2FC))
+
+ttd <- prolfqua::ionstar_bench_preprocess(bb, idcol = "Protein")
+head(ttd$data)
+#Benchmark$debug("pAUC_summaries")
+benchmark_msstats <- make_benchmark(ttd$data,
+                                   contrast = "Label",
+                                toscale = c("pvalue"),
+                                fcestimate = "log2FC",
+                                benchmark = list(
+                                  list(sc = "log2FC", desc = TRUE),
+                                  list(sc = "Tvalue", desc = TRUE),
+                                  list(sc = "pvalue", desc = FALSE)
+                                ),  
+                                model_description = "MSStats",
+                                model_name = "MSStats",
+                                FDRvsFDP = list(list(sc = "adj.pvalue", desc = FALSE))
+, hierarchy = c("Protein"), summarizeNA = "Tvalue"
+)
+sum(benchmark_msstats$smc$summary$Protein)
+benchmark_msstats$smc$summary
+
+res <- benchmark_msstats$pAUC_summaries()
+undebug(prolfqua:::.partial_AUC_summary)
+undebug(prolfqua:::.scale_probabilities)
+benchmark_msstats$plot_FDRvsFDP()
+benchmark_msstats$plot_FDPvsTPR()
+benchmark_msstats$plot_ROC()
+
+
 ```
