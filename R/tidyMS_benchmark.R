@@ -2,12 +2,12 @@
 #' @export
 #' @family benchmarking
 #' @param data analysis results
-ionstar_bench_preprocess <- function(data) {
+ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   tmp <- data %>%
     ungroup() %>%
     mutate(species  = case_when(
-      grepl("HUMAN", protein_Id) ~ "HUMAN",
-      grepl("ECOLI", protein_Id) ~ "ECOLI",
+      grepl("HUMAN", !!sym(idcol)) ~ "HUMAN",
+      grepl("ECOLI", !!sym(idcol)) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
   res <- tmp %>% dplyr::filter(!.data$species == "OTHER")
@@ -96,18 +96,18 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 # @param toscale columns to scale
 # @param estimate fold change column
 .scale_probabilities <-
-  function(est ,toscale , estimate = "estimate") {
-    addScaledP <- function(data , estimate , scale) {
+  function(est ,toscale , fcestimate = "estimate") {
+    addScaledP <- function(data , fcestimate , scale) {
       scaled.p = paste0("scaled.", scale)
       data <-
-        data %>% dplyr::mutate(!!scaled.p := ifelse(!!sym(estimate) > 0,
+        data %>% dplyr::mutate(!!scaled.p := ifelse(!!sym(fcestimate) > 0,
                                                     1 - !!sym(scale) , !!sym(scale) - 1))
       return(data)
     }
 
     for (scale in toscale) {
       message(scale)
-      est <- addScaledP(est, estimate = estimate , scale = scale)
+      est <- addScaledP(est, fcestimate = fcestimate , scale = scale)
     }
     return(est)
   }
@@ -158,31 +158,31 @@ do_confusion_c <- function(
   return(xx)
 }
 
-.plot_FDPvsTPR <- function(pStats, xlim){
+.plot_FDPvsTPR <- function(pStats, xlim, contrast = "contrast"){
   p1 <-
     ggplot(pStats , ggplot2::aes(x = .data$FDP, y = .data$TPR, color = .data$what)) +
     ggplot2::geom_path()  +
     ggplot2::labs(tag = "C") + xlim(0, xlim) +
-    ggplot2::facet_wrap( ~contrast )
+    ggplot2::facet_wrap(as.formula(paste0("~",contrast )))
   return(p1)
 }
 
 # Visualizes data frame with columns FPR, TPR, FDP
 .plot_ROC <-
-  function(pStats, fpr_lim = 0.2) {
+  function(pStats, fpr_lim = 0.2, contrast= "contrast") {
 
     p1 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
       geom_path() +
       labs(tag = "A") +
-      facet_wrap( ~contrast )
+      facet_wrap( as.formula(paste0("~",contrast )))
 
     p2 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
       geom_path()  +
       labs(tag = "B") +
       xlim(0, xlim = fpr_lim) +
-      facet_wrap( ~contrast )
+      facet_wrap( as.formula(paste0("~",contrast )) )
 
     rocp <-
       ggpubr::ggarrange(
@@ -195,8 +195,9 @@ do_confusion_c <- function(
     rocp = rocp
   }
 
-.partial_AUC_summary <- function(pStats, model_description = "mixed effects model"){
-  summaryS <- pStats %>% dplyr::group_by(.data$contrast, .data$what) %>%
+.partial_AUC_summary <- function(pStats, model_description = "mixed effects model",
+                                 contrast = "contrast"){
+  summaryS <- pStats %>% dplyr::group_by(!!sym(contrast), .data$what) %>%
     dplyr::summarize(
       AUC = ms_bench_auc(.data$FPR, .data$TPR),
       pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
@@ -207,11 +208,13 @@ do_confusion_c <- function(
                  caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description),
                  digits = 2)
   # TODO replace melt
-  sumd <- tidyr::pivot_longer(summaryS, cols = matches("^AUC|^pAUC"))
+  sumd <- tidyr::pivot_longer(summaryS, cols = matches("^AUC|^pAUC"), names_to = "AUC")
   #sumd <- reshape2::melt(summaryS)
-  barp <- ggplot(sumd, aes(x = contrast , y = value, color = NULL , fill = what)) +
+  barp <- ggplot(sumd, aes(x = !!sym(contrast) , y = .data$value,
+                           color = NULL ,
+                           fill = .data$what)) +
     geom_bar(stat = "identity", position = position_dodge()) +
-    facet_wrap(~ contrast, scales = "free") +
+    facet_wrap(~AUC, scales = "free") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     coord_cartesian(ylim = c(floor(min(sumd$value) / 10) * 10, 100))
 
@@ -313,6 +316,8 @@ Benchmark <-
       contrast = "",
       #' @field toscale which columns to scale
       toscale = c(""),
+      #' @field fc estimate column
+      fcestimate = "",
       #' @field benchmark todo
       benchmark = list(),
       #' @field model_description describe model
@@ -343,6 +348,7 @@ Benchmark <-
       #' @param hierarchy e.g. protein_Id
       initialize = function(data,
                             toscale = c("p.value"),
+                            fcestimate = "estimate",
                             benchmark = list(
                               list(sc = "estimate", desc = TRUE),
                               list(sc = "statistic", desc = TRUE),
@@ -353,10 +359,12 @@ Benchmark <-
                             model_name = "medpolish_lm",
                             contrast = "contrast",
                             species = "species",
-                            hierarchy = c("protein_Id") ) {
+                            hierarchy = c("protein_Id"),
+                            summarizeNA = "statistic") {
         self$.data <- data
         self$contrast <- contrast
         self$toscale <- toscale
+        self$fcestimate <- fcestimate
         self$benchmark <- benchmark
         self$FDRvsFDP <- FDRvsFDP
         self$model_description <- model_description
@@ -364,8 +372,10 @@ Benchmark <-
         self$hierarchy <- hierarchy
         self$species <- species
 
-        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy)
-        self$.data <- .scale_probabilities(self$.data, toscale = toscale)
+        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy,what = summarizeNA)
+        self$.data <- .scale_probabilities(self$.data,
+                                           toscale = toscale,
+                                           fcestimate = self$fcestimate)
 
       },
       #' @description
@@ -416,7 +426,9 @@ Benchmark <-
       plot_FDPvsTPR = function(xlim = 0.5){
         confusion <- self$get_confusion_summaries()
 
-        p <- .plot_FDPvsTPR(confusion,xlim = 0.5)
+        p <- .plot_FDPvsTPR(confusion,
+                            xlim = 0.5,
+                            contrast = self$contrast)
         return(p)
       },
       #' @description
@@ -426,7 +438,8 @@ Benchmark <-
       plot_ROC = function(xlim = 0.5){
         confusion <- self$get_confusion_summaries()
         vissum <- .plot_ROC(confusion,
-                            fpr_lim = xlim)
+                            fpr_lim = xlim,
+                            contrast = self$contrast)
         return(vissum)
       },
       #' @description
@@ -436,7 +449,8 @@ Benchmark <-
         pauc <- .partial_AUC_summary(
           confusion,
           model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "),
-                                     self$model_description))
+                                     self$model_description),
+          contrast = self$contrast)
         return(pauc)
       },
       #' @description
@@ -533,6 +547,7 @@ Benchmark <-
 make_benchmark <- function(prpr,
                            contrast = "contrast",
                            toscale = c("p.value"),
+                           fcestimate = "estimate",
                            benchmark = list(
                              list(sc = "estimate", desc = TRUE),
                              list(sc = "statistic", desc = TRUE),
@@ -541,15 +556,18 @@ make_benchmark <- function(prpr,
                            FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
                            model_description = "protein level measurments, linear model",
                            model_name = "prot_med_lm",
-                           hierarchy = c("protein_Id")
+                           hierarchy = c("protein_Id"),
+                           summarizeNA= "statistic"
 ) {
   res <- Benchmark$new(prpr,
-                       contrast = "contrast",
+                       contrast = contrast,
                        toscale = toscale,
+                       fcestimate = fcestimate,
                        benchmark = benchmark,
                        FDRvsFDP = FDRvsFDP,
                        model_description = model_description,
                        model_name = model_name,
-                       hierarchy = hierarchy)
+                       hierarchy = hierarchy,
+                       summarizeNA=summarizeNA)
   return(res)
 }

@@ -125,7 +125,7 @@ pl$volcano_plotly()
 pl$ma_plot()
 pl$histogram()
 
-
+# Plot proteins without p-values
 xx <- modtmpdistinct[rowSums(is.na(modtmpdistinct)) > 0,]
 xx <- xx %>% arrange(estimate)
 ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) + ggplot2::geom_bar(stat="identity") + coord_flip()

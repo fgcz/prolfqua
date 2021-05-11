@@ -8,12 +8,14 @@ make_benchmark(
   prpr,
   contrast = "contrast",
   toscale = c("p.value"),
+  fcestimate = "estimate",
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
     TRUE), list(sc = "scaled.p.value", desc = TRUE)),
   FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
   model_description = "protein level measurments, linear model",
   model_name = "prot_med_lm",
-  hierarchy = c("protein_Id")
+  hierarchy = c("protein_Id"),
+  summarizeNA = "statistic"
 )
 }
 \arguments{

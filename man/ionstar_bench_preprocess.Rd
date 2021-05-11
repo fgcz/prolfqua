@@ -4,7 +4,7 @@
 \alias{ionstar_bench_preprocess}
 \title{prepare benchmark data}
 \usage{
-ionstar_bench_preprocess(data)
+ionstar_bench_preprocess(data, idcol = "protein_Id")
 }
 \arguments{
 \item{data}{analysis results}

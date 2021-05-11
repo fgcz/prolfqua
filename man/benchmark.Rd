@@ -66,6 +66,8 @@ Other benchmarking:
 
 \item{\code{toscale}}{which columns to scale}
 
+\item{\code{fc}}{estimate column}
+
 \item{\code{benchmark}}{todo}
 
 \item{\code{model_description}}{describe model}
@@ -81,6 +83,13 @@ Other benchmarking:
 \item{\code{species}}{todo}
 
 \item{\code{FDRvsFDP}}{todo}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{fc}}{estimate column}
 }
 \if{html}{\out{</div>}}
 }
@@ -112,6 +121,7 @@ create Benchmark
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$new(
   data,
   toscale = c("p.value"),
+  fcestimate = "estimate",
   benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
     TRUE), list(sc = "scaled.p.value", desc = TRUE)),
   FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
@@ -119,7 +129,8 @@ create Benchmark
   model_name = "medpolish_lm",
   contrast = "contrast",
   species = "species",
-  hierarchy = c("protein_Id")
+  hierarchy = c("protein_Id"),
+  summarizeNA = "statistic"
 )}\if{html}{\out{</div>}}
 }
 
