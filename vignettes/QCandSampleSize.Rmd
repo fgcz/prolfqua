@@ -84,7 +84,7 @@ Here we summarize the number of `r if(params$pep){"peptides"}else{"proteins"}` m
 While the overall number of `r if(params$pep){"proteins and peptides"}else{"proteins"}` can highly vary depending of the type of experiment, it is crucial that the number of `r  if(params$pep){"proteins and peptides"}else{"proteins"}`  between your biological replicates is similar (reproducibility).
 
 
-```{r hierarchy_counts}
+```{r hierarchyCounts}
 x <- hierarchy_counts(data, local_config)
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
 
