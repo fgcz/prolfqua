@@ -48,41 +48,9 @@ annotation <- readxl::read_xlsx(inputAnnotation)
 unzip(inputMQfile, list = TRUE)$Name
 MQPeptides <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE))
-colnames(MQPeptides) <- tolower(colnames(MQPeptides))
-# Keep only proteins with 2 id's
-MQPeptides <- MQPeptides %>% filter(unique.stripped.peptides > 1)
-sum(duplicated(select(MQPeptides, protein.group, subgroup)))
 
-annot <- MQPeptides %>% select(colnames(MQPeptides)[1:14]) 
+#MQPeptides <- MQPeptides %>% filter(unique.stripped.peptides > 1)
 
-extractDataLong <- function(MQPeptides, what = "total.intensity"){
-  gg <- MQPeptides %>% select( protein.group, subgroup, ends_with(what))
-  gg <- gg %>% pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
-  gg <- gg %>% mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
-  gg
-}
-
-res <- vector( mode = "list", length = 9)
-
-intnames <- c("total.intensity",
-              "unique.intensity",
-              "razor.intensity",
-              "total.ion.count",
-              "unique.ion.count",
-              "razor.ion.count",
-              "total.spectral.count",
-              "unique.spectral.count", 
-              "razor.spectral.count")
-
-names(res)  <- intnames
-
-for (i in 1:length(intnames)) {
-  res[[intnames[i]]] <- extractDataLong(MQPeptides, what = intnames[i] )
-}
-
-merged <- Reduce(inner_join, res)
-merged <- inner_join(annot, merged)
-merged <- inner_join(annotation, merged)
 head(annotation)
 
 ```

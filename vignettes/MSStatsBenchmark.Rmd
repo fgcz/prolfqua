@@ -20,7 +20,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-evalAll <- FALSE
+evalAll <- TRUE
 ```
 
 ```{r eval=evalAll}
@@ -120,7 +120,8 @@ length(unique(bb$Protein))
 
 ```{r setUPBenchmark, eval = evalAll}
 library(prolfqua)
-bb <- readRDS(file = "bb.RDS")
+#saveRDS(bb, file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
+#bb <- readRDS(file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
 mean(is.na(bb$pvalue))
 mean(is.na(bb$Tvalue))
 mean(is.na(bb$log2FC))
@@ -135,7 +136,7 @@ benchmark_msstats <- make_benchmark(ttd$data,
                                 benchmark = list(
                                   list(sc = "log2FC", desc = TRUE),
                                   list(sc = "Tvalue", desc = TRUE),
-                                  list(sc = "pvalue", desc = FALSE)
+                                  list(sc = "scaled.pvalue", desc = TRUE)
                                 ),  
                                 model_description = "MSStats",
                                 model_name = "MSStats",
@@ -143,14 +144,27 @@ benchmark_msstats <- make_benchmark(ttd$data,
 , hierarchy = c("Protein"), summarizeNA = "Tvalue"
 )
 sum(benchmark_msstats$smc$summary$Protein)
-benchmark_msstats$smc$summary
+
+sumarry <- benchmark_msstats$smc$summary
+table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
+```
+
+```{r fig.cap="ROC curves"}
 
 res <- benchmark_msstats$pAUC_summaries()
-undebug(prolfqua:::.partial_AUC_summary)
-undebug(prolfqua:::.scale_probabilities)
-benchmark_msstats$plot_FDRvsFDP()
-benchmark_msstats$plot_FDPvsTPR()
-benchmark_msstats$plot_ROC()
+res$barp
+```
 
+```{r fig.cap="plot ROC curves"}
+#res$ftable
+benchmark_msstats$plot_ROC(xlim = 0.2)
+```
+
+```{r fig.cap = "plot FDR vs FDP"}
+benchmark_msstats$plot_FDRvsFDP()
+```
+
+```{r}
+benchmark_msstats$plot_FDPvsTPR()
 
 ```

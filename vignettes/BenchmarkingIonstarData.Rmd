@@ -47,7 +47,7 @@ conflict_prefer("filter", "dplyr")
 Decide if you work with all data or for speedup with subset of data:
 
 ```{r}
-SUBSET <- TRUE
+SUBSET <- FALSE
 ```
 
 
@@ -356,6 +356,8 @@ x2 <- contrImp2$get_contrasts()
 
 
 ```{r benchmarkImputed}
+allContrasts <- list()
+allContrasts$imputation <- contrImp$get_contrasts()
 ttd <- prolfqua::ionstar_bench_preprocess(contrImp$get_contrasts())
 
 benchmark_imputation <- make_benchmark(ttd$data,
@@ -370,8 +372,8 @@ benchmark_imputation$plot_FDRvsFDP()
 prolfqua::table_facade(benchmark_imputation$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
 
 
-
 allBenchmarks <- list()
+
 allBenchmarks$benchmark_imputation <- benchmark_imputation
 
 ```
@@ -390,6 +392,8 @@ pl$histogram()
 
 
 ```{r benchmarkModel1}
+allContrasts$Prot <- contrProt$get_contrasts()
+
 ttd <- prolfqua::ionstar_bench_preprocess(contrProt$get_contrasts())
 ttd$data$protein_Id %>% unique %>% length
 
@@ -418,6 +422,7 @@ contrProtModerated$get_contrasts()$protein_Id %>% unique %>% length
 
 
 ```{r benchmarkModel1Moderation}
+allContrasts$ProtModerated <- contrProtModerated$get_contrasts()
 
 ttd <- prolfqua::ionstar_bench_preprocess(contrProtModerated$get_contrasts())
 
@@ -448,7 +453,7 @@ pl$protein_Id %>% unique %>% length
 
 
 ```{r benchmarkModel2}
-
+allContrasts$contrProtMixed <- contrProtMixed$get_contrasts()
 ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixed$get_contrasts())
 benchmark_mixed <- make_benchmark(ttd$data,
                                    model_description = "mixed effect model",
@@ -483,6 +488,7 @@ contrProtMixedModerated$get_Plotter()$volcano()
 
 
 ```{r benchmarkModel2Moderation}
+allContrasts$contrProtMixedModerated <- contrProtMixedModerated$get_contrasts()
 
 ttd <- prolfqua::ionstar_bench_preprocess(contrProtMixedModerated$get_contrasts())
 
@@ -514,8 +520,8 @@ contrROPECA$get_Plotter()$histogram()
 
 
 ```{r benchmarkROPECA}
-View(contrROPECA$get_contrasts())
-dim(na.omit(contrROPECA$get_contrasts()))
+#View(contrROPECA$get_contrasts())
+allContrasts$contrProtMixedModerated <- contrProtMixedModerated$get_contrasts()
 
 ttd <- prolfqua::ionstar_bench_preprocess(contrROPECA$get_contrasts())
 benchmark_ropeca <- make_benchmark(ttd$data,
@@ -545,16 +551,18 @@ allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
 ```{r}
 
+# TODO implement as proper function ...
 modPmod <- contrProtModerated$get_contrasts()
 modImp <- contrImp$get_contrasts()
 modPmod <- filter(modPmod,!is.na(statistic))
-
 more <- setdiff(select(modImp, protein_Id, contrast) , select(modPmod, protein_Id, contrast))
 xx <- inner_join(more, modImp )
-
 merged <- bind_rows(modPmod, xx)
 
 
+
+allContrasts$merged <- merged
+saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
 
 ttd <- prolfqua::ionstar_bench_preprocess(merged)
 
@@ -568,7 +576,7 @@ prolfqua::table_facade(benchmark_merged$smc$summary, caption = "Nr of proteins w
 benchmark_merged$plot_FDRvsFDP()
 benchmark_merged$plot_ROC()
 allBenchmarks$benchmark_merged <- benchmark_merged
-
+saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
 ```
 
 # Benchmarking
