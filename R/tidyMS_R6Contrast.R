@@ -957,5 +957,26 @@ Contrasts_Plotter <- R6::R6Class(
 
 
 
+# Merge contrasts ----
+#' add contrast results from two different functions. Tipically used with Contrast and Cotnrast simple imputed.
+#'
+#' @param prefer contrasts to use preferentially
+#' @param add contrasts to add from if missing in prefer
+#' @export
+#' @family modelling
+#'
+addContrastResults <- function(prefer, add){
+  cA <- prefer$get_contrasts()
+  cB <- add$get_contrasts()
+
+  stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
+
+  cA <- filter(cA,!is.na(statistic))
+  more <- setdiff(select(cB, c(prefer$subject_Id, "contrast")),
+                  select(cA, c(add$subject_Id, "contrast")))
+  xx <- inner_join(more, cB )
+  merged <- bind_rows(cA, xx)
+  return(merged)
+}
 
 

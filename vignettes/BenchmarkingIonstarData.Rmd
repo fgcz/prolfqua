@@ -552,21 +552,11 @@ allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
 ```{r}
 
-# TODO implement as proper function ...
-modPmod <- contrProtModerated$get_contrasts()
-modImp <- contrImp$get_contrasts()
-modPmod <- filter(modPmod,!is.na(statistic))
-more <- setdiff(select(modImp, protein_Id, contrast) , select(modPmod, protein_Id, contrast))
-xx <- inner_join(more, modImp )
-merged <- bind_rows(modPmod, xx)
-
-
-
+merged <- prolfqua::addContrastResults(prefer = contrProtMixedModerated, add = contrImp)
 allContrasts$merged <- merged
 saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
 
 ttd <- prolfqua::ionstar_bench_preprocess(merged)
-
 benchmark_merged <- make_benchmark(ttd$data,
                                    model_description = "merge of prot moderated and imputed",
                                    model_name = "prot_merged")
