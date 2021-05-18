@@ -46,14 +46,16 @@ annotation <- readxl::read_xlsx(inputAnnotation)
 
 
 unzip(inputMQfile, list = TRUE)$Name
-MQPeptides <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
+
+protein <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+protein <- tidy_MSFragger_combined_protein(protein)
+protein <- protein %>% filter(unique.stripped.peptides > 1)
+#View(protein)
 
-#MQPeptides <- MQPeptides %>% filter(unique.stripped.peptides > 1)
-
-head(annotation)
-
+merged <- inner_join(annotation, protein)
 ```
+
 
 ```{r setupConfigs}
 

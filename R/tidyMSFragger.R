@@ -31,9 +31,9 @@ tidy_MSFragger_combined_protein <- function(Cprotein){
   annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
 
   extractDataLong <- function(Cprotein, what = "total.intensity"){
-    gg <- Cprotein %>% select( protein.group, subgroup, ends_with(what))
-    gg <- gg %>% pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
-    gg <- gg %>% mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
+    gg <- Cprotein %>% dplyr::select( protein.group, subgroup, ends_with(what))
+    gg <- gg %>% tidyr::pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
+    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
     gg
   }
   intnames <- c("total.intensity",
@@ -55,6 +55,5 @@ tidy_MSFragger_combined_protein <- function(Cprotein){
 
   merged <- Reduce(inner_join, res)
   merged <- inner_join(annot, merged)
-  merged <- inner_join(annotation, merged)
   return(merged)
 }

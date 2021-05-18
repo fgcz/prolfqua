@@ -431,7 +431,8 @@ benchmark_ProtModerated <- make_benchmark(ttd$data,
                                    model_name = "prot_med_lm_moderated")
 
 #benchmark_ProtModerated$plot_score_distribution()
-prolfqua::table_facade(benchmark_ProtModerated$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+prolfqua::table_facade(benchmark_ProtModerated$smc$summary,
+                       caption = "Nr of proteins with Nr of estimated contrasts.")
 
 benchmark_ProtModerated$plot_FDRvsFDP()
 allBenchmarks$benchmark_ProtModerated <- benchmark_ProtModerated
