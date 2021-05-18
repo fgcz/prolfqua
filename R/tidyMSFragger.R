@@ -18,6 +18,7 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #' @examples
 #' @family MSFragger
 #' @keywords internal
+#' @examples
 #'
 #' if(FALSE){
 #'   unzip(inputMQfile, list = TRUE)$Name
@@ -25,6 +26,7 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #'                                 header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 #'   tidy_MSFragger_combined_protein(protein)
 #' }
+#'
 tidy_MSFragger_combined_protein <- function(Cprotein){
   ### start processing
   colnames(Cprotein) <- tolower(colnames(Cprotein))

@@ -177,7 +177,7 @@ IonstarData <- R6::R6Class(
 ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config, 
                            lfqNormSubset$data, lfqNormSubset$config)
 
-usethis::use_data(data_ionstar, overwrite = TRUE)
+#usethis::use_data(data_ionstar, overwrite = TRUE)
 
 ```
 
