@@ -32,7 +32,8 @@ Other data:
 \code{\link{data_modellingResult_A}},
 \code{\link{data_multigroupFC}},
 \code{\link{data_skylinePRMSample_A}},
-\code{\link{data_skylineSRM_HL_A}}
+\code{\link{data_skylineSRM_HL_A}},
+\code{\link{data_spectronautDIA250_A}}
 }
 \concept{data}
 \keyword{internal}

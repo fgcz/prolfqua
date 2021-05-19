@@ -157,6 +157,20 @@ Other MaxQuant:
 \code{\link{tidyMQ_merged}()},
 \code{\link{tidyMQ_modificationSpecificPeptides}()},
 \code{\link{tidyMQ_top_protein_name}()}
+
+Other stats: 
+\code{\link{compute_pooled}()},
+\code{\link{lfq_power_t_test_proteins}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
+\code{\link{lfq_power_t_test_quantiles}()},
+\code{\link{plot_stat_density_median}()},
+\code{\link{plot_stat_density}()},
+\code{\link{plot_stat_violin_median}()},
+\code{\link{plot_stat_violin}()},
+\code{\link{plot_stdv_vs_mean}()},
+\code{\link{poolvar}()},
+\code{\link{summarize_stats_quantiles}()},
+\code{\link{summarize_stats}()}
 }
 \concept{MaxQuant}
 \concept{aggregation}
@@ -167,6 +181,7 @@ Other MaxQuant:
 \concept{modelling}
 \concept{plotting}
 \concept{preprocessing}
+\concept{stats}
 \concept{summary}
 \concept{transitionCorrelation}
 \concept{utilities}

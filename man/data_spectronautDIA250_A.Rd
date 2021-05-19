@@ -13,5 +13,27 @@ data_spectronautDIA250_A
 \description{
 example data for check
 }
-\concept{}
+\seealso{
+Other data: 
+\code{\link{PACKAGE_DATA}},
+\code{\link{data_IonstarProtein_subsetNorm}},
+\code{\link{data_Yeast2Factor}},
+\code{\link{data_basicModel_p1807}},
+\code{\link{data_benchmarkExample}},
+\code{\link{data_checksummarizationrobust87}},
+\code{\link{data_checksummarizerobust69}},
+\code{\link{data_checksummarizerobust}},
+\code{\link{data_correlatedPeptideList}},
+\code{\link{data_exampleForRopeca}},
+\code{\link{data_factor_levelContrasts}},
+\code{\link{data_interactionModel_p1807}},
+\code{\link{data_ionstar}},
+\code{\link{data_lm_models_to_test}},
+\code{\link{data_modellingResult_A}},
+\code{\link{data_models_interaction}},
+\code{\link{data_multigroupFC}},
+\code{\link{data_skylinePRMSample_A}},
+\code{\link{data_skylineSRM_HL_A}}
+}
+\concept{data}
 \keyword{datasets}

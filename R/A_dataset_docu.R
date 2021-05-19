@@ -45,6 +45,7 @@ NULL
 #' @family preprocessing
 #' @family benchmarking
 #' @family MaxQuant
+#' @family stats
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL
@@ -220,7 +221,7 @@ NULL
 #file.remove("data/spectronautDIAData250_A.rda")
 
 #' example data for check
-#' @family
+#' @family data
 #' @keywards internal
 'data_spectronautDIA250_A'
 

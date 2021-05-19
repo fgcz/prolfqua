@@ -25,9 +25,33 @@ config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config, all = FALSE)
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "ILSLAQDQVGGSAEK")
+head(res1)
+View(res1)
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+head(d)
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+head(d)
+CON__P02769~18~NA VHKECCHGDLLECADDR
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+head(d)
 res1 \%>\% dplyr::filter(dilution. == "pooled")
 res2 <- summarize_stats(data, config, all = TRUE)
 
 }
+\seealso{
+Other stats: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{compute_pooled}()},
+\code{\link{lfq_power_t_test_proteins}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
+\code{\link{lfq_power_t_test_quantiles}()},
+\code{\link{plot_stat_density_median}()},
+\code{\link{plot_stat_density}()},
+\code{\link{plot_stat_violin_median}()},
+\code{\link{plot_stat_violin}()},
+\code{\link{plot_stdv_vs_mean}()},
+\code{\link{poolvar}()},
+\code{\link{summarize_stats_quantiles}()}
+}
+\concept{stats}
 \keyword{internal}

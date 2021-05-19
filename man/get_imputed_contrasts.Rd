@@ -30,16 +30,19 @@ data <- prolfqua::removeLarge_Q_Values(data, configur)
 data <- complete_cases(data, configur)
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-get_imputed_contrasts(data, configur, Contrasts)
+res <- get_imputed_contrasts(data, configur, Contrasts)
+head(res)
+
 if(FALSE){
 debug(get_imputed_contrasts)
 config <- configur
 contrasts <- Contrasts
 imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+head(imputed)
 imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-dim(imputed)
-debug(aggregate_contrast)
+head(imputed)
 imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+head(imputedProt)
 }
 }
 \seealso{

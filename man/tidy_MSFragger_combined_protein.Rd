@@ -9,25 +9,19 @@ tidy_MSFragger_combined_protein(Cprotein)
 \description{
 read MSFragger combined protein file
 }
+\examples{
+
+if(FALSE){
+  unzip(inputMQfile, list = TRUE)$Name
+  protein <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
+                                header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+  tidy_MSFragger_combined_protein(protein)
+}
+
+}
 \seealso{
 Other MSFragger: 
 \code{\link{tidy_MSFragger_MSstats_csv}()}
 }
 \concept{MSFragger}
-\keyword{"\t",}
-\keyword{<-}
-\keyword{=}
-\keyword{FALSE))}
-\keyword{TRUE)$Name}
-\keyword{TRUE,}
-\keyword{as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),}
-\keyword{header}
-\keyword{if(FALSE){}
 \keyword{internal}
-\keyword{list}
-\keyword{protein}
-\keyword{sep}
-\keyword{stringsAsFactors}
-\keyword{tidy_MSFragger_combined_protein(protein)}
-\keyword{unzip(inputMQfile,}
-\keyword{}}

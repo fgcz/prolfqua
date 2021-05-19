@@ -34,6 +34,7 @@ function
 used in Acetylation project p2916
 }
 \examples{
+
 library(prolfqua)
 bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
@@ -58,6 +59,7 @@ alldata <- fun("all")
 head(xxx)
 
 imputed <- fun("imputed")
+missing <- fun("nrMeasured")
 
  meanArea <- fun("mean")
  print(sum(is.na(meanArea$mean.dilution.a)))

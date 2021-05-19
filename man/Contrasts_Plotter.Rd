@@ -223,7 +223,7 @@ plot histogram of estimated fold change
 \subsection{Method \code{volcano()}}{
 volcano plots (fold change vs FDR)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 }
@@ -233,7 +233,7 @@ volcano plots (fold change vs FDR)
 \subsection{Method \code{volcano_plotly()}}{
 plotly volcano plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 }
