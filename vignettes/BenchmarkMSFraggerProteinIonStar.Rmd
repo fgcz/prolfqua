@@ -32,7 +32,7 @@ library(conflicted)
 library(prolfqua)
 library(tidyverse)
 library(dplyr)
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
 ```
 

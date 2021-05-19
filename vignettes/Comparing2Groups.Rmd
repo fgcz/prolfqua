@@ -14,6 +14,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+conflicted::conflict_prefer("filter", "dplyr")
 ```
 
 
@@ -224,11 +225,27 @@ filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 
 
-# Missing values
+# Contrasts with missing value imputation
 
 ```{r computeMissing, eval=TRUE}
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
-dim(mC$get_contrasts())
+colnames(mC$get_contrasts())
 
 ```
 
+Merging both results.
+
+```{r}
+merged <- prolfqua::addContrastResults
+merged$modelName <- as.factor(merged$modelName)
+plotter <- Contrasts_Plotter$new(contrastDF = merged , subject_Id = contr$subject_Id)
+
+tmp <- plotter$volcano()
+#Create a custom color scale
+myColors <- c("green","black")
+names(myColors) <- levels(as.factor(merged$modelName))
+colScale <- scale_colour_manual(name = "modelName",values = myColors)
+tmp$FDR +  colScale
+
+
+```

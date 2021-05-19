@@ -41,7 +41,7 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(prolfqua)
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
 ```
 

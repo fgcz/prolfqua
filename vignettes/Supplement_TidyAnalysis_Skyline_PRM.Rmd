@@ -33,7 +33,7 @@ library(tidyverse)
 library(readxl)
 library(yaml)
 library(prolfqua)
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
 ```
 

@@ -40,7 +40,7 @@ library(conflicted)
 library(prolfqua)
 library(tidyverse)
 library(dplyr)
-conflict_prefer("filter", "dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
 
 ```
 
@@ -362,7 +362,7 @@ ttd <- prolfqua::ionstar_bench_preprocess(contrImp$get_contrasts())
 
 benchmark_imputation <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. imputation",
-                                   model_name = "prot_med_lm_imputation",
+                                   model_name = "prot_imputation",
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
 
