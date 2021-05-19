@@ -1,3 +1,53 @@
+#' @examples
+#' library(tidyverse)
+#' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
+#' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+#' pooled_V2(na.omit(x))
+#' pooled_V1(na.omit(x))
+pooled_V2 <- function(x){
+
+  n <- x$not_na
+  sample.var <- x$var
+  sample.mean <- x$mean
+  pool.n <- sum(n)
+
+  pool.mean <- sum(n * sample.mean)/pool.n
+  deviation <- sample.mean - pool.mean
+
+  SS <- (n - 1) * sample.var
+  pool.SS <- sum(SS) + sum(n * deviation^2)
+  pool.var <- pool.SS/(pool.n - 1)
+
+  res <- data.frame(
+    n.groups = length(sample.var),
+    n = pool.n,
+    df = n - n.groups,
+    sd = sqrt(pool.var),
+    var = pool.var,
+    mean = pool.mean
+  )
+  return(res)
+}
+
+pooled_V1 <- function(x){
+  n <- x$not_na
+  sample.var <- x$var
+  sample.mean <- x$mean
+  pool.n <- sum(n)
+
+  pool.var <- sum((sample.var * (n - 1)))/(sum(n) - nrow(x))
+  pool.mean <- sum(sample.mean * n)/pool.n
+  res <- data.frame(
+    n.groups = length(sample.var),
+    n = pool.n,
+    df = n-n.groups,
+    sd = sqrt(pool.var),
+    var = pool.var,
+    mean = pool.mean
+  )
+  return(res)
+}
+
 #' compute pooled variance
 #'
 #' following the documentation here:
@@ -18,10 +68,10 @@ compute_pooled <- function(x){
   not_na  = sum(xm$not_na)
 
   x <- x %>% dplyr::filter(.data$not_na > 1)
-  pooledvar <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
-  df <- sum(x$not_na) - nrow(x)
+  res <- pooled_V2(x)
 
   sdT <- sqrt(pooledvar) * sqrt(sum(1/x$not_na))
+  res$n <-
 
   res <- data.frame(
     n = df,
