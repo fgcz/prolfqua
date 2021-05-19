@@ -80,6 +80,7 @@ interaction_missing_stats <- function(pdata,
 #' @keywords internal
 #' @return function
 #' @examples
+#'
 #' library(prolfqua)
 #' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
@@ -104,6 +105,7 @@ interaction_missing_stats <- function(pdata,
 #' head(xxx)
 #'
 #' imputed <- fun("imputed")
+#' missing <- fun("nrMeasured")
 #'
 #'  meanArea <- fun("mean")
 #'  print(sum(is.na(meanArea$mean.dilution.a)))
@@ -238,6 +240,7 @@ interaction_missing_stats <- function(pdata,
 #' res <- missigness_impute_factors_interactions(xx, configur)
 #' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
+#' head(res)
 #' fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
 #' fun
 missigness_impute_factors_interactions <-
@@ -425,16 +428,19 @@ get_contrast <- function(data,
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' get_imputed_contrasts(data, configur, Contrasts)
+#' res <- get_imputed_contrasts(data, configur, Contrasts)
+#' head(res)
+#'
 #' if(FALSE){
 #' debug(get_imputed_contrasts)
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+#' head(imputed)
 #' imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-#' dim(imputed)
-#' debug(aggregate_contrast)
+#' head(imputed)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+#' head(imputedProt)
 #' }
 get_imputed_contrasts <- function(data, config, contrasts){
   imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )

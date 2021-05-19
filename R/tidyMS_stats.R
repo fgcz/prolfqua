@@ -1,27 +1,54 @@
 #' compute pooled variance
+#'
+#' following the documentation here:
+#' https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
+#'
 #' @export
+#' @keywords internal
+#' @family stats
+#'
 #' @examples
 #' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 #' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
-#' .compute_pooled(x)
+#' compute_pooled(x)
 #'
 compute_pooled <- function(x){
-  x <- x %>% dplyr::filter(.data$not_na > 1)
-  var <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
-  res <- data.frame(
-    #n = sum(x$n) - nrow(x), #
-    n = sum(x$not_na) - nrow(x),
+  xm <- x %>% dplyr::filter(.data$not_na > 0)
+  mean <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
+  not_na  = sum(xm$not_na)
 
-    not_na  = sum(x$not_na),
-    sd = sqrt(var),
-    var = var,
-    mean = sum(x$mean * x$not_na)/sum(x$not_na)
+  x <- x %>% dplyr::filter(.data$not_na > 1)
+  pooledvar <- sum((x$var * (x$not_na - 1)))/(sum(x$not_na) - nrow(x))
+  df <- sum(x$not_na) - nrow(x)
+
+  sdT <- sqrt(pooledvar) * sqrt(sum(1/x$not_na))
+
+  res <- data.frame(
+    n = df,
+    not_na = not_na,
+    sd = sqrt(pooledvar),
+    var = pooledvar,
+    sdT = sdT,
+    mean = mean
   )
   return(res)
 }
-
-
-.poolvar <- function(res1, config){
+#' pooled variance
+#' @export
+#' @keywords internal
+#' @family stats
+#' @examples
+#'
+#' library(prolfqua)
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$normalized()
+#' config <- bb$config
+#' data <- bb$data
+#'
+#' res1 <- summarize_stats(data, config, all = FALSE)
+#' head(res1)
+#' poolvar(res1, config)
+poolvar <- function(res1, config){
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
   pooled =  purrr::map_df(resp$data, compute_pooled )
   resp$data <- NULL
@@ -37,6 +64,7 @@ compute_pooled <- function(x){
 #' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #'
 #' library(prolfqua)
@@ -46,7 +74,15 @@ compute_pooled <- function(x){
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config, all = FALSE)
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "ILSLAQDQVGGSAEK")
+#' head(res1)
+#' View(res1)
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+#' head(d)
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+#' head(d)
+#' CON__P02769~18~NA VHKECCHGDLLECADDR
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+#' head(d)
 #' res1 %>% dplyr::filter(dilution. == "pooled")
 #' res2 <- summarize_stats(data, config, all = TRUE)
 #'
@@ -63,8 +99,6 @@ summarize_stats <- function(pdata, config, all = TRUE){
 
   hierarchyFactor <- hierarchyFactor %>%
     dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
-  hierPool <- .poolvar(hierarchyFactor, config )
-  hierarchyFactor <- bind_rows(hierarchyFactor, hierPool)
   if (all) {
     hierarchy <- pdata %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
@@ -90,6 +124,7 @@ summarize_stats <- function(pdata, config, all = TRUE){
 #' @param probs for which quantiles 10, 20 etc.
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #' library(ggplot2)
 #' library(prolfqua)
@@ -172,6 +207,7 @@ summarize_stats_quantiles <- function(stats_res,
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #'
 #' library(tidyverse)
@@ -219,6 +255,7 @@ lfq_power_t_test_quantiles_V2 <-
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #'
 #' bb1 <- prolfqua::data_ionstar$normalized()
@@ -281,6 +318,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
@@ -324,6 +362,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
@@ -352,6 +391,7 @@ plot_stat_density <- function(pdata,
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #'
 #' library(prolfqua)
@@ -380,6 +420,7 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @param stat either CV, mean or sd
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
@@ -404,6 +445,7 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
@@ -439,6 +481,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #'
 #' @export
 #' @keywords internal
+#' @family stats
 #' @examples
 #'
 #' library(prolfqua)

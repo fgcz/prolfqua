@@ -79,13 +79,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         result = get_imputed_contrasts(self$lfqdata$data, self$lfqdata$config, self$contrasts)
 
         if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchyKeys())) {
-          # more than experimental
           stop("hierarchy depth < hierarchyKeys(). Please aggregate first.")
-          #result$isSingular <- TRUE
-          #result <- mutate(result,
-          #                 statistic = estimate_median / estimate_mad )
-          #result <- mutate(result,
-          #                 p.value = 2*pt(abs(statistic) , df = 2 , lower.tail = FALSE) )
         } else {
           # compute statistics using pooled variance
           result$isSingular <- TRUE
@@ -93,11 +87,10 @@ ContrastsSimpleImpute <- R6::R6Class(
           result <- select(result , -all_of(c("n","estimate_mad")))
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
-          pooled <- var %>% dplyr::filter(!!sym(self$lfqdata$config$table$fkeysDepth()[1]) == "pooled")
+          pooled <- poolvar(var, self$lfqdata$config)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
-
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
-          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
+          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sdT,
                            p.value = 2*pt(abs(.data$statistic), df = .data$n, lower.tail = FALSE))
           result <- dplyr::rename(result, df = n)
           prqt <- -qt((1 - self$confint)/2, df = result$df)
@@ -781,15 +774,15 @@ Contrasts_Plotter <- R6::R6Class(
 
     },
     #' @description volcano plots (fold change vs FDR)
-    volcano = function(){
-      fig <- private$.volcano(self$contrastDF, self$volcano_spec )
+    volcano = function(colour = "modelName"){
+      fig <- private$.volcano(self$contrastDF, self$volcano_spec, colour = colour )
       self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
       return(fig)
     },
     #' @description plotly volcano plots
-    volcano_plotly = function(){
+    volcano_plotly = function(colour = "modelName"){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
-      res <- private$.volcano(contrastDF, self$volcano_spec )
+      res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
       for (i in 1:length(res)) {
         res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
       }
