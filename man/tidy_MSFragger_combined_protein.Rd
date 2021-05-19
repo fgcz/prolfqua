@@ -21,6 +21,7 @@ if(FALSE){
 }
 \seealso{
 Other MSFragger: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{tidy_MSFragger_MSstats_csv}()}
 }
 \concept{MSFragger}

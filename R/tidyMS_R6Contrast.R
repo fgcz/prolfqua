@@ -20,8 +20,8 @@
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
-#' "dilution.c-e" = "dilution.c - dilution.e")
-#' #ContrastsSimpleImpute$debug("get_contrasts")
+#' "dilution.c-e" = "dilution.c - dilution.b")
+#' #ContrastsSimpleImpute$undebug("get_contrasts")
 #' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 #' bb <- tmp$get_contrasts()
 #' tmp$get_contrast_sides()
@@ -31,6 +31,10 @@
 #' pl$histogram_estimate()
 #' pl$ma_plot()
 #' pl$volcano()
+#'
+#' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts, method = "V2")
+#' pl <- tmp$get_Plotter()
+#' pl$histogram()
 #'
 ContrastsSimpleImpute <- R6::R6Class(
   "ContrastSimple",
@@ -48,6 +52,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @field confint
     confint = 0.95,
     p.adjust = NULL,
+    method = "V1",
     #' @description initialize
     #' @param lfqdata LFQData
     #' @param contrasts array of contrasts (see example)
@@ -56,13 +61,15 @@ ContrastsSimpleImpute <- R6::R6Class(
                           contrasts,
                           confint = 0.95,
                           p.adjust = prolfqua::adjust_p_values,
-                          modelName = "groupAverage"){
+                          modelName = "groupAverage",
+                          method = "V1"){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
       self$modelName = modelName
       self$lfqdata = lfqdata
       self$confint = confint
       self$p.adjust = p.adjust
+      self$method = method
 
     },
     #' @description get contrasts sides
@@ -87,18 +94,18 @@ ContrastsSimpleImpute <- R6::R6Class(
           result <- select(result , -all_of(c("n","estimate_mad")))
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
-          pooled <- poolvar(var, self$lfqdata$config)
+          pooled <- poolvar(var, self$lfqdata$config, method = self$method)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
-                           p.value = 2*pt(abs(.data$statistic), df = .data$n, lower.tail = FALSE))
-          result <- dplyr::rename(result, df = n)
+                           p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
+          #result <- dplyr::rename(result, df = n)
           prqt <- -qt((1 - self$confint)/2, df = result$df)
           result$conf.low <- result$estimate_median  - prqt * result$sd
           result$conf.high <- result$estimate_median + prqt * result$sd
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
           if (!all) {
-            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" ) ) )
+            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" , "sdT") ) )
           }
 
         }

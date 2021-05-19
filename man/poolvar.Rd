@@ -4,7 +4,7 @@
 \alias{poolvar}
 \title{pooled variance}
 \usage{
-poolvar(res1, config)
+poolvar(res1, config, method = c("V1", "V2"))
 }
 \description{
 pooled variance
@@ -19,6 +19,7 @@ data <- bb$data
 
 res1 <- summarize_stats(data, config, all = FALSE)
 head(res1)
+undebug(poolvar)
 poolvar(res1, config)
 }
 \seealso{

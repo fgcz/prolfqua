@@ -45,6 +45,7 @@ NULL
 #' @family preprocessing
 #' @family benchmarking
 #' @family MaxQuant
+#' @family MSFragger
 #' @family stats
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'

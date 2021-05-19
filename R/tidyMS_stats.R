@@ -4,6 +4,10 @@
 #' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
 #' pooled_V2(na.omit(x))
 #' pooled_V1(na.omit(x))
+#' x <- x[1,, drop=FALSE]
+#' x
+#' na.omit(x)
+#' pooled_V2(na.omit(x))
 pooled_V2 <- function(x){
 
   n <- x$not_na
@@ -17,11 +21,11 @@ pooled_V2 <- function(x){
   SS <- (n - 1) * sample.var
   pool.SS <- sum(SS) + sum(n * deviation^2)
   pool.var <- pool.SS/(pool.n - 1)
-
+  n.groups <-  length(sample.var)
   res <- data.frame(
-    n.groups = length(sample.var),
+    n.groups = n.groups,
     n = pool.n,
-    df = n - n.groups,
+    df = pool.n - n.groups,
     sd = sqrt(pool.var),
     var = pool.var,
     mean = pool.mean
@@ -35,12 +39,18 @@ pooled_V1 <- function(x){
   sample.mean <- x$mean
   pool.n <- sum(n)
 
-  pool.var <- sum((sample.var * (n - 1)))/(sum(n) - nrow(x))
+  n.groups <- length(sample.var)
+  SS <- (n - 1) * sample.var
+  pool.var <- sum(SS)/(pool.n - n.groups)
+
+  #SS <- (n) * sample.var
+  #pool.var <- sum(SS)/(pool.n)
+
   pool.mean <- sum(sample.mean * n)/pool.n
   res <- data.frame(
-    n.groups = length(sample.var),
+    n.groups = n.groups,
     n = pool.n,
-    df = n-n.groups,
+    df = pool.n - n.groups,
     sd = sqrt(pool.var),
     var = pool.var,
     mean = pool.mean
@@ -61,26 +71,33 @@ pooled_V1 <- function(x){
 #' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 #' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
 #' compute_pooled(x)
-#'
-compute_pooled <- function(x){
+#' compute_pooled(x, method = "V2")
+#' #debug(compute_pooled)
+#' y <- data.frame(dilution.=c("a","b","c"),
+#'      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
+#'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
+#' compute_pooled(y)
+#' yb <- y %>% filter(not_na > 1)
+#' prolfqua:::pooled_V2(yb)
+#' prolfqua:::pooled_V1(yb)
+compute_pooled <- function(x, method = c("V1","V2")){
+  method <- match.arg(method)
   xm <- x %>% dplyr::filter(.data$not_na > 0)
-  mean <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
+  meanAll <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
   not_na  = sum(xm$not_na)
 
+  func <- prolfqua:::pooled_V1
+  if (method == "V2") {
+    func <- prolfqua:::pooled_V2
+  }
   x <- x %>% dplyr::filter(.data$not_na > 1)
-  res <- pooled_V2(x)
 
-  sdT <- sqrt(pooledvar) * sqrt(sum(1/x$not_na))
-  res$n <-
+  res <- func(x)
 
-  res <- data.frame(
-    n = df,
-    not_na = not_na,
-    sd = sqrt(pooledvar),
-    var = pooledvar,
-    sdT = sdT,
-    mean = mean
-  )
+  # sdT <- sqrt(x$var) * sqrt(sum(1/x$not_na))
+  res$sdT <- sqrt(res$var) * sqrt(sum(1/x$not_na))
+  res$meanAll <- meanAll
+  res$not_na <- not_na
   return(res)
 }
 #' pooled variance
@@ -97,10 +114,17 @@ compute_pooled <- function(x){
 #'
 #' res1 <- summarize_stats(data, config, all = FALSE)
 #' head(res1)
+#' undebug(poolvar)
 #' poolvar(res1, config)
-poolvar <- function(res1, config){
+poolvar <- function(res1, config,  method = c("V1","V2")){
+  method <- match.arg(method)
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
-  pooled =  purrr::map_df(resp$data, compute_pooled )
+  pooled <- vector(length = length(resp$data), mode = "list")
+  for(i in 1:length(resp$data)){
+    #print(i)
+    pooled[[i]] <- compute_pooled(resp$data[[i]], method = method)
+  }
+  pooled =  bind_rows(pooled)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp %>% mutate(!!config$table$factorKeys()[1] := "pooled")

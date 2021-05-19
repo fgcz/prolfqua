@@ -158,6 +158,10 @@ Other MaxQuant:
 \code{\link{tidyMQ_modificationSpecificPeptides}()},
 \code{\link{tidyMQ_top_protein_name}()}
 
+Other MSFragger: 
+\code{\link{tidy_MSFragger_MSstats_csv}()},
+\code{\link{tidy_MSFragger_combined_protein}()}
+
 Other stats: 
 \code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
@@ -172,6 +176,7 @@ Other stats:
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }
+\concept{MSFragger}
 \concept{MaxQuant}
 \concept{aggregation}
 \concept{benchmarking}

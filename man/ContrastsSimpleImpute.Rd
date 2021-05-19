@@ -23,8 +23,8 @@ configur$table$hierarchyDepth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
-"dilution.c-e" = "dilution.c - dilution.e")
-#ContrastsSimpleImpute$debug("get_contrasts")
+"dilution.c-e" = "dilution.c - dilution.b")
+#ContrastsSimpleImpute$undebug("get_contrasts")
 tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 bb <- tmp$get_contrasts()
 tmp$get_contrast_sides()
@@ -34,6 +34,10 @@ pl$histogram()
 pl$histogram_estimate()
 pl$ma_plot()
 pl$volcano()
+
+tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts, method = "V2")
+pl <- tmp$get_Plotter()
+pl$histogram()
 
 }
 \seealso{
@@ -118,7 +122,8 @@ initialize
   contrasts,
   confint = 0.95,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = "groupAverage"
+  modelName = "groupAverage",
+  method = "V1"
 )}\if{html}{\out{</div>}}
 }
 

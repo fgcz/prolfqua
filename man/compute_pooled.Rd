@@ -4,7 +4,7 @@
 \alias{compute_pooled}
 \title{compute pooled variance}
 \usage{
-compute_pooled(x)
+compute_pooled(x, method = c("V1", "V2"))
 }
 \description{
 following the documentation here:
@@ -14,7 +14,15 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
 x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
 compute_pooled(x)
-
+compute_pooled(x, method = "V2")
+#debug(compute_pooled)
+y <- data.frame(dilution.=c("a","b","c"),
+     n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
+     var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
+compute_pooled(y)
+yb <- y \%>\% filter(not_na > 1)
+prolfqua:::pooled_V2(yb)
+prolfqua:::pooled_V1(yb)
 }
 \seealso{
 Other stats: 
