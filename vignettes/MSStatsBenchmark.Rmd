@@ -21,13 +21,19 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 evalAll <- TRUE
+res <- require("MSstats")
+if(!res){
+  evalAll <- FALSE
+}
 ```
 
 # Setting up analysis
 
+
 ```{r eval=evalAll}
 library(MSstats)
 library(magrittr)
+
 # Read in MaxQuant files
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir,
@@ -146,20 +152,20 @@ table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrast
 
 ```
 
-```{r fig.cap="ROC curves"}
+```{r fig.cap="ROC curves", eval = evalAll}
 res <- benchmark_msstats$pAUC_summaries()
 res$barp
 ```
 
-```{r fig.cap="plot ROC curves"}
+```{r fig.cap="plot ROC curves", eval = evalAll}
 #res$ftable
 benchmark_msstats$plot_ROC(xlim = 0.2)
 ```
 
-```{r fig.cap = "plot FDR vs FDP"}
+```{r fig.cap = "plot FDR vs FDP",eval = evalAll}
 benchmark_msstats$plot_FDRvsFDP()
 ```
 
-```{r}
+```{r,eval = evalAll}
 benchmark_msstats$plot_FDPvsTPR()
 ```
