@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -81,6 +81,12 @@
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
+    </li>
+    <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
@@ -121,13 +127,13 @@
 
       
 
-      </header><script src="QCandSampleSize_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="QCandSampleSize_files/header-attrs-2.8/header-attrs.js"></script><script src="QCandSampleSize_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Quality Control &amp; Sample Size Estimation</h1>
                         <h4 class="author"><a href="mailto:WEW@FGCZ.ETHZ.CH" class="email">WEW@FGCZ.ETHZ.CH</a></h4>
             
-            <h4 class="date">2021-03-29</h4>
+            <h4 class="date">2021-05-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/QCandSampleSize.Rmd"><code>vignettes/QCandSampleSize.Rmd</code></a></small>
       <div class="hidden name"><code>QCandSampleSize.Rmd</code></div>
@@ -149,9 +155,9 @@
 <div id="quality-control-identifications" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quality-control-identifications" class="anchor"></a>Quality Control: Identifications</h1>
-<p>Here we summarize the number of peptides measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins , and between a few hundred to up to some few tens of thousands of peptides. While the overall number of proteins and peptides can highly vary depending of the type of experiment, it is crucial that the number of proteins and peptides between your biological replicates is similar (reproducibility). Table @ref(tab:hierarchyCounts) summarizes the number of proteins and peptides of proteins and peptides in all samples.</p>
+<p>Here we summarize the number of peptides measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins , and between a few hundred to up to some few tens of thousands of peptides. While the overall number of proteins and peptides can highly vary depending of the type of experiment, it is crucial that the number of proteins and peptides between your biological replicates is similar (reproducibility).</p>
 <table class="table">
-<caption>Nr of proteins and peptides detected in all samples.</caption>
+<caption>Nr ofproteins and peptides detected in all samples.</caption>
 <thead><tr class="header">
 <th align="left">NR.isotope</th>
 <th align="right">NR.protein_Id</th>
@@ -185,7 +191,7 @@
 </div>
 <p>(ref:missingnessHeatmap) Heatmap of missing peptide quantifications clustered by sample.</p>
 <div class="figure" style="text-align: center">
-<img src="QCandSampleSize_files/figure-html/missingnessHeatmap-1.png" alt="(ref:missingnessHeatmap)" width="432"><p class="caption">
+<img src="QCandSampleSize_files/figure-html/missingnessHeatmap-1.png" alt="(ref:missingnessHeatmap)" width="768"><p class="caption">
 (ref:missingnessHeatmap)
 </p>
 </div>
@@ -259,7 +265,7 @@ Density plot of peptide level Coefficient of Variations (CV).
 </tbody>
 </table>
 <div class="figure" style="text-align: center">
-<img src="QCandSampleSize_files/figure-html/intensityDistribution-1.png" alt="Distribution of unnormalized intensities." width="528"><p class="caption">
+<img src="QCandSampleSize_files/figure-html/intensityDistribution-1.png" alt="Distribution of unnormalized intensities." width="768"><p class="caption">
 Distribution of unnormalized intensities.
 </p>
 </div>
@@ -270,13 +276,13 @@ Distribution of unnormalized intensities.
 <p>We <span class="math inline">\(\log_2\)</span> transformed and applied the <code><a href="../reference/robust_scale.html">prolfqua::robust_scale()</a></code> transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure @ref(fig:plotTransformedIntensityDistributions)). Because of this, we can’t report CV anymore but report standard deviations (sd). Figure @ref(fig:sdviolinplots) shows the distribution of the peptide standard deviations while Figure @ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table @ref(tab:printSDTable) summarises the sd. The heatmap in Figure @ref(fig:correlationHeat) envisages the correlation between the QC samples.</p>
 <p>(ref:plotTransformedIntensityDistributions) Peptide intensity distribution after transformation.</p>
 <div class="figure" style="text-align: center">
-<img src="QCandSampleSize_files/figure-html/plotTransformedIntensityDistributions-1.png" alt="(ref:plotTransformedIntensityDistributions)" width="528"><p class="caption">
+<img src="QCandSampleSize_files/figure-html/plotTransformedIntensityDistributions-1.png" alt="(ref:plotTransformedIntensityDistributions)" width="768"><p class="caption">
 (ref:plotTransformedIntensityDistributions)
 </p>
 </div>
 <p>(ref:correlationHeat) Heatmap of peptide intensity correlation between samples.</p>
 <div class="figure" style="text-align: center">
-<img src="QCandSampleSize_files/figure-html/correlationHeat-1.png" alt="(ref:correlationHeat)" width="528"><p class="caption">
+<img src="QCandSampleSize_files/figure-html/correlationHeat-1.png" alt="(ref:correlationHeat)" width="768"><p class="caption">
 (ref:correlationHeat)
 </p>
 </div>
@@ -358,7 +364,7 @@ Pairsplot - scatterplot of samples.
 </table>
 <p>(ref:overviewHeat) Sample and peptide Heatmap.</p>
 <div class="figure" style="text-align: center">
-<img src="QCandSampleSize_files/figure-html/overviewHeat-1.png" alt="(ref:overviewHeat)" width="768"><p class="caption">
+<img src="QCandSampleSize_files/figure-html/overviewHeat-1.png" alt="(ref:overviewHeat)" width="960"><p class="caption">
 (ref:overviewHeat)
 </p>
 </div>

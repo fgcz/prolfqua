@@ -73,7 +73,7 @@ plot contrasts" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -121,6 +121,12 @@ plot contrasts" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -188,6 +194,7 @@ plot contrasts" />
 <code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href='LR_test.html'>LR_test</a>()</code>,
 <code><a href='Model.html'>Model</a></code>,
+<code><a href='addContrastResults.html'>addContrastResults</a>()</code>,
 <code><a href='build_model.html'>build_model</a>()</code>,
 <code><a href='get_complete_model_fit.html'>get_complete_model_fit</a>()</code>,
 <code><a href='get_imputed_contrasts.html'>get_imputed_contrasts</a>()</code>,
@@ -318,12 +325,12 @@ plot contrasts" />
 <p><hr>
 <a id="method-volcano"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/datasets/volcano.html'>volcano()</a></code></h3>
 <p>volcano plots (fold change vs FDR)</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Contrasts_Plotter</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>Contrasts_Plotter</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"modelName"</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-volcano_plotly"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>volcano_plotly()</code></h3>
 <p>plotly volcano plots</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Contrasts_Plotter</span><span class='op'>$</span><span class='fu'>volcano_plotly</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>Contrasts_Plotter</span><span class='op'>$</span><span class='fu'>volcano_plotly</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"modelName"</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-ma_plot"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>ma_plot()</code></h3>
@@ -391,9 +398,9 @@ plot contrasts" />
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span>list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>modelName</span> <span class='op'>&lt;-</span> <span class='st'>"Model"</span>
 <span class='va'>modelFunction</span> <span class='op'>&lt;-</span>
@@ -449,7 +456,7 @@ histogram <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/
 #&gt;         return(NULL)
 #&gt;     }
 #&gt; }
-#&gt; &lt;environment: 0x000000004be0a780&gt;</div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
+#&gt; &lt;environment: 0x00000000046781f8&gt;</div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>{</span>
   <span class='va'>cp</span><span class='op'>$</span><span class='fu'>write_pdf</span><span class='op'>(</span><span class='st'>"c:/Temp"</span><span class='op'>)</span>
   <span class='va'>cp</span><span class='op'>$</span><span class='fu'>write_plotly</span><span class='op'>(</span><span class='st'>"c:/Temp"</span><span class='op'>)</span>
 <span class='op'>}</span>

@@ -1,4 +1,4 @@
-pandoc: 2.11.2
+pandoc: 2.9.2.1
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -11,6 +11,8 @@ articles:
   Comparing2Groups: Comparing2Groups.html
   CreatingConfigurations: CreatingConfigurations.html
   Modelling2Factors: Modelling2Factors.html
+  MSStatsBenchmark: MSStatsBenchmark.html
+  Preprocessing2Factors: Preprocessing2Factors.html
   QCandSampleSize: QCandSampleSize.html
   QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
   Supplement_srm_summary: Supplement_srm_summary.html
@@ -18,5 +20,5 @@ articles:
   Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
   Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
   Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
-last_built: 2021-03-29T14:00Z
+last_built: 2021-05-20T08:46Z
 

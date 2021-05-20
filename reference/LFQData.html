@@ -73,7 +73,7 @@ LFQData R6 class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -121,6 +121,12 @@ LFQData R6 class" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -213,6 +219,7 @@ LFQData R6 class" />
 <li><p><a href='#method-complete_cases'><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href='#method-to_wide'><code>LFQData$to_wide()</code></a></p></li>
 <li><p><a href='#method-factors'><code>LFQData$factors()</code></a></p></li>
+<li><p><a href='#method-hierarchy_counts'><code>LFQData$hierarchy_counts()</code></a></p></li>
 <li><p><a href='#method-summarize_hierarchy'><code>LFQData$summarize_hierarchy()</code></a></p></li>
 <li><p><a href='#method-get_Plotter'><code>LFQData$get_Plotter()</code></a></p></li>
 <li><p><a href='#method-get_Writer'><code>LFQData$get_Writer()</code></a></p></li>
@@ -247,11 +254,13 @@ LFQData R6 class" />
 <p><hr>
 <a id="method-get_sample"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_sample()</code></h3>
 <p>samples subset of data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>get_sample</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>get_sample</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>100</span>, seed <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>size</code></dt><dd><p>size of subset default 100</p></dd>
+
+<dt><code>seed</code></dt><dd><p>set seed</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -329,6 +338,11 @@ For instance if a peptide has a missing value in any of the samples it will be r
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>data.frame</p>
+<p><hr>
+<a id="method-hierarchy_counts"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='hierarchy_counts.html'>hierarchy_counts()</a></code></h3>
+<p>number of elements at each level</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>hierarchy_counts</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
 <p><hr>
 <a id="method-summarize_hierarchy"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='summarize_hierarchy.html'>summarize_hierarchy()</a></code></h3>
 <p>e.g. number of peptides per protein etc</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -412,10 +426,10 @@ For instance if a peptide has a missing value in any of the samples it will be r
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
 
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
@@ -474,11 +488,12 @@ For instance if a peptide has a missing value in any of the samples it will be r
 #&gt;     get_Aggregator: function () 
 #&gt;     get_copy: function () 
 #&gt;     get_Plotter: function () 
-#&gt;     get_sample: function (size = 100) 
+#&gt;     get_sample: function (size = 100, seed = NULL) 
 #&gt;     get_Stats: function () 
 #&gt;     get_Summariser: function () 
 #&gt;     get_Transformer: function () 
 #&gt;     get_Writer: function (format = "xlsx") 
+#&gt;     hierarchy_counts: function () 
 #&gt;     initialize: function (data, config, is_pep = TRUE, prefix = "ms_") 
 #&gt;     is_pep: TRUE
 #&gt;     is_transformed: function (is_transformed) 

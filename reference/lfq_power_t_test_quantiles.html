@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -120,6 +120,12 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -208,91 +214,42 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other stats: 
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='compute_pooled.html'>compute_pooled</a>()</code>,
+<code><a href='lfq_power_t_test_proteins.html'>lfq_power_t_test_proteins</a>()</code>,
+<code><a href='lfq_power_t_test_quantiles_V2.html'>lfq_power_t_test_quantiles_V2</a>()</code>,
+<code><a href='plot_stat_density_median.html'>plot_stat_density_median</a>()</code>,
+<code><a href='plot_stat_density.html'>plot_stat_density</a>()</code>,
+<code><a href='plot_stat_violin_median.html'>plot_stat_violin_median</a>()</code>,
+<code><a href='plot_stat_violin.html'>plot_stat_violin</a>()</code>,
+<code><a href='plot_stdv_vs_mean.html'>plot_stdv_vs_mean</a>()</code>,
+<code><a href='poolvar.html'>poolvar</a>()</code>,
+<code><a href='summarize_stats_quantiles.html'>summarize_stats_quantiles</a>()</code>,
+<code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
 
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
-<span class='va'>res</span>
-</div><div class='output co'>#&gt; $long
-#&gt;   quantile probs        sd delta  N_exact N FC
-#&gt; 1      50%   0.5 0.1964909     1 2.098698 3  2
-#&gt; 2      60%   0.6 0.2398376     1 2.348303 3  2
-#&gt; 3      70%   0.7 0.2951539     1 2.742047 3  2
-#&gt; 4      80%   0.8 0.3731692     1 3.464832 4  2
-#&gt; 5      90%   0.9 0.5566183     1 5.994641 6  2
-#&gt; 
-#&gt; $summary
-#&gt;   quantile probs        sd FC=2
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span><span class='op'>$</span><span class='va'>summary</span>
+</div><div class='output co'>#&gt;   quantile probs        sd FC=2
 #&gt; 1      50%   0.5 0.1964909    3
 #&gt; 2      60%   0.6 0.2398376    3
 #&gt; 3      70%   0.7 0.2951539    3
 #&gt; 4      80%   0.8 0.3731692    4
-#&gt; 5      90%   0.9 0.5566183    6
-#&gt; </div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='va'>stats_res</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6,445 x 7</span><span>
-#&gt;    protein_Id       peptide_Id      dilution.     n not_na     sd    mean
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P01030~9~NA AELADQAASWLTR   a             4      1 </span><span style='color: #BB0000;'>NA</span><span>      -</span><span style='color: #BB0000;'>1.73</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P01030~9~NA AELADQAASWLTR   b             4      1 </span><span style='color: #BB0000;'>NA</span><span>      -</span><span style='color: #BB0000;'>2.40</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P01030~9~NA AELADQAASWLTR   c             4      0 </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P01030~9~NA AELADQAASWLTR   d             4      0 </span><span style='color: #BB0000;'>NA</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P01030~9~NA AELADQAASWLTR   e             4      2  0.647  -</span><span style='color: #BB0000;'>2.21</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK a             4      4  0.499  -</span><span style='color: #BB0000;'>0.973</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK b             4      4  0.544  -</span><span style='color: #BB0000;'>1.03</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK c             4      4  0.384  -</span><span style='color: #BB0000;'>1.15</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK d             4      4  0.391  -</span><span style='color: #BB0000;'>1.41</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P01030~9~NA ILSLAQDQVGGSAEK e             4      4  0.403  -</span><span style='color: #BB0000;'>1.35</span><span> 
-#&gt; </span><span style='color: #949494;'># ... with 6,435 more rows</span><span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>res</span>
-</div><div class='output co'>#&gt; $long
-#&gt;   quantile probs        sd delta  N_exact N FC
-#&gt; 1      50%   0.5 0.1964909     2 1.668069 2  4
-#&gt; 2      60%   0.6 0.2398376     2 1.751737 2  4
-#&gt; 3      70%   0.7 0.2951539     2 1.866111 2  4
-#&gt; 4      80%   0.8 0.3731692     2 2.047834 3  4
-#&gt; 5      90%   0.9 0.5566183     2 2.612338 3  4
-#&gt; 
-#&gt; $summary
-#&gt;   quantile probs        sd FC=4
-#&gt; 1      50%   0.5 0.1964909    2
-#&gt; 2      60%   0.6 0.2398376    2
-#&gt; 3      70%   0.7 0.2951539    2
-#&gt; 4      80%   0.8 0.3731692    3
-#&gt; 5      90%   0.9 0.5566183    3
-#&gt; </div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>res</span>
-</div><div class='output co'>#&gt; $long
-#&gt;    quantile probs        sd delta   N_exact  N   FC
-#&gt; 1       50%   0.5 0.1964909   0.5  3.681683  4 1.41
-#&gt; 2       60%   0.6 0.2398376   0.5  4.791962  5 1.41
-#&gt; 3       70%   0.7 0.2951539   0.5  6.584286  7 1.41
-#&gt; 4       80%   0.8 0.3731692   0.5  9.803998 10 1.41
-#&gt; 5       90%   0.9 0.5566183   0.5 20.460423 21 1.41
-#&gt; 6       50%   0.5 0.1964909   1.0  2.098698  3 2.00
-#&gt; 7       60%   0.6 0.2398376   1.0  2.348303  3 2.00
-#&gt; 8       70%   0.7 0.2951539   1.0  2.742047  3 2.00
-#&gt; 9       80%   0.8 0.3731692   1.0  3.464832  4 2.00
-#&gt; 10      90%   0.9 0.5566183   1.0  5.994641  6 2.00
-#&gt; 11      50%   0.5 0.1964909   2.0  1.668069  2 4.00
-#&gt; 12      60%   0.6 0.2398376   2.0  1.751737  2 4.00
-#&gt; 13      70%   0.7 0.2951539   2.0  1.866111  2 4.00
-#&gt; 14      80%   0.8 0.3731692   2.0  2.047834  3 4.00
-#&gt; 15      90%   0.9 0.5566183   2.0  2.612338  3 4.00
-#&gt; 
-#&gt; $summary
-#&gt;   quantile probs        sd FC=1.41 FC=2 FC=4
-#&gt; 1      50%   0.5 0.1964909       4    3    2
-#&gt; 2      60%   0.6 0.2398376       5    3    2
-#&gt; 3      70%   0.7 0.2951539       7    3    2
-#&gt; 4      80%   0.8 0.3731692      10    4    3
-#&gt; 5      90%   0.9 0.5566183      21    6    3
-#&gt; </div><div class='input'>
-</div></span></pre>
+#&gt; 5      90%   0.9 0.5566183    6</div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>stats_res</span><span class='op'>$</span><span class='va'>dilution.</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "a" "b" "c" "d" "e"</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

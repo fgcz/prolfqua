@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -120,6 +120,12 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -202,16 +208,31 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other stats: 
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='compute_pooled.html'>compute_pooled</a>()</code>,
+<code><a href='lfq_power_t_test_proteins.html'>lfq_power_t_test_proteins</a>()</code>,
+<code><a href='lfq_power_t_test_quantiles_V2.html'>lfq_power_t_test_quantiles_V2</a>()</code>,
+<code><a href='lfq_power_t_test_quantiles.html'>lfq_power_t_test_quantiles</a>()</code>,
+<code><a href='plot_stat_density.html'>plot_stat_density</a>()</code>,
+<code><a href='plot_stat_violin_median.html'>plot_stat_violin_median</a>()</code>,
+<code><a href='plot_stat_violin.html'>plot_stat_violin</a>()</code>,
+<code><a href='plot_stdv_vs_mean.html'>plot_stdv_vs_mean</a>()</code>,
+<code><a href='poolvar.html'>poolvar</a>()</code>,
+<code><a href='summarize_stats_quantiles.html'>summarize_stats_quantiles</a>()</code>,
+<code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ionstar.html'>ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
-<span class='fu'>plot_stat_density_median</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>,<span class='st'>"CV"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>plot_stat_density_median</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>,<span class='st'>"CV"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_stat_density_median-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_stat_density_median</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>,<span class='st'>"mean"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_stat_density_median-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_stat_density_median</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>,<span class='st'>"sd"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_stat_density_median-3.png' alt='' width='700' height='433' /></div></pre>

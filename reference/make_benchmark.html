@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -120,6 +120,12 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -177,15 +183,15 @@
     <pre class="usage"><span class='fu'>make_benchmark</span><span class='op'>(</span>
   <span class='va'>prpr</span>,
   contrast <span class='op'>=</span> <span class='st'>"contrast"</span>,
-  toscale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"p.value"</span>, <span class='st'>"moderated.p.value"</span><span class='op'>)</span>,
+  toscale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"p.value"</span><span class='op'>)</span>,
+  fcestimate <span class='op'>=</span> <span class='st'>"estimate"</span>,
   benchmark <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"estimate"</span>, desc <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"statistic"</span>, desc <span class='op'>=</span>
-    <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"scaled.p.value"</span>, desc <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span>
-    <span class='st'>"scaled.moderated.p.value"</span>, desc <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
-  FDRvsFDP <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"p.value.adjusted"</span>, desc <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span>
-    <span class='st'>"moderated.p.value.adjusted"</span>, desc <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>,
+    <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"scaled.p.value"</span>, desc <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
+  FDRvsFDP <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"FDR"</span>, desc <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>,
   model_description <span class='op'>=</span> <span class='st'>"protein level measurments, linear model"</span>,
   model_name <span class='op'>=</span> <span class='st'>"prot_med_lm"</span>,
-  hierarchy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"protein_Id"</span><span class='op'>)</span>
+  hierarchy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"protein_Id"</span><span class='op'>)</span>,
+  summarizeNA <span class='op'>=</span> <span class='st'>"statistic"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

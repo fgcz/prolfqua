@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -120,6 +120,12 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+    </li>
+    <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -185,7 +191,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>modelSummary_A</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='modellingResult_A.html'>modellingResult_A</a></span>
+<span class='va'>modelSummary_A</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_modellingResult_A.html'>data_modellingResult_A</a></span>
 <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_complete_model_fit.html'>get_complete_model_fit</a></span><span class='op'>(</span><span class='va'>modelSummary_A</span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>)</span>
 
 <span class='va'>factor_contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_factors_contrasts.html'>linfct_factors_contrasts</a></span><span class='op'>(</span> <span class='va'>m</span><span class='op'>$</span><span class='va'>linear_model</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
@@ -209,9 +215,9 @@
 </div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='input'>
 <span class='co'>#usethis::use_data(factor_levelContrasts, overwrite = TRUE)</span>
 
-<span class='va'>models_interaction</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='models_interaction.html'>models_interaction</a></span>
+<span class='va'>data_models_interaction</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_models_interaction.html'>data_models_interaction</a></span>
 
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_complete_model_fit.html'>get_complete_model_fit</a></span><span class='op'>(</span><span class='va'>models_interaction</span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>)</span>
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_complete_model_fit.html'>get_complete_model_fit</a></span><span class='op'>(</span><span class='va'>data_models_interaction</span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>)</span>
 <span class='va'>m</span><span class='op'>$</span><span class='va'>linear_model</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Linear mixed model fit by REML ['lmerModLmerTest']
 #&gt; Formula: formula

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
       </span>
     </div>
 
@@ -81,6 +81,12 @@
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
+      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
+    </li>
+    <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
@@ -121,13 +127,13 @@
 
       
 
-      </header><script src="Supplement_TidyAnalysis_HL_Skyline_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="Supplement_TidyAnalysis_HL_Skyline_files/header-attrs-2.8/header-attrs.js"></script><script src="Supplement_TidyAnalysis_HL_Skyline_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Supplement - Data preprocessing of SRM Heavy Light data</h1>
                         <h4 class="author">Functional Genomics Center Zurich</h4>
             
-            <h4 class="date">29 March, 2021</h4>
+            <h4 class="date">20 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd"><code>vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_TidyAnalysis_HL_Skyline.Rmd</code></div>
@@ -139,7 +145,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/conflicted">conflicted</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -147,7 +153,7 @@
 <h1 class="hasAnchor">
 <a href="#setting-up-the-configuration" class="anchor"></a>Setting up the configuration</h1>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">allDataM</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/skylineSRM_HL_A.html">skylineSRM_HL_A</a></span><span class="op">$</span><span class="va">data</span>
+<code class="sourceCode R"><span class="va">allDataM</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/data_skylineSRM_HL_A.html">data_skylineSRM_HL_A</a></span><span class="op">$</span><span class="va">data</span>
 
 
 <span class="va">skylineconfig</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_config_Skyline.html">create_config_Skyline</a></span><span class="op">(</span>isotopeLabel <span class="op">=</span> <span class="st">"Isotope.Label"</span>,
