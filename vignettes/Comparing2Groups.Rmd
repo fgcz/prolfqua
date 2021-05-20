@@ -236,7 +236,7 @@ colnames(mC$get_contrasts())
 Merging both results.
 
 ```{r}
-merged <- prolfqua::addContrastResults
+merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
 merged$modelName <- as.factor(merged$modelName)
 plotter <- Contrasts_Plotter$new(contrastDF = merged , subject_Id = contr$subject_Id)
 

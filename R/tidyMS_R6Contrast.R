@@ -95,7 +95,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
-          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth(),"var")))
+          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
                            p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))

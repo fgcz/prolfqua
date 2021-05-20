@@ -19,9 +19,11 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 evalAll <- TRUE
 ```
+
+# Setting up analysis
 
 ```{r eval=evalAll}
 library(MSstats)
@@ -53,7 +55,6 @@ raw <- MaxQtoMSstatsFormat(evidence = infile,
                            proteinGroups = proteinGroups,
                            removeProtein_with1Peptide = TRUE)
 
-dim(raw)
 
 ```
 
@@ -68,9 +69,9 @@ QuantData <- dataProcess(raw)
 # Quantification plot for conditions
 #dataProcessPlots(data=QuantData, type = "ConditionPlot")
 
-QuantData$RunlevelData$Protein
-
 ```
+
+# Defining Contrasts and computing group comparisons
 
 ```{r computeContrasts, eval = evalAll}
 
@@ -111,8 +112,6 @@ names(testResultMultiComparisons)
 length(testResultMultiComparisons$fittedmodel)
 bb <- testResultMultiComparisons$ComparisonResult
 
-length(unique(bb$Protein))
-
 
 ```
 
@@ -122,13 +121,10 @@ length(unique(bb$Protein))
 library(prolfqua)
 #saveRDS(bb, file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
 #bb <- readRDS(file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
-mean(is.na(bb$pvalue))
-mean(is.na(bb$Tvalue))
-mean(is.na(bb$log2FC))
 
 ttd <- prolfqua::ionstar_bench_preprocess(bb, idcol = "Protein")
 head(ttd$data)
-#Benchmark$debug("pAUC_summaries")
+
 benchmark_msstats <- make_benchmark(ttd$data,
                                    contrast = "Label",
                                 toscale = c("pvalue"),
@@ -147,10 +143,10 @@ sum(benchmark_msstats$smc$summary$Protein)
 
 sumarry <- benchmark_msstats$smc$summary
 table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
+
 ```
 
 ```{r fig.cap="ROC curves"}
-
 res <- benchmark_msstats$pAUC_summaries()
 res$barp
 ```
@@ -166,5 +162,4 @@ benchmark_msstats$plot_FDRvsFDP()
 
 ```{r}
 benchmark_msstats$plot_FDPvsTPR()
-
 ```

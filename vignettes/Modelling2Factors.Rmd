@@ -14,14 +14,23 @@ editor_options:
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
 # Model Fitting
 
 ```{r specifyModel}
 library(prolfqua)
 library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
+
 pMerged <- prolfqua::data_Yeast2Factor
+pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
 pMerged$config$table$getWorkIntensity()
+pMerged$factors()
+
 
 formula_Batches <-
   strategy_lm("transformedIntensity ~ condition_ * batch_ ")
@@ -62,7 +71,6 @@ Examine proteins with a significant interaction between the two factors treatmen
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
-unique(ANOVA$factor)
 ANOVA %>% filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head(5)
 protIntSig <- ANOVA %>% filter(factor == "condition_:batch_") %>% filter(FDR.Pr..F. < 0.05)
 protInt <-  pMerged$get_copy()
@@ -72,7 +80,6 @@ protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,
 
 ```{r fig.with=15, fig.height=15}
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
-
 ```
 
 # Compute contrasts
@@ -91,24 +98,12 @@ plotter$ma_plot()
 ```
 
 
-```{r}
-
-sigInteraction <- contrdf %>% 
-  filter(contrast == "Interaction" & FDR < 0.1)
-protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
-hm <- protInt$get_Plotter()$heatmap()
-
-```
-
-```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
-hm
-```
-
 
 ## Annalyse contrasts with missing data imputation
 
 ```{r}
+pMerged$config$table$fkeysDepth()
+#ContrastsSimpleImpute$debug("get_contrasts")
 contrSimple <- ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
@@ -117,23 +112,45 @@ pl$volcano()
 
 ```
 
-```{r}
-contrSimpleMod <- ContrastsModerated$new(contrSimple)
-contrdfSimpleMod <- contrSimpleMod$get_contrasts()
-dim(contrdfSimple)
-dim(contrdfSimpleMod)
-
-plm <- contrSimpleMod$get_Plotter()
-
-plm$histogram_estimate()
-plm$volcano()
-
-```
 
 ## Merge nonimputed and imputed data.
 
 ```{r}
-dim(contr$get_contrasts())
-dim(contrSimpleMod$get_contrasts())
 
+dim(contr$get_contrasts())
+dim(contrSimple$get_contrasts())
+
+mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)
+mergedContrasts$modelName <- as.factor(mergedContrasts$modelName)
+
+myColors <- c("green","black")
+names(myColors) <- levels(as.factor(mergedContrasts$modelName))
+colScale <- scale_colour_manual(name = "modelName",values = myColors)
+
+cM <- prolfqua::Contrasts_Plotter$new(mergedContrasts, subject_Id = contr$subject_Id)
+plot <- cM$volcano()
+plot$FDR + colScale
+
+```
+
+
+
+```{r}
+
+sigInteraction <- mergedContrasts %>% 
+  filter(contrast == "Interaction" & FDR < 0.2)
+
+protInt <-  pMerged$get_copy()
+protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
+
+ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+
+  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+hm <- protInt$get_Plotter()$heatmap()
+
+```
+
+```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
+hm
 ```
