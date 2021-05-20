@@ -567,7 +567,7 @@ prolfqua::table_facade(benchmark_merged$smc$summary, caption = "Nr of proteins w
 benchmark_merged$plot_FDRvsFDP()
 benchmark_merged$plot_ROC()
 allBenchmarks$benchmark_merged <- benchmark_merged
-saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
+#saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
 ```
 
 # Benchmarking
