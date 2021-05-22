@@ -2,6 +2,27 @@ library(prolfqua)
 library(tidyverse)
 
 
+################### CREATE SOME annotations
+
+inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2370_March_2017_WU183008.zip")
+inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2370_March_2017_WU183008.xlsx")
+
+grp2 <- list()
+grp2$projectID <- 3000
+grp2$projectName <- "bbbbbbbbbbbbbbbbbbbb"
+grp2$workunitID <- "WU444XDD"
+grp2$nrPeptides <- 2
+
+
+factorDisplayName <- "Condition_"
+factorAnnotationName <- "condition"
+
+Contrasts <- c("Glucose - Ethanol" = "Condition_Glucose - Condition_Ethanol")
+Contrasts <- c("GvsE" = "Condition_Glucose - Condition_Ethanol")
+
+
+#####
+
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 #inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 #inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
@@ -13,12 +34,7 @@ startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
 
-################### CREATE SOME annotations
-grp2 <- list()
-grp2$projectID <- 3000
-grp2$projectName <- "bbbbbbbbbbbbbbbbbbbb"
-grp2$workunitID <- "WU444XDD"
-grp2$nrPeptides <- 2
+
 
 ##################################### ProteinID statistics
 
@@ -41,15 +57,13 @@ grp2$NrOfProteinsNoDecoys <- table(distinctprotid$proteinAnnot)["FW"]
 atable <- AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
-
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
-
 anaparam <- AnalysisParameters$new()
 config <- AnalysisConfiguration$new(atable, anaparam)
 
 
-config$table$factors[["Condition_"]] = "condition"
+config$table$factors[[factorDisplayName]] = factorAnnotationName
 config$table$factors[["run"]] = "Run_ID"
 config$table$factorDepth <- 1
 
@@ -80,7 +94,6 @@ formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensi
 
 # specify model definition
 modelName  <- "Model"
-unique(transformed$data$Condition_)
 
 mod <- prolfqua::build_model(
   transformed$data,
@@ -89,17 +102,18 @@ mod <- prolfqua::build_model(
 
 grp2$models <- mod
 
-Contrasts <- c("Glucose - Ethanol" = "Condition_Glucose - Condition_Ethanol")
-Contrasts <- c("GvsE" = "Condition_Glucose - Condition_Ethanol")
 
+# generate contrasts automatically
+if(FALSE){
+  mxdf <- max(mod$modelDF$df.residual, na.rm =  TRUE)
+  m <- mod$modelDF %>% dplyr::filter(.data$df.residual ==  mxdf & isSingular == FALSE )
+  linfct <- linfct_from_model(m$linear_model[[1]])
+  prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+  xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+  Contrasts <- rownames(xx)
+  names(Contrasts) <- gsub(" - ", "_vs_",(rownames(xx)))
+}
 
-mxdf <- max(mod$modelDF$df.residual, na.rm =  TRUE)
-m <- mod$modelDF %>% dplyr::filter(.data$df.residual ==  mxdf & isSingular == FALSE )
-linfct <- linfct_from_model(m$linear_model[[1]])
-prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
-xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-Contrasts <- rownames(xx)
-names(Contrasts) <- gsub(" - ", "_vs_",(rownames(xx)))
 
 contr <- prolfqua::Contrasts$new(mod, Contrasts)
 conrM <- ContrastsModerated$new(contr, modelName = "ModeratedLinear")
@@ -111,7 +125,7 @@ mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 conrMI <- ContrastsModerated$new(mC, modelName = "ModeratedImpute")
 modtmp <- conrMI$get_contrasts()
 
-
+foo
 more <- setdiff(modtmp$protein_Id , modLin$protein_Id)
 modtmpdistinct <- modtmp %>% filter(protein_Id %in% more)
 

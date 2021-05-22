@@ -4,7 +4,7 @@
 \alias{summarize_stats}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
-summarize_stats(pdata, config, all = TRUE)
+summarize_stats(pdata, config, all = FALSE)
 }
 \arguments{
 \item{pdata}{data.frame}

@@ -105,7 +105,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           result$conf.high <- result$estimate_median + prqt * result$sd
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
           if (!all) {
-            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" , "sdT") ) )
+            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" , "sdT","n.groups", "n", "meanAll") ) )
           }
 
         }

@@ -117,7 +117,7 @@ create analyse variances and CV
 \subsection{Method \code{stats()}}{
 compute CV sd and mean of data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats(all = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

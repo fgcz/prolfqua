@@ -28,11 +28,17 @@ Other plotting:
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
+\code{\link{plot_NA_heatmap}()},
 \code{\link{plot_aggregation}()},
+\code{\link{plot_heatmap_cor}()},
+\code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_raster}()},
 \code{\link{plot_sample_correlation}()}
 
 Other imputation: 

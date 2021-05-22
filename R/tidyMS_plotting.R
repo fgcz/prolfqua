@@ -173,8 +173,8 @@ plot_hierarchies_boxplot <- function(pdata,
   pdata <- prolfqua::make_interaction_column( pdata , c(config$table$fkeysDepth()))
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
-                              y = config$table$getWorkIntensity(),
-                              color = color
+                                y = config$table$getWorkIntensity(),
+                                color = color
   )) + theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
@@ -200,7 +200,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @param config AnalysisConfiguration
 #' @param hiearchy e.g. protein_Id default hkeysDepth
 #' @param facet_grid_on default NULL
-#'
+#' @family plotting
 #' @keywords internal
 #' @examples
 #'
@@ -257,6 +257,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #'
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #' library(tidyverse)
 #' istar <- prolfqua::data_ionstar$filtered()
@@ -308,6 +309,7 @@ plot_heatmap_cor <- function(data,
 #'
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #' library(tidyverse)
 #' istar <- prolfqua::data_ionstar$filtered()
@@ -357,9 +359,53 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   invisible(res)
 }
 
+#' plot heatmap without any clustering (use to show NA's)
+#' @param data dataframe
+#' @param config dataframe configuration
+#' @keywords internal
+#'
+#' @family plotting
+#' @export
+#' @examples
+#' istar <- prolfqua::data_IonstarProtein_subsetNorm
+#'
+#' config <- istar$config$clone(deep=TRUE)
+#' analysis <- istar$data
+#' plot_raster(analysis, config)
+#' plot_raster(analysis, config, "var")
+#'
+plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FALSE ) {
+
+  arrange <- match.arg(arrange)
+
+  arrangeby <- summarize_stats(data, config, all=TRUE)
+  arrangeby <- tidyr::unite(arrangeby, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
+  if(not_na){
+    arrangeby <- arrange(arrangeby, !!sym("not_na"), !!sym(arrange))
+  }else{
+    arrangeby <- arrange(arrangeby,  !!sym(arrange))
+  }
+  dataM <- tidyr::unite(data, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
+
+  dataM$hierarchyID <- factor(dataM$hierarchyID, levels = unique(arrangeby$hierarchyID))
+
+  res <- ggplot(data = dataM,
+                aes_string(x = config$table$sampleName,
+                           y = "hierarchyID",
+                           fill = config$table$getWorkIntensity())) +
+    geom_raster() + scale_fill_distiller(palette = "RdYlBu") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+  return(res)
+}
+
+
+
+
+
 #' plot heatmap of NA values
 #' @export
 #' @keywords internal
+#' @family plotting
 #' @examples
 #'
 #' library(tidyverse)
@@ -434,6 +480,7 @@ plot_NA_heatmap <- function(data,
 #' @export
 #' @keywords internal
 #' @import ggfortify
+#' @family plotting
 #' @examples
 #'
 #' library(tidyverse)

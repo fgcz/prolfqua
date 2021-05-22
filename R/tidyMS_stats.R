@@ -160,20 +160,21 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' res1 %>% dplyr::filter(dilution. == "pooled")
 #' res2 <- summarize_stats(data, config, all = TRUE)
 #'
-summarize_stats <- function(pdata, config, all = TRUE){
+summarize_stats <- function(pdata, config, all = FALSE){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$getWorkIntensity())
-  hierarchyFactor <- pdata %>%
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
-    dplyr::summarize(n = dplyr::n(),
-                     not_na = sum(!is.na(!!intsym)),
-                     sd = sd(!!intsym, na.rm = T),
-                     var = var(!!intsym, na.rm = T),
-                     mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
+  if (!all) {
+    hierarchyFactor <- pdata %>%
+      dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
+      dplyr::summarize(n = dplyr::n(),
+                       not_na = sum(!is.na(!!intsym)),
+                       sd = sd(!!intsym, na.rm = T),
+                       var = var(!!intsym, na.rm = T),
+                       mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>%
-    dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
-  if (all) {
+    hierarchyFactor <- hierarchyFactor %>%
+      dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
+  } else if (all) {
     hierarchy <- pdata %>%
       dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
       dplyr::summarize(n = dplyr::n(),
@@ -183,7 +184,7 @@ summarize_stats <- function(pdata, config, all = TRUE){
                        mean = mean(!!intsym,na.rm = T))
 
     hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
-    hierarchyFactor <- dplyr::bind_rows(hierarchyFactor,hierarchy)
+    hierarchyFactor <- hierarchy
   }
   if (config$table$is_intensity_transformed == FALSE) {
     hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor

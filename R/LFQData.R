@@ -393,9 +393,9 @@ LFQDataStats <- R6::R6Class(
     #' @description
     #' compute CV sd and mean of data
     #' @return data.frame
-    stats = function(){
+    stats = function(all = FALSE){
       if (is.null(self$statsdf)) {
-       self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+       self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, all = all)
       }
       return(self$statsdf)
     },
@@ -594,6 +594,7 @@ LFQDataSummariser <- R6::R6Class(
 #' lfqplotter$intensity_distribution_violin()
 #' lfqplotter$pairs_smooth()
 #' lfqplotter$sample_correlation()
+#' lfqplotter$raster()
 #' prolfqua::plot_sample_correlation(istar$data, istar$config)
 #'
 LFQDataPlotter <- R6::R6Class(
@@ -614,6 +615,18 @@ LFQDataPlotter <- R6::R6Class(
     initialize = function(lfqdata, prefix = "ms_"){
       self$lfq = lfqdata
       self$prefix = prefix
+    },
+
+    #' @description
+    #' plot intensities in raster
+    #' @return ggplot
+    raster = function( arrange = c("mean", "var") , not_na = FALSE ){
+      arrange <- match.arg(arrange)
+      fig <- prolfqua::plot_raster(self$lfq$data,
+                                   self$lfq$config,
+                                   arrange= arrange,
+                                   not_na = not_na)
+      return(fig)
     },
     #' @description
     #' heatmap of intensities

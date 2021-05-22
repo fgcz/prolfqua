@@ -39,6 +39,7 @@ lfqplotter$intensity_distribution_density()
 lfqplotter$intensity_distribution_violin()
 lfqplotter$pairs_smooth()
 lfqplotter$sample_correlation()
+lfqplotter$raster()
 prolfqua::plot_sample_correlation(istar$data, istar$config)
 
 }
@@ -67,6 +68,7 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataPlotter$new()}}
+\item \href{#method-raster}{\code{LFQDataPlotter$raster()}}
 \item \href{#method-heatmap}{\code{LFQDataPlotter$heatmap()}}
 \item \href{#method-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
 \item \href{#method-pca}{\code{LFQDataPlotter$pca()}}
@@ -104,6 +106,19 @@ create LFQDataPlotter
 \item{\code{prefix}}{will be prepended to outputs written}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-raster"></a>}}
+\if{latex}{\out{\hypertarget{method-raster}{}}}
+\subsection{Method \code{raster()}}{
+plot intensities in raster
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(arrange = c("mean", "var"), not_na = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+ggplot
 }
 }
 \if{html}{\out{<hr>}}
