@@ -74,7 +74,7 @@ impute data using mean of lowest 0.1 (default) — .missigness_impute_interactio
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -239,42 +239,42 @@ impute data using mean of lowest 0.1 (default)</h1>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
 <span class='va'>long</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span><span class='st'>"long"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>long</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span>
 #&gt;   dilution. protein_Id peptide_Id isotope nrReplicates nrNAs meanArea medianArea
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a         CON__P010~ ILSLAQDQV~ light              4     0   1.32</span><span style='color: #949494;'>e</span><span>7   13</span><span style='text-decoration: underline;'>208</span><span>600
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> a         CON__P027~ AEFVEVTK   light              4     0   5.28</span><span style='color: #949494;'>e</span><span>8  589</span><span style='text-decoration: underline;'>010</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> a         CON__P027~ DDPHACYST~ light              4     0   2.18</span><span style='color: #949494;'>e</span><span>8  229</span><span style='text-decoration: underline;'>275</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> a         CON__P027~ DDPHACYST~ light              4     0   4.44</span><span style='color: #949494;'>e</span><span>7   47</span><span style='text-decoration: underline;'>249</span><span>500
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> a         CON__P027~ ECCHGDLLE~ light              4     0   1.21</span><span style='color: #949494;'>e</span><span>7   12</span><span style='text-decoration: underline;'>865</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> a         CON__P027~ ETYGDMADC~ light              4     0   2.49</span><span style='color: #949494;'>e</span><span>7   23</span><span style='text-decoration: underline;'>886</span><span>500
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: nrMeasured &lt;int&gt;, interaction &lt;fct&gt;, imputed &lt;dbl&gt;</span><span></div><div class='input'><span class='va'>debugData</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span>DEBUG<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> a         CON__P010~ ILSLAQDQV~ light              4     0   1.32<span style='color: #949494;'>e</span>7   13<span style='text-decoration: underline;'>208</span>600
+#&gt; <span style='color: #BCBCBC;'>2</span> a         CON__P027~ AEFVEVTK   light              4     0   5.28<span style='color: #949494;'>e</span>8  589<span style='text-decoration: underline;'>010</span>000
+#&gt; <span style='color: #BCBCBC;'>3</span> a         CON__P027~ DDPHACYST~ light              4     0   2.18<span style='color: #949494;'>e</span>8  229<span style='text-decoration: underline;'>275</span>000
+#&gt; <span style='color: #BCBCBC;'>4</span> a         CON__P027~ DDPHACYST~ light              4     0   4.44<span style='color: #949494;'>e</span>7   47<span style='text-decoration: underline;'>249</span>500
+#&gt; <span style='color: #BCBCBC;'>5</span> a         CON__P027~ ECCHGDLLE~ light              4     0   1.21<span style='color: #949494;'>e</span>7   12<span style='text-decoration: underline;'>865</span>000
+#&gt; <span style='color: #BCBCBC;'>6</span> a         CON__P027~ ETYGDMADC~ light              4     0   2.49<span style='color: #949494;'>e</span>7   23<span style='text-decoration: underline;'>886</span>500
+#&gt; <span style='color: #949494;'># ... with 3 more variables: nrMeasured &lt;int&gt;, interaction &lt;fct&gt;, imputed &lt;dbl&gt;</span></div><div class='input'><span class='va'>debugData</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span>DEBUG<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>debugData</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "value"  "long"   "config"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>debugData</span><span class='op'>$</span><span class='va'>long</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span>
 #&gt;   dilution. protein_Id peptide_Id isotope nrReplicates nrNAs meanArea medianArea
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a         CON__P010~ ILSLAQDQV~ light              4     0   1.32</span><span style='color: #949494;'>e</span><span>7   13</span><span style='text-decoration: underline;'>208</span><span>600
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> a         CON__P027~ AEFVEVTK   light              4     0   5.28</span><span style='color: #949494;'>e</span><span>8  589</span><span style='text-decoration: underline;'>010</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> a         CON__P027~ DDPHACYST~ light              4     0   2.18</span><span style='color: #949494;'>e</span><span>8  229</span><span style='text-decoration: underline;'>275</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> a         CON__P027~ DDPHACYST~ light              4     0   4.44</span><span style='color: #949494;'>e</span><span>7   47</span><span style='text-decoration: underline;'>249</span><span>500
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> a         CON__P027~ ECCHGDLLE~ light              4     0   1.21</span><span style='color: #949494;'>e</span><span>7   12</span><span style='text-decoration: underline;'>865</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> a         CON__P027~ ETYGDMADC~ light              4     0   2.49</span><span style='color: #949494;'>e</span><span>7   23</span><span style='text-decoration: underline;'>886</span><span>500
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: nrMeasured &lt;int&gt;, interaction &lt;fct&gt;, imputed &lt;dbl&gt;</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>xx</span><span class='op'>$</span><span class='va'>long</span><span class='op'>$</span><span class='va'>nrReplicates</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> a         CON__P010~ ILSLAQDQV~ light              4     0   1.32<span style='color: #949494;'>e</span>7   13<span style='text-decoration: underline;'>208</span>600
+#&gt; <span style='color: #BCBCBC;'>2</span> a         CON__P027~ AEFVEVTK   light              4     0   5.28<span style='color: #949494;'>e</span>8  589<span style='text-decoration: underline;'>010</span>000
+#&gt; <span style='color: #BCBCBC;'>3</span> a         CON__P027~ DDPHACYST~ light              4     0   2.18<span style='color: #949494;'>e</span>8  229<span style='text-decoration: underline;'>275</span>000
+#&gt; <span style='color: #BCBCBC;'>4</span> a         CON__P027~ DDPHACYST~ light              4     0   4.44<span style='color: #949494;'>e</span>7   47<span style='text-decoration: underline;'>249</span>500
+#&gt; <span style='color: #BCBCBC;'>5</span> a         CON__P027~ ECCHGDLLE~ light              4     0   1.21<span style='color: #949494;'>e</span>7   12<span style='text-decoration: underline;'>865</span>000
+#&gt; <span style='color: #BCBCBC;'>6</span> a         CON__P027~ ETYGDMADC~ light              4     0   2.49<span style='color: #949494;'>e</span>7   23<span style='text-decoration: underline;'>886</span>500
+#&gt; <span style='color: #949494;'># ... with 3 more variables: nrMeasured &lt;int&gt;, interaction &lt;fct&gt;, imputed &lt;dbl&gt;</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>xx</span><span class='op'>$</span><span class='va'>long</span><span class='op'>$</span><span class='va'>nrReplicates</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: `long`.</span></div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='va'>xxx</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='fu'>fun</span><span class='op'>(</span><span class='st'>"nrReplicates"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>alldata</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span><span class='st'>"all"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>xxx</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 9</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 9</span>
 #&gt;   value    protein_Id    peptide_Id    isotope nrRep.dilution.a nrRep.dilution.b
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> nrRepli~ CON__P01030~~ ILSLAQDQVGGS~ light                  4                4
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> nrRepli~ CON__P02769~~ AEFVEVTK      light                  4                4
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> nrRepli~ CON__P02769~~ DDPHACYSTVFDK light                  4                4
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> nrRepli~ CON__P02769~~ DDPHACYSTVFD~ light                  4                4
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> nrRepli~ CON__P02769~~ ECCHGDLLECAD~ light                  4                4
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> nrRepli~ CON__P02769~~ ETYGDMADCCEK  light                  4                4
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: nrRep.dilution.c &lt;int&gt;, nrRep.dilution.d &lt;int&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   nrRep.dilution.e &lt;int&gt;</span><span></div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> nrRepli~ CON__P01030~~ ILSLAQDQVGGS~ light                  4                4
+#&gt; <span style='color: #BCBCBC;'>2</span> nrRepli~ CON__P02769~~ AEFVEVTK      light                  4                4
+#&gt; <span style='color: #BCBCBC;'>3</span> nrRepli~ CON__P02769~~ DDPHACYSTVFDK light                  4                4
+#&gt; <span style='color: #BCBCBC;'>4</span> nrRepli~ CON__P02769~~ DDPHACYSTVFD~ light                  4                4
+#&gt; <span style='color: #BCBCBC;'>5</span> nrRepli~ CON__P02769~~ ECCHGDLLECAD~ light                  4                4
+#&gt; <span style='color: #BCBCBC;'>6</span> nrRepli~ CON__P02769~~ ETYGDMADCCEK  light                  4                4
+#&gt; <span style='color: #949494;'># ... with 3 more variables: nrRep.dilution.c &lt;int&gt;, nrRep.dilution.d &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   nrRep.dilution.e &lt;int&gt;</span></div><div class='input'>
 <span class='va'>imputed</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span><span class='st'>"imputed"</span><span class='op'>)</span>
 <span class='va'>missing</span> <span class='op'>&lt;-</span> <span class='fu'>fun</span><span class='op'>(</span><span class='st'>"nrMeasured"</span><span class='op'>)</span>
 
@@ -283,7 +283,7 @@ impute data using mean of lowest 0.1 (default)</h1>
 </div><div class='output co'>#&gt; [1] 59</div><div class='input'> <span class='co'>#stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)</span>
  <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>imputed</span><span class='op'>$</span><span class='va'>mean.imp.dilution.a</span><span class='op'>)</span><span class='op'>)</span><span class='op'>==</span><span class='fl'>0</span><span class='op'>)</span>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

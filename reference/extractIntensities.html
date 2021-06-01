@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -210,16 +210,16 @@
  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by_all.html'>group_by_at</a></span><span class='op'>(</span><span class='va'>conf</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>xnested</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 2</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   protein_Id [6]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 2</span>
+#&gt; <span style='color: #949494;'># Groups:   protein_Id [6]</span>
 #&gt;   protein_Id                        data              
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                             </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>            
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> sp|P21589|5NTD_HUMAN~1527~P21589  </span><span style='color: #949494;'>&lt;tibble [320 x 9]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> sp|Q9NZM3|ITSN2_HUMAN~4539~Q9NZM3 </span><span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> sp|O43660|PLRG1_HUMAN~356~O43660  </span><span style='color: #949494;'>&lt;tibble [140 x 9]&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> sp|P0AG78|SUBI_ECOLI~1278~P0AG78  </span><span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> sp|P0A908|MIPA_ECOLI~1035~P0A908  </span><span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> sp|Q6UX04|CWC27_HUMAN~3241~Q6UX04 </span><span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span><span> </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                             <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>            
+#&gt; <span style='color: #BCBCBC;'>1</span> sp|P21589|5NTD_HUMAN~1527~P21589  <span style='color: #949494;'>&lt;tibble [320 x 9]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> sp|Q9NZM3|ITSN2_HUMAN~4539~Q9NZM3 <span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>3</span> sp|O43660|PLRG1_HUMAN~356~O43660  <span style='color: #949494;'>&lt;tibble [140 x 9]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>4</span> sp|P0AG78|SUBI_ECOLI~1278~P0AG78  <span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>5</span> sp|P0A908|MIPA_ECOLI~1035~P0A908  <span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>6</span> sp|Q6UX04|CWC27_HUMAN~3241~Q6UX04 <span style='color: #949494;'>&lt;tibble [40 x 9]&gt;</span> </div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>xnested</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 <span class='va'>nn</span>  <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span> <span class='fu'><a href='https://generics.r-lib.org/reference/setops.html'>setdiff</a></span><span class='op'>(</span><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>,  <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -227,7 +227,7 @@
 <span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'>extractIntensities</span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>conf</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>xx</span><span class='op'>)</span><span class='op'>==</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>nn</span>,<span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ Create various visualization of the LFQdata" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -209,6 +209,7 @@ Create various visualization of the LFQdata" />
 
 <ul>
 <li><p><a href='#method-new'><code>LFQDataPlotter$new()</code></a></p></li>
+<li><p><a href='#method-raster'><code>LFQDataPlotter$raster()</code></a></p></li>
 <li><p><a href='#method-heatmap'><code>LFQDataPlotter$heatmap()</code></a></p></li>
 <li><p><a href='#method-heatmap_cor'><code>LFQDataPlotter$heatmap_cor()</code></a></p></li>
 <li><p><a href='#method-pca'><code>LFQDataPlotter$pca()</code></a></p></li>
@@ -240,6 +241,13 @@ Create various visualization of the LFQdata" />
 <dt><code>prefix</code></dt><dd><p>will be prepended to outputs written</p></dd>
 
 </dl><p></div></p>
+<p><hr>
+<a id="method-raster"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>raster()</code></h3>
+<p>plot intensities in raster</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQDataPlotter</span><span class='op'>$</span><span class='fu'>raster</span><span class='op'>(</span>arrange <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"var"</span><span class='op'>)</span>, not_na <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>ggplot</p>
 <p><hr>
 <a id="method-heatmap"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/heatmap.html'>heatmap()</a></code></h3>
 <p>heatmap of intensities</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -450,7 +458,8 @@ Create various visualization of the LFQdata" />
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 72 rows containing non-finite values (stat_density).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_violin</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 72 rows containing non-finite values (stat_ydensity).</span></div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>pairs_smooth</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>sample_correlation</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'><a href='plot_sample_correlation.html'>plot_sample_correlation</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
+<span class='va'>lfqplotter</span><span class='op'>$</span><span class='fu'>raster</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'><a href='plot_sample_correlation.html'>plot_sample_correlation</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 
 </div></pre>
   </div>

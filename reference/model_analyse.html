@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -239,48 +239,49 @@
 <span class='va'>ionstar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>ionstar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>ionstar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'><a href='table_factors.html'>table_factors</a></span><span class='op'>(</span><span class='va'>ionstar</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>ionstar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span>
 #&gt;    raw.file                                          sampleName dilution. run_Id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
-#&gt; </span><span style='color: #BCBCBC;'>17</span><span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
-#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
-#&gt; </span><span style='color: #BCBCBC;'>19</span><span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
-#&gt; </span><span style='color: #BCBCBC;'>20</span><span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='va'>formula_randomPeptide</span> <span class='op'>&lt;-</span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'> 1</span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~10       a         10    
+#&gt; <span style='color: #BCBCBC;'> 2</span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~11       a         11    
+#&gt; <span style='color: #BCBCBC;'> 3</span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~20       a         20    
+#&gt; <span style='color: #BCBCBC;'> 4</span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc~ a~21       a         21    
+#&gt; <span style='color: #BCBCBC;'> 5</span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~02       b         02    
+#&gt; <span style='color: #BCBCBC;'> 6</span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~09       b         09    
+#&gt; <span style='color: #BCBCBC;'> 7</span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~12       b         12    
+#&gt; <span style='color: #BCBCBC;'> 8</span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc~ b~19       b         19    
+#&gt; <span style='color: #BCBCBC;'> 9</span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~03       c         03    
+#&gt; <span style='color: #BCBCBC;'>10</span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~08       c         08    
+#&gt; <span style='color: #BCBCBC;'>11</span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~13       c         13    
+#&gt; <span style='color: #BCBCBC;'>12</span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc~ c~18       c         18    
+#&gt; <span style='color: #BCBCBC;'>13</span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~04       d         04    
+#&gt; <span style='color: #BCBCBC;'>14</span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~07       d         07    
+#&gt; <span style='color: #BCBCBC;'>15</span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~14       d         14    
+#&gt; <span style='color: #BCBCBC;'>16</span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc~ d~17       d         17    
+#&gt; <span style='color: #BCBCBC;'>17</span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~05       e         05    
+#&gt; <span style='color: #BCBCBC;'>18</span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~06       e         06    
+#&gt; <span style='color: #BCBCBC;'>19</span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~15       e         15    
+#&gt; <span style='color: #BCBCBC;'>20</span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc~ e~16       e         16    </div><div class='input'><span class='va'>formula_randomPeptide</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='strategy_lmer.html'>strategy_lmer</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution. + (1 | peptide_Id)"</span><span class='op'>)</span>
 <span class='va'>mr</span> <span class='op'>&lt;-</span> <span class='fu'>model_analyse</span><span class='op'>(</span> <span class='va'>ionstar</span><span class='op'>$</span><span class='va'>data</span>,
  <span class='va'>formula_randomPeptide</span>,
  subject_Id <span class='op'>=</span> <span class='va'>ionstar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='input'><span class='fu'><a href='get_complete_model_fit.html'>get_complete_model_fit</a></span><span class='op'>(</span><span class='va'>mr</span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 9 x 9</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   protein_Id [9]</span><span>
-#&gt;   protein_Id  data  linear_model exists_lmer isSingular df.residual sigma nrcoef
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lis&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> sp|P41252|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              508 0.299      5
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> sp|P0A6L2|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               89 0.215      5
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> sp|Q58FF8|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              193 0.211      5
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> sp|P00505|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              186 0.291      5
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> sp|Q96T51|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE               74 0.486      5
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> sp|P35613|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              122 0.326      5
-#&gt; </span><span style='color: #BCBCBC;'>7</span><span> sp|P0C0V0|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              200 0.308      5
-#&gt; </span><span style='color: #BCBCBC;'>8</span><span> sp|P08238|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              797 0.261      5
-#&gt; </span><span style='color: #BCBCBC;'>9</span><span> sp|Q14764|~ </span><span style='color: #949494;'>&lt;tib</span><span>~ </span><span style='color: #949494;'>&lt;lmrMdLmT&gt;</span><span>   TRUE        FALSE              491 0.331      5
-#&gt; </span><span style='color: #949494;'># ... with 1 more variable: nrcoeff_not_NA &lt;int&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 9</span>
+#&gt; <span style='color: #949494;'># Groups:   protein_Id [10]</span>
+#&gt;    protein_Id data  linear_model exists_lmer isSingular df.residual sigma nrcoef
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;lis&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp|P20042~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               49 0.248      5
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp|P00505~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              186 0.291      5
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp|Q07020~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              133 0.171      5
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp|Q99873~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              157 0.289      5
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp|Q9Y3C8~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               33 0.144      5
+#&gt; <span style='color: #BCBCBC;'> 6</span> CON__Q3SZ~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              119 0.181      5
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp|P0C0V0~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              200 0.308      5
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp|P76145~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE                5 0.564      5
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp|P23229~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              218 0.549      5
+#&gt; <span style='color: #BCBCBC;'>10</span> sp|P49327~ <span style='color: #949494;'>&lt;tib</span>~ <span style='color: #949494;'>&lt;lmrMdLmT&gt;</span>   TRUE        FALSE             <span style='text-decoration: underline;'>1</span>476 0.302      5
+#&gt; <span style='color: #949494;'># ... with 1 more variable: nrcoeff_not_NA &lt;int&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

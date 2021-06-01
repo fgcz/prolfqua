@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -221,16 +221,16 @@
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>]</span>
 <span class='fu'>matrix_to_tibble</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.</span>
-#&gt; <span class='warning'>Using compatibility `.name_repair`.</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 5</span><span>
-#&gt;   row.names     V1     V2       V3     V4
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A         -</span><span style='color: #BB0000;'>0.522</span><span> -</span><span style='color: #BB0000;'>1.54</span><span>   1.25    -</span><span style='color: #BB0000;'>0.722</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> B         -</span><span style='color: #BB0000;'>0.606</span><span> -</span><span style='color: #BB0000;'>0.866</span><span>  0.382    0.245
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> C         -</span><span style='color: #BB0000;'>1.83</span><span>   1.66  -</span><span style='color: #BB0000;'>0.404</span><span>   -</span><span style='color: #BB0000;'>0.936</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> D         -</span><span style='color: #BB0000;'>1.53</span><span>  -</span><span style='color: #BB0000;'>1.05</span><span>  -</span><span style='color: #BB0000;'>0.373</span><span>    0.193
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> E          0.816  2.21  -</span><span style='color: #BB0000;'>0.006</span><span style='color: #BB0000;text-decoration: underline;'>19</span><span> -</span><span style='color: #BB0000;'>0.841</span><span></div><div class='input'><span class='op'>!</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>is.matrix</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>is.data.frame</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; <span class='warning'>Using compatibility `.name_repair`.</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 5</span>
+#&gt;   row.names      V1      V2      V3      V4
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> A         -<span style='color: #BB0000;'>0.024</span><span style='color: #BB0000; text-decoration: underline;'>8</span> -<span style='color: #BB0000;'>0.096</span><span style='color: #BB0000; text-decoration: underline;'>2</span>  1.03   -<span style='color: #BB0000;'>0.039</span><span style='color: #BB0000; text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> B          0.552  -<span style='color: #BB0000;'>0.146</span>  -<span style='color: #BB0000;'>1.48</span>   -<span style='color: #BB0000;'>0.875</span> 
+#&gt; <span style='color: #BCBCBC;'>3</span> C         -<span style='color: #BB0000;'>1.06</span>    0.417  -<span style='color: #BB0000;'>0.013</span><span style='color: #BB0000; text-decoration: underline;'>7</span>  1.38  
+#&gt; <span style='color: #BCBCBC;'>4</span> D         -<span style='color: #BB0000;'>0.415</span>   0.987  -<span style='color: #BB0000;'>0.099</span><span style='color: #BB0000; text-decoration: underline;'>9</span> -<span style='color: #BB0000;'>0.157</span> 
+#&gt; <span style='color: #BCBCBC;'>5</span> E         -<span style='color: #BB0000;'>0.410</span>   0.176  -<span style='color: #BB0000;'>0.595</span>  -<span style='color: #BB0000;'>0.243</span> </div><div class='input'><span class='op'>!</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>is.matrix</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>is.data.frame</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

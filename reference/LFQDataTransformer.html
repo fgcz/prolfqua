@@ -73,7 +73,7 @@ Decorate LFQData with Methods for transforming Intensities" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -299,7 +299,7 @@ Decorate LFQData with Methods for transforming Intensities" />
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='fu'>intensity_matrix</span><span class='op'>(</span><span class='va'>robust_scale</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>lfq</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2232 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2460 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># transform by asinh root and scale</span>
 <span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lfqTrans</span> <span class='op'>&lt;-</span> <span class='va'>lfqcopy</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span>
@@ -308,7 +308,7 @@ Decorate LFQData with Methods for transforming Intensities" />
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>intensity_matrix</span><span class='op'>(</span><span class='va'>robust_scale</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>lfq</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2232 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2460 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -218,10 +218,16 @@
 <code><a href='missigness_histogram.html'>missigness_histogram</a>()</code>,
 <code><a href='missingness_per_condition_cumsum.html'>missingness_per_condition_cumsum</a>()</code>,
 <code><a href='missingness_per_condition.html'>missingness_per_condition</a>()</code>,
+<code><a href='plot_NA_heatmap.html'>plot_NA_heatmap</a>()</code>,
 <code><a href='plot_aggregation.html'>plot_aggregation</a>()</code>,
+<code><a href='plot_heatmap_cor.html'>plot_heatmap_cor</a>()</code>,
+<code><a href='plot_heatmap.html'>plot_heatmap</a>()</code>,
 <code><a href='plot_hierarchies_add_quantline.html'>plot_hierarchies_add_quantline</a>()</code>,
+<code><a href='plot_hierarchies_boxplot_df.html'>plot_hierarchies_boxplot_df</a>()</code>,
 <code><a href='plot_hierarchies_line.html'>plot_hierarchies_line</a>()</code>,
 <code><a href='plot_intensity_distribution_violin.html'>plot_intensity_distribution_violin</a>()</code>,
+<code><a href='plot_pca.html'>plot_pca</a>()</code>,
+<code><a href='plot_raster.html'>plot_raster</a>()</code>,
 <code><a href='plot_sample_correlation.html'>plot_sample_correlation</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -235,22 +241,22 @@
 <span class='co'>#debug(plot_hierarchies_line_df)</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 121 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 88 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 79 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 79 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 19 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span>  <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 31 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 11 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 41 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 15 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>plot_hierarchies_line_df</span><span class='op'>(</span><span class='va'>istar_data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>res</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 31 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 11 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 41 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 15 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='plot_hierarchies_line_df-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>#TODO make it work for other hiearachy levels.</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>=</span> <span class='fl'>2</span>
 <span class='co'>#res &lt;- plot_hierarchies_line_df(resDataStart, config)</span>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -217,20 +217,20 @@
 <span class='va'>res</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>,<span class='st'>"srm_NrNotNAs"</span>  ,<span class='st'>"srm_NrNotNARank"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>syms</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,<span class='st'>"srm_NrNotNARank"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 823 x 6</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 823 x 6</span>
 #&gt;    protein_Id peptide_Id modPeptide_Id precursor_Id srm_NrNotNAs srm_NrNotNARank
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> A0A075B6I0 FSGSILGNK  _FSGSILGNK_   _FSGSILGNK_~           20               1
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> A0A075B6P~ DIVMTQSPL~ _DIVM[+16]TQ~ _DIVM[+16]T~           45               1
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           45               1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           45               1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> A0A075B6P~ SSQSLLHSN~ _SSQSLLHSNGY~ _SSQSLLHSNG~           45               1
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> A0A075B6P~ SSQSLLHSN~ _SSQSLLHSNGY~ _SSQSLLHSNG~           45               1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> A0A075B6P~ DIVMTQSPL~ _DIVMTQSPLSL~ _DIVMTQSPLS~           41               6
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           27               7
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> A0A075B6R2 GLEWIGEIY~ _GLEWIGEIYHS~ _GLEWIGEIYH~           44               1
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> A0A075B6R2 GLEWIGEIY~ _GLEWIGEIYHS~ _GLEWIGEIYH~           39               2
-#&gt; </span><span style='color: #949494;'># ... with 813 more rows</span><span></div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> A0A075B6I0 FSGSILGNK  _FSGSILGNK_   _FSGSILGNK_~           20               1
+#&gt; <span style='color: #BCBCBC;'> 2</span> A0A075B6P~ DIVMTQSPL~ _DIVM[+16]TQ~ _DIVM[+16]T~           45               1
+#&gt; <span style='color: #BCBCBC;'> 3</span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           45               1
+#&gt; <span style='color: #BCBCBC;'> 4</span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           45               1
+#&gt; <span style='color: #BCBCBC;'> 5</span> A0A075B6P~ SSQSLLHSN~ _SSQSLLHSNGY~ _SSQSLLHSNG~           45               1
+#&gt; <span style='color: #BCBCBC;'> 6</span> A0A075B6P~ SSQSLLHSN~ _SSQSLLHSNGY~ _SSQSLLHSNG~           45               1
+#&gt; <span style='color: #BCBCBC;'> 7</span> A0A075B6P~ DIVMTQSPL~ _DIVMTQSPLSL~ _DIVMTQSPLS~           41               6
+#&gt; <span style='color: #BCBCBC;'> 8</span> A0A075B6P~ PGQSPQLLI~ _PGQSPQLLIYL~ _PGQSPQLLIY~           27               7
+#&gt; <span style='color: #BCBCBC;'> 9</span> A0A075B6R2 GLEWIGEIY~ _GLEWIGEIYHS~ _GLEWIGEIYH~           44               1
+#&gt; <span style='color: #BCBCBC;'>10</span> A0A075B6R2 GLEWIGEIY~ _GLEWIGEIYHS~ _GLEWIGEIYH~           39               2
+#&gt; <span style='color: #949494;'># ... with 813 more rows</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

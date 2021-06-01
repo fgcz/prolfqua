@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -211,32 +211,32 @@
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>analysis</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='removeLarge_Q_Values.html'>removeLarge_Q_Values</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='fu'><a href='hierarchy_counts.html'>hierarchy_counts</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
 #&gt;   Isotope.Label protein_Id peptide_Id modPeptide_Id precursor_Id
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Light                 50        436           651          823</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>filter_factor_levels_by_missing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>,percent <span class='op'>=</span> <span class='fl'>60</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Light                 50        436           651          823</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>filter_factor_levels_by_missing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>,percent <span class='op'>=</span> <span class='fl'>60</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id", "modPeptide_Id", "precursor_Id")</span></div><div class='input'><span class='va'>data1</span> <span class='op'>&lt;-</span><span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='hierarchy_counts.html'>hierarchy_counts</a></span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 5</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
 #&gt;   Isotope.Label protein_Id peptide_Id modPeptide_Id precursor_Id
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Light                 49        382           570          708</div><div class='input'><span class='fu'><a href='summarize_hierarchy.html'>summarize_hierarchy</a></span><span class='op'>(</span><span class='va'>res</span>,<span class='va'>config</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Light                 49        382           570          708</div><div class='input'><span class='fu'><a href='summarize_hierarchy.html'>summarize_hierarchy</a></span><span class='op'>(</span><span class='va'>res</span>,<span class='va'>config</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,<span class='st'>"_n"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 39 x 5</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 39 x 5</span>
 #&gt;    protein_Id        Isotope.Label_n peptide_Id_n modPeptide_Id_n precursor_Id_n
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> A0A075B6P5;P01615               1            3               5              7
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> A0A087WSY6;P01624               1            3               6              7
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> A0A0B4J1V0                      1            6              11             13
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> A0A0C4DH25                      1            9               9             11
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> A0A0J9YXX1                      1            3               4              4
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> FGCZCont0141_P69~               1            8              14             21
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> FGCZCont0174_P68~               1           10              12             14
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> P00751                          1           21              25             29
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> P01008                          1           17              25             35
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> P01009                          1           34              56             82
-#&gt; </span><span style='color: #949494;'># ... with 29 more rows</span><span></div><div class='input'>
-</div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> A0A075B6P5;P01615               1            3               5              7
+#&gt; <span style='color: #BCBCBC;'> 2</span> A0A087WSY6;P01624               1            3               6              7
+#&gt; <span style='color: #BCBCBC;'> 3</span> A0A0B4J1V0                      1            6              11             13
+#&gt; <span style='color: #BCBCBC;'> 4</span> A0A0C4DH25                      1            9               9             11
+#&gt; <span style='color: #BCBCBC;'> 5</span> A0A0J9YXX1                      1            3               4              4
+#&gt; <span style='color: #BCBCBC;'> 6</span> FGCZCont0141_P69~               1            8              14             21
+#&gt; <span style='color: #BCBCBC;'> 7</span> FGCZCont0174_P68~               1           10              12             14
+#&gt; <span style='color: #BCBCBC;'> 8</span> P00751                          1           21              25             29
+#&gt; <span style='color: #BCBCBC;'> 9</span> P01008                          1           17              25             35
+#&gt; <span style='color: #BCBCBC;'>10</span> P01009                          1           34              56             82
+#&gt; <span style='color: #949494;'># ... with 29 more rows</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

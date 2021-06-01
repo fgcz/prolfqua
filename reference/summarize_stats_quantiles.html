@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -222,6 +222,7 @@
 <code><a href='plot_stat_violin.html'>plot_stat_violin</a>()</code>,
 <code><a href='plot_stdv_vs_mean.html'>plot_stdv_vs_mean</a>()</code>,
 <code><a href='poolvar.html'>poolvar</a>()</code>,
+<code><a href='summarize_stats_all.html'>summarize_stats_all</a>()</code>,
 <code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -233,138 +234,138 @@
 <span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>summarize_stats_quantiles</span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $long
-#&gt; <span style='color: #949494;'># A tibble: 30 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   dilution. [6]</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 25 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   dilution. [5]</span>
 #&gt;    dilution. probs quantiles
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a          0.1   1</span><span style='text-decoration: underline;'>238</span><span>943.
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a          0.25  2</span><span style='text-decoration: underline;'>401</span><span>401.
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a          0.5   5</span><span style='text-decoration: underline;'>128</span><span>504.
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a          0.75 15</span><span style='text-decoration: underline;'>058</span><span>063.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a          0.9  47</span><span style='text-decoration: underline;'>610</span><span>913.
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b          0.1   1</span><span style='text-decoration: underline;'>207</span><span>982.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b          0.25  2</span><span style='text-decoration: underline;'>212</span><span>925.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b          0.5   5</span><span style='text-decoration: underline;'>188</span><span>453.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b          0.75 14</span><span style='text-decoration: underline;'>320</span><span>245.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b          0.9  47</span><span style='text-decoration: underline;'>873</span><span>314.
-#&gt; </span><span style='color: #949494;'># ... with 20 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> a          0.1   1<span style='text-decoration: underline;'>238</span>943.
+#&gt; <span style='color: #BCBCBC;'> 2</span> a          0.25  2<span style='text-decoration: underline;'>401</span>401.
+#&gt; <span style='color: #BCBCBC;'> 3</span> a          0.5   5<span style='text-decoration: underline;'>128</span>504.
+#&gt; <span style='color: #BCBCBC;'> 4</span> a          0.75 15<span style='text-decoration: underline;'>058</span>063.
+#&gt; <span style='color: #BCBCBC;'> 5</span> a          0.9  47<span style='text-decoration: underline;'>610</span>913.
+#&gt; <span style='color: #BCBCBC;'> 6</span> b          0.1   1<span style='text-decoration: underline;'>207</span>982.
+#&gt; <span style='color: #BCBCBC;'> 7</span> b          0.25  2<span style='text-decoration: underline;'>212</span>925.
+#&gt; <span style='color: #BCBCBC;'> 8</span> b          0.5   5<span style='text-decoration: underline;'>188</span>453.
+#&gt; <span style='color: #BCBCBC;'> 9</span> b          0.75 14<span style='text-decoration: underline;'>320</span>245.
+#&gt; <span style='color: #BCBCBC;'>10</span> b          0.9  47<span style='text-decoration: underline;'>873</span>314.
+#&gt; <span style='color: #949494;'># ... with 15 more rows</span>
 #&gt; 
 #&gt; $wide
-#&gt; </span><span style='color: #949494;'># A tibble: 5 x 7</span><span>
-#&gt;   probs         a       All         b         c         d         e
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  0.1   1</span><span style='text-decoration: underline;'>238</span><span>943.  1</span><span style='text-decoration: underline;'>565</span><span>426.  1</span><span style='text-decoration: underline;'>207</span><span>982.  1</span><span style='text-decoration: underline;'>072</span><span>003.  1</span><span style='text-decoration: underline;'>191</span><span>353.  1</span><span style='text-decoration: underline;'>239</span><span>760.
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  0.25  2</span><span style='text-decoration: underline;'>401</span><span>401.  2</span><span style='text-decoration: underline;'>483</span><span>120.  2</span><span style='text-decoration: underline;'>212</span><span>925.  2</span><span style='text-decoration: underline;'>040</span><span>999.  2</span><span style='text-decoration: underline;'>116</span><span>310.  2</span><span style='text-decoration: underline;'>331</span><span>274.
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  0.5   5</span><span style='text-decoration: underline;'>128</span><span>504.  5</span><span style='text-decoration: underline;'>043</span><span>511.  5</span><span style='text-decoration: underline;'>188</span><span>453.  4</span><span style='text-decoration: underline;'>919</span><span>957.  4</span><span style='text-decoration: underline;'>785</span><span>827.  5</span><span style='text-decoration: underline;'>018</span><span>632.
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  0.75 15</span><span style='text-decoration: underline;'>058</span><span>063. 13</span><span style='text-decoration: underline;'>774</span><span>826. 14</span><span style='text-decoration: underline;'>320</span><span>245. 14</span><span style='text-decoration: underline;'>256</span><span>412. 14</span><span style='text-decoration: underline;'>254</span><span>286. 14</span><span style='text-decoration: underline;'>328</span><span>837.
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.9  47</span><span style='text-decoration: underline;'>610</span><span>913. 44</span><span style='text-decoration: underline;'>278</span><span>351. 47</span><span style='text-decoration: underline;'>873</span><span>314. 45</span><span style='text-decoration: underline;'>552</span><span>582. 49</span><span style='text-decoration: underline;'>583</span><span>057. 49</span><span style='text-decoration: underline;'>084</span><span>314.
+#&gt; <span style='color: #949494;'># A tibble: 5 x 6</span>
+#&gt;   probs         a         b         c         d         e
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  0.1   1<span style='text-decoration: underline;'>238</span>943.  1<span style='text-decoration: underline;'>207</span>982.  1<span style='text-decoration: underline;'>072</span>003.  1<span style='text-decoration: underline;'>191</span>353.  1<span style='text-decoration: underline;'>239</span>760.
+#&gt; <span style='color: #BCBCBC;'>2</span>  0.25  2<span style='text-decoration: underline;'>401</span>401.  2<span style='text-decoration: underline;'>212</span>925.  2<span style='text-decoration: underline;'>040</span>999.  2<span style='text-decoration: underline;'>116</span>310.  2<span style='text-decoration: underline;'>331</span>274.
+#&gt; <span style='color: #BCBCBC;'>3</span>  0.5   5<span style='text-decoration: underline;'>128</span>504.  5<span style='text-decoration: underline;'>188</span>453.  4<span style='text-decoration: underline;'>919</span>957.  4<span style='text-decoration: underline;'>785</span>827.  5<span style='text-decoration: underline;'>018</span>632.
+#&gt; <span style='color: #BCBCBC;'>4</span>  0.75 15<span style='text-decoration: underline;'>058</span>063. 14<span style='text-decoration: underline;'>320</span>245. 14<span style='text-decoration: underline;'>256</span>412. 14<span style='text-decoration: underline;'>254</span>286. 14<span style='text-decoration: underline;'>328</span>837.
+#&gt; <span style='color: #BCBCBC;'>5</span>  0.9  47<span style='text-decoration: underline;'>610</span>913. 47<span style='text-decoration: underline;'>873</span>314. 45<span style='text-decoration: underline;'>552</span>582. 49<span style='text-decoration: underline;'>583</span>057. 49<span style='text-decoration: underline;'>084</span>314.
 #&gt; </div><div class='input'><span class='fu'>summarize_stats_quantiles</span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span>, stats <span class='op'>=</span> <span class='st'>"CV"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $long
-#&gt; </span><span style='color: #949494;'># A tibble: 30 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   dilution. [6]</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 25 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   dilution. [5]</span>
 #&gt;    dilution. probs quantiles
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a          0.1       9.14
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a          0.25     12.6 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a          0.5      17.2 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a          0.75     25.7 
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a          0.9      41.1 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b          0.1       8.56
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b          0.25     13.0 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b          0.5      18.3 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b          0.75     27.5 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b          0.9      40.3 
-#&gt; </span><span style='color: #949494;'># ... with 20 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> a          0.1       9.14
+#&gt; <span style='color: #BCBCBC;'> 2</span> a          0.25     12.6 
+#&gt; <span style='color: #BCBCBC;'> 3</span> a          0.5      17.2 
+#&gt; <span style='color: #BCBCBC;'> 4</span> a          0.75     25.7 
+#&gt; <span style='color: #BCBCBC;'> 5</span> a          0.9      41.1 
+#&gt; <span style='color: #BCBCBC;'> 6</span> b          0.1       8.56
+#&gt; <span style='color: #BCBCBC;'> 7</span> b          0.25     13.0 
+#&gt; <span style='color: #BCBCBC;'> 8</span> b          0.5      18.3 
+#&gt; <span style='color: #BCBCBC;'> 9</span> b          0.75     27.5 
+#&gt; <span style='color: #BCBCBC;'>10</span> b          0.9      40.3 
+#&gt; <span style='color: #949494;'># ... with 15 more rows</span>
 #&gt; 
 #&gt; $wide
-#&gt; </span><span style='color: #949494;'># A tibble: 5 x 7</span><span>
-#&gt;   probs     a   All     b     c     d     e
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  0.1   9.14  12.9  8.56  7.97  8.60  8.24
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  0.25 12.6   16.0 13.0  12.3  12.2  13.1 
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  0.5  17.2   22.3 18.3  18.3  18.3  19.8 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  0.75 25.7   32.9 27.5  27.8  28.8  28.7 
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.9  41.1   43.7 40.3  43.8  40.8  42.7 
+#&gt; <span style='color: #949494;'># A tibble: 5 x 6</span>
+#&gt;   probs     a     b     c     d     e
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  0.1   9.14  8.56  7.97  8.60  8.24
+#&gt; <span style='color: #BCBCBC;'>2</span>  0.25 12.6  13.0  12.3  12.2  13.1 
+#&gt; <span style='color: #BCBCBC;'>3</span>  0.5  17.2  18.3  18.3  18.3  19.8 
+#&gt; <span style='color: #BCBCBC;'>4</span>  0.75 25.7  27.5  27.8  28.8  28.7 
+#&gt; <span style='color: #BCBCBC;'>5</span>  0.9  41.1  40.3  43.8  40.8  42.7 
 #&gt; </div><div class='input'><span class='va'>stats_res</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 7,734 x 9</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6,445 x 9</span>
 #&gt;    protein_Id  peptide_Id dilution.     n not_na      sd      var     mean    CV
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> CON__P0103~ AELADQAAS~ a             4      1 </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>  </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>    7</span><span style='text-decoration: underline;'>982</span><span>100  </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> CON__P0103~ AELADQAAS~ b             4      1 </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>  </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>    4</span><span style='text-decoration: underline;'>949</span><span>600  </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> CON__P0103~ AELADQAAS~ c             4      0 </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>  </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>        </span><span style='color: #BB0000;'>NaN</span><span>  </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> CON__P0103~ AELADQAAS~ d             4      0 </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>  </span><span style='color: #BB0000;'>NA</span><span>   </span><span style='color: #949494;'> </span><span>        </span><span style='color: #BB0000;'>NaN</span><span>  </span><span style='color: #BB0000;'>NA</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> CON__P0103~ AELADQAAS~ e             4      2  3.21</span><span style='color: #949494;'>e</span><span>6  1.03</span><span style='color: #949494;'>e</span><span>13  5</span><span style='text-decoration: underline;'>288</span><span>200  60.6
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> CON__P0103~ ILSLAQDQV~ a             4      4  4.93</span><span style='color: #949494;'>e</span><span>6  2.43</span><span style='color: #949494;'>e</span><span>13 13</span><span style='text-decoration: underline;'>181</span><span>700  37.4
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> CON__P0103~ ILSLAQDQV~ b             4      4  6.58</span><span style='color: #949494;'>e</span><span>6  4.33</span><span style='color: #949494;'>e</span><span>13 12</span><span style='text-decoration: underline;'>526</span><span>225  52.6
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> CON__P0103~ ILSLAQDQV~ c             4      4  3.63</span><span style='color: #949494;'>e</span><span>6  1.32</span><span style='color: #949494;'>e</span><span>13 10</span><span style='text-decoration: underline;'>191</span><span>650  35.6
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> CON__P0103~ ILSLAQDQV~ d             4      4  2.94</span><span style='color: #949494;'>e</span><span>6  8.67</span><span style='color: #949494;'>e</span><span>12  8</span><span style='text-decoration: underline;'>863</span><span>225  33.2
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> CON__P0103~ ILSLAQDQV~ e             4      4  3.83</span><span style='color: #949494;'>e</span><span>6  1.47</span><span style='color: #949494;'>e</span><span>13  9</span><span style='text-decoration: underline;'>253</span><span>350  41.4
-#&gt; </span><span style='color: #949494;'># ... with 7,724 more rows</span><span></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> CON__P0103~ AELADQAAS~ a             4      1 <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>  <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>    7<span style='text-decoration: underline;'>982</span>100  <span style='color: #BB0000;'>NA</span>  
+#&gt; <span style='color: #BCBCBC;'> 2</span> CON__P0103~ AELADQAAS~ b             4      1 <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>  <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>    4<span style='text-decoration: underline;'>949</span>600  <span style='color: #BB0000;'>NA</span>  
+#&gt; <span style='color: #BCBCBC;'> 3</span> CON__P0103~ AELADQAAS~ c             4      0 <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>  <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>        <span style='color: #BB0000;'>NaN</span>  <span style='color: #BB0000;'>NA</span>  
+#&gt; <span style='color: #BCBCBC;'> 4</span> CON__P0103~ AELADQAAS~ d             4      0 <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>  <span style='color: #BB0000;'>NA</span>   <span style='color: #949494;'> </span>        <span style='color: #BB0000;'>NaN</span>  <span style='color: #BB0000;'>NA</span>  
+#&gt; <span style='color: #BCBCBC;'> 5</span> CON__P0103~ AELADQAAS~ e             4      2  3.21<span style='color: #949494;'>e</span>6  1.03<span style='color: #949494;'>e</span>13  5<span style='text-decoration: underline;'>288</span>200  60.6
+#&gt; <span style='color: #BCBCBC;'> 6</span> CON__P0103~ ILSLAQDQV~ a             4      4  4.93<span style='color: #949494;'>e</span>6  2.43<span style='color: #949494;'>e</span>13 13<span style='text-decoration: underline;'>181</span>700  37.4
+#&gt; <span style='color: #BCBCBC;'> 7</span> CON__P0103~ ILSLAQDQV~ b             4      4  6.58<span style='color: #949494;'>e</span>6  4.33<span style='color: #949494;'>e</span>13 12<span style='text-decoration: underline;'>526</span>225  52.6
+#&gt; <span style='color: #BCBCBC;'> 8</span> CON__P0103~ ILSLAQDQV~ c             4      4  3.63<span style='color: #949494;'>e</span>6  1.32<span style='color: #949494;'>e</span>13 10<span style='text-decoration: underline;'>191</span>650  35.6
+#&gt; <span style='color: #BCBCBC;'> 9</span> CON__P0103~ ILSLAQDQV~ d             4      4  2.94<span style='color: #949494;'>e</span>6  8.67<span style='color: #949494;'>e</span>12  8<span style='text-decoration: underline;'>863</span>225  33.2
+#&gt; <span style='color: #BCBCBC;'>10</span> CON__P0103~ ILSLAQDQV~ e             4      4  3.83<span style='color: #949494;'>e</span>6  1.47<span style='color: #949494;'>e</span>13  9<span style='text-decoration: underline;'>253</span>350  41.4
+#&gt; <span style='color: #949494;'># ... with 6,435 more rows</span></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "transformedIntensity"</div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>summarize_stats_quantiles</span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $long
-#&gt; </span><span style='color: #949494;'># A tibble: 30 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   dilution. [6]</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 25 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   dilution. [5]</span>
 #&gt;    dilution. probs quantiles
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a          0.1     0.067</span><span style='text-decoration: underline;'>5</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a          0.25    0.117 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a          0.5     0.195 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a          0.75    0.330 
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a          0.9     0.544 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b          0.1     0.072</span><span style='text-decoration: underline;'>2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b          0.25    0.122 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b          0.5     0.200 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b          0.75    0.338 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b          0.9     0.571 
-#&gt; </span><span style='color: #949494;'># ... with 20 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> a          0.1     0.067<span style='text-decoration: underline;'>5</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> a          0.25    0.117 
+#&gt; <span style='color: #BCBCBC;'> 3</span> a          0.5     0.195 
+#&gt; <span style='color: #BCBCBC;'> 4</span> a          0.75    0.330 
+#&gt; <span style='color: #BCBCBC;'> 5</span> a          0.9     0.544 
+#&gt; <span style='color: #BCBCBC;'> 6</span> b          0.1     0.072<span style='text-decoration: underline;'>2</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> b          0.25    0.122 
+#&gt; <span style='color: #BCBCBC;'> 8</span> b          0.5     0.200 
+#&gt; <span style='color: #BCBCBC;'> 9</span> b          0.75    0.338 
+#&gt; <span style='color: #BCBCBC;'>10</span> b          0.9     0.571 
+#&gt; <span style='color: #949494;'># ... with 15 more rows</span>
 #&gt; 
 #&gt; $wide
-#&gt; </span><span style='color: #949494;'># A tibble: 5 x 7</span><span>
-#&gt;   probs      a   All      b      c      d      e
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  0.1  0.067</span><span style='text-decoration: underline;'>5</span><span> 0.115 0.072</span><span style='text-decoration: underline;'>2</span><span> 0.072</span><span style='text-decoration: underline;'>8</span><span> 0.074</span><span style='text-decoration: underline;'>7</span><span> 0.071</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  0.25 0.117  0.165 0.122  0.114  0.119  0.118 
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  0.5  0.195  0.270 0.200  0.192  0.199  0.195 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  0.75 0.330  0.460 0.338  0.319  0.330  0.332 
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.9  0.544  0.716 0.571  0.567  0.534  0.558 
+#&gt; <span style='color: #949494;'># A tibble: 5 x 6</span>
+#&gt;   probs      a      b      c      d      e
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  0.1  0.067<span style='text-decoration: underline;'>5</span> 0.072<span style='text-decoration: underline;'>2</span> 0.072<span style='text-decoration: underline;'>8</span> 0.074<span style='text-decoration: underline;'>7</span> 0.071<span style='text-decoration: underline;'>4</span>
+#&gt; <span style='color: #BCBCBC;'>2</span>  0.25 0.117  0.122  0.114  0.119  0.118 
+#&gt; <span style='color: #BCBCBC;'>3</span>  0.5  0.195  0.200  0.192  0.199  0.195 
+#&gt; <span style='color: #BCBCBC;'>4</span>  0.75 0.330  0.338  0.319  0.330  0.332 
+#&gt; <span style='color: #BCBCBC;'>5</span>  0.9  0.544  0.571  0.567  0.534  0.558 
 #&gt; </div><div class='input'><span class='fu'>summarize_stats_quantiles</span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span>, stats <span class='op'>=</span> <span class='st'>"sd"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $long
-#&gt; </span><span style='color: #949494;'># A tibble: 30 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   dilution. [6]</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 25 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   dilution. [5]</span>
 #&gt;    dilution. probs quantiles
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a          0.1     0.067</span><span style='text-decoration: underline;'>5</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a          0.25    0.117 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a          0.5     0.195 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a          0.75    0.330 
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a          0.9     0.544 
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> b          0.1     0.072</span><span style='text-decoration: underline;'>2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> b          0.25    0.122 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b          0.5     0.200 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> b          0.75    0.338 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> b          0.9     0.571 
-#&gt; </span><span style='color: #949494;'># ... with 20 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> a          0.1     0.067<span style='text-decoration: underline;'>5</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> a          0.25    0.117 
+#&gt; <span style='color: #BCBCBC;'> 3</span> a          0.5     0.195 
+#&gt; <span style='color: #BCBCBC;'> 4</span> a          0.75    0.330 
+#&gt; <span style='color: #BCBCBC;'> 5</span> a          0.9     0.544 
+#&gt; <span style='color: #BCBCBC;'> 6</span> b          0.1     0.072<span style='text-decoration: underline;'>2</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> b          0.25    0.122 
+#&gt; <span style='color: #BCBCBC;'> 8</span> b          0.5     0.200 
+#&gt; <span style='color: #BCBCBC;'> 9</span> b          0.75    0.338 
+#&gt; <span style='color: #BCBCBC;'>10</span> b          0.9     0.571 
+#&gt; <span style='color: #949494;'># ... with 15 more rows</span>
 #&gt; 
 #&gt; $wide
-#&gt; </span><span style='color: #949494;'># A tibble: 5 x 7</span><span>
-#&gt;   probs      a   All      b      c      d      e
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  0.1  0.067</span><span style='text-decoration: underline;'>5</span><span> 0.115 0.072</span><span style='text-decoration: underline;'>2</span><span> 0.072</span><span style='text-decoration: underline;'>8</span><span> 0.074</span><span style='text-decoration: underline;'>7</span><span> 0.071</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  0.25 0.117  0.165 0.122  0.114  0.119  0.118 
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  0.5  0.195  0.270 0.200  0.192  0.199  0.195 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  0.75 0.330  0.460 0.338  0.319  0.330  0.332 
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.9  0.544  0.716 0.571  0.567  0.534  0.558 
+#&gt; <span style='color: #949494;'># A tibble: 5 x 6</span>
+#&gt;   probs      a      b      c      d      e
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  0.1  0.067<span style='text-decoration: underline;'>5</span> 0.072<span style='text-decoration: underline;'>2</span> 0.072<span style='text-decoration: underline;'>8</span> 0.074<span style='text-decoration: underline;'>7</span> 0.071<span style='text-decoration: underline;'>4</span>
+#&gt; <span style='color: #BCBCBC;'>2</span>  0.25 0.117  0.122  0.114  0.119  0.118 
+#&gt; <span style='color: #BCBCBC;'>3</span>  0.5  0.195  0.200  0.192  0.199  0.195 
+#&gt; <span style='color: #BCBCBC;'>4</span>  0.75 0.330  0.338  0.319  0.330  0.332 
+#&gt; <span style='color: #BCBCBC;'>5</span>  0.9  0.544  0.571  0.567  0.534  0.558 
 #&gt; </div><div class='input'>
 <span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'>summarize_stats_quantiles</span><span class='op'>(</span><span class='va'>stats_res</span>, <span class='va'>config</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>xx</span><span class='op'>$</span><span class='va'>long</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>probs</span>, y <span class='op'>=</span> <span class='va'>quantiles</span>, color <span class='op'>=</span> <span class='va'>dilution.</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='summarize_stats_quantiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

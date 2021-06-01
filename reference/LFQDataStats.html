@@ -73,7 +73,7 @@ Decorates LFQData with methods to compute statistics of interactions" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -224,7 +224,7 @@ Decorates LFQData with methods to compute statistics of interactions" />
 <p><hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>create analyse variances and CV</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqdata</span>, stats <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"interaction"</span>, <span class='st'>"all"</span>, <span class='st'>"pooled"</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -233,8 +233,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 </dl><p></div></p>
 <p><hr>
 <a id="method-stats"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/stats-package.html'>stats()</a></code></h3>
-<p>compute CV sd and mean of data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>stats</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p>compute CV sd and mean of e.g. peptide protein in each condition.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQDataStats</span><span class='op'>$</span><span class='fu'>stats</span><span class='op'>(</span>all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>data.frame</p>
@@ -376,8 +376,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 <span class='va'>lfqstats</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Stats</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='input'><span class='va'>x</span><span class='op'>&lt;-</span><span class='va'>lfqstats</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='input'><span class='va'>x</span><span class='op'>&lt;-</span><span class='va'>lfqstats</span>
 
 <span class='co'>#study variance of normalized data</span>
 <span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
@@ -386,8 +386,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>is_transformed</span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lfqstats</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Stats</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
+
 <span class='co'>#Slightly different dataset</span>
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
@@ -397,8 +397,8 @@ Decorates LFQData with methods to compute statistics of interactions" />
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
 
 <span class='va'>lfqstats</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Stats</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>runallfuncs</span><span class='op'>(</span><span class='va'>lfqstats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: data is not transformed - aborting</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

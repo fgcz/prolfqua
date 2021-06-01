@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@
       <h1 data-toc-skip>Modelling Dataset with two Factors.</h1>
                         <h4 class="author">Witold Wolski</h4>
             
-            <h4 class="date">20 May, 2021</h4>
+            <h4 class="date">01 June, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Modelling2Factors.Rmd"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -206,7 +206,7 @@ p-value distributions for ANOVA analysis.
 </div>
 <pre><code>## 
 ## $name
-## [1] "Anova_p.values_.pdf"</code></pre>
+## [1] "Anova_p.values_Model.pdf"</code></pre>
 <p>Examine proteins with a significant interaction between the two factors treatment and batch.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span>
@@ -278,9 +278,9 @@ p-value distributions for ANOVA analysis.
 <pre><code>## [1] 1695   15</code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 2500   18</code></pre>
+<pre><code>## [1] 2500   15</code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/addContrastResults.html">addContrastResults</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/addContrastResults.html">addContrastResults</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span>
 <span class="va">mergedContrasts</span><span class="op">$</span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">mergedContrasts</span><span class="op">$</span><span class="va">modelName</span><span class="op">)</span>
 
 <span class="va">myColors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"black"</span><span class="op">)</span>

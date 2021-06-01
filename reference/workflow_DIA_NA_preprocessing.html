@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -231,22 +231,22 @@
 <span class='va'>data</span><span class='op'>$</span><span class='va'>nr_peptide_Id_IN_protein_Id</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
 
 <span class='fu'><a href='hierarchy_counts.html'>hierarchy_counts</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   isotope protein_Id peptide_Id
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> light          163       </span><span style='text-decoration: underline;'>1</span><span>258</div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>workflow_DIA_NA_preprocessing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light          163       <span style='text-decoration: underline;'>1</span>258</div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>workflow_DIA_NA_preprocessing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Columns added : srm_QValueMin, srm_QValueNR</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='hierarchy_counts.html'>hierarchy_counts</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   isotope protein_Id peptide_Id
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> light          137        978</div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>workflow_DIA_NA_preprocessing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, percent<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light          137        978</div><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>workflow_DIA_NA_preprocessing</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, percent<span class='op'>=</span><span class='fl'>70</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Columns added : srm_QValueMin, srm_QValueNR</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "protein_Id"</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='hierarchy_counts.html'>hierarchy_counts</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   isotope protein_Id peptide_Id
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> light          137        978</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>==</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/grouped_df.html'>is.grouped_df</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light          137        978</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>==</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/grouped_df.html'>is.grouped_df</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

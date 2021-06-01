@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@
       <h1 data-toc-skip>Benchmarking MSstats using the Ionstar Dataset</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">20 May, 2021</h4>
+            <h4 class="date">01 June, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/MSStatsBenchmark.Rmd"><code>vignettes/MSStatsBenchmark.Rmd</code></a></small>
       <div class="hidden name"><code>MSStatsBenchmark.Rmd</code></div>
@@ -148,6 +148,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://msstats.org">MSstats</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
+
 <span class="co"># Read in MaxQuant files</span>
 <span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html">find.package</a></span><span class="op">(</span><span class="st">"prolfquaData"</span><span class="op">)</span> , <span class="st">"quantdata"</span><span class="op">)</span>
 <span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">datadir</span>,
@@ -175,20 +176,52 @@
                            annotation <span class="op">=</span> <span class="va">msstas_annotation</span>, 
                            proteinGroups <span class="op">=</span> <span class="va">proteinGroups</span>,
                            removeProtein_with1Peptide <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<pre><code>## INFO  [2021-06-01 13:16:16] ** Raw data from MaxQuant imported successfully.
+## INFO  [2021-06-01 13:16:16] ** Rows with values of Potentialcontaminant equal to + are removed 
+## INFO  [2021-06-01 13:16:19] ** Rows with values of Reverse equal to + are removed 
+## INFO  [2021-06-01 13:16:21] ** Rows with values of Potentialcontaminant equal to + are removed 
+## INFO  [2021-06-01 13:16:21] ** Rows with values of Reverse equal to + are removed 
+## INFO  [2021-06-01 13:16:21] ** Rows with values of Onlyidentifiedbysite equal to + are removed 
+## INFO  [2021-06-01 13:16:21] ** + Contaminant, + Reverse, + Potential.contaminant, + Only.identified.by.site proteins are removed.
+## INFO  [2021-06-01 13:16:24] ** Raw data from MaxQuant cleaned successfully.
+## INFO  [2021-06-01 13:16:24] ** Using provided annotation.
+## INFO  [2021-06-01 13:16:24] ** Run labels were standardized to remove symbols such as '.' or '%'.
+## INFO  [2021-06-01 13:16:24] ** The following options are used:
+##   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
+##   - Shared peptides will be removed.
+##   - Proteins with a single feature will be removed.
+##   - Features with less than 3 measurements across runs will be removed.
+## INFO  [2021-06-01 13:16:25] ** Features with all missing measurements across runs are removed.
+## INFO  [2021-06-01 13:16:26] ** Shared peptides are removed.
+## INFO  [2021-06-01 13:16:28] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+## INFO  [2021-06-01 13:16:28] ** Features with one or two measurements across runs are removed.
+## INFO  [2021-06-01 13:16:29] Proteins with a single feature are removed.
+## INFO  [2021-06-01 13:16:32] ** Run annotation merged with quantification data.
+## INFO  [2021-06-01 13:16:33] ** Features with one or two measurements across runs are removed.
+## INFO  [2021-06-01 13:16:33] ** Fractionation handled.
+## INFO  [2021-06-01 13:16:35] ** Updated quantification data to make balanced design. Missing values are marked by NA
+## INFO  [2021-06-01 13:16:35] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.</code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">QuantData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MSstats/man/dataProcess.html">dataProcess</a></span><span class="op">(</span><span class="va">raw</span><span class="op">)</span></code></pre></div>
-<pre><code>##                        
-##   Summary of Features :
-##                          count
-## # of Protein              4034
-## # of Peptides/Protein    2-426
-## # of Transitions/Peptide   1-1
-##                       
-##   Summary of Samples :
-##                            a b c d e
-## # of MS runs               4 4 4 4 4
-## # of Biological Replicates 4 4 4 4 4
-## # of Technical Replicates  1 1 1 1 1
+<pre><code>## INFO  [2021-06-01 13:16:40] ** Log2 intensities under cutoff = 17.373  were considered as censored missing values.
+## INFO  [2021-06-01 13:16:40] ** Log2 intensities = NA were considered as censored missing values.
+## INFO  [2021-06-01 13:16:40] ** Use all features that the dataset originally has.
+## INFO  [2021-06-01 13:16:43] 
+##  # proteins: 4034
+##  # peptides per protein: 2-426
+##  # features per peptide: 1-1
+## INFO  [2021-06-01 13:16:43] 
+##                     a b c d e
+##              # runs 4 4 4 4 4
+##     # bioreplicates 4 4 4 4 4
+##  # tech. replicates 1 1 1 1 1
+## INFO  [2021-06-01 13:16:44] Some features are completely missing in at least one condition:  
+##  KPNVGCQQDSEELLK_3_NA_NA,
+##  AQPPEAGPQGLHDLGR_2_NA_NA,
+##  EPTPSIASDISLPIATQELR_2_NA_NA,
+##  KISSNPNPVVQMSVGHK_3_NA_NA,
+##  SDPYGIIR_2_NA_NA ...
+## INFO  [2021-06-01 13:16:44]  == Start the summarization per subplot...
 ## 
   |                                                                            
   |                                                                      |   0%
@@ -531,8 +564,9 @@
   |                                                                            
   |======================================================================|  99%
   |                                                                            
-  |======================================================================| 100%</code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+  |======================================================================| 100%
+## INFO  [2021-06-01 13:22:08]  == Summarization is done.</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Profile plot</span>
 <span class="co">#dataProcessPlots(data=QuantData, type = "ProfilePlot")</span>
 <span class="co"># Quality control plot </span>
@@ -543,7 +577,7 @@
 <div id="defining-contrasts-and-computing-group-comparisons" class="section level1">
 <h1 class="hasAnchor">
 <a href="#defining-contrasts-and-computing-group-comparisons" class="anchor"></a>Defining Contrasts and computing group comparisons</h1>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="st">"dilution_(9/3)_3"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.a"</span>,
   <span class="st">"dilution_(9/4.5)_2"</span> <span class="op">=</span>   <span class="st">"dilution.e - dilution.b"</span>,
@@ -568,10 +602,10 @@
 ## "dilution.e - dilution.d" "dilution.d - dilution.c" "dilution.c - dilution.b" 
 ##      dilution_(4.5/3)_1.5 
 ## "dilution.b - dilution.a"</code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">QuantData</span><span class="op">$</span><span class="va">ProcessedData</span><span class="op">$</span><span class="va">GROUP_ORIGINAL</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "a" "b" "c" "d" "e"</code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># based on multiple comparisons  (T1 vs T3; T1 vs T7; T1 vs T9)</span>
 <span class="va">comparison1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="va">comparison2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
@@ -579,9 +613,10 @@
 <span class="va">comparison4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>,nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">comparison1</span>,<span class="va">comparison2</span>, <span class="va">comparison3</span>, <span class="va">comparison4</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dilution_(9/7.5)_1.2"</span>,<span class="st">"dilution_(7.5/6)_1.25"</span>,<span class="st">"dilution_(6/4.5)_1.3(3)"</span>,<span class="st">"dilution_(4.5/3)_1.5"</span><span class="op">)</span>
-
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span>,<span class="st">"e"</span><span class="op">)</span>
 <span class="va">testResultMultiComparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MSstats/man/groupComparison.html">groupComparison</a></span><span class="op">(</span>contrast.matrix<span class="op">=</span><span class="va">comparison</span>, data<span class="op">=</span><span class="va">QuantData</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
+<pre><code>## INFO  [2021-06-01 13:22:14]  == Start to test and get inference in whole plot ...
+## 
   |                                                                            
   |                                                                      |   0%
   |                                                                            
@@ -923,48 +958,49 @@
   |                                                                            
   |======================================================================|  99%
   |                                                                            
-  |======================================================================| 100%</code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+  |======================================================================| 100%
+## INFO  [2021-06-01 13:23:28]  == Comparisons for all proteins are done.</code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">testResultMultiComparisons</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "ComparisonResult" "ModelQC"          "fittedmodel"</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<pre><code>## [1] "ComparisonResult" "ModelQC"          "FittedModel"</code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">testResultMultiComparisons</span><span class="op">$</span><span class="va">fittedmodel</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 4034</code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">testResultMultiComparisons</span><span class="op">$</span><span class="va">ComparisonResult</span></code></pre></div>
 </div>
 <div id="benchmarking" class="section level1">
 <h1 class="hasAnchor">
 <a href="#benchmarking" class="anchor"></a>Benchmarking</h1>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span>
 <span class="co">#saveRDS(bb, file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")</span>
 <span class="co">#bb &lt;- readRDS(file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")</span>
 
 <span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">bb</span>, idcol <span class="op">=</span> <span class="st">"Protein"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                       Protein                Label       log2FC
-## 1                        sp|A0AVT1|UBA6_HUMAN dilution_(9/7.5)_1.2  0.007803734
-## 2                       sp|A0FGR8|ESYT2_HUMAN dilution_(9/7.5)_1.2 -0.241748745
-## 3                       sp|A0MZ66|SHOT1_HUMAN dilution_(9/7.5)_1.2  0.130843529
-## 4                       sp|A1L0T0|ILVBL_HUMAN dilution_(9/7.5)_1.2 -0.046049073
-## 5 sp|A1X283|SPD2B_HUMAN;sp|Q5TCZ1|SPD2A_HUMAN dilution_(9/7.5)_1.2 -0.063718060
-## 6                        sp|A2RRP1|NBAS_HUMAN dilution_(9/7.5)_1.2  0.013487094
-##          SE      Tvalue DF     pvalue adj.pvalue issue MissingPercentage
-## 1 0.1237976  0.06303622 15 0.95056999  0.9923490  &lt;NA&gt;         0.3229167
-## 2 0.1017615 -2.37564059 15 0.03127735  0.3012502  &lt;NA&gt;         0.2380952
-## 3 0.1462949  0.89438225 15 0.38524385  0.8077905  &lt;NA&gt;         0.2840909
-## 4 0.2243356 -0.20526868 15 0.84012185  0.9645167  &lt;NA&gt;         0.3750000
-## 5 0.3850702 -0.16547129 15 0.87078258  0.9708587  &lt;NA&gt;         0.5000000
-## 6 0.2454501  0.05494841 14 0.95695602  0.9923490  &lt;NA&gt;         0.5625000
+<pre><code>##                 Protein                   Label       log2FC        SE
+## 1  sp|A0AVT1|UBA6_HUMAN    dilution_(9/7.5)_1.2  0.007803734 0.1237976
+## 2  sp|A0AVT1|UBA6_HUMAN   dilution_(7.5/6)_1.25 -0.210262196 0.1237976
+## 3  sp|A0AVT1|UBA6_HUMAN dilution_(6/4.5)_1.3(3) -0.107354560 0.1237976
+## 4  sp|A0AVT1|UBA6_HUMAN    dilution_(4.5/3)_1.5  0.110008330 0.1237976
+## 5 sp|A0FGR8|ESYT2_HUMAN    dilution_(9/7.5)_1.2 -0.241748745 0.1017615
+## 6 sp|A0FGR8|ESYT2_HUMAN   dilution_(7.5/6)_1.25  0.142149523 0.1017615
+##        Tvalue DF     pvalue adj.pvalue issue MissingPercentage
+## 1  0.06303622 15 0.95056999  0.9923490  &lt;NA&gt;         0.3229167
+## 2 -1.69843500 15 0.11006653  0.6038811  &lt;NA&gt;         0.2708333
+## 3 -0.86717796 15 0.39950477  0.8274025  &lt;NA&gt;         0.1770833
+## 4  0.88861432 15 0.38823853  0.8972674  &lt;NA&gt;         0.1875000
+## 5 -2.37564059 15 0.03127735  0.3012502  &lt;NA&gt;         0.2380952
+## 6  1.39688906 15 0.18277191  0.7120014  &lt;NA&gt;         0.2261905
 ##   ImputationPercentage species    TP
 ## 1            0.3229167   HUMAN FALSE
-## 2            0.2380952   HUMAN FALSE
-## 3            0.2840909   HUMAN FALSE
-## 4            0.3750000   HUMAN FALSE
-## 5            0.5000000   HUMAN FALSE
-## 6            0.4375000   HUMAN FALSE</code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+## 2            0.2708333   HUMAN FALSE
+## 3            0.1770833   HUMAN FALSE
+## 4            0.1875000   HUMAN FALSE
+## 5            0.2380952   HUMAN FALSE
+## 6            0.2261905   HUMAN FALSE</code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">benchmark_msstats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_benchmark.html">make_benchmark</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span>,
                                    contrast <span class="op">=</span> <span class="st">"Label"</span>,
                                 toscale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pvalue"</span><span class="op">)</span>,
@@ -981,7 +1017,7 @@
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">benchmark_msstats</span><span class="op">$</span><span class="va">smc</span><span class="op">$</span><span class="va">summary</span><span class="op">$</span><span class="va">Protein</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 4034</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sumarry</span> <span class="op">&lt;-</span> <span class="va">benchmark_msstats</span><span class="op">$</span><span class="va">smc</span><span class="op">$</span><span class="va">summary</span>
 <span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">sumarry</span>, caption <span class="op">=</span> <span class="st">"nr of proteins with 0, 1, 2, 3 missing contrasts."</span><span class="op">)</span></code></pre></div>
 <table class="table">
@@ -1009,7 +1045,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">benchmark_msstats</span><span class="op">$</span><span class="fu">pAUC_summaries</span><span class="op">(</span><span class="op">)</span>
 <span class="va">res</span><span class="op">$</span><span class="va">barp</span></code></pre></div>
 <div class="figure">
@@ -1017,7 +1053,7 @@
 ROC curves
 </p>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#res$ftable</span>
 <span class="va">benchmark_msstats</span><span class="op">$</span><span class="fu">plot_ROC</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -1025,14 +1061,14 @@ ROC curves
 plot ROC curves
 </p>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">benchmark_msstats</span><span class="op">$</span><span class="fu">plot_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="MSStatsBenchmark_files/figure-html/unnamed-chunk-4-1.png" alt="plot FDR vs FDP" width="700"><p class="caption">
 plot FDR vs FDP
 </p>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">benchmark_msstats</span><span class="op">$</span><span class="fu">plot_FDPvsTPR</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="MSStatsBenchmark_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>

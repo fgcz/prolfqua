@@ -73,7 +73,7 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -198,6 +198,7 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1</p>
 <code><a href='plot_stat_violin.html'>plot_stat_violin</a>()</code>,
 <code><a href='plot_stdv_vs_mean.html'>plot_stdv_vs_mean</a>()</code>,
 <code><a href='poolvar.html'>poolvar</a>()</code>,
+<code><a href='summarize_stats_all.html'>summarize_stats_all</a>()</code>,
 <code><a href='summarize_stats_quantiles.html'>summarize_stats_quantiles</a>()</code>,
 <code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
@@ -214,7 +215,7 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1</p>
      var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span><span class='op'>)</span>,mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NaN</span>,<span class='cn'>NaN</span>,<span class='cn'>NaN</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>compute_pooled</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   n.groups n df  sd var mean sdT meanAll not_na
-#&gt; 1        0 0  0 NaN NaN  NaN NaN     NaN      1</div><div class='input'><span class='va'>yb</span> <span class='op'>&lt;-</span> <span class='va'>y</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>not_na</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
+#&gt; 1        0 0  0 NaN NaN  NaN NaN     NaN      1</div><div class='input'><span class='va'>yb</span> <span class='op'>&lt;-</span> <span class='va'>y</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>not_na</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'>prolfqua</span><span class='fu'>:::</span><span class='fu'>pooled_V2</span><span class='op'>(</span><span class='va'>yb</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   n.groups n df sd var mean
 #&gt; 1        0 0  0  0   0  NaN</div><div class='input'><span class='fu'>prolfqua</span><span class='fu'>:::</span><span class='fu'>pooled_V1</span><span class='op'>(</span><span class='va'>yb</span><span class='op'>)</span>

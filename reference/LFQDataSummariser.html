@@ -73,7 +73,7 @@ Summarize LFQData" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -203,6 +203,7 @@ Summarize LFQData" />
 
 <ul>
 <li><p><a href='#method-new'><code>LFQDataSummariser$new()</code></a></p></li>
+<li><p><a href='#method-hierarchy_counts'><code>LFQDataSummariser$hierarchy_counts()</code></a></p></li>
 <li><p><a href='#method-hierarchy_counts_sample'><code>LFQDataSummariser$hierarchy_counts_sample()</code></a></p></li>
 <li><p><a href='#method-interaction_missing_stats'><code>LFQDataSummariser$interaction_missing_stats()</code></a></p></li>
 <li><p><a href='#method-missingness_per_condition'><code>LFQDataSummariser$missingness_per_condition()</code></a></p></li>
@@ -219,6 +220,11 @@ Summarize LFQData" />
 <dt><code>lfqdata</code></dt><dd><p>LFQData</p></dd>
 
 </dl><p></div></p>
+<p><hr>
+<a id="method-hierarchy_counts"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='hierarchy_counts.html'>hierarchy_counts()</a></code></h3>
+<p>summarize hierarchy</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQDataSummariser</span><span class='op'>$</span><span class='fu'>hierarchy_counts</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
 <p><hr>
 <a id="method-hierarchy_counts_sample"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='hierarchy_counts_sample.html'>hierarchy_counts_sample()</a></code></h3>
 <p>number of elements at each level in every sample</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -264,88 +270,101 @@ Summarize LFQData" />
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 <span class='va'>sum</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_Summariser</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): attempt to apply non-function</span></div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"wide"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   isotope [1]</span><span>
+<span class='va'>sum</span>
+</div><div class='output co'>#&gt; &lt;LFQDataSummariser&gt;
+#&gt;   Public:
+#&gt;     clone: function (deep = FALSE) 
+#&gt;     hierarchy_counts: function () 
+#&gt;     hierarchy_counts_sample: function (value = c("wide", "long", "plot")) 
+#&gt;     initialize: function (lfqdata) 
+#&gt;     interaction_missing_stats: function () 
+#&gt;     lfq: LFQData, R6
+#&gt;     missingness_per_condition: function () 
+#&gt;     missingness_per_condition_cumsum: function () </div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
+#&gt;   isotope protein_Id peptide_Id
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light           64        803</div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"wide"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 4</span>
+#&gt; <span style='color: #949494;'># Groups:   isotope [1]</span>
 #&gt;    isotope sampleName protein_Id peptide_Id
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> light   a~10               64        650
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> light   a~11               63        637
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> light   a~20               65        631
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> light   a~21               64        618
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> light   b~02               66        647
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> light   b~09               65        638
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> light   b~12               63        650
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> light   b~19               66        624
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> light   c~03               65        634
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> light   c~08               67        642
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> light   c~13               65        631
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> light   c~18               66        627
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> light   d~04               66        647
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> light   d~07               65        638
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> light   d~14               67        641
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> light   d~17               67        643
-#&gt; </span><span style='color: #BCBCBC;'>17</span><span> light   e~05               66        639
-#&gt; </span><span style='color: #BCBCBC;'>18</span><span> light   e~06               66        642
-#&gt; </span><span style='color: #BCBCBC;'>19</span><span> light   e~15               66        630
-#&gt; </span><span style='color: #BCBCBC;'>20</span><span> light   e~16               67        627</div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"long"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 40 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   isotope [1]</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> light   a~10               60        679
+#&gt; <span style='color: #BCBCBC;'> 2</span> light   a~11               61        672
+#&gt; <span style='color: #BCBCBC;'> 3</span> light   a~20               60        665
+#&gt; <span style='color: #BCBCBC;'> 4</span> light   a~21               61        655
+#&gt; <span style='color: #BCBCBC;'> 5</span> light   b~02               62        699
+#&gt; <span style='color: #BCBCBC;'> 6</span> light   b~09               64        679
+#&gt; <span style='color: #BCBCBC;'> 7</span> light   b~12               62        692
+#&gt; <span style='color: #BCBCBC;'> 8</span> light   b~19               60        654
+#&gt; <span style='color: #BCBCBC;'> 9</span> light   c~03               62        685
+#&gt; <span style='color: #BCBCBC;'>10</span> light   c~08               63        672
+#&gt; <span style='color: #BCBCBC;'>11</span> light   c~13               62        667
+#&gt; <span style='color: #BCBCBC;'>12</span> light   c~18               62        672
+#&gt; <span style='color: #BCBCBC;'>13</span> light   d~04               63        688
+#&gt; <span style='color: #BCBCBC;'>14</span> light   d~07               64        685
+#&gt; <span style='color: #BCBCBC;'>15</span> light   d~14               61        674
+#&gt; <span style='color: #BCBCBC;'>16</span> light   d~17               63        681
+#&gt; <span style='color: #BCBCBC;'>17</span> light   e~05               61        694
+#&gt; <span style='color: #BCBCBC;'>18</span> light   e~06               63        682
+#&gt; <span style='color: #BCBCBC;'>19</span> light   e~15               61        664
+#&gt; <span style='color: #BCBCBC;'>20</span> light   e~16               63        676</div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"long"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 40 x 4</span>
+#&gt; <span style='color: #949494;'># Groups:   isotope [1]</span>
 #&gt;    isotope sampleName key           nr
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> light   a~10       protein_Id    64
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> light   a~11       protein_Id    63
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> light   a~20       protein_Id    65
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> light   a~21       protein_Id    64
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> light   b~02       protein_Id    66
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> light   b~09       protein_Id    65
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> light   b~12       protein_Id    63
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> light   b~19       protein_Id    66
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> light   c~03       protein_Id    65
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> light   c~08       protein_Id    67
-#&gt; </span><span style='color: #949494;'># ... with 30 more rows</span><span></div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> light   a~10       protein_Id    60
+#&gt; <span style='color: #BCBCBC;'> 2</span> light   a~11       protein_Id    61
+#&gt; <span style='color: #BCBCBC;'> 3</span> light   a~20       protein_Id    60
+#&gt; <span style='color: #BCBCBC;'> 4</span> light   a~21       protein_Id    61
+#&gt; <span style='color: #BCBCBC;'> 5</span> light   b~02       protein_Id    62
+#&gt; <span style='color: #BCBCBC;'> 6</span> light   b~09       protein_Id    64
+#&gt; <span style='color: #BCBCBC;'> 7</span> light   b~12       protein_Id    62
+#&gt; <span style='color: #BCBCBC;'> 8</span> light   b~19       protein_Id    60
+#&gt; <span style='color: #BCBCBC;'> 9</span> light   c~03       protein_Id    62
+#&gt; <span style='color: #BCBCBC;'>10</span> light   c~08       protein_Id    63
+#&gt; <span style='color: #949494;'># ... with 30 more rows</span></div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>hierarchy_counts_sample</span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>
 </div><div class='img'><img src='LFQDataSummariser-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>interaction_missing_stats</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; $data
-#&gt; </span><span style='color: #949494;'># A tibble: 3,890 x 9</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 4,050 x 9</span>
 #&gt;    dilution. protein_Id     peptide_Id      isotope nrReplicates nrNAs  meanArea
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> a         CON__P01030~9~ AELADQAASWLTR   light              4     3    7.98</span><span style='color: #949494;'>e</span><span>6
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> a         CON__P01030~9~ ILSLAQDQVGGSAEK light              4     0    1.32</span><span style='color: #949494;'>e</span><span>7
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> a         CON__P01030~9~ LLLFSPSVVR      light              4     0    7.16</span><span style='color: #949494;'>e</span><span>6
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a         CON__P02769~1~ AEFVEVTK        light              4     0    5.28</span><span style='color: #949494;'>e</span><span>8
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> a         CON__P02769~1~ DDPHACYSTVFDK   light              4     0    2.18</span><span style='color: #949494;'>e</span><span>8
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> a         CON__P02769~1~ DDPHACYSTVFDKLK light              4     0    4.44</span><span style='color: #949494;'>e</span><span>7
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> a         CON__P02769~1~ ECCHGDLLECADDR~ light              4     0    1.21</span><span style='color: #949494;'>e</span><span>7
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> a         CON__P02769~1~ ETYGDMADCCEK    light              4     0    2.49</span><span style='color: #949494;'>e</span><span>7
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> a         CON__P02769~1~ EYEATLEECCAK    light              4     0    2.69</span><span style='color: #949494;'>e</span><span>7
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> a         CON__P02769~1~ FKDLGEEHFK      light              4     0    1.27</span><span style='color: #949494;'>e</span><span>9
-#&gt; </span><span style='color: #949494;'># ... with 3,880 more rows, and 2 more variables: medianArea &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   nrMeasured &lt;int&gt;</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> a         CON__P02769~1~ AEFVEVTK        light              4     0    5.28<span style='color: #949494;'>e</span>8
+#&gt; <span style='color: #BCBCBC;'> 2</span> a         CON__P02769~1~ DDPHACYSTVFDK   light              4     0    2.18<span style='color: #949494;'>e</span>8
+#&gt; <span style='color: #BCBCBC;'> 3</span> a         CON__P02769~1~ DDPHACYSTVFDKLK light              4     0    4.44<span style='color: #949494;'>e</span>7
+#&gt; <span style='color: #BCBCBC;'> 4</span> a         CON__P02769~1~ ECCHGDLLECADDR~ light              4     0    1.21<span style='color: #949494;'>e</span>7
+#&gt; <span style='color: #BCBCBC;'> 5</span> a         CON__P02769~1~ ETYGDMADCCEK    light              4     0    2.49<span style='color: #949494;'>e</span>7
+#&gt; <span style='color: #BCBCBC;'> 6</span> a         CON__P02769~1~ EYEATLEECCAK    light              4     0    2.69<span style='color: #949494;'>e</span>7
+#&gt; <span style='color: #BCBCBC;'> 7</span> a         CON__P02769~1~ FKDLGEEHFK      light              4     0    1.27<span style='color: #949494;'>e</span>9
+#&gt; <span style='color: #BCBCBC;'> 8</span> a         CON__P02769~1~ HLVDEPQNLIK     light              4     0    2.20<span style='color: #949494;'>e</span>9
+#&gt; <span style='color: #BCBCBC;'> 9</span> a         CON__P02769~1~ HPEYAVSVLLR     light              4     0    5.44<span style='color: #949494;'>e</span>7
+#&gt; <span style='color: #BCBCBC;'>10</span> a         CON__P02769~1~ HPYFYAPELLYYANK light              4     0    1.91<span style='color: #949494;'>e</span>8
+#&gt; <span style='color: #949494;'># ... with 4,040 more rows, and 2 more variables: medianArea &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   nrMeasured &lt;int&gt;</span>
 #&gt; 
 #&gt; $summaries
 #&gt; [1] "nrReplicates" "nrNAs"        "nrMeasured"   "meanArea"     "medianArea"  
 #&gt; </div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>missingness_per_condition</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 8</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   isotope, dilution. [5]</span><span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 8</span>
+#&gt; <span style='color: #949494;'># Groups:   isotope, dilution. [5]</span>
 #&gt;   isotope dilution. nrReplicates   `0`   `1`   `2`   `3`   `4`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> light   a                    4   561    74    53    52    38
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> light   b                    4   559    86    53    49    31
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> light   c                    4   552    89    48    50    39
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> light   d                    4   564    87    47    44    36
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> light   e                    4   558    77    60    42    41</div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>missingness_per_condition_cumsum</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 8</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   isotope, dilution. [5]</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light   a                    4   579    70    57    59    45
+#&gt; <span style='color: #BCBCBC;'>2</span> light   b                    4   582    82    65    48    33
+#&gt; <span style='color: #BCBCBC;'>3</span> light   c                    4   579    81    51    63    36
+#&gt; <span style='color: #BCBCBC;'>4</span> light   d                    4   586    84    59    42    39
+#&gt; <span style='color: #BCBCBC;'>5</span> light   e                    4   581    83    61    49    36</div><div class='input'><span class='va'>sum</span><span class='op'>$</span><span class='fu'>missingness_per_condition_cumsum</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>isotope ~ dilution.</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 8</span>
+#&gt; <span style='color: #949494;'># Groups:   isotope, dilution. [5]</span>
 #&gt;   isotope dilution. nrReplicates   `0`   `1`   `2`   `3`   `4`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> light   a                    4   561   635   688   740   778
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> light   b                    4   559   645   698   747   778
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> light   c                    4   552   641   689   739   778
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> light   d                    4   564   651   698   742   778
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> light   e                    4   558   635   695   737   778</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> light   a                    4   579   649   706   765   810
+#&gt; <span style='color: #BCBCBC;'>2</span> light   b                    4   582   664   729   777   810
+#&gt; <span style='color: #BCBCBC;'>3</span> light   c                    4   579   660   711   774   810
+#&gt; <span style='color: #BCBCBC;'>4</span> light   d                    4   586   670   729   771   810
+#&gt; <span style='color: #BCBCBC;'>5</span> light   e                    4   581   664   725   774   810</div><div class='input'>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

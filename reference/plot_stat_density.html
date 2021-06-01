@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -221,6 +221,7 @@
 <code><a href='plot_stat_violin.html'>plot_stat_violin</a>()</code>,
 <code><a href='plot_stdv_vs_mean.html'>plot_stdv_vs_mean</a>()</code>,
 <code><a href='poolvar.html'>poolvar</a>()</code>,
+<code><a href='summarize_stats_all.html'>summarize_stats_all</a>()</code>,
 <code><a href='summarize_stats_quantiles.html'>summarize_stats_quantiles</a>()</code>,
 <code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
@@ -233,8 +234,8 @@
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'>plot_stat_density</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>, stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 368 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plot_stat_density-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_stat_density</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>, stat <span class='op'>=</span> <span class='st'>"sd"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 858 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plot_stat_density-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_stat_density</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>, stat <span class='op'>=</span> <span class='st'>"CV"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 858 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plot_stat_density-3.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 846 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plot_stat_density-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_stat_density</span><span class='op'>(</span><span class='va'>res</span>, <span class='va'>config</span>, stat <span class='op'>=</span> <span class='st'>"CV"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 846 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plot_stat_density-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

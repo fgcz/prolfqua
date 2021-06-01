@@ -73,7 +73,7 @@ compute contrasts with data imputation (directly from data)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -346,12 +346,12 @@ compute contrasts with data imputation (directly from data)" />
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>ContrastsSimpleImpute</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqdata</span>, contrasts <span class='op'>=</span> <span class='va'>Contrasts</span><span class='op'>)</span>
 <span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.b</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_contrast_sides</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   contrast [2]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   contrast [2]</span>
 #&gt;   contrast     c1         c2        
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dilution.b-a dilution.b dilution.a
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dilution.c-e dilution.c dilution.b</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     
+#&gt; <span style='color: #BCBCBC;'>1</span> dilution.b-a dilution.b dilution.a
+#&gt; <span style='color: #BCBCBC;'>2</span> dilution.c-e dilution.c dilution.b</div><div class='input'>
 <span class='va'>pl</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>pl</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='ContrastsSimpleImpute-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>pl</span><span class='op'>$</span><span class='fu'>histogram_estimate</span><span class='op'>(</span><span class='op'>)</span>
@@ -362,7 +362,7 @@ compute contrasts with data imputation (directly from data)" />
 <span class='va'>pl</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.b</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='input'><span class='va'>pl</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing non-finite values (stat_bin).</span></div><div class='img'><img src='ContrastsSimpleImpute-5.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

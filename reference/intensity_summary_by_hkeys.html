@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
       </span>
     </div>
 
@@ -229,64 +229,64 @@
 </div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='input'>
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>x</span><span class='op'>(</span><span class='st'>"unnest"</span><span class='op'>)</span>
 <span class='fu'>x</span><span class='op'>(</span><span class='st'>"unnest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> , <span class='st'>"medpolish"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,260 x 2</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,260 x 2</span>
 #&gt;    protein_Id                       medpolish
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 53</span><span style='text-decoration: underline;'>281</span><span>919.
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 53</span><span style='text-decoration: underline;'>108</span><span>622.
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 51</span><span style='text-decoration: underline;'>768</span><span>575 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 48</span><span style='text-decoration: underline;'>923</span><span>212.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 46</span><span style='text-decoration: underline;'>757</span><span>962.
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 43</span><span style='text-decoration: underline;'>139</span><span>562.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 49</span><span style='text-decoration: underline;'>301</span><span>991.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 46</span><span style='text-decoration: underline;'>173</span><span>388.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 47</span><span style='text-decoration: underline;'>789</span><span>438.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|P21589|5NTD_HUMAN~1527~P21589 61</span><span style='text-decoration: underline;'>505</span><span>569.
-#&gt; </span><span style='color: #949494;'># ... with 3,250 more rows</span><span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp|P21589|5NTD_HUMAN~1527~P21589 53<span style='text-decoration: underline;'>281</span>919.
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp|P21589|5NTD_HUMAN~1527~P21589 53<span style='text-decoration: underline;'>108</span>622.
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp|P21589|5NTD_HUMAN~1527~P21589 51<span style='text-decoration: underline;'>768</span>575 
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp|P21589|5NTD_HUMAN~1527~P21589 48<span style='text-decoration: underline;'>923</span>212.
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp|P21589|5NTD_HUMAN~1527~P21589 46<span style='text-decoration: underline;'>757</span>962.
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp|P21589|5NTD_HUMAN~1527~P21589 43<span style='text-decoration: underline;'>139</span>562.
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp|P21589|5NTD_HUMAN~1527~P21589 49<span style='text-decoration: underline;'>301</span>991.
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp|P21589|5NTD_HUMAN~1527~P21589 46<span style='text-decoration: underline;'>173</span>388.
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp|P21589|5NTD_HUMAN~1527~P21589 47<span style='text-decoration: underline;'>789</span>438.
+#&gt; <span style='color: #BCBCBC;'>10</span> sp|P21589|5NTD_HUMAN~1527~P21589 61<span style='text-decoration: underline;'>505</span>569.
+#&gt; <span style='color: #949494;'># ... with 3,250 more rows</span></div><div class='input'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>intensity_summary_by_hkeys</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span>, func <span class='op'>=</span> <span class='va'>medpolishPly</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>starting aggregation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='output co'>#&gt; <span class='warning'>Warning: medpolish() did not converge in 10 iterations</span></div><div class='input'>
 <span class='fu'>x</span><span class='op'>(</span><span class='st'>"unnest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>data</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3,260 x 7</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,260 x 7</span>
 #&gt;    protein_Id     sampleName dilution. run_Id raw.file         isotope medpolish
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> sp|P21589|5NT~ b~02       b         02     b03_02_150304_h~ light   53</span><span style='text-decoration: underline;'>281</span><span>919.
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> sp|P21589|5NT~ c~03       c         03     b03_03_150304_h~ light   53</span><span style='text-decoration: underline;'>108</span><span>622.
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> sp|P21589|5NT~ d~04       d         04     b03_04_150304_h~ light   51</span><span style='text-decoration: underline;'>768</span><span>575 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> sp|P21589|5NT~ e~05       e         05     b03_05_150304_h~ light   48</span><span style='text-decoration: underline;'>923</span><span>212.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sp|P21589|5NT~ e~06       e         06     b03_06_150304_h~ light   46</span><span style='text-decoration: underline;'>757</span><span>962.
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> sp|P21589|5NT~ d~07       d         07     b03_07_150304_h~ light   43</span><span style='text-decoration: underline;'>139</span><span>562.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> sp|P21589|5NT~ c~08       c         08     b03_08_150304_h~ light   49</span><span style='text-decoration: underline;'>301</span><span>991.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> sp|P21589|5NT~ b~09       b         09     b03_09_150304_h~ light   46</span><span style='text-decoration: underline;'>173</span><span>388.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> sp|P21589|5NT~ a~10       a         10     b03_10_150304_h~ light   47</span><span style='text-decoration: underline;'>789</span><span>438.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sp|P21589|5NT~ a~11       a         11     b03_11_150304_h~ light   61</span><span style='text-decoration: underline;'>505</span><span>569.
-#&gt; </span><span style='color: #949494;'># ... with 3,250 more rows</span><span></div><div class='input'><span class='va'>xnested</span> <span class='op'>&lt;-</span> <span class='fu'>x</span><span class='op'>(</span><span class='op'>)</span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp|P21589|5NT~ b~02       b         02     b03_02_150304_h~ light   53<span style='text-decoration: underline;'>281</span>919.
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp|P21589|5NT~ c~03       c         03     b03_03_150304_h~ light   53<span style='text-decoration: underline;'>108</span>622.
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp|P21589|5NT~ d~04       d         04     b03_04_150304_h~ light   51<span style='text-decoration: underline;'>768</span>575 
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp|P21589|5NT~ e~05       e         05     b03_05_150304_h~ light   48<span style='text-decoration: underline;'>923</span>212.
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp|P21589|5NT~ e~06       e         06     b03_06_150304_h~ light   46<span style='text-decoration: underline;'>757</span>962.
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp|P21589|5NT~ d~07       d         07     b03_07_150304_h~ light   43<span style='text-decoration: underline;'>139</span>562.
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp|P21589|5NT~ c~08       c         08     b03_08_150304_h~ light   49<span style='text-decoration: underline;'>301</span>991.
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp|P21589|5NT~ b~09       b         09     b03_09_150304_h~ light   46<span style='text-decoration: underline;'>173</span>388.
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp|P21589|5NT~ a~10       a         10     b03_10_150304_h~ light   47<span style='text-decoration: underline;'>789</span>438.
+#&gt; <span style='color: #BCBCBC;'>10</span> sp|P21589|5NT~ a~11       a         11     b03_11_150304_h~ light   61<span style='text-decoration: underline;'>505</span>569.
+#&gt; <span style='color: #949494;'># ... with 3,250 more rows</span></div><div class='input'><span class='va'>xnested</span> <span class='op'>&lt;-</span> <span class='fu'>x</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>x</span><span class='op'>(</span>value <span class='op'>=</span> <span class='st'>"plot"</span><span class='op'>)</span>
 
 <span class='va'>dd</span><span class='op'>$</span><span class='va'>medpolishPly</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 20 x 6</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 6</span>
 #&gt;    sampleName dilution. run_Id raw.file                        isotope medpolish
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> b~02       b         02     b03_02_150304_human_ecoli_b_3u~ light   53</span><span style='text-decoration: underline;'>281</span><span>919.
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> c~03       c         03     b03_03_150304_human_ecoli_c_3u~ light   53</span><span style='text-decoration: underline;'>108</span><span>622.
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> d~04       d         04     b03_04_150304_human_ecoli_d_3u~ light   51</span><span style='text-decoration: underline;'>768</span><span>575 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> e~05       e         05     b03_05_150304_human_ecoli_e_3u~ light   48</span><span style='text-decoration: underline;'>923</span><span>212.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> e~06       e         06     b03_06_150304_human_ecoli_e_3u~ light   46</span><span style='text-decoration: underline;'>757</span><span>962.
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> d~07       d         07     b03_07_150304_human_ecoli_d_3u~ light   43</span><span style='text-decoration: underline;'>139</span><span>562.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> c~08       c         08     b03_08_150304_human_ecoli_c_3u~ light   49</span><span style='text-decoration: underline;'>301</span><span>991.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> b~09       b         09     b03_09_150304_human_ecoli_b_3u~ light   46</span><span style='text-decoration: underline;'>173</span><span>388.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> a~10       a         10     b03_10_150304_human_ecoli_a_3u~ light   47</span><span style='text-decoration: underline;'>789</span><span>438.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> a~11       a         11     b03_11_150304_human_ecoli_a_3u~ light   61</span><span style='text-decoration: underline;'>505</span><span>569.
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> b~12       b         12     b03_12_150304_human_ecoli_b_3u~ light   57</span><span style='text-decoration: underline;'>534</span><span>412.
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> c~13       c         13     b03_13_150304_human_ecoli_c_3u~ light   50</span><span style='text-decoration: underline;'>100</span><span>838.
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> d~14       d         14     b03_14_150304_human_ecoli_d_3u~ light   58</span><span style='text-decoration: underline;'>970</span><span>725 
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> e~15       e         15     b03_15_150304_human_ecoli_e_3u~ light   61</span><span style='text-decoration: underline;'>280</span><span>338.
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span> e~16       e         16     b03_16_150304_human_ecoli_e_3u~ light   56</span><span style='text-decoration: underline;'>780</span><span>612.
-#&gt; </span><span style='color: #BCBCBC;'>16</span><span> d~17       d         17     b03_17_150304_human_ecoli_d_3u~ light   59</span><span style='text-decoration: underline;'>887</span><span>225 
-#&gt; </span><span style='color: #BCBCBC;'>17</span><span> c~18       c         18     b03_18_150304_human_ecoli_c_3u~ light   57</span><span style='text-decoration: underline;'>788</span><span>409.
-#&gt; </span><span style='color: #BCBCBC;'>18</span><span> b~19       b         19     b03_19_150304_human_ecoli_b_3u~ light   60</span><span style='text-decoration: underline;'>040</span><span>838.
-#&gt; </span><span style='color: #BCBCBC;'>19</span><span> a~20       a         20     b03_20_150304_human_ecoli_a_3u~ light   57</span><span style='text-decoration: underline;'>032</span><span>150 
-#&gt; </span><span style='color: #BCBCBC;'>20</span><span> a~21       a         21     b03_21_150304_human_ecoli_a_3u~ light   55</span><span style='text-decoration: underline;'>993</span><span>412.</div><div class='input'>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> b~02       b         02     b03_02_150304_human_ecoli_b_3u~ light   53<span style='text-decoration: underline;'>281</span>919.
+#&gt; <span style='color: #BCBCBC;'> 2</span> c~03       c         03     b03_03_150304_human_ecoli_c_3u~ light   53<span style='text-decoration: underline;'>108</span>622.
+#&gt; <span style='color: #BCBCBC;'> 3</span> d~04       d         04     b03_04_150304_human_ecoli_d_3u~ light   51<span style='text-decoration: underline;'>768</span>575 
+#&gt; <span style='color: #BCBCBC;'> 4</span> e~05       e         05     b03_05_150304_human_ecoli_e_3u~ light   48<span style='text-decoration: underline;'>923</span>212.
+#&gt; <span style='color: #BCBCBC;'> 5</span> e~06       e         06     b03_06_150304_human_ecoli_e_3u~ light   46<span style='text-decoration: underline;'>757</span>962.
+#&gt; <span style='color: #BCBCBC;'> 6</span> d~07       d         07     b03_07_150304_human_ecoli_d_3u~ light   43<span style='text-decoration: underline;'>139</span>562.
+#&gt; <span style='color: #BCBCBC;'> 7</span> c~08       c         08     b03_08_150304_human_ecoli_c_3u~ light   49<span style='text-decoration: underline;'>301</span>991.
+#&gt; <span style='color: #BCBCBC;'> 8</span> b~09       b         09     b03_09_150304_human_ecoli_b_3u~ light   46<span style='text-decoration: underline;'>173</span>388.
+#&gt; <span style='color: #BCBCBC;'> 9</span> a~10       a         10     b03_10_150304_human_ecoli_a_3u~ light   47<span style='text-decoration: underline;'>789</span>438.
+#&gt; <span style='color: #BCBCBC;'>10</span> a~11       a         11     b03_11_150304_human_ecoli_a_3u~ light   61<span style='text-decoration: underline;'>505</span>569.
+#&gt; <span style='color: #BCBCBC;'>11</span> b~12       b         12     b03_12_150304_human_ecoli_b_3u~ light   57<span style='text-decoration: underline;'>534</span>412.
+#&gt; <span style='color: #BCBCBC;'>12</span> c~13       c         13     b03_13_150304_human_ecoli_c_3u~ light   50<span style='text-decoration: underline;'>100</span>838.
+#&gt; <span style='color: #BCBCBC;'>13</span> d~14       d         14     b03_14_150304_human_ecoli_d_3u~ light   58<span style='text-decoration: underline;'>970</span>725 
+#&gt; <span style='color: #BCBCBC;'>14</span> e~15       e         15     b03_15_150304_human_ecoli_e_3u~ light   61<span style='text-decoration: underline;'>280</span>338.
+#&gt; <span style='color: #BCBCBC;'>15</span> e~16       e         16     b03_16_150304_human_ecoli_e_3u~ light   56<span style='text-decoration: underline;'>780</span>612.
+#&gt; <span style='color: #BCBCBC;'>16</span> d~17       d         17     b03_17_150304_human_ecoli_d_3u~ light   59<span style='text-decoration: underline;'>887</span>225 
+#&gt; <span style='color: #BCBCBC;'>17</span> c~18       c         18     b03_18_150304_human_ecoli_c_3u~ light   57<span style='text-decoration: underline;'>788</span>409.
+#&gt; <span style='color: #BCBCBC;'>18</span> b~19       b         19     b03_19_150304_human_ecoli_b_3u~ light   60<span style='text-decoration: underline;'>040</span>838.
+#&gt; <span style='color: #BCBCBC;'>19</span> a~20       a         20     b03_20_150304_human_ecoli_a_3u~ light   57<span style='text-decoration: underline;'>032</span>150 
+#&gt; <span style='color: #BCBCBC;'>20</span> a~21       a         21     b03_21_150304_human_ecoli_a_3u~ light   55<span style='text-decoration: underline;'>993</span>412.</div><div class='input'>
 <span class='va'>dd</span><span class='op'>$</span><span class='va'>plot</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 15 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 3 rows containing missing values (geom_point).</span></div><div class='img'><img src='intensity_summary_by_hkeys-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># example how to add peptide count information</span>
@@ -294,7 +294,7 @@
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_hierarchy.html'>summarize_hierarchy</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>tmp</span>, <span class='fu'>x</span><span class='op'>(</span><span class='st'>"wide"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>data</span>, by <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
