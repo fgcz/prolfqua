@@ -67,6 +67,8 @@ mod <- prolfqua::build_model(
 mod$anova_histogram()
 ```
 
+## ANOVA
+
 Examine proteins with a significant interaction between the two factors treatment and batch.
 
 ```{r anovaAnalysis}
@@ -78,7 +80,7 @@ protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,
 ```
 
 
-```{r fig.with=15, fig.height=15}
+```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.5 for condition batch interaction in ANOVA."}
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 ```
 
@@ -86,7 +88,7 @@ ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 
 ```{r computeModeratedContrasts}
 contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
-contr$get_contrasts_sides()
+#contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
 ```
 
@@ -120,7 +122,7 @@ pl$volcano()
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
 
-mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)
+mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)$merged
 mergedContrasts$modelName <- as.factor(mergedContrasts$modelName)
 
 myColors <- c("green","black")
@@ -135,6 +137,8 @@ plot$FDR + colScale
 
 
 
+### Look at Proteins with significant interaction term.
+
 ```{r}
 
 sigInteraction <- mergedContrasts %>% 
@@ -143,9 +147,10 @@ sigInteraction <- mergedContrasts %>%
 protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
 
-ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+
-  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+protInt$get_Plotter()$raster()
+#ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+
+#  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +
+#  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 hm <- protInt$get_Plotter()$heatmap()
 

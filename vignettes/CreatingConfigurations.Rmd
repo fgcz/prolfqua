@@ -56,8 +56,7 @@ atable$factors[["Marker"]] <- "R.Condition"
 Lastly, we create an Analysis parameter object, and the Analysis Configuration. The function `setup_analysis`, creates from data frame in long format a data.frame compatible with your configuration. We can now run most of the function in the package using the data and configuration.
 
 ```{r}
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
+config <- AnalysisConfiguration$new(atable)
 analysis_data <- setup_analysis(xx, config)
 
 prolfqua::summarize_hierarchy(analysis_data, config)

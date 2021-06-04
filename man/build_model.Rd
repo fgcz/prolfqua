@@ -8,7 +8,7 @@ build_model(
   data,
   modelFunction,
   subject_Id = "protein_Id",
-  modelName = modelFunction$modelName
+  modelName = modelFunction$model_name
 )
 }
 \arguments{

@@ -17,9 +17,8 @@ bb <- prolfqua::data_ionstar$normalized()
 config <- bb$config
 data <- bb$data
 
-res1 <- summarize_stats(data, config, all = FALSE)
+res1 <- summarize_stats(data, config)
 head(res1)
-undebug(poolvar)
 poolvar(res1, config)
 }
 \seealso{
@@ -34,6 +33,7 @@ Other stats:
 \code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

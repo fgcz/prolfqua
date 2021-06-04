@@ -35,7 +35,7 @@ data2 <- bb1$data
 
 res <- lfq_power_t_test_quantiles(data2, config)
 res$summary
-stats_res <- summarize_stats(data2, config, all = FALSE)
+stats_res <- summarize_stats(data2, config)
 unique(stats_res$dilution.)
 res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
@@ -54,6 +54,7 @@ Other stats:
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{poolvar}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

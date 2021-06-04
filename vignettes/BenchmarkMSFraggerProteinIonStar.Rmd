@@ -65,14 +65,14 @@ atable$hierarchy[["protein_Id"]] <- c("protein")
 
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("total.intensity")
+atable$factors[["dilution."]] = "sample"
+atable$factors[["run"]] = "run_ID"
+atable$factorDepth <- 1
 
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
+
+config <- AnalysisConfiguration$new(atable)
 
 
-config$table$factors[["dilution."]] = "sample"
-config$table$factors[["run"]] = "run_ID"
-config$table$factorDepth <- 1
 
 adata <- setup_analysis(merged, config)
 lfqdata <- LFQData$new(adata, config)

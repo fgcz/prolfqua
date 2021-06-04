@@ -20,7 +20,7 @@ y <- data.frame(dilution.=c("a","b","c"),
      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 compute_pooled(y)
-yb <- y \%>\% filter(not_na > 1)
+yb <- y \%>\% dplyr::filter(not_na > 1)
 prolfqua:::pooled_V2(yb)
 prolfqua:::pooled_V1(yb)
 }
@@ -36,6 +36,7 @@ Other stats:
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{poolvar}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

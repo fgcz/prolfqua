@@ -301,7 +301,7 @@ LR_test <- function(modelProteinF,
 build_model <- function(data,
                         modelFunction,
                         subject_Id = "protein_Id",
-                        modelName = modelFunction$modelName){
+                        modelName = modelFunction$model_name){
 
   modellingResult <- model_analyse(
     data,

@@ -48,7 +48,10 @@ Other configuration:
 \subsection{Method \code{new()}}{
 create AnalysisConfiguration
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new(analysisTableAnnotation, analysisParameter)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new(
+  analysisTableAnnotation,
+  analysisParameter = AnalysisParameters$new()
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

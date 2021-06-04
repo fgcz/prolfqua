@@ -4,7 +4,7 @@
 \alias{plot_stdv_vs_mean}
 \title{plot stddev vs mean to asses stability of variance}
 \usage{
-plot_stdv_vs_mean(pdata, config, size = 200)
+plot_stdv_vs_mean(pdata, config, size = 2000)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -48,6 +48,7 @@ Other stats:
 \code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{poolvar}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

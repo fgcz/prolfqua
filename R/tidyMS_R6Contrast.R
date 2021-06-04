@@ -93,7 +93,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           #result = get_imputed_contrasts(transformed$data, transformed$config, Contrasts)
           result <- select(result , -all_of(c("n","estimate_mad")))
 
-          var = summarize_stats(self$lfqdata$data, self$lfqdata$config, all = FALSE)
+          var = summarize_stats(self$lfqdata$data, self$lfqdata$config)
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
@@ -974,9 +974,9 @@ addContrastResults <- function(prefer, add){
   cA <- filter(cA,!is.na(statistic))
   more <- setdiff(select(cB, c(prefer$subject_Id, "contrast")),
                   select(cA, c(add$subject_Id, "contrast")))
-  xx <- inner_join(more, cB )
-  merged <- bind_rows(cA, xx)
-  return(merged)
+  more <- inner_join(more, cB )
+  merged <- bind_rows(cA, more)
+  return(list(merged = merged, more = more))
 }
 
 

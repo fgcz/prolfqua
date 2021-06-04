@@ -378,7 +378,7 @@ plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FAL
 
   arrange <- match.arg(arrange)
 
-  arrangeby <- summarize_stats(data, config, all=TRUE)
+  arrangeby <- summarize_stats(data, config)
   arrangeby <- tidyr::unite(arrangeby, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
   if(not_na){
     arrangeby <- arrange(arrangeby, !!sym("not_na"), !!sym(arrange))

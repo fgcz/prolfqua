@@ -60,8 +60,7 @@ atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
 
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
+config <- AnalysisConfiguration$new(atable)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -105,8 +104,7 @@ atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
 
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
+config <- AnalysisConfiguration$new(atable)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"

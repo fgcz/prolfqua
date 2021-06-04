@@ -100,7 +100,7 @@ Other LFQData:
 \subsection{Method \code{new()}}{
 create analyse variances and CV
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata, stats = c("interaction", "all", "pooled"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -115,7 +115,7 @@ create analyse variances and CV
 \if{html}{\out{<a id="method-stats"></a>}}
 \if{latex}{\out{\hypertarget{method-stats}{}}}
 \subsection{Method \code{stats()}}{
-compute CV sd and mean of data
+compute CV sd and mean of e.g. peptide protein in each condition.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats(all = FALSE)}\if{html}{\out{</div>}}
 }

@@ -1077,10 +1077,11 @@ moderated_p_limma_long <- function(mm ,
 
 
 #' adjust columns
+#'
 #' @export
 #' @keywords internal
 #' @examples
-#'
+#' library(prolfqua)
 #' bb <- c(runif(1000), rexp(1500,rate=5))
 #' length(bb)
 #' bb <- bb[bb < 1]

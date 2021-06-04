@@ -32,7 +32,7 @@ library(tidyverse)
 bb1 <- prolfqua::data_ionstar$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
-stats_res <- summarize_stats(data2, config, all = FALSE)
+stats_res <- summarize_stats(data2, config)
 bb <- lfq_power_t_test_proteins(stats_res)
 head(bb)
 }
@@ -48,6 +48,7 @@ Other stats:
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{poolvar}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

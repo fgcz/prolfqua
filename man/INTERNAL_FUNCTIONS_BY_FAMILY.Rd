@@ -179,6 +179,7 @@ Other stats:
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{poolvar}()},
+\code{\link{summarize_stats_all}()},
 \code{\link{summarize_stats_quantiles}()},
 \code{\link{summarize_stats}()}
 }

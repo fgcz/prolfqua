@@ -122,6 +122,19 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 - [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
 
 
+# Future interesting topics or packages to look at
+
+- [modelsummary](https://vincentarelbundock.github.io/modelsummary/index.html)
+- [modelsummary tutorial](https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf)
+- [edgeR tutorial](https://gist.github.com/jdblischak/11384914)
+- [another edgeR tutorial](https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html)
+
+# Sample size estimation based on FDR
+
+- [ssize](https://www.bioconductor.org/packages/release/bioc/html/ssize.html)
+- [ssize.fdr](https://cran.r-project.org/web/packages/ssize.fdr/index.html)
+  - related article [https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf]
+- [proper](https://bioconductor.org/packages/release/bioc/html/PROPER.html)
 
 # What package name?
 

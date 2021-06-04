@@ -15,6 +15,7 @@ istar <- prolfqua::data_ionstar
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 sum <- lfqdata$get_Summariser()
+sum
 sum$hierarchy_counts()
 sum$hierarchy_counts_sample("wide")
 sum$hierarchy_counts_sample("long")
@@ -43,6 +44,7 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataSummariser$new()}}
+\item \href{#method-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
 \item \href{#method-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
@@ -66,6 +68,16 @@ initialize
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-hierarchy_counts"></a>}}
+\if{latex}{\out{\hypertarget{method-hierarchy_counts}{}}}
+\subsection{Method \code{hierarchy_counts()}}{
+summarize hierarchy
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-hierarchy_counts_sample"></a>}}

@@ -20,7 +20,7 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 # Loading data
 
-Create configuration for MQ peptide file or use function `create_config_MQ_peptide`
+Load the required packages.
 
 ```{r createConfig}
 library(prolfqua)
@@ -28,6 +28,7 @@ library(tidyverse)
 
 ```
 
+Specify the path to the MaxQuant proteinGroups.txt file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a long format.
 
 ```{r LoadDataAndConfigure}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
@@ -35,63 +36,97 @@ inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU1830
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
 
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-ncol(startdata)
-str(startdata)
-annotation <- readxl::read_xlsx(inputAnnotation)
-annotation$experiment = "p2691"
-#View(annotation)
-ncol(annotation)
-
-
-startdata <- inner_join(annotation, startdata, by = "raw.file")
-ncol(startdata)
-str(startdata)
 ```
 
-For the sample size estimation we will use bio-reps from one condition. Also remove all proteins identified only by a single peptide.
+
+Read the sample annotation. The sample annotation must contain the `raw.file` name and the explanatory variables of your experiment, e.g. treatment, timepoint, genetic background, or other factors which you would like to check for confounding.
+
+
+```{r}
+annotation <- readxl::read_xlsx(inputAnnotation)
+head(annotation)
+```
+
+Merge the annotation with quantitative data using `inner_join` joining by `raw.file`.
+
+```{r}
+startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
+```
+
+We remove all proteins identified only by a single peptide.
 
 
 ```{r}
 startdata <- filter(startdata, nr.peptides > 1)
-
 ```
 
-Telling `prolfqua` at which columns to look.
 
-The `hierarchy` describes the structure of the MS data e.g, 
-  - protein 
-  - peptides
-  - modified peptides
-  - precursor
-
-In this case we have only protein level measurements.
-
-In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables.
-Then you need to add the intensity column.
+Then you need to _tell_ `prolfqua` which columns in the data frame contain what information. You do it using the `AnalysisTableAnnotation` class.
 
 ```{r setupConfigs}
-
 atable <- AnalysisTableAnnotation$new()
+```
+
+The AnalysisTableAnnotation has the following fields that need to be populated:
+- fileName
+- hierarchy
+- factors
+- workingIntensity,
+and we will discuss in more detail next.
+
+
+The `fileName` is the column with the raw file names. 
+```{r}
 atable$fileName = "raw.file"
-atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
-
-atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
-
-anaparam <- AnalysisParameters$new()
-config <- AnalysisConfiguration$new(atable, anaparam)
-
-
-config$table$factors[["Condition_"]] = "condition"
-config$table$factors[["run"]] = "Run_ID"
-config$table$factorDepth <- 1
-
-adata <- setup_analysis(startdata, config)
-str(adata)
 ```
 
 
-Create the LFQData class instance, remove zeros from data.
+The `hierarchy` field describes the structure of the MS data e.g, 
+- protein 
+- peptides
+- modified peptides
+- precursor
+In case of the MQ proteinGroups file we have data on protein level.
+
+```{r}
+atable$hierarchy[["protein_Id"]] <- c("proteinID")
+
+```
+
+
+In addition you need to describe the `factors` of the analysis, i.e, the column containing the explanatory variables. We include here the "Run_ID". It will be visualized int some of the plots. By setting the factorDepth variable to $1$ we include only the "Condition_" variable into the modelling.
+
+
+```{r}
+atable$factors[["Condition_"]] = "condition"
+atable$factors[["run"]] = "Run_ID"
+atable$factorDepth <- 1
+```
+
+
+```{r}
+startdata$Run_ID <- as.integer(startdata$Run_ID)
+```
+
+
+We also need to specify the intensity column.
+
+```{r}
+atable$setWorkIntensity("mq.protein.intensity")
+```
+
+Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
+```{r}
+config <- AnalysisConfiguration$new(atable)
+```
+
+
+adata <- setup_analysis(startdata, config)
+
+```
+
+
+Create the LFQData class instance and remove zeros from data (MaxQuant encodes missing values with zero).
 
 ```{r filterdata}
 lfqdata <- LFQData$new(adata, config)
@@ -101,16 +136,20 @@ lfqdata$factors()
 
 You can convert the data into wide format.
 
-```{r}
+```{r eval = FALSE}
 lfqdata$to_wide()$data
+wr <- lfqdata$get_Writer()
+wr$write_wide(".")
 ```
 
 
 ## Visualization of not normalized data
 
+
+
 ```{r makeMissingHeatmap}
 lfqplotter <- lfqdata$get_Plotter()
-lfqplotter$intensity_distribution_density()
+density_nn <- lfqplotter$intensity_distribution_density()
 ```
 
 
@@ -123,10 +162,9 @@ lfqplotter$missingness_per_condition()
 
 ```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}
 lfqplotter$missigness_histogram()
-lfqplotter$intensity_distribution_density()
 ```
 
-# Computing standard deviations, mean and CV.
+### Computing standard deviations, mean and CV.
 
 
 ```{r PlotCVDistributions}
@@ -144,7 +182,7 @@ stats$density_median()
 
 ## Normalize protein intensities
 
-We normalize the data by $\log2$ transforming and then z-scaling.
+We normalize the data by $\log_2$ transforming and then $z-scaling$.
 
 ```{r normalizedata}
 lt <- lfqdata$get_Transformer()
@@ -156,7 +194,13 @@ transformed$config$table$is_intensity_transformed
 
 ```{r plotDensities, fig.cap="Normalized intensities."}
 pl <- transformed$get_Plotter()
-pl$intensity_distribution_density()
+density_norm <- pl$intensity_distribution_density()
+```
+
+
+
+```{r fig.cap="Distribution of intensities before and aftern normalization."}
+gridExtra::grid.arrange(density_nn, density_norm)
 ```
 
 ```{r plotScatterMatrix, fig.cap = "Scatterplot matrix"}
@@ -171,7 +215,8 @@ p <- pl$heatmap_cor()
 p
 ```
 
-# Model specification
+# Fitting a linear model 
+
 
 ```{r}
 transformed$config$table$getWorkIntensity()
@@ -198,22 +243,52 @@ mod <- prolfqua::build_model(
 ```
 
 
+```{r fig.cap="Distribtuion of "}
+mod$anova_histogram("FDR.Pr..F.")
+```
+
+```{r}
+aovtable <- mod$get_anova()
+head(aovtable)
+dim(aovtable)
+xx <- aovtable %>% filter(FDR.Pr..F. < 0.2)
+dim(xx)
+signif <- transformed$get_copy()
+signif$data <- signif$data %>% filter(protein_Id %in% xx$protein_Id)
+hmSig <- signif$get_Plotter()$heatmap()
+
+```
+
+```{r}
+hmSig
+
+```
 
 # Compute contrasts
 
 ```{r contrModerated}
-contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
+contr <- prolfqua::Contrasts$new(mod, Contrasts)
+v1 <- contr$get_Plotter()$volcano()
+```
+
+Moderate the variance and using the Experimental Bayes method implmented in `ContrastModerated`.
+
+```{r}
+contr <- prolfqua::ContrastsModerated$new(contr)
 #contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
-dim(contrdf)
 #View(contrdf)
 ```
 
 
 
-```{r plotVolcanos}
+```{r plotVolcanos, fig.cap="Volcano plot, Left panel - no moderation, Right panel - with moderation."}
 plotter <- contr$get_Plotter()
-plotter$volcano_plotly()
+v2 <- plotter$volcano()
+gridExtra::grid.arrange(v1$FDR,v2$FDR, ncol = 1)
+```
+
+```{r fig.cap="MA plot"}
 plotter$ma_plotly()
 ```
 
@@ -236,7 +311,9 @@ colnames(mC$get_contrasts())
 Merging both results.
 
 ```{r}
-merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
+
+merged <- prolfqua::addContrastResults(prefer = contr,add = mC)$merged
+
 merged$modelName <- as.factor(merged$modelName)
 plotter <- Contrasts_Plotter$new(contrastDF = merged , subject_Id = contr$subject_Id)
 
@@ -248,4 +325,54 @@ colScale <- scale_colour_manual(name = "modelName",values = myColors)
 tmp$FDR +  colScale
 
 
+```
+
+Look at proteins which could not be fitted using the linear model.
+
+```{r}
+merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
+names(merged)
+
+moreProt <- transformed$get_copy()
+moreProt$data <- moreProt$data %>% filter(protein_Id %in% merged$more$protein_Id)
+moreProt$get_Plotter()$raster()
+```
+
+# GSEA Analyis
+
+We can rank the proteins based on the log2FC or the t-statistic and subject them them to gene set enrichment analysis (see GSEA).
+
+This example will run only if the following packages are installed on you machine:
+
+- clusterProfiler (Bioconductor)
+- org.Sc.sgd.db (Biocondcutor)
+- prora (github.com/protviz/prora)
+
+
+```{r}
+evalAll <- require("MSstats") & require("org.Sc.sgd.db") & require("prora")
+
+```
+
+```{r eval=evalAll}
+library(clusterProfiler)
+library(org.Sc.sgd.db)
+
+bb <- prora::get_UniprotID_from_fasta_header(ungroup(merged$merged),idcolumn = "protein_Id")
+bb <- prora::map_ids_uniprot(bb)
+ranklist <- bb$statistic
+names(ranklist) <- bb$P_ENTREZGENEID
+res <- clusterProfiler::gseGO(sort(ranklist, decreasing = TRUE), OrgDb = org.Sc.sgd.db, ont = "ALL")
+```
+
+```{r fig.cap="ridgeplot", eval = evalAll}
+ridgeplot( res )
+```
+
+```{r fig.cap = "Dotplot", eval = evalAll}
+dotplot(res , showCategory = 30)
+```
+
+```{r fig.cap="Upset Plot", eval = evalAll}
+enrichplot::upsetplot(res)
 ```

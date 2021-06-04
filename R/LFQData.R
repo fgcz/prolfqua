@@ -386,18 +386,24 @@ LFQDataStats <- R6::R6Class(
     #' @description create analyse variances and CV
     #' @param lfqdata LFQData object
     #'
-    initialize = function(lfqdata){
+    initialize = function(lfqdata, stats = c("interaction","all","pooled")){
+      stats <- match.arg(stats)
       self$lfq = lfqdata
       self$stat <- if (!self$lfq$is_transformed()) {"CV"}else{"sd"}
+      if(stats == "interaction" ){
+        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+      } else if (stats == "all" ){
+        self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+      } else if (stats == "pooled" ){
+        self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+      }
     },
     #' @description
-    #' compute CV sd and mean of data
+    #' compute CV sd and mean of e.g. peptide protein in each condition.
+    #'
     #' @return data.frame
     stats = function(all = FALSE){
-      if (is.null(self$statsdf)) {
-       self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, all = all)
-      }
-      return(self$statsdf)
+       self$statsdf
     },
     #' @description
     #' Determine CV or sd for the quantiles
@@ -511,6 +517,7 @@ LFQDataStats <- R6::R6Class(
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
+#' sum
 #' sum$hierarchy_counts()
 #' sum$hierarchy_counts_sample("wide")
 #' sum$hierarchy_counts_sample("long")
@@ -530,6 +537,11 @@ LFQDataSummariser <- R6::R6Class(
     #' @param lfqdata LFQData
     initialize = function(lfqdata ) {
       self$lfq <- lfqdata
+    },
+    #' @description
+    #' summarize hierarchy
+    hierarchy_counts = function(){
+      self$lfq$hierarchy_counts()
     },
     #' @description
     #' number of elements at each level in every sample

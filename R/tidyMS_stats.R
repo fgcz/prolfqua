@@ -77,7 +77,7 @@ pooled_V1 <- function(x){
 #'      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
 #'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 #' compute_pooled(y)
-#' yb <- y %>% filter(not_na > 1)
+#' yb <- y %>% dplyr::filter(not_na > 1)
 #' prolfqua:::pooled_V2(yb)
 #' prolfqua:::pooled_V1(yb)
 compute_pooled <- function(x, method = c("V1","V2")){
@@ -112,9 +112,8 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' config <- bb$config
 #' data <- bb$data
 #'
-#' res1 <- summarize_stats(data, config, all = FALSE)
+#' res1 <- summarize_stats(data, config)
 #' head(res1)
-#' undebug(poolvar)
 #' poolvar(res1, config)
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
@@ -147,49 +146,78 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' config <- bb$config
 #' data <- bb$data
 #'
-#' res1 <- summarize_stats(data, config, all = FALSE)
+#' res1 <- summarize_stats(data, config)
 #' head(res1)
-#' View(res1)
+#' #View(res1)
 #' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
 #' head(d)
 #' d <- res1 %>% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
 #' head(d)
-#' CON__P02769~18~NA VHKECCHGDLLECADDR
+#' #CON__P02769~18~NA VHKECCHGDLLECADDR
 #' d <- res1 %>% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' head(d)
 #' res1 %>% dplyr::filter(dilution. == "pooled")
-#' res2 <- summarize_stats(data, config, all = TRUE)
 #'
-summarize_stats <- function(pdata, config, all = FALSE){
+summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$getWorkIntensity())
-  if (!all) {
-    hierarchyFactor <- pdata %>%
-      dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
-      dplyr::summarize(n = dplyr::n(),
-                       not_na = sum(!is.na(!!intsym)),
-                       sd = sd(!!intsym, na.rm = T),
-                       var = var(!!intsym, na.rm = T),
-                       mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
+  hierarchyFactor <- pdata %>%
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
+    dplyr::summarize(n = dplyr::n(),
+                     not_na = sum(!is.na(!!intsym)),
+                     sd = sd(!!intsym, na.rm = T),
+                     var = var(!!intsym, na.rm = T),
+                     mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
 
-    hierarchyFactor <- hierarchyFactor %>%
-      dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
-  } else if (all) {
-    hierarchy <- pdata %>%
-      dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
-      dplyr::summarize(n = dplyr::n(),
-                       not_na = sum(!is.na(!!intsym)),
-                       sd = sd(!!intsym,na.rm = T),
-                       var = sd(!!intsym,na.rm = T),
-                       mean = mean(!!intsym,na.rm = T))
-
-    hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
-    hierarchyFactor <- hierarchy
-  }
+  hierarchyFactor <- hierarchyFactor %>%
+    dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
   if (config$table$is_intensity_transformed == FALSE) {
     hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
-  return(hierarchyFactor)
+  return(ungroup(hierarchyFactor))
+}
+
+#' Compute mean, sd, and CV for e.g. Peptides, or proteins, for all samples.
+#'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param all also compute for all samples (default), or only of conditions (set to FALSE)
+#' @export
+#' @keywords internal
+#' @family stats
+#' @examples
+#'
+#' library(prolfqua)
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$normalized()
+#' config <- bb$config
+#' data <- bb$data
+#'
+#' res1 <- summarize_stats_all(data, config)
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+#' head(d)
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+#' head(d)
+#' #CON__P02769~18~NA VHKECCHGDLLECADDR
+#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+#' res1 %>% dplyr::filter(dilution. == "pooled")
+#'
+summarize_stats_all <- function(pdata, config){
+  pdata <- complete_cases(pdata, config)
+  intsym <- sym(config$table$getWorkIntensity())
+  hierarchy <- pdata %>%
+    dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
+    dplyr::summarize(n = dplyr::n(),
+                     not_na = sum(!is.na(!!intsym)),
+                     sd = sd(!!intsym,na.rm = T),
+                     var = sd(!!intsym,na.rm = T),
+                     mean = mean(!!intsym,na.rm = T))
+
+  hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
+  hierarchyFactor <- hierarchy
+  if (config$table$is_intensity_transformed == FALSE) {
+    hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+  }
+  return(ungroup(hierarchyFactor))
 }
 
 #' summarize stats output (compute quantiles)
@@ -308,7 +336,7 @@ lfq_power_t_test_quantiles_V2 <-
 
     res <- vector(mode = "list", length = length(delta))
     for (i in 1:length(delta)) {
-      cat("i", i , "delta_i", delta[i], "\n")
+      #message("i", i , "delta_i", delta[i], "\n")
       res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
                                               delta = delta[i],
                                               min.n = min.n,
@@ -339,7 +367,7 @@ lfq_power_t_test_quantiles_V2 <-
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res$summary
-#' stats_res <- summarize_stats(data2, config, all = FALSE)
+#' stats_res <- summarize_stats(data2, config)
 #' unique(stats_res$dilution.)
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
@@ -356,7 +384,7 @@ lfq_power_t_test_quantiles <- function(pdata,
     warning("Intensities are not transformed yet.")
   }
 
-  stats_res <- summarize_stats(pdata, config, all = FALSE)
+  stats_res <- summarize_stats(pdata, config)
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
@@ -400,7 +428,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' bb1 <- prolfqua::data_ionstar$normalized()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
-#' stats_res <- summarize_stats(data2, config, all = FALSE)
+#' stats_res <- summarize_stats(data2, config)
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #' head(bb)
 lfq_power_t_test_proteins <- function(stats_res,
@@ -576,7 +604,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' ressqrt <- summarize_stats(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
-plot_stdv_vs_mean <- function(pdata, config, size=200){
+plot_stdv_vs_mean <- function(pdata, config, size=2000){
   summary <- pdata %>%
     group_by_at(config$table$fkeysDepth()) %>%
     dplyr::summarize(n = n(),.groups = "drop")
@@ -587,7 +615,7 @@ plot_stdv_vs_mean <- function(pdata, config, size=200){
     sample_n(size = size) %>%
     ungroup()
 
-  p <- ggplot(pdata, aes(x = mean, y = abs(sd))) +
+  p <- ggplot(pdata, aes(x = mean, y = sd)) +
     geom_point() +
     geom_smooth(method = "loess") +
     facet_wrap(config$table$fkeysDepth(), nrow = 1) +

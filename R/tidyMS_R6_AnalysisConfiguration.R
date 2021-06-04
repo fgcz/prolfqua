@@ -194,7 +194,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
                                        #' create AnalysisConfiguration
                                        #' @param analysisTableAnnotation instance of AnalysisTableAnnotation
                                        #' @param analysisParameter instance of AnalysisParameter
-                                       initialize = function(analysisTableAnnotation, analysisParameter){
+                                       initialize = function(analysisTableAnnotation, analysisParameter = AnalysisParameters$new()){
                                          self$table <- analysisTableAnnotation
                                          self$parameter <- analysisParameter
                                        }

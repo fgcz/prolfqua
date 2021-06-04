@@ -15,7 +15,7 @@ adjust_p_values(
 adjust columns
 }
 \examples{
-
+library(prolfqua)
 bb <- c(runif(1000), rexp(1500,rate=5))
 length(bb)
 bb <- bb[bb < 1]

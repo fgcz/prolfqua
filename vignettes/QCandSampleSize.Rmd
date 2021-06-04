@@ -98,6 +98,8 @@ prolfqua::table_facade(
 
 ```
 
+
+
 ```{r}
 nrSamples <- nrow(prolfqua::table_factors(data, local_config) )
 width = max(8, nrSamples*0.2)
