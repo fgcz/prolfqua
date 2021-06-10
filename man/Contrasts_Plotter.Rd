@@ -43,7 +43,7 @@ tmp <- contrast$get_contrasts()
 
 cp <- Contrasts_Plotter$new(tmp ,
  contrast$subject_Id,
-volcano = list(list(score = "FDR", fc = 1)),
+volcano = list(list(score = "FDR", thresh = 1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))))
 cp$histogram()
@@ -174,9 +174,10 @@ create Crontrast_Plotter
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$new(
   contrastDF,
   subject_Id,
-  volcano = list(list(score = "FDR", fc = 1)),
+  volcano = list(list(score = "FDR", thresh = 0.1)),
   histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
     xlim = c(0, 1, 0.05))),
+  fcthresh = 1,
   modelName = "Model",
   estimate = "estimate",
   contrast = "contrast"
@@ -249,7 +250,7 @@ plotly volcano plots
 \subsection{Method \code{ma_plot()}}{
 ma plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc = 1, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -266,7 +267,7 @@ ma plot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc = 1, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

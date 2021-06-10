@@ -21,7 +21,8 @@
 plot_intensity_distribution_violin <- function(pdata, config){
   p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
     geom_violin() +
-    theme(axis.text.x = element_text(angle = ))
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    stat_summary(fun.y = median, geom = "point", size = 1, color = "black")
   if (!config$table$is_intensity_transformed) {
     p <- p + scale_y_continuous(trans = 'log10')
   }

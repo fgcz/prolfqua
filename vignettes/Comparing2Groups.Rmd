@@ -118,8 +118,6 @@ atable$setWorkIntensity("mq.protein.intensity")
 Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
 ```{r}
 config <- AnalysisConfiguration$new(atable)
-```
-
 
 adata <- setup_analysis(startdata, config)
 

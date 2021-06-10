@@ -538,7 +538,9 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
   stat <- match.arg(stat)
   p <- ggplot(pdata, aes_string(x = config$table$factorKeys()[1], y = stat  )) +
-    geom_violin()
+    geom_violin() + ggplot2::stat_summary(fun.y = median,
+                                          geom = "point", size = 1, color = "black")
+
   return(p)
 }
 #' plot Violin plot of sd CV or mean given intensity lower or above median

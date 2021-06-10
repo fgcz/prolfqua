@@ -28,11 +28,13 @@ mod <- build_model(
  Contr)
  contrast <- ContrastsModerated$new(contrast)
  bb <- contrast$get_contrasts()
+ bb
  plotter <- contrast$get_Plotter()
  plotter$histogram()
  plotter$ma_plot()
  plotter$volcano()
 
+#bb \%>\% dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
 }
 \seealso{
 \code{\link{moderated_p_limma_long}}
