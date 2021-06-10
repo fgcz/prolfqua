@@ -98,7 +98,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
-                           p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
+                                  p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
           #result <- dplyr::rename(result, df = n)
           prqt <- -qt((1 - self$confint)/2, df = result$df)
           result$conf.low <- result$estimate_median  - prqt * result$sd
@@ -130,7 +130,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         self$get_contrasts(),
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", fc = 1)),
+        volcano = list(list(score = "FDR", thresh = 1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -295,9 +295,9 @@ Contrasts <- R6::R6Class(
         contrast_result <- inner_join(contrast_sides, contrast_result)
 
         contrast_result <- self$p.adjust(contrast_result,
-                                              column = "p.value",
-                                              group_by_col = "contrast",
-                                              newname = "FDR")
+                                         column = "p.value",
+                                         group_by_col = "contrast",
+                                         newname = "FDR")
         contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
         self$contrast_result <- dplyr::ungroup(contrast_result )
       }
@@ -330,7 +330,7 @@ Contrasts <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", fc = 1)),
+        volcano = list(list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -376,11 +376,14 @@ Contrasts <- R6::R6Class(
 #'  Contr)
 #'  contrast <- ContrastsModerated$new(contrast)
 #'  bb <- contrast$get_contrasts()
+#'  bb
 #'  plotter <- contrast$get_Plotter()
 #'  plotter$histogram()
 #'  plotter$ma_plot()
 #'  plotter$volcano()
 #'
+#' #bb %>% dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
+
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
 
@@ -419,9 +422,9 @@ ContrastsModerated <- R6::R6Class(
                                                 group_by_col = "contrast")
       if (!all) {
         contrast_result <- contrast_result %>% select(-c( "sigma","df",
-                                             "statistic", "p.value","conf.low","conf.high",
-                                             "FDR",  "moderated.df.prior" ,
-                                             "moderated.var.prior"))
+                                                          "statistic", "p.value","conf.low","conf.high",
+                                                          "FDR",  "moderated.df.prior" ,
+                                                          "moderated.var.prior"))
         contrast_result <- contrast_result %>% mutate(sigma = sqrt(moderated.var.post),.keep = "unused")
         contrast_result <- contrast_result %>% rename(
           conf.low = "moderated.conf.low",
@@ -448,7 +451,7 @@ ContrastsModerated <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", fc = 1)),
+        volcano = list(list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -536,7 +539,7 @@ ContrastsROPECA <- R6::R6Class(
     initialize = function(Contrast,
                           modelName = "ROPECA",
                           p.adjust = prolfqua::adjust_p_values
-                          ){
+    ){
       self$Contrast = Contrast
       stopifnot(length(Contrast$subject_Id) > 1)
       self$modelName = modelName
@@ -566,13 +569,13 @@ ContrastsROPECA <- R6::R6Class(
           p.value = "p.value",
           max.n = 10)
         contrasts_data <- self$p.adjust(contrasts_data,
-                             column = "beta.based.significance",
-                             group_by_col = "contrast",
-                             newname = "FDR.beta.based.significance")
+                                        column = "beta.based.significance",
+                                        group_by_col = "contrast",
+                                        newname = "FDR.beta.based.significance")
         contrasts_data <- self$p.adjust(contrasts_data,
-                             column = "median.p.value",
-                             group_by_col = "contrast",
-                             newname = "FDR.median.p.value")
+                                        column = "median.p.value",
+                                        group_by_col = "contrast",
+                                        newname = "FDR.median.p.value")
         contrasts_data <- mutate(contrasts_data,modelName = self$modelName, .before  = 1)
         self$contrasts_data <- contrasts_data
 
@@ -596,7 +599,7 @@ ContrastsROPECA <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
-        volcano = list(list(score = "FDR.beta.based.significance", fc = 1)),
+        volcano = list(list(score = "FDR.beta.based.significance", thresh = 0.1)),
         histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
                          list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -690,7 +693,7 @@ ContrastsROPECA <- R6::R6Class(
 #'
 #' cp <- Contrasts_Plotter$new(tmp ,
 #'  contrast$subject_Id,
-#' volcano = list(list(score = "FDR", fc = 1)),
+#' volcano = list(list(score = "FDR", thresh = 1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
 #'                  list(score = "FDR", xlim = c(0,1,0.05))))
 #' cp$histogram()
@@ -732,6 +735,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @field histogram_spec plot specification
     #'
     histogram_spec = NULL,
+    fcthresh = 1,
     #' @description create Crontrast_Plotter
     #' @param contrastDF frame with contrast data
     #' @param subject_Id columns containing subject Identifier
@@ -742,9 +746,10 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param contrast contrast column
     initialize = function(contrastDF,
                           subject_Id,
-                          volcano = list(list(score = "FDR", fc = 1)),
+                          volcano = list(list(score = "FDR", thresh = 0.1)),
                           histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                                            list(score = "FDR", xlim = c(0,1,0.05))),
+                          fcthresh = 1,
                           #list(score = "statistic" , xlim = c(0,4,0.1))),
                           modelName = "Model",
                           estimate = "estimate",
@@ -756,6 +761,7 @@ Contrasts_Plotter <- R6::R6Class(
       self$estimate = estimate
       self$volcano_spec = volcano
       self$histogram_spec = histogram
+      self$fcthresh = fcthresh
 
     },
     #' @description  plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
@@ -787,7 +793,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
     },
     #' @description plotly volcano plots
-    volcano_plotly = function(colour = "modelName"){
+    volcano_plotly = function( colour = "modelName"){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
       for (i in 1:length(res)) {
@@ -800,11 +806,11 @@ Contrasts_Plotter <- R6::R6Class(
     #' @description
     #' ma plot
     #' @param fc fold change abline
-    ma_plot = function(fc = 1){
+    ma_plot = function(fc = 1, colour = "modelName"){
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
         # pdf version
-        fig <- private$.ma_plot(contrastDF ,self$contrast, fc = fc)
+        fig <- private$.ma_plot(contrastDF ,self$contrast, colour = colour)
         self$figures[["ma_plot"]] <- list(fig = fig,
                                           name = paste0(self$prefix, "_MA_", self$modelName))
       }else{
@@ -816,14 +822,14 @@ Contrasts_Plotter <- R6::R6Class(
     #' @description
     #' ma plotly
     #' @param fc fold change abline
-    ma_plotly = function(fc =1){
+    ma_plotly = function(fc =1, colour = "modelName"){
       # html version
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
 
         contrastDF  <- contrastDF %>%
           plotly::highlight_key(~subject_Id)
-        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc = fc) %>%
+        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, colour = colour) %>%
           plotly::ggplotly(tooltip = "subject_Id")
 
         self$figures_plotly[["ma_plot"]] <-
@@ -904,18 +910,18 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores, colour = NULL){
+    .volcano = function(contrasts, scores,  colour = NULL){
       fig <- list()
       for (score in scores) {
         column <- score$score
-        fc <- score$fc
         fig[[column]] <- prolfqua:::.multigroupVolcano(
           contrasts,
           effect = self$estimate,
           p.value = column,
           condition = self$contrast,
           text = "subject_Id",
-          xintercept = c(-fc, fc),
+          xintercept = c(-self$fcthresh, self$fcthresh),
+          yintercept = score$thresh,
           colour = colour,
           scales = "free_y")
 
@@ -940,16 +946,19 @@ Contrasts_Plotter <- R6::R6Class(
       #fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
       return(fig)
     },
-    .ma_plot = function(x, contrast, colour = NULL, fc = 1){
+    .ma_plot = function(x, contrast, colour = NULL){
+
+
       x <- ggplot(x , aes(x = (c1 + c2)/2,
                           y = !!sym(self$estimate),
                           text = !!sym("subject_Id"),
-                          colour = colour)) +
-                    geom_point(alpha = 0.5) +
-                    scale_colour_manual(values = c("black", "red")) +
-                    facet_wrap(vars(!!sym(self$contrast))) + theme_light() +
-                    geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red")
-                  return(x)
+                          colour = !!sym(colour))) +
+        geom_point(alpha = 0.5) +
+        scale_colour_manual(values = c("black", "green")) +
+        facet_wrap(vars(!!sym(contrast))) + theme_light() +
+        geom_hline(yintercept = c(-self$fcthresh, self$fcthresh), linetype = "dashed",colour = "red") +
+        ylab("log fold change (M)") + xlab("mean log intensities (A)")
+      return(x)
     }
   )
 )
@@ -975,7 +984,10 @@ addContrastResults <- function(prefer, add){
   more <- setdiff(select(cB, c(prefer$subject_Id, "contrast")),
                   select(cA, c(add$subject_Id, "contrast")))
   more <- inner_join(more, cB )
+
   merged <- bind_rows(cA, more)
+  merged$modelName <- factor(merged$modelName,
+                                levels = c(prefer$modelName, add$modelName))
   return(list(merged = merged, more = more))
 }
 
