@@ -65,7 +65,7 @@ Other LFQData:
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
-\item \href{#method-omit_NA_hierarchy}{\code{LFQData$omit_NA_hierarchy()}}
+\item \href{#method-omit_NA}{\code{LFQData$omit_NA()}}
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
@@ -198,13 +198,14 @@ self
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-omit_NA_hierarchy"></a>}}
-\if{latex}{\out{\hypertarget{method-omit_NA_hierarchy}{}}}
-\subsection{Method \code{omit_NA_hierarchy()}}{
+\if{html}{\out{<a id="method-omit_NA"></a>}}
+\if{latex}{\out{\hypertarget{method-omit_NA}{}}}
+\subsection{Method \code{omit_NA()}}{
 Omit NA from intensities per hierarchy, idea is to use it for normalization
-For instance if a peptide has a missing value in any of the samples it will be rmoved.
+For instance if a peptide has a missing value in more then nrNA of the samples within a condition
+it will be removed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA_hierarchy(nrNA = 0)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
