@@ -69,6 +69,7 @@ Other LFQData:
 \item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
+\item \href{#method-response}{\code{LFQData$response()}}
 \item \href{#method-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
@@ -203,7 +204,7 @@ self
 Omit NA from intensities per hierarchy, idea is to use it for normalization
 For instance if a peptide has a missing value in any of the samples it will be rmoved.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA_hierarchy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA_hierarchy(nrNA = 0)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -257,6 +258,19 @@ list with data, annotation, and configuration
 Annotation table.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$factors()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-response"></a>}}
+\if{latex}{\out{\hypertarget{method-response}{}}}
+\subsection{Method \code{response()}}{
+name of response variable
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$response()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

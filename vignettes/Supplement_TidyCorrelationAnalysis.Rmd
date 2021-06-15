@@ -91,7 +91,7 @@ toremove <- c("EG.TotalQuantity..Settings.",
  "EG.UsedForPeptideQuantity","EG.UsedForProteinGroupQuantity")
 
 dataval <- data$data# %>% select(-all_of(toremove))
-dataval <- dataval %>% filter(PG.ProteinAccessions %in% pIDS)
+dataval <- dataval %>% dplyr::filter(PG.ProteinAccessions %in% pIDS)
 
 
 setup <- function(data, config){

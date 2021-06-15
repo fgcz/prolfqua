@@ -7,12 +7,14 @@
 \usage{
 plot_intensity_distribution_violin(pdata, config)
 
-plot_intensity_distribution_density(pdata, config)
+plot_intensity_distribution_density(pdata, config, legend = TRUE)
 }
 \arguments{
 \item{pdata}{data.frame}
 
 \item{config}{AnalysisConfiguration}
+
+\item{legend}{do not show legend}
 }
 \description{
 visualize intensity distributions
@@ -30,7 +32,7 @@ plot_intensity_distribution_violin(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
-
+guides
 istar <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)

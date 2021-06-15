@@ -101,11 +101,17 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' Omit NA from intensities per hierarchy, idea is to use it for normalization
-    #' For instance if a peptide has a missing value in any of the samples it will be rmoved.
+    #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
+    #' it will be removed
     #' @return LFQData with NA omitted.
-    omit_NA_hierarchy = function(){
-      missing <- interaction_missing_stats(self$data, self$config, factors = NULL)
-      notNA <- missing$data %>% dplyr::filter(nrNAs == 0)
+    omit_NA = function(nrNA = 0){
+
+      missing <- interaction_missing_stats(self$data, self$config)
+      notNA <- missing$data %>% dplyr::filter(nrNAs <= nrNA)
+      sumN <- notNA %>% group_by_at(self$config$table$hkeysDepth()) %>%
+        summarise(n = n())
+      notNA <- sumN %>% filter(n == max(n))
+
       notNA <- notNA %>% dplyr::select(self$config$table$hierarchyKeys())
       notNAdata <- dplyr::inner_join( notNA, self$data)
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
@@ -133,6 +139,12 @@ LFQData <- R6::R6Class(
     #' @return data.frame
     factors = function(){
       prolfqua::table_factors(self$data, self$config)
+    },
+    #' @description
+    #' name of response variable
+    #' @return data.frame
+    response = function(){
+      self$config$table$getWorkIntensity()
     },
     #' @description
     #' number of elements at each level
@@ -706,8 +718,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' density distribution of intensities
     #' @return ggplot
-    intensity_distribution_density = function(){
-      prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config)
+    intensity_distribution_density = function(legend = TRUE){
+      prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config, legend = legend)
     },
     #' @description
     #' Violinplot showing distribution of intensities in all samples
