@@ -26,7 +26,7 @@ ggplot(NAinfo , aes(x= name, y=nrProteins)) +
 
 ```{r IntensitiesSingle}
 tmp1 <- results %>%
-  select(TopProteinName,grp2$getConditions()$reference , grp2$getConditions()$condition,log2FC) %>%
+  dplyr::select(TopProteinName,grp2$getConditions()$reference , grp2$getConditions()$condition,log2FC) %>%
   dplyr::filter(is.na(log2FC)) %>%
   arrange( desc(!!sym(grp2$getConditions()$reference)) ,desc(!!sym(grp2$getConditions()$condition)) )
 
@@ -38,7 +38,7 @@ tmp1 <- results %>%
 plotBaR<-function(tmp2, name){
   if(nrow(tmp2) > 0){
     tmp3 <- tmp2 %>%
-      select(TopProteinName,name)
+      dplyr::select(TopProteinName,name)
     x <- setNames(tmp3[,2],tmp3[,1])[1:min(20,nrow(tmp3))]
     barplot(x, las = 2, ylab="Normalized intensity", main= name,cex.names=0.7, border="lightblue")
   }

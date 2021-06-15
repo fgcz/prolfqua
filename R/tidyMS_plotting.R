@@ -32,13 +32,13 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' visualize intensity distributions
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
+#' @param legend do not show legend
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#'
+#'guides
 #' istar <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
@@ -47,11 +47,15 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' plot_intensity_distribution_density(analysis, config)
 #'
-plot_intensity_distribution_density <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(), colour = config$table$sampleName )) +
+plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
+  p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(),
+                                colour = config$table$sampleName )) +
     geom_line(stat = "density")
   if (!config$table$is_intensity_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
+  }
+  if (!legend) {
+    p <- p + guides(colour = FALSE)
   }
   return(p)
 }

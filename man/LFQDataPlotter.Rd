@@ -258,7 +258,7 @@ ggplot
 \subsection{Method \code{intensity_distribution_density()}}{
 density distribution of intensities
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density(legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

@@ -156,7 +156,7 @@ dev.off()
 ```{r getProtQuants}
 table <- skylineconfig$table
 protIntensity <-
-  figs3 %>% select(table$hierarchyKeys()[1], medpolishPly) %>%
+  figs3 %>% dplyr::select(table$hierarchyKeys()[1], medpolishPly) %>%
   tidyr::unnest(cols = "medpolishPly")
 
 ```
