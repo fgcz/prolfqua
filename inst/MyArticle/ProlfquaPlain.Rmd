@@ -1,43 +1,14 @@
 ---
-journal: jacsat
-type: article
-author:
-  - name: Witold E. Wolski
-  - name: Christian Panse
-  - name: Jonas Grossman
-  - name: Paolo Nanni
-  - name: Ralph Schlappbach
-title:
-  formatted: Prolfqua - \textsf{Pro}teomics label free quantification using linear models.
-   class\footnote{A footnote for the title}
-  short: prolfqua
-abbr: IR,NMR,UV
-keywords: American Chemical Society, \LaTeX
-abstract: We introduce here the R package and benchmark linear modelling methods available in R for label free protein expression analysis.
+title: "Untitled"
+author: 'Witold Wolski Std Nr:'
+date: "6/11/2021"
+output: html_document
 bibliography: acstest.bib
-csl: american-chemical-society.csl
-output: rticles::acs_article
-editor_options: 
-  chunk_output_type: console
 ---
 
-\begin{tocentry}
-Some journals require a graphical entry for the Table of Contents.
-This should be laid out ``print ready'' so that the sizing of the
-text is correct.
 
-Inside the \texttt{tocentry} environment, the font used is Helvetica
-8\,pt, as required by \emph{Journal of the American Chemical
-Society}.
+# Abstract
 
-The surrounding frame is 9\,cm by 3.5\,cm, which is the maximum
-permitted for  \emph{Journal of the American Chemical Society}
-graphical table of content entries. The box will not resize if the
-content is too big: instead it will overflow the edge of the box.
-
-This box and the associated title will always be printed on a
-separate page at the end of the document.
-\end{tocentry}
 
 # Introduction
 
@@ -157,7 +128,6 @@ Contrasts <- c(
 tt <- data.frame(contrastsName = names(Contrasts),  contrasts = Contrasts)
 tt <- tt %>% separate(contrastsName, c("dilution", "ratio", "expected fold change"), sep =  "_", remove = FALSE)
 
-tt
 ```
 
 
@@ -167,7 +137,7 @@ relevantContrasts <- c("dilution_(9/7.5)_1.2","dilution_(7.5/6)_1.25", "dilution
 
 tt <- tt %>% filter(contrastsName  %in% relevantContrasts)
 tt <- select(tt, all_of(c("contrasts","ratio", "expected fold change")))
-knitr::kable(tt, caption = "Contrasts used for benchmark.", format = "latex")
+knitr::kable(tt, caption = "Contrasts used for benchmark.")
 
 
 ```
@@ -268,6 +238,7 @@ characterization data for all new compounds. The class will
 automatically add a sentence pointing to the information on-line:
 
 \end{suppinfo}
+
 ## References
 
 
