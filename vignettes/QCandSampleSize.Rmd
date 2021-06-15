@@ -327,7 +327,8 @@ nudgeval <- max(sampleSize$long$N) * 0.05
 ggplot(sampleSize$long, aes(x = quantile, y = N)) +
   geom_bar(stat = "identity", color = "black", fill = "white") +
   geom_text(aes(label = N), nudge_y = nudgeval) + 
-  facet_wrap(~ paste0("FC==", round(FC,digits=2), "~or~log[2](FC)==", delta), labeller = label_parsed)
+  facet_wrap(~ paste0("FC==", round(FC,digits=2), "~or~log[2](FC)==", delta), 
+             labeller = label_parsed)
 
 
 ```
