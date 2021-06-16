@@ -43,6 +43,8 @@ plotter$intensity_distribution_density()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{lfq}}{LFQData object}
+
+\item{\code{scales}}{scales used for transformation}
 }
 \if{html}{\out{</div>}}
 }
