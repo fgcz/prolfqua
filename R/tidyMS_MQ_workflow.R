@@ -35,38 +35,6 @@ filter_proteins_by_peptide_count <-
     return(list(data = res, name = name))
   }
 
-#' normalize data by log2 and robust scaling
-#'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @return list with data.frame (data) and updated config (config)
-#' @export
-#' @keywords internal
-#' @family preprocessing
-#' @examples
-#'
-#' istar <- prolfqua::data_ionstar$filtered()
-#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' xx <- normalize_log2_robscale(istar_data, istar$config)
-#' names(xx)
-#' xx$config$table$workIntensity
-#'
-normalize_log2_robscale <- function(pdata, config){
-  pepConfig <- config$clone(deep = TRUE)
-  pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
-  pepConfig$table$is_intensity_transformed = TRUE
-
-  pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized,
-                                                   pepConfig,
-                                                   .func = robust_scale)
-
-  pepIntensityNormalized <- pepIntensityNormalized %>%
-    dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
-  pepConfig$table$popWorkIntensity()
-  pepConfig$table$setWorkIntensity("transformedIntensity")
-
-  return(list(data = pepIntensityNormalized, config = pepConfig))
-}
 
 
 #' get the difference of two dataset where one is a subset of the other.
