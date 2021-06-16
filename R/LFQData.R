@@ -252,6 +252,8 @@ LFQDataTransformer <- R6::R6Class(
   public = list(
     #' @field lfq LFQData object
     lfq = NULL,
+    #' @field scales scales used for transformation
+    scales = NULL,
     #' @description  initialize
     #' @param lfqdata LFQData object to transform
     initialize = function(lfqdata){
@@ -261,16 +263,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname name of transformed column
     #' @return LFQData
     log2_robscale = function(colname = "transformedIntensity"){
-      r <- prolfqua::normalize_log2_robscale(self$lfq$data, self$lfq$config)
-      self$lfq$data <- r$data
-      self$lfq$config <- r$config
-      if (!is.null(colname)) {
-        self$lfq$data <- self$lfq$data %>%
-          dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
-        self$lfq$config$table$popWorkIntensity()
-        self$lfq$config$table$setWorkIntensity(colname)
-      }
-      invisible(self$lfq)
+      self$log2_robscale_subset(self$lfq, colname = colname)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
@@ -288,7 +281,9 @@ LFQDataTransformer <- R6::R6Class(
         lfqsubset$data <- prolfqua::transform_work_intensity(lfqsubset$data, lfqsubset$config, log2)
         self$lfq$is_transformed(TRUE)
       }
-      self$lfq$data  <-  prolfqua::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      scales <- prolfqua::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config)
+      self$lfq$data  <- scales$data
+      self$scales <- scales$scales
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data %>%
           dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
