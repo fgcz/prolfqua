@@ -776,11 +776,12 @@ Contrasts_Plotter <- R6::R6Class(
       }
     },
     #' @description plot histogram of estimated fold change
-    histogram_estimate = function(){
+    #' @param binwidth with of bin in histogram
+    histogram_estimate = function(binwidth = 0.05){
       re <- range(self$contrastDF[[self$estimate]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
-      fig <- private$.histogram(score = list(list(score =  self$estimate, xlim = c(re,0.1))))
+      fig <- private$.histogram(score = list(list(score =  self$estimate, xlim = c(re,binwidth))))
       self$figures[["histogram_estimate"]] <- list(fig = fig,
                                                    name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
       return(fig)
