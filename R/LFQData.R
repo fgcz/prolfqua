@@ -64,11 +64,18 @@ LFQData <- R6::R6Class(
     get_sample = function(size = 100, seed = NULL){
       if(!is.null(seed)){ set.seed( seed )}
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
-      return(LFQData$new(subset, self$config))
+      return(LFQData$new(subset, self$config$clone(deep = TRUE)))
+    },
+    #' @description get subset of data
+    #' @param x data frame with columns containing subjectId
+    get_subset = function(x){
+      x <- select(x, all_of(self$subjectId()))
+      subset <- inner_join(x, self$data)
+      return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
-    subject_id = function(){
+    subjectId = function(){
       return(self$config$table$hkeysDepth())
     },
     #' @description is data trasfromed
