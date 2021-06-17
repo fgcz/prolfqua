@@ -97,7 +97,8 @@ $$  t fold change on the original scale, we multiply the z-score by the average 
 $$
 z' = z \times 1/N\sum_{i=1}^N S_i
 $$
-We decided to apply this simple transformation because it only requires to estimate two parameters per sample and works for experiments with thousands of proteins as well as for experiments where only a few hundreds of proteins per sample are measured.
+We decided to apply this simple transformation because it only requires to estimate two parameters per sample. For the ionstar dataset we estimated \bar{x} and $S$ using the human proteins only.
+
 
 
 
@@ -196,7 +197,16 @@ rocp
 
 ## Linear model 
 
-Here we show how the two-stage modelling by first estimating the protein intensities using the Tukey median polish and then fitting a linear model performs.
+We will be fitting four models to the data.
+A linear model implemented by the R function lm we fitted to protein intensities inferred from peptide intensities using the Tukey's median polish. The second mixed-effects model, implemented in the R function `lmer`, fitted to peptide level intensities. We modeled the peptide measurements as repeated measurements of the protein. The third model is again a linear model but this time fitted to peptide intensities. By this we have for each protein several models, which we then summarize. 
+Furthermore, in to handle cases, where no observations were made in one of the conditions, we model the condition estimates and variances as follows. Either we use the mean of the protein intensity in the group, or if there are no observations we impute by using the average of $10\%$ smallest group mean intensities in the experiment. Here we assume that if there are no observations it is because of the limit of detection (LOD). To estimate the variance, we compute the pooled variance and standard deviation of all conditions $\hat{var}$. We assume that the variance of the protein is constant in all the conditions. The t-statistic is given by $\frac{\bar x}{\hat{\sigma}}$.
+
+
+Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
+For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
+
+
+From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@limma] discuss how to use the $\sigma$ and $df$ of all models to estimate a moderated $\tilde \sigma$ and prior degrees of freedom. This allows to moderate the t-statistics by $\tilde{t}_{pj} &= \frac{t_{pj} s_p}{\tilde{s}_p}$ and to determine the posterior degrees of freedom and finally to moderate the p-values.
 
 
 
@@ -205,11 +215,8 @@ Here we show how the two-stage modelling by first estimating the protein intensi
 In this section we compare the results for the various models implemented and discussed previously, namely:
 
 * (`prot_med_lm`) : linear model fitted to protein estimates obtained using Tukey's median polish 
-* (`prot_lme4`) : mixed effects model fitted using _lme4_ 
+* (`prot_lme4`) : mixed effects model fitted using _lme4_ to peptide intensities.
 * (`prot_ROPECA`) : linear models fitted on peptide level and aggregation of moderated p-values using the beta distribution
-* (`prot_rstan`) : mixed effects model fitted with _rstan_ and with prior over $\varepsilon$ 
-* (`prot_brms`) : mixed effects model fitted with _brms_ and default priors 
-* (`prot_brms_student_t`) : mixed effects model fitted with _brms_ and shrinkage prior over fixed effects coefficients .
 
 A relevant parameter is the number of proteins for which we estimated the contrasts (see Table \@ref(tab:completeCasesTab)). It indicates how robust the models are in the presence of missing data. We observe, that when using the linear model on protein level intensities or the bayesian version of the mixed effects models we were able to estimate for 4024 (out of the 4099) proteins all the four examined contrasts (complete cases). When using the mixed effect model implementation in _lme4_ this number drops to $4013$, while when summarizing peptide level models it drops further to $3999$ proteins.
 
