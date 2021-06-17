@@ -220,9 +220,16 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 \subsection{Method \code{histogram_estimate()}}{
 plot histogram of estimated fold change
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_estimate()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_estimate(binwidth = 0.05)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{binwidth}}{with of bin in histogram}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-volcano"></a>}}

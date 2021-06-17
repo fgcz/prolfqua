@@ -61,7 +61,8 @@ Other LFQData:
 \item \href{#method-new}{\code{LFQData$new()}}
 \item \href{#method-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-get_sample}{\code{LFQData$get_sample()}}
-\item \href{#method-subject_id}{\code{LFQData$subject_id()}}
+\item \href{#method-get_subset}{\code{LFQData$get_subset()}}
+\item \href{#method-subjectId}{\code{LFQData$subjectId()}}
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
@@ -135,12 +136,29 @@ samples subset of data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-subject_id"></a>}}
-\if{latex}{\out{\hypertarget{method-subject_id}{}}}
-\subsection{Method \code{subject_id()}}{
+\if{html}{\out{<a id="method-get_subset"></a>}}
+\if{latex}{\out{\hypertarget{method-get_subset}{}}}
+\subsection{Method \code{get_subset()}}{
+get subset of data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_subset(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{data frame with columns containing subjectId}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-subjectId"></a>}}
+\if{latex}{\out{\hypertarget{method-subjectId}{}}}
+\subsection{Method \code{subjectId()}}{
 get subject ID columns
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_id()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$subjectId()}\if{html}{\out{</div>}}
 }
 
 }
