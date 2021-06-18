@@ -1,9 +1,9 @@
 ---
-title: "Untitled"
+title: "Prolfqua - Proteomics label free quantification using linear models."
 author: 'Witold Wolski Std Nr:'
 date: "6/11/2021"
 output: html_document
-bibliography: acstest.bib
+bibliography: bibliography.bib
 ---
 
 
@@ -28,7 +28,7 @@ When developing _prolfqua_, we draw inspiration from packages such as _sf_, whic
 
  R linear model and linear mixed effect models allow modeling parallel designs, repeated measurements, factorial designs, and many more.  R's formula interface for linear models is flexible, widely used, and well documented. We integrate R's linear model and mixed model formula interface in _prolfqua_'s API. This glass box approach should make it easy to reimplement an analysis performed with prolfqua using base R or other programming languages by reading the analysis script and without looking at the package code. Knowledge of the R regression model infrastructure is an advantage when using our package. Acknowledging the formula interface's complexity and the popularity of MSstats, we provided functionality to derive the model formula from an MSstats data format.
  
-The prolfqua package fits the linear model to all the proteins in the dataset. Afterward, we can compute contrast to test the hypothesis, perform ANOVA, or model selection using the likelihood ratio test for thousands of proteins. By exploiting the parallel structure of the analysis, _prolfqua_ implements t-statistic moderation to improve inference for small sample sizes [_limma_]. It also computes probabilities of differential protein regulation based on peptide level models [_ropeca_]. 
+The prolfqua package fits the linear model to all the proteins in the dataset. Afterward, we can compute contrast to test the hypothesis, perform ANOVA, or model selection using the likelihood ratio test for thousands of proteins. By exploiting the parallel structure of the analysis, _prolfqua_ implements t-statistic moderation to improve inference for small sample sizes [@Smyth2004linear]. It also computes probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. 
 
 To optimize a data analysis workflow, prolfqua implements and integrates benchmarking methods, e.g., computing ROC curves. We implemented these methods to assess differences between linear models, mixed effect models, p-value moderation, or Bayesian regression models using the IonStar dataset.
 
@@ -195,7 +195,7 @@ rocp
 ```
 
 
-## Linear model 
+## Linear models 
 
 We will be fitting four models to the data.
 A linear model implemented by the R function lm we fitted to protein intensities inferred from peptide intensities using the Tukey's median polish. The second mixed-effects model, implemented in the R function `lmer`, fitted to peptide level intensities. We modeled the peptide measurements as repeated measurements of the protein. The third model is again a linear model but this time fitted to peptide intensities. By this we have for each protein several models, which we then summarize. 
@@ -206,7 +206,29 @@ Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta
 For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
 
 
-From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@limma] discuss how to use the $\sigma$ and $df$ of all models to estimate a moderated $\tilde \sigma$ and prior degrees of freedom. This allows to moderate the t-statistics by $\tilde{t}_{pj} &= \frac{t_{pj} s_p}{\tilde{s}_p}$ and to determine the posterior degrees of freedom and finally to moderate the p-values.
+From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$ using the empirical Bayes paradigm. These can be used to moderate the t-statistics by:
+$\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
+and p-values.
+
+To summarize peptide level models to protein models we did applied the method suggested by [@Suomi2017bEnhanced], that is to use the median scaled p-value of the peptide models and cumulative distribution function of the beta distribution function to determine a regulation probability of the protein. 
+
+To obtain the median p-value of the protein, we first rescaled the peptide p-values by taking the direction of the fold-change $\hat \beta$ into account, i.e.:
+
+
+\begin{equation}
+p_{s} =
+  \begin{cases}
+1-p, & \textrm{if}~ \hat{\beta} > 0\\
+p-1, & \textrm{otherwise}
+\end{cases}
+\end{equation}
+
+Afterwards, the median scaled p-value $\tilde{p}_s$ is determined and using the transformation below, transformed back onto the original scale. 
+
+$$
+\tilde{p} = 1 - |\tilde{p}_{s}|
+$$
+Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution.
 
 
 
@@ -217,6 +239,7 @@ In this section we compare the results for the various models implemented and di
 * (`prot_med_lm`) : linear model fitted to protein estimates obtained using Tukey's median polish 
 * (`prot_lme4`) : mixed effects model fitted using _lme4_ to peptide intensities.
 * (`prot_ROPECA`) : linear models fitted on peptide level and aggregation of moderated p-values using the beta distribution
+
 
 A relevant parameter is the number of proteins for which we estimated the contrasts (see Table \@ref(tab:completeCasesTab)). It indicates how robust the models are in the presence of missing data. We observe, that when using the linear model on protein level intensities or the bayesian version of the mixed effects models we were able to estimate for 4024 (out of the 4099) proteins all the four examined contrasts (complete cases). When using the mixed effect model implementation in _lme4_ this number drops to $4013$, while when summarizing peptide level models it drops further to $3999$ proteins.
 
