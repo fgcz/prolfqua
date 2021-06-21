@@ -59,7 +59,10 @@ datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir,
                           "MAXQuant_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
-mqdata <- tidyMQ_Peptides_Config(inputMQfile)
+mqdata <- list()
+
+mqdata$data <- tidyMQ_Peptides(inputMQfile)
+mqdata$config <- prolfqua::create_config_MQ_peptide()
 mean(grepl("CON_", mqdata$data$top_protein))
 
 annotation <- readxl::read_xlsx(inputAnnotation)
@@ -86,12 +89,6 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 
 
-```{r filterProteinsByPeptideCount}
-datafilt <- prolfqua::filter_proteins_by_peptide_count(mqdata$data, mqdata$config)$data
-length(unique(datafilt$protein_Id))
-
-```
-
 
 ## Data normalization
 
@@ -102,11 +99,15 @@ To this task we subset the dataset by filtering for HUMAN proteins only and then
 
 ```{r filterForHumans}
 
-lfqdata <- LFQData$new(datafilt, mqdata$config)
+lfqdata <- LFQData$new(mqdata$data, mqdata$config)
+lfqdata$remove_small_intensities()
+lfqdata$filter_proteins_by_peptide_count()
+
 tr <- lfqdata$get_Transformer()
 
 subset_h <- lfqdata$get_copy()
 subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
+subset_h <- subset_h$get_Transformer()$log2()$lfq
 lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
 
 ```
@@ -188,7 +189,14 @@ We will be using the `LFQDataAggregator` class. To estimate protein intensities 
 The figure below shows the the peptide intensities used for estimation and the protein intensity estimates (black dashed line).
 
 ```{r aggregateMedpolish}
-lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, "protein")
+lfqNormSubset$config$table$getWorkIntensity()
+
+pl <- lfqNormSubset$get_Plotter()
+pl$intensity_distribution_density()
+
+
+lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, prefix = "protein")
+
 lfqAggMedpol$medpolish()
 xx <- lfqAggMedpol$plot()
 xx$plots[[1]]
@@ -269,7 +277,7 @@ lmmodel <- paste0(lfqNormSubset$config$table$getWorkIntensity() , lmmodel)
 modelFunction <- strategy_lm( lmmodel, model_name = "Model")
 modLMPepLevel <- prolfqua::build_model(lfqNormSubset$data,
                                        modelFunction,
-                                       subject_Id = lfqNormSubset$subject_id())
+                                       subject_Id = lfqNormSubset$subjectId())
 modLMPepLevel$anova_histogram()$plot
 
 ```
@@ -347,17 +355,6 @@ plc$volcano()
 plc$histogram()
 ```
 
-```{r include = FALSE}
-dummy <- protLFQ$clone()
-dummy$data <- protLFQ$data %>% filter(protein_Id == "sp|A0A0U1RRL7|MMPOS_HUMAN~A0A0U1RRL7")
-#prolfqua::ContrastsSimpleImpute$debug("get_contrasts")
-contrImp2 <- prolfqua::ContrastsSimpleImpute$new(dummy, relevantContrasts)
-
-#debug(summarize_stats)
-#var = summarize_stats(dummy$data, dummy$config, all = FALSE)
-x2 <- contrImp2$get_contrasts()
-
-```
 
 
 ```{r benchmarkImputed}
