@@ -82,7 +82,7 @@ lfqdata$remove_small_intensities()
 pl <- lfqdata$get_Plotter()
 pl$intensity_distribution_density()
 
-subset_h <- lfqdata$get_copy()
+subset_h <- lfqdata$get_copy()$get_Transformer()$log2()$lfq
 subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
 tr <- lfqdata$get_Transformer()
 lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq

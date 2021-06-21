@@ -22,12 +22,11 @@ Arguments:
   mqzip input file
 "
 
-if (FALSE) {
+if (TRUE) {
 
   dummyargs <- c( "c:/Users/wewol/prog/prolfquaTestDataExtern/1675194.zip" )
   dummyargs <- c("D:/TEMP/checkSampleSizeEstimation/1293562.zip","-p","3000","-q","9999032")
   opt <- docopt(doc, args = dummyargs)
-
 }else{
   opt <- docopt(doc)
 }
@@ -70,12 +69,14 @@ summarize_stats_raw_transformed <- function(resDataStart, config){
 }
 
 
-resPep <- tidyMQ_Peptides_Config(mqzip)
-resPep$config$table$factors[["FACTOR"]] = "QC"
-resPep$config$table$factorDepth <- 1
+resPep <- tidyMQ_Peptides(mqzip)
 
-resPep$data$QC <- "QC"
-resPep$data$isotope <- "light"
+config <- prolfqua::create_config_MQ_peptide()
+config$table$factors[["FACTOR"]] = "QC"
+config$table$factorDepth <- 1
+
+resPep$QC <- "QC"
+resPep$isotope <- "light"
 
 project_conf <- list()
 project_conf$project_Id <- project_Id
@@ -83,11 +84,12 @@ project_conf$order_Id <- order_Id
 project_conf$workunit_Id <- workunit
 
 
-resPep$data <- setup_analysis(resPep$data, resPep$config)
-resPep$data <- remove_small_intensities(resPep$data, resPep$config) %>%
-  complete_cases(resPep$config)
-
-
+resPep <- setup_analysis(resPep, config)
+resPep <- remove_small_intensities(resPep, config) %>%
+  complete_cases(config)
+resPepL <- list()
+resPepL$data <- resPep
+resPepL$config <- config
 filename <- basename(tools::file_path_sans_ext(mqzip))
 
 # debug(render_MQSummary_rmd)
