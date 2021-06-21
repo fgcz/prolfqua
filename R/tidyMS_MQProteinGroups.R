@@ -497,58 +497,6 @@ tidyMQ_from_Sites <- function(pDat){
   return(list(data = res, annotation = annotation))
 }
 
-#' read from folder or zip with the content of the MQ txt folder.
-#' @param MQtxtfolder path to folder
-#' @param use either peptides.txt or modificationSpecificPeptides.txt
-#' @param id_extractor function to parse id's
-#' @param remove_rev should reverse sequences be removed
-#'
-#' @family MaxQuant
-#' @keywords internal
-#' @export
-tidyMQ_Peptides_Config <- function(MQtxtfolder,
-                                   use = c("peptides", "modificationSpecificPeptides" ),
-                                   remove_rev = TRUE,
-                                   proteotypic_only = TRUE,
-                                   id_extractor = function(df) {get_UniprotID_from_fasta_header(df, idcolumn = "top_protein")})
-  {
-
-  # create default config
-  config <- prolfqua::create_config_MQ_peptide()
-  peptides <- match.arg(use)
-  mqData <- NULL
-  if (peptides == "modificationSpecificPeptides") {
-    if ("modificationSpecificPeptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name) {
-      mqData <- tidyMQ_modificationSpecificPeptides(MQtxtfolder)
-
-      config$table$workIntensity <- "mod.peptide.intensity"
-      config$table$hierarchy[["peptide_Id"]] <- c("sequence", "modifications", "mod.peptide.id")
-    }else{
-      stop("modificationSpecificPeptides.txt does not exist")
-    }
-  }else if (peptides ==  "peptides") {
-    if ("peptides.txt" %in% unzip(MQtxtfolder, list = TRUE)$Name) {
-      mqData <- tidyMQ_Peptides(MQtxtfolder, proteotypic_only = proteotypic_only)
-    } else {
-      stop("peptides.txt does not exist")
-    }
-  }
-
-  mqData <- tidyMQ_top_protein_name(mqData)
-
-  if (remove_rev == TRUE) {
-    mqData <- mqData %>% dplyr::filter(reverse !=  TRUE)
-  }
-  mqData$isotope <- "light"
-
-  if (!is.null(id_extractor)) {
-    mqData <- id_extractor(mqData)
-    config$table$hierarchy[["protein_Id"]] <- c(config$table$hierarchy[["protein_Id"]], "UniprotID")
-  }
-  mqData <- remove_small_intensities( mqData, config, threshold = 4 )
-  return(list(data = mqData, config = config))
-}
-
 
 
 
