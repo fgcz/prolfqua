@@ -18,7 +18,7 @@
 #' lfqdata$factors()
 #' stopifnot(lfqdata$is_transformed()==FALSE)
 #' lfqdata$summarize_hierarchy()
-#' lfqdata$omit_NA_hierarchy()
+#' lfqdata$omit_NA()
 #'
 #' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 #' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
