@@ -184,7 +184,7 @@ We normalize the data by $\log_2$ transforming and then $z-scaling$.
 
 ```{r normalizedata}
 lt <- lfqdata$get_Transformer()
-transformed <- lt$log2_robscale()
+transformed <- lt$log2()$robscale()$lfq
 transformed$config$table$is_intensity_transformed
 
 ```

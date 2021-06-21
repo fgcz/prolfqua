@@ -146,7 +146,7 @@ pMerged <- LFQData$new(data, config)
 
 bb <- pMerged$complete_cases()
 tr <- pMerged$get_Transformer()
-pMerged <- tr$log2_robscale()
+pMerged <- tr$log2()$robscale()$lfq
 set.seed(1001)
 data_Yeast2Factor <- pMerged$get_sample(size = 500)
 #usethis::use_data(data_Yeast2Factor)

@@ -79,7 +79,7 @@ lfqdata$factors()
 
 ### Do some type of data normalization (or do not)
 lt <- lfqdata$get_Transformer()
-transformed <- lt$log2_robscale()
+transformed <- lt$log2()$robscale()
 
 
 GRP2$lfqData <- lfqdata

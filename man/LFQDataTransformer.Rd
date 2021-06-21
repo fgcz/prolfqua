@@ -20,7 +20,7 @@ istar <- prolfqua::data_ionstar$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 
-lfqcopy <- lfqdata$clone()
+lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
@@ -30,7 +30,7 @@ plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
 # transform by asinh root and scale
-lfqcopy <- lfqdata$clone()
+lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
 x$lfq$config$table$is_intensity_transformed
@@ -38,6 +38,10 @@ x <- lfqTrans$intensity_matrix(robust_scale)
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
+lfqcopy <- lfqdata$get_copy()
+lfqTrans <- lfqcopy$get_Transformer()
+lfqTrans$log2()$robscale()
+lfqTrans$log2()
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -52,8 +56,9 @@ plotter$intensity_distribution_density()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{LFQDataTransformer$new()}}
-\item \href{#method-log2_robscale}{\code{LFQDataTransformer$log2_robscale()}}
-\item \href{#method-log2_robscale_subset}{\code{LFQDataTransformer$log2_robscale_subset()}}
+\item \href{#method-log2}{\code{LFQDataTransformer$log2()}}
+\item \href{#method-robscale}{\code{LFQDataTransformer$robscale()}}
+\item \href{#method-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
 \item \href{#method-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
 \item \href{#method-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
 \item \href{#method-clone}{\code{LFQDataTransformer$clone()}}
@@ -77,12 +82,25 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log2_robscale"></a>}}
-\if{latex}{\out{\hypertarget{method-log2_robscale}{}}}
-\subsection{Method \code{log2_robscale()}}{
-log2 transform and robust scale data
+\if{html}{\out{<a id="method-log2"></a>}}
+\if{latex}{\out{\hypertarget{method-log2}{}}}
+\subsection{Method \code{log2()}}{
+log2 transform data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale(colname = "transformedIntensity")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2(force = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Transformer
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-robscale"></a>}}
+\if{latex}{\out{\hypertarget{method-robscale}{}}}
+\subsection{Method \code{robscale()}}{
+robust scale data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale(colname = "transformedIntensity")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -97,15 +115,12 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log2_robscale_subset"></a>}}
-\if{latex}{\out{\hypertarget{method-log2_robscale_subset}{}}}
-\subsection{Method \code{log2_robscale_subset()}}{
+\if{html}{\out{<a id="method-robscale_subset"></a>}}
+\if{latex}{\out{\hypertarget{method-robscale_subset}{}}}
+\subsection{Method \code{robscale_subset()}}{
 log2 transform and robust scale data based on subset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2_robscale_subset(
-  lfqsubset,
-  colname = "transformedIntensity"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(lfqsubset, colname = "transformedIntensity")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

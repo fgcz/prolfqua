@@ -236,7 +236,7 @@ LFQData <- R6::R6Class(
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
-#' lfqcopy <- lfqdata$clone()
+#' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #'
 #' x <- lfqTrans$intensity_array(log2)
@@ -246,7 +246,7 @@ LFQData <- R6::R6Class(
 #' plotter$intensity_distribution_density()
 #'
 #' # transform by asinh root and scale
-#' lfqcopy <- lfqdata$clone()
+#' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #' x <- lfqTrans$intensity_array(asinh)
 #' x$lfq$config$table$is_intensity_transformed
@@ -254,6 +254,10 @@ LFQData <- R6::R6Class(
 #' plotter <- x$lfq$get_Plotter()
 #' plotter$intensity_distribution_density()
 #'
+#' lfqcopy <- lfqdata$get_copy()
+#' lfqTrans <- lfqcopy$get_Transformer()
+#' lfqTrans$log2()$robscale()
+#' lfqTrans$log2()
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
@@ -266,11 +270,25 @@ LFQDataTransformer <- R6::R6Class(
     initialize = function(lfqdata){
       self$lfq = lfqdata$clone(deep = TRUE)
     },
-    #' @description log2 transform and robust scale data
+    #' @description log2 transform data
+    #' @return Transformer
+    log2 = function(force = FALSE){
+      if (self$lfq$is_transformed() == FALSE | force ) {
+        self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data ,
+                                                              self$lfq$config, log2)
+        self$lfq$is_transformed(TRUE)
+      } else {
+        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+      }
+      invisible(self)
+
+    },
+    #' @description robust scale data
     #' @param colname name of transformed column
     #' @return LFQData
-    log2_robscale = function(colname = "transformedIntensity"){
-      self$log2_robscale_subset(self$lfq$get_copy(), colname = colname)
+    robscale = function(colname = "transformedIntensity"){
+      res <- self$robscale_subset(self$lfq, colname = colname)
+      invisible(res)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
@@ -278,18 +296,11 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQData
     #'
-    log2_robscale_subset = function(lfqsubset, colname = "transformedIntensity"){
+    robscale_subset = function(lfqsubset, colname = "transformedIntensity"){
       message("data is : ",self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
         invisible(NULL)
-      }
-      if (self$lfq$is_transformed() == FALSE) {
-        self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data ,
-                                                              self$lfq$config, log2)
-        lfqsubset$data <- prolfqua::transform_work_intensity(lfqsubset$data,
-                                                             lfqsubset$config, log2)
-        self$lfq$is_transformed(TRUE)
       }
       scales <- prolfqua::scale_with_subset(self$lfq$data,
                                             lfqsubset$data,
@@ -302,7 +313,8 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$config$table$popWorkIntensity()
         self$lfq$config$table$setWorkIntensity(colname)
       }
-      invisible(self$lfq)
+      invisible(self)
+
     },
     #' @description
     #' Transforms intensities
@@ -422,7 +434,7 @@ LFQDataStats <- R6::R6Class(
     #'
     #' @return data.frame
     stats = function(all = FALSE){
-       self$statsdf
+      self$statsdf
     },
     #' @description
     #' Determine CV or sd for the quantiles
@@ -515,10 +527,10 @@ LFQDataStats <- R6::R6Class(
       }
 
       res <- prolfqua::lfq_power_t_test_proteins(self$stats(),
-                                delta = delta,
-                                power = power,
-                                sig.level = sig.level,
-                                min.n = 1.5)
+                                                 delta = delta,
+                                                 power = power,
+                                                 sig.level = sig.level,
+                                                 min.n = 1.5)
       return(res)
     }
   )
@@ -665,8 +677,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @return pheatmap
     heatmap = function(na_fraction = 0.3){
       fig <- prolfqua::plot_heatmap(self$lfq$data,
-                                      self$lfq$config,
-                                      na_fraction = na_fraction)
+                                    self$lfq$config,
+                                    na_fraction = na_fraction)
       return(fig)
     },
     #' @description
@@ -815,7 +827,7 @@ LFQDataPlotter <- R6::R6Class(
       pdf(fpath,
           width = width,
           height = height)
-        print(fig)
+      print(fig)
       graphics.off()
       self$file_paths_pdf[[fig_name]] <- fpath
       invisible(fpath)
@@ -916,10 +928,10 @@ LFQDataWriter <- R6::R6Class(
 
       fname <- paste0(self$prefix,"intensities_file_annotation")
       self$file_paths[[fname]] <-
-      lfq_write_table(wide$annotation,
-                      path = path_qc,
-                      name = fname,
-                      format = self$format)
+        lfq_write_table(wide$annotation,
+                        path = path_qc,
+                        name = fname,
+                        format = self$format)
     }
   ))
 
@@ -1046,7 +1058,7 @@ LFQDataAggregator <- R6::R6Class(
 
       private$.topN(N = N, .func = sum_f)
     }
-      ,
+    ,
     #' @description
     #' creates aggreation plots
     #' @param show.legend default FALSE

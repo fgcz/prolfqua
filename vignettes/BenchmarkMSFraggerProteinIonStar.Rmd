@@ -56,7 +56,6 @@ protein <- protein %>% filter(unique.stripped.peptides > 1)
 merged <- inner_join(annotation, protein)
 ```
 
-
 ```{r setupConfigs}
 
 atable <- AnalysisTableAnnotation$new()
@@ -86,7 +85,7 @@ pl$intensity_distribution_density()
 subset_h <- lfqdata$get_copy()
 subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
 tr <- lfqdata$get_Transformer()
-lfqdataNormalized <- tr$log2_robscale_subset(lfqsubset = subset_h)
+lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
 
 pl <- lfqdataNormalized$get_Plotter()
 pl$intensity_distribution_density()
