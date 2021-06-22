@@ -47,10 +47,8 @@ Imports:
     yaml,
     writexl
 Suggests:
-    coda,
     corrplot,
     docopt,
-    flextable,
     KernSmooth,
     knitr,
     multcomp,
