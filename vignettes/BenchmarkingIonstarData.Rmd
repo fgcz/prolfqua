@@ -94,7 +94,7 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 
 
 We will normalize the data using the 'LFQTransformer' class. Since we know that the Human proteins are the Matrix in the experiment we will normalize the data using HUMAN proteins only.
-To this task we subset the dataset by filtering for HUMAN proteins only and then use the 'log2_robscale_subset' method.
+To this task we subset the dataset by filtering for HUMAN proteins only and then use the `LFQDataTransformer` to normalize the data.
 
 
 ```{r filterForHumans}
@@ -106,7 +106,7 @@ lfqdata$filter_proteins_by_peptide_count()
 tr <- lfqdata$get_Transformer()
 
 subset_h <- lfqdata$get_copy()
-subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
+subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
 subset_h <- subset_h$get_Transformer()$log2()$lfq
 lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
 
@@ -591,7 +591,7 @@ The table below summarizes the contrast estimates produced which will be benchma
 ```{r fig.cap="Partial area under the ROC curve at 10% FPR."}
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
-resAllB <- res %>% filter(contrast == "all")
+resAllB <- res %>% dplyr::filter(contrast == "all")
 
 bb <- resAllB %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
 

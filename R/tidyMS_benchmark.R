@@ -383,7 +383,7 @@ Benchmark <-
       #' @return data.frame
       data = function(){
         if (self$is_complete) {
-          nr_na <- self$smc$nr_na %>% filter(n == n - .data$nr_na)
+          nr_na <- self$smc$nr_na %>% dplyr::filter(n == n - .data$nr_na)
           return(dplyr::inner_join(self$.data, nr_na, by = self$hierarchy))
         } else {
           return(self$.data)

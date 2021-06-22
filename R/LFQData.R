@@ -115,9 +115,9 @@ LFQData <- R6::R6Class(
 
       missing <- interaction_missing_stats(self$data, self$config)
       notNA <- missing$data %>% dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA %>% group_by_at(self$config$table$hkeysDepth()) %>%
+      sumN <- notNA %>% group_by_at(self$config$table$hierarchyKeys()) %>%
         summarise(n = n())
-      notNA <- sumN %>% filter(n == max(n))
+      notNA <- sumN %>% dplyr::filter(n == max(n))
 
       notNA <- notNA %>% dplyr::select(self$config$table$hierarchyKeys())
       notNAdata <- dplyr::inner_join( notNA, self$data)
@@ -953,7 +953,7 @@ LFQDataWriter <- R6::R6Class(
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
-#' lfqTrans <- lfqdata$clone()$get_Transformer()$log2_robscale()
+#' lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
 #' lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 #'
 #' lfqAggregator$medpolish()

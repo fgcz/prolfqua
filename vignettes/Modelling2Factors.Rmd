@@ -73,8 +73,9 @@ Examine proteins with a significant interaction between the two factors treatmen
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
-ANOVA %>% filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head(5)
-protIntSig <- ANOVA %>% filter(factor == "condition_:batch_") %>% filter(FDR.Pr..F. < 0.05)
+ANOVA %>% dplyr::filter(factor == "condition_:batch_") %>% arrange(FDR.Pr..F.) %>% head(5)
+protIntSig <- ANOVA %>% dplyr::filter(factor == "condition_:batch_") %>%
+  dplyr::filter(FDR.Pr..F. < 0.05)
 protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
 ```

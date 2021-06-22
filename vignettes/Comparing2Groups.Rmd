@@ -57,7 +57,7 @@ We remove all proteins identified only by a single peptide.
 
 
 ```{r}
-startdata <- filter(startdata, nr.peptides > 1)
+startdata <- dplyr::filter(startdata, nr.peptides > 1)
 ```
 
 
@@ -249,10 +249,10 @@ mod$anova_histogram("FDR.Pr..F.")
 aovtable <- mod$get_anova()
 head(aovtable)
 dim(aovtable)
-xx <- aovtable %>% filter(FDR.Pr..F. < 0.2)
+xx <- aovtable %>% dplyr::filter(FDR.Pr..F. < 0.2)
 dim(xx)
 signif <- transformed$get_copy()
-signif$data <- signif$data %>% filter(protein_Id %in% xx$protein_Id)
+signif$data <- signif$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
 hmSig <- signif$get_Plotter()$heatmap()
 
 ```
@@ -328,7 +328,7 @@ merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
 names(merged)
 
 moreProt <- transformed$get_copy()
-moreProt$data <- moreProt$data %>% filter(protein_Id %in% merged$more$protein_Id)
+moreProt$data <- moreProt$data %>% dplyr::filter(protein_Id %in% merged$more$protein_Id)
 moreProt$get_Plotter()$raster()
 ```
 

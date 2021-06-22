@@ -60,8 +60,8 @@ We also remove all proteins identified only by a single peptide.
 
 
 ```{r}
-startdata <- startdata %>% filter(condition  == "Ethanol")
-startdata <- startdata %>% filter(nr.peptides > 1)
+startdata <- startdata %>% dplyr::filter(condition  == "Ethanol")
+startdata <- startdata %>% dplyr::filter(nr.peptides > 1)
 
 ```
 
@@ -240,7 +240,8 @@ stats$density(ggstat = "ecdf")
 
 
 ```{r estimateSampleSizes}
-sampleSize <- stats$power_t_test_quantiles() %>% filter(condition_ != "All")
+sampleSize <- stats$power_t_test_quantiles() %>% 
+  dplyr::filter(condition_ != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
 ```
 
@@ -265,7 +266,7 @@ Getting the sample size for each protein.
 ```{r statsWithN, eval = TRUE}
 
 x <- stats$power_t_test()
-x <- x %>% filter(condition_ == "Ethanol") %>% arrange(desc(N),protein_Id)
+x <- x %>% dplyr::filter(condition_ == "Ethanol") %>% arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1000:1007,], caption = "Sample size for each protein")
 
 ```

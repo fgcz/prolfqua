@@ -341,7 +341,7 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
   xx <- xx %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
   xx$isotope <- "light"
   if (proteotypic_only) {
-    xx <- xx %>% filter(.data$proteotypic == TRUE)
+    xx <- xx %>% dplyr::filter(.data$proteotypic == TRUE)
   }
   return(xx)
 }

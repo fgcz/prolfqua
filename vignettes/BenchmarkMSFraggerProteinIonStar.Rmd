@@ -50,7 +50,7 @@ unzip(inputMQfile, list = TRUE)$Name
 protein <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 protein <- tidy_MSFragger_combined_protein(protein)
-protein <- protein %>% filter(unique.stripped.peptides > 1)
+protein <- protein %>% dplyr::filter(unique.stripped.peptides > 1)
 #View(protein)
 
 merged <- inner_join(annotation, protein)
@@ -83,7 +83,7 @@ pl <- lfqdata$get_Plotter()
 pl$intensity_distribution_density()
 
 subset_h <- lfqdata$get_copy()$get_Transformer()$log2()$lfq
-subset_h$data <- subset_h$data %>% filter(grepl("HUMAN", protein_Id))
+subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
 tr <- lfqdata$get_Transformer()
 lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
 

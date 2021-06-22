@@ -981,7 +981,7 @@ addContrastResults <- function(prefer, add){
 
   stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
 
-  cA <- filter(cA,!is.na(statistic))
+  cA <- dplyr::filter(cA,!is.na(statistic))
   more <- setdiff(select(cB, c(prefer$subject_Id, "contrast")),
                   select(cA, c(add$subject_Id, "contrast")))
   more <- inner_join(more, cB )
