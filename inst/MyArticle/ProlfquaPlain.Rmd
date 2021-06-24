@@ -39,6 +39,7 @@ We believe that the package makes it easy to perform proteomics quantitative dat
 # Methods
 
 ## Benchmarking
+
 The benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentration [@shen2018ionstar]. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins we know that the difference between dilutions should be $\beta \ne 0$.
 
 We can use various statistics to examine this hypothesis: the contrast estimate $\beta$, or because we first log2 transformed the data the log2 fold-change (log2FC), the t-statistic $\frac{\beta}{\sqrt{var(\beta)}}$, the $p-value$  and moderated $p-value$ for models where the p-value can be obtained. 
@@ -197,18 +198,24 @@ rocp
 
 ## Linear models 
 
-We will be fitting four models to the data.
-A linear model implemented by the R function lm we fitted to protein intensities inferred from peptide intensities using the Tukey's median polish. The second mixed-effects model, implemented in the R function `lmer`, fitted to peptide level intensities. We modeled the peptide measurements as repeated measurements of the protein. The third model is again a linear model but this time fitted to peptide intensities. By this we have for each protein several models, which we then summarize. 
-Furthermore, in to handle cases, where no observations were made in one of the conditions, we model the condition estimates and variances as follows. Either we use the mean of the protein intensity in the group, or if there are no observations we impute by using the average of $10\%$ smallest group mean intensities in the experiment. Here we assume that if there are no observations it is because of the limit of detection (LOD). To estimate the variance, we compute the pooled variance and standard deviation of all conditions $\hat{var}$. We assume that the variance of the protein is constant in all the conditions. The t-statistic is given by $\frac{\bar x}{\hat{\sigma}}$.
+We fitted a linear model implemented by the R function `lm` to protein intensities inferred from peptide intensities using the Tukey's median polish. The second mixed-effects model, implemented in the R function `lmer`, fitted to peptide level intensities. We modeled the peptide measurements as repeated measurements of the protein. The third model is again a linear model but this time fitted to peptide intensities. By this we have for each protein several models, which we then summarize. 
 
+## Contrast estimation with imputation
+
+To handle cases, where no observations were made in one of the conditions, we model the condition estimates and variances as follows. Either we use the mean of the protein intensity in the group, or if there are no observations we impute by using the average of $10\%$ smallest group mean intensities in the experiment. Here we assume that if there are no observations it is because of the limit of detection (LOD). To estimate the variance, we compute the pooled variance and standard deviation of all conditions $\hat{var}$. We assume that the variance of the protein is constant in all the conditions. The t-statistic is then given by $\frac{\bar x}{\hat{\sigma}}$.
+
+## Computing contrasts
 
 Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
 For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
 
+## P-value moderation
 
-From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$ using the empirical Bayes paradigm. These can be used to moderate the t-statistics by:
+From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how, using the empirical Bayes paradigm, to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$. These can be used to moderate the t-statistics by:
 $\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
 and p-values.
+
+## Summarizing peptide level models
 
 To summarize peptide level models to protein models we did applied the method suggested by [@Suomi2017bEnhanced], that is to use the median scaled p-value of the peptide models and cumulative distribution function of the beta distribution function to determine a regulation probability of the protein. 
 
@@ -234,17 +241,101 @@ Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefor
 
 # Results and discussion
 
+## Method comparison
+
 In this section we compare the results for the various models implemented and discussed previously, namely:
 
 * (`prot_med_lm`) : linear model fitted to protein estimates obtained using Tukey's median polish 
 * (`prot_lme4`) : mixed effects model fitted using _lme4_ to peptide intensities.
 * (`prot_ROPECA`) : linear models fitted on peptide level and aggregation of moderated p-values using the beta distribution
 
+The table below summarizes the contrast estimates produced which will be benchmarked.
 
-A relevant parameter is the number of proteins for which we estimated the contrasts (see Table \@ref(tab:completeCasesTab)). It indicates how robust the models are in the presence of missing data. We observe, that when using the linear model on protein level intensities or the bayesian version of the mixed effects models we were able to estimate for 4024 (out of the 4099) proteins all the four examined contrasts (complete cases). When using the mixed effect model implementation in _lme4_ this number drops to $4013$, while when summarizing peptide level models it drops further to $3999$ proteins.
+|                    | Model                   | Contrast   | Moderation   | Aggregation  |
+|--------------------|:-----------------------:|------------|--------------|--------------|
+| Protein Intensity  |  lm                     | o          |  o           |              |
+| Protein Intensity Imputed | pooled variance  | o          |  o           |              |
+| Peptide Intensity  |  lmer                   | o          |  o           |              |
+| Peptide Intensity  |  lm                     |            |              |  o           |
 
-The different number of proteins for which we obtained statistics of contrasts makes comparing the scores for various models complicated because the set of proteins differs, e.g. $4024$ versus $3999$. 
+
+A relevant parameter is the number of proteins for which we estimated the contrasts (see Table \@ref(tab:completeCasesTab)). It indicates how robust the models are in the presence of missing data. We observe, that when using the linear model on protein level intensities or the bayesian version of the mixed effects models we were able to estimate for 4024 (out of the 4099) proteins all the four examined contrasts (complete cases). When using the mixed effect model implementation in _lme4_ this number drops to $4013$, while when summarizing peptide level models it drops further to $3999$ proteins. The different number of proteins for which we obtained statistics of contrasts makes comparing the scores for various models complicated because the set of proteins differs, e.g. $4024$ versus $3999$. 
 Therefore, we incorporate the failure to generate statistics for contrasts into the benchmark by setting $P$ and $N$ equal to the number of all proteins (see Table \@ref(tab:confusionMatrix)) and then computing the $FPR$ and $TPR$.
+
+
+
+```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=5}
+allBenchmarks <- readRDS("inst/Benchresults/allBenchmarkds.RDS")
+benchmark_msstats <- readRDS("inst/Benchresults/benchmark_msstats.RDS")
+allBenchmarks$benchmark_mssstats <- benchmark_msstats
+msFragger <- readRDS(file = "inst/Benchresults/MSFragger_medpol_benchmark.RDS")
+allBenchmarks$benchmark_msFragger <- msFragger
+
+dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
+dd <- dd %>% mutate(nrcontrasts = protein_Id * (4-nr_missing))
+dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
+dds$percent <- dds$nrcontrasts/max(dds$nrcontrasts) * 100
+percentgg <- dds %>% ggplot(aes(x = name, y = percent )) + 
+  geom_bar(stat = "identity") + 
+  coord_cartesian(ylim = c(min(dds$percent),max(dds$percent))) +
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_text(aes(label = round(percent,digits = 1)), position = position_dodge(width = 0.9), vjust = -0.25)
+
+nrgg <- dds %>% ggplot(aes(x = name, y = nrcontrasts )) + 
+  geom_bar(stat = "identity") + 
+  coord_cartesian(ylim = c(min(dds$nrcontrasts),max(dds$nrcontrasts))) +
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_text(aes(label=round(nrcontrasts,digits = 1)), position = position_dodge(width = 0.9), vjust = -0.25)
+
+gridExtra::grid.arrange(percentgg, nrgg, nrow = 2)
+
+```
+
+
+```{r fig.cap="Partial area under the ROC curve at 10% FPR."}
+
+ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
+res <- map_df(allBenchmarks, function(x){x$pAUC()})
+resAllB <- res %>% dplyr::filter(contrast == "all")
+
+bb <- resAllB %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
+
+ggplot(bb, aes(x = Name, y = pAUC_10)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~whatfix)  + 
+  coord_cartesian(ylim = c(min(bb$pAUC_10),max(bb$pAUC_10))) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+
+```
+
+
+
+```{r FDRfdp, fig.cap = "Compare FDR estimate with false discovery proportion (FDP).", fig.width=8, fig.height=8}
+dd <- map_df(allBenchmarks, function(x){res <- x$get_confusion_FDRvsFDP(); res$name <- x$model_name;res})
+dd <- filter(dd, contrast == "all")
+
+
+dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
+  geom_line(aes(color = model_name)) +
+  facet_wrap(~contrast) + 
+   geom_abline(intercept = 0, slope = 1, color=2)
+```
+
+```{r fig.cap=""}
+dd %>% ggplot(aes(x = scorecol))+geom_histogram() + facet_wrap(~model_name)
+```
+
+How these results compare to MSStats.
+
+```{r}
+
+```
+
+Compare number of estimated models, Compare ROC, and compare FDR vs FDP curves
+
+How this results generalize when using a different software.
+
 
 
 ## Outline
@@ -252,7 +343,6 @@ Therefore, we incorporate the failure to generate statistics for contrasts into 
 
 
 
-# Extra information when writing JACS Communications
 
 \begin{acknowledgement}
 
