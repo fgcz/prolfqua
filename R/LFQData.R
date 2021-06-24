@@ -69,7 +69,7 @@ LFQData <- R6::R6Class(
     #' @description get subset of data
     #' @param x data frame with columns containing subjectId
     get_subset = function(x){
-      x <- select(x, all_of(self$subjectId()))
+      x <- select(x, all_of(self$subjectId())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
@@ -87,6 +87,11 @@ LFQData <- R6::R6Class(
       }else{
         self$config$table$is_intensity_transformed = is_transformed
       }
+    },
+    #' @description return name of intensity column
+    #' @return name of intensity column
+    intensity_column(){
+      return(self$config$table$getWorkIntensity())
     },
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
