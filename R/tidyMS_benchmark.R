@@ -224,20 +224,27 @@ do_confusion_c <- function(
 }
 
 # summarise_missing_contrasts
+#' @examples
+#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+#' x <- .summarise_missing_contrasts(ttd$data)
+#' x2 <- as_tibble(x$summary)
+#'
+#debug(.summarise_missing_contrasts)
 .summarise_missing_contrasts <- function(data,
                                          hierarchy = c("protein_Id"),
                                          what = "statistic") {
-  xxA <- data %>%
-    group_by_at(hierarchy) %>%
+  xxA <- data |>
+    group_by_at(hierarchy) |>
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
-  summary <- as.data.frame(table(xxA$nr_na))
+  summary <- xxA |> group_by(nr_na) |> summarize(n = n())
+
   colnames(summary) <- c("nr_missing", paste(hierarchy, collapse = "_"))
   return(list(summary = summary, nr_na = xxA))
 }
 
 # plot score distributions by species
 .plot_score_distribution <- function(data,
-                                     score =list(list(score = "estimate",xlim = c(-1,2) ),
+                                     score = list(list(score = "estimate",xlim = c(-1,2) ),
                                                  list(score = "statistic", xlim = c(-3,10) )),
                                      contrast = "contrast",
                                      species = "species" ,
@@ -275,7 +282,7 @@ do_confusion_c <- function(
 #' )
 #' medpol_benchmark$plot_score_distribution()
 #' #Benchmark$debug("pAUC_summaries")
-#' brms_benchmark <- make_benchmark(
+#' benchmark <- make_benchmark(
 #'   ttd$data,
 #'   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
 #'   benchmark = list(list(sc = "estimate", desc = TRUE),
@@ -289,19 +296,22 @@ do_confusion_c <- function(
 #'   model_description = "protein level measurments, lm model",
 #'   model_name = "prot_lm"
 #' )
-#' bb <- brms_benchmark$pAUC_summaries()
-#' brms_benchmark$complete()
-#' brms_benchmark$plot_score_distribution()
-#' bb <- brms_benchmark$get_confusion()
+#'
+#' bb <- benchmark$pAUC_summaries()
+#' benchmark$complete()
+#' benchmark$plot_score_distribution()
+#' bb <- benchmark$get_confusion_FDRvsFDP()
 #' bb$contrast %>% unique()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 #' max(xb$TPR)
 #' max(xb$TP_hits)/ max(xb$T_)
-#' brms_benchmark$get_confusion_summaries()
-#' brms_benchmark$plot_ROC(xlim = 0.1)
-#' brms_benchmark$plot_FDPvsTPR()
-#' brms_benchmark$plot_FDRvsFDP()
-#' brms_benchmark$plot_scatter()
+#' bb <- benchmark$get_confusion_benchmark()
+#' head(bb)
+#' bb %>% group_by(what, contrast) %>% sumarize(n = n())
+#' benchmark$plot_ROC(xlim = 0.1)
+#' benchmark$plot_FDPvsTPR()
+#' benchmark$plot_FDRvsFDP()
+#' benchmark$plot_scatter()
 #' head(bb)
 #'
 Benchmark <-
@@ -372,7 +382,7 @@ Benchmark <-
         self$hierarchy <- hierarchy
         self$species <- species
 
-        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy,what = summarizeNA)
+        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy, what = summarizeNA)
         self$.data <- .scale_probabilities(self$.data,
                                            toscale = toscale,
                                            fcestimate = self$fcestimate)
@@ -403,10 +413,7 @@ Benchmark <-
       #' @description
       #' get confusion data
       #' @param arrange todo
-      get_confusion = function(arrange){
-        if (missing(arrange)) {
-          arrange = self$FDRvsFDP
-        }
+      .get_confusion = function(arrange){
         confusion <- prolfqua:::do_confusion_c(self$data(),
                                                contrast = self$contrast,
                                                arrangeby = arrange)
@@ -418,13 +425,20 @@ Benchmark <-
       },
       #' @description
       #' get FDR summaries
-      get_confusion_summaries = function(){
-        self$get_confusion(arrange = self$benchmark)
+      get_confusion_benchmark = function(){
+        self$.get_confusion(arrange = self$benchmark)
+      },
+      #' @description nr of elements used to determine ROC curve
+      #'
+      n_confusion_benchmark = function(){
+        bb1 <- self$get_confusion_benchmark()
+        n <- bb1 %>% na.omit() |> group_by(what, contrast) |> summarise(n = n())
+        return(n)
       },
       #' @description plot FDP vs TPR
       #' @param xlim limit x axis
       plot_FDPvsTPR = function(xlim = 0.5){
-        confusion <- self$get_confusion_summaries()
+        confusion <- self$get_confusion_benchmark()
 
         p <- .plot_FDPvsTPR(confusion,
                             xlim = 0.5,
@@ -436,7 +450,7 @@ Benchmark <-
       #' @param xlim limit x axis
       #' @return ggplot
       plot_ROC = function(xlim = 0.5){
-        confusion <- self$get_confusion_summaries()
+        confusion <- self$get_confusion_benchmark()
         vissum <- .plot_ROC(confusion,
                             fpr_lim = xlim,
                             contrast = self$contrast)
@@ -445,7 +459,7 @@ Benchmark <-
       #' @description
       #' AUC summaries
       pAUC_summaries = function(){
-        confusion <- self$get_confusion_summaries()
+        confusion <- self$get_confusion_benchmark()
         pauc <- .partial_AUC_summary(
           confusion,
           model_description = paste0(ifelse(self$complete(), " (CC) " , " (NC) "),
@@ -457,7 +471,7 @@ Benchmark <-
       #' AUC summaries as table
       #'
       pAUC = function(){
-        pStats <- self$get_confusion_summaries()
+        pStats <- self$get_confusion_benchmark()
         summaryS <- pStats %>% dplyr::group_by(.data$contrast, .data$what) %>%
           dplyr::summarize(
             AUC = ms_bench_auc(.data$FPR, .data$TPR),
@@ -469,15 +483,23 @@ Benchmark <-
       },
       #' @description
       #' FDR vs FDP data
-      get_FDRvsFDP = function(){
-        xx <- self$get_confusion(arrange = self$FDRvsFDP)
+      get_confusion_FDRvsFDP = function(){
+        xx <- self$.get_confusion(arrange = self$FDRvsFDP)
         return(xx)
       },
+      #' @description nr of elements used to determine ROC curve
+      #'
+      n_confusion_FDRvsFDP = function(){
+        bb1 <- self$get_confusion_FDRvsFDP()
+        n <- bb1 %>% na.omit() |> group_by(what, contrast) |> summarise(n = n())
+        return(n)
+      },
+
       #' @description
       #' plot FDR vs FDP data
       #' @return ggplot
       plot_FDRvsFDP = function(){
-        xx <- self$get_FDRvsFDP()
+        xx <- self$get_confusion_FDRvsFDP()
         #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
         p <- ggplot(xx,
                     aes(x = scorecol,
