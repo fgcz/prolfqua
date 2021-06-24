@@ -38,7 +38,6 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#'guides
 #' istar <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
@@ -55,7 +54,7 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
     p <- p + scale_x_continuous(trans = 'log10')
   }
   if (!legend) {
-    p <- p + guides(colour = FALSE)
+    p <- p + ggplot2::guides(colour = FALSE)
   }
   return(p)
 }
