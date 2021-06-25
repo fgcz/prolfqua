@@ -125,7 +125,11 @@ library(prolfqua)
 
 ttd <- prolfqua::ionstar_bench_preprocess(bb, idcol = "Protein")
 head(ttd$data)
-
+if (FALSE) {
+  xdd <- ttd$data %>% dplyr::rename(protein_Id = Protein ,contrast = Label, estimate = log2FC, statistic = Tvalue, p.value = pvalue,FDR = adj.pvalue  )
+  benchmark2_msstats <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
+  saveRDS(benchmark2_msstats, file = "inst/Benchresults/benchmark_msstats.RDS")
+}
 benchmark_msstats <- make_benchmark(ttd$data,
                                    contrast = "Label",
                                 toscale = c("pvalue"),
@@ -144,7 +148,7 @@ sum(benchmark_msstats$smc$summary$Protein)
 
 sumarry <- benchmark_msstats$smc$summary
 table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
-
+saveRDS(benchmark_msstats, file = "inst/Benchresults/benchmark_msstats.RDS")
 ```
 
 ```{r fig.cap="ROC curves", eval = evalAll}
