@@ -136,15 +136,16 @@ cp$volcano()
 ```{r bnechmark}
 ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
-                                   model_description = "med. polish and lm. density",
-                                   model_name = "prot_med_lm",
+                                   model_description = "MSFragger med. polish and lm. density",
+                                   model_name = "MSFragger_prot_med_lm",
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
+saveRDS(medpol_benchmark, file = "../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
 medpol_benchmark$plot_ROC()
 medpol_benchmark$plot_FDRvsFDP()
-medpol_benchmark$get_confusion()
-medpol_benchmark$get_FDRvsFDP()
+medpol_benchmark$get_confusion_benchmark()
+medpol_benchmark$get_confusion_FDRvsFDP()
 
 ```
