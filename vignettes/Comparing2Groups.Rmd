@@ -269,7 +269,7 @@ contr <- prolfqua::Contrasts$new(mod, Contrasts)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
-Moderate the variance and using the Experimental Bayes method implmented in `ContrastModerated`.
+Moderate the variance and using the Experimental Bayes method implmented in `ContrastsModerated`.
 
 ```{r}
 contr <- prolfqua::ContrastsModerated$new(contr)
