@@ -104,11 +104,15 @@ lfqdata$remove_small_intensities()
 lfqdata$filter_proteins_by_peptide_count()
 
 tr <- lfqdata$get_Transformer()
-
-subset_h <- lfqdata$get_copy()
-subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
-subset_h <- subset_h$get_Transformer()$log2()$lfq
-lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
+SUBSETNORM <- FALSE
+if (SUBSETNORM) {
+  subset_h <- lfqdata$get_copy()
+  subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
+  subset_h <- subset_h$get_Transformer()$log2()$lfq
+  lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
+} else{
+  lfqdataNormalized <- tr$log2()$robscale()$lfq
+}
 
 ```
 
@@ -334,10 +338,10 @@ relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
 
 
 There are, as of today, four contrasts classes in the package _prolfqua_
-- 'ContrastSimpleImputed' : contrast computation with imputation of fold changes and t-statistic estimation using pooled variances.
-- 'Contrast'  : uses Wald test, 
-- 'ContrastModerated' : applies variance moderation:, 
-- 'ContrastROPECA' implements estimate and p-value aggregation
+- 'ContrastsSimpleImputed' : contrast computation with imputation of fold changes and t-statistic estimation using pooled variances.
+- 'Contrasts'  : uses Wald test, 
+- 'ContrastsModerated' : applies variance moderation:, 
+- 'ContrastsROPECA' implements estimate and p-value aggregation
 
 
 ## Contrasts with Imputation
@@ -556,7 +560,12 @@ allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
 merged <- prolfqua::addContrastResults(prefer = contrProtMixedModerated, add = contrImp)$merged
 allContrasts$merged <- merged
-#saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
+if (SUBSETNORM) {
+  saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
+} else{
+  saveRDS(allContrasts, file = "../inst/Benchresults/allContrastsNORMAL.RDS")
+  
+}
 
 ttd <- prolfqua::ionstar_bench_preprocess(merged)
 benchmark_merged <- make_benchmark(ttd$data,
@@ -571,9 +580,15 @@ benchmark_merged$plot_FDRvsFDP()
 ```
 
 ```{r fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark"}
-benchmark_merged$plot_ROC(xlim=0.15)
+benchmark_merged$plot_ROC(xlim = 0.15)
 allBenchmarks$benchmark_merged <- benchmark_merged
-#saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
+if (SUBSETNORM) {
+  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
+} else{
+  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkdsNORMAL.RDS")
+}
+
+
 ```
 
 # Benchmarking
@@ -633,12 +648,12 @@ dds %>% ggplot(aes(x = name, y = (nrcontrasts - min(nrcontrasts)))) +
 ### Plot FDR vs FDP
 
 ```{r FDRfdp, fig.cap = "Compare FDR estimate with false discovery proportion (FDP).", fig.width=8, fig.height=8}
-dd <- map_df(allBenchmarks, function(x){res <- x$get_FDRvsFDP(); res$name <- x$model_name;res})
+dd <- map_df(allBenchmarks, function(x){res <- x$get_confusion_FDRvsFDP(); res$name <- x$model_name;res})
 
 dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
   geom_line(aes(color = model_name)) +
   facet_wrap(~contrast) + 
-   geom_abline(intercept = 0, slope = 1, color=2)
+   geom_abline(intercept = 0, slope = 1, color = 2)
 
   
   
