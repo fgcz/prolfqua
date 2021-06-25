@@ -37,7 +37,7 @@
 #' pl$histogram()
 #'
 ContrastsSimpleImpute <- R6::R6Class(
-  "ContrastSimple",
+  "ContrastsSimpleImpute",
   public = list(
     #' @field subject_Id subject_id e.g. protein_ID column
     subject_Id = character(),
@@ -395,7 +395,7 @@ ContrastsModerated <- R6::R6Class(
     subject_Id = character(),
     p.adjust = NULL,
     initialize = function(Contrast,
-                          modelName = "Moderated",
+                          modelName = paste0(Contrast$modelName, "_moderated"),
                           p.adjust = prolfqua::adjust_p_values
     ){
       self$Contrast = Contrast
@@ -523,7 +523,7 @@ ContrastsModerated <- R6::R6Class(
 #'  tmp <- contrast$get_contrasts()
 #'  dim(tmp)
 #'  pl <- contrast$get_Plotter()
-#'
+#'  contrast$to_wide()
 #'  pl$histogram()
 #'  pl$ma_plot()
 #'
@@ -532,7 +532,7 @@ ContrastsROPECA <- R6::R6Class(
 
   public = list(
     Contrast = NULL,
-    contrasts_data = NULL,
+    contrast_result = NULL,
     modelName = character(),
     subject_Id = character(),
     p.adjust = NULL,
@@ -546,7 +546,12 @@ ContrastsROPECA <- R6::R6Class(
       self$subject_Id = Contrast$subject_Id
       self$p.adjust = p.adjust
     },
-
+    get_contrasts_sides = function(){
+      if (is.null(self$contrast_result)) {
+        self$get_contrasts()
+      }
+      self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+    },
     get_linfct = function(){
       self$contrast$get_linfct()
     },
@@ -557,38 +562,38 @@ ContrastsROPECA <- R6::R6Class(
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
-      if(is.null(self$contrasts_data)){
-        contrasts_data <- self$Contrast$get_contrasts(all = FALSE)
-        contrasts_data <- summary_ROPECA_median_p.scaled(
+      if (is.null(self$contrast_result)) {
+        contrast_result <- self$Contrast$get_contrasts(all = FALSE)
+        contrast_result <- summary_ROPECA_median_p.scaled(
 
-          contrasts_data,
+          contrast_result,
           contrast = "contrast",
           subject_Id = self$subject_Id[length(self$subject_Id) - 1],
           estimate = "estimate",
           statistic = "statistic",
           p.value = "p.value",
           max.n = 10)
-        contrasts_data <- self$p.adjust(contrasts_data,
+        contrast_result <- self$p.adjust(contrast_result,
                                         column = "beta.based.significance",
                                         group_by_col = "contrast",
                                         newname = "FDR.beta.based.significance")
-        contrasts_data <- self$p.adjust(contrasts_data,
+        contrast_result <- self$p.adjust(contrast_result,
                                         column = "median.p.value",
                                         group_by_col = "contrast",
                                         newname = "FDR.median.p.value")
-        contrasts_data <- mutate(contrasts_data,modelName = self$modelName, .before  = 1)
-        self$contrasts_data <- contrasts_data
+        contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
+        self$contrast_result <- contrast_result
 
       }
 
       if (!all) {
-        res <- select(self$contrasts_data ,
+        res <- select(self$contrast_result ,
                       -all_of(c( "n_not_na", "mad.estimate",
                                  "n.beta", "isSingular",
                                  "median.p.scaled","median.p.value",
                                  "FDR.median.p.value")) )
       }else{
-        res <- self$contrasts_data
+        res <- self$contrast_result
       }
 
       return(res)
@@ -612,7 +617,7 @@ ContrastsROPECA <- R6::R6Class(
     to_wide = function(columns = c("beta.based.significance", "FDR.beta.based.significance")){
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$contrast$subject_Id,
+                                                     subject_Id = self$subject_Id,
                                                      columns = c("estimate", columns),
                                                      contrast = 'contrast')
     },
@@ -627,6 +632,93 @@ ContrastsROPECA <- R6::R6Class(
     }
   ))
 
+
+# ContrastsTable -----
+
+#'
+#' ContrastTable (place holder future baseclass?)
+#'
+#'
+#' @export
+#' @family modelling
+#' @examples
+#'
+#' library(prolfqua)
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$normalized()
+#' configur <- bb$config$clone(deep=TRUE)
+#' configur$table$hierarchyDepth <- 2
+#' data <- bb$data
+#' lfqdata <- LFQData$new(data, configur)
+#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
+#' "dilution.c-e" = "dilution.c - dilution.b")
+#' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+#' ctr <- tmp$get_contrasts()
+#' xcx <- ContrastsTable$new(ctr, subject_Id = tmp$subject_Id, modelName = tmp$modelName)
+#' xcx$get_Plotter()$volcano()
+#'
+ContrastsTable <- R6::R6Class(
+  "ContrastsTable",
+
+  public = list(
+    contrast_result = NULL,
+    modelName = character(),
+    subject_Id = character(),
+    initialize = function(contrastsdf,
+                          subject_Id = "protein_Id",
+                          modelName = "ContrastTable"
+    ){
+      self$contrast_result = contrastsdf
+      self$subject_Id = subject_Id
+      self$modelName = modelName
+    },
+    get_contrasts_sides = function(){
+      self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+    },
+    get_linfct = function(){
+      NULL
+    },
+
+    #' @description
+    #' get contrasts
+    #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
+    #' @param all should all columns be returned (default FALSE)
+    #' @param global use a global linear function (determined by get_linfct)
+    get_contrasts = function(all = FALSE){
+      self$contrast_result
+    },
+    #' @description get \code{\link{Contrast_Plotter}}
+    get_Plotter = function(){
+      res <- Contrasts_Plotter$new(
+        self$contrast_result,
+        subject_Id = self$subject_Id,
+        volcano = list(list(score = "FDR", thresh = 0.1)),
+        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+                         list(score = "FDR", xlim = c(0,1,0.05))),
+        modelName = self$modelName,
+        estimate = "estimate",
+        contrast = "contrast")
+      return(res)
+    },
+    #' @description convert to wide format
+    #' @param columns value column default beta.based.significance
+    to_wide = function(columns = c("p.value", "FDR")){
+      contrast_minimal <- self$get_contrasts()
+      contrasts_wide <- pivot_model_contrasts_2_Wide(self$contrast_result,
+                                                     subject_Id = self$subject_Id,
+                                                     columns = c("estimate", columns),
+                                                     contrast = 'contrast')
+    },
+    #' @description write results
+    #' @param path directory
+    #' @param format default xlsx \code{\link{lfq_write_table}}
+    write = function(path, format = "xlsx"){
+      lfq_write_table(self$contrast_result,
+                      path = path,
+                      name  = paste0("Contrasts_",self$modelName),
+                      format = format)
+    }
+  ))
 
 
 # plot score distributions by species
@@ -652,6 +744,7 @@ ContrastsROPECA <- R6::R6Class(
   fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
   return(fig)
 }
+
 
 # Contrast_Plotter ----
 #' plot contrasts
@@ -975,7 +1068,7 @@ Contrasts_Plotter <- R6::R6Class(
 #' @export
 #' @family modelling
 #'
-addContrastResults <- function(prefer, add){
+addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
   cB <- add$get_contrasts()
 
@@ -986,9 +1079,23 @@ addContrastResults <- function(prefer, add){
                   select(cA, c(add$subject_Id, "contrast")))
   more <- inner_join(more, cB )
 
+
+  if (prefer$modelName == add$modelName){
+    prefermodelName <- paste0(prefer$modelName, "_prefer")
+    addmodelName <- paste0(add$modelName, "_add")
+  } else {
+    prefermodelName <- prefer$modelName
+    addmodelName <- add$modelName
+  }
+
+  cA$modelName <- prefermodelName
+  more$modelName <- addmodelName
   merged <- bind_rows(cA, more)
   merged$modelName <- factor(merged$modelName,
-                                levels = c(prefer$modelName, add$modelName))
+                                levels = c(prefermodelName, addmodelName))
+
+  merged <- ContrastsTable(merged, subject_Id = prefer$subject_Id, modelName = modelName)
+  more <- ContrastsTable(add , subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more))
 }
 
