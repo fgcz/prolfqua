@@ -90,7 +90,7 @@ LFQData <- R6::R6Class(
     },
     #' @description return name of intensity column
     #' @return name of intensity column
-    intensity_column(){
+    intensity_column = function(){
       return(self$config$table$getWorkIntensity())
     },
     #' @description
@@ -667,13 +667,16 @@ LFQDataPlotter <- R6::R6Class(
 
     #' @description
     #' plot intensities in raster
+    #' @param arrange arrange by either mean or var
+    #' @param
     #' @return ggplot
-    raster = function( arrange = c("mean", "var") , not_na = FALSE ){
+    raster = function(arrange = c("mean", "var") , not_na = FALSE, y.labels = FALSE ){
       arrange <- match.arg(arrange)
       fig <- prolfqua::plot_raster(self$lfq$data,
                                    self$lfq$config,
-                                   arrange= arrange,
-                                   not_na = not_na)
+                                   arrange = arrange,
+                                   not_na = not_na,
+                                   y.labels = y.labels)
       return(fig)
     },
     #' @description
