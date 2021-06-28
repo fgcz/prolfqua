@@ -1075,26 +1075,28 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
 
   cA <- dplyr::filter(cA,!is.na(statistic))
-  more <- setdiff(select(cB, c(prefer$subject_Id, "contrast")),
-                  select(cA, c(add$subject_Id, "contrast")))
+  more <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
+                  distinct(select(cA, c(add$subject_Id, "contrast"))))
   more <- inner_join(more, cB )
 
 
-  if (prefer$modelName == add$modelName){
+  if (prefer$modelName == add$modelName) {
     prefermodelName <- paste0(prefer$modelName, "_prefer")
     addmodelName <- paste0(add$modelName, "_add")
+    cA$modelName <- prefermodelName
+    more$modelName <- addmodelName
   } else {
-    prefermodelName <- prefer$modelName
     addmodelName <- add$modelName
   }
 
-  cA$modelName <- prefermodelName
-  more$modelName <- addmodelName
+
   merged <- bind_rows(cA, more)
   merged$modelName <- factor(merged$modelName,
-                                levels = c(prefermodelName, addmodelName))
+                             levels = c(levels(factor(cA$modelName)), addmodelName))
 
-  merged <- ContrastsTable$new(merged, subject_Id = prefer$subject_Id, modelName = modelName)
+  merged <- ContrastsTable$new(merged,
+                               subject_Id = prefer$subject_Id,
+                               modelName = paste0(prefermodelName,"_",addmodelName))
   more <- ContrastsTable$new(more , subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more))
 }
