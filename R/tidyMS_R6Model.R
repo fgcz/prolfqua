@@ -300,11 +300,11 @@ LR_test <- function(modelProteinF,
 #'
 build_model <- function(data,
                         modelFunction,
-                        subject_Id = "protein_Id",
+                        subject_Id = if("LFQData" %in% class(data)){data$subjectId()}else{"protein_Id"},
                         modelName = modelFunction$model_name){
 
   modellingResult <- model_analyse(
-    data,
+    if("LFQData" %in% class(data)){ data$data }else{ data },
     modelFunction,
     modelName = modelName,
     subject_Id = subject_Id)
