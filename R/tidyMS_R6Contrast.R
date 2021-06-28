@@ -1086,6 +1086,7 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
     cA$modelName <- prefermodelName
     more$modelName <- addmodelName
   } else {
+    prefermodelName <- prefer$modelName
     addmodelName <- add$modelName
   }
 
