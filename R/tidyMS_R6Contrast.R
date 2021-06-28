@@ -1094,8 +1094,8 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   merged$modelName <- factor(merged$modelName,
                                 levels = c(prefermodelName, addmodelName))
 
-  merged <- ContrastsTable(merged, subject_Id = prefer$subject_Id, modelName = modelName)
-  more <- ContrastsTable(add , subject_Id = prefer$subject_Id, modelName = addmodelName)
+  merged <- ContrastsTable$new(merged, subject_Id = prefer$subject_Id, modelName = modelName)
+  more <- ContrastsTable$new(more , subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more))
 }
 

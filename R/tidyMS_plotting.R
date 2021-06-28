@@ -366,6 +366,9 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' plot heatmap without any clustering (use to show NA's)
 #' @param data dataframe
 #' @param config dataframe configuration
+#' @param arrange either mean or var
+#' @param not_na if true than arrange by nr of NA's first and then by arrange
+#' @param y.labels show y labels
 #' @keywords internal
 #'
 #' @family plotting
@@ -376,9 +379,10 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #' plot_raster(analysis, config)
-#' plot_raster(analysis, config, "var")
 #'
-plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FALSE ) {
+#' plot_raster(analysis, config, "var")
+#' plot_raster(analysis, config, y.labels = TRUE)
+plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FALSE, y.labels=FALSE ) {
 
   arrange <- match.arg(arrange)
 
@@ -398,7 +402,8 @@ plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FAL
                            y = "hierarchyID",
                            fill = config$table$getWorkIntensity())) +
     geom_raster() + scale_fill_distiller(palette = "RdYlBu") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    if(!y.labels) {scale_y_discrete(labels = NULL)} else {NULL}
   return(res)
 }
 

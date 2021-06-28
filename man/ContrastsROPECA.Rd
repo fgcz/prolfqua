@@ -44,7 +44,7 @@ mod <- build_model(
  tmp <- contrast$get_contrasts()
  dim(tmp)
  pl <- contrast$get_Plotter()
-
+ contrast$to_wide()
  pl$histogram()
  pl$ma_plot()
 
@@ -55,6 +55,7 @@ mod <- build_model(
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsSimpleImpute}},
+\code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -96,6 +97,7 @@ Other modelling:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ContrastsROPECA$new()}}
+\item \href{#method-get_contrasts_sides}{\code{ContrastsROPECA$get_contrasts_sides()}}
 \item \href{#method-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
@@ -114,6 +116,15 @@ Other modelling:
   modelName = "ROPECA",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_contrasts_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-get_contrasts_sides}{}}}
+\subsection{Method \code{get_contrasts_sides()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts_sides()}\if{html}{\out{</div>}}
 }
 
 }

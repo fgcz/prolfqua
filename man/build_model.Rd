@@ -7,7 +7,8 @@
 build_model(
   data,
   modelFunction,
-  subject_Id = "protein_Id",
+  subject_Id = if ("LFQData" \%in\% class(data)) {     data$subjectId() } else {    
+    "protein_Id" },
   modelName = modelFunction$model_name
 )
 }
@@ -57,6 +58,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
+\code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

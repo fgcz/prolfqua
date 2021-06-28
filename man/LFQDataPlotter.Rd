@@ -114,9 +114,20 @@ create LFQDataPlotter
 \subsection{Method \code{raster()}}{
 plot intensities in raster
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(arrange = c("mean", "var"), not_na = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(
+  arrange = c("mean", "var"),
+  not_na = FALSE,
+  y.labels = FALSE
+)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{arrange}}{arrange by either mean or var}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 ggplot
 }

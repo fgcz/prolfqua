@@ -4,7 +4,7 @@
 \alias{addContrastResults}
 \title{add contrast results from two different functions. Tipically used with Contrast and Cotnrast simple imputed.}
 \usage{
-addContrastResults(prefer, add)
+addContrastResults(prefer, add, modelName = "mergedModel")
 }
 \arguments{
 \item{prefer}{contrasts to use preferentially}
@@ -19,6 +19,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
+\code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

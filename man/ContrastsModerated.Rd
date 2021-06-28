@@ -42,6 +42,7 @@ mod <- build_model(
 Other modelling: 
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
+\code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -100,7 +101,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
   Contrast,
-  modelName = "Moderated",
+  modelName = paste0(Contrast$modelName, "_moderated"),
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }

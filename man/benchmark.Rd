@@ -18,7 +18,7 @@ medpol_benchmark <- make_benchmark(ttd$data,
 )
 medpol_benchmark$plot_score_distribution()
 #Benchmark$debug("pAUC_summaries")
-brms_benchmark <- make_benchmark(
+benchmark <- make_benchmark(
   ttd$data,
   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
   benchmark = list(list(sc = "estimate", desc = TRUE),
@@ -32,19 +32,22 @@ brms_benchmark <- make_benchmark(
   model_description = "protein level measurments, lm model",
   model_name = "prot_lm"
 )
-bb <- brms_benchmark$pAUC_summaries()
-brms_benchmark$complete()
-brms_benchmark$plot_score_distribution()
-bb <- brms_benchmark$get_confusion()
+
+bb <- benchmark$pAUC_summaries()
+benchmark$complete()
+benchmark$plot_score_distribution()
+bb <- benchmark$get_confusion_FDRvsFDP()
 bb$contrast \%>\% unique()
 xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 max(xb$TPR)
 max(xb$TP_hits)/ max(xb$T_)
-brms_benchmark$get_confusion_summaries()
-brms_benchmark$plot_ROC(xlim = 0.1)
-brms_benchmark$plot_FDPvsTPR()
-brms_benchmark$plot_FDRvsFDP()
-brms_benchmark$plot_scatter()
+bb <- benchmark$get_confusion_benchmark()
+head(bb)
+bb \%>\% group_by(what, contrast) \%>\% sumarize(n = n())
+benchmark$plot_ROC(xlim = 0.1)
+benchmark$plot_FDPvsTPR()
+benchmark$plot_FDRvsFDP()
+benchmark$plot_scatter()
 head(bb)
 
 }
@@ -99,13 +102,15 @@ Other benchmarking:
 \item \href{#method-new}{\code{Benchmark$new()}}
 \item \href{#method-data}{\code{Benchmark$data()}}
 \item \href{#method-complete}{\code{Benchmark$complete()}}
-\item \href{#method-get_confusion}{\code{Benchmark$get_confusion()}}
-\item \href{#method-get_confusion_summaries}{\code{Benchmark$get_confusion_summaries()}}
+\item \href{#method-.get_confusion}{\code{Benchmark$.get_confusion()}}
+\item \href{#method-get_confusion_benchmark}{\code{Benchmark$get_confusion_benchmark()}}
+\item \href{#method-n_confusion_benchmark}{\code{Benchmark$n_confusion_benchmark()}}
 \item \href{#method-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
 \item \href{#method-plot_ROC}{\code{Benchmark$plot_ROC()}}
 \item \href{#method-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
 \item \href{#method-pAUC}{\code{Benchmark$pAUC()}}
-\item \href{#method-get_FDRvsFDP}{\code{Benchmark$get_FDRvsFDP()}}
+\item \href{#method-get_confusion_FDRvsFDP}{\code{Benchmark$get_confusion_FDRvsFDP()}}
+\item \href{#method-n_confusion_FDRvsFDP}{\code{Benchmark$n_confusion_FDRvsFDP()}}
 \item \href{#method-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
 \item \href{#method-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
 \item \href{#method-plot_scatter}{\code{Benchmark$plot_scatter()}}
@@ -191,12 +196,12 @@ set or get complete
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_confusion"></a>}}
-\if{latex}{\out{\hypertarget{method-get_confusion}{}}}
-\subsection{Method \code{get_confusion()}}{
+\if{html}{\out{<a id="method-.get_confusion"></a>}}
+\if{latex}{\out{\hypertarget{method-.get_confusion}{}}}
+\subsection{Method \code{.get_confusion()}}{
 get confusion data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion(arrange)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$.get_confusion(arrange)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -208,12 +213,22 @@ get confusion data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_confusion_summaries"></a>}}
-\if{latex}{\out{\hypertarget{method-get_confusion_summaries}{}}}
-\subsection{Method \code{get_confusion_summaries()}}{
+\if{html}{\out{<a id="method-get_confusion_benchmark"></a>}}
+\if{latex}{\out{\hypertarget{method-get_confusion_benchmark}{}}}
+\subsection{Method \code{get_confusion_benchmark()}}{
 get FDR summaries
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion_summaries()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion_benchmark()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-n_confusion_benchmark"></a>}}
+\if{latex}{\out{\hypertarget{method-n_confusion_benchmark}{}}}
+\subsection{Method \code{n_confusion_benchmark()}}{
+nr of elements used to determine ROC curve
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$n_confusion_benchmark()}\if{html}{\out{</div>}}
 }
 
 }
@@ -275,12 +290,22 @@ AUC summaries as table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_FDRvsFDP"></a>}}
-\if{latex}{\out{\hypertarget{method-get_FDRvsFDP}{}}}
-\subsection{Method \code{get_FDRvsFDP()}}{
+\if{html}{\out{<a id="method-get_confusion_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-get_confusion_FDRvsFDP}{}}}
+\subsection{Method \code{get_confusion_FDRvsFDP()}}{
 FDR vs FDP data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_FDRvsFDP()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$get_confusion_FDRvsFDP()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-n_confusion_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-n_confusion_FDRvsFDP}{}}}
+\subsection{Method \code{n_confusion_FDRvsFDP()}}{
+nr of elements used to determine ROC curve
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$n_confusion_FDRvsFDP()}\if{html}{\out{</div>}}
 }
 
 }

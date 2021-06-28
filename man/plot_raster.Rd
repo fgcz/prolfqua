@@ -4,12 +4,24 @@
 \alias{plot_raster}
 \title{plot heatmap without any clustering (use to show NA's)}
 \usage{
-plot_raster(data, config, arrange = c("mean", "var"), not_na = FALSE)
+plot_raster(
+  data,
+  config,
+  arrange = c("mean", "var"),
+  not_na = FALSE,
+  y.labels = FALSE
+)
 }
 \arguments{
 \item{data}{dataframe}
 
 \item{config}{dataframe configuration}
+
+\item{arrange}{either mean or var}
+
+\item{not_na}{if true than arrange by nr of NA's first and then by arrange}
+
+\item{y.labels}{show y labels}
 }
 \description{
 plot heatmap without any clustering (use to show NA's)
@@ -20,8 +32,9 @@ istar <- prolfqua::data_IonstarProtein_subsetNorm
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 plot_raster(analysis, config)
-plot_raster(analysis, config, "var")
 
+plot_raster(analysis, config, "var")
+plot_raster(analysis, config, y.labels = TRUE)
 }
 \seealso{
 Other plotting: 

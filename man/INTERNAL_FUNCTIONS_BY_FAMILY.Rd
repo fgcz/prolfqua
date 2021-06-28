@@ -87,6 +87,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
+\code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},

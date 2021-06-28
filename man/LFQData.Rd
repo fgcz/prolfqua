@@ -64,6 +64,7 @@ Other LFQData:
 \item \href{#method-get_subset}{\code{LFQData$get_subset()}}
 \item \href{#method-subjectId}{\code{LFQData$subjectId()}}
 \item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
+\item \href{#method-intensity_column}{\code{LFQData$intensity_column()}}
 \item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-omit_NA}{\code{LFQData$omit_NA()}}
@@ -180,6 +181,19 @@ is data trasfromed
 }
 \subsection{Returns}{
 logical
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-intensity_column"></a>}}
+\if{latex}{\out{\hypertarget{method-intensity_column}{}}}
+\subsection{Method \code{intensity_column()}}{
+return name of intensity column
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$intensity_column()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+name of intensity column
 }
 }
 \if{html}{\out{<hr>}}

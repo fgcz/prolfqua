@@ -266,12 +266,17 @@ Therefore, we incorporate the failure to generate statistics for contrasts into 
 
 ```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=5}
 allBenchmarks <- readRDS("inst/Benchresults/allBenchmarkds.RDS")
+
+
+#allBenchmarks <- readRDS("inst/Benchresults/allBenchmarkdsNORMAL.RDS")
+
 benchmark_msstats <- readRDS("inst/Benchresults/benchmark_msstats.RDS")
 allBenchmarks$benchmark_mssstats <- benchmark_msstats
-msFragger <- readRDS(file = "inst/Benchresults/MSFragger_medpol_benchmark.RDS")
-allBenchmarks$benchmark_msFragger <- msFragger
+
+length(allBenchmarks)
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
+
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4-nr_missing))
 dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
 dds$percent <- dds$nrcontrasts/max(dds$nrcontrasts) * 100
@@ -326,9 +331,12 @@ dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) +
 dd %>% ggplot(aes(x = scorecol))+geom_histogram() + facet_wrap(~model_name)
 ```
 
-How these results compare to MSStats.
+Compare to MS Fragger
+
 
 ```{r}
+msFragger <- readRDS(file = "inst/Benchresults/MSFragger_medpol_benchmark.RDS")
+allBenchmarks$benchmark_msFragger <- msFragger
 
 ```
 
