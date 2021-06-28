@@ -1,3 +1,4 @@
+# Model -----
 #' R6 class representing modelling result
 #'
 #' @export
@@ -222,11 +223,11 @@ Model <- R6::R6Class(
 #' @examples
 #' #todo add example
 LR_test <- function(modelProteinF,
-                                           modelName,
-                                           modelProteinF_Int,
-                                           modelName_Int,
-                                           subject_Id = "protein_Id",
-                                           path = NULL
+                    modelName,
+                    modelProteinF_Int,
+                    modelName_Int,
+                    subject_Id = "protein_Id",
+                    path = NULL
 ){
   # Model Comparison
   reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
@@ -284,8 +285,10 @@ LR_test <- function(modelProteinF,
 #'
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
-#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)",
 #'    model_name = modelName)
+#'
+#'
 #' pepIntensity <- D$data
 #' config <- D$config
 #'
@@ -297,14 +300,18 @@ LR_test <- function(modelProteinF,
 #'  modelName = modelName,
 #'  subject_Id = config$table$hkeysDepth())
 #'
+#' mod <- prolfqua:::build_model(
+#'  LFQData$new(pepIntensity, config),
+#'  formula_randomPeptide,
+#'  modelName = modelName)
 #'
 build_model <- function(data,
                         modelFunction,
-                        subject_Id = if("LFQData" %in% class(data)){data$subjectId()}else{"protein_Id"},
+                        subject_Id = if ("LFQData" %in% class(data)) {data$subjectId()} else {"protein_Id"},
                         modelName = modelFunction$model_name){
 
-  modellingResult <- model_analyse(
-    if("LFQData" %in% class(data)){ data$data }else{ data },
+  dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
+  modellingResult <- model_analyse(dataX,
     modelFunction,
     modelName = modelName,
     subject_Id = subject_Id)
@@ -312,4 +319,14 @@ build_model <- function(data,
                     modelFunction = modelFunction,
                     modelName = modellingResult$modelName,
                     subject_Id = subject_Id))
+}
+
+#' summarize modelling and error reporting
+#' @export
+modelSummary <- function(mod){
+  res <- list()
+  res$exists <- table(mod$modelDF$exists_lmer)
+  res$isSingular <- table(mod$modelDF$isSingular)
+  return(res)
+
 }
