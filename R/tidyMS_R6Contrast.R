@@ -312,15 +312,17 @@ Contrasts <- R6::R6Class(
       }else{
         self$contrast_result
       }
-      return(res)
+      return(ungroup(res))
     },
     #' @description write results
     #' @param path directory
     #' @param format default xlsx \code{\link{lfq_write_table}}
-    write = function(path, format = "xlsx"){
+    write = function(path, filename, format = "xlsx"){
+      filename <- if (missing(filename)) {self$modelName} else (filename )
+
       lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("Contrasts_",self$modelName),
+                      name  = paste0("Contrasts_",filename),
                       format = format)
     },
     #' @description
@@ -471,10 +473,11 @@ ContrastsModerated <- R6::R6Class(
     #' @description write results
     #' @param path directory
     #' @param format default xlsx \code{\link{lfq_write_table}}
-    write = function(path, format = "xlsx"){
+    write = function(path, filename, format = "xlsx"){
+      filename <- if (missing(filename)) {self$modelName} else (filename )
       lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("Contrasts_",self$modelName),
+                      name  = paste0("Contrasts_",filename),
                       format = format)
     }
   )
@@ -620,14 +623,17 @@ ContrastsROPECA <- R6::R6Class(
                                                      subject_Id = self$subject_Id,
                                                      columns = c("estimate", columns),
                                                      contrast = 'contrast')
+      return(contrast_wide)
     },
     #' @description write results
     #' @param path directory
     #' @param format default xlsx \code{\link{lfq_write_table}}
-    write = function(path, format = "xlsx"){
+    write = function(path, filename, format = "xlsx"){
+      filename <- if (missing(filename)) {self$modelName} else (filename )
+
       lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("Contrasts_",self$modelName),
+                      name  = paste0("Contrasts_",filename),
                       format = format)
     }
   ))
@@ -704,18 +710,20 @@ ContrastsTable <- R6::R6Class(
     #' @param columns value column default beta.based.significance
     to_wide = function(columns = c("p.value", "FDR")){
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(self$contrast_result,
+      contrasts_wide <- pivot_model_contrasts_2_Wide(self$contrast_minimal,
                                                      subject_Id = self$subject_Id,
                                                      columns = c("estimate", columns),
                                                      contrast = 'contrast')
+      return(contrasts_wide)
     },
     #' @description write results
     #' @param path directory
     #' @param format default xlsx \code{\link{lfq_write_table}}
-    write = function(path, format = "xlsx"){
-      lfq_write_table(self$contrast_result,
+    write = function(path, filename, format = "xlsx"){
+      filename <- if (missing(filename)) {self$modelName} else (filename )
+      lfq_write_table(self$get_contrasts(),
                       path = path,
-                      name  = paste0("Contrasts_",self$modelName),
+                      name  = paste0("Contrasts_",filename),
                       format = format)
     }
   ))
@@ -887,7 +895,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
     },
     #' @description plotly volcano plots
-    volcano_plotly = function( colour = "modelName"){
+    volcano_plotly = function(colour = "modelName"){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
       for (i in 1:length(res)) {

@@ -998,7 +998,7 @@ contrasts_linfct <- function(models,
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
-  return(contrasts)
+  return(ungroup(contrasts))
 }
 
 
