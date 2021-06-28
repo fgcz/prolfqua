@@ -198,7 +198,7 @@ data.frame with contrasts
 \subsection{Method \code{write()}}{
 write results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$write(path, format = "xlsx")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

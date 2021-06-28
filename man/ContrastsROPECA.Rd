@@ -191,7 +191,7 @@ convert to wide format
 \subsection{Method \code{write()}}{
 write results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$write(path, format = "xlsx")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
