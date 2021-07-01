@@ -307,10 +307,12 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
                         "protein.group.id" = "protein.group.ids",
                         "peptide.score"  = "score",
                         "pep",
+                        "ms.ms.count" = "ms.ms.count",
                         dplyr::one_of("missed.cleavages"),
                         "unique.groups" = "unique..groups.",
                         "potential.contaminant" = ends_with("contaminant"),
-                        "reverse" = "reverse") %>%
+                        "reverse" = "reverse"
+                        ) %>%
     dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
     dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
                                                   !!sym("unique.groups") == "no" ~ FALSE)) %>%
