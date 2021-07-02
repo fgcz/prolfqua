@@ -897,7 +897,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 
   m_spread <- function(longContrasts, subject_Id, column , contrast){
     res <- longContrasts %>%
-      dplyr::select_at(c(subject_Id, "isSingular", contrast,  column))
+      dplyr::select_at(c(subject_Id, contrast,  column))
     res <- res %>% dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
     res <- res %>% tidyr::spread(contrast, !!sym(column) )
     return(res)
@@ -906,7 +906,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
   for (column in columns) {
     res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id,column, contrast)
   }
-  res <- res %>% reduce(left_join, by = c(subject_Id,"isSingular"))
+  res <- res %>% reduce(left_join, by = c(subject_Id))
   return(res)
 }
 #' compute group averages

@@ -307,7 +307,7 @@ do_confusion_c <- function(
 #' max(xb$TP_hits)/ max(xb$T_)
 #' bb <- benchmark$get_confusion_benchmark()
 #' head(bb)
-#' bb %>% group_by(what, contrast) %>% sumarize(n = n())
+#' bb %>% group_by(what, contrast) %>% summarize(n = n())
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_FDPvsTPR()
 #' benchmark$plot_FDRvsFDP()
