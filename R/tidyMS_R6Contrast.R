@@ -544,10 +544,9 @@ ContrastsModerated <- R6::R6Class(
 #'  dim(contr$get_contrasts())
 #'  contrM <- prolfqua::ContrastsModerated$new(contr)
 #'  dim(contrM$get_contrasts())
-#' #ContrastsROPECA$debug("get_contrasts")
 #'  contrast <- prolfqua::ContrastsROPECA$new(contrM)
 #'  contrast$get_contrasts()
-#'
+#'  #ContrastsROPECA$debug("to_wide")
 #'  contrast <- prolfqua::ContrastsROPECA$new(contr)
 #'  tmp <- contrast$get_contrasts()
 #'  dim(tmp)
@@ -594,7 +593,6 @@ ContrastsROPECA <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         contrast_result <- self$Contrast$get_contrasts(all = FALSE)
         contrast_result <- summary_ROPECA_median_p.scaled(
-
           contrast_result,
           contrast = "contrast",
           subject_Id = self$subject_Id[length(self$subject_Id) - 1],
@@ -645,11 +643,12 @@ ContrastsROPECA <- R6::R6Class(
     #' @param columns value column default beta.based.significance
     to_wide = function(columns = c("beta.based.significance", "FDR.beta.based.significance")){
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$subject_Id,
-                                                     columns = c("estimate", columns),
-                                                     contrast = 'contrast')
-      return(contrast_wide)
+      contrasts_wide <- pivot_model_contrasts_2_Wide(
+        contrast_minimal,
+        subject_Id = self$subject_Id[length(self$subject_Id) - 1],
+        columns = c("estimate", columns),
+        contrast = 'contrast')
+      return(contrasts_wide)
     },
     #' @description write results
     #' @param path directory
