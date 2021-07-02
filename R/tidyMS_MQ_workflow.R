@@ -25,7 +25,7 @@ filter_proteins_by_peptide_count <-
 
     # remove single hit wonders
     tmp <- nr_B_in_A(pdata,config)
-    if(!is.null(tmp)){
+    if (!is.null(tmp)) {
       res <- dplyr::filter(tmp$data, !!sym(tmp$name) >= config$parameter$min_peptides_protein )
       name <- tmp$name
     }else{

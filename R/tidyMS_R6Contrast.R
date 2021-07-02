@@ -1,3 +1,29 @@
+# summarise_missing_contrasts
+#' @examples
+#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+#' x <- .summarise_missing_contrasts(ttd$data)
+#' x2 <- as_tibble(x$summary)
+#'
+#debug(.summarise_missing_contrasts)
+.summarise_missing_contrasts <- function(data,
+                                         hierarchy = c("protein_Id"),
+                                         contrast = "contrast",
+                                         what = "statistic") {
+  data <- tidyr::complete(
+    data,
+    tidyr::nesting(!!!syms(contrast)),
+    tidyr::nesting(!!!syms(hierarchy))
+  )
+
+  xxA <- data |>
+    group_by_at(hierarchy) |>
+    summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
+  summary <- xxA |> group_by(nr_na) |> summarize(n = n())
+
+  colnames(summary) <- c("nr_missing", paste(hierarchy, collapse = "_"))
+  return(list(summary = summary, nr_na = xxA))
+}
+
 .requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
                               "c1_name" , "c2_name" , "sigma","df","estimate","statistic","p.value","conf.low","conf.high","FDR")
 # Contrast simple impute----
@@ -867,12 +893,15 @@ Contrasts_Plotter <- R6::R6Class(
     },
     #' @description  plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
     histogram = function(){
+      res <- list()
       if (length(self$histogram_spec) > 0) {
-        fig <- private$.histogram(scores = self$histogram_spec)
-
-        self$figures[["histogram"]] <-
-          list(fig = fig,
-               name = paste0(self$prefix,"_Histogram_", self$modelName))
+        for (spec in self$histogram_spec) {
+          fig <- private$.histogram(score = spec )
+          res[[spec$score]] <- fig
+          self$figures[[paste0("histogram_", spec$score)]] <-
+            list(fig = fig,
+                 name = paste0(self$prefix, "_Histogram_", spec$score, "_", self$modelName))
+        }
         return(fig)
       }
     },
@@ -882,7 +911,7 @@ Contrasts_Plotter <- R6::R6Class(
       re <- range(self$contrastDF[[self$estimate]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
-      fig <- private$.histogram(score = list(list(score =  self$estimate, xlim = c(re,binwidth))))
+      fig <- private$.histogram(score = list(score =  self$estimate, xlim = c(re,binwidth)))
       self$figures[["histogram_estimate"]] <- list(fig = fig,
                                                    name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
       return(fig)
@@ -1031,22 +1060,13 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
 
     },
-    .histogram  = function(scores){
-      plots <- list()
-      for (i in scores) {
-        xlim = i$xlim
-        score = i$score
-        plots[[score]] <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
-          geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
-          facet_wrap(vars(!!sym(self$contrast)))
-      }
-      fig <- ggpubr::ggarrange(plotlist = plots,
-                               nrow = 1,
-                               common.legend = TRUE,
-                               legend = "bottom")
-      #annot <- "histogram of score distribution"
-      #fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
-      return(fig)
+    .histogram  = function(score){
+      xlim = score$xlim
+      score = score$score
+      plot <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
+        geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
+        facet_wrap(vars(!!sym(self$contrast)))
+      return(plot)
     },
     .ma_plot = function(x, contrast, colour = NULL){
 
@@ -1083,10 +1103,14 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
 
   cA <- dplyr::filter(cA,!is.na(statistic))
-  more <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
+  moreID <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
                   distinct(select(cA, c(add$subject_Id, "contrast"))))
-  more <- inner_join(more, cB )
+  more <- inner_join(moreID, cB )
 
+  sameID <- select(cA, c(add$subject_Id, "contrast"))
+  same <- inner_join(sameID, cB)
+
+  merged <- bind_rows(cA, more)
 
   if (prefer$modelName == add$modelName) {
     prefermodelName <- paste0(prefer$modelName, "_prefer")
@@ -1099,7 +1123,6 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   }
 
 
-  merged <- bind_rows(cA, more)
   merged$modelName <- factor(merged$modelName,
                              levels = c(levels(factor(cA$modelName)), addmodelName))
 
@@ -1107,7 +1130,8 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
                                subject_Id = prefer$subject_Id,
                                modelName = paste0(prefermodelName,"_",addmodelName))
   more <- ContrastsTable$new(more , subject_Id = prefer$subject_Id, modelName = addmodelName)
-  return(list(merged = merged, more = more))
+  same <-  ContrastsTable$new(same , subject_Id = prefer$subject_Id, modelName = addmodelName)
+  return(list(merged = merged, more = more, same = same))
 }
 
 

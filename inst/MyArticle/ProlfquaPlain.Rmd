@@ -53,7 +53,7 @@ From the confusion matrix we can compute measures such as true positive rate (TP
 ```{r confusionMatrix}
 table <- data.frame( c("beta != 0", "beta == 0", "Total"), matrix(c("TP","FP","R","FN","TN","","P","N","m"), ncol = 3, byrow = T))
 colnames(table) <- c("Prediction \\ Truth","E.coli", "H.sapiens", "Total")
-knitr::kable(table, caption = "Confusion matrix, TP - true positive, FP - false positive, FN - false negative, P - all positive cases (all E. coli proteins), N - all negative cases (all H. sapiens proteins), m- all proteins.", format="latex")
+knitr::kable(table, caption = "Confusion matrix, TP - true positive, FP - false positive, FN - false negative, P - all positive cases (all E. coli proteins), N - all negative cases (all H. sapiens proteins), m- all proteins.", format = "latex")
 
 ```
 
@@ -264,35 +264,30 @@ Therefore, we incorporate the failure to generate statistics for contrasts into 
 
 
 
-```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=5}
-allBenchmarks <- readRDS("inst/Benchresults/allBenchmarkds.RDS")
+```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=7}
+allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
 
-
-#allBenchmarks <- readRDS("inst/Benchresults/allBenchmarkdsNORMAL.RDS")
-
-benchmark_msstats <- readRDS("inst/Benchresults/benchmark_msstats.RDS")
+benchmark_msstats <- readRDS("../../inst/Benchresults/benchmark_msstats.RDS")
 allBenchmarks$benchmark_mssstats <- benchmark_msstats
-
-length(allBenchmarks)
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 
-dd <- dd %>% mutate(nrcontrasts = protein_Id * (4-nr_missing))
+dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))
 dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
 dds$percent <- dds$nrcontrasts/max(dds$nrcontrasts) * 100
 percentgg <- dds %>% ggplot(aes(x = name, y = percent )) + 
   geom_bar(stat = "identity") + 
   coord_cartesian(ylim = c(min(dds$percent),max(dds$percent))) +
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-  geom_text(aes(label = round(percent,digits = 1)), position = position_dodge(width = 0.9), vjust = -0.25)
+  geom_text(aes(label = round(percent,digits = 1)), vjust = 0.5, hjust = 1, angle = -90)
 
 nrgg <- dds %>% ggplot(aes(x = name, y = nrcontrasts )) + 
   geom_bar(stat = "identity") + 
-  coord_cartesian(ylim = c(min(dds$nrcontrasts),max(dds$nrcontrasts))) +
+  coord_cartesian(ylim = c(min(dds$nrcontrasts),max(dds$nrcontrasts) + 10)) +
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-  geom_text(aes(label=round(nrcontrasts,digits = 1)), position = position_dodge(width = 0.9), vjust = -0.25)
+  geom_text(aes(label = round(nrcontrasts,digits = 1)), vjust = 0.5, hjust = 1, angle = -90)
 
-gridExtra::grid.arrange(percentgg, nrgg, nrow = 2)
+gridExtra::grid.arrange(grobs = list(percentgg,  nrgg), nrow = 1)
 
 ```
 
@@ -301,7 +296,10 @@ gridExtra::grid.arrange(percentgg, nrgg, nrow = 2)
 
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
-resAllB <- res %>% dplyr::filter(contrast == "all")
+
+resAllB <- res %>% dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
+resAllB <- res %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
+resAllB <- res %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
 
 bb <- resAllB %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
 
@@ -318,24 +316,32 @@ ggplot(bb, aes(x = Name, y = pAUC_10)) +
 
 ```{r FDRfdp, fig.cap = "Compare FDR estimate with false discovery proportion (FDP).", fig.width=8, fig.height=8}
 dd <- map_df(allBenchmarks, function(x){res <- x$get_confusion_FDRvsFDP(); res$name <- x$model_name;res})
-dd <- filter(dd, contrast == "all")
+ddb <- filter(dd, contrast == "dilution_(4.5/3)_1.5")
+ddb <- dd %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
+ddb <- dd %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
 
 
-dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
-  geom_line(aes(color = model_name)) +
+ddb %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
+  geom_line(aes(color = model_name, linetype = model_name)) +
   facet_wrap(~contrast) + 
-   geom_abline(intercept = 0, slope = 1, color=2)
+   geom_abline(intercept = 0, slope = 1, color = 2)
+
 ```
 
-```{r fig.cap=""}
-dd %>% ggplot(aes(x = scorecol))+geom_histogram() + facet_wrap(~model_name)
+```{r fig.cap="Distribution of the FDR values produced."}
+dd %>% ggplot(aes(x = scorecol)) + geom_histogram() + facet_wrap(~model_name)
 ```
 
 Compare to MS Fragger
 
 
 ```{r}
-msFragger <- readRDS(file = "inst/Benchresults/MSFragger_medpol_benchmark.RDS")
+msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
+msFragger$plot_FDPvsTPR()
+msFragger$plot_FDRvsFDP()
+msFragger$plot_ROC()
+
+
 allBenchmarks$benchmark_msFragger <- msFragger
 
 ```

@@ -170,29 +170,13 @@ do_confusion_c <- function(
 # Visualizes data frame with columns FPR, TPR, FDP
 .plot_ROC <-
   function(pStats, fpr_lim = 0.2, contrast= "contrast") {
-
-    p1 <-
-      ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
-      geom_path() +
-      labs(tag = "A") +
-      facet_wrap( as.formula(paste0("~",contrast )))
-
     p2 <-
       ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
       geom_path()  +
-      labs(tag = "B") +
       xlim(0, xlim = fpr_lim) +
       facet_wrap( as.formula(paste0("~",contrast )) )
 
-    rocp <-
-      ggpubr::ggarrange(
-        p1,
-        p2,
-        nrow = 1,
-        common.legend = TRUE,
-        legend = "bottom"
-      )
-    rocp = rocp
+    rocp = p2
   }
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model",
@@ -232,7 +216,14 @@ do_confusion_c <- function(
 #debug(.summarise_missing_contrasts)
 .summarise_missing_contrasts <- function(data,
                                          hierarchy = c("protein_Id"),
+                                         contrast = "contrast",
                                          what = "statistic") {
+  data <- tidyr::complete(
+    data,
+    tidyr::nesting(!!!syms(contrast)),
+    tidyr::nesting(!!!syms(hierarchy))
+  )
+
   xxA <- data |>
     group_by_at(hierarchy) |>
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
@@ -275,7 +266,7 @@ do_confusion_c <- function(
 #' @examples
 #' library(ggpubr)
 #' library(prolfqua)
-#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+#' ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua::data_benchmarkExample, !is.na(statistic)))
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"
@@ -298,21 +289,20 @@ do_confusion_c <- function(
 #' )
 #'
 #' bb <- benchmark$pAUC_summaries()
-#' benchmark$complete()
+#' benchmark$complete(FALSE)
+#' benchmark$smc$summary
 #' benchmark$plot_score_distribution()
 #' bb <- benchmark$get_confusion_FDRvsFDP()
-#' bb$contrast %>% unique()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
-#' max(xb$TPR)
-#' max(xb$TP_hits)/ max(xb$T_)
 #' bb <- benchmark$get_confusion_benchmark()
-#' head(bb)
-#' bb %>% group_by(what, contrast) %>% sumarize(n = n())
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_FDPvsTPR()
 #' benchmark$plot_FDRvsFDP()
 #' benchmark$plot_scatter()
-#' head(bb)
+#' benchmark$complete(FALSE)
+#' benchmark$pAUC_summaries()$ftable$content
+#' benchmark$complete(TRUE)
+#' benchmark$pAUC_summaries()$ftable$content
 #'
 Benchmark <-
   R6::R6Class(

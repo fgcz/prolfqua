@@ -11,7 +11,7 @@ Benchmark R6 class
 \examples{
 library(ggpubr)
 library(prolfqua)
-ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua::data_benchmarkExample, !is.na(statistic)))
 medpol_benchmark <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm. density",
                                    model_name = "prot_med_lm"
@@ -34,21 +34,20 @@ benchmark <- make_benchmark(
 )
 
 bb <- benchmark$pAUC_summaries()
-benchmark$complete()
+benchmark$complete(FALSE)
+benchmark$smc$summary
 benchmark$plot_score_distribution()
 bb <- benchmark$get_confusion_FDRvsFDP()
-bb$contrast \%>\% unique()
 xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
-max(xb$TPR)
-max(xb$TP_hits)/ max(xb$T_)
 bb <- benchmark$get_confusion_benchmark()
-head(bb)
-bb \%>\% group_by(what, contrast) \%>\% sumarize(n = n())
 benchmark$plot_ROC(xlim = 0.1)
 benchmark$plot_FDPvsTPR()
 benchmark$plot_FDRvsFDP()
 benchmark$plot_scatter()
-head(bb)
+benchmark$complete(FALSE)
+benchmark$pAUC_summaries()$ftable$content
+benchmark$complete(TRUE)
+benchmark$pAUC_summaries()$ftable$content
 
 }
 \seealso{

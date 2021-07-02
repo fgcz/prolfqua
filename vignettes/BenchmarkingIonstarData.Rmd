@@ -48,6 +48,8 @@ Decide if you work with all data or for speedup with subset of data:
 
 ```{r}
 SUBSET <- FALSE
+SUBSETNORM <- TRUE
+
 ```
 
 
@@ -104,7 +106,6 @@ lfqdata$remove_small_intensities()
 lfqdata$filter_proteins_by_peptide_count()
 
 tr <- lfqdata$get_Transformer()
-SUBSETNORM <- FALSE
 if (SUBSETNORM) {
   subset_h <- lfqdata$get_copy()
   subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
@@ -431,7 +432,6 @@ contrProtModerated$get_contrasts()$protein_Id %>% unique %>% length
 allContrasts$ProtModerated <- contrProtModerated$get_contrasts()
 
 ttd <- prolfqua::ionstar_bench_preprocess(contrProtModerated$get_contrasts())
-
 benchmark_ProtModerated <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm moderated",
                                    model_name = "prot_med_lm_moderated")
@@ -546,20 +546,80 @@ benchmark_ropeca <- make_benchmark(ttd$data,
 
 prolfqua::table_facade(benchmark_ropeca$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
 
-benchmark_ropeca$plot_ROC()
+benchmark_ropeca$plot_ROC(0.1)
 benchmark_ropeca$plot_FDRvsFDP()
+
+
 allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
 ```
 
+```{r}
+benchmark_ropeca$pAUC_summaries()$ftable$content
+```
 
 ## Merging contrasts
 
 
 ```{r mergingContrasts}
+allContrasts$ProtModerated
+all <- prolfqua::addContrastResults(prefer = contrProtModerated, add = contrImp)
 
-merged <- prolfqua::addContrastResults(prefer = contrProtMixedModerated, add = contrImp)$merged
-allContrasts$merged <- merged
+merged <- all$merged
+ttd <- prolfqua::ionstar_bench_preprocess(merged$get_contrasts())
+benchmark_merged <- make_benchmark(ttd$data,
+                                   model_description = "merge of prot moderated and imputed",
+                                   model_name = "prot_merged")
+
+prolfqua::table_facade(benchmark_merged$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+#benchmark_mixedModerated$plot_score_distribution()
+
+benchmark_merged$plot_FDRvsFDP()
+
+```
+
+```{r fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark"}
+benchmark_merged$plot_ROC(xlim = 0.15)
+benchmark_merged$pAUC_summaries()$ftable$content
+allBenchmarks$benchmark_merged <- benchmark_merged
+
+
+```
+
+
+### What is the performance of those replaced? 
+
+```{r same}
+same <- all$same
+
+allBenchmarks$benchmark_Prot$smc$summary
+
+
+ttd <- prolfqua::ionstar_bench_preprocess(same$get_contrasts())
+benchmark_same <- make_benchmark(ttd$data,
+                                   model_description = "imputed_same_as_lm",
+                                   model_name = "imputed_same_as_lm")
+
+prolfqua::table_facade(benchmark_same$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+
+
+benchmark_same$plot_FDRvsFDP()
+
+```
+
+
+```{r fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark"}
+benchmark_same$plot_ROC(xlim = 0.15)
+benchmark_same$pAUC_summaries()
+allBenchmarks$benchmark_same <- benchmark_same
+
+
+```
+
+
+# Write results
+
+```{r}
 if (SUBSETNORM) {
   saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
 } else{
@@ -567,27 +627,11 @@ if (SUBSETNORM) {
   
 }
 
-ttd <- prolfqua::ionstar_bench_preprocess(merged)
-benchmark_merged <- make_benchmark(ttd$data,
-                                   model_description = "merge of prot moderated and imputed",
-                                   model_name = "prot_merged")
-
-prolfqua::table_facade(benchmark_merged$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
-
-#benchmark_mixedModerated$plot_score_distribution()
-
-benchmark_merged$plot_FDRvsFDP()
-```
-
-```{r fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark"}
-benchmark_merged$plot_ROC(xlim = 0.15)
-allBenchmarks$benchmark_merged <- benchmark_merged
 if (SUBSETNORM) {
-  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkds.RDS")
+  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
 } else{
-  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarkdsNORMAL.RDS")
+  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
 }
-
 
 ```
 
@@ -613,7 +657,7 @@ bb <- resAllB %>% mutate(whatfix = case_when(what == "scaled.beta.based.signific
 ggplot(bb, aes(x = Name, y = pAUC_10)) +
   geom_bar(stat = "identity") +
   facet_wrap(~whatfix)  + 
-  coord_cartesian(ylim = c(min(bb$pAUC_10),82.5)) + 
+  coord_cartesian(ylim = c(min(bb$pAUC_10),max(bb$pAUC_10))) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 
@@ -623,7 +667,7 @@ ggplot(bb, aes(x = Name, y = pAUC_10)) +
 ggplot(bb, aes(x = Name, y = pAUC_20)) +
   geom_bar(stat = "identity") +
   facet_wrap(~whatfix)  +
-  coord_cartesian(ylim = c(min(bb$pAUC_20),87.5)) + 
+  coord_cartesian(ylim = c(min(bb$pAUC_20),max(bb$pAUC_20))) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5))  
 
@@ -641,7 +685,7 @@ dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
 dds %>% ggplot(aes(x = name, y = (nrcontrasts - min(nrcontrasts)))) + 
   geom_bar(stat="identity") + 
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-  geom_text(aes(label=nrcontrasts), position=position_dodge(width=0.9), vjust=-0.25)
+  geom_text(aes(label= nrcontrasts), position = position_dodge(width=0.9), vjust=-0.25)
 
 ```
 

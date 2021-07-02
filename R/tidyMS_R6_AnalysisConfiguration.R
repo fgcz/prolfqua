@@ -302,6 +302,7 @@ R6extractValues <- function(r6class){
 #' sample_analysis <- setup_analysis(prolfqua::data_skylinePRMSample_A$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
+  configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
   for (i in 1:length(table$hierarchy))
   {
