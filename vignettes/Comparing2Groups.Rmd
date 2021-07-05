@@ -312,8 +312,7 @@ Merging both results.
 
 merged <- prolfqua::addContrastResults(prefer = contr,add = mC)$merged
 
-merged$modelName <- as.factor(merged$modelName)
-plotter <- Contrasts_Plotter$new(contrastDF = merged , subject_Id = contr$subject_Id)
+plotter <- merged$get_Plotter()
 
 tmp <- plotter$volcano()
 tmp$FDR
@@ -325,10 +324,9 @@ Look at proteins which could not be fitted using the linear model.
 
 ```{r}
 merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
-names(merged)
 
 moreProt <- transformed$get_copy()
-moreProt$data <- moreProt$data %>% dplyr::filter(protein_Id %in% merged$more$protein_Id)
+moreProt$data <- moreProt$data %>% dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)
 moreProt$get_Plotter()$raster()
 ```
 
@@ -339,7 +337,7 @@ We can rank the proteins based on the log2FC or the t-statistic and subject them
 This example will run only if the following packages are installed on you machine:
 
 - clusterProfiler (Bioconductor)
-- org.Sc.sgd.db (Biocondcutor)
+- org.Sc.sgd.db (Bioconductor)
 - prora (github.com/protviz/prora)
 
 

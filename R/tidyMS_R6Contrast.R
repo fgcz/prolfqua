@@ -901,7 +901,7 @@ Contrasts_Plotter <- R6::R6Class(
             list(fig = fig,
                  name = paste0(self$prefix, "_Histogram_", spec$score, "_", self$modelName))
         }
-        return(fig)
+        return(res)
       }
     },
     #' @description plot histogram of estimated fold change

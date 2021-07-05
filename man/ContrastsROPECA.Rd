@@ -36,10 +36,9 @@ mod <- build_model(
  dim(contr$get_contrasts())
  contrM <- prolfqua::ContrastsModerated$new(contr)
  dim(contrM$get_contrasts())
-#ContrastsROPECA$debug("get_contrasts")
  contrast <- prolfqua::ContrastsROPECA$new(contrM)
  contrast$get_contrasts()
-
+ #ContrastsROPECA$debug("to_wide")
  contrast <- prolfqua::ContrastsROPECA$new(contr)
  tmp <- contrast$get_contrasts()
  dim(tmp)

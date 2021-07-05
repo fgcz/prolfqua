@@ -124,13 +124,7 @@ dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
 
 mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)$merged
-mergedContrasts$modelName <- as.factor(mergedContrasts$modelName)
-
-myColors <- c("green","black")
-names(myColors) <- levels(as.factor(mergedContrasts$modelName))
-colScale <- scale_colour_manual(name = "modelName",values = myColors)
-
-cM <- prolfqua::Contrasts_Plotter$new(mergedContrasts, subject_Id = contr$subject_Id)
+cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
 plot$FDR + colScale
 

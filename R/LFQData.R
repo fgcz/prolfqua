@@ -663,6 +663,7 @@ LFQDataPlotter <- R6::R6Class(
     initialize = function(lfqdata, prefix = "ms_"){
       self$lfq = lfqdata
       self$prefix = prefix
+      self$lfq$data <- na.omit(self$lfq$data)
     },
 
     #' @description
@@ -670,7 +671,9 @@ LFQDataPlotter <- R6::R6Class(
     #' @param arrange arrange by either mean or var
     #' @param
     #' @return ggplot
-    raster = function(arrange = c("mean", "var") , not_na = FALSE, y.labels = FALSE ){
+    raster = function(arrange = c("mean", "var") ,
+                      not_na = FALSE,
+                      y.labels = FALSE ){
       arrange <- match.arg(arrange)
       fig <- prolfqua::plot_raster(self$lfq$data,
                                    self$lfq$config,

@@ -49,7 +49,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     sampleName = "sampleName",
 
     #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.
-    isotopeLabel = character(),
+    isotopeLabel = "isotopeLabel",
     # do you want to model charge sequence etc?
     #' @field ident_qValue column name with identification QValues (smaller better)
     ident_qValue = character(),
@@ -337,9 +337,9 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 
   # Make implicit NA's explicit
 
-  if(length(configuration$table$isotopeLabel) == 0){
-    configuration$table$isotopeLabel <- "isotopeLabel"
-    data$isotopeLabel <- "light"
+  if (!configuration$table$isotopeLabel %in% colnames(data)) {
+    warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
+    data[[configuration$table$isotopeLabel]] <- "light"
   }
 
   data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))

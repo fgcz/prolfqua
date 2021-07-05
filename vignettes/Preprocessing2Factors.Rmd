@@ -65,13 +65,18 @@ config <- AnalysisConfiguration$new(atable)
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
 config$table$factors[["Run_ID"]] = "Run_ID"
+
 config$table$factorDepth <- 1
+
 ```
 
 Preprocess and normalize Data.
 
 ```{r preprocessp2691}
+undebug(setup_analysis)
+config$table$isotopeLabel
 adata <- setup_analysis(data, config)
+
 adata <- prolfqua::remove_small_intensities(adata,config)
 
 p2691 <- LFQData$new(adata, config)
@@ -142,8 +147,6 @@ config$table$factorDepth <- 2
 
 ```{r mergeData}
 pMerged <- LFQData$new(data, config)
-
-
 bb <- pMerged$complete_cases()
 tr <- pMerged$get_Transformer()
 pMerged <- tr$log2()$robscale()$lfq
@@ -185,8 +188,8 @@ pMerged$hierarchy_counts()
 
 ```{r, fig.cap = "Number of Proteins or peptides per sample in merged dataset"}
 su <- pMerged$get_Summariser()
-
 su$hierarchy_counts_sample("plot")
+
 ```
 
 
@@ -194,5 +197,8 @@ su$hierarchy_counts_sample("plot")
 pl <- pMerged$get_Plotter()
 pl$heatmap()
 bp <- pl$boxplots()
+
 ggpubr::ggarrange(plotlist = bp$boxplot[1001:1006])
+
+
 ```

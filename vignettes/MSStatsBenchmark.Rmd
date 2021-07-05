@@ -120,6 +120,7 @@ bb <- testResultMultiComparisons$ComparisonResult
 
 ```{r setUPBenchmark, eval = evalAll}
 library(prolfqua)
+
 #saveRDS(bb, file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
 #bb <- readRDS(file = "inst/Benchresults/MSStatsGroupComparisonResult.RDS")
 
@@ -148,7 +149,7 @@ sum(benchmark_msstats$smc$summary$Protein)
 
 sumarry <- benchmark_msstats$smc$summary
 table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
-saveRDS(benchmark_msstats, file = "inst/Benchresults/benchmark_msstats.RDS")
+saveRDS(benchmark_msstats, file = "../inst/Benchresults/benchmark_msstats.RDS")
 ```
 
 ```{r fig.cap="ROC curves", eval = evalAll}

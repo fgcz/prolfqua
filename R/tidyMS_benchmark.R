@@ -373,7 +373,10 @@ Benchmark <-
         self$hierarchy <- hierarchy
         self$species <- species
 
-        self$smc <- .summarise_missing_contrasts(self$.data, hierarchy = hierarchy, what = summarizeNA)
+        self$smc <- .summarise_missing_contrasts(self$.data,
+                                                 hierarchy = hierarchy,
+                                                 contrast = contrast,
+                                                 what = summarizeNA)
         self$.data <- .scale_probabilities(self$.data,
                                            toscale = toscale,
                                            fcestimate = self$fcestimate)
