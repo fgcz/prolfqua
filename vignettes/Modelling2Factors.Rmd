@@ -126,8 +126,7 @@ dim(contrSimple$get_contrasts())
 mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)$merged
 cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
-plot$FDR + colScale
-
+plot$FDR
 ```
 
 
@@ -136,7 +135,7 @@ plot$FDR + colScale
 
 ```{r}
 
-sigInteraction <- mergedContrasts %>% 
+sigInteraction <- mergedContrasts$contrast_result %>% 
   filter(contrast == "Interaction" & FDR < 0.2)
 
 protInt <-  pMerged$get_copy()
@@ -150,6 +149,8 @@ protInt$get_Plotter()$raster()
 hm <- protInt$get_Plotter()$heatmap()
 
 ```
+
+
 
 ```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
 hm
