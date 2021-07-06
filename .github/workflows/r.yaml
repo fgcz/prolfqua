@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        r-version: [4.0.4]
+        r-version: [4.1.0]
     steps:
       - uses: actions/checkout@v2
 
