@@ -140,7 +140,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- result
       }
-      invisible(self$contrast_result)
+      invisible(ungroup(self$contrast_result))
     },
     #' @description write contrasts computation results to
     #' @param path folder to write to
@@ -156,7 +156,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       res <- Contrasts_Plotter$new(
         self$get_contrasts(),
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", thresh = 1)),
+        volcano = list(list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
