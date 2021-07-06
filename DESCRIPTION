@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.1.8
+Version: 0.1.9
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
 Description: Analysing complex label free quantification (LFQ) experiments using linear models.
@@ -62,5 +62,5 @@ Remotes:
 RoxygenNote: 7.1.1
 Roxygen: list(r6 = TRUE)
 Depends: 
-    R (>= 4.0)
+    R (>= 4.1)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, ExperimentHubSoftware
