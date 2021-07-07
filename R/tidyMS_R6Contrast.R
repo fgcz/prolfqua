@@ -125,7 +125,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
                                   p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
-          #result <- dplyr::rename(result, df = n)
+
           prqt <- -qt((1 - self$confint)/2, df = result$df)
           result$conf.low <- result$estimate_median  - prqt * result$sd
           result$conf.high <- result$estimate_median + prqt * result$sd
@@ -471,7 +471,7 @@ ContrastsModerated <- R6::R6Class(
                                          newname = "FDR.moderated")
       }
       contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
-      return(contrast_result)
+      return(dplyr::ungroup(contrast_result))
     },
     #' @description get \code{\link{Contrast_Plotter}}
     get_Plotter = function(){
