@@ -350,7 +350,7 @@ evalAll <- require("clusterProfiler") & require("org.Sc.sgd.db") & require("pror
 library(clusterProfiler)
 library(org.Sc.sgd.db)
 
-bb <- prora::get_UniprotID_from_fasta_header(ungroup(merged$merged),idcolumn = "protein_Id")
+bb <- prora::get_UniprotID_from_fasta_header(merged$merged$get_contrasts(),idcolumn = "protein_Id")
 bb <- prora::map_ids_uniprot(bb)
 ranklist <- bb$statistic
 names(ranklist) <- bb$P_ENTREZGENEID

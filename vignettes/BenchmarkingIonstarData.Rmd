@@ -338,7 +338,7 @@ relevantContrasts <- Contrasts[names(Contrasts) %in% relevantContrasts]
 ```
 
 
-There are, as of today, four contrasts classes in the package _prolfqua_
+There are, as of today, four contrasts classes in the package _prolfqua_+
 - 'ContrastsSimpleImputed' : contrast computation with imputation of fold changes and t-statistic estimation using pooled variances.
 - 'Contrasts'  : uses Wald test, 
 - 'ContrastsModerated' : applies variance moderation:, 
