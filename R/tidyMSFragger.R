@@ -27,7 +27,15 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #'   tidy_MSFragger_combined_protein(protein)
 #' }
 #'
-tidy_MSFragger_combined_protein <- function(Cprotein){
+tidy_MSFragger_combined_protein <- function(combprot) {
+  if (file.exists(combprot)) {
+    Cprotein <- as_tibble(read.csv(combprot,
+                                  header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+
+  }else if("tibble" %in% class(combprot)){
+    Cprotein <- combprot
+  }
+
   ### start processing
   colnames(Cprotein) <- tolower(colnames(Cprotein))
   annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
