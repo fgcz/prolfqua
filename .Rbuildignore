@@ -11,5 +11,7 @@
 vignettes/_Grp2Analysis_MissingInOneCondition\.Rmd$
 vignettes/_Grp2Analysis\.Rmd$
 vignettes/_CVReport\.Rmd$
-R/tidyMS_stanr.R
+inst/Benchresults/*
+inst/samples/*
+R/tidyMS_stanr\.R
 .github/*
