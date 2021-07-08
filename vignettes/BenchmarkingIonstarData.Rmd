@@ -620,17 +620,18 @@ allBenchmarks$benchmark_same <- benchmark_same
 # Write results
 
 ```{r}
+
 if (SUBSETNORM) {
-  saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
+  #saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
 } else{
-  saveRDS(allContrasts, file = "../inst/Benchresults/allContrastsNORMAL.RDS")
+  #saveRDS(allContrasts, file = "../inst/Benchresults/allContrastsNORMAL.RDS")
   
 }
 
 if (SUBSETNORM) {
-  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
+  #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
 } else{
-  saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
+  #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
 }
 
 ```

@@ -140,7 +140,7 @@ medpol_benchmark <- make_benchmark(ttd$data,
                                    model_name = "MSFragger_prot_med_lm",
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
-saveRDS(medpol_benchmark, file = "../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
+#saveRDS(medpol_benchmark, file = "../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
 medpol_benchmark$data()
 medpol_benchmark$plot_score_distribution()
 medpol_benchmark$plot_ROC()
