@@ -4,7 +4,7 @@
 \alias{tidy_MSFragger_combined_protein}
 \title{read MSFragger combined protein file}
 \usage{
-tidy_MSFragger_combined_protein(Cprotein)
+tidy_MSFragger_combined_protein(combprot)
 }
 \description{
 read MSFragger combined protein file
