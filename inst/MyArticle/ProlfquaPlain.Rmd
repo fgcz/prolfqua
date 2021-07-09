@@ -138,7 +138,7 @@ tt <- tt %>% separate(contrastsName, c("dilution", "ratio", "expected fold chang
 relevantContrasts <- c("dilution_(9/7.5)_1.2","dilution_(7.5/6)_1.25", "dilution_(6/4.5)_1.3(3)", "dilution_(4.5/3)_1.5" )
 
 tt <- tt %>% dplyr::filter(contrastsName  %in% relevantContrasts)
-tt <- select(tt, all_of(c("contrasts","ratio", "expected fold change")))
+tt <- dplyr::select(tt, all_of(c("contrasts","ratio", "expected fold change")))
 knitr::kable(tt, caption = "Contrasts used for benchmark.")
 
 
@@ -270,11 +270,14 @@ allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
 benchmark_msstats <- readRDS("../../inst/Benchresults/benchmark_msstats.RDS")
 allBenchmarks$benchmark_mssstats <- benchmark_msstats
 
-dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
+allBenchmarks$benchmark_mssstats$smc$summary
 
+dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))
 dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
 dds$percent <- dds$nrcontrasts/max(dds$nrcontrasts) * 100
+
+
 percentgg <- dds %>% ggplot(aes(x = name, y = percent )) + 
   geom_bar(stat = "identity") + 
   coord_cartesian(ylim = c(min(dds$percent),max(dds$percent))) +
@@ -296,20 +299,37 @@ gridExtra::grid.arrange(grobs = list(percentgg,  nrgg), nrow = 1)
 
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
+res <- res %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
+res <- res %>% filter(Name != "imputed_same_as_lm")
 
-resAllB <- res %>% dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
-resAllB <- res %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
-resAllB <- res %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
+res$contrast %>% unique()
+#resAllB <- res %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
+#resAllB <- res %>% dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
+#resAllB <- res %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
+resAllB <- res %>% dplyr::filter(contrast == "dilution_(6/4.5)_1.3(3)")
 
-bb <- resAllB %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
 
-ggplot(bb, aes(x = Name, y = pAUC_10)) +
+ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
   geom_bar(stat = "identity") +
   facet_wrap(~whatfix)  + 
-  coord_cartesian(ylim = c(min(bb$pAUC_10),max(bb$pAUC_10))) + 
+  coord_cartesian(ylim = c(min(resAllB$pAUC_10),max(resAllB$pAUC_10))) + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 
+norm <- res %>% group_by(contrast,whatfix) %>% summarize(meanpAUC_10 = mean(pAUC_10))
+
+res <- inner_join(res, norm)
+res <- mutate(res , pAUC_10n = pAUC_10 - meanpAUC_10)
+
+ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
+  geom_line(stat = "identity",aes(linetype = Name, color = Name)) + 
+  facet_wrap(~whatfix, scales = "free") +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+
+#myColors <- brewer.pal(5,"Set1")
+#names(myColors) <- levels(dat$grp)
+#colScale <- scale_colour_manual(name = "grp",values = myColors)
 ```
 
 

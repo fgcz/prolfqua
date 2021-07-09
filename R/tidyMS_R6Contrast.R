@@ -127,11 +127,11 @@ ContrastsSimpleImpute <- R6::R6Class(
                                   p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
 
           prqt <- -qt((1 - self$confint)/2, df = result$df)
-          result$conf.low <- result$estimate_median  - prqt * result$sd
-          result$conf.high <- result$estimate_median + prqt * result$sd
+          result$conf.low <- result$estimate_median  - prqt * (result$sd)
+          result$conf.high <- result$estimate_median + prqt * (result$sd)
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
           if (!all) {
-            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" , "sdT","n.groups", "n", "meanAll") ) )
+            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" ,"n.groups", "n", "meanAll") ) )
           }
 
         }
