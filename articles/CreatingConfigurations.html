@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -127,7 +124,7 @@
 
       
 
-      </header><script src="CreatingConfigurations_files/header-attrs-2.8/header-attrs.js"></script><script src="CreatingConfigurations_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="CreatingConfigurations_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating prolfqua Configurations</h1>
@@ -149,6 +146,8 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span>
+<span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"rename"</span>, <span class="st">"dplyr"</span><span class="op">)</span>
+
 <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">.find.package.file</span><span class="op">(</span><span class="st">"prolfqua"</span>,<span class="st">"samples/spectronaut_PEPTIDE.xls"</span><span class="op">)</span>
 
 <span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
@@ -169,8 +168,7 @@
 <span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Marker"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"R.Condition"</span></code></pre></div>
 <p>Lastly, we create an Analysis parameter object, and the Analysis Configuration. The function <code>setup_analysis</code>, creates from data frame in long format a data.frame compatible with your configuration. We can now run most of the function in the package using the data and configuration.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span>
 <span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span>
 
 <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/summarize_hierarchy.html">summarize_hierarchy</a></span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>

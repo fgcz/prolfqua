@@ -73,7 +73,7 @@ Decorate LFQData with Methods for transforming Intensities" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -97,9 +97,6 @@ Decorate LFQData with Methods for transforming Intensities" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -189,6 +186,8 @@ Decorate LFQData with Methods for transforming Intensities" />
     <p><div class="r6-fields"></p><dl>
 <dt><code>lfq</code></dt><dd><p>LFQData object</p></dd>
 
+<dt><code>scales</code></dt><dd><p>scales used for transformation</p></dd>
+
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
@@ -197,8 +196,9 @@ Decorate LFQData with Methods for transforming Intensities" />
 
 <ul>
 <li><p><a href='#method-new'><code>LFQDataTransformer$new()</code></a></p></li>
-<li><p><a href='#method-log2_robscale'><code>LFQDataTransformer$log2_robscale()</code></a></p></li>
-<li><p><a href='#method-log2_robscale_subset'><code>LFQDataTransformer$log2_robscale_subset()</code></a></p></li>
+<li><p><a href='#method-log2'><code>LFQDataTransformer$log2()</code></a></p></li>
+<li><p><a href='#method-robscale'><code>LFQDataTransformer$robscale()</code></a></p></li>
+<li><p><a href='#method-robscale_subset'><code>LFQDataTransformer$robscale_subset()</code></a></p></li>
 <li><p><a href='#method-intensity_array'><code>LFQDataTransformer$intensity_array()</code></a></p></li>
 <li><p><a href='#method-intensity_matrix'><code>LFQDataTransformer$intensity_matrix()</code></a></p></li>
 <li><p><a href='#method-clone'><code>LFQDataTransformer$clone()</code></a></p></li>
@@ -214,9 +214,16 @@ Decorate LFQData with Methods for transforming Intensities" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-log2_robscale"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>log2_robscale()</code></h3>
-<p>log2 transform and robust scale data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataTransformer</span><span class='op'>$</span><span class='fu'>log2_robscale</span><span class='op'>(</span>colname <span class='op'>=</span> <span class='st'>"transformedIntensity"</span><span class='op'>)</span></pre><p></div></p>
+<a id="method-log2"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/Log.html'>log2()</a></code></h3>
+<p>log2 transform data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQDataTransformer</span><span class='op'>$</span><span class='fu'>log2</span><span class='op'>(</span>force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>Transformer</p>
+<p><hr>
+<a id="method-robscale"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>robscale()</code></h3>
+<p>robust scale data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQDataTransformer</span><span class='op'>$</span><span class='fu'>robscale</span><span class='op'>(</span>colname <span class='op'>=</span> <span class='st'>"transformedIntensity"</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -226,12 +233,9 @@ Decorate LFQData with Methods for transforming Intensities" />
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>LFQData</p>
 <p><hr>
-<a id="method-log2_robscale_subset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>log2_robscale_subset()</code></h3>
+<a id="method-robscale_subset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>robscale_subset()</code></h3>
 <p>log2 transform and robust scale data based on subset</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQDataTransformer</span><span class='op'>$</span><span class='fu'>log2_robscale_subset</span><span class='op'>(</span>
-  <span class='va'>lfqsubset</span>,
-  colname <span class='op'>=</span> <span class='st'>"transformedIntensity"</span>
-<span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQDataTransformer</span><span class='op'>$</span><span class='fu'>robscale_subset</span><span class='op'>(</span><span class='va'>lfqsubset</span>, colname <span class='op'>=</span> <span class='st'>"transformedIntensity"</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -291,7 +295,7 @@ Decorate LFQData with Methods for transforming Intensities" />
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>)</span>
 
-<span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_copy</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lfqTrans</span> <span class='op'>&lt;-</span> <span class='va'>lfqcopy</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>intensity_array</span><span class='op'>(</span><span class='va'>log2</span><span class='op'>)</span>
@@ -299,17 +303,21 @@ Decorate LFQData with Methods for transforming Intensities" />
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='fu'>intensity_matrix</span><span class='op'>(</span><span class='va'>robust_scale</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>lfq</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2460 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='LFQDataTransformer-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># transform by asinh root and scale</span>
-<span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_copy</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>lfqTrans</span> <span class='op'>&lt;-</span> <span class='va'>lfqcopy</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>intensity_array</span><span class='op'>(</span><span class='va'>asinh</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : asinh_peptide.intensity</span></div><div class='input'><span class='va'>x</span><span class='op'>$</span><span class='va'>lfq</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>is_intensity_transformed</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>intensity_matrix</span><span class='op'>(</span><span class='va'>robust_scale</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>plotter</span> <span class='op'>&lt;-</span> <span class='va'>x</span><span class='op'>$</span><span class='va'>lfq</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>plotter</span><span class='op'>$</span><span class='fu'>intensity_distribution_density</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2460 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='LFQDataTransformer-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+</div><div class='img'><img src='LFQDataTransformer-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>lfqcopy</span> <span class='op'>&lt;-</span> <span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_copy</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lfqTrans</span> <span class='op'>&lt;-</span> <span class='va'>lfqcopy</span><span class='op'>$</span><span class='fu'>get_Transformer</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>log2</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>robscale</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='output co'>#&gt; <span class='message'>data is : TRUE</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span></div><div class='input'><span class='va'>lfqTrans</span><span class='op'>$</span><span class='fu'>log2</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: data already transformed. If you still want to log2 tranform, set force = TRUE</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

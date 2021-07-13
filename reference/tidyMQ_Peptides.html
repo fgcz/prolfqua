@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -96,9 +96,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -198,7 +195,6 @@
 <code><a href='plot_MQ_intensity_vs_retention_time.html'>plot_MQ_intensity_vs_retention_time</a>()</code>,
 <code><a href='tidyMQ_Evidence.html'>tidyMQ_Evidence</a>()</code>,
 <code><a href='tidyMQ_PeptideProtein.html'>tidyMQ_PeptideProtein</a>()</code>,
-<code><a href='tidyMQ_Peptides_Config.html'>tidyMQ_Peptides_Config</a>()</code>,
 <code><a href='tidyMQ_ProteinGroups.html'>tidyMQ_ProteinGroups</a>()</code>,
 <code><a href='tidyMQ_allPeptides.html'>tidyMQ_allPeptides</a>()</code>,
 <code><a href='tidyMQ_from_Sites.html'>tidyMQ_from_Sites</a>()</code>,
@@ -221,7 +217,7 @@
 </div><div class='output co'>#&gt; [1] 3444</div><div class='input'>
 <span class='va'>mq_peptides</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_Peptides</span><span class='op'>(</span><span class='va'>peptides_txt</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mq_peptides</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 16</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 17</span>
 #&gt;   peptide.id sequence  proteins  leading.razor.p~ protein.group.id peptide.score
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
@@ -230,10 +226,10 @@
 #&gt; <span style='color: #BCBCBC;'>4</span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
 #&gt; <span style='color: #BCBCBC;'>5</span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
 #&gt; <span style='color: #BCBCBC;'>6</span>          0 AADGGMFE~ sp|Q28C4~ sp|Q28C44|C19L2~              236          60.6
-#&gt; <span style='color: #949494;'># ... with 10 more variables: pep &lt;dbl&gt;, missed.cleavages &lt;int&gt;,</span>
-#&gt; <span style='color: #949494;'>#   unique.groups &lt;lgl&gt;, potential.contaminant &lt;lgl&gt;, reverse &lt;lgl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   raw.file &lt;chr&gt;, peptide.intensity &lt;dbl&gt;, id.type &lt;chr&gt;, proteotypic &lt;lgl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   isotope &lt;chr&gt;</span></div></pre>
+#&gt; <span style='color: #949494;'># ... with 11 more variables: pep &lt;dbl&gt;, ms.ms.count &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   missed.cleavages &lt;int&gt;, unique.groups &lt;lgl&gt;, potential.contaminant &lt;lgl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   reverse &lt;lgl&gt;, raw.file &lt;chr&gt;, peptide.intensity &lt;dbl&gt;, id.type &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   proteotypic &lt;lgl&gt;, isotope &lt;chr&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

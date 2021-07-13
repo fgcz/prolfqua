@@ -73,7 +73,7 @@ visualize intensity distributions" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -97,9 +97,6 @@ visualize intensity distributions" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -184,7 +181,7 @@ visualize intensity distributions" />
 
     <pre class="usage"><span class='fu'>plot_intensity_distribution_violin</span><span class='op'>(</span><span class='va'>pdata</span>, <span class='va'>config</span><span class='op'>)</span>
 
-<span class='fu'>plot_intensity_distribution_density</span><span class='op'>(</span><span class='va'>pdata</span>, <span class='va'>config</span><span class='op'>)</span></pre>
+<span class='fu'>plot_intensity_distribution_density</span><span class='op'>(</span><span class='va'>pdata</span>, <span class='va'>config</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,6 +193,10 @@ visualize intensity distributions" />
     <tr>
       <th>config</th>
       <td><p>AnalysisConfiguration</p></td>
+    </tr>
+    <tr>
+      <th>legend</th>
+      <td><p>do not show legend</p></td>
     </tr>
     </table>
 
@@ -246,10 +247,9 @@ visualize intensity distributions" />
 <span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span>
 
 <span class='fu'>plot_intensity_distribution_violin</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_ydensity).</span></div><div class='img'><img src='plot_intensity_distribution_violin-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_ydensity).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_intensity_distribution_violin-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='transform_work_intensity.html'>transform_work_intensity</a></span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, <span class='va'>log2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : log2_peptide.intensity</span></div><div class='input'><span class='fu'>plot_intensity_distribution_violin</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_ydensity).</span></div><div class='img'><img src='plot_intensity_distribution_violin-2.png' alt='' width='700' height='433' /></div><div class='input'>
-
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_ydensity).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4666 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_intensity_distribution_violin-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
 <span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>

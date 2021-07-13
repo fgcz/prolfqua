@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -127,7 +124,7 @@
 
       
 
-      </header><script src="QualityControlAndSampleSizeEstimation_files/header-attrs-2.8/header-attrs.js"></script><script src="QualityControlAndSampleSizeEstimation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="QualityControlAndSampleSizeEstimation_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>QC and Sample Size Estimation</h1>
@@ -184,11 +181,11 @@
 ## 6 20180313_0~ 20180313 03     ge        Ethanol   p2691      CON__P02666;zz|ZZ_~
 ## # ... with 8 more variables: majority.protein.ids &lt;chr&gt;, nr.peptides &lt;int&gt;,
 ## #   fasta.headers &lt;chr&gt;, protein.group.id &lt;int&gt;, protein.score &lt;dbl&gt;,
-## #   mq.protein.intensity &lt;dbl&gt;, mq.protein.lfq.intensity &lt;dbl&gt;, proteinID &lt;chr&gt;</code></pre>
+## #   proteinID &lt;chr&gt;, mq.protein.intensity &lt;dbl&gt;, mq.protein.lfq.intensity &lt;dbl&gt;</code></pre>
 <p>For the sample size estimation we will use bio-reps from the <em>Ethanol</em> condition. We also remove all proteins identified only by a single peptide.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition</span>  <span class="op">==</span> <span class="st">"Ethanol"</span><span class="op">)</span>
-<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">nr.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition</span>  <span class="op">==</span> <span class="st">"Ethanol"</span><span class="op">)</span>
+<span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">nr.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>We need to <em>tell</em> <code>prolfqua</code> at which columns in the startdata frame contain what information. This is done using the <code>AnalysisTableAnnotation</code> class.</p>
 <p>The <code>hierarchy</code> describes the structure of the MS data. In this case we have only protein level measurements. In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables. You also need to specify the column containing the protein identifiers and the protein intensities.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -197,14 +194,14 @@
 <span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"proteinID"</span><span class="op">)</span>
 <span class="va">atable</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 <span class="va">atable</span><span class="op">$</span><span class="fu">setWorkIntensity</span><span class="op">(</span><span class="st">"mq.protein.intensity"</span><span class="op">)</span>
-<span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"batch_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 
 
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"condition_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"condition"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"batch_"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"experiment"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Run_ID"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span>
+
 
 <span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">startdata</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
 <p>Create the LFQData class instance, remove zeros from data.</p>
@@ -320,7 +317,7 @@ Scatter plot of standard deviation vs mean
 <p>We normalize the data by first <span class="math inline">\(\log_2\)</span> transforming it and then z-scaling. The <span class="math inline">\(log_2\)</span> stabilizes the variance, while the z-scaling removes systematic differences from the samples.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lt</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
-<span class="va">transformed</span> <span class="op">&lt;-</span> <span class="va">lt</span><span class="op">$</span><span class="fu">log2_robscale</span><span class="op">(</span><span class="op">)</span>
+<span class="va">transformed</span> <span class="op">&lt;-</span> <span class="va">lt</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span>
 <span class="va">transformed</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">is_intensity_transformed</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -416,7 +413,8 @@ Empirical cumulative density function of the standard deviation.
 </p>
 </div>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition_</span> <span class="op">!=</span> <span class="st">"All"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition_</span> <span class="op">!=</span> <span class="st">"All"</span><span class="op">)</span>
 <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">sampleSize</span>, <span class="st">"Sample sizes. delta - Effect size, N - samplesize"</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>Sample sizes. delta - Effect size, N - samplesize</caption>
@@ -592,7 +590,7 @@ Estimated sample sizes for various FC levels and various quantiles of the standa
 <p>Getting the sample size for each protein.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test</span><span class="op">(</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition_</span> <span class="op">==</span> <span class="st">"Ethanol"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>,<span class="va">protein_Id</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">condition_</span> <span class="op">==</span> <span class="st">"Ethanol"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>,<span class="va">protein_Id</span><span class="op">)</span>
 <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1000</span><span class="op">:</span><span class="fl">1007</span>,<span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Sample size for each protein"</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>Sample size for each protein</caption>

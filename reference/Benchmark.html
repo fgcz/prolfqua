@@ -73,7 +73,7 @@ Benchmark R6 class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -97,9 +97,6 @@ Benchmark R6 class" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -235,13 +232,15 @@ Benchmark R6 class" />
 <li><p><a href='#method-new'><code>Benchmark$new()</code></a></p></li>
 <li><p><a href='#method-data'><code>Benchmark$data()</code></a></p></li>
 <li><p><a href='#method-complete'><code>Benchmark$complete()</code></a></p></li>
-<li><p><a href='#method-get_confusion'><code>Benchmark$get_confusion()</code></a></p></li>
-<li><p><a href='#method-get_confusion_summaries'><code>Benchmark$get_confusion_summaries()</code></a></p></li>
+<li><p><a href='#method-.get_confusion'><code>Benchmark$.get_confusion()</code></a></p></li>
+<li><p><a href='#method-get_confusion_benchmark'><code>Benchmark$get_confusion_benchmark()</code></a></p></li>
+<li><p><a href='#method-n_confusion_benchmark'><code>Benchmark$n_confusion_benchmark()</code></a></p></li>
 <li><p><a href='#method-plot_FDPvsTPR'><code>Benchmark$plot_FDPvsTPR()</code></a></p></li>
 <li><p><a href='#method-plot_ROC'><code>Benchmark$plot_ROC()</code></a></p></li>
 <li><p><a href='#method-pAUC_summaries'><code>Benchmark$pAUC_summaries()</code></a></p></li>
 <li><p><a href='#method-pAUC'><code>Benchmark$pAUC()</code></a></p></li>
-<li><p><a href='#method-get_FDRvsFDP'><code>Benchmark$get_FDRvsFDP()</code></a></p></li>
+<li><p><a href='#method-get_confusion_FDRvsFDP'><code>Benchmark$get_confusion_FDRvsFDP()</code></a></p></li>
+<li><p><a href='#method-n_confusion_FDRvsFDP'><code>Benchmark$n_confusion_FDRvsFDP()</code></a></p></li>
 <li><p><a href='#method-plot_FDRvsFDP'><code>Benchmark$plot_FDRvsFDP()</code></a></p></li>
 <li><p><a href='#method-plot_score_distribution'><code>Benchmark$plot_score_distribution()</code></a></p></li>
 <li><p><a href='#method-plot_scatter'><code>Benchmark$plot_scatter()</code></a></p></li>
@@ -306,9 +305,9 @@ Benchmark R6 class" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-get_confusion"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_confusion()</code></h3>
+<a id="method-.get_confusion"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>.get_confusion()</code></h3>
 <p>get confusion data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>get_confusion</span><span class='op'>(</span><span class='va'>arrange</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>.get_confusion</span><span class='op'>(</span><span class='va'>arrange</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -316,9 +315,14 @@ Benchmark R6 class" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-get_confusion_summaries"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_confusion_summaries()</code></h3>
+<a id="method-get_confusion_benchmark"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_confusion_benchmark()</code></h3>
 <p>get FDR summaries</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_summaries</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_benchmark</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-n_confusion_benchmark"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>n_confusion_benchmark()</code></h3>
+<p>nr of elements used to determine ROC curve</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>n_confusion_benchmark</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-plot_FDPvsTPR"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>plot_FDPvsTPR()</code></h3>
@@ -353,9 +357,14 @@ Benchmark R6 class" />
 <p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>pAUC</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-get_FDRvsFDP"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_FDRvsFDP()</code></h3>
+<a id="method-get_confusion_FDRvsFDP"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_confusion_FDRvsFDP()</code></h3>
 <p>FDR vs FDP data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>get_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-n_confusion_FDRvsFDP"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>n_confusion_FDRvsFDP()</code></h3>
+<p>nr of elements used to determine ROC curve</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Benchmark</span><span class='op'>$</span><span class='fu'>n_confusion_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-plot_FDRvsFDP"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>plot_FDRvsFDP()</code></h3>
@@ -410,14 +419,14 @@ Benchmark R6 class" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/ggpubr/'>ggpubr</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='va'>ttd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ionstar_bench_preprocess.html'>ionstar_bench_preprocess</a></span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_benchmarkExample.html'>data_benchmarkExample</a></span><span class='op'>)</span>
+<span class='va'>ttd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ionstar_bench_preprocess.html'>ionstar_bench_preprocess</a></span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_benchmarkExample.html'>data_benchmarkExample</a></span>, <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>statistic</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>medpol_benchmark</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_benchmark.html'>make_benchmark</a></span><span class='op'>(</span><span class='va'>ttd</span><span class='op'>$</span><span class='va'>data</span>,
                                    model_description <span class='op'>=</span> <span class='st'>"med. polish and lm. density"</span>,
                                    model_name <span class='op'>=</span> <span class='st'>"prot_med_lm"</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>p.value</span></div><div class='input'><span class='va'>medpol_benchmark</span><span class='op'>$</span><span class='fu'>plot_score_distribution</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.37</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 335 rows containing non-finite values (stat_density_ridges).</span></div><div class='img'><img src='Benchmark-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#Benchmark$debug("pAUC_summaries")</span>
-<span class='va'>brms_benchmark</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_benchmark.html'>make_benchmark</a></span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.37</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 172 rows containing non-finite values (stat_density_ridges).</span></div><div class='img'><img src='Benchmark-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#Benchmark$debug("pAUC_summaries")</span>
+<span class='va'>benchmark</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_benchmark.html'>make_benchmark</a></span><span class='op'>(</span>
   <span class='va'>ttd</span><span class='op'>$</span><span class='va'>data</span>,
   toscale <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"moderated.p.value"</span>, <span class='st'>"moderated.p.value.adjusted"</span><span class='op'>)</span>,
   benchmark <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sc <span class='op'>=</span> <span class='st'>"estimate"</span>, desc <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
@@ -431,47 +440,99 @@ Benchmark R6 class" />
   model_description <span class='op'>=</span> <span class='st'>"protein level measurments, lm model"</span>,
   model_name <span class='op'>=</span> <span class='st'>"prot_lm"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>moderated.p.value</span></div><div class='output co'>#&gt; <span class='message'>moderated.p.value.adjusted</span></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>pAUC_summaries</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>complete</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>plot_score_distribution</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.37</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 335 rows containing non-finite values (stat_density_ridges).</span></div><div class='img'><img src='Benchmark-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>get_confusion</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>bb</span><span class='op'>$</span><span class='va'>contrast</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "all"                     "dilution_(4.5/3)_1.5"   
-#&gt; [3] "dilution_(6/4.5)_1.3(3)" "dilution_(7.5/6)_1.25"  
-#&gt; [5] "dilution_(9/7.5)_1.2"   </div><div class='input'><span class='va'>xb</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>bb</span>, <span class='va'>contrast</span> <span class='op'>==</span>  <span class='st'>"dilution_(4.5/3)_1.5"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>xb</span><span class='op'>$</span><span class='va'>TPR</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>xb</span><span class='op'>$</span><span class='va'>TP_hits</span><span class='op'>)</span><span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>xb</span><span class='op'>$</span><span class='va'>T_</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_summaries</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 129,874 x 17</span>
-#&gt;    scorecol TP    what      F_    T_     R   FDP TP_hits FN_hits FP_hits TN_hits
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>     2.94 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     1 0           1    <span style='text-decoration: underline;'>2</span>392       0   <span style='text-decoration: underline;'>13</span>845
-#&gt; <span style='color: #BCBCBC;'> 2</span>     2.30 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     2 0           2    <span style='text-decoration: underline;'>2</span>391       0   <span style='text-decoration: underline;'>13</span>845
-#&gt; <span style='color: #BCBCBC;'> 3</span>     2.10 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     3 0           3    <span style='text-decoration: underline;'>2</span>390       0   <span style='text-decoration: underline;'>13</span>845
-#&gt; <span style='color: #BCBCBC;'> 4</span>     1.87 FALSE estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     4 0.25        3    <span style='text-decoration: underline;'>2</span>390       1   <span style='text-decoration: underline;'>13</span>844
-#&gt; <span style='color: #BCBCBC;'> 5</span>     1.70 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     5 0.2         4    <span style='text-decoration: underline;'>2</span>389       1   <span style='text-decoration: underline;'>13</span>844
-#&gt; <span style='color: #BCBCBC;'> 6</span>     1.63 FALSE estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     6 0.333       4    <span style='text-decoration: underline;'>2</span>389       2   <span style='text-decoration: underline;'>13</span>843
-#&gt; <span style='color: #BCBCBC;'> 7</span>     1.60 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     7 0.286       5    <span style='text-decoration: underline;'>2</span>388       2   <span style='text-decoration: underline;'>13</span>843
-#&gt; <span style='color: #BCBCBC;'> 8</span>     1.51 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     8 0.25        6    <span style='text-decoration: underline;'>2</span>387       2   <span style='text-decoration: underline;'>13</span>843
-#&gt; <span style='color: #BCBCBC;'> 9</span>     1.50 TRUE  estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393     9 0.222       7    <span style='text-decoration: underline;'>2</span>386       2   <span style='text-decoration: underline;'>13</span>843
-#&gt; <span style='color: #BCBCBC;'>10</span>     1.45 FALSE estim~ <span style='text-decoration: underline;'>13</span>845  <span style='text-decoration: underline;'>2</span>393    10 0.3         7    <span style='text-decoration: underline;'>2</span>386       3   <span style='text-decoration: underline;'>13</span>842
-#&gt; <span style='color: #949494;'># ... with 129,864 more rows, and 6 more variables: FPR &lt;dbl&gt;, TPR &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ACC &lt;dbl&gt;, FDP_ &lt;dbl&gt;, model_name &lt;chr&gt;, contrast &lt;chr&gt;</span></div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>plot_ROC</span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 12785 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='Benchmark-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>plot_FDPvsTPR</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 11789 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='Benchmark-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>plot_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='Benchmark-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>brms_benchmark</span><span class='op'>$</span><span class='fu'>plot_scatter</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 178 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 335 rows containing missing values (geom_point).</span></div><div class='img'><img src='Benchmark-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 17</span>
-#&gt;   scorecol TP    what       F_    T_     R   FDP TP_hits FN_hits FP_hits TN_hits
-#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> 1.47<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     1     0       1    <span style='text-decoration: underline;'>2</span>392       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #BCBCBC;'>2</span> 3.93<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     2     0       2    <span style='text-decoration: underline;'>2</span>391       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #BCBCBC;'>3</span> 4.73<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     3     0       3    <span style='text-decoration: underline;'>2</span>390       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #BCBCBC;'>4</span> 4.98<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     4     0       4    <span style='text-decoration: underline;'>2</span>389       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #BCBCBC;'>5</span> 5.40<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     5     0       5    <span style='text-decoration: underline;'>2</span>388       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #BCBCBC;'>6</span> 7.64<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> TRUE  modera~ <span style='text-decoration: underline;'>13</span>840  <span style='text-decoration: underline;'>2</span>393     6     0       6    <span style='text-decoration: underline;'>2</span>387       0   <span style='text-decoration: underline;'>13</span>840
-#&gt; <span style='color: #949494;'># ... with 6 more variables: FPR &lt;dbl&gt;, TPR &lt;dbl&gt;, ACC &lt;dbl&gt;, FDP_ &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   model_name &lt;chr&gt;, contrast &lt;chr&gt;</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>moderated.p.value</span></div><div class='output co'>#&gt; <span class='message'>moderated.p.value.adjusted</span></div><div class='input'>
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>pAUC_summaries</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>complete</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>benchmark</span><span class='op'>$</span><span class='va'>smc</span><span class='op'>$</span><span class='va'>summary</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 2</span>
+#&gt;   nr_missing protein_Id
+#&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>          0       <span style='text-decoration: underline;'>4</span>024
+#&gt; <span style='color: #BCBCBC;'>2</span>          1          8
+#&gt; <span style='color: #BCBCBC;'>3</span>          2         51
+#&gt; <span style='color: #BCBCBC;'>4</span>          3         11</div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>plot_score_distribution</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.023</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing non-finite values (stat_density_ridges).</span></div><div class='output co'>#&gt; <span class='message'>Picking joint bandwidth of 0.37</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 172 rows containing non-finite values (stat_density_ridges).</span></div><div class='img'><img src='Benchmark-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>xb</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>bb</span>, <span class='va'>contrast</span> <span class='op'>==</span>  <span class='st'>"dilution_(4.5/3)_1.5"</span><span class='op'>)</span>
+<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>get_confusion_benchmark</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>bb</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>what</span>, <span class='va'>contrast</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>summarize</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>`summarise()` has grouped output by 'what'. You can override using the `.groups` argument.</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 3</span>
+#&gt; <span style='color: #949494;'># Groups:   what [4]</span>
+#&gt;    what                              contrast                    n
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> estimate                          all                     <span style='text-decoration: underline;'>16</span>233
+#&gt; <span style='color: #BCBCBC;'> 2</span> estimate                          dilution_(4.5/3)_1.5     <span style='text-decoration: underline;'>4</span>043
+#&gt; <span style='color: #BCBCBC;'> 3</span> estimate                          dilution_(6/4.5)_1.3(3)  <span style='text-decoration: underline;'>4</span>037
+#&gt; <span style='color: #BCBCBC;'> 4</span> estimate                          dilution_(7.5/6)_1.25    <span style='text-decoration: underline;'>4</span>075
+#&gt; <span style='color: #BCBCBC;'> 5</span> estimate                          dilution_(9/7.5)_1.2     <span style='text-decoration: underline;'>4</span>078
+#&gt; <span style='color: #BCBCBC;'> 6</span> scaled.moderated.p.value          all                     <span style='text-decoration: underline;'>16</span>233
+#&gt; <span style='color: #BCBCBC;'> 7</span> scaled.moderated.p.value          dilution_(4.5/3)_1.5     <span style='text-decoration: underline;'>4</span>043
+#&gt; <span style='color: #BCBCBC;'> 8</span> scaled.moderated.p.value          dilution_(6/4.5)_1.3(3)  <span style='text-decoration: underline;'>4</span>037
+#&gt; <span style='color: #BCBCBC;'> 9</span> scaled.moderated.p.value          dilution_(7.5/6)_1.25    <span style='text-decoration: underline;'>4</span>075
+#&gt; <span style='color: #BCBCBC;'>10</span> scaled.moderated.p.value          dilution_(9/7.5)_1.2     <span style='text-decoration: underline;'>4</span>078
+#&gt; <span style='color: #BCBCBC;'>11</span> scaled.moderated.p.value.adjusted all                     <span style='text-decoration: underline;'>16</span>233
+#&gt; <span style='color: #BCBCBC;'>12</span> scaled.moderated.p.value.adjusted dilution_(4.5/3)_1.5     <span style='text-decoration: underline;'>4</span>043
+#&gt; <span style='color: #BCBCBC;'>13</span> scaled.moderated.p.value.adjusted dilution_(6/4.5)_1.3(3)  <span style='text-decoration: underline;'>4</span>037
+#&gt; <span style='color: #BCBCBC;'>14</span> scaled.moderated.p.value.adjusted dilution_(7.5/6)_1.25    <span style='text-decoration: underline;'>4</span>075
+#&gt; <span style='color: #BCBCBC;'>15</span> scaled.moderated.p.value.adjusted dilution_(9/7.5)_1.2     <span style='text-decoration: underline;'>4</span>078
+#&gt; <span style='color: #BCBCBC;'>16</span> statistic                         all                     <span style='text-decoration: underline;'>16</span>233
+#&gt; <span style='color: #BCBCBC;'>17</span> statistic                         dilution_(4.5/3)_1.5     <span style='text-decoration: underline;'>4</span>043
+#&gt; <span style='color: #BCBCBC;'>18</span> statistic                         dilution_(6/4.5)_1.3(3)  <span style='text-decoration: underline;'>4</span>037
+#&gt; <span style='color: #BCBCBC;'>19</span> statistic                         dilution_(7.5/6)_1.25    <span style='text-decoration: underline;'>4</span>075
+#&gt; <span style='color: #BCBCBC;'>20</span> statistic                         dilution_(9/7.5)_1.2     <span style='text-decoration: underline;'>4</span>078</div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>plot_ROC</span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 12784 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='Benchmark-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>plot_FDPvsTPR</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 11788 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='Benchmark-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>plot_FDRvsFDP</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='Benchmark-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>plot_scatter</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 20 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 172 rows containing missing values (geom_point).</span></div><div class='img'><img src='Benchmark-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>complete</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>pAUC_summaries</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>ftable</span><span class='op'>$</span><span class='va'>content</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 5</span>
+#&gt; <span style='color: #949494;'># Groups:   contrast [5]</span>
+#&gt;    contrast                what                              AUC pAUC_10 pAUC_20
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> all                     estimate                         93.6    71.3    81.9
+#&gt; <span style='color: #BCBCBC;'> 2</span> all                     scaled.moderated.p.value         93.9    76.3    82.4
+#&gt; <span style='color: #BCBCBC;'> 3</span> all                     scaled.moderated.p.value.adjus~  93.9    76.0    82.2
+#&gt; <span style='color: #BCBCBC;'> 4</span> all                     statistic                        93.7    74.9    81.3
+#&gt; <span style='color: #BCBCBC;'> 5</span> dilution_(4.5/3)_1.5    estimate                         94.6    84.0    88.4
+#&gt; <span style='color: #BCBCBC;'> 6</span> dilution_(4.5/3)_1.5    scaled.moderated.p.value         94.8    85.4    88.1
+#&gt; <span style='color: #BCBCBC;'> 7</span> dilution_(4.5/3)_1.5    scaled.moderated.p.value.adjus~  94.8    85.4    88.2
+#&gt; <span style='color: #BCBCBC;'> 8</span> dilution_(4.5/3)_1.5    statistic                        94.7    84.6    87.6
+#&gt; <span style='color: #BCBCBC;'> 9</span> dilution_(6/4.5)_1.3(3) estimate                         93.6    73.9    83.5
+#&gt; <span style='color: #BCBCBC;'>10</span> dilution_(6/4.5)_1.3(3) scaled.moderated.p.value         94.1    78.5    84.0
+#&gt; <span style='color: #BCBCBC;'>11</span> dilution_(6/4.5)_1.3(3) scaled.moderated.p.value.adjus~  94.2    78.5    84.0
+#&gt; <span style='color: #BCBCBC;'>12</span> dilution_(6/4.5)_1.3(3) statistic                        94.0    77.3    83.1
+#&gt; <span style='color: #BCBCBC;'>13</span> dilution_(7.5/6)_1.25   estimate                         91.9    62.7    76.5
+#&gt; <span style='color: #BCBCBC;'>14</span> dilution_(7.5/6)_1.25   scaled.moderated.p.value         92.4    70.0    77.4
+#&gt; <span style='color: #BCBCBC;'>15</span> dilution_(7.5/6)_1.25   scaled.moderated.p.value.adjus~  92.4    70.0    77.4
+#&gt; <span style='color: #BCBCBC;'>16</span> dilution_(7.5/6)_1.25   statistic                        92.1    67.9    75.8
+#&gt; <span style='color: #BCBCBC;'>17</span> dilution_(9/7.5)_1.2    estimate                         94.3    64.7    79.5
+#&gt; <span style='color: #BCBCBC;'>18</span> dilution_(9/7.5)_1.2    scaled.moderated.p.value         94.5    72.1    80.6
+#&gt; <span style='color: #BCBCBC;'>19</span> dilution_(9/7.5)_1.2    scaled.moderated.p.value.adjus~  94.6    72.1    80.6
+#&gt; <span style='color: #BCBCBC;'>20</span> dilution_(9/7.5)_1.2    statistic                        94.2    70.3    79.2</div><div class='input'><span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>complete</span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>benchmark</span><span class='op'>$</span><span class='fu'>pAUC_summaries</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>ftable</span><span class='op'>$</span><span class='va'>content</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 5</span>
+#&gt; <span style='color: #949494;'># Groups:   contrast [5]</span>
+#&gt;    contrast                what                              AUC pAUC_10 pAUC_20
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> all                     estimate                         94.3    72.8    83.1
+#&gt; <span style='color: #BCBCBC;'> 2</span> all                     scaled.moderated.p.value         94.6    77.9    83.8
+#&gt; <span style='color: #BCBCBC;'> 3</span> all                     scaled.moderated.p.value.adjus~  94.6    77.7    83.6
+#&gt; <span style='color: #BCBCBC;'> 4</span> all                     statistic                        94.4    76.6    82.7
+#&gt; <span style='color: #BCBCBC;'> 5</span> dilution_(4.5/3)_1.5    estimate                         94.6    84.4    88.7
+#&gt; <span style='color: #BCBCBC;'> 6</span> dilution_(4.5/3)_1.5    scaled.moderated.p.value         94.8    85.4    88.2
+#&gt; <span style='color: #BCBCBC;'> 7</span> dilution_(4.5/3)_1.5    scaled.moderated.p.value.adjus~  94.8    85.4    88.2
+#&gt; <span style='color: #BCBCBC;'> 8</span> dilution_(4.5/3)_1.5    statistic                        94.7    84.6    87.7
+#&gt; <span style='color: #BCBCBC;'> 9</span> dilution_(6/4.5)_1.3(3) estimate                         93.7    74.8    83.9
+#&gt; <span style='color: #BCBCBC;'>10</span> dilution_(6/4.5)_1.3(3) scaled.moderated.p.value         94.2    78.7    84.1
+#&gt; <span style='color: #BCBCBC;'>11</span> dilution_(6/4.5)_1.3(3) scaled.moderated.p.value.adjus~  94.2    78.7    84.1
+#&gt; <span style='color: #BCBCBC;'>12</span> dilution_(6/4.5)_1.3(3) statistic                        94.0    77.6    83.3
+#&gt; <span style='color: #BCBCBC;'>13</span> dilution_(7.5/6)_1.25   estimate                         93.6    64.4    78.6
+#&gt; <span style='color: #BCBCBC;'>14</span> dilution_(7.5/6)_1.25   scaled.moderated.p.value         93.9    72.4    79.9
+#&gt; <span style='color: #BCBCBC;'>15</span> dilution_(7.5/6)_1.25   scaled.moderated.p.value.adjus~  94.0    72.5    80.0
+#&gt; <span style='color: #BCBCBC;'>16</span> dilution_(7.5/6)_1.25   statistic                        93.6    70.4    78.4
+#&gt; <span style='color: #BCBCBC;'>17</span> dilution_(9/7.5)_1.2    estimate                         95.1    66.5    81.1
+#&gt; <span style='color: #BCBCBC;'>18</span> dilution_(9/7.5)_1.2    scaled.moderated.p.value         95.5    75.0    83.1
+#&gt; <span style='color: #BCBCBC;'>19</span> dilution_(9/7.5)_1.2    scaled.moderated.p.value.adjus~  95.5    75.1    83.2
+#&gt; <span style='color: #BCBCBC;'>20</span> dilution_(9/7.5)_1.2    statistic                        95.2    73.3    81.8</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

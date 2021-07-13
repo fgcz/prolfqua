@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -127,13 +124,13 @@
 
       
 
-      </header><script src="Supplement_TidyAnalysis_Skyline_PRM_files/header-attrs-2.8/header-attrs.js"></script><script src="Supplement_TidyAnalysis_Skyline_PRM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Supplement_TidyAnalysis_Skyline_PRM_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Supplement - Data preprocessing for PRM</h1>
                         <h4 class="author">Functional Genomics Center Zurich</h4>
             
-            <h4 class="date">01 June, 2021</h4>
+            <h4 class="date">13 July, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Supplement_TidyAnalysis_Skyline_PRM.Rmd"><code>vignettes/Supplement_TidyAnalysis_Skyline_PRM.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_TidyAnalysis_Skyline_PRM.Rmd</code></div>
@@ -264,7 +261,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span>
 <span class="va">protIntensity</span> <span class="op">&lt;-</span>
-  <span class="va">figs3</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">medpolishPly</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">figs3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">medpolishPly</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="st">"medpolishPly"</span><span class="op">)</span></code></pre></div>
 <div id="normalize-protein-instensities-using-cirt-peptides" class="section level2">
 <h2 class="hasAnchor">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -96,9 +96,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -198,7 +195,6 @@
 <code><a href='plot_MQ_intensity_vs_retention_time.html'>plot_MQ_intensity_vs_retention_time</a>()</code>,
 <code><a href='tidyMQ_Evidence.html'>tidyMQ_Evidence</a>()</code>,
 <code><a href='tidyMQ_PeptideProtein.html'>tidyMQ_PeptideProtein</a>()</code>,
-<code><a href='tidyMQ_Peptides_Config.html'>tidyMQ_Peptides_Config</a>()</code>,
 <code><a href='tidyMQ_Peptides.html'>tidyMQ_Peptides</a>()</code>,
 <code><a href='tidyMQ_allPeptides.html'>tidyMQ_allPeptides</a>()</code>,
 <code><a href='tidyMQ_from_Sites.html'>tidyMQ_from_Sites</a>()</code>,
@@ -233,20 +229,27 @@
 #&gt; 4 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
 #&gt; 5 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
 #&gt; 6 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt;   protein.group.id protein.score                                   raw.file
-#&gt; 1                0         9.291         m20150511_04_fgczpaolo_msqc1_60min
-#&gt; 2                0         9.291         m20150518_03_fgczpaolo_msqc1_60min
-#&gt; 3                0         9.291         m20150528_03_fgczpaolo_msqc1_60min
-#&gt; 4                0         9.291         m20150528_04_fgczpaolo_msqc1_60min
-#&gt; 5                0         9.291 m20150601_03_fgczpaolo_msqc1_60min_correct
-#&gt; 6                0         9.291         m20150609_04_fgczpaolo_msqc1_60min
-#&gt;   mq.protein.intensity mq.protein.lfq.intensity
-#&gt; 1               116400                        0
-#&gt; 2                    0                        0
-#&gt; 3               374750                        0
-#&gt; 4               441300                        0
-#&gt; 5               140390                        0
-#&gt; 6               235550                        0</div><div class='input'>
+#&gt;   protein.group.id protein.score           proteinID
+#&gt; 1                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt; 2                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt; 3                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt; 4                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt; 5                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt; 6                0         9.291 zz|ZZ_FGCZCont0179|
+#&gt;                                     raw.file mq.protein.intensity
+#&gt; 1         m20150511_04_fgczpaolo_msqc1_60min               116400
+#&gt; 2         m20150518_03_fgczpaolo_msqc1_60min                    0
+#&gt; 3         m20150528_03_fgczpaolo_msqc1_60min               374750
+#&gt; 4         m20150528_04_fgczpaolo_msqc1_60min               441300
+#&gt; 5 m20150601_03_fgczpaolo_msqc1_60min_correct               140390
+#&gt; 6         m20150609_04_fgczpaolo_msqc1_60min               235550
+#&gt;   mq.protein.lfq.intensity
+#&gt; 1                        0
+#&gt; 2                        0
+#&gt; 3                        0
+#&gt; 4                        0
+#&gt; 5                        0
+#&gt; 6                        0</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

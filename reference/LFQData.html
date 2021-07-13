@@ -73,7 +73,7 @@ LFQData R6 class" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -97,9 +97,6 @@ LFQData R6 class" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -211,14 +208,17 @@ LFQData R6 class" />
 <li><p><a href='#method-new'><code>LFQData$new()</code></a></p></li>
 <li><p><a href='#method-get_copy'><code>LFQData$get_copy()</code></a></p></li>
 <li><p><a href='#method-get_sample'><code>LFQData$get_sample()</code></a></p></li>
-<li><p><a href='#method-subject_id'><code>LFQData$subject_id()</code></a></p></li>
+<li><p><a href='#method-get_subset'><code>LFQData$get_subset()</code></a></p></li>
+<li><p><a href='#method-subjectId'><code>LFQData$subjectId()</code></a></p></li>
 <li><p><a href='#method-is_transformed'><code>LFQData$is_transformed()</code></a></p></li>
+<li><p><a href='#method-intensity_column'><code>LFQData$intensity_column()</code></a></p></li>
 <li><p><a href='#method-remove_small_intensities'><code>LFQData$remove_small_intensities()</code></a></p></li>
 <li><p><a href='#method-filter_proteins_by_peptide_count'><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
-<li><p><a href='#method-omit_NA_hierarchy'><code>LFQData$omit_NA_hierarchy()</code></a></p></li>
+<li><p><a href='#method-omit_NA'><code>LFQData$omit_NA()</code></a></p></li>
 <li><p><a href='#method-complete_cases'><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href='#method-to_wide'><code>LFQData$to_wide()</code></a></p></li>
 <li><p><a href='#method-factors'><code>LFQData$factors()</code></a></p></li>
+<li><p><a href='#method-response'><code>LFQData$response()</code></a></p></li>
 <li><p><a href='#method-hierarchy_counts'><code>LFQData$hierarchy_counts()</code></a></p></li>
 <li><p><a href='#method-summarize_hierarchy'><code>LFQData$summarize_hierarchy()</code></a></p></li>
 <li><p><a href='#method-get_Plotter'><code>LFQData$get_Plotter()</code></a></p></li>
@@ -264,9 +264,19 @@ LFQData R6 class" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-subject_id"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>subject_id()</code></h3>
+<a id="method-get_subset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_subset()</code></h3>
+<p>get subset of data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>get_subset</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>x</code></dt><dd><p>data frame with columns containing subjectId</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-subjectId"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>subjectId()</code></h3>
 <p>get subject ID columns</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>subject_id</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>subjectId</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-is_transformed"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>is_transformed()</code></h3>
@@ -280,6 +290,13 @@ LFQData R6 class" />
 </dl><p></div></p>
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>logical</p>
+<p><hr>
+<a id="method-intensity_column"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>intensity_column()</code></h3>
+<p>return name of intensity column</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>intensity_column</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>name of intensity column</p>
 <p><hr>
 <a id="method-remove_small_intensities"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='remove_small_intensities.html'>remove_small_intensities()</a></code></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -300,10 +317,11 @@ LFQData R6 class" />
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>self</p>
 <p><hr>
-<a id="method-omit_NA_hierarchy"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>omit_NA_hierarchy()</code></h3>
+<a id="method-omit_NA"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>omit_NA()</code></h3>
 <p>Omit NA from intensities per hierarchy, idea is to use it for normalization
-For instance if a peptide has a missing value in any of the samples it will be rmoved.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>omit_NA_hierarchy</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+For instance if a peptide has a missing value in more then nrNA of the samples within a condition
+it will be removed</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>omit_NA</span><span class='op'>(</span>nrNA <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>LFQData with NA omitted.</p>
@@ -335,6 +353,13 @@ For instance if a peptide has a missing value in any of the samples it will be r
 <a id="method-factors"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>factors()</code></h3>
 <p>Annotation table.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>factors</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>data.frame</p>
+<p><hr>
+<a id="method-response"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>response()</code></h3>
+<p>name of response variable</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>LFQData</span><span class='op'>$</span><span class='fu'>response</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>data.frame</p>
@@ -475,13 +500,13 @@ For instance if a peptide has a missing value in any of the samples it will be r
 #&gt; <span style='color: #BCBCBC;'> 8</span> sp|P07951|TPM2_HUMAN~829~P07951          1           21
 #&gt; <span style='color: #BCBCBC;'> 9</span> sp|P08238|HS90B_HUMAN~837~P08238         1           41
 #&gt; <span style='color: #BCBCBC;'>10</span> sp|P0A6L2|DAPA_ECOLI~914~P0A6L2          1            5
-#&gt; <span style='color: #949494;'># ... with 52 more rows</span></div><div class='input'><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>omit_NA_hierarchy</span><span class='op'>(</span><span class='op'>)</span>
+#&gt; <span style='color: #949494;'># ... with 52 more rows</span></div><div class='input'><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>omit_NA</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; &lt;LFQData&gt;
 #&gt;   Public:
 #&gt;     clone: function (deep = FALSE) 
 #&gt;     complete_cases: function () 
 #&gt;     config: AnalysisConfiguration, R6
-#&gt;     data: tbl_df, tbl, data.frame
+#&gt;     data: grouped_df, tbl_df, tbl, data.frame
 #&gt;     factors: function () 
 #&gt;     filter_difference: function (other) 
 #&gt;     filter_proteins_by_peptide_count: function () 
@@ -490,17 +515,20 @@ For instance if a peptide has a missing value in any of the samples it will be r
 #&gt;     get_Plotter: function () 
 #&gt;     get_sample: function (size = 100, seed = NULL) 
 #&gt;     get_Stats: function () 
+#&gt;     get_subset: function (x) 
 #&gt;     get_Summariser: function () 
 #&gt;     get_Transformer: function () 
 #&gt;     get_Writer: function (format = "xlsx") 
 #&gt;     hierarchy_counts: function () 
 #&gt;     initialize: function (data, config, is_pep = TRUE, prefix = "ms_") 
+#&gt;     intensity_column: function () 
 #&gt;     is_pep: TRUE
 #&gt;     is_transformed: function (is_transformed) 
-#&gt;     omit_NA_hierarchy: function () 
+#&gt;     omit_NA: function (nrNA = 0) 
 #&gt;     prefix: ms_
 #&gt;     remove_small_intensities: function (threshold = 4) 
-#&gt;     subject_id: function () 
+#&gt;     response: function () 
+#&gt;     subjectId: function () 
 #&gt;     summarize_hierarchy: function () 
 #&gt;     to_wide: function (as.matrix = FALSE) </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='st'>"LFQData"</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>lfqdata</span><span class='op'>$</span><span class='fu'>get_copy</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>

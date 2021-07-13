@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -127,13 +124,13 @@
 
       
 
-      </header><script src="Modelling2Factors_files/header-attrs-2.8/header-attrs.js"></script><script src="Modelling2Factors_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Modelling2Factors_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Modelling Dataset with two Factors.</h1>
                         <h4 class="author">Witold Wolski</h4>
             
-            <h4 class="date">01 June, 2021</h4>
+            <h4 class="date">13 July, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Modelling2Factors.Rmd"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -207,10 +204,13 @@ p-value distributions for ANOVA analysis.
 <pre><code>## 
 ## $name
 ## [1] "Anova_p.values_Model.pdf"</code></pre>
+<div id="anova" class="section level2">
+<h2 class="hasAnchor">
+<a href="#anova" class="anchor"></a>ANOVA</h2>
 <p>Examine proteins with a significant interaction between the two factors treatment and batch.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span>
-<span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
+<span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 10
 ##   protein_Id    isSingular nrcoef factor       Df Sum.Sq Mean.Sq F.value  Pr..F.
 ##   &lt;chr&gt;         &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
@@ -221,51 +221,48 @@ p-value distributions for ANOVA analysis.
 ## 5 sp|P32783|MC~ FALSE           4 conditio~     1   7.90    7.90    37.4 4.85e-4
 ## # ... with 1 more variable: FDR.Pr..F. &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span>
 <span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
 <span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">)</span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/unnamed-chunk-1-1.png" alt="Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA." width="700"><p class="caption">
+Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA.
+</p>
+</div>
+</div>
 </div>
 <div id="compute-contrasts" class="section level1">
 <h1 class="hasAnchor">
 <a href="#compute-contrasts" class="anchor"></a>Compute contrasts</h1>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span>
-<span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts_sides</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 3
-##   contrast                  c1                         c2                       
-##   &lt;chr&gt;                     &lt;chr&gt;                      &lt;chr&gt;                    
-## 1 Glucose - Ethanol         condition_Glucose          condition_Ethanol        
-## 2 p2370 - p2691             batch_p2370                batch_p2691              
-## 3 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
-## 4 Glucose_vs_Ethanol_gv_p2~ condition_Glucose:batch_p~ condition_Ethanol:batch_~
-## 5 Interaction               Glucose_vs_Ethanol_gv_p23~ Glucose_vs_Ethanol_gv_p2~</code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<span class="co">#contr$get_contrasts_sides()</span>
+<span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $FDR</code></pre>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
 <div id="annalyse-contrasts-with-missing-data-imputation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#annalyse-contrasts-with-missing-data-imputation" class="anchor"></a>Annalyse contrasts with missing data imputation</h2>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "condition_" "batch_"</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#ContrastsSimpleImpute$debug("get_contrasts")</span>
 <span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span>
 <span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pl</span><span class="op">$</span><span class="fu">histogram_estimate</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $FDR</code></pre>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
@@ -273,43 +270,43 @@ p-value distributions for ANOVA analysis.
 <div id="merge-nonimputed-and-imputed-data-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#merge-nonimputed-and-imputed-data-" class="anchor"></a>Merge nonimputed and imputed data.</h2>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1695   15</code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 2500   15</code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/addContrastResults.html">addContrastResults</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span>
-<span class="va">mergedContrasts</span><span class="op">$</span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">mergedContrasts</span><span class="op">$</span><span class="va">modelName</span><span class="op">)</span>
-
-<span class="va">myColors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"black"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">myColors</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">mergedContrasts</span><span class="op">$</span><span class="va">modelName</span><span class="op">)</span><span class="op">)</span>
-<span class="va">colScale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"modelName"</span>,values <span class="op">=</span> <span class="va">myColors</span><span class="op">)</span>
-
-<span class="va">cM</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts_Plotter.html">Contrasts_Plotter</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mergedContrasts</span>, subject_Id <span class="op">=</span> <span class="va">contr</span><span class="op">$</span><span class="va">subject_Id</span><span class="op">)</span>
+<span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">cM</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span>
-<span class="va">plot</span><span class="op">$</span><span class="va">FDR</span> <span class="op">+</span> <span class="va">colScale</span></code></pre></div>
+<span class="va">plot</span><span class="op">$</span><span class="va">FDR</span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span> <span class="op">%&gt;%</span> 
+<div id="look-at-proteins-with-significant-interaction-term-" class="section level3">
+<h3 class="hasAnchor">
+<a href="#look-at-proteins-with-significant-interaction-term-" class="anchor"></a>Look at Proteins with significant interaction term.</h3>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="va">contrast_result</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"Interaction"</span> <span class="op">&amp;</span> <span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.2</span><span class="op">)</span>
 
 <span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
 <span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">%in%</span> <span class="va">sigInteraction</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span> ,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">sampleName</span>,y<span class="op">=</span><span class="va">protein_Id</span>,fill<span class="op">=</span><span class="va">transformedIntensity</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span><span class="op">)</span>   <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"RdYlBu"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">raster</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+</span>
+<span class="co">#  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +</span>
+<span class="co">#  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))</span>
+
+<span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hm</span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteins with significant Interactions" width="700"><p class="caption">
 Proteins with significant Interactions
 </p>
+</div>
 </div>
 </div>
 </div>

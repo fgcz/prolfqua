@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
       </span>
     </div>
 
@@ -55,9 +55,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_LFQSurvey.html">Auxiliary - Project meeting (bioinfo) Agenda</a>
     </li>
     <li>
       <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
@@ -127,13 +124,13 @@
 
       
 
-      </header><script src="BenchmarkMSFraggerProteinIonStar_files/header-attrs-2.8/header-attrs.js"></script><script src="BenchmarkMSFraggerProteinIonStar_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="BenchmarkMSFraggerProteinIonStar_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benchmarking MSFragger output using Ionstar Dataset</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">01 June, 2021</h4>
+            <h4 class="date">13 July, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/BenchmarkMSFraggerProteinIonStar.Rmd"><code>vignettes/BenchmarkMSFraggerProteinIonStar.Rmd</code></a></small>
       <div class="hidden name"><code>BenchmarkMSFraggerProteinIonStar.Rmd</code></div>
@@ -172,7 +169,7 @@
 <code class="sourceCode R"><span class="va">protein</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">unz</a></span><span class="op">(</span><span class="va">inputMQfile</span>,<span class="st">"IonstarWithMSFragger/combined_protein.tsv"</span><span class="op">)</span>,
                              header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
 <span class="va">protein</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tidy_MSFragger_combined_protein.html">tidy_MSFragger_combined_protein</a></span><span class="op">(</span><span class="va">protein</span><span class="op">)</span>
-<span class="va">protein</span> <span class="op">&lt;-</span> <span class="va">protein</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">unique.stripped.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">protein</span> <span class="op">&lt;-</span> <span class="va">protein</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">unique.stripped.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span>
 <span class="co">#View(protein)</span>
 
 <span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">protein</span><span class="op">)</span></code></pre></div>
@@ -183,14 +180,14 @@
 
 <span class="va">atable</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 <span class="va">atable</span><span class="op">$</span><span class="fu">setWorkIntensity</span><span class="op">(</span><span class="st">"total.intensity"</span><span class="op">)</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"dilution."</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"sample"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"run"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"run_ID"</span>
+<span class="va">atable</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 
-<span class="va">anaparam</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisParameters.html">AnalysisParameters</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span>, <span class="va">anaparam</span><span class="op">)</span>
+
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span>
 
 
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"dilution."</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"sample"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"run"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"run_ID"</span>
-<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 
 <span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">merged</span>, <span class="va">config</span><span class="op">)</span>
 <span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span>
@@ -200,10 +197,10 @@
 <span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="BenchmarkMSFraggerProteinIonStar_files/figure-html/createPlotter-1.png" width="960"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">subset_h</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span>
-<span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"HUMAN"</span>, <span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">subset_h</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span>
+<span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">subset_h</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"HUMAN"</span>, <span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tr</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span>
-<span class="va">lfqdataNormalized</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2_robscale_subset</span><span class="op">(</span>lfqsubset <span class="op">=</span> <span class="va">subset_h</span><span class="op">)</span>
+<span class="va">lfqdataNormalized</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale_subset</span><span class="op">(</span>lfqsubset <span class="op">=</span> <span class="va">subset_h</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span>
 
 <span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">lfqdataNormalized</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -349,24 +346,25 @@
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ttd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></span><span class="op">(</span><span class="va">contrdf</span><span class="op">)</span>
 <span class="va">medpol_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_benchmark.html">make_benchmark</a></span><span class="op">(</span><span class="va">ttd</span><span class="op">$</span><span class="va">data</span>,
-                                   model_description <span class="op">=</span> <span class="st">"med. polish and lm. density"</span>,
-                                   model_name <span class="op">=</span> <span class="st">"prot_med_lm"</span>,
+                                   model_description <span class="op">=</span> <span class="st">"MSFragger med. polish and lm. density"</span>,
+                                   model_name <span class="op">=</span> <span class="st">"MSFragger_prot_med_lm"</span>,
                                    FDRvsFDP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sc <span class="op">=</span> <span class="st">"FDR"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
+<span class="co">#saveRDS(medpol_benchmark, file = "../inst/Benchresults/MSFragger_medpol_benchmark.RDS")</span>
 <span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 15,664 x 18
-##    modelName contrast     protein_Id         c1      c2 c1_name c2_name estimate
-##    &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;           &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
-##  1 Moderated dilution_(4~ sp|A0AVT1|UBA~ -1.27  -1.23   diluti~ diluti~ -0.0453 
-##  2 Moderated dilution_(4~ sp|A0FGR8|ESY~  0.437  0.429  diluti~ diluti~  0.00768
-##  3 Moderated dilution_(4~ sp|A0MZ66|SHO~ -0.530 -0.510  diluti~ diluti~ -0.0198 
-##  4 Moderated dilution_(4~ sp|A1L0T0|ILV~ -2.24  -2.24   diluti~ diluti~ -0.00124
-##  5 Moderated dilution_(4~ sp|A1X283|SPD~ NA     -2.50   diluti~ diluti~ NA      
-##  6 Moderated dilution_(4~ sp|A3KN83|SBN~ -3.35  -3.64   diluti~ diluti~  0.283  
-##  7 Moderated dilution_(4~ sp|A4D1E9|GTP~ -1.95  -2.04   diluti~ diluti~  0.0910 
-##  8 Moderated dilution_(4~ sp|A5YKK6|CNO~ -0.757 -0.786  diluti~ diluti~  0.0292 
-##  9 Moderated dilution_(4~ sp|A6NDG6|PGP~ -0.113 -0.0994 diluti~ diluti~ -0.0132 
-## 10 Moderated dilution_(4~ sp|A6NHR9|SMH~ -1.11  -0.976  diluti~ diluti~ -0.130  
+##    modelName   contrast    protein_Id        c1      c2 c1_name c2_name estimate
+##    &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
+##  1 WaldTest_m~ dilution_(~ sp|A0AVT1|UB~ -1.27  -1.23   diluti~ diluti~ -0.0453 
+##  2 WaldTest_m~ dilution_(~ sp|A0FGR8|ES~  0.437  0.429  diluti~ diluti~  0.00768
+##  3 WaldTest_m~ dilution_(~ sp|A0MZ66|SH~ -0.530 -0.510  diluti~ diluti~ -0.0198 
+##  4 WaldTest_m~ dilution_(~ sp|A1L0T0|IL~ -2.24  -2.24   diluti~ diluti~ -0.00124
+##  5 WaldTest_m~ dilution_(~ sp|A1X283|SP~ NA     -2.50   diluti~ diluti~ NA      
+##  6 WaldTest_m~ dilution_(~ sp|A3KN83|SB~ -3.35  -3.64   diluti~ diluti~  0.283  
+##  7 WaldTest_m~ dilution_(~ sp|A4D1E9|GT~ -1.95  -2.04   diluti~ diluti~  0.0910 
+##  8 WaldTest_m~ dilution_(~ sp|A5YKK6|CN~ -0.757 -0.786  diluti~ diluti~  0.0292 
+##  9 WaldTest_m~ dilution_(~ sp|A6NDG6|PG~ -0.113 -0.0994 diluti~ diluti~ -0.0132 
+## 10 WaldTest_m~ dilution_(~ sp|A6NHR9|SM~ -1.11  -0.976  diluti~ diluti~ -0.130  
 ## # ... with 15,654 more rows, and 10 more variables: statistic &lt;dbl&gt;, df &lt;dbl&gt;,
 ## #   p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;, FDR &lt;dbl&gt;,
 ## #   species &lt;chr&gt;, TP &lt;lgl&gt;, scaled.p.value &lt;dbl&gt;</code></pre>
@@ -380,24 +378,24 @@
 <code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">plot_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="BenchmarkMSFraggerProteinIonStar_files/figure-html/bnechmark-3.png" width="960"></p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">get_confusion</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 28,762 x 17
-##     scorecol TP    what     F_    T_     R   FDP TP_hits FN_hits FP_hits TN_hits
-##        &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
-##  1   5.14e-9 TRUE  FDR   12517  1864     1     0       1    1863       0   12517
-##  2   5.14e-9 TRUE  FDR   12517  1864     2     0       2    1862       0   12517
-##  3   5.14e-9 TRUE  FDR   12517  1864     3     0       3    1861       0   12517
-##  4   5.14e-9 TRUE  FDR   12517  1864     4     0       4    1860       0   12517
-##  5   5.14e-9 TRUE  FDR   12517  1864     5     0       5    1859       0   12517
-##  6   5.18e-9 TRUE  FDR   12517  1864     6     0       6    1858       0   12517
-##  7   5.31e-9 TRUE  FDR   12517  1864     7     0       7    1857       0   12517
-##  8   5.31e-9 TRUE  FDR   12517  1864     8     0       8    1856       0   12517
-##  9   5.31e-9 TRUE  FDR   12517  1864     9     0       9    1855       0   12517
-## 10   6.15e-9 TRUE  FDR   12517  1864    10     0      10    1854       0   12517
-## # ... with 28,752 more rows, and 6 more variables: FPR &lt;dbl&gt;, TPR &lt;dbl&gt;,
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">get_confusion_benchmark</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 86,440 x 17
+##    scorecol TP    what      F_    T_     R   FDP TP_hits FN_hits FP_hits TN_hits
+##       &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
+##  1     3.27 FALSE estim~ 12591  1867     1 1           0    1867       1   12590
+##  2     2.66 TRUE  estim~ 12591  1867     2 0.5         1    1866       1   12590
+##  3     2.15 TRUE  estim~ 12591  1867     3 0.333       2    1865       1   12590
+##  4     2.09 TRUE  estim~ 12591  1867     4 0.25        3    1864       1   12590
+##  5     2.06 TRUE  estim~ 12591  1867     5 0.2         4    1863       1   12590
+##  6     1.85 TRUE  estim~ 12591  1867     6 0.167       5    1862       1   12590
+##  7     1.78 TRUE  estim~ 12591  1867     7 0.143       6    1861       1   12590
+##  8     1.78 TRUE  estim~ 12591  1867     8 0.125       7    1860       1   12590
+##  9     1.76 TRUE  estim~ 12591  1867     9 0.111       8    1859       1   12590
+## 10     1.75 TRUE  estim~ 12591  1867    10 0.1         9    1858       1   12590
+## # ... with 86,430 more rows, and 6 more variables: FPR &lt;dbl&gt;, TPR &lt;dbl&gt;,
 ## #   ACC &lt;dbl&gt;, FDP_ &lt;dbl&gt;, model_name &lt;chr&gt;, contrast &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">get_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">get_confusion_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 28,762 x 17
 ##     scorecol TP    what     F_    T_     R   FDP TP_hits FN_hits FP_hits TN_hits
 ##        &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
