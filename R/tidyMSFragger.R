@@ -28,11 +28,11 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #' }
 #'
 tidy_MSFragger_combined_protein <- function(combprot) {
-  if (file.exists(combprot)) {
+  if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 
-  }else if("tibble" %in% class(combprot)){
+  } else if("tbl_df" %in% class(combprot)) {
     Cprotein <- combprot
   }
 
