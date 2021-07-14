@@ -248,14 +248,14 @@
 <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>strategy_lmer</span><span class='op'>(</span><span class='st'>"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class='op'>=</span> <span class='st'>"random_example"</span><span class='op'>)</span>
 <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Intensity ~ condition + (1 | peptide_Id)
-#&gt; &lt;environment: 0x000000004fa5be10&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
+#&gt; &lt;environment: 0x0000000010336af0&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
 </div><div class='output co'>#&gt; function (x, tol = 1e-04) 
 #&gt; {
 #&gt;     lwr &lt;- getME(x, "lower")
 #&gt;     theta &lt;- getME(x, "theta")
 #&gt;     any(theta[lwr == 0] &lt; tol)
 #&gt; }
-#&gt; &lt;bytecode: 0x00000000424950d8&gt;
+#&gt; &lt;bytecode: 0x0000000042aa9f80&gt;
 #&gt; &lt;environment: namespace:lme4&gt;</div><div class='input'>
 </div></pre>
   </div>
