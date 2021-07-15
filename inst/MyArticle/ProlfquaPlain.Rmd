@@ -266,11 +266,14 @@ Therefore, we incorporate the failure to generate statistics for contrasts into 
 
 ```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=7}
 allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
-
 benchmark_msstats <- readRDS("../../inst/Benchresults/benchmark_msstats.RDS")
-allBenchmarks$benchmark_mssstats <- benchmark_msstats
+msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
 
-allBenchmarks$benchmark_mssstats$smc$summary
+allBenchmarks$benchmark_mssstats <- benchmark_msstats
+allBenchmarks$benchmark_msFragger <- msFragger
+
+names(allBenchmarks)
+allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats", "benchmark_msFragger"   )]
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))
@@ -300,36 +303,38 @@ gridExtra::grid.arrange(grobs = list(percentgg,  nrgg), nrow = 1)
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
 res <- res %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
-res <- res %>% filter(Name != "imputed_same_as_lm")
 
 res$contrast %>% unique()
 #resAllB <- res %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
 #resAllB <- res %>% dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
 #resAllB <- res %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
-resAllB <- res %>% dplyr::filter(contrast == "dilution_(6/4.5)_1.3(3)")
 
 
-ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
+
+norm <- res %>% group_by(contrast,whatfix) %>% summarize(meanpAUC_10 = mean(pAUC_10))
+res <- inner_join(res, norm)
+res <- mutate(res , pAUC_10n = pAUC_10 - meanpAUC_10)
+
+resAllB <- res %>% dplyr::filter(contrast == "all")
+
+p1 <- ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
   geom_bar(stat = "identity") +
   facet_wrap(~whatfix)  + 
   coord_cartesian(ylim = c(min(resAllB$pAUC_10),max(resAllB$pAUC_10))) + 
   theme_minimal() + 
-  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_hline(aes(yintercept = meanpAUC_10), color="red")
 
-norm <- res %>% group_by(contrast,whatfix) %>% summarize(meanpAUC_10 = mean(pAUC_10))
 
-res <- inner_join(res, norm)
-res <- mutate(res , pAUC_10n = pAUC_10 - meanpAUC_10)
 
-ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
+p2 <- ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
   geom_line(stat = "identity",aes(linetype = Name, color = Name)) + 
   facet_wrap(~whatfix, scales = "free") +
   theme_minimal() + 
-  theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_hline(aes(yintercept = 0), color = "red")
 
-#myColors <- brewer.pal(5,"Set1")
-#names(myColors) <- levels(dat$grp)
-#colScale <- scale_colour_manual(name = "grp",values = myColors)
+gridExtra::grid.arrange(p1, p2, nrow = 2)
 ```
 
 
@@ -338,7 +343,7 @@ ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
 dd <- map_df(allBenchmarks, function(x){res <- x$get_confusion_FDRvsFDP(); res$name <- x$model_name;res})
 ddb <- filter(dd, contrast == "dilution_(4.5/3)_1.5")
 ddb <- dd %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
-ddb <- dd %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
+ddb <- dd %>% dplyr::filter(contrast == "all")
 
 
 ddb %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
@@ -348,31 +353,12 @@ ddb %>% ggplot(aes(y = FDP_,  x  = scorecol )) +
 
 ```
 
+
+
 ```{r fig.cap="Distribution of the FDR values produced."}
 dd %>% ggplot(aes(x = scorecol)) + geom_histogram() + facet_wrap(~model_name)
 ```
 
-Compare to MS Fragger
-
-
-```{r}
-msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
-msFragger$plot_FDPvsTPR()
-msFragger$plot_FDRvsFDP()
-msFragger$plot_ROC()
-
-
-allBenchmarks$benchmark_msFragger <- msFragger
-
-```
-
-Compare number of estimated models, Compare ROC, and compare FDR vs FDP curves
-
-How this results generalize when using a different software.
-
-
-
-## Outline
 
 
 
@@ -380,7 +366,7 @@ How this results generalize when using a different software.
 
 \begin{acknowledgement}
 
-The authors thank technology platform fund of the University of Zurich.
+The authors thank the technology platform fund of the University of Zurich.
 
 
 \end{acknowledgement}
