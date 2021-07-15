@@ -22,12 +22,15 @@ pooled_V2 <- function(x){
   pool.SS <- sum(SS) + sum(n * deviation^2)
   pool.var <- pool.SS/(pool.n - 1)
   n.groups <-  length(sample.var)
+  sdT = sqrt(pool.var * 2 / (pool.n/n.groups))
+
   res <- data.frame(
     n.groups = n.groups,
     n = pool.n,
     df = pool.n - n.groups,
     sd = sqrt(pool.var),
     var = pool.var,
+    sdT = sdT,
     mean = pool.mean
   )
   return(res)
@@ -47,11 +50,15 @@ pooled_V1 <- function(x){
   #pool.var <- sum(SS)/(pool.n)
 
   pool.mean <- sum(sample.mean * n)/pool.n
+
+  sdT = sqrt(pool.var * 2 / (pool.n/n.groups))
+
   res <- data.frame(
     n.groups = n.groups,
     n = pool.n,
     df = pool.n - n.groups,
     sd = sqrt(pool.var),
+    sdT = sdT,
     var = pool.var,
     mean = pool.mean
   )
@@ -94,7 +101,6 @@ compute_pooled <- function(x, method = c("V1","V2")){
 
   res <- func(x)
 
-  #res$sdT <- sqrt(res$var) / sqrt(sum(x$not_na))
   res$meanAll <- meanAll
   res$not_na <- not_na
   return(res)

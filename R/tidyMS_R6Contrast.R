@@ -122,13 +122,14 @@ ContrastsSimpleImpute <- R6::R6Class(
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config)
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
+
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
-          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sd,
+          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sdT,
                                   p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
 
           prqt <- -qt((1 - self$confint)/2, df = result$df)
-          result$conf.low <- result$estimate_median  - prqt * (result$sd)
-          result$conf.high <- result$estimate_median + prqt * (result$sd)
+          result$conf.low <- result$estimate_median  - prqt * (result$sdT)
+          result$conf.high <- result$estimate_median + prqt * (result$sdT)
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
           if (!all) {
             result <- select(result, -all_of( c("isSingular", "not_na" , "mean" ,"n.groups", "n", "meanAll") ) )

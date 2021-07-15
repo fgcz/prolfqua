@@ -2,7 +2,11 @@
 title: "Benchmarking MSFragger output using Ionstar Dataset"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
 papersize: a4
 geometry: margin=.5in
 vignette: >
@@ -36,7 +40,11 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 ```
 
+## Load data
+
 We start by loading the IonStar dataset and the annotation from the `prolfquaData` package. The method `add_annotation` adds the annotation to the data.
+
+
 
 ```{r}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
@@ -44,17 +52,15 @@ inputMQfile <-  file.path(datadir, "MSFragger_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 annotation <- readxl::read_xlsx(inputAnnotation)
 
-
-unzip(inputMQfile, list = TRUE)$Name
-
 protein <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
                              header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 protein <- tidy_MSFragger_combined_protein(protein)
 protein <- protein %>% dplyr::filter(unique.stripped.peptides > 1)
-#View(protein)
 
 merged <- inner_join(annotation, protein)
 ```
+
+## Create prolfqua configuration
 
 ```{r setupConfigs}
 
@@ -71,12 +77,12 @@ atable$factorDepth <- 1
 
 config <- AnalysisConfiguration$new(atable)
 
-
-
 adata <- setup_analysis(merged, config)
 lfqdata <- LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 ```
+
+## Normalize data using human proteins
 
 ```{r createPlotter}
 pl <- lfqdata$get_Plotter()
@@ -97,18 +103,21 @@ hm <- pl$NA_heatmap()
 hm
 ```
 
+## Summarize data
+
 ```{r useSummarizer}
 lfqdataNormalized$summarize_hierarchy()
 
 
 summariz <- lfqdataNormalized$get_Summariser()
-summariz$hierarchy_counts_sample()
 summariz$interaction_missing_stats()
 summariz$missingness_per_condition()
 summariz$missingness_per_condition_cumsum()
 summariz$hierarchy_counts_sample()
 
 ```
+
+## Model data and specify contrasts
 
 ```{r specifyContrasts}
 Contrasts <- c(
@@ -133,6 +142,10 @@ cp$volcano()
 
 ```
 
+
+## Benchmark data
+
+
 ```{r bnechmark}
 ttd <- prolfqua::ionstar_bench_preprocess(contrdf)
 medpol_benchmark <- make_benchmark(ttd$data,
@@ -141,11 +154,9 @@ medpol_benchmark <- make_benchmark(ttd$data,
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
 #saveRDS(medpol_benchmark, file = "../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
-medpol_benchmark$data()
+prolfqua::table_facade(medpol_benchmark$smc$summary, "Nr of estimated contrasts")
 medpol_benchmark$plot_score_distribution()
-medpol_benchmark$plot_ROC()
+medpol_benchmark$plot_ROC(0.05)
 medpol_benchmark$plot_FDRvsFDP()
-medpol_benchmark$get_confusion_benchmark()
-medpol_benchmark$get_confusion_FDRvsFDP()
 
 ```

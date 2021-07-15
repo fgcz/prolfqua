@@ -5,9 +5,9 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
     toc_float:
-      toc_collapsed: true
+      toc_collapsed: false
 papersize: a4
 geometry: margin=.5in
 vignette: >
@@ -65,11 +65,10 @@ mqdata <- list()
 
 mqdata$data <- tidyMQ_Peptides(inputMQfile)
 mqdata$config <- prolfqua::create_config_MQ_peptide()
-mean(grepl("CON_", mqdata$data$top_protein))
+mean(grepl("CON_", mqdata$data$leading.razor.protein),na.rm = TRUE)
+
 
 annotation <- readxl::read_xlsx(inputAnnotation)
-
-
 res <- add_annotation(
   mqdata$data,
   annotation,
@@ -204,7 +203,7 @@ lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, prefix = "protein")
 
 lfqAggMedpol$medpolish()
 xx <- lfqAggMedpol$plot()
-xx$plots[[1]]
+gridExtra::grid.arrange(grobs =  xx$plots[1:6])
 ```
 
 
@@ -236,7 +235,7 @@ We will be fitting tree models to the data. The first model is a linear model as
 The second model is mixed effects model as implemented in the R function `lmer` fitted to peptide level intensites, where we model the peptide measurements as repeated measurements of the protein. The third is again a linear model but fitted to peptide intensities. By this we obtain for each peptide intensites a linear model. 
 
 
-## Model 1 : Fitting a linear model to the protein intensities
+## Fitting a linear model to the protein intensities
 
 
 ```{r buildModelLM}
@@ -253,7 +252,7 @@ modLinearProt$anova_histogram()$plot
 
 ```
 
-## Model 2: Fitting a mixed effects model to peptide intensities
+## Fitting a mixed effects model to peptide intensities
 
 
 ```{r buildModelLMer}
@@ -268,7 +267,7 @@ modMixedProtLevel$anova_histogram()$plot
 
 ```
 
-## Model 3: Fitting peptide level models
+## Fitting peptide level models
 
 ```{r buildModelPeptide}
 
@@ -386,7 +385,7 @@ allBenchmarks$benchmark_imputation <- benchmark_imputation
 ```
 
 
-## Contrasts from Model 1
+## Contrasts from linear model
 
 ```{r contrastModel1}
 dim(modLinearProt$modelDF)
@@ -436,7 +435,6 @@ benchmark_ProtModerated <- make_benchmark(ttd$data,
                                    model_description = "med. polish and lm moderated",
                                    model_name = "prot_med_lm_moderated")
 
-#benchmark_ProtModerated$plot_score_distribution()
 prolfqua::table_facade(benchmark_ProtModerated$smc$summary,
                        caption = "Nr of proteins with Nr of estimated contrasts.")
 
@@ -445,7 +443,7 @@ allBenchmarks$benchmark_ProtModerated <- benchmark_ProtModerated
 
 ```
 
-## Contrasts from Model 2
+## Contrasts from mixed effect models
 
 ```{r contrastModel2}
 contrProtMixed <- prolfqua::Contrasts$new(modMixedProtLevel, relevantContrasts, modelName = "WaldTestMixed")
@@ -467,7 +465,8 @@ benchmark_mixed <- make_benchmark(ttd$data,
                                    model_name = "prot_mixed_effect"
 )
 benchmark_mixed$complete(FALSE)
-prolfqua::table_facade(benchmark_mixed$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+prolfqua::table_facade(benchmark_mixed$smc$summary,
+                       caption = "Nr of proteins with Nr of estimated contrasts.")
 
 #benchmark_mixed$plot_score_distribution()
 benchmark_mixed$plot_FDRvsFDP()
@@ -488,9 +487,9 @@ hist(df, breaks = 100, xlim = c(0,61))
 
 
 ```{r contrastModel2Moderation}
-
 contrProtMixedModerated <- ContrastsModerated$new(contrProtMixed)
 contrProtMixedModerated$get_Plotter()$volcano()
+
 ```
 
 
@@ -511,7 +510,7 @@ allBenchmarks$benchmark_mixedModerated <- benchmark_mixedModerated
 ```
 
 
-## Protein level contrasts from Peptide models
+## Protein level contrasts from peptide models
 
 To estimate regulation probabilities using the ROPECA approach we can chain the contrast computation methods. First we compute contrasts on peptide level, than we moderated the variance, t-statistics and p-values and finally we aggregate the fold change estimates and p-values.
 
@@ -527,7 +526,6 @@ contrROPECA$get_Plotter()$histogram()
 
 
 ```{r benchmarkROPECA}
-#View(contrROPECA$get_contrasts())
 allContrasts$contrProtMixedModerated <- contrProtMixedModerated$get_contrasts()
 
 ttd <- prolfqua::ionstar_bench_preprocess(contrROPECA$get_contrasts())
@@ -544,11 +542,11 @@ benchmark_ropeca <- make_benchmark(ttd$data,
 )
 
 
-prolfqua::table_facade(benchmark_ropeca$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
+prolfqua::table_facade(benchmark_ropeca$smc$summary,
+                       caption = "Nr of proteins with Nr of estimated contrasts.")
 
 benchmark_ropeca$plot_ROC(0.1)
 benchmark_ropeca$plot_FDRvsFDP()
-
 
 allBenchmarks$benchmark_ropeca <- benchmark_ropeca
 
@@ -560,6 +558,7 @@ benchmark_ropeca$pAUC_summaries()$ftable$content
 
 ## Merging contrasts
 
+Here we merge contrasts estimates from linear models and from the models with imputation.
 
 ```{r mergingContrasts}
 allContrasts$ProtModerated
@@ -587,9 +586,8 @@ allBenchmarks$benchmark_merged <- benchmark_merged
 ```
 
 
-### What is the performance of those replaced? 
 
-```{r same}
+```{r same, eval=FALSE}
 same <- all$same
 
 allBenchmarks$benchmark_Prot$smc$summary
@@ -608,7 +606,7 @@ benchmark_same$plot_FDRvsFDP()
 ```
 
 
-```{r fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark"}
+```{r storeSame, fig.width=10, fig.height=10, fig.cap="ROC curves for merged benchmark", eval=FALSE}
 benchmark_same$plot_ROC(xlim = 0.15)
 benchmark_same$pAUC_summaries()
 allBenchmarks$benchmark_same <- benchmark_same
@@ -631,12 +629,12 @@ if (SUBSETNORM) {
 if (SUBSETNORM) {
   #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
 } else{
-  # saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
+  #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
 }
 
 ```
 
-# Benchmarking
+# Comparing various models
 
 The table below summarizes the contrast estimates produced which will be benchmarked.
 
@@ -699,10 +697,6 @@ dd %>% ggplot(aes(y = FDP_,  x  = scorecol )) +
   geom_line(aes(color = model_name)) +
   facet_wrap(~contrast) + 
    geom_abline(intercept = 0, slope = 1, color = 2)
-
-  
-  
-
 
 ```
 
