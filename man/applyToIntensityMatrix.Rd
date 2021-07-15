@@ -26,7 +26,6 @@ stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 data <- bb$data
 res <- applyToIntensityMatrix(data, conf, .func = base::scale)
-res
 stopifnot("peptide.intensity_base..scale" \%in\% colnames(res))
 stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
 conf <- bb$config$clone(deep=TRUE)

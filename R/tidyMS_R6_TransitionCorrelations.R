@@ -276,35 +276,44 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   return(pdata)
 }
 
-robustscale <- function(data,
-                        dim = 2,
-                        center = TRUE,
-                        scale = TRUE,
-                        preserveScale = TRUE)
+#'
+#'
+#' @examples
+#'
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' conf <- bb$config$clone(deep=TRUE)
+#' sample_analysis <- bb$data
+#' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
+#' mat <- toWideConfig(pepIntensityNormalized, conf,as.matrix = TRUE)$data
+#' rs <- robustscale(mat, preserveMean = TRUE)
+#' apply(rs$data, 2 , median , na.rm = TRUE)
+#'
+get_robscales <- function(data,
+                        dim = 2)
 {
-  medians = NULL
-  if (center) {
-    medians <- apply(data, dim, median, na.rm = TRUE)
-    data = sweep(data, dim, medians, "-")
-  }
-  mads = NULL
-  if (scale) {
-    mads <- apply(data, dim, mad, na.rm = TRUE)
-    if (preserveScale) {
-      mads <- mads/mean(mads)
-    }
-    data = (sweep(data, dim, mads, "/"))
-  }
-  return(list(data = data, medians = medians, mads = mads))
+  medians <- apply(data, dim, median, na.rm = TRUE)
+  data = sweep(data, dim, medians, "-")
+  mads <- apply(data, dim, mad, na.rm = TRUE)
+  return(list( medians = medians, mads = mads ) )
 }
 
 
 # Functions working on Matrices go Here ----
-#' robust scale warpper
+#' robust scale wrapper
 #' @keywords internal
 #' @export
-robust_scale <- function(data){
-  return(robustscale(data)$data)
+robust_scale <- function(data, dim = 2, preserveMean = FALSE){
+  scales <- get_robscales(data, dim = dim)
+  data = sweep(data, dim, scales$medians, "-")
+  mads <- scales$mads/mean(scales$mads)
+  data = (sweep(data, dim, mads, "/"))
+
+  meanmed <- mean(scales$medians)
+  addmean <- if (preserveMean) {meanmed} else {0}
+
+  return(data + addmean)
 }
 
 
@@ -323,7 +332,6 @@ robust_scale <- function(data){
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' res <- applyToIntensityMatrix(data, conf, .func = base::scale)
-#' res
 #' stopifnot("peptide.intensity_base..scale" %in% colnames(res))
 #' stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
 #' conf <- bb$config$clone(deep=TRUE)
@@ -343,6 +351,7 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' scale_with_subset
 #' @export
 #' @keywords internal
+#' @family preprocessing
 #' @examples
 #'
 #' library(prolfqua)
@@ -356,17 +365,81 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset(res, res, conf)
 #'
-#'
-scale_with_subset <- function(data, subset, config){
+scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE){
+
   colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
   subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
-  scales <- prolfqua:::robustscale(subset)
+
+
+  scales <- get_robscales(subset)
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat = sweep(mat, 2, scales$medians, "-")
   mat = sweep(mat, 2, scales$mads, "/")
 
+  meanmed <- mean(scales$medians)
+  addmean <- if (preserveMean) {meanmed} else {0}
+  mat <- mat + addmean
   data <- gatherItBack(mat, colname, config, data)
-  return(list(data = data, scales = scales))
+  if (get_scales) {
+    return(list(data = data, scales = scales))
+  } else {
+    return(data)
+  }
+}
+
+#' scale within factor levels (e.g. use for pulldown data)
+#'
+#' @export
+#' @keywords internal
+#'
+#' @family preprocessing
+#' @examples
+#' library(prolfqua)
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' conf <- bb$config$clone(deep=TRUE)
+#' sample_analysis <- bb$data
+#' conf$table$workIntensity <- "peptide.intensity"
+#'
+#' res <- transform_work_intensity(sample_analysis, conf, log2)
+#' res <- scale_with_subset_by_factors(res, res, conf)
+#'
+#' undebug(scale_with_subset2)
+#'
+scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = TRUE){
+data <- res
+config <- conf$clone(deep = TRUE)
+  dl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
+  sl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
+  cf <- config$clone(deep = T)
+  cf$table$factors <- NULL
+  cf$table$factorDepth <- 0
+  N <- length(dl$data)
+  res <- vector(mode = "list", N)
+  scales <- vector(mode = "list", N)
+
+  for (i in 1:(N - 1)) {
+    tmp <- scale_with_subset(dl$data[[i]], sl$data[[i]] ,
+                                  cf$clone(deep = TRUE) ,
+                                  preserveMean = TRUE,
+                                  get_scales = TRUE)
+    res[[i]] <- tmp$data
+    scales[[i]] <- tmp$scales
+  }
+  tmp <- scale_with_subset(dl$data[[N]],
+                           sl$data[[N]],
+                           cf,
+                           preserveMean = TRUE,
+                           get_scales = TRUE)
+  res[[N]] <- tmp$data
+  scales[[N]] <- tmp$scales
+  #names(scales) <- dl[[1]]
+  resb <- dl
+  resb$data <- res
+  resb <- unnest(resb, cols = (names(resb)))
+  config$table$setWorkIntensity(cf$table$getWorkIntensity())
+  return(list(data = resb, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
 }
 
 #' normalize data by log2 and robust scaling
@@ -565,7 +638,7 @@ impute_correlationBased <- function(x , config){
 #'
 #' bb <- prolfqua::data_IonstarProtein_subsetNorm
 #' nr_B_in_A(bb$data, bb$config)
-#' undebug(nr_B_in_A)
+#' #undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
   levelA <- config$table$hkeysDepth()
   levelB <- config$table$hierarchyKeys()[length(levelA) + 1]

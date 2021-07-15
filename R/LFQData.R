@@ -964,7 +964,9 @@ LFQDataWriter <- R6::R6Class(
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
-#' lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
+#' lfqTrans <- lfqdata$clone()$get_Transformer()
+#' lfqTrans$log2()
+#' lfqTrans <- lfqTrans$robscale()$lfq
 #' lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 #'
 #' lfqAggregator$medpolish()

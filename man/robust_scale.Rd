@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{robust_scale}
 \alias{robust_scale}
-\title{robust scale warpper}
+\title{robust scale wrapper}
 \usage{
-robust_scale(data)
+robust_scale(data, dim = 2, preserveMean = FALSE)
 }
 \description{
-robust scale warpper
+robust scale wrapper
 }
 \keyword{internal}
