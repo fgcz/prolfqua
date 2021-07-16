@@ -405,13 +405,11 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset_by_factors(res, res, conf)
 #'
-#' undebug(scale_with_subset2)
 #'
 scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = TRUE){
-data <- res
-config <- conf$clone(deep = TRUE)
+  config <- conf$clone(deep = TRUE)
   dl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
-  sl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
+  sl <- group_by(subset, across(config$table$fkeysDepth())) %>% nest()
   cf <- config$clone(deep = T)
   cf$table$factors <- NULL
   cf$table$factorDepth <- 0
@@ -421,9 +419,9 @@ config <- conf$clone(deep = TRUE)
 
   for (i in 1:(N - 1)) {
     tmp <- scale_with_subset(dl$data[[i]], sl$data[[i]] ,
-                                  cf$clone(deep = TRUE) ,
-                                  preserveMean = TRUE,
-                                  get_scales = TRUE)
+                             cf$clone(deep = TRUE) ,
+                             preserveMean = TRUE,
+                             get_scales = TRUE)
     res[[i]] <- tmp$data
     scales[[i]] <- tmp$scales
   }

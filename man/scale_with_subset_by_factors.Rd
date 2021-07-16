@@ -21,7 +21,6 @@ conf$table$workIntensity <- "peptide.intensity"
 res <- transform_work_intensity(sample_analysis, conf, log2)
 res <- scale_with_subset_by_factors(res, res, conf)
 
-undebug(scale_with_subset2)
 
 }
 \seealso{
