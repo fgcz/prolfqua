@@ -29,7 +29,9 @@ xx$config$table$workIntensity
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{filter_proteins_by_peptide_count}()}
+\code{\link{filter_proteins_by_peptide_count}()},
+\code{\link{scale_with_subset_by_factors}()},
+\code{\link{scale_with_subset}()}
 }
 \concept{preprocessing}
 \keyword{internal}

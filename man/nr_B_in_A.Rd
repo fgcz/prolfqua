@@ -40,6 +40,6 @@ nr_B_in_A(resDataStart, config, merge = FALSE)
 
 bb <- prolfqua::data_IonstarProtein_subsetNorm
 nr_B_in_A(bb$data, bb$config)
-undebug(nr_B_in_A)
+#undebug(nr_B_in_A)
 }
 \keyword{internal}
