@@ -192,7 +192,7 @@ ionstar <- IonstarData$new(mqdataSubset$data, mqdataSubset$config,
 We will be using the `LFQDataAggregator` class. To estimate protein intensities using Tukey's median polish we need to use log2 transformed peptide intensities.
 The figure below shows the the peptide intensities used for estimation and the protein intensity estimates (black dashed line).
 
-```{r aggregateMedpolish}
+```{r aggregateMedpolish, fig.width=10, fig.height=10}
 lfqNormSubset$config$table$getWorkIntensity()
 
 pl <- lfqNormSubset$get_Plotter()
