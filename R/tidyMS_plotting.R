@@ -447,7 +447,7 @@ plot_NA_heatmap <- function(data,
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
   allrows <- nrow(res)
-  res <- res[apply(res,1, sum) > 0,]
+  res <- res[apply(res,1, sum) > 0, , drop = FALSE]
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
 
