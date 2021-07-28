@@ -451,7 +451,7 @@ plot_NA_heatmap <- function(data,
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
 
-  if (nrow(res) > 0) {
+  if (nrow(res) > 1) {
     res <- if (nrow(res) > limitrows ) {
       message("limiting nr of rows to:", limitrows,"\n")
       res[sample( 1:nrow(res),limitrows),]
