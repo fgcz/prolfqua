@@ -1,22 +1,26 @@
 ---
-title: prolfqua - Proteomics Label Free Quantification using Linear Models
+title: prolfqua - R-package for Proteomics Label Free Quantification using Linear Models
 author: 
   - name: Witold Wolski
     affil: 1; 2
-    orcid: '0000-0002-1099-3857'
+    orcid: '0000-0002-6468-120X'
   - name: Christian Panse
     affil: 1; 2
+    orcid: '0000-0003-1975-3064'
   - name: Jonas Grossmann
     affil: 1; 2
-  - name: Maria DiErrico
+    orcid: '0000-0002-6899-9020'
+  - name: Maria d'Errico
     affil: 1; 2
+    orcid: '0000-0001-9467-9058'
   - name: Paolo Nanni
     affil: 1
+    orcid: '0000-0001-8429-3557'
 affiliation:
   - num: 1
-    address: Functional Genomics Center Zurich, University Zurich
+    address: Functional Genomics Center Zurich (https://www.fgcz.ch/)
   - num: 2
-    address: Swiss Institute of Bioinformatics
+    address: Swiss Institute of Bioinformatics (https://www.sib.swiss/)
 column_numbers: 4
 font_family: Monaco
 poster_height: "38in"
@@ -24,7 +28,7 @@ primary_colour: "#000C66"
 titletext_fontfamily: Arial
 body_textsize: "35px"
 logoleft_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/FGCZLogo.png
-logoright_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/imgfile.png
+logoright_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/hexStickerProlfqua.png
 output: 
   posterdown::posterdown_html:
 bibliography: bibliography.bib
@@ -41,24 +45,26 @@ library(tidyverse)
 library(prolfqua)
 library(ggplot2)
 
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 5)
+
 ```
 
 
-We use prolfqua to develop highly customizable, visually appealing, and interactive data analysis reports for quantification experiments in pdf or HTML format. We use prolfqua to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. The prolfqua package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, sample size estimation, modeling, and hypothesis testing. We further use prolfqua to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format for quantification experiments. We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. The `prolfqua` package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, sample size estimation, modeling, and hypothesis testing. We further use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+
 
 # Implementation & Methods
 
-We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value. Using an __R6__ configuration object, we specify what variable is in which column, making it easy to integrate new inputs in `prolfqua` if provided in tidy tables. For example, to visualize tidy _Spectronaut_, or _Skyline_ outputs, or data in _MSStats_ format, only a few lines of code to update the `prolfqua` configuration are needed. For popular software like _MaxQuant_ or _MSFragger_, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base R and the tidyverse. We use __R6__ classes to structure the functionality of the package (see Figure \@ref(fig:LFQData) and Figure \@ref(fig:ContrastUML)). __R6__ classes are well supported (e.g. autocompletion) and easy to use (OOP).
+We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value. Using an __R6__ configuration object, we specify what variable is in which column, making it easy to integrate new inputs in `prolfqua` if provided in tidy tables. For example, to visualize tidy _Spectronaut_, or _Skyline_ outputs, or data in _MSStats_ format, only a few lines of code to update the `prolfqua` configuration are needed. For popular software like _MaxQuant_ or _MSFragger_, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base __R__ and the tidyverse. We use __R6__ classes to structure the functionality of the package (see Figure \@ref(fig:LFQData) and Figure \@ref(fig:ContrastUML)). __R6__ classes are well supported (e.g. auto-completion) and easy to use (OOP).
 
 
 ```{r LFQData, echo=FALSE, fig.cap="Class Diagram for LFQData and related objects. The LFQData_Plotter class uses the LFQData class to implement methods for plotting.", out.width = '90%'}
 knitr::include_graphics("LFQDataUML.png")
 ```
 
-R linear model and linear mixed effect models allow modelling parallel designs, repeated measurements, factorial designs, and many more. R's formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with `prolfqua` in any other statistical programming language. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statisitcal modelling functionality in proflqua (see Figure \@ref(fig:ContrastUML)).
+__R__ linear model and linear mixed effect models allow modeling parallel designs, repeated measurements, factorial designs, and many more. __R__'s formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with `prolfqua` in other statistical programming languages. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statistical modeling functionality in `proflqua` (see Figure \@ref(fig:ContrastUML)).
 
-(ref:ContrastUML) UML diagram of modelling and contrast related classes. Different strategies e.g. _lm_, _lmer_, and _glm_ can be used to fit the models using a model builder (see code). All classes computing contrasts implement the _Contrast_ interface.
+(ref:ContrastUML) UML diagram of modeling and contrast related classes. Different strategies e.g. _lm_, _lmer_, and _glm_ can be used to fit the models using a model builder (see code). All classes computing contrasts implement the _Contrast_ interface.
 
 ```{r ContrastUML, echo=FALSE, fig.cap="(ref:ContrastUML)", out.width = '90%'}
 knitr::include_graphics("ContrastUML.png")
@@ -66,11 +72,11 @@ knitr::include_graphics("ContrastUML.png")
 
 # Example Analysis
 
-The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentration. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins we know that the difference between dilutions should be $\beta \ne 0$. For benchmarking we used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. Peptide intensities are $\log_2$ transformed and robust z-score scaled, which also preserves the original scale of the data. Protein intensities are estimated using Tukey's median polish (see code example and Figure \@ref(fig:prepro)).
+The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentrations. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins, we know that the difference between dilutions should be $\beta \ne 0$. For benchmarking we used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. Peptide intensities are $\log_2$ transformed and robust z-score scaled but then rescaled to preserves the original range of the data. Protein intensities are estimated using Tukey's median polish (see code example and Figure \@ref(fig:prepro)).
 
 
 
-```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", fig.width=9, fig.height=7, out.width = '90%'}
+```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", out.width = '90%'}
 d <- prolfqua::data_ionstar$filtered()
 lfqd <- LFQData$new(d$data, d$config) 
 t <- lfqd$get_Transformer()
@@ -136,9 +142,9 @@ allBenchmarks$benchmark_msFragger <- msFragger
 allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats"   )]
 ```
 
-(ref:benchmarkROC) Partial area under the ROC curve at $10\%$ FPR. Red line average area under the curve. Difference to mean partial area under the ROC curve for various models, at $10\%$ FPR, by fold change.
+(ref:benchmarkROC) Left panel - Partial area under the ROC curve at $10\%$ FPR for all contrasts. Red line average area under the curve. Left panel - Difference to mean partial area under the ROC curve for various models, at $10\%$ FPR, by fold change.
 
-```{r benchmarkROC, fig.cap="(ref:benchmarkROC)", fig.width=8, fig.height=6, out.width = '90%'}
+```{r benchmarkROC, fig.cap="(ref:benchmarkROC)", out.width = '90%'}
 
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
@@ -159,7 +165,7 @@ p1 <- ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
   geom_hline(aes(yintercept = meanpAUC_10), color = "red") + xlab("")
 
 p2 <- ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
-  geom_line(stat = "identity", aes(linetype = Name, color = Name), size = 2) + 
+  geom_line(stat = "identity", aes(linetype = Name, color = Name), size = 1) + 
   facet_wrap(~ whatfix, scales = "free") +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -170,15 +176,15 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores. We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
+The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores (`?Benchmark`). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
 
-A relevant parameter is the number of proteins for which we estimated the contrasts (see Figure \@ref(fig:FDRfdp)). It indicates how robust the models are in the presence of missing data. Also import is if the FDR produced is an unbiased estimate of the false discovery proportion (FDP) (see Figure \@ref(fig:FDRfdp) right panel) 
-
-
-(ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modelling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
+A relevant parameter is the number of proteins for which we estimated the contrasts (see Figure \@ref(fig:FDRfdp)). It indicates how robust the models are in the presence of missing data. Also important is if the FDR produced is an unbiased estimate of the false discovery proportion (FDP) (see Figure \@ref(fig:FDRfdp) right panel).
 
 
-```{r FDRfdp, fig.cap = "(ref:FDRfdp)", fig.width=8, fig.height=6, out.width = '90%'}
+(ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modeling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
+
+
+```{r FDRfdp, fig.cap = "(ref:FDRfdp)", out.width = '90%'}
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))
@@ -215,6 +221,17 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # Conclusions
 
+`prolfqua` is an easy-to-use package to analyze quantitative mass spectrometric data, report results, and benchmark MS software and statistical methods. We provide more details at the website https://wolski.github.io/prolfqua/. To install:
+
+
+```{r echo=TRUE, eval=FALSE}
+install.packages('remotes')
+remotes::install_gitlab("wolski/prolfquaData",
+                        host="gitlab.bfabric.org")
+remotes::install_github('wolski/prolfqua',
+                        build_vignettes = TRUE)
+
+```
 
 The authors thank the technology platform fund of the University of Zurich.
 
