@@ -1,29 +1,30 @@
 ---
-title: prolfqua - Proteomics label free quantification using linear models
+title: prolfqua - Proteomics Label Free Quantification using Linear Models
 author: 
   - name: Witold Wolski
     affil: 1; 2
     orcid: '0000-0002-1099-3857'
-  - name: Jonas Grossmann
-    affil: 1; 2
   - name: Christian Panse
     affil: 1; 2
-  - name: Paolo Nanni
+  - name: Jonas Grossmann
     affil: 1; 2
+  - name: Maria DiErrico
+    affil: 1; 2
+  - name: Paolo Nanni
+    affil: 1
 affiliation:
   - num: 1
     address: Functional Genomics Center Zurich, University Zurich
   - num: 2
     address: Swiss Institute of Bioinformatics
 column_numbers: 4
-font_family: Papyrus
+font_family: Monaco
 poster_height: "38in"
 primary_colour: "#000C66"
-title_textsize: "80pt"
-titletext_fontfamily: Monaco
+titletext_fontfamily: Arial
 body_textsize: "35px"
-logoright_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/imgfile.png
 logoleft_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/FGCZLogo.png
+logoright_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/imgfile.png
 output: 
   posterdown::posterdown_html:
 bibliography: bibliography.bib
@@ -46,161 +47,84 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 We use prolfqua to develop highly customizable, visually appealing, and interactive data analysis reports for quantification experiments in pdf or HTML format. We use prolfqua to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. The prolfqua package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, sample size estimation, modeling, and hypothesis testing. We further use prolfqua to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 
-# Methods
+# Implementation & Methods
 
-We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value. Using an __R6__ configuration object, we specify what variable is in which column, making it easy to integrate new inputs in prolfqua if provided in tidy tables. For example, to visualize tidy Spectronaut, or Skyline outputs, or data in MSStats format, only a few lines of code to update the prolfqua configuration are needed. For popular software like MaxQuant or MSFragger, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base R and the tidyverse.
-
-
-## Benchmarking
-
-The benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentration [@shen2018ionstar]. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins we know that the difference between dilutions should be $\beta \ne 0$.
+We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value. Using an __R6__ configuration object, we specify what variable is in which column, making it easy to integrate new inputs in `prolfqua` if provided in tidy tables. For example, to visualize tidy _Spectronaut_, or _Skyline_ outputs, or data in _MSStats_ format, only a few lines of code to update the `prolfqua` configuration are needed. For popular software like _MaxQuant_ or _MSFragger_, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base R and the tidyverse. We use __R6__ classes to structure the functionality of the package (see Figure \@ref(fig:LFQData) and Figure \@ref(fig:ContrastUML)). __R6__ classes are well supported (e.g. autocompletion) and easy to use (OOP).
 
 
+```{r LFQData, echo=FALSE, fig.cap="Class Diagram for LFQData and related objects. The LFQData_Plotter class uses the LFQData class to implement methods for plotting.", out.width = '90%'}
+knitr::include_graphics("LFQDataUML.png")
+```
 
-## Benchmark Data preprocessing
+R linear model and linear mixed effect models allow modelling parallel designs, repeated measurements, factorial designs, and many more. R's formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with `prolfqua` in any other statistical programming language. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statisitcal modelling functionality in proflqua (see Figure \@ref(fig:ContrastUML)).
+
+(ref:ContrastUML) UML diagram of modelling and contrast related classes. Different strategies e.g. _lm_, _lmer_, and _glm_ can be used to fit the models using a model builder (see code). All classes computing contrasts implement the _Contrast_ interface.
+
+```{r ContrastUML, echo=FALSE, fig.cap="(ref:ContrastUML)", out.width = '90%'}
+knitr::include_graphics("ContrastUML.png")
+```
+
+# Example Analysis
+
+The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentration. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins we know that the difference between dilutions should be $\beta \ne 0$. For benchmarking we used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. Peptide intensities are $\log_2$ transformed and robust z-score scaled, which also preserves the original scale of the data. Protein intensities are estimated using Tukey's median polish (see code example and Figure \@ref(fig:prepro)).
 
 
-We fitted the models using all the $20$ samples of the IonStar dataset, i.e. five different dilutions, with four technical replicates each. This allows to estimate ten different contrasts but for benchmarking we only used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$ listed in Table \@ref(tab:usedContrasts). Only those small fold-changes allowed us to see differences among the methods. 
-Data was preprocessed by $\log_2$ transforming the peptide intensities, and subsequent robust z-score like transformation, which preseres the original scale of the data. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment.
 
-In order to remove systematic differences among samples, peptide intensities need to be transformed and scaled. The transformation aims to remove heteroscedasticity while the scaling aims to remove systematic differences among samples. Because the size of the error is proportional to the intensity, by $\log$ transforming the intensities this error can be modelled with $\epsilon \propto N(0, \sigma^2)$. Because we need to estimate the protein fold-changes on the original scale, we have to multiply the $z$-score by the average variance of all the $N$ samples in the experiment.
+```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", fig.width=9, fig.height=7, out.width = '90%'}
+d <- prolfqua::data_ionstar$filtered()
+lfqd <- LFQData$new(d$data, d$config) 
+t <- lfqd$get_Transformer()
+lfqd <-  t$log2()$robscale()$lfq
+pl <- lfqd$get_Plotter()
+p_1 <- pl$intensity_distribution_density() +
+  labs(tag = "A") + theme(legend.position = "none")
+agr <- lfqd$get_Aggregator()
+lfqp <- agr$medpolish()
+p_2 <- agr$plot()$plots[[1]] + labs(tag = "B")
+p_3 <- lfqp$get_Stats()$violin() + labs(tag = "C")
+pl <- lfqp$get_Plotter()
+p_4 <- pl$boxplots()$boxplot[[1]] + labs(tag = "D")
+ggpubr::ggarrange(p_1, p_2, p_3, p_4)
 
-$$
-z' = z \times 1/N\sum_{i=1}^N S_i
-$$
 
-For the Ionstar dataset we used the intensities of _H. sapiens_ proteins, whose concentrations do not change, to determine $\bar{x}$ and $S$ and than applied it to all the intensities (including _E. coli_) in the sample.
+```
 
 
-```{r setupContrasts}
 
-outpath <- "results_modelling_all"
-#modelName  <- "Model"
+(ref:scaling) Panel A - Peptide intensity distributions for 20 samples, Panel B - Peptide intensities for protein _5NTD_ and protein intensity estimate (black dashed line), Panel C - distribution of protein standard deviations for all dilutions, Panel D - Distribution of protein intensities for protein _5NTD_.
 
-DEBUG <- FALSE
 
-Contrasts <- c(
-  "dilution_(9/3)_3" =   "dilution.e - dilution.a",
-  "dilution_(9/4.5)_2" =   "dilution.e - dilution.b",
-  "dilution_(9/6)_1.5" =   "dilution.e - dilution.c",
+(ref:exampleContrasts) Left panel - histogram of p-values. Right panel - volcano plots.
+
+```{r exampleContrasts, fig.cap="(ref:exampleContrasts)", echo=TRUE, out.width = '90%'}
+contrasts <- c(
   "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
-  
-  "dilution_(7.5/3)_2.5" =   "dilution.d - dilution.a",
-  "dilution_(7.5/4.5)_1.6(6)" =   "dilution.d - dilution.b",
   "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
-  
-  "dilution_(6/3)_2" =   "dilution.c - dilution.a",
   "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
-  
   "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
 )
-
-tt <- data.frame(contrastsName = names(Contrasts),  contrasts = Contrasts)
-tt <- tt %>% separate(contrastsName, c("dilution", "ratio", "expected fold change"), sep =  "_", remove = FALSE)
+# fit model
+lmmodel <- paste(lfqp$intensity_column()," ~ dilution.")
+modelFunction <- strategy_lm( lmmodel, model_name = "lm")
+models <- build_model(lfqp, modelFunction)
+p1 <-  models$anova_histogram()
+# compute contrasts from linear model and with imputation
+contr <- Contrasts$new(models, contrasts) %>% 
+  ContrastsModerated$new()
+conI <- ContrastsSimpleImpute$new( lfqp, contrasts) %>% 
+  ContrastsModerated$new()
+tmp <- addContrastResults(contr, conI)
+# visualize results
+pl <- tmp$merged$get_Plotter()
+p1 <- pl$histogram()$p.value
+p2 <- pl$volcano()$FDR +
+   theme(legend.position = "bottom")
+gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
 
-
-```{r usedContrasts}
-relevantContrasts <- c("dilution_(9/7.5)_1.2","dilution_(7.5/6)_1.25", "dilution_(6/4.5)_1.3(3)", "dilution_(4.5/3)_1.5" )
-
-tt <- tt %>% dplyr::filter(contrastsName  %in% relevantContrasts)
-tt <- dplyr::select(tt, all_of(c("contrasts","ratio", "expected fold change")))
-knitr::kable(tt, caption = "Contrasts used for benchmark.")
-
-
-```
-
-
-Figure \@ref(fig:scaling) right panel shows the distribution of the peptide intensities within the samples after the intensity scaling, while the left panel shows the standard deviation of the peptide measurement within each condition for low intensity and high intensity proteins.
-
-
-(ref:scaling) Density plot of peptide intensities before (panel A) and after (panel B) data transformation and scaling.
-
-```{r scaling, fig.cap="(ref:scaling)", fig.width=7, fig.height=7, echo = TRUE}
-is <- prolfqua::data_ionstar
-summarised <- is$subset_normalized()
-
-lfqsum <- LFQData$new(summarised$data, summarised$config)
-p2 <- lfqsum$get_Plotter()$intensity_distribution_density() +
-  labs(tag = "B") + theme(legend.position = "none")
-
-sum <- lfqsum$get_Stats()
-p3 <- sum$violin_median()
-
-rocp <- ggpubr::ggarrange(p2, p3, nrow = 1, legend = "none")
-rocp
-```
-
-
-## Linear models 
-
-We fitted a linear model implemented by the R function `lm` to protein intensities inferred from peptide intensities using the Tukey's median polish. The second mixed-effects model, implemented in the R function `lmer`, fitted to peptide level intensities. We modeled the peptide measurements as repeated measurements of the protein. The third model is again a linear model but this time fitted to peptide intensities. By this we have for each protein several models, which we then summarize. 
-
-## Contrast estimation with imputation
-
-To handle cases, where no observations were made in one of the conditions, we model the condition estimates and variances as follows. Either we use the mean of the protein intensity in the group, or if there are no observations we impute by using the average of $10\%$ smallest group mean intensities in the experiment. Here we assume that if there are no observations it is because of the limit of detection (LOD). To estimate the variance, we compute the pooled variance and standard deviation of all conditions $\hat{var}$. We assume that the variance of the protein is constant in all the conditions. The t-statistic is then given by $\frac{\bar x}{\hat{\sigma}}$.
-
-## Computing contrasts
-
-Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
-For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
-
-## P-value moderation
-
-From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how, using the empirical Bayes paradigm, to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$. These can be used to moderate the t-statistics by:
-$\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
-and p-values.
-
-## Summarizing peptide level models
-
-To summarize peptide level models to protein models we did applied the method suggested by [@Suomi2017bEnhanced], that is to use the median scaled p-value of the peptide models and cumulative distribution function of the beta distribution function to determine a regulation probability of the protein. 
-
-To obtain the median p-value of the protein, we first rescaled the peptide p-values by taking the direction of the fold-change $\hat \beta$ into account, i.e.:
-
-
-\begin{equation}
-p_{s} =
-  \begin{cases}
-1-p, & \textrm{if}~ \hat{\beta} > 0\\
-p-1, & \textrm{otherwise}
-\end{cases}
-\end{equation}
-
-Afterwards, the median scaled p-value $\tilde{p}_s$ is determined and using the transformation below, transformed back onto the original scale. 
-
-$$
-\tilde{p} = 1 - |\tilde{p}_{s}|
-$$
-Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution.
-
-
-
-# Results and discussion
-
-## Method comparison
-
-In this section we compare the results for the various models implemented and discussed previously, namely:
-
-* (`prot_med_lm`) : linear model fitted to protein estimates obtained using Tukey's median polish 
-* (`prot_lme4`) : mixed effects model fitted using _lme4_ to peptide intensities.
-* (`prot_ROPECA`) : linear models fitted on peptide level and aggregation of moderated p-values using the beta distribution
-
-The table below summarizes the contrast estimates produced which will be benchmarked.
-
-|                    | Model                   | Contrast   | Moderation   | Aggregation  |
-|--------------------|:-----------------------:|------------|--------------|--------------|
-| Protein Intensity  |  lm                     | o          |  o           |              |
-| Protein Intensity Imputed | pooled variance  | o          |  o           |              |
-| Peptide Intensity  |  lmer                   | o          |  o           |              |
-| Peptide Intensity  |  lm                     |            |              |  o           |
-
-
-A relevant parameter is the number of proteins for which we estimated the contrasts (see Table \@ref(fig:completeCasesTab)). It indicates how robust the models are in the presence of missing data. <!-- We observe, that when using the linear model on protein level intensities or the bayesian version of the mixed effects models we were able to estimate for 4024 (out of the 4099) proteins all the four examined contrasts (complete cases). When using the mixed effect model implementation in _lme4_ this number drops to $4013$, while when summarizing peptide level models it drops further to $3999$ proteins.  The different number of proteins for which we obtained statistics of contrasts makes comparing the scores for various models complicated because the set of proteins differs., e.g. $4024$ versus $3999$. 
-Therefore, we incorporate the failure to generate statistics for contrasts into the benchmark by setting $P$ and $N$ equal to the number of all proteins (see Table \@ref(tab:confusionMatrix)) and then computing the $FPR$ and $TPR$. -->
-
-
+# Benchmarking
 
 ```{r}
 allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
@@ -209,13 +133,52 @@ msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.
 
 allBenchmarks$benchmark_mssstats <- benchmark_msstats
 allBenchmarks$benchmark_msFragger <- msFragger
-
-names(allBenchmarks)
-allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats", "benchmark_msFragger"   )]
+allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats"   )]
 ```
 
+(ref:benchmarkROC) Partial area under the ROC curve at $10\%$ FPR. Red line average area under the curve. Difference to mean partial area under the ROC curve for various models, at $10\%$ FPR, by fold change.
 
-```{r completeCasesTab, fig.cap="Number and percentage of estimated contrasts by modelling method.", fig.width=5, fig.height=7}
+```{r benchmarkROC, fig.cap="(ref:benchmarkROC)", fig.width=8, fig.height=6, out.width = '90%'}
+
+ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
+res <- map_df(allBenchmarks, function(x){x$pAUC()})
+res <- res %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
+
+norm <- res %>% group_by(contrast,whatfix) %>% summarize(meanpAUC_10 = mean(pAUC_10))
+res <- inner_join(res, norm)
+res <- mutate(res , pAUC_10n = pAUC_10 - meanpAUC_10)
+
+resAllB <- res %>% dplyr::filter(contrast == "all")
+
+p1 <- ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~whatfix)  + 
+  coord_cartesian(ylim = c(min(resAllB$pAUC_10),max(resAllB$pAUC_10))) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_hline(aes(yintercept = meanpAUC_10), color = "red") + xlab("")
+
+p2 <- ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
+  geom_line(stat = "identity", aes(linetype = Name, color = Name), size = 2) + 
+  facet_wrap(~ whatfix, scales = "free") +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  geom_hline(aes(yintercept = 0), color = "red") + 
+   theme(legend.position = "bottom", legend.title = element_blank())
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+
+```
+
+The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores. We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
+
+A relevant parameter is the number of proteins for which we estimated the contrasts (see Figure \@ref(fig:FDRfdp)). It indicates how robust the models are in the presence of missing data. Also import is if the FDR produced is an unbiased estimate of the false discovery proportion (FDP) (see Figure \@ref(fig:FDRfdp) right panel) 
+
+
+(ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modelling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
+
+
+```{r FDRfdp, fig.cap = "(ref:FDRfdp)", fig.width=8, fig.height=6, out.width = '90%'}
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))
@@ -230,93 +193,35 @@ nrgg <- dds %>% ggplot(aes(x = name, y = nrcontrasts )) +
             vjust = 1, hjust = -0.2, angle = -90) + 
   geom_text(aes(label = paste0("(",round(percent, digits = 1),"%)")),
             vjust = -1, hjust = -0.2, angle = -90) 
-nrgg
+p1 <- nrgg
 
-```
-
-
-```{r fig.cap="Partial area under the ROC curve at 10% FPR. Red line average area under the curve.", fig.width=10, fig.width=10}
-
-ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
-res <- map_df(allBenchmarks, function(x){x$pAUC()})
-res <- res %>% mutate(whatfix = case_when(what == "scaled.beta.based.significance" ~ "scaled.p.value", TRUE ~ what))
-
-res$contrast %>% unique()
-#resAllB <- res %>% dplyr::filter(contrast == "dilution_(9/7.5)_1.2")
-#resAllB <- res %>% dplyr::filter(contrast == "dilution_(4.5/3)_1.5")
-#resAllB <- res %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
-
-
-
-norm <- res %>% group_by(contrast,whatfix) %>% summarize(meanpAUC_10 = mean(pAUC_10))
-res <- inner_join(res, norm)
-res <- mutate(res , pAUC_10n = pAUC_10 - meanpAUC_10)
-
-resAllB <- res %>% dplyr::filter(contrast == "all")
-
-p1 <- ggplot(resAllB, aes(x = Name, y = pAUC_10)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~whatfix)  + 
-  coord_cartesian(ylim = c(min(resAllB$pAUC_10),max(resAllB$pAUC_10))) + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-  geom_hline(aes(yintercept = meanpAUC_10), color="red")
-p1
-```
-
-
-```{r fig.cap="Difference to mean partial area under the ROC curve for various models, at 10% FPR, by fold change.", fig.width=10, fig.width=10}
-
-
-p2 <- ggplot(res, aes(x = contrast, y = pAUC_10n, group = Name)) +
-  geom_line(stat = "identity",aes(linetype = Name, color = Name)) + 
-  facet_wrap(~whatfix, scales = "free") +
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-  geom_hline(aes(yintercept = 0), color = "red")
-
-p2
-```
-
-
-
-```{r FDRfdp, fig.cap = "Compare FDR estimate with false discovery proportion (FDP).", fig.width=8, fig.height=8}
 dd <- map_df(allBenchmarks, function(x){res <- x$get_confusion_FDRvsFDP(); res$name <- x$model_name;res})
+
 ddb <- filter(dd, contrast == "dilution_(4.5/3)_1.5")
 ddb <- dd %>% dplyr::filter(contrast == "dilution_(7.5/6)_1.25")
 ddb <- dd %>% dplyr::filter(contrast == "all")
 
 
-ddb %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
+p2 <- ddb %>% ggplot(aes(y = FDP_,  x  = scorecol )) + 
   geom_line(aes(color = model_name, linetype = model_name)) +
   facet_wrap(~contrast) + 
-   geom_abline(intercept = 0, slope = 1, color = 2)
+   geom_abline(intercept = 0, slope = 1, color = 2) + 
+   theme(legend.position = "bottom")
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
 
+# Conclusions
 
-```{r fig.cap="Distribution of the FDR values produced.", include = FALSE}
-dd %>% ggplot(aes(x = scorecol)) + geom_histogram() + facet_wrap(~model_name)
-```
-
-
-\begin{acknowledgement}
 
 The authors thank the technology platform fund of the University of Zurich.
 
 
-\end{acknowledgement}
 
-\begin{suppinfo}
 
-This will usually read something like: ``Experimental procedures and
-characterization data for all new compounds. The class will
-automatically add a sentence pointing to the information on-line:
-
-\end{suppinfo}
-
-## References
+# References
 
 
 
