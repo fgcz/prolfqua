@@ -4,18 +4,22 @@ author:
   - name: Witold Wolski
     affil: 1; 2
     orcid: '0000-0002-6468-120X'
-  - name: Christian Panse
-    affil: 1; 2
-    orcid: '0000-0003-1975-3064'
-  - name: Jonas Grossmann
-    affil: 1; 2
-    orcid: '0000-0002-6899-9020'
-  - name: Maria d'Errico
-    affil: 1; 2
-    orcid: '0000-0001-9467-9058'
   - name: Paolo Nanni
     affil: 1
     orcid: '0000-0001-8429-3557'
+  - name: Jonas Grossmann
+    affil: 1; 2
+    orcid: '0000-0002-6899-9020'
+  - name: Maria D'Errico
+    affil: 1; 2
+    orcid: '0000-0001-9467-9058'
+  - name: Ralph Schlapbach
+    affil: 1
+    orcid: '0000-0002-7488-4262'
+  - name: Christian Panse
+    affil: 1; 2
+    orcid: '0000-0003-1975-3064'
+  
 affiliation:
   - num: 1
     address: Functional Genomics Center Zurich (https://www.fgcz.ch/)
@@ -23,7 +27,6 @@ affiliation:
     address: Swiss Institute of Bioinformatics (https://www.sib.swiss/)
 column_numbers: 4
 font_family: Monaco
-poster_height: "38in"
 primary_colour: "#000C66"
 titletext_fontfamily: Arial
 body_textsize: "35px"
@@ -42,7 +45,7 @@ bibliography: bibliography.bib
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(prolfqua)
+
 library(ggplot2)
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 5)
@@ -77,6 +80,7 @@ The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins
 
 
 ```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", out.width = '90%'}
+library(prolfqua)
 d <- prolfqua::data_ionstar$filtered()
 lfqd <- LFQData$new(d$data, d$config) 
 t <- lfqd$get_Transformer()
@@ -91,8 +95,6 @@ p_3 <- lfqp$get_Stats()$violin() + labs(tag = "C")
 pl <- lfqp$get_Plotter()
 p_4 <- pl$boxplots()$boxplot[[1]] + labs(tag = "D")
 ggpubr::ggarrange(p_1, p_2, p_3, p_4)
-
-
 ```
 
 
@@ -176,10 +178,9 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores (`?Benchmark`). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
+The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores (for more details see [BenchmarkingIonstarData](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
 
 A relevant parameter is the number of proteins for which we estimated the contrasts (see Figure \@ref(fig:FDRfdp)). It indicates how robust the models are in the presence of missing data. Also important is if the FDR produced is an unbiased estimate of the false discovery proportion (FDP) (see Figure \@ref(fig:FDRfdp) right panel).
-
 
 (ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modeling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
 

@@ -32,7 +32,9 @@ https://github.com/wolski/prolfqua/issues
 
 # How to get started
 
+See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
 Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
+
 
 Or read the pkgdown generate website https://wolski.github.io/prolfqua/index.html
 
