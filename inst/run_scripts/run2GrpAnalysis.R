@@ -139,7 +139,7 @@ GRP2$imputedProteins <- protMore
 # Plot proteins without p-values
 
 xx <- res$more[rowSums(is.na(res$more)) > 0,]
-if(nrow(xx) > 0){
+if (nrow(xx) > 0) {
   xx <- xx %>% arrange(estimate)
   GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) +
     ggplot2::geom_bar(stat="identity") + coord_flip()

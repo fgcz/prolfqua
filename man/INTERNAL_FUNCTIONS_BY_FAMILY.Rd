@@ -165,6 +165,7 @@ Other MaxQuant:
 
 Other MSFragger: 
 \code{\link{tidy_MSFragger_MSstats_csv}()},
+\code{\link{tidy_MSFragger_combined_protein_V16}()},
 \code{\link{tidy_MSFragger_combined_protein}()}
 
 Other stats: 

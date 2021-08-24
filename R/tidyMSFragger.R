@@ -41,7 +41,6 @@ tidy_MSFragger_combined_protein_V16 <- function(combprot) {
   ### start processing
   colnames(Cprotein) <- tolower(colnames(Cprotein))
   annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
-  head(annot)
   extractDataLong <- function(Cprotein, what = "total.intensity"){
     gg <- Cprotein %>% dplyr::select( protein.id, ends_with(what))
     gg <- gg %>% tidyr::pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
@@ -50,18 +49,17 @@ tidy_MSFragger_combined_protein_V16 <- function(combprot) {
   }
   intnames <- c("total.intensity",
                 "unique.intensity",
-                "razor.intensity",
-                "total.ion.count",
-                "unique.ion.count",
-                "razor.ion.count",
+                "intensity",
                 "total.spectral.count",
                 "unique.spectral.count",
-                "razor.spectral.count")
+                "spectral.count"
+                )
 
   res <- vector( mode = "list", length = length(intnames))
   names(res)  <- intnames
 
   for (i in 1:length(intnames)) {
+    message(intnames[i] )
     res[[intnames[i]]] <- extractDataLong(Cprotein, what = intnames[i] )
   }
 
