@@ -20,7 +20,6 @@ analysis <- istar$data
  plot.new()
  p  <- plot_heatmap(analysis, config)
 
-debug(plot_heatmap)
 
 }
 \seealso{
