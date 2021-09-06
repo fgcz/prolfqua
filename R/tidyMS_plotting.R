@@ -343,7 +343,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   # not showing row dendrogram trick
   # res <- pheatmap::pheatmap(resdata,
   #                           silent = TRUE)
-  gg <- hclust( dist( res, method = distance ))
+  gg <- hclust( dist( resdata ))
   res <- pheatmap::pheatmap(resdata[gg$order,],
                             cluster_rows  = FALSE,
                             scale = "row",
