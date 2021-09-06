@@ -94,6 +94,15 @@ Other modelling:
 \item{\code{contrast_result}}{data frame with results of contrast computation}
 
 \item{\code{lfqdata}}{data frame}
+
+\item{\code{Take}}{global or local values for imputation}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{Take}}{global or local values for imputation}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,7 +130,8 @@ initialize
   confint = 0.95,
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
-  method = "V1"
+  method = "V1",
+  global = TRUE
 )}\if{html}{\out{</div>}}
 }
 

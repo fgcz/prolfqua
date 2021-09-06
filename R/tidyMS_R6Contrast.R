@@ -77,8 +77,11 @@ ContrastsSimpleImpute <- R6::R6Class(
     lfqdata = NULL,
     #' @field confint
     confint = 0.95,
+    #' @field p.adjust
     p.adjust = NULL,
     method = "V1",
+    #' @field Take global or local values for imputation
+    global = logical(),
     #' @description initialize
     #' @param lfqdata LFQData
     #' @param contrasts array of contrasts (see example)
@@ -88,7 +91,8 @@ ContrastsSimpleImpute <- R6::R6Class(
                           confint = 0.95,
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
-                          method = "V1"){
+                          method = "V1",
+                          global = TRUE){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
       self$modelName = modelName
@@ -96,7 +100,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$confint = confint
       self$p.adjust = p.adjust
       self$method = method
-
+      self$global  = global
     },
     #' @description get contrasts sides
     #'
@@ -109,7 +113,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @description table with results of contrast computation
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result)) {
-        result = get_imputed_contrasts(self$lfqdata$data, self$lfqdata$config, self$contrasts)
+        result = get_imputed_contrasts(self$lfqdata$data, self$lfqdata$config, self$contrasts, global = self$global)
 
         if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchyKeys())) {
           stop("hierarchy depth < hierarchyKeys(). Please aggregate first.")

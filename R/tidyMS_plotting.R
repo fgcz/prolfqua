@@ -293,11 +293,12 @@ plot_heatmap_cor <- function(data,
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
 
-  res <- pheatmap::pheatmap(cres,
-                            scale = "none",
-                            silent = TRUE)
+  #res <- pheatmap::pheatmap(cres,
+  #                          scale = "none",
+  #                          silent = TRUE)
 
-  res <- pheatmap::pheatmap(cres[res$tree_row$order,],
+  gg <- hclust(dist(cres))
+  res <- pheatmap::pheatmap(cres[gg$order,],
                             scale = "none",
                             cluster_rows  = FALSE,
                             annotation_col = factors,
@@ -340,10 +341,10 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 
 
   # not showing row dendrogram trick
-  res <- pheatmap::pheatmap(resdata,
-                            silent = TRUE)
-
-  res <- pheatmap::pheatmap(resdata[res$tree_row$order,],
+  # res <- pheatmap::pheatmap(resdata,
+  #                           silent = TRUE)
+  gg <- hclust( dist( res, method = distance ))
+  res <- pheatmap::pheatmap(resdata[gg$order,],
                             cluster_rows  = FALSE,
                             scale = "row",
                             annotation_col = factors,
@@ -374,13 +375,18 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' plot_raster(analysis, config, "var")
 #' plot_raster(analysis, config, y.labels = TRUE)
-plot_raster <- function( data, config, arrange = c("mean", "var") , not_na = FALSE, y.labels=FALSE ) {
+plot_raster <- function(data,
+                        config,
+                        arrange = c("mean", "var"),
+                        not_na = FALSE,
+                        y.labels = FALSE ) {
 
   arrange <- match.arg(arrange)
 
   arrangeby <- summarize_stats(data, config)
   arrangeby <- tidyr::unite(arrangeby, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
-  if(not_na){
+
+  if (not_na) {
     arrangeby <- arrange(arrangeby, !!sym("not_na"), !!sym(arrange))
   }else{
     arrangeby <- arrange(arrangeby,  !!sym(arrange))
@@ -452,18 +458,19 @@ plot_NA_heatmap <- function(data,
     }
 
     # not showing row dendrogram trick
-    resclust <- pheatmap::pheatmap(res,
-                                   scale = "none",
-                                   silent = TRUE,
-                                   clustering_distance_cols = distance,
-                                   clustering_distance_rows = distance)
+    #resclust <- pheatmap::pheatmap(res,
+    #                               scale = "none",
+    #                               silent = TRUE,
+    #                               clustering_distance_cols = distance,
+    #                               clustering_distance_rows = distance)
 
-    resclust <- pheatmap::pheatmap(res[resclust$tree_row$order,],
+    gg <- hclust( dist( res, method = distance ))
+    resclust <- pheatmap::pheatmap(res[gg$order,],
                                    cluster_rows  = FALSE,
                                    clustering_distance_cols = distance,
                                    scale = "none",
                                    annotation_col = factors,
-                                   color = c("white","black"),
+                                   color = c("white", "black"),
                                    show_rownames = FALSE,
                                    border_color = NA,
                                    legend = FALSE,
