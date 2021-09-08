@@ -79,7 +79,7 @@ lfqdata$factors()
 
 ### Do some type of data normalization (or do not)
 lt <- lfqdata$get_Transformer()
-transformed <- lt$log2()$robscale()
+transformed <- lt$log2()$robscale()$lfq
 
 
 GRP2$lfqData <- lfqdata
@@ -88,7 +88,8 @@ GRP2$transformedlfqData <- transformed
 ################## Run Modelling ###############
 
 
-formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ", transformed$config$table$fkeysDepth()))
+formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ",
+                                         transformed$config$table$fkeysDepth()))
 # specify model definition
 modelName  <- "Model"
 
@@ -109,16 +110,14 @@ conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
 res <- prolfqua::addContrastResults(conrM, conMI)
 
-GRP2$contrResult <- res
-GRP2$contrMerged <- prolfqua::Contrasts_Plotter$new(res$merged, subject_Id = "protein_Id",
-                                                    volcano = list(list(score = "FDR", fc = GRP2$FCthreshold,
-                                                                        thresh = GRP2$FDRthreshold)))
-GRP2$contrMore <- prolfqua::Contrasts_Plotter$new(res$more, subject_Id = "protein_Id")
+GRP2$contrResult <- res$merged$get_contrasts()
+GRP2$contrMerged <- res$merged$get_Plotter()
+GRP2$contrMerged$fcthresh = GRP2$FCthreshold
+GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
 
-#GRP2$contrMerged$ma_plotly()
+GRP2$contrMore <- res$more$get_Plotter()
 
-tmp2 <- ungroup(GRP2$contrMerged$contrastDF)
-top20 <- tmp2 %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
+top20 <- GRP2$contrResult %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
   arrange(FDR) %>%
   head(20)
 GRP2$top20 <- top20
@@ -132,17 +131,17 @@ GRP2$top20confint <- ggplot(top20, aes(x = protein_Id, y = log2FC,
 
 protMore <- GRP2$transformedlfqData$get_copy()
 protMore$complete_cases()
-protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$protein_Id)
+protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$contrast_result$protein_Id)
 protMore$get_Plotter()$raster()
 GRP2$imputedProteins <- protMore
 
 # Plot proteins without p-values
 
-xx <- res$more[rowSums(is.na(res$more)) > 0,]
+xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
 if (nrow(xx) > 0) {
   xx <- xx %>% arrange(estimate)
   GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) +
-    ggplot2::geom_bar(stat="identity") + coord_flip()
+    ggplot2::geom_bar(stat = "identity") + coord_flip()
   missing <- GRP2$transformedlfqData$get_copy()
   missing$complete_cases()
   missing$data <- missing$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
