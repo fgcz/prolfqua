@@ -125,7 +125,7 @@ LFQData <- R6::R6Class(
       notNA <- sumN %>% dplyr::filter(n == max(n))
 
       notNA <- notNA %>% dplyr::select(self$config$table$hierarchyKeys())
-      notNAdata <- dplyr::inner_join( notNA, self$data)
+      notNAdata <- dplyr::inner_join( notNA, self$data) %>% ungroup()
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
     #'

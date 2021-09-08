@@ -17,16 +17,9 @@ config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 
 
-
-graphics.off()
-.Device
+ plot.new()
  p  <- plot_heatmap(analysis, config)
-.Device
- print(p)
- .Device
- plot(1)
 
- print(p)
 
 }
 \seealso{

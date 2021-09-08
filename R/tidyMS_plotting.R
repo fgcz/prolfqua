@@ -322,18 +322,10 @@ plot_heatmap_cor <- function(data,
 #' analysis <- istar$data
 #'
 #'
-#'
-#' graphics.off()
-#' .Device
+#'  plot.new()
 #'  p  <- plot_heatmap(analysis, config)
-#' .Device
-#'  print(p)
-#'  .Device
-#'  plot(1)
 #'
-#'  print(p)
 #'
-
 plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation

@@ -15,6 +15,7 @@ read MSFragger generated MSstats formatted csv files.
 \seealso{
 Other MSFragger: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{tidy_MSFragger_combined_protein_V16}()},
 \code{\link{tidy_MSFragger_combined_protein}()}
 }
 \concept{MSFragger}

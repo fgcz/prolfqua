@@ -407,7 +407,7 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #'
 #'
 scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = TRUE){
-  config <- conf$clone(deep = TRUE)
+  config <- config$clone(deep = TRUE)
   dl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
   sl <- group_by(subset, across(config$table$fkeysDepth())) %>% nest()
   cf <- config$clone(deep = T)
@@ -435,9 +435,9 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
   #names(scales) <- dl[[1]]
   resb <- dl
   resb$data <- res
-  resb <- unnest(resb, cols = (names(resb)))
+  resb <- dplyr::ungroup( unnest(resb, cols = (names(resb))) )
   config$table$setWorkIntensity(cf$table$getWorkIntensity())
-  return(list(data = resb, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
+  return(list(data = resb, config = config, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
 }
 
 #' normalize data by log2 and robust scaling
