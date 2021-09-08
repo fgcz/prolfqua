@@ -1,0 +1,372 @@
+---
+title: "FGCZ Two-Group Analysis \n Statistics for a Quantitative Protein Matrix"
+author: "Functional Genomics Center Zurich"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document: 
+    toc: yes
+  html_document: 
+    toc: yes
+header-includes: 
+  \usepackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhead[CO,CE]{Group Comparison}
+  \fancyfoot[CO,CE]{\textbf{FGCZ} - www.fgcz.ch - 2018}
+  \fancyfoot[LE,RO]{\thepage} 
+params:
+  #grp: !r quote(SRMService::mqQuantMatrixGRP2)
+  grp: NULL
+vignette: >
+  %\VignetteIndexEntry{FGCZ Two-Group Analysis}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+bibliography: bibliography.bib
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+
+if(!exists("progress")){
+  progress <- function(howmuch, detail){
+    invisible(NULL)
+  }
+}
+
+grp2 <- params$grp
+```
+
+# Introduction
+
+The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)) by computing the $log_2$ fold change $\log_2(condition/reference)$, and tests if they are non-zero.
+
+The protein identification and quantification were performed using `r grp2$Software`. We run a set of functions implemented in the R package prolfqua [@SRMService2018] to generate visualizations, normalize the data and to compute _moderated p-values_ [@Smyth2004] for all proteins quantified.
+
+
+## Experiment summary
+
+This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`,  
+with the workunit name : `r grp2$projectName`.
+
+This report was created from data stored in _bfabric_ with the following identifiers:
+
+- workunit Id : `r grp2$workunitID`
+- project Id: `r grp2$projectID`.
+
+
+The protein matrix is filtered using the following threshold:
+
+- Minimum number of peptides / protein: `r grp2$nrPeptides`
+
+
+- The total number of proteins in this experiment is: `r grp2$totalNrOfProteins` 
+- Total number without decoys sequences is `r grp2$NrOfProteinsNoDecoys` 
+
+
+- Percentage of contaminants : `r grp2$percentOfContaminants` %
+- Percentage of false positives : `r grp2$percentOfFalsePositives` %
+
+
+```{r samples, eval=TRUE}
+
+tab <- data.frame(table(grp2$lfqData$factors()[[grp2$lfqData$config$table$fkeysDepth()]]))
+colnames(tab) <- c("Condition","# samples")
+knitr::kable(tab, caption="Nr of samples in each condition.")
+
+```
+
+Table \@ref(tab:samples) shows the number of samples in each condition while Table \@ref(tab:annotation) shows the raw files assigned to the conditions.
+
+```{r annotation, eval=TRUE}
+knitr::kable(grp2$lfqData$factors(), caption = "Condition sample mapping.")
+
+```
+
+
+<!--
+The input matrix has the following structure (Figure \@ref(fig:overview)).
+
+```{r overview, fig.width=8,fig.height=7,dpi=300,fig.cap="Heatmap for quantifyable #proteins sorted by missigness and intensity (log2). Gray - missing values"}
+#imageWithLabels(t(log2(grp2$proteinIntensity)), col.labels = NULL, #col=quantable::getBlueScale(21))
+```
+-->
+
+
+\newpage
+
+# Quality Control
+
+
+## Missing Data and Intensity Distribution
+
+Figure \@ref(fig:missingValuesPerProtein) A shows the number of proteins (y) axis with $0-N$ missing values (x - axis), while
+the histogram on the left (Panel B) shows the distribution of intensities of proteins with $0-N$ missing values.
+
+```{r histmissing, eval=FALSE }
+```
+
+
+```{r missingValuesPerProtein, eval=TRUE, fig.cap="Panel A - # of proteins with n missing values, Panel B - intensity distribution of proteins with 1 to N missing values.", fig.height=5, fig.width=8}
+
+pl <- grp2$lfqData$get_Plotter()
+p2 <- pl$missigness_histogram()
+
+p1 <- pl$missingness_per_condition()
+
+gridExtra::grid.arrange(p1,p2, nrow=1)
+
+progress(0.1, "Summary")
+```
+
+Shown in Figure \@ref(fig:distributionRaw) are the distributions of raw log2 transformed protein intensity values for each sample. Ideally the violins should look very similar (have the same shape and span the same range).
+
+```{r distributionRaw, fig.width=8, fig.height=5, fig.cap="Violin plots for quantifyable proteins (log2 transformed)", eval= TRUE}
+pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+
+In Figure \@ref(fig:scaling) the log2 fold change of the average sample intensity versus the mean average intensity of all samples is shown. It is getting critical if a samples average deviates more than 5 times (linear scale) from the average of all samples.
+
+```{r  scaling,dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
+xb <- grp2$lfqData$data %>% 
+  group_by(!!sym(grp2$lfqData$config$table$sampleName)) %>%
+  summarize(median = median(!!sym(grp2$lfqData$config$table$getWorkIntensity())))
+
+bb <- xb$median
+names(bb) <- xb$sampleName
+par(mar = c(10,6,3,6))
+barplot(sort(abs(log2(bb)))  - mean(log2(bb)) ,
+        horiz = F,las = 2, main = "median", cex.names = 0.6, ylab = "sample average - log2(total average", ylim = c(-log2(8),log2(8)))
+abline(h = c(-log2(5),log2(5)), col = 2)
+x <- seq(-3 ,3 ,by = 1)
+axis(4,x,round(2^abs(x),digits = 1))
+mtext("linear scale", side = 4, line = 2)
+```
+
+
+
+```{r progress2, eval=FALSE}
+progress(0.2, "Normalization")
+```
+
+## Normalization
+
+Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. To do this the z-score of the log2 transformed intensities is computed, which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have a similar distribution.
+
+
+```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="Violin plots of normalized protein intensity values (z-score)", eval=TRUE}
+pl <- grp2$transformedlfqData$get_Plotter()
+pl$intensity_distribution_violin() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+\pagebreak
+
+
+The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations for all proteins in each condition and overall computed on not normalized data. To observe differences between conditions the variation within a condition should ideally be smaller than within all conditions.
+
+
+```{r CViolin, eval=FALSE}
+
+```
+
+
+
+The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
+
+```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within condition and overall, Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and overall", eval=TRUE}
+
+stR <- grp2$lfqData$get_Stats()
+p1 <- stR$violin()
+
+st <- grp2$transformedlfqData$get_Stats()
+p2 <- st$violin()
+gridExtra::grid.arrange(p1,p2, nrow=1)
+
+```
+
+```{r, eval=TRUE}
+resR <- stR$stats_quantiles()
+
+res <- st$stats_quantiles()
+
+C <- bind_rows(
+CV = resR$wide  %>% filter(probs == 0.5),
+sd = res$wide %>% filter(probs == 0.5))
+C <- C %>% mutate( what = c("CV","sd"), .before = 1 )
+
+
+knitr::kable(C, caption = 'median of cv and sd')
+
+progress(0.1, "CVs")
+
+```
+
+\pagebreak
+
+## Clustering for Samples and Proteins
+
+```{r inlcude = FALSE}
+pl <- grp2$transformedlfqData$get_Plotter()
+ph <- pl$heatmap()
+phc <- pl$heatmap_cor()
+```
+
+```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap of correlations (spearman) between samples.", eval=TRUE}
+phc
+```
+
+In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on their correlation as well as the protein expression profiles. Side colors on the left side of the heatmaps indicate the groupings.
+
+
+
+```{r heatmapData, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of normalized data.", eval=TRUE}
+ph
+```
+
+\pagebreak
+
+
+# Two Group Comparison
+
+
+In the following analysis, it is assumed that most of the proteins are not regulated (most log2 fold change should be around zero). We compare the the following 2 conditions:
+
+`r names(grp2$Contrast)` = `r grp2$Contrast`.
+
+P-values and Q-values are a measure of how likely it is to observe the data given the assumption that they are not differentially regulated. Small p-values tell us that $H_0$ (no regulation) is very unlikely. Figure \@ref(fig:densityOFFoldChanges), left panel, shows the distribution of fold changes. Most of the fold changes should be close to zero and also the median of all fold changes (red dashed line) should be close to zero (green line).
+
+
+
+```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "Top : Distribution of log2(FC). red dashed line - median fold change. Bottom left panel - Histogram of moderated p values. Bottom right panel - Histogram of FDR"}
+
+p1 <- grp2$contrMerged$histogram_estimate()
+p2 <- grp2$contrMerged$histogram()
+gridExtra::grid.arrange(p1,p2)
+
+```
+
+\newpage
+
+If samples in both groups differ on protein level we expect more small p-values than by chance (Figure \@ref(fig:densityOFFoldChanges) right panel blue horizontal line). If there are only as many or less small p-values as by chance than no significant false discovery rate controlled calls (q-values) will be made in Figure \@ref(fig:volcanoplot). Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$FCthreshold` (see Figure \@ref(fig:volcanoplot)). Table \@ref(tab:nrsignificant) summarizes the number of significant calls while \@ref(tab:top20table) lists the 20 proteins with the smallest moderated q-values. The heatmap (Figure \@ref(fig:siproteins)) shows all significant proteins.
+
+
+```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="VolcanoPlot : x axis log2 fold change of normalized data, y axis : panel A  -log10(p-value), panel B -log10(q-value)", eval=TRUE}
+
+grp2$contrMerged$volcano_plotly()$FDR
+
+```
+
+
+```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="MA plot, x - axis: mean normalized protein intensity, y axis: log2 fold change of normalized data", eval=TRUE}
+
+grp2$contrMerged$ma_plotly(fc = GRP2$FCthreshold)
+```
+
+\clearpage
+
+
+```{r nrsignificant, results="markup", eval=TRUE}
+
+x <- data.frame(table(abs(grp2$contrMerged$contrastDF$estimate) >  grp2$FCthreshold  & grp2$contrMerged$contrastDF$FDR < grp2$FDRthreshold))
+
+if (length(x$Var1) == 2) {
+  x$Var1 <- c("Not Significant" , "Significant")
+  names(x)[names(x) == 'Var1'] <- ''
+}
+knitr::kable(x, caption = "Number of not significant and significant proteins.")
+
+```
+
+
+```{r prepareHeatmap}
+
+significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthreshold)
+signif <- grp2$transformedlfqData$get_copy()
+signif$data <-signif$data %>% dplyr::filter(protein_Id %in% significant$protein_Id)
+showSignificant <- TRUE
+if(nrow(signif$data) == 1){
+  sigheat <- signif$get_Plotter()$raster()
+}  else if(nrow(signif$data) > 1){
+  sigheat <- signif$get_Plotter()$heatmap()
+} else {
+  showSignificant <- FALSE 
+}
+```
+
+```{r siproteins, fig.cap="Heatmap of Significant Proteins heatmap", eval = showSignificant}
+sigheat
+```
+
+
+```{r top20table, eval=TRUE}
+knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
+```
+
+
+```{r CI, fig.cap="Confidence interfals for proteins with 20 smallest FDR.", fig.height=4, fig.width=7, eval=TRUE}
+grp2$top20confint
+existsNoPvalEstimate <- !is.null(grp2$noPvalEstimate)
+
+
+plotMissing <-if(nrow(grp2$imputedProteins$data) == 0) {
+  FALSE
+}else {TRUE}
+  
+```
+
+`r if(plotMissing){"Figure \\@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions. The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset."}else{""}`
+
+```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height=10, eval = plotMissing}
+grp2$imputedProteins$get_Plotter()$raster()
+```
+
+# Data Interpretation
+
+For interpreting the results in the _`r paste0("MaxQuant_report", grp2$projectName, ".xlsx")`_ file, the protein IDs can be either sorted by `log2FC`, `t-statistic` or $sign(log2FC) \cdot` p-value. Large positive or negative fold changes typically result in small p-values.
+
+
+The IDs sorted by fold change can then be subjected to gene set enrichment analysis (GSEA). Alternatively, a subset filtered by FDR, e.g. for a threshold of $0.1$ or $0.25$, can be analysed using over-representation analysis (ORA). The web application WebGestalt (WEB-based GEne SeT AnaLysis Toolkit) <http://www.webgestalt.org> implements both of these methods for the most popular organisms [@Wang2017]. The [DAVID Bioinformatics Resource](https://david.ncifcrf.gov/home.jsp) also enables you to run ORA analysis for a wide variety of organizms.
+
+Overrepresentation analysis is performed on biological functional categories (e.g., biological processes of gene ontology annotations) or on biological pathways (e.g., KEGG or Wikipathways). Using such methods allows identifying functions or pathways for proteins in the submitted list. For the correct usage and interpretation of the results from such an analysis, it is essential to specify the background proteome. The background proteome is the list of all proteins identified in your experiment.
+
+
+A further resource to analyze the results is the STRING database <https://string-db.org> [@Szklarczyk2017]. It reports known and predicted interactions for proteins in the submit   ted list.
+
+
+The FGCZ can support you, with the interpretation of your quantitative proteomics data or with a more customized analysis. Further visualization of the data, targeted to your audience, e.g., receiver operator curves (ROC) or MA-plots, can be generated. You can reach the proteome-bioinformatics team at <protinf@fgcz.uzh.ch>.
+
+
+\newpage
+
+```{r columnlist, eval=FALSE}
+knitr::kable(data.frame(columns=colnames(grp2$getResultTableWithPseudo())), caption="List of column names in result .csv table.")
+```
+
+
+# Disclaimer
+
+
+The obtained results should be validated orthogonal as well (e.g. with Western blots). The Functional Genomics Center Zurich does not provide any kind of guarantee for the validity of the results.
+
+
+For questions and improvement suggestions, with respect to this report, please do contact <protinf@fgcz.uzh.ch>.
+
+
+# Session Inforamtion
+
+
+```{r sessionInfo}
+pander::pander(sessionInfo())
+```
+
+
+# References
+
+
