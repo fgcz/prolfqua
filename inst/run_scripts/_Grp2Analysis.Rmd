@@ -247,7 +247,7 @@ P-values and Q-values are a measure of how likely it is to observe the data give
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "Top : Distribution of log2(FC). red dashed line - median fold change. Bottom left panel - Histogram of moderated p values. Bottom right panel - Histogram of FDR"}
 
 p1 <- grp2$contrMerged$histogram_estimate()
-p2 <- grp2$contrMerged$histogram()
+p2 <- grp2$contrMerged$histogram()$FDR
 gridExtra::grid.arrange(p1,p2)
 
 ```
@@ -289,18 +289,18 @@ knitr::kable(x, caption = "Number of not significant and significant proteins.")
 
 significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthreshold)
 signif <- grp2$transformedlfqData$get_copy()
-signif$data <-signif$data %>% dplyr::filter(protein_Id %in% significant$protein_Id)
+signif$data <- signif$data %>% dplyr::filter(protein_Id %in% significant$protein_Id)
 showSignificant <- TRUE
-if(nrow(signif$data) == 1){
+if (nrow(signif$data) == 1){
   sigheat <- signif$get_Plotter()$raster()
-}  else if(nrow(signif$data) > 1){
+}  else if (nrow(signif$data) > 1){
   sigheat <- signif$get_Plotter()$heatmap()
 } else {
   showSignificant <- FALSE 
 }
 ```
 
-```{r siproteins, fig.cap="Heatmap of Significant Proteins heatmap", eval = showSignificant}
+```{r siproteins, fig.cap="Heatmap of Significant Proteins.", eval = showSignificant}
 sigheat
 ```
 
@@ -315,7 +315,7 @@ grp2$top20confint
 existsNoPvalEstimate <- !is.null(grp2$noPvalEstimate)
 
 
-plotMissing <-if(nrow(grp2$imputedProteins$data) == 0) {
+plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
   FALSE
 }else {TRUE}
   
