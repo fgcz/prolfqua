@@ -155,7 +155,7 @@ density_nn <- lfqplotter$intensity_distribution_density()
 
 
 ```{r fig.cap="# of proteins with 0,1,...N missing values"}
-lfqplotter$missingness_per_condition()
+lfqdata$get_Summariser()$plot_missingness_per_condition()
 ```
 
 ```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}

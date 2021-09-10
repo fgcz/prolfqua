@@ -19,11 +19,12 @@ sum
 sum$hierarchy_counts()
 sum$hierarchy_counts_sample("wide")
 sum$hierarchy_counts_sample("long")
-sum$hierarchy_counts_sample("plot")
+sum$plot_hierarchy_counts_sample()
 sum$interaction_missing_stats()
 sum$missingness_per_condition()
 sum$missingness_per_condition_cumsum()
-
+sum$plot_missingness_per_condition()
+sum$plot_missingness_per_condition_cumsum()
 
 }
 \seealso{
@@ -46,9 +47,12 @@ Other LFQData:
 \item \href{#method-new}{\code{LFQDataSummariser$new()}}
 \item \href{#method-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
 \item \href{#method-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
+\item \href{#method-plot_hierarchy_counts_sample}{\code{LFQDataSummariser$plot_hierarchy_counts_sample()}}
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
 \item \href{#method-missingness_per_condition_cumsum}{\code{LFQDataSummariser$missingness_per_condition_cumsum()}}
+\item \href{#method-plot_missingness_per_condition}{\code{LFQDataSummariser$plot_missingness_per_condition()}}
+\item \href{#method-plot_missingness_per_condition_cumsum}{\code{LFQDataSummariser$plot_missingness_per_condition_cumsum()}}
 \item \href{#method-clone}{\code{LFQDataSummariser$clone()}}
 }
 }
@@ -85,7 +89,24 @@ summarize hierarchy
 \subsection{Method \code{hierarchy_counts_sample()}}{
 number of elements at each level in every sample
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(value = c("wide", "long", "plot"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(value = c("wide", "long"))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot_hierarchy_counts_sample"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_hierarchy_counts_sample}{}}}
+\subsection{Method \code{plot_hierarchy_counts_sample()}}{
+barplot showing number of elements at each level in every sample
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_hierarchy_counts_sample()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -125,6 +146,32 @@ missing stats per condition as cumulative sum
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot_missingness_per_condition"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_missingness_per_condition}{}}}
+\subsection{Method \code{plot_missingness_per_condition()}}{
+barplot with number of features with 1,2, etc missing in condition
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_condition()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+ggplot
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-plot_missingness_per_condition_cumsum"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_missingness_per_condition_cumsum}{}}}
+\subsection{Method \code{plot_missingness_per_condition_cumsum()}}{
+barplot with cumulative sum of features with 1,2, etc missing in condition
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
