@@ -188,7 +188,7 @@ pMerged$hierarchy_counts()
 
 ```{r, fig.cap = "Number of Proteins or peptides per sample in merged dataset"}
 su <- pMerged$get_Summariser()
-su$hierarchy_counts_sample("plot")
+su$plot_hierarchy_counts_sample()
 
 ```
 

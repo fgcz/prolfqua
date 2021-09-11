@@ -557,11 +557,12 @@ LFQDataStats <- R6::R6Class(
 #' sum$hierarchy_counts()
 #' sum$hierarchy_counts_sample("wide")
 #' sum$hierarchy_counts_sample("long")
-#' sum$hierarchy_counts_sample("plot")
+#' sum$plot_hierarchy_counts_sample()
 #' sum$interaction_missing_stats()
 #' sum$missingness_per_condition()
 #' sum$missingness_per_condition_cumsum()
-#'
+#' sum$plot_missingness_per_condition()
+#' sum$plot_missingness_per_condition_cumsum()
 #'
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
@@ -582,10 +583,17 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' number of elements at each level in every sample
     #' @param value wide - wide format, long - long format, plot - ggplot
-    hierarchy_counts_sample = function(value = c("wide", "long", "plot")){
+    hierarchy_counts_sample = function(value=c("wide","long")){
       value <- match.arg(value)
       fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
       return(fun(value))
+    },
+    #' @description
+    #' barplot showing number of elements at each level in every sample
+    #' @param value wide - wide format, long - long format, plot - ggplot
+    plot_hierarchy_counts_sample = function(){
+      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
+      return(fun("plot"))
     },
     #' @description
     #' missing per condition and protein
@@ -601,6 +609,18 @@ LFQDataSummariser <- R6::R6Class(
     #' missing stats per condition as cumulative sum
     missingness_per_condition_cumsum = function(){
       prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
+    },
+    #' @description
+    #' barplot with number of features with 1,2, etc missing in condition
+    #' @return ggplot
+    plot_missingness_per_condition = function(){
+      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
+    },
+    #' @description
+    #' barplot with cumulative sum of features with 1,2, etc missing in condition
+    #' @return ggplot
+    plot_missingness_per_condition_cumsum = function(){
+      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
     }
   )
 )
@@ -634,8 +654,6 @@ LFQDataSummariser <- R6::R6Class(
 #' #tmp <- lfqplotter$boxplots()
 #' #tmp$boxplot[[1]]
 #' lfqplotter$missigness_histogram()
-#' lfqplotter$missingness_per_condition()
-#' lfqplotter$missingness_per_condition_cumsum()
 #'
 #' lfqplotter$NA_heatmap()
 #' lfqplotter$intensity_distribution_density()
@@ -727,18 +745,7 @@ LFQDataPlotter <- R6::R6Class(
     missigness_histogram = function(){
       prolfqua::missigness_histogram(self$lfq$data, self$lfq$config)
     },
-    #' @description
-    #' barplot with number of features with 1,2, etc missing in condition
-    #' @return ggplot
-    missingness_per_condition = function(){
-      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
-    },
-    #' @description
-    #' barplot with cumulative sum of features with 1,2, etc missing in condition
-    #' @return ggplot
-    missingness_per_condition_cumsum = function(){
-      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
-    },
+
     #' @description
     #' heatmap of features with missing values
     #' @return ggplot

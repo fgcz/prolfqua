@@ -374,7 +374,11 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
   scales <- get_robscales(subset)
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat = sweep(mat, 2, scales$medians, "-")
-  mat = sweep(mat, 2, scales$mads, "/")
+  if (!any(scales$mads == 0)) {
+    mat = sweep(mat, 2, scales$mads, "/")
+  } else {
+    warning("SKIPPING scaling step in scale_with_subset function.")
+  }
 
   meanmed <- mean(scales$medians)
   addmean <- if (preserveMean) {meanmed} else {0}

@@ -442,8 +442,8 @@ get_contrast <- function(data,
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
 #' head(imputedProt)
 #' }
-get_imputed_contrasts <- function(data, config, contrasts){
-  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+get_imputed_contrasts <- function(data, config, contrasts, global = TRUE){
+  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" , global = global)
   imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
   imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
   return(imputedProt)

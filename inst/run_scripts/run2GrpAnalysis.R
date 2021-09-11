@@ -20,7 +20,7 @@ GRP2$workunitID <- "PDrun"
 
 GRP2$nrPeptides <- 2
 
-GRP2$FCthreshold <- 1
+GRP2$log2FCthreshold <- 1
 GRP2$FDRthreshold <- 0.1
 
 
@@ -32,6 +32,7 @@ GRP2$FDRthreshold <- 0.1
 ##### Read the data.
 
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
+head(startdata)
 startdata$majProtID <- gsub(";.+","",startdata$majority.protein.ids)
 
 annotation <- readxl::read_xlsx(inputAnnotation)
@@ -47,7 +48,7 @@ startdata <- startdata %>% mutate(proteinAnnot = case_when(grepl("^REV_",majorit
                                               TRUE ~ "FW"))
 
 distinctprotid <- startdata %>% select(protein_Id = majProtID, fasta.headers, proteinAnnot) %>% distinct()
-
+desc <- distinctprotid %>% select(-proteinAnnot)
 
 GRP2$percentOfContaminants <-  table(distinctprotid$proteinAnnot)["CON"]/sum(table(distinctprotid$proteinAnnot)) * 100
 GRP2$percentOfFalsePositives <- table(distinctprotid$proteinAnnot)["REV"]/sum(table(distinctprotid$proteinAnnot)) * 100
@@ -79,7 +80,7 @@ lfqdata$factors()
 
 ### Do some type of data normalization (or do not)
 lt <- lfqdata$get_Transformer()
-transformed <- lt$log2()$robscale()
+transformed <- lt$log2()$robscale()$lfq
 
 
 GRP2$lfqData <- lfqdata
@@ -88,7 +89,8 @@ GRP2$transformedlfqData <- transformed
 ################## Run Modelling ###############
 
 
-formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ", transformed$config$table$fkeysDepth()))
+formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ",
+                                         transformed$config$table$fkeysDepth()))
 # specify model definition
 modelName  <- "Model"
 
@@ -109,16 +111,14 @@ conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
 res <- prolfqua::addContrastResults(conrM, conMI)
 
-GRP2$contrResult <- res
-GRP2$contrMerged <- prolfqua::Contrasts_Plotter$new(res$merged, subject_Id = "protein_Id",
-                                                    volcano = list(list(score = "FDR", fc = GRP2$FCthreshold,
-                                                                        thresh = GRP2$FDRthreshold)))
-GRP2$contrMore <- prolfqua::Contrasts_Plotter$new(res$more, subject_Id = "protein_Id")
+GRP2$contrResult <- res$merged$get_contrasts()
+GRP2$contrMerged <- res$merged$get_Plotter()
+GRP2$contrMerged$fcthresh = GRP2$log2FCthreshold
+GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
 
-#GRP2$contrMerged$ma_plotly()
+GRP2$contrMore <- res$more$get_Plotter()
 
-tmp2 <- ungroup(GRP2$contrMerged$contrastDF)
-top20 <- tmp2 %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
+top20 <- GRP2$contrResult %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
   arrange(FDR) %>%
   head(20)
 GRP2$top20 <- top20
@@ -132,17 +132,17 @@ GRP2$top20confint <- ggplot(top20, aes(x = protein_Id, y = log2FC,
 
 protMore <- GRP2$transformedlfqData$get_copy()
 protMore$complete_cases()
-protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$protein_Id)
-protMore$get_Plotter()$raster()
+protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$contrast_result$protein_Id)
+
 GRP2$imputedProteins <- protMore
 
 # Plot proteins without p-values
 
-xx <- res$more[rowSums(is.na(res$more)) > 0,]
+xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
 if (nrow(xx) > 0) {
   xx <- xx %>% arrange(estimate)
   GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) +
-    ggplot2::geom_bar(stat="identity") + coord_flip()
+    ggplot2::geom_bar(stat = "identity") + coord_flip()
   missing <- GRP2$transformedlfqData$get_copy()
   missing$complete_cases()
   missing$data <- missing$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
@@ -152,6 +152,13 @@ if (nrow(xx) > 0) {
 
 ### -----
 
+wr <- GRP2$lfqData$get_Writer()
+tmp <- wr$get_wide()
+tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
+names(tmp2) <- paste0(names(tmp2), ".normalized")
+res <- inner_join(desc, GRP2$contrResult, by = c("protein_Id" = "protein_Id"))
 
-rmarkdown::render("_GRP2Analysis.Rmd", params = list(grp = GRP2), output_format = bookdown::html_document2())
+writexl::write_xlsx(c(tmp, tmp2,  contrasts = list(res)), path = "AnalysisResults.xlsx")
+
+rmarkdown::render("_GRP2Analysis.Rmd", params = list(grp = GRP2), output_format = bookdown::html_document2(toc = TRUE, toc_float = TRUE))
 

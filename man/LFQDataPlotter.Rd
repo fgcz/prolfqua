@@ -31,8 +31,6 @@ lfqplotter$pca_plotly()
 #tmp <- lfqplotter$boxplots()
 #tmp$boxplot[[1]]
 lfqplotter$missigness_histogram()
-lfqplotter$missingness_per_condition()
-lfqplotter$missingness_per_condition_cumsum()
 
 lfqplotter$NA_heatmap()
 lfqplotter$intensity_distribution_density()
@@ -75,8 +73,6 @@ Other LFQData:
 \item \href{#method-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
 \item \href{#method-boxplots}{\code{LFQDataPlotter$boxplots()}}
 \item \href{#method-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
-\item \href{#method-missingness_per_condition}{\code{LFQDataPlotter$missingness_per_condition()}}
-\item \href{#method-missingness_per_condition_cumsum}{\code{LFQDataPlotter$missingness_per_condition_cumsum()}}
 \item \href{#method-NA_heatmap}{\code{LFQDataPlotter$NA_heatmap()}}
 \item \href{#method-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
 \item \href{#method-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
@@ -218,32 +214,6 @@ tibble with column boxplots containing ggplot objects
 histogram of intensities given number of missing in conditions
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missigness_histogram()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-ggplot
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-missingness_per_condition"></a>}}
-\if{latex}{\out{\hypertarget{method-missingness_per_condition}{}}}
-\subsection{Method \code{missingness_per_condition()}}{
-barplot with number of features with 1,2, etc missing in condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-ggplot
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-missingness_per_condition_cumsum"></a>}}
-\if{latex}{\out{\hypertarget{method-missingness_per_condition_cumsum}{}}}
-\subsection{Method \code{missingness_per_condition_cumsum()}}{
-barplot with cumulative sum of features with 1,2, etc missing in condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
