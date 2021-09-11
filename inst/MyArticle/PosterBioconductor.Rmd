@@ -1,5 +1,5 @@
 ---
-title: prolfqua - R-package for Proteomics Label Free Quantification using Linear Models
+title: prolfqua - R-package for analysing Proteomics Label Free Quantification Experiments
 author: 
   - name: Witold Wolski
     affil: 1; 2
@@ -56,7 +56,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width 
 ```
 
 
-We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format for quantification experiments. We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. The `prolfqua` package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, sample size estimation, modeling, and hypothesis testing. We further use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format for mass spectrometry based protein quantification experiments. We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. The `prolfqua` package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, modeling, hypothesis testing and sample size estimation. We further use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 
 
 # Implementation & Methods
