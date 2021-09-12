@@ -49,7 +49,7 @@ We can use various statistics to examine this hypothesis: the contrast estimate 
 For Bayesian models we can use the posterior probabilities that $\beta=0$, e.g. the probability that $\beta < 0$ when the mean estimate $\hat{\beta}$ is greater $0$ or vice versa, i.e.  $P(\beta < 0| \hat{\beta} > 0)$ or $P(\beta > 0 | \hat{\beta} < 0)$, which we can compute from the posterior sample of the $\beta$ parameters. We can also use the statistic $\frac{mean(\beta)}{\sqrt{var(\beta)}}$ with $var{\beta}$ estimated from the posterior sample of the $\beta$ parameter.
 
 For each statistic and each value of the statistics we then compute a confusion matrix (see Table \@ref(tab:confusionMatrix)).
-From the confusion matrix we can compute measures such as true positive rate (TPR), false positive rate (FPR), false discovery proportion (FDP) or accuracy (ACC) which are given by:
+From the confusion matrix we obtain measures such as true positive rate (TPR), false positive rate (FPR), false discovery proportion (FDP) or accuracy (ACC) which are given by:
 
 
 ```{r confusionMatrix}
