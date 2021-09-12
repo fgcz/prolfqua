@@ -24,17 +24,10 @@ GRP2$log2FCthreshold <- 1
 GRP2$FDRthreshold <- 0.1
 
 
-
-
-
-
-
 ##### Read the data.
 
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-head(startdata)
 startdata$majProtID <- gsub(";.+","",startdata$majority.protein.ids)
-
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 
@@ -42,7 +35,6 @@ annotation <- readxl::read_xlsx(inputAnnotation)
 
 startdata <- inner_join(annotation, startdata, by = "raw.file")
 startdata <- filter(startdata, nr.peptides >= GRP2$nrPeptides)
-
 startdata <- startdata %>% mutate(proteinAnnot = case_when(grepl("^REV_",majority.protein.ids) ~ "REV",
                                               grepl("^zz|^CON",majority.protein.ids) ~ "CON",
                                               TRUE ~ "FW"))
