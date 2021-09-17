@@ -9,7 +9,7 @@
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
 #'
-tidyMQ_ProteinGroups <- function(MQProteinGroups){
+tidyMQ_ProteinGroups <- function(MQProteinGroups) {
   if (is.character(MQProteinGroups)) {
     if (grepl("\\.zip$",tolower(MQProteinGroups))) {
       message(MQProteinGroups)
