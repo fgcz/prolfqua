@@ -54,12 +54,24 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width 
 ```
 
 
-# Abstract
+See ACS guidelines [https://publish.acs.org/publish/author_guidelines?coden=ancham#manuscript_text_components]
 
-We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format for mass spectrometry based protein quantification experiments. The `prolfqua` package integrates essential steps of the data analysis workflow: quality control, data normalization, protein aggregation, modeling, hypothesis testing and sample size estimation. We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. Furthermore we use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+# Abstract (80–250 words) 
+
+The `prolfqua` package integrates essential steps of the mass spectrometry based label free quantification data analysis workflow: quality control, data normalization, protein aggregation, modeling, hypothesis testing and sample size estimation. We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format.  We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. Furthermore, we use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 
 
-# Implementation & Methods
+# Introduction
+
+Several packages exist to model mass spectrometry label free quantification experiments. Among the most widely used are Limma[@] or MSStats[], ROPECA or MSqRob all implemented in the R. Each of them has some unique features, making them apealing to use depending on the experiment. We evaluated these package with the idea to integrate the various approaches in our analysis pipeline. Although all these packages are implemented in R, model specification, input, and output formats differ widely and wildly. Therefore, integrating their implementation into an analysis pipeline with an consisitent application programming interface is challenging. 
+Despite these differences the packages have in common, that they use R linear modelling infrastructure. All of them fit a linear model for each of the proteins, determine contrasts among conditions, and afterwards some apply t-statistics moderation using the `limma` method.
+We integrate R’s linear model and mixed model formula interface in prolfqua’s API. Therefore, knowledge of the R regression model infrastructure is an advantage when using our package.  This glass box approach should make it easy to reimplement an analysis performed with prolfqua using base R or other programming languages by reading the analysis script and without looking at the package code. However, acknowledging the R formula interface’s complexity and the popularity of MSstats, we provide functionality to suggest a model formula from an MSstats data format.
+
+Other functionality of `prolfqua` include inferring protein intensities from peptide intensities, transforming and normalizing data, and methods to visualizing and summarize the data. To infer protein intensities we implemented three methods, top N, Tukey's median polish, robust linear models. To remove systematic differences among samples the protein intensities, can be scaled using the robust scale method implemented in our package or use methods such as quantile normalization or vsn from bioconductor. In this respect `prolfqua` can be compared with the bioconductor package `msnbase`.
+
+
+
+# Implementation & Methods (Experimental Section)
 
 ## Implementation
 
@@ -78,9 +90,43 @@ __R__ linear model and linear mixed effect models allow modeling parallel design
 knitr::include_graphics("ContrastUML.png")
 ```
 
+### Estimating contrasts
+
+Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
+For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
+
+### P-value moderation
+
+From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how, using the empirical Bayes paradigm, to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$. These can be used to moderate the t-statistics by:
+$\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
+and subsequently the p-values. We implemented these methods in the class `ContrastModerated`.
+
+## Summarizing peptide level models
+
+To summarize peptide level models to protein models we did applied the method suggested by [@Suomi2017bEnhanced], that is to use the median scaled p-value of the peptide models and cumulative distribution function of the beta distribution function to determine a regulation probability of the protein. 
+
+To obtain the median p-value of the protein, we first rescaled the peptide p-values by taking the direction of the fold-change $\hat \beta$ into account, i.e.:
+
+
+\begin{equation}
+p_{s} =
+  \begin{cases}
+1-p, & \textrm{if}~ \hat{\beta} > 0\\
+p-1, & \textrm{otherwise}
+\end{cases}
+\end{equation}
+
+Afterwards, the median scaled p-value $\tilde{p}_s$ is determined and using the transformation below, transformed back onto the original scale. 
+
+$$
+\tilde{p} = 1 - |\tilde{p}_{s}|
+$$
+Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution.
+
+
 ## Data preprocessing
 
-Data was preprocessed by $log_2$ transforming the peptide intensities, and subsequent robust z-score transformation. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment (For details see section [Datasets and Data preprocessing]). We did not use imputation.  The only differences we will observe are because of using different modelling methods.
+Data was preprocessed by $log_2$ transforming the peptide intensities, and subsequent robust z-score transformation. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment. We did not use imputation.
 
 
 ## Benchmarking

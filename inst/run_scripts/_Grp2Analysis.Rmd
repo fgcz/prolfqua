@@ -119,7 +119,8 @@ the histogram on the left (Panel B) shows the distribution of intensities of pro
 pl <- grp2$lfqData$get_Plotter()
 p2 <- pl$missigness_histogram()
 
-p1 <- pl$missingness_per_condition()
+sr <- grp2$lfqData$get_Summariser()
+p1 <- sr$plot_missingness_per_condition()
 
 gridExtra::grid.arrange(p1,p2, nrow=1)
 
@@ -144,7 +145,7 @@ bb <- xb$median
 names(bb) <- xb$sampleName
 par(mar = c(10,6,3,6))
 barplot(sort(abs(log2(bb)))  - mean(log2(bb)) ,
-        horiz = F,las = 2, main = "median", cex.names = 0.6, ylab = "sample average - log2(total average", ylim = c(-log2(8),log2(8)))
+        horiz = F,las = 2, main = "median", cex.names = 0.6, ylab = "sample avg. - total avg. (log2 intensities)", ylim = c(-log2(8),log2(8)))
 abline(h = c(-log2(5),log2(5)), col = 2)
 x <- seq(-3 ,3 ,by = 1)
 axis(4,x,round(2^abs(x),digits = 1))
