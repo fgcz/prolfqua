@@ -90,6 +90,8 @@ __R__ linear model and linear mixed effect models allow modeling parallel design
 knitr::include_graphics("ContrastUML.png")
 ```
 
+## Modelling
+
 ### Estimating contrasts
 
 Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
@@ -101,7 +103,7 @@ From the linear and the mixed effect models, we can obtain the residual standard
 $\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
 and subsequently the p-values. We implemented these methods in the class `ContrastModerated`.
 
-## Summarizing peptide level models
+### Summarizing peptide level models
 
 To summarize peptide level models to protein models we did applied the method suggested by [@Suomi2017bEnhanced], that is to use the median scaled p-value of the peptide models and cumulative distribution function of the beta distribution function to determine a regulation probability of the protein. 
 
@@ -124,12 +126,81 @@ $$
 Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution.
 
 
-## Data preprocessing
-
-Data was preprocessed by $log_2$ transforming the peptide intensities, and subsequent robust z-score transformation. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment. We did not use imputation.
 
 
-## Benchmarking
+
+
+
+
+
+
+# Example Analysis
+
+Peptide intensities are $\log_2$ transformed and robust z-score scaled but then rescaled to preserves the original range of the data using the method `robscale`. The distribution of the normalized intensities can be seen in Figure \@ref(fig:prepro) Panel A. Protein intensities are estimated using Tukey's median polish. Figure \@ref(fig:prepro) Panel B shows the peptide intensities and in black the estimated protein intensities, while the boxplot (Panel D) shows the distribution of the protein intensity estimate in each condition. Finally Panel C shows the distribution of the standard deviations in each of the conditions for all of the proteins.
+
+
+
+```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", out.width = '90%'}
+library(prolfqua)
+d <- prolfqua::data_ionstar$filtered()
+lfqd <- LFQData$new(d$data, d$config) 
+t <- lfqd$get_Transformer()
+lfqd <-  t$log2()$robscale()$lfq
+pl <- lfqd$get_Plotter()
+p_1 <- pl$intensity_distribution_density() +
+  labs(tag = "A") + theme(legend.position = "none")
+agr <- lfqd$get_Aggregator()
+lfqp <- agr$medpolish()
+p_2 <- agr$plot()$plots[[1]] + labs(tag = "B")
+p_3 <- lfqp$get_Stats()$violin() + labs(tag = "C")
+pl <- lfqp$get_Plotter()
+p_4 <- pl$boxplots()$boxplot[[1]] + labs(tag = "D")
+ggpubr::ggarrange(p_1, p_2, p_3, p_4)
+```
+
+
+
+(ref:scaling) Panel A - Peptide intensity distributions for 20 samples, Panel B - Peptide intensities for protein _5NTD_ and protein intensity estimate (black dashed line), Panel C - distribution of protein standard deviations for all dilutions, Panel D - Distribution of protein intensities for protein _5NTD_.
+
+
+The following code example illustrates how contrast comparing the protein intensities in the condition can be computed. First the contrasts and the linear model are specified. Afterwards the model is fitted to the data using the `build_model` function. The importance of the factors within the model can be examined using the anova function. This facilitates model selection for data within more than one explanatory variable. Finally we estimate the contrasts either from the linear model using the `Contrasts` class, or directly from the data using the `ContrastsSimpleImpute` class. Afterwards we apply t-statistic moderation using the `ContrastModerated` class The `addContrastResults` then merges both sets of contrast estimates, preferring the one obtained from the linear model. Figure \@ref(fig:exampleContrasts) Panel A shows the distribution of the p-values, while figure Panel B shows the volcano plot  for each comparsion.
+
+(ref:exampleContrasts) Left panel - histogram of p-values. Right panel - volcano plots.
+
+```{r exampleContrasts, fig.cap="(ref:exampleContrasts)", echo=TRUE, out.width = '90%'}
+contrasts <- c(
+  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
+  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c"
+  #,"dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
+  #,"dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
+)
+# fit model
+lmmodel <- paste(lfqp$intensity_column()," ~ dilution.")
+modelFunction <- strategy_lm( lmmodel, model_name = "lm")
+models <- build_model(lfqp, modelFunction)
+p0 <- models$anova_histogram()
+# compute contrasts from linear model and with imputation
+contr <- Contrasts$new(models, contrasts) %>% 
+  ContrastsModerated$new()
+conI <- ContrastsSimpleImpute$new( lfqp, contrasts) %>% 
+  ContrastsModerated$new()
+tmp <- addContrastResults(prefer = contr, add = conI)
+# visualize results
+pl <- tmp$merged$get_Plotter()
+p1 <- pl$histogram()$p.value
+p2 <- pl$volcano()$FDR +
+   theme(legend.position = "bottom")
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+
+```
+
+
+# Benchmarking
+
+The Benchmark functionality of prolfqua includes ROC curves and computes partial areas under those curves (pAUC) and other scores (for more details see BenchmarkingIonstarData). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats (Choi 2014). 
+
+Data was preprocessed by $log_2$ transforming the peptide intensities, and subsequent robust z-score transformation. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment. We did not use imputation. We fitted the mixed effect linear model to the peptide intensities. The linear model was fitted to the protein intensities inferred from the peptide intensities using the Tukey's median polish.
+
 
 The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentrations. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins, we know that the difference between dilutions should be $\beta \ne 0$. For benchmarking we used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. 
 
@@ -165,66 +236,6 @@ A further question we can examine using the benchmark data is, how well the fals
 
 
 
-# Example Analysis
-
-Peptide intensities are $\log_2$ transformed and robust z-score scaled but then rescaled to preserves the original range of the data. Protein intensities are estimated using Tukey's median polish (see code example and Figure \@ref(fig:prepro)).
-
-
-
-```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", out.width = '90%'}
-library(prolfqua)
-d <- prolfqua::data_ionstar$filtered()
-lfqd <- LFQData$new(d$data, d$config) 
-t <- lfqd$get_Transformer()
-lfqd <-  t$log2()$robscale()$lfq
-pl <- lfqd$get_Plotter()
-p_1 <- pl$intensity_distribution_density() +
-  labs(tag = "A") + theme(legend.position = "none")
-agr <- lfqd$get_Aggregator()
-lfqp <- agr$medpolish()
-p_2 <- agr$plot()$plots[[1]] + labs(tag = "B")
-p_3 <- lfqp$get_Stats()$violin() + labs(tag = "C")
-pl <- lfqp$get_Plotter()
-p_4 <- pl$boxplots()$boxplot[[1]] + labs(tag = "D")
-ggpubr::ggarrange(p_1, p_2, p_3, p_4)
-```
-
-
-
-(ref:scaling) Panel A - Peptide intensity distributions for 20 samples, Panel B - Peptide intensities for protein _5NTD_ and protein intensity estimate (black dashed line), Panel C - distribution of protein standard deviations for all dilutions, Panel D - Distribution of protein intensities for protein _5NTD_.
-
-
-(ref:exampleContrasts) Left panel - histogram of p-values. Right panel - volcano plots.
-
-```{r exampleContrasts, fig.cap="(ref:exampleContrasts)", echo=TRUE, out.width = '90%'}
-contrasts <- c(
-  "dilution_(9/7.5)_1.2" =   "dilution.e - dilution.d",
-  "dilution_(7.5/6)_1.25" =   "dilution.d - dilution.c",
-  "dilution_(6/4.5)_1.3(3)" =   "dilution.c - dilution.b",
-  "dilution_(4.5/3)_1.5" =   "dilution.b - dilution.a"
-)
-# fit model
-lmmodel <- paste(lfqp$intensity_column()," ~ dilution.")
-modelFunction <- strategy_lm( lmmodel, model_name = "lm")
-models <- build_model(lfqp, modelFunction)
-p1 <-  models$anova_histogram()
-# compute contrasts from linear model and with imputation
-contr <- Contrasts$new(models, contrasts) %>% 
-  ContrastsModerated$new()
-conI <- ContrastsSimpleImpute$new( lfqp, contrasts) %>% 
-  ContrastsModerated$new()
-tmp <- addContrastResults(contr, conI)
-# visualize results
-pl <- tmp$merged$get_Plotter()
-p1 <- pl$histogram()$p.value
-p2 <- pl$volcano()$FDR +
-   theme(legend.position = "bottom")
-gridExtra::grid.arrange(p1, p2, ncol = 2)
-
-```
-
-
-# Benchmarking
 
 ```{r}
 allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
