@@ -19,7 +19,6 @@ author:
   - name: Christian Panse
     affil: 1; 2
     orcid: '0000-0003-1975-3064'
-  
 affiliation:
   - num: 1
     address: Functional Genomics Center Zurich (https://www.fgcz.ch/)
@@ -40,7 +39,8 @@ output:
     toc: true
   posterdown::posterdown_html:
 bibliography: bibliography.bib
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -58,31 +58,63 @@ See ACS guidelines [https://publish.acs.org/publish/author_guidelines?coden=anch
 
 # Abstract (80–250 words) 
 
-The `prolfqua` package integrates essential steps of the mass spectrometry based label free quantification data analysis workflow: quality control, data normalization, protein aggregation, modeling, hypothesis testing and sample size estimation. We use `prolfqua` to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format.  We use `prolfqua` to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. Furthermore, we use `prolfqua` to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+LFQ experiments are conducted to determine the relative protein abundance across different conditions. LFQ by Liquid-Chromatography Mass-Spectrometry  (LC-MS) is a bottom-up method: peptides are measured and then used to determine the relative abundance of the intact protein.
+
+
+"Protein mass spectrometry with label-free quantification (LFQ) is widely used for quantitative proteomics studies. Nevertheless, well-principled statistical inference procedures are still lacking, and most practitioners adopt methods from transcriptomics. These, however, cannot properly treat the principal complication of label-free proteomics, namely many non-randomly missing values." (rewrite this sentence)
+
+The _prolfqua_ package integrates essential steps of the mass spectrometry based label free quantification data analysis workflow: quality control, data normalization, protein aggregation, modeling, hypothesis testing and sample size estimation. We use _prolfqua_ to develop highly customizable, visually appealing, and interactive data analysis reports in pdf or HTML format.  We use _prolfqua_ to visualize and model simple experimental designs with a single explanatory variable and complex experiments with multiple factors. Furthermore, we use _prolfqua_ to benchmark data acquisition, data preprocessing or data modeling methods. We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+
+
+
 
 
 # Introduction
 
-Several packages exist to model mass spectrometry label free quantification experiments. Among the most widely used are Limma[@] or MSStats[], ROPECA or MSqRob all implemented in the R. Each of them has some unique features, making them apealing to use depending on the experiment. We evaluated these package with the idea to integrate the various approaches in our analysis pipeline. Although all these packages are implemented in R, model specification, input, and output formats differ widely and wildly. Therefore, integrating their implementation into an analysis pipeline with an consisitent application programming interface is challenging. 
-Despite these differences the packages have in common, that they use R linear modelling infrastructure. All of them fit a linear model for each of the proteins, determine contrasts among conditions, and afterwards some apply t-statistics moderation using the `limma` method.
-We integrate R’s linear model and mixed model formula interface in prolfqua’s API. Therefore, knowledge of the R regression model infrastructure is an advantage when using our package.  This glass box approach should make it easy to reimplement an analysis performed with prolfqua using base R or other programming languages by reading the analysis script and without looking at the package code. However, acknowledging the R formula interface’s complexity and the popularity of MSstats, we provide functionality to suggest a model formula from an MSstats data format.
+Proteins are carriers of function and structure in living cells. Hence, measuring changes in protein abundance is the subject of active research. However, identifying and quantifying intact proteins in complex samples containing hundreds of proteins is not possible using existing methods at the moment. Hence, the bottom-up mass spectrometric method is employed (see Figure \@ref(fig:bottomUP)). Proteins that are extracted from biological samples are specifically and reproducible digested into protein fragments - peptides. The peptides are first separated by their chemical and physical properties using High-Pressure Liquid Chromatography (HPLC). Afterward, they are weighted, identified, and quantified using mass spectrometric techniques, e.g., Electro-Spray-Ionization Mass Spectrometry (ESI-MS). Finally, peptide identification is achieved by fragmenting and matching the measured fragment masses to theoretical masses computed from known peptide sequences. For quantification, intact peptide ions or products of peptide ion fragmentation are counted and aggregated. Finally, the identified and quantified peptides are assigned to proteins based on protein sequence information.
 
-Other functionality of `prolfqua` include inferring protein intensities from peptide intensities, transforming and normalizing data, and methods to visualizing and summarize the data. To infer protein intensities we implemented three methods, top N, Tukey's median polish, robust linear models. To remove systematic differences among samples the protein intensities, can be scaled using the robust scale method implemented in our package or use methods such as quantile normalization or vsn from bioconductor. In this respect `prolfqua` can be compared with the bioconductor package `msnbase`.
+Label-Free Quantification (LFQ) Proteomics Experiments enable monitoring relative abundances of thousands of proteins in biological samples. For most studies, parallel designs with a single explanatory variable are used, e.g., treatment vs. control. More recently, more complex experimental designs are implemented with increasing numbers of samples, i.e., factorial designs and longitudinal studies (time series), sometimes with repeated measurements on the same subject. The obtained data can be modeled using linear fixed, mixed, or random-effects models [@Bates2015FittingJSS]. Based on these models, tests can be applied to examine whether a factor or interactions are significant, or differences between factor levels can be estimated, and their significance tested.  Proteins can be ordered or grouped using the estimated fold-change, t-statistics, scaled p-value, or false discovery rate (FDR) and then subjected to gene set enrichment or over-representation analysis (give references) or validation experiments.
 
+
+Several packages exist to model mass spectrometry LFQ experiments, e.g. Limma[@Ritchie2015] and MSStats[@Choi2014], ROPECA[@Suomi2017bEnhanced],  MSqRob [@Goeminne2016] or proDA [@bioxrvproDA2020], to mention some, all implemented in the R. Each of them has some unique features. For example, _MSStats_ infers the model from the sample annotation and generates the model formula. At the same time, _limma_ allows to specify a linear model formula and implements the empirical Bayes variance shrinkage method. The R-package _ROPECA_, performs a roll-up of peptide level fold change and p-value estimates, obtained from _limma_, to protein level estimates. Furthermore, MSqRob implements two models: robust linear models fitted to protein intensities and robust ridge regression fitted to peptide intensities and combines them with empirical Bayes variance shrinkage known from _limma_. 
+When analyzing parallel designs using a single explanatory variable, we can use all packages for the statistical data analysis of the data; however, if we want to model factorial designs or repeated measurements, we can use only some of them. Table \ref@(tab:tableOverview) gives an overview of the models supported.
+
+```{r tableOverview}
+xx <- list(proDA = c("pd" = "Y", eb = "Y", md = "Y"),
+triqler = c("pd" = "Y"),
+MSstats = c("pd" = "Y", "rm" = "Y", "mem" = "y"),
+MSqRob2_rlm = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y", md = "?"),
+limma  = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y"),
+ROPECA = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y", eb = "Y"),
+prolfqua = c("pd" = "Y", "rm" = "Y", fd = "Y", int = "Y", mem = "Y",eb = "Y", md = "Y"))
+
+bb <- data.frame(bind_rows(xx))
+rownames(bb) <- names(xx)
+knitr::kable(data.frame(bb), caption = "Rows - R package, Columns - types of models supported: pd - parallel design, rm - repeated measurements, fd - factorial design, int - interactions among factors, mem - mixed effect models, eb - empirical Bayes, md - missing data modelling. Y - yes, y - yes but only for random effects, * - repeated measurements are only modeled using a fixed effects. ? - the hurdle model is not implemented in the msqrob2 package yet.")
+```
+
+
+We were inspired by the excellent R package caret, which enables us to call various machine learning methods utilizing few functions, making selecting the best ML algorithm for your problem easy. We wanted to have a similar tool for the analysis of LFQ data. However, after examining the R packages for modeling proteomics quantification data, we observed that model specification, input, and output formats differ widely and wildly. These packages are implemented in R, and all use the R linear modeling infrastructure. All of them fit some type of linear model either to peptide or protein intensities, determine contrasts among conditions, and afterward, some of them apply empirical Bayes variance shrinkage. Therefore, the revised goal was to provide a modular design, with R linear models as a core, where features such as p-value aggregation (ROPECA) or variance shrinkage could be easily enabled if required. 
+
+Models in _prolfqua_ are specified using R’s linear model and mixed model formula interface. Therefore, knowledge of the R regression model infrastructure is an advantage when using our package. Furthermore, this glass box approach should make it easy to reimplement an analysis performed with _prolfqua_ using base R or other programming languages by reading the analysis script and without looking at the package code. However, acknowledging the R formula interface’s complexity to non-statisticians and the popularity of MSstats, we provide the functionality to suggest a model formula from the sample annotation.
+
+Furthermore, the functionality of _prolfqua_ also includes methods specific to proteomics data. For example, we implemented strategies to infer protein intensities from peptide intensities: top N, Tukey's median polish, robust linear models. Furthermore, peptide or protein intensities can be scaled using the robust scaling method or transformed using _quantile_ normalization or _vsn_ from Bioconductor to remove systematic differences among samples and heteroscedasticity. In this respect, _prolfqua_ can be compared with other R packages such _msnbase_[], _DEP_ and (see BioC2021 conference) which support the entire LFQ analysis pipeline.
+
+To benchmark analysis pipeline and modeling methods implemented within _prolfqua_ and to compare our results with those of MSstats, we use the Ionstar [reference] dataset. 
 
 
 # Implementation & Methods (Experimental Section)
 
 ## Implementation
 
-We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value[@tidydata2014]. Using an __R6__[@R6cite] configuration object, we specify what variable is in which column, making it easy to integrate new inputs in `prolfqua` if provided in tidy tables. For example, to visualize tidy _Spectronaut_, or _Skyline_ outputs, or data in _MSStats_ format, only a few lines of code to update the `prolfqua` configuration are needed. For popular software like _MaxQuant_ or _MSFragger_, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base __R__[@RCoreTeam2021] and the tidyverse[@tidyverse2019]. We use __R6__ classes to structure the functionality of the package (see Figure \@ref(fig:LFQData) and Figure \@ref(fig:ContrastUML)). __R6__ classes are well supported (e.g. auto-completion) and easy to use (OOP).
+We store all the data needed for analysis in a single data frame in a tidy table, i.e., every column is a variable, every row is an observation, every cell is a single value[@tidydata2014]. Using an __R6__[@R6cite] configuration object, we specify what variable is in which column, making it easy to integrate new inputs in _prolfqua_ if provided in tidy tables. For example, to visualize tidy _Spectronaut_, or _Skyline_ outputs, or data in _MSStats_ format, only a few lines of code to update the _prolfqua_ configuration are needed. For popular software like _MaxQuant_ or _MSFragger_, which stores the same variable (e.g., intensity) in multiple columns, one for each sample, we implemented methods that transform the data into tidy tables. Relying on the tidy data table enabled us to easily interface with many data manipulation, visualization, and modeling methods implemented in base __R__[@RCoreTeam2021] and the tidyverse[@tidyverse2019]. We use __R6__ classes to structure the functionality of the package (see Figure \@ref(fig:LFQData) and Figure \@ref(fig:ContrastUML)). __R6__ classes are well supported (e.g. auto-completion) and easy to use (OOP).
 
 
 ```{r LFQData, echo=FALSE, fig.cap="Class Diagram for LFQData and related objects. The LFQData_Plotter class uses the LFQData class to implement methods for plotting.", out.width = '90%'}
 knitr::include_graphics("LFQDataUML.png")
 ```
 
-__R__ linear model and linear mixed effect models allow modeling parallel designs, repeated measurements, factorial designs, and many more. __R__'s formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with `prolfqua` in other statistical programming languages. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statistical modeling functionality in `proflqua` (see Figure \@ref(fig:ContrastUML)).
+__R__ linear model and linear mixed effect models allow modeling parallel designs, repeated measurements, factorial designs, and many more. __R__'s formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with _prolfqua_ in other statistical programming languages. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statistical modeling functionality in `proflqua` (see Figure \@ref(fig:ContrastUML)).
 
 (ref:ContrastUML) UML diagram of modeling and contrast related classes. Different strategies e.g. _lm_, _lmer_, and _glm_ can be used to fit various types of models using a model builder (see code). All classes computing contrasts implement the _Contrast_ interface.
 
@@ -92,16 +124,34 @@ knitr::include_graphics("ContrastUML.png")
 
 ## Modelling
 
-### Estimating contrasts
+### Estimating contrasts for linear models
 
 Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
-For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom.
+For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom. These methods are implemented in the class `Contrast` (see Figure \@ref(fig:ContrastUML))
+
+### Contrast estimation in presence of missing data.
+
+When imputing, we assume that there are no observations because of the limit of detection (LOD). Furthermore, we believe that the variance of the protein is constant in all the conditions.
+To handle cases where we do not have any observations in one of the conditions, we impute the estimate of the condition mean by using the average of $10\%$ smallest group mean intensities in the experiment. To estimate the variance in the condition, we use the pooled variance based on all conditions: 
+
+$$s_p^2=\frac{\sum_{i=1}^k (n_i - 1)s_i^2}{\sum_{i=1}^k (n_i - 1)},$$
+with $n_i$ the number of observations, and $s_i$ the standard deviation in each condition.
+The standard deviation for the t-statics is then given by:
+
+$$
+s = \sqrt{2}\sqrt{\frac{n_g s_p^2}{n}},
+$$
+
+Where, $n_G$ is the number of groups and $n$ is the number of observations.
+
+This methods are implemented in the class `ContrastSimpleImpute` (see Figure \@ref(fig:ContrastUML)).
+
 
 ### P-value moderation
 
 From the linear and the mixed effect models, we can obtain the residual standard deviation $\sigma$, and degrees of freedom.  [@Smyth2004linear] discuss how, using the empirical Bayes paradigm, to use the $\sigma$ and $df$ of all models to estimate a prior $\sigma$ and prior degrees of freedom, and posterior $\tilde \sigma$. These can be used to moderate the t-statistics by:
 $\tilde{t}_{pj} = \frac{t_{pj} s_p}{\tilde{s}_p}$
-and subsequently the p-values. We implemented these methods in the class `ContrastModerated`.
+and subsequently the p-values. We implemented this method in the class `ContrastModerated` (Figure \@ref(fig:ContrastUML)).
 
 ### Summarizing peptide level models
 
@@ -116,6 +166,7 @@ p_{s} =
 1-p, & \textrm{if}~ \hat{\beta} > 0\\
 p-1, & \textrm{otherwise}
 \end{cases}
+(\#eq:scalepvalue)
 \end{equation}
 
 Afterwards, the median scaled p-value $\tilde{p}_s$ is determined and using the transformation below, transformed back onto the original scale. 
@@ -123,21 +174,17 @@ Afterwards, the median scaled p-value $\tilde{p}_s$ is determined and using the 
 $$
 \tilde{p} = 1 - |\tilde{p}_{s}|
 $$
-Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution.
+Because we used the median as the i-th order statistic  $i = n/2 +0.5$. Therefore, $\gamma = i = n/2 + 0.5$ and $\delta = n - i + 1 = n - (n/2 + 0.5) + 1 = n/2 + 0.5 = \gamma$ are used to parameterize the CDF of the Beta distribution. We implemented this method in the class `ContrastROPECA` (Figure \@ref(fig:ContrastUML)).
 
 
 
+$$
 
-
-
-
-
-
+$$
 
 # Example Analysis
 
-Peptide intensities are $\log_2$ transformed and robust z-score scaled but then rescaled to preserves the original range of the data using the method `robscale`. The distribution of the normalized intensities can be seen in Figure \@ref(fig:prepro) Panel A. Protein intensities are estimated using Tukey's median polish. Figure \@ref(fig:prepro) Panel B shows the peptide intensities and in black the estimated protein intensities, while the boxplot (Panel D) shows the distribution of the protein intensity estimate in each condition. Finally Panel C shows the distribution of the standard deviations in each of the conditions for all of the proteins.
-
+Peptide intensities are $\log_2$ transformed and robust z-score scaled but then rescaled to preserves the original range of the data using the method `robscale`. We show the distribution of the normalized intensities in Figure \@ref(fig:prepro) Panel A. Protein intensities are estimated using Tukey's median polish. Figure \@ref(fig:prepro) Panel B shows the peptide intensities and the estimated protein intensities in black. The boxplot (Panel D) shows the distribution of the protein intensity estimate in each condition. Finally, Panel C shows the distribution of the protein standard deviations for each condition.
 
 
 ```{r prepro,  echo = TRUE , fig.cap="(ref:scaling)", out.width = '90%'}
@@ -156,6 +203,7 @@ p_3 <- lfqp$get_Stats()$violin() + labs(tag = "C")
 pl <- lfqp$get_Plotter()
 p_4 <- pl$boxplots()$boxplot[[1]] + labs(tag = "D")
 ggpubr::ggarrange(p_1, p_2, p_3, p_4)
+
 ```
 
 
@@ -163,7 +211,7 @@ ggpubr::ggarrange(p_1, p_2, p_3, p_4)
 (ref:scaling) Panel A - Peptide intensity distributions for 20 samples, Panel B - Peptide intensities for protein _5NTD_ and protein intensity estimate (black dashed line), Panel C - distribution of protein standard deviations for all dilutions, Panel D - Distribution of protein intensities for protein _5NTD_.
 
 
-The following code example illustrates how contrast comparing the protein intensities in the condition can be computed. First the contrasts and the linear model are specified. Afterwards the model is fitted to the data using the `build_model` function. The importance of the factors within the model can be examined using the anova function. This facilitates model selection for data within more than one explanatory variable. Finally we estimate the contrasts either from the linear model using the `Contrasts` class, or directly from the data using the `ContrastsSimpleImpute` class. Afterwards we apply t-statistic moderation using the `ContrastModerated` class The `addContrastResults` then merges both sets of contrast estimates, preferring the one obtained from the linear model. Figure \@ref(fig:exampleContrasts) Panel A shows the distribution of the p-values, while figure Panel B shows the volcano plot  for each comparsion.
+The following code example illustrates how we compute contrast comparing the protein intensities in the condition. First, the differences and the linear model are specified. Afterward, the model is fitted to the data using the `build_model` function. Next, we examine the importance of the factors in the model using the ANOVA function, which facilitates model selection for models with one explanatory variable. Finally, we estimate the contrasts either from the linear model using the `Contrasts` class or directly from the data using the `ContrastsSimpleImpute` class. Afterward, we apply t-statistic moderation using the `ContrastModerated` class. Finally, the `addContrastResults` function merges both sets of contrast estimates, preferring the one obtained from the linear model. Figure \@ref(fig:exampleContrasts) Panel A shows the distribution of the p-values, while figure Panel B shows the volcano-plot for each comparison.
 
 (ref:exampleContrasts) Left panel - histogram of p-values. Right panel - volcano plots.
 
@@ -197,17 +245,15 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # Benchmarking
 
-The Benchmark functionality of prolfqua includes ROC curves and computes partial areas under those curves (pAUC) and other scores (for more details see BenchmarkingIonstarData). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats (Choi 2014). 
 
-Data was preprocessed by $log_2$ transforming the peptide intensities, and subsequent robust z-score transformation. No other data filtering was used than the removal of _one hit wonders_, i.e. proteins with a single peptide assignment. We did not use imputation. We fitted the mixed effect linear model to the peptide intensities. The linear model was fitted to the protein intensities inferred from the peptide intensities using the Tukey's median polish.
+The peptide intensities from the _peptide.txt_ file were $log_2$ transformed, and subsequent robust z-score transformation, where median and the mean average deviation (mad) were obtained from the human proteins only. We removed _one hit wonders_, i.e. proteins with a single peptide assignment. No further data filtering was used. We also did not use imputation. The protein level linear model was fitted to the protein intensities inferred from the peptide intensities using the Tukey's median polish. The mixed effect linear model, and the ROPECA model were fitted to the peptide intensities. The details of the _prolfqua_ benchmark implementation are available online  [BenchmarkingIonstarData](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html).
+
+The Benchmark functionality of _prolfqua_ includes ROC curves and computes partial areas under those curves (pAUC) and other scores, e.g. the false discovery proportion FDP. We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014] and by proDA [@bioxrvproDA2020]. Figure \@ref(fig:benchmarkROC)
+
+The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentrations. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins, we know that the difference between dilutions should be $\beta \ne 0$. To compare the performance of the various methods implemented in _prolfqua_ we use only the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. 
 
 
-The IonStar  [@shen2018ionstar] benchmark dataset contains _H. sapiens_ proteins with constant concentrations and _E. coli_ proteins with varying concentrations. We know that for _H. sapiens_ proteins the difference $\beta$ between two dilutions should be $\beta = 0$ while for _E. coli_ proteins, we know that the difference between dilutions should be $\beta \ne 0$. For benchmarking we used the contrasts resulting in small fold-changes $\beta = 1.2,1.25,1.3(3),1.5$. 
-
-We can use various statistics to examine this hypothesis: the contrast estimate $\beta$, or because we first log2 transformed the data the log2 fold-change (log2FC), the t-statistic $\frac{\beta}{\sqrt{var(\beta)}}$, the $p-value$  and moderated $p-value$ for models where the p-value can be obtained. 
-
-For each statistic and each value of the statistics we then compute a confusion matrix (see Table \@ref(tab:confusionMatrix)).
-From the confusion matrix we obtain measures such as true positive rate (TPR), false positive rate (FPR), false discovery proportion (FDP) or accuracy (ACC) which are given by:
+We can use various statistics to examine the alternative hypothesis $\beta \ne 0$: the contrast estimate, i.e. the $\log_2$ fold-change $\beta$, the t-statistic $\frac{\beta}{\sqrt{var(\beta)}}$, or the $p-value$ and moderated $p-value$. For each statistic and each value of the statistics we then compute a confusion matrix (see Table \@ref(tab:confusionMatrix)). From the confusion matrix we obtain measures such as true positive rate (TPR), false positive rate (FPR), false discovery proportion (FDP) or accuracy (ACC) which are given by:
 
 
 ```{r confusionMatrix}
@@ -229,12 +275,7 @@ ACC &= \frac{TP + TN}{m}
 $$
 
 
-By plotting the $TPR$ versus the $FPR$ we obtain the receiver operator characteristic curve (ROC curve). The area under the curve (AUC) or partial areas under the curve (pAUC), at various values of the $FPR$, are further measures of performance. By using these measures we can compare the performances of the statistics produced by the various methods examined.
-
-
-A further question we can examine using the benchmark data is, how well the false discovery estimate (FDR) obtained to from the statistical model matches the false discovery proportion (FDP). The FDR is the expected value of the false discovery proportion. Ideally, the FDR should be an unbiased estimate of the $FDP$. By plotting the FDR gainst the FDP we can asses visually if these assumptions are met. 
-
-
+By plotting the $TPR$ versus the $FPR$ we obtain the receiver operator characteristic curve (ROC curve). The area under the curve (AUC) or partial areas under the curve (pAUC), at various values of the $FPR$, are measures of performance derived from the ROC curve. By using these measures we can compare the performances of the statistics produced by the various methods examined.
 
 
 ```{r}
@@ -281,9 +322,15 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-The Benchmark functionality of `prolfqua` includes ROC curves and computes partial areas under those curves (pAUC) and other scores (for more details see [BenchmarkingIonstarData](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)). We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014]. Figure \@ref(fig:benchmarkROC)
 
-A relevant parameter is the number of proteins for which we estimated the contrasts (see Figure \@ref(fig:FDRfdp)). It indicates how robust the models are in the presence of missing data. Also important is if the FDR produced is an unbiased estimate of the false discovery proportion (FDP) (see Figure \@ref(fig:FDRfdp) right panel).
+A relevant parameter is the number of contracts a given method estimates from the data(see Figure \@ref(fig:FDRfdp) left Panel). It indicates how robust the procedure works in the presence of missing data. For each protein, we can estimate four contrast which for 4046 proteins, at least two peptides resulted in $16184$ possible contrast estimates. Because the set of contrasts slightly differs for each method, it makes comparing them complicated. For instance, we observe that MSstas estimates $16058$ while the mixed effect models estimate the fewest with $15940$. Hence, to conclude that one method shows a better performance, the score, e.g., pAUC, needs to be greater, but also the number of estimated contrasts needs to be equal or larger. 
+
+Figure \@ref(fig:benchmarkROC) left panel, shows how various estimates obtained from the models, i.e. $\log_2(FC)$, $t-statistics$ and scaled p-values allow to identify true positives (TP) given a false positive rate. When testing for differential expression, the $\log_2(FC)$ is outperformed by than the t-statistic or p-value. 
+If an accurate estimate of the $log_2(FC)$ is essential, the linear models fitted to protein intensities, estimated using Tukey's median polish, show the best performance. We speculate that this is because of the robustness of Tukey's median polish method. This hypothesis could be examined, by including other forms of protein intensity inferences implemented in `prolfqua`, e.g. `top-N` or `rlm`, into the benchmark.
+
+There are only minor differences in the p-AUC when using the t-statistics or the scaled p-value  (see Figure \@ref(fig:benchmarkROC) right panel). In order to compute the confusion matrices based on the p-value we first need to rescale it (see Equation \@ref(eq:scalepvalue)). Thus, the p-value is a function of the t-statistics and the degrees of freedom. Interestingly, the pAUC increases when using p-values instead of the t-statistics for linear models, while it decreases for mixed effect models. The reason is erroneous denominator degrees of freedom estimation for many proteins in the mixed-effect models.
+
+We also benchmark if the FDR obtained from a model is an unbiased estimate of the false discovery proportion (FDP). Figure \@ref(fig:FDRfdp) right panel draws on the horizontal axis the FDR determined from the model, and on the vertical axis, the FDP obtained from the confusion matrix.  We see that most of the lines are below the diagonal, indicating that the FDR estimates obtained with _prolfqua_ are modestly conservative for this benchmark dataset provide. In the case of MSstats, we observe a high proportion of false discoveries for small FDR values. In the case of ROPECA, the FDR estimates, obtained when Benjamini-Hochberg correcting the regulation probabilities, strongly overestimate the FDP.
 
 (ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modeling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
 
@@ -325,7 +372,29 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # Conclusions
 
-`prolfqua` is an easy-to-use package to analyze quantitative mass spectrometric data, report results, and benchmark MS software and statistical methods. We provide more details at the website https://wolski.github.io/prolfqua/. To install:
+We assessed the performance of different modelling approaches using a benchmark dataset whose ground truth was known.  However, the dataset used has several limitations. First, the design is a parallel-group design. Secondly, essential sources of variation, present in every experiment, such as the biochemical and biological, are not measured. The dataset, captures only the variance coming from the chromatography, electrospray and the mass spectrometric measurement method. While we can extrapolate some of the results obtained to more realistic datasets, we need to be careful because the observed differences between the various tested models are small.
+
+What we can conclude is that, if we want to order the proteins according to the likelihood of being differentially regulated, for instance to perform gene enrichment analysis, the t-statistic is better suited than the fold-change estimate, especially if the expected observed effect sizes are small.
+Modelling the degrees of freedom when computing the p-values might improve the inference further. However, for the benchmark dataset used, we do not observe an improvement for neither the fixed nor mixed effect models (see Figure \@ref(fig:roc2Stage) and Tables \@ref(tab:tablesMedpolishScoresNC) for fixed and Table \@ref(tab:tablesMMScoresNC) and Figure \@ref(fig:rocMM) for mixed effects).
+
+For the fixed effect linear model, the p-value moderation as first suggested by [@Smyth2004linear] gives a consistent improvement compared to using unmoderated ones (see Table \@ref(tab:tablesMedpolishScoresNC)). However, we could not get a similar improvment for the mixed effect model, most likely because the degrees of freedom are not correctly estimated for a large proportion of models (see Table \@ref(tab:degreesOfFreedom)).
+
+Computing first the statistics at peptide level, e.g. the t-statistics or p-value and then summarizing these statistics by using the median, produces the highest AUC scores among all the models tested (see Figure \@ref(fig:integratedPValPlot)). By using the beta distribution to model the number of peptides observed, we can further improve the AUC scores compared with the median p-value (for more details see Table \@ref(tab:tablesRopecaScoreNC)). However, the properties of beta based probabilities are not well understood, for instance they are not uniformly distributed under the null hypothesis. The FDR estimates obtained when correcting for multiple testing with the Benjamini-Hochberg method are biased (see Figure \@ref(fig:FDRvsFDP)). A step forward might be to look into alternative ways to model the number of peptides. For now, we would resort to the use of `prot_med_lm` model.
+
+Leveraging on these computer experiments we can provide the following advices. Aggregate the peptide intensities to protein intensities using a robust regression method. Use linear models as long as they suffice to model your experimental design and the sources of variance. Use mixed effect models only if you have to, i.e. for more complicated designs (e.g. repeated measurements) because the estimates of p-values or false discovery rates have larger errors. If you use fixed effect linear models, apply p-value moderation, since this improves the p-value estimates. If you want to sort you protein lists to perform gene set enrichment analysis, use the t-statistic. Suppose we're going to dichotomise the list of proteins, e.g. to select proteins to study them further. In that case, we can use the FDR, obtained using the Benjamini-Hochberg correction, but the estimate although not entirely unrealistic might be biased.
+
+
+Large flexibility when choosing models. Intuitive contrast specification. Benchmarking results comparable with other methods. 
+
+Use of `R6` classes for programming. Once configuration for data is specified and LFQData object configured the code becomes very concise. Auto-completion support in Rstudio makes it easy for novices to create own reports.
+Infrastructure will allow to easily add more modelling methods, eg. glm's for missing data modelling, or rlm's as an alternative to lm.
+
+Easy interoperability with other packages such as protti which are also using tidy tables to represent the data.
+
+Outlook, Improve degrees of freedom estimation for mixed effect models.
+
+
+_prolfqua_ is an easy-to-use package to analyse quantitative mass spectrometric data, report results, and benchmark MS software and statistical methods. We provide more details at the website https://wolski.github.io/prolfqua/. To install:
 
 
 ```{r echo=TRUE, eval=FALSE}
@@ -343,4 +412,3 @@ The authors thank the technology platform fund of the University of Zurich.
 
 
 # References
-
