@@ -375,34 +375,46 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' plot_raster(analysis, config, "var")
 #' plot_raster(analysis, config, y.labels = TRUE)
+
 plot_raster <- function(data,
                         config,
                         arrange = c("mean", "var"),
                         not_na = FALSE,
-                        y.labels = FALSE ) {
-
+                        y.labels = FALSE,
+                        ...) {
   arrange <- match.arg(arrange)
+  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- res$annotation
+  resdata <- res$data
 
-  arrangeby <- summarize_stats(data, config)
-  arrangeby <- tidyr::unite(arrangeby, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
 
-  if (not_na) {
-    arrangeby <- arrange(arrangeby, !!sym("not_na"), !!sym(arrange))
-  }else{
-    arrangeby <- arrange(arrangeby,  !!sym(arrange))
+  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot$sampleName
+
+
+  if (arrange == "mean") {
+    bb <- apply(resdata, 1, mean, na.rm = TRUE)
+  } else if (arrange == "var") {
+    bb <- apply(resdata, 1, var, na.rm = TRUE)
   }
-  dataM <- tidyr::unite(data, "hierarchyID" ,config$table$hkeysDepth(), remove = FALSE)
+  if (not_na) {
+    bNA <- apply(resdata, 1, function(x){sum(is.na(x))})
+    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)),]
+  } else {
+    resdata <- resdata[order(bb, decreasing =  TRUE),]
+  }
 
-  dataM$hierarchyID <- factor(dataM$hierarchyID, levels = unique(arrangeby$hierarchyID))
+  res <- pheatmap::pheatmap(resdata,
+                            cluster_rows  = FALSE,
+                            cluster_cols = FALSE,
+                            annotation_col = factors,
+                            y.labels = T,
+                            border_color = NA,
+                            silent = TRUE,
+                            ... = ...)
 
-  res <- ggplot(data = dataM,
-                aes_string(x = config$table$sampleName,
-                           y = "hierarchyID",
-                           fill = config$table$getWorkIntensity())) +
-    geom_raster() + scale_fill_distiller(palette = "RdYlBu") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-    if(!y.labels) {scale_y_discrete(labels = NULL)} else {NULL}
-  return(res)
+  invisible(res)
 }
 
 
