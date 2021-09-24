@@ -237,7 +237,7 @@ Omit NA from intensities per hierarchy, idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0, factorDepth = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

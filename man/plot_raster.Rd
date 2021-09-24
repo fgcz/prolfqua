@@ -9,7 +9,8 @@ plot_raster(
   config,
   arrange = c("mean", "var"),
   not_na = FALSE,
-  y.labels = FALSE
+  y.labels = FALSE,
+  ...
 )
 }
 \arguments{
