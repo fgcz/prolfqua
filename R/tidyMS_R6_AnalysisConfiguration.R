@@ -359,7 +359,11 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' @keywords internal
 separate_hierarchy <- function(data, config){
   for (hkey in config$table$hkeysDepth()) {
-    data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+    if (length(config$table$hierarchy[[hkey]]) == 1 & hkey == config$table$hierarchy[[hkey]]) {
+      data <- data
+    }else {
+      data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+    }
   }
   return(data)
 }
