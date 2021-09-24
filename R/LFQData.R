@@ -116,9 +116,15 @@ LFQData <- R6::R6Class(
     #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
     #' it will be removed
     #' @return LFQData with NA omitted.
-    omit_NA = function(nrNA = 0){
-
-      missing <- interaction_missing_stats(self$data, self$config)
+    omit_NA = function(nrNA = 0, factorDepth = FALSE){
+      if(!factorDepth)
+      {
+        missing <- interaction_missing_stats(self$data, self$config)
+      } else {
+        cfg <- self$config$clone(deep = TRUE)
+        cfg$table$factorDepth <- factorDepth
+        missing <- interaction_missing_stats(self$data, cfg)
+      }
       notNA <- missing$data %>% dplyr::filter(nrNAs <= nrNA)
       sumN <- notNA %>% group_by_at(self$config$table$hierarchyKeys()) %>%
         summarise(n = n())
