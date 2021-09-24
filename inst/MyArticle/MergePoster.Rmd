@@ -79,13 +79,14 @@ Several packages exist to model mass spectrometry LFQ experiments, e.g. _limma_[
 When analyzing parallel designs using a single explanatory variable, we can use all packages for the statistical data analysis of the data; however, if we want to model factorial designs or repeated measurements, we can use only some of them. Table \ref@(tab:tableOverview) gives an overview of the models and features supported by these packages.
 
 ```{r tableOverview}
-xx <- list(proDA = c("pd" = "Y", eb = "Y", md = "Y"),
-triqler = c("pd" = "Y"),
-MSstats = c("pd" = "Y", "rm" = "Y", "mem" = "y"),
-MSqRob2_rlm = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y", md = "?"),
-limma  = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y"),
-ROPECA = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y", eb = "Y"),
-prolfqua = c("pd" = "Y", "rm" = "Y", fd = "Y", int = "Y", mem = "Y",eb = "Y", md = "Y"))
+xx <- list(
+  triqler = c("pd" = "Y"),
+  MSstats = c("pd" = "Y", "rm" = "Y", "mem" = "y"),
+  ROPECA = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y", eb = "Y"),
+  limma  = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y"),
+  MSqRob2_rlm = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y", md = "?"),
+  proDA = c("pd" = "Y", "rm" = "Y*", fd = "Y", int = "Y",eb = "Y", md = "Y"),
+  prolfqua = c("pd" = "Y", "rm" = "Y", fd = "Y", int = "Y", mem = "Y",eb = "Y", md = "Y"))
 
 bb <- data.frame(bind_rows(xx))
 rownames(bb) <- names(xx)
@@ -97,9 +98,13 @@ We were inspired by the excellent R package caret, which enables to call various
 
 Models in _prolfqua_ are specified using R’s linear model and mixed model formula interface. Therefore, knowledge of the R regression model infrastructure is an advantage when using our package. Furthermore, this glass box approach should make it easy to reimplement an analysis performed with _prolfqua_ using base R or other programming languages by reading the analysis script and without looking at the package code. However, acknowledging the R formula interface’s complexity to non-statisticians and the popularity of MSstats, we provide the functionality to suggest a model formula from the sample annotation.
 
-Furthermore, the functionality of _prolfqua_ also includes methods specific to proteomics data. For example, we implemented strategies to infer protein intensities from peptide intensities: top N, Tukey's median polish, robust linear models. Furthermore, peptide or protein intensities can be scaled using the robust scaling method or transformed using _quantile_ normalization or _vsn_ from Bioconductor to remove systematic differences among samples and heteroscedasticity. In this respect, _prolfqua_ can be compared with other R packages such _msnbase_[], _DEP_ and (see BioC2021 conference) which support the entire LFQ analysis pipeline.
+An important aspect of mass spectrometric data are missing values. Typically, problems arising from missing data are handled using imputation. The problem with imputation is, that imputed values are treated similarily to observed data in the subsequent modelling (get text from proda paper). A way to adress this is to annotate the produced models with information about missigness which is done by for instance MSStats. How missigness can modelled using the Hurdle model is described here, however to our knowledge only the R package _proDA_ models missingness directly. In prolfqua, we also do not impute the data but attempt to model missigness by inferring the pooled variance from the observed data, and model parameters (group averages) based on a prespecied prior. 
 
-To benchmark analysis pipeline and modeling methods implemented within _prolfqua_ and to compare our results with those of MSstats, we use the Ionstar [reference] dataset. 
+Furthermore, the functionality of _prolfqua_ also includes methods specific to proteomics data. For example, we implemented strategies to infer protein intensities from peptide intensities: top N, Tukey's median polish, robust linear models. Furthermore, peptide or protein intensities can be scaled using the robust scaling method or transformed using _quantile_ normalization or _vsn_ from Bioconductor to remove systematic differences among samples and heteroscedasticity. In this respect, _prolfqua_ can be compared with other R packages such _DEP_ [@DEP2018] or POMA [@POMA2021] which support the entire LFQ analysis pipeline.
+
+
+
+We use the Ionstar [@shen2018ionstar] dataset to benchmark the analysis pipeline and modeling methods implemented within _prolfqua_ and to compare our results with those of _MSstats_ and _proDA_. 
 
 
 # Implementation & Methods (Experimental Section)
@@ -120,6 +125,10 @@ __R__ linear model and linear mixed effect models allow modeling parallel design
 ```{r ContrastUML, echo=FALSE, fig.cap="(ref:ContrastUML)", out.width = '90%'}
 knitr::include_graphics("ContrastUML.png")
 ```
+
+## Benchmark dataset
+
+Ionstar dataset, give Pride ids, describe MaxQuant settings and version. Give reference to Experiment hub and the _prolfquaData_ package.
 
 ## Modelling
 
