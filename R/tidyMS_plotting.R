@@ -409,7 +409,7 @@ plot_raster <- function(data,
                             cluster_rows  = FALSE,
                             cluster_cols = FALSE,
                             annotation_col = factors,
-                            y.labels = T,
+                            y.labels = y.labels,
                             border_color = NA,
                             silent = TRUE,
                             ... = ...)
