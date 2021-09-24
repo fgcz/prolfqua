@@ -125,7 +125,7 @@ library(prolfqua)
 ttd <- prolfqua::ionstar_bench_preprocess(bb, idcol = "Protein")
 head(ttd$data)
 
-if (TRUE) {
+if (FALSE) {
   xdd <- ttd$data %>% dplyr::rename(protein_Id = Protein ,
                                     contrast = Label,
                                     estimate = log2FC,
