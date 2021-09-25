@@ -98,7 +98,8 @@ We were inspired by the excellent R package caret, which enables to call various
 
 Models in _prolfqua_ are specified using R’s linear model and mixed model formula interface. Therefore, knowledge of the R regression model infrastructure is an advantage when using our package. Furthermore, this glass box approach should make it easy to reimplement an analysis performed with _prolfqua_ using base R or other programming languages by reading the analysis script and without looking at the package code. However, acknowledging the R formula interface’s complexity to non-statisticians and the popularity of MSstats, we provide the functionality to suggest a model formula from the sample annotation.
 
-An important aspect of mass spectrometric data are missing values. Typically, problems arising from missing data are handled using imputation. The problem with imputation is, that imputed values are treated similarily to observed data in the subsequent modelling (get text from proda paper). A way to adress this is to annotate the produced models with information about missigness which is done by for instance MSStats. How missigness can modelled using the Hurdle model is described here, however to our knowledge only the R package _proDA_ models missingness directly. In prolfqua, we also do not impute the data but attempt to model missigness by inferring the pooled variance from the observed data, and model parameters (group averages) based on a prespecied prior. 
+An important aspect of mass spectrometric data are missing values. Missing values lead to groups of varying size. Linear and mixed effect models can handle unbalanced designs, i.e. different group sizes. As long as there is at least one observation per group they do produce unbiased estimates. We use this feature instead of imputing missing observations. However, if there are not observation in one of the groups, then contrasts involving this group can not be estimated. To adres it, for the group without observations, we use a point prior equal to the average of $10\%$ smallest group mean intensities in the dataset and infer the variance from the variance in other groups. A way to adress this is to annotate the produced models with information about missigness which is done by for instance MSStats. How missigness can modelled using the Hurdle model is described here, however to our knowledge only the R package _proDA_ models missingness directly. 
+
 
 Furthermore, the functionality of _prolfqua_ also includes methods specific to proteomics data. For example, we implemented strategies to infer protein intensities from peptide intensities: top N, Tukey's median polish, robust linear models. Furthermore, peptide or protein intensities can be scaled using the robust scaling method or transformed using _quantile_ normalization or _vsn_ from Bioconductor to remove systematic differences among samples and heteroscedasticity. In this respect, _prolfqua_ can be compared with other R packages such _DEP_ [@DEP2018] or POMA [@POMA2021] which support the entire LFQ analysis pipeline.
 
@@ -134,13 +135,14 @@ Ionstar dataset, give Pride ids, describe MaxQuant settings and version. Give re
 
 ### Estimating contrasts for linear models
 
-Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients. The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
+Given a linear model contrasts can be computed by $\hat{\beta_{c}} = \sum l\beta_{m}$ and $\textrm{var} \hat\beta_c = l\sigma^2 (X^T X)^{-1} l^T$, with $X$ being the design matrix, $\beta_m$ the model parameters and $l$ an array of coefficients.  The degrees of freedom for the contrast are equal to the residual degrees of freedom of the linear model.
 For estimating contrasts from mixed effects models we used the function `contest` implemented in the R package `lmerTest` [@Kuznetsova2017lmerTest] and used the Satterthwaite method to estimate the denominator degrees of freedom. These methods are implemented in the class `Contrast` (see Figure \@ref(fig:ContrastUML))
 
 ### Contrast estimation in presence of missing data.
 
-When imputing, we assume that there are no observations because of the limit of detection (LOD). Furthermore, we believe that the variance of the protein is constant in all the conditions.
-To handle cases where we do not have any observations in one of the conditions, we impute the estimate of the condition mean by using the average of $10\%$ smallest group mean intensities in the experiment. To estimate the variance in the condition, we use the pooled variance based on all conditions: 
+
+If there are no observation in a group we assume that there are no observations because of the limit of detection (LOD). Furthermore, we assume that the variance of the protein is constant in all the conditions.
+We impute the mean estimate of the group by using the average of $10\%$ smallest group mean intensities in the experiment. To estimate the variance in the condition, we use the pooled variance based on all conditions: 
 
 $$s_p^2=\frac{\sum_{i=1}^k (n_i - 1)s_i^2}{\sum_{i=1}^k (n_i - 1)},$$
 with $n_i$ the number of observations, and $s_i$ the standard deviation in each condition.

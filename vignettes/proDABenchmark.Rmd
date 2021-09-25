@@ -39,8 +39,12 @@ inputMQfile <-  file.path(datadir,
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
 
-mqdata <- list()
+
 mqdata <- tidyMQ_ProteinGroups(inputMQfile)
+
+mqdata <- mqdata %>% filter(!grepl("REV__", mqdata$proteinID))
+mqdata <- mqdata %>% filter(!grepl("CON__", mqdata$proteinID))
+
 annotation <- readxl::read_xlsx(inputAnnotation)
 res <- add_annotation(
   mqdata,
@@ -56,12 +60,19 @@ config$hierarchy[["proteinID"]] = "proteinID"
 
 config <- prolfqua::AnalysisConfiguration$new(config)
 
+
+
 lfqdata <- setup_analysis(res, config)
 
 lfq <- LFQData$new(lfqdata, config)
 lfq$remove_small_intensities()
 
-lfqtrans <- lfq$get_Transformer()$log2()$lfq
+tr <- lfq$get_Transformer()
+tr$log2()
+lfqhum <- lfq$get_subset(filter(lfq$data, grepl("HUMAN", lfq$data$proteinID)))
+
+tr$robscale_subset(lfqhum$get_Transformer()$log2()$lfq)
+lfqtrans <- tr$lfq
 
 ```
 
@@ -88,7 +99,7 @@ Both input types are also accepted by `proDA`.
 
 ```{r eval=evalAll, include=TRUE}
 # Not Run
-fit <- proDA(se, design = ~ dilution. - 1)
+fit <- proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
 contr <- list()
 contr[["dilution_(9/7.5)_1.2"]] <- data.frame(contrast = "dilution_(9/7.5)_1.2", test_diff(fit, contrast = "dilution.e - dilution.d"))
 contr[["dilution_(7.5/6)_1.25"]] <- data.frame(contrast = "dilution_(7.5/6)_1.25", test_diff(fit, contrast = "dilution.d - dilution.c"))
@@ -108,9 +119,6 @@ bb <- bind_rows(contr)
 ```{r setUPBenchmark, eval = evalAll}
 library(prolfqua)
 
-bb <- bb %>% filter(!grepl("REV__", bb$name))
-bb <- bb %>% filter(!grepl("CON__", bb$name))
-
 bb$name %>% unique() %>% length()
 ttd <- prolfqua::ionstar_bench_preprocess( bb , idcol = "name" )
 head(ttd$data)
@@ -124,6 +132,7 @@ if (FALSE) {
   )
   
   benchmark2_proDA <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
+  saveRDS(benchmark2_proDA, file = "inst/Benchresults/benchmark2_proDA.RDS")
 }
 
 #foo
