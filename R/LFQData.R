@@ -267,6 +267,7 @@ LFQData <- R6::R6Class(
 #'
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
+#'
 #' lfqTrans$log2()$robscale()
 #' lfqTrans$log2()
 LFQDataTransformer <- R6::R6Class(
@@ -295,7 +296,7 @@ LFQDataTransformer <- R6::R6Class(
 
     },
     #' @description robust scale data
-    #' @param colname name of transformed column
+    #' @param colname new name of transformed column
     #' @return LFQData
     robscale = function(colname = "transformedIntensity"){
       res <- self$robscale_subset(self$lfq, colname = colname)

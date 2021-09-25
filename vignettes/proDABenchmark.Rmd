@@ -27,7 +27,7 @@ evalAll <- require(proDA)
 # Setting up analysis
 
 
-```{r eval=evalAll}
+```{r normalizeDataUsingProlfqua, eval=evalAll}
 library(proDA)
 library(tidyverse)
 library(prolfqua)
@@ -80,7 +80,7 @@ lfqtrans <- tr$lfq
 
 
 
-```{r, eval=evalAll}
+```{r createSummarizedExperiment, eval=evalAll}
 library(SummarizedExperiment)
 wide <- lfqtrans$to_wide(as.matrix = TRUE)
 library(SummarizedExperiment)
@@ -97,7 +97,7 @@ se
 
 Both input types are also accepted by `proDA`.
 
-```{r eval=evalAll, include=TRUE}
+```{r runProda, eval=evalAll, include=TRUE}
 # Not Run
 fit <- proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
 contr <- list()
@@ -121,22 +121,6 @@ library(prolfqua)
 
 bb$name %>% unique() %>% length()
 ttd <- prolfqua::ionstar_bench_preprocess( bb , idcol = "name" )
-head(ttd$data)
-if (FALSE) {
-  xdd <- ttd$data %>% dplyr::rename(protein_Id = name ,
-                                    contrast = contrast,
-                                    estimate = diff,
-                                    statistic = t_statistic,
-                                    p.value = pval,
-                                    FDR = adj_pval  
-  )
-  
-  benchmark2_proDA <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
-  saveRDS(benchmark2_proDA, file = "inst/Benchresults/benchmark2_proDA.RDS")
-}
-
-#foo
-head(ttd$data)
 
 benchmark_proDA <- make_benchmark(ttd$data,
                                    contrast = "contrast",
@@ -159,20 +143,35 @@ table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrast
 
 ```
 
-```{r fig.cap="ROC curves", eval = evalAll}
+
+```{r prepBenchmarkforComparison, include= FALSE, eval = evalAll}
+  xdd <- ttd$data %>% dplyr::rename(protein_Id = name ,
+                                    contrast = contrast,
+                                    estimate = diff,
+                                    statistic = t_statistic,
+                                    p.value = pval,
+                                    FDR = adj_pval  
+  )
+  
+  benchmark2_proDA <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
+  saveRDS(benchmark2_proDA, file = "inst/Benchresults/benchmark2_proDA.RDS")
+
+```
+
+```{r rocCurve, fig.cap="ROC curves", eval = evalAll}
 res <- benchmark_proDA$pAUC_summaries()
 res$barp
 ```
 
-```{r fig.cap="plot ROC curves", eval = evalAll}
+```{r pAUC02, fig.cap="plot ROC curves", eval = evalAll}
 #res$ftable
 benchmark_proDA$plot_ROC(xlim = 0.2)
 ```
 
-```{r fig.cap = "plot FDR vs FDP",eval = evalAll}
+```{r fdrfdp, fig.cap = "plot FDR vs FDP",eval = evalAll}
 benchmark_proDA$plot_FDRvsFDP()
 ```
 
-```{r,eval = evalAll}
+```{r fdptpr,eval = evalAll}
 benchmark_proDA$plot_FDPvsTPR()
 ```
