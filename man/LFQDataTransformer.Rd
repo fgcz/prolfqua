@@ -40,6 +40,7 @@ plotter$intensity_distribution_density()
 
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
+
 lfqTrans$log2()$robscale()
 lfqTrans$log2()
 }
@@ -100,13 +101,18 @@ Transformer
 \subsection{Method \code{robscale()}}{
 robust scale data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale(colname = "transformedIntensity")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale(
+  preserveMean = TRUE,
+  colname = "transformedIntensity"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{colname}}{name of transformed column}
+\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+
+\item{\code{colname}}{new name of transformed column}
 }
 \if{html}{\out{</div>}}
 }
@@ -120,13 +126,19 @@ LFQData
 \subsection{Method \code{robscale_subset()}}{
 log2 transform and robust scale data based on subset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(lfqsubset, colname = "transformedIntensity")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(
+  lfqsubset,
+  preserveMean = TRUE,
+  colname = "transformedIntensity"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{lfqsubset}}{LFQData subset to use for normalization}
+
+\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
 
 \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
 }

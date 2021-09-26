@@ -297,18 +297,20 @@ LFQDataTransformer <- R6::R6Class(
     },
     #' @description robust scale data
     #' @param colname new name of transformed column
+    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @return LFQData
-    robscale = function(colname = "transformedIntensity"){
-      res <- self$robscale_subset(self$lfq, colname = colname)
+    robscale = function(preserveMean = TRUE, colname = "transformedIntensity"){
+      res <- self$robscale_subset(self$lfq, preserveMean = preserveMean, colname = colname)
       invisible(res)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
     #' @param lfqsubset LFQData subset to use for normalization
+    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQData
     #'
-    robscale_subset = function(lfqsubset, colname = "transformedIntensity"){
+    robscale_subset = function(lfqsubset, preserveMean = TRUE, colname = "transformedIntensity"){
       message("data is : ",self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
@@ -316,7 +318,8 @@ LFQDataTransformer <- R6::R6Class(
       }
       scales <- prolfqua::scale_with_subset(self$lfq$data,
                                             lfqsubset$data,
-                                            self$lfq$config)
+                                            self$lfq$config,
+                                            preserveMean = preserveMean)
       self$lfq$data  <- scales$data
       self$scales <- scales$scales
       if (!is.null(colname)) {
