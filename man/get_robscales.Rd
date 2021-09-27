@@ -15,6 +15,7 @@ library(tidyverse)
 bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
+sample_analysis <- bb$data
 pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(pepIntensityNormalized, conf)
 

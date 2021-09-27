@@ -64,8 +64,9 @@ inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 mqdata <- list()
 
 mqdata$data <- tidyMQ_Peptides(inputMQfile)
+length(unique(mqdata$data$proteins))
+
 mqdata$config <- prolfqua::create_config_MQ_peptide()
-mean(grepl("CON_", mqdata$data$leading.razor.protein),na.rm = TRUE)
 
 
 annotation <- readxl::read_xlsx(inputAnnotation)
@@ -89,27 +90,36 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 ```
 
 
-
-
 ## Data normalization
 
+
+First we remove 0 intensity values, then filter for 2 peptides per protein.
+
+```{r filterForHumans}
+lfqdata <- LFQData$new(mqdata$data, mqdata$config)
+lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
+lfqdata$filter_proteins_by_peptide_count()
+sr <- lfqdata$get_Summariser()
+sr$hierarchy_counts()
+
+lfqdata$remove_small_intensities()
+sr <- lfqdata$get_Summariser()
+sr$hierarchy_counts()
+
+```
 
 We will normalize the data using the 'LFQTransformer' class. Since we know that the Human proteins are the Matrix in the experiment we will normalize the data using HUMAN proteins only.
 To this task we subset the dataset by filtering for HUMAN proteins only and then use the `LFQDataTransformer` to normalize the data.
 
 
-```{r filterForHumans}
-
-lfqdata <- LFQData$new(mqdata$data, mqdata$config)
-lfqdata$remove_small_intensities()
-lfqdata$filter_proteins_by_peptide_count()
-
+```{r}
 tr <- lfqdata$get_Transformer()
 if (SUBSETNORM) {
   subset_h <- lfqdata$get_copy()
   subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
   subset_h <- subset_h$get_Transformer()$log2()$lfq
   lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
+  
 } else{
   lfqdataNormalized <- tr$log2()$robscale()$lfq
 }
@@ -139,8 +149,9 @@ if (SUBSET) {
   lfqNormSubset <- lfqdataNormalized$get_sample(size = N, seed = 2020)
   lfqNormSubset$hierarchy_counts()
 } else {
-  mqdataSubset <- lfqdata$clone()
+  mqdataSubset <- lfqdata$get_copy()  
   lfqNormSubset <- lfqdataNormalized$clone()
+  lfqNormSubset$hierarchy_counts()
 }
 ```
 
@@ -197,13 +208,11 @@ lfqNormSubset$config$table$getWorkIntensity()
 
 pl <- lfqNormSubset$get_Plotter()
 pl$intensity_distribution_density()
-
-
 lfqAggMedpol <- LFQDataAggregator$new(lfqNormSubset, prefix = "protein")
-
 lfqAggMedpol$medpolish()
-xx <- lfqAggMedpol$plot()
-gridExtra::grid.arrange(grobs =  xx$plots[1:6])
+
+#xx <- lfqAggMedpol$plot()
+#gridExtra::grid.arrange(grobs =  xx$plots[1:6])
 ```
 
 
@@ -240,6 +249,8 @@ The second model is mixed effects model as implemented in the R function `lmer` 
 
 ```{r buildModelLM}
 protLFQ <- lfqAggMedpol$lfq_agg
+sr <- protLFQ$get_Summariser()
+sr$hierarchy_counts()
 
 lmmodel <- "~ dilution."
 lmmodel <- paste0(protLFQ$config$table$getWorkIntensity() , lmmodel)
@@ -620,16 +631,15 @@ allBenchmarks$benchmark_same <- benchmark_same
 ```{r}
 
 if (SUBSETNORM) {
-  # saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
+ saveRDS(allContrasts, file = "../inst/Benchresults/allContrasts.RDS")
 } else{
-  # saveRDS(allContrasts, file = "../inst/Benchresults/allContrastsNORMAL.RDS")
-  
+ saveRDS(allContrasts, file = "../inst/Benchresults/allContrastsNORMAL.RDS")
 }
 
 if (SUBSETNORM) {
-  #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
+ saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarks.RDS")
 } else{
-  #saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
+ saveRDS(allBenchmarks, file = "../inst/Benchresults/allBenchmarksNORMAL.RDS")
 }
 
 ```

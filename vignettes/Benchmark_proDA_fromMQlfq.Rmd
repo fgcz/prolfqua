@@ -1,5 +1,5 @@
 ---
-title: "Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities."
+title: "Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities"
 author: "FGCZ - (Draft)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -11,7 +11,7 @@ output:
 papersize: a4
 geometry: margin=.5in
 vignette: >
-  %\VignetteIndexEntry{Benchmarking the proDA package using the Ionstar Dataset} 
+  %\VignetteIndexEntry{Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -21,7 +21,6 @@ editor_options:
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 evalAll <- require(proDA)
-fromPEP <- TRUE
 
 
 ```
@@ -31,7 +30,7 @@ fromPEP <- TRUE
 
 
 
-```{r normalizeDataUsingProlfqua, eval=!fromPEP}
+```{r normalizeDataUsingProlfqua, eval = evalAll}
 library(proDA)
 library(tidyverse)
 library(prolfqua)
@@ -66,22 +65,21 @@ config <- prolfqua::AnalysisConfiguration$new(config)
 
 
 lfqdata <- setup_analysis(res, config)
-
 lfqPROT <- LFQData$new(lfqdata, config)
-lfq$remove_small_intensities()
+lfqPROT$remove_small_intensities()
 
-sr <- lfq$get_Summariser()
+sr <- lfqPROT$get_Summariser()
 sr$hierarchy_counts()
 ```
 
 
 Calibrate the data using the human protein subset.
 
-```{r scaleData, fig.cap="Distribution of intensites before (left panel) and after (right panel) robscaling.", eval = !fromPEP}
+```{r scaleData, fig.cap="Distribution of intensites before (left panel) and after (right panel) robscaling.", eval = evalAll}
 
-lfqhum <- lfq$get_subset(filter(lfq$data, grepl("HUMAN", lfq$data$proteinID)))
+lfqhum <- lfqPROT$get_subset(filter(lfqPROT$data, grepl("HUMAN", proteinID)))
 
-tr <- lfq$get_Transformer()
+tr <- lfqPROT$get_Transformer()
 log2data <- tr$log2()$lfq
 p1 <- log2data$get_Plotter()$intensity_distribution_density()
 tr$robscale_subset(lfqhum$get_Transformer()$log2()$lfq)
