@@ -290,7 +290,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #' rs <- robustscale(mat, preserveMean = TRUE)
 #' apply(rs$data, 2 , median , na.rm = TRUE)
 #'
-get_robscales <- function(data,
+.get_robscales <- function(data,
                         dim = 2)
 {
   medians <- apply(data, dim, median, na.rm = TRUE)
@@ -299,13 +299,37 @@ get_robscales <- function(data,
   return(list( medians = medians, mads = mads ) )
 }
 
+#' test
+#'
+#' @examples
+#'
+#' library(tidyverse)
+#' bb <- prolfqua::data_ionstar$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' conf <- bb$config$clone(deep=TRUE)
+#' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
+#' s1 <- get_robscales(pepIntensityNormalized, conf)
+#'
+#' res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
+#' s2 <- get_robscales(res$data, conf)
+#' abs(mean(s1$mads) - mean(s2$mads)) < 0.1
+#'
+#'
+get_robscales <- function(data, config){
+  data <- toWideConfig(data, config, as.matrix = TRUE)$data
+  scales <- .get_robscales(data)
+  return(scales)
+}
+
+
 
 # Functions working on Matrices go Here ----
 #' robust scale wrapper
 #' @keywords internal
+#' @family preprocessing
 #' @export
 robust_scale <- function(data, dim = 2, preserveMean = FALSE){
-  scales <- get_robscales(data, dim = dim)
+  scales <- .get_robscales(data, dim = dim)
   data = sweep(data, dim, scales$medians, "-")
   mads <- scales$mads/mean(scales$mads)
   data = (sweep(data, dim, mads, "/"))
@@ -324,6 +348,7 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @param .funcname name of function (used for creating new column)
 #' @export
 #' @keywords internal
+#' @family preprocessing
 #' @examples
 #'
 #' library(tidyverse)
@@ -363,19 +388,22 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' conf$table$workIntensity <- "peptide.intensity"
 #'
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
+#' s1 <- get_robscales(res, conf)
 #' res <- scale_with_subset(res, res, conf)
-#'
+#' s2 <- get_robscales(res$data, conf)
+#' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE){
 
   colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
   subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
 
 
-  scales <- get_robscales(subset)
+  scales <- .get_robscales(subset)
   mat <- toWideConfig(data, config, as.matrix = TRUE)$data
   mat = sweep(mat, 2, scales$medians, "-")
   if (!any(scales$mads == 0)) {
-    mat = sweep(mat, 2, scales$mads, "/")
+    mads <- scales$mads/mean(scales$mads)
+    mat = sweep(mat, 2, mads, "/")
   } else {
     warning("SKIPPING scaling step in scale_with_subset function.")
   }

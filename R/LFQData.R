@@ -239,10 +239,7 @@ LFQData <- R6::R6Class(
 #' library(tidyverse)
 #' library(prolfqua)
 #'
-#'
-#' rm(list = ls())
 #' library(prolfqua)
-#' #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 #' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -260,23 +257,24 @@ LFQData <- R6::R6Class(
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #' x <- lfqTrans$intensity_array(asinh)
-#' x$lfq$config$table$is_intensity_transformed
+#' mads1 <- mean(x$get_scales()$mads)
 #' x <- lfqTrans$intensity_matrix(robust_scale)
-#' plotter <- x$lfq$get_Plotter()
-#' plotter$intensity_distribution_density()
-#'
+#' mads2 <- mean(x$get_scales()$mads)
+#' stopifnot(abs(mads1 - mads2) < 1e-8)
+#' stopifnot(abs(mean(x$get_scales()$medians)) < 1e-8)
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
-#'
-#' lfqTrans$log2()$robscale()
 #' lfqTrans$log2()
+#' before <- lfqTrans$get_scales()
+#' lfqTrans$robscale()
+#' after <- lfqTrans$get_scales()
+#' stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
+#' stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
     #' @field lfq LFQData object
     lfq = NULL,
-    #' @field scales scales used for transformation
-    scales = NULL,
     #' @description  initialize
     #' @param lfqdata LFQData object to transform
     initialize = function(lfqdata){
@@ -295,6 +293,12 @@ LFQDataTransformer <- R6::R6Class(
       invisible(self)
 
     },
+    #' @description get mean and variance and standard deviation in each sample
+    #' @return list with means and mads
+    get_scales = function()
+    {
+      get_robscales(self$lfq$data, self$lfq$config)
+    },
     #' @description robust scale data
     #' @param colname new name of transformed column
     #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
@@ -310,7 +314,9 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQData
     #'
-    robscale_subset = function(lfqsubset, preserveMean = TRUE, colname = "transformedIntensity"){
+    robscale_subset = function(lfqsubset,
+                               preserveMean = TRUE,
+                               colname = "transformedIntensity"){
       message("data is : ",self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
@@ -321,7 +327,6 @@ LFQDataTransformer <- R6::R6Class(
                                             self$lfq$config,
                                             preserveMean = preserveMean)
       self$lfq$data  <- scales$data
-      self$scales <- scales$scales
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data %>%
           dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())

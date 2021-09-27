@@ -12,10 +12,7 @@ Decorate LFQData with Methods for transforming Intensities
 library(tidyverse)
 library(prolfqua)
 
-
-rm(list = ls())
 library(prolfqua)
-#source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 istar <- prolfqua::data_ionstar$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -33,23 +30,24 @@ plotter$intensity_distribution_density()
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
-x$lfq$config$table$is_intensity_transformed
+mads1 <- mean(x$get_scales()$mads)
 x <- lfqTrans$intensity_matrix(robust_scale)
-plotter <- x$lfq$get_Plotter()
-plotter$intensity_distribution_density()
-
+mads2 <- mean(x$get_scales()$mads)
+stopifnot(abs(mads1 - mads2) < 1e-8)
+stopifnot(abs(mean(x$get_scales()$medians)) < 1e-8)
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
-
-lfqTrans$log2()$robscale()
 lfqTrans$log2()
+before <- lfqTrans$get_scales()
+lfqTrans$robscale()
+after <- lfqTrans$get_scales()
+stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
+stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{lfq}}{LFQData object}
-
-\item{\code{scales}}{scales used for transformation}
 }
 \if{html}{\out{</div>}}
 }
@@ -58,6 +56,7 @@ lfqTrans$log2()
 \itemize{
 \item \href{#method-new}{\code{LFQDataTransformer$new()}}
 \item \href{#method-log2}{\code{LFQDataTransformer$log2()}}
+\item \href{#method-get_scales}{\code{LFQDataTransformer$get_scales()}}
 \item \href{#method-robscale}{\code{LFQDataTransformer$robscale()}}
 \item \href{#method-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
 \item \href{#method-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
@@ -93,6 +92,19 @@ log2 transform data
 
 \subsection{Returns}{
 Transformer
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_scales"></a>}}
+\if{latex}{\out{\hypertarget{method-get_scales}{}}}
+\subsection{Method \code{get_scales()}}{
+get mean and variance and standard deviation in each sample
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$get_scales()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+list with means and mads
 }
 }
 \if{html}{\out{<hr>}}

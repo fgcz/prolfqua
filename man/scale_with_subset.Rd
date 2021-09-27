@@ -26,14 +26,18 @@ sample_analysis <- bb$data
 conf$table$workIntensity <- "peptide.intensity"
 
 res <- transform_work_intensity(sample_analysis, conf, log2)
+s1 <- get_robscales(res, conf)
 res <- scale_with_subset(res, res, conf)
-
+s2 <- get_robscales(res$data, conf)
+stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 }
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{applyToIntensityMatrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{normalize_log2_robscale}()},
+\code{\link{robust_scale}()},
 \code{\link{scale_with_subset_by_factors}()}
 }
 \concept{preprocessing}

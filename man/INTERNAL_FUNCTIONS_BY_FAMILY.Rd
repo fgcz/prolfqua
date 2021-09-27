@@ -140,8 +140,10 @@ Other deprecated:
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 
 Other preprocessing: 
+\code{\link{applyToIntensityMatrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{normalize_log2_robscale}()},
+\code{\link{robust_scale}()},
 \code{\link{scale_with_subset_by_factors}()},
 \code{\link{scale_with_subset}()}
 
