@@ -21,6 +21,7 @@ editor_options:
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 evalAll <- require("MSstats")
+storeBench <- TRUE
 ```
 
 # Setting up analysis
@@ -29,6 +30,11 @@ evalAll <- require("MSstats")
 ```{r eval=evalAll}
 library(MSstats)
 library(magrittr)
+```
+
+The following code reads the data and creates and MSStats compatible annotation file.
+
+```{r}
 
 # Read in MaxQuant files
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
@@ -36,10 +42,9 @@ inputMQfile <-  file.path(datadir,
                           "MAXQuant_IonStar2018_PXD003881.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 
-proteinGroups <- read.table(unz(inputMQfile,"proteinGroups.txt"), sep = "\t", header = TRUE)
 
+proteinGroups <- read.table(unz(inputMQfile,"proteinGroups.txt"), sep = "\t", header = TRUE)
 infile <- read.table(unz(inputMQfile,"evidence.txt"), sep="\t", header = TRUE)
-dim(infile)
 
 annotation <- readxl::read_xlsx(inputAnnotation)
 msstas_annotation <- annotation %>% dplyr::select(raw.file, Condition = sample, BioReplicate = run_ID)
@@ -52,18 +57,29 @@ rf <- unique(infile$Raw.file)
 rf <- data.frame(Raw.file = rf, raw.file = tolower(rf))
 msstas_annotation <- dplyr::inner_join(rf, msstas_annotation)
 msstas_annotation$raw.file <- NULL
+```
+
+
+
+```{r}
 raw <- MaxQtoMSstatsFormat(evidence = infile, 
                            annotation = msstas_annotation, 
                            proteinGroups = proteinGroups,
                            removeProtein_with1Peptide = TRUE)
+```
 
 
+Remove reverse sequence and contaminants
+
+```{r eval = evalAll}
+
+raw2 <- raw[ !grepl("REV__",raw$ProteinName),]
+raw3 <- raw2[ !grepl("CON__",raw$ProteinName),]
 ```
 
 
 ```{r dataPreprocess, eval = evalAll}
-
-QuantData <- dataProcess(raw)
+QuantData <- dataProcess(raw3)
 # Profile plot
 #dataProcessPlots(data=QuantData, type = "ProfilePlot")
 # Quality control plot 
@@ -100,20 +116,6 @@ library(prolfqua)
 
 
 ttd <- prolfqua::ionstar_bench_preprocess(bb, idcol = "Protein")
-head(ttd$data)
-
-if (FALSE) {
-  xdd <- ttd$data %>% dplyr::rename(protein_Id = Protein ,
-                                    contrast = Label,
-                                    estimate = log2FC,
-                                    statistic = Tvalue,
-                                    p.value = pvalue,
-                                    FDR = adj.pvalue  
-                                    )
-  
-  benchmark2_msstats <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
-  #saveRDS(benchmark2_msstats, file = "inst/Benchresults/benchmark_msstats.RDS")
-}
 
 
 benchmark_msstats <- make_benchmark(ttd$data,
@@ -134,6 +136,21 @@ sum(benchmark_msstats$smc$summary$Protein)
 
 sumarry <- benchmark_msstats$smc$summary
 table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
+```
+
+
+```{r include=FALSE, eval=storeBench}
+
+xdd <- ttd$data %>% dplyr::rename(protein_Id = Protein ,
+                                  contrast = Label,
+                                  estimate = log2FC,
+                                  statistic = Tvalue,
+                                  p.value = pvalue,
+                                  FDR = adj.pvalue  
+)
+
+benchmark2_msstats <- make_benchmark(xdd, model_description = "MSStats", model_name = "MSStats")
+saveRDS(benchmark2_msstats, file = "../inst/Benchresults/benchmark_msstats.RDS")
 ```
 
 ```{r fig.cap="ROC curves", eval = evalAll}
