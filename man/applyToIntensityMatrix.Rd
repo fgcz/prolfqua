@@ -32,11 +32,18 @@ conf <- bb$config$clone(deep=TRUE)
 conf$table$workIntensity <- "peptide.intensity"
 res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 
+# Normalize data using the vsn method from bioconductor
+is_vsn <- require("vsn")
+if(is_vsn){
+ res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+}
+
 }
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{filter_proteins_by_peptide_count}()},
+\code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},
 \code{\link{scale_with_subset_by_factors}()},

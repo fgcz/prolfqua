@@ -276,7 +276,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   return(pdata)
 }
 
-#'
+#' compute median and mad on matrix
 #'
 #' @examples
 #'
@@ -287,8 +287,8 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #' sample_analysis <- bb$data
 #' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 #' mat <- toWideConfig(pepIntensityNormalized, conf,as.matrix = TRUE)$data
-#' rs <- robustscale(mat, preserveMean = TRUE)
-#' apply(rs$data, 2 , median , na.rm = TRUE)
+#' rs <- robust_scale(mat, preserveMean = TRUE)
+#' .get_robscales(rs)
 #'
 .get_robscales <- function(data,
                         dim = 2)
@@ -299,8 +299,10 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   return(list( medians = medians, mads = mads ) )
 }
 
-#' test
-#'
+#' compute median and standard deviation for each sample
+#' @export
+#' @keywords internal
+#' @family preprocessing
 #' @examples
 #'
 #' library(tidyverse)
@@ -363,6 +365,12 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' conf <- bb$config$clone(deep=TRUE)
 #' conf$table$workIntensity <- "peptide.intensity"
 #' res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
+#'
+#' # Normalize data using the vsn method from bioconductor
+#' is_vsn <- require("vsn")
+#' if(is_vsn){
+#'  res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+#' }
 #'
 applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
   .call <- as.list( match.call() )

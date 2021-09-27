@@ -233,11 +233,11 @@ modelFunction <- strategy_lm( lmmodel, model_name = "lm")
 models <- build_model(lfqp, modelFunction)
 p0 <- models$anova_histogram()
 # compute contrasts from linear model and with imputation
-contr <- Contrasts$new(models, contrasts) %>% 
-  ContrastsModerated$new()
-conI <- ContrastsSimpleImpute$new( lfqp, contrasts) %>% 
-  ContrastsModerated$new()
-tmp <- addContrastResults(prefer = contr, add = conI)
+contr <- prolfqua::Contrasts$new(models, contrasts) %>% 
+  prolfqua::ContrastsModerated$new()
+conI <- prolfqua::ContrastsSimpleImpute$new( lfqp, contrasts) %>% 
+  prolfqua::ContrastsModerated$new()
+tmp <- prolfqua::addContrastResults(prefer = contr, add = conI)
 # visualize results
 pl <- tmp$merged$get_Plotter()
 p1 <- pl$histogram()$p.value
@@ -252,6 +252,8 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 
 The peptide intensities from the _peptide.txt_ file were $log_2$ transformed, and subsequent robust z-score transformation, where median and the mean average deviation (mad) were obtained from the human proteins only. We removed _one hit wonders_, i.e. proteins with a single peptide assignment. No further data filtering was used. We also did not use imputation. The protein level linear model was fitted to the protein intensities inferred from the peptide intensities using the Tukey's median polish. The mixed effect linear model, and the ROPECA model were fitted to the peptide intensities. The details of the _prolfqua_ benchmark implementation are available online  [BenchmarkingIonstarData](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html).
+
+For benchmarking of MSstats we used the defaults specified in the [Benchmarking_MSstats](https://wolski.github.io/prolfqua/articles/)
 
 The Benchmark functionality of _prolfqua_ includes ROC curves and computes partial areas under those curves (pAUC) and other scores, e.g. the false discovery proportion FDP. We use it to study how well linear, mixed effect models or p-value moderation model quantitative mass spectrometric high throughput experiments and compare it with results produced by MSstats [@MSstats2014] and by proDA [@bioxrvproDA2020]. Figure \@ref(fig:benchmarkROC)
 
@@ -285,16 +287,18 @@ By plotting the $TPR$ versus the $FPR$ we obtain the receiver operator character
 ```{r}
 allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
 benchmark_msstats <- readRDS("../../inst/Benchresults/benchmark_msstats.RDS")
+benchmark_prodA <- readRDS("../../inst/Benchresults/benchmark2_proDA.RDS")
 msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
 
 allBenchmarks$benchmark_mssstats <- benchmark_msstats
 allBenchmarks$benchmark_msFragger <- msFragger
-allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats"   )]
+allBenchmarks$benchmark_proDA <- benchmark_prodA
+allBenchmarks <- allBenchmarks[c("benchmark_imputation","benchmark_ProtModerated",  "benchmark_mixedModerated", "benchmark_ropeca","benchmark_merged","benchmark_mssstats","benchmark_proDA"   )]
 ```
 
 (ref:benchmarkROC) Left panel - Partial area under the ROC curve at $10\%$ FPR for all contrasts. Red line average area under the curve. Left panel - Difference to mean partial area under the ROC curve for various models, at $10\%$ FPR, by fold change.
 
-```{r benchmarkROC, fig.cap="(ref:benchmarkROC)", out.width = '90%'}
+```{r benchmarkROC, fig.cap="(ref:benchmarkROC)", out.width = '90%', fig.width=12, fig.height=10}
 
 ttt <- sapply(allBenchmarks, function(x){x$complete(FALSE)})
 res <- map_df(allBenchmarks, function(x){x$pAUC()})
@@ -339,7 +343,7 @@ We also benchmark if the FDR obtained from a model is an unbiased estimate of th
 (ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modeling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
 
 
-```{r FDRfdp, fig.cap = "(ref:FDRfdp)", out.width = '90%'}
+```{r FDRfdp, fig.cap = "(ref:FDRfdp)", out.width = '90%', fig.width=12, fig.height=10}
 
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
 dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - nr_missing))

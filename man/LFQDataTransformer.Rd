@@ -43,6 +43,23 @@ lfqTrans$robscale()
 after <- lfqTrans$get_scales()
 stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
 stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
+
+# normalize data using vsn
+lfqcopy <- lfqdata$get_copy()
+lfqTrans <- lfqcopy$get_Transformer()
+lfqTransCheck <- lfqcopy$get_Transformer()
+
+lfqTransCheck$log2()
+lfqTransCheck$get_scales()
+lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
+is_vsn <- require("vsn")
+if(is_vsn){
+ res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
+}
+
+res$lfq$get_Plotter()$intensity_distribution_density()
+res$get_scales()
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

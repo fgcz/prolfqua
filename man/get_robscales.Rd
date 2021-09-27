@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{get_robscales}
 \alias{get_robscales}
-\title{test}
+\title{compute median and standard deviation for each sample}
 \usage{
 get_robscales(data, config)
 }
 \description{
-test
+compute median and standard deviation for each sample
 }
 \examples{
 
@@ -25,3 +25,15 @@ abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 
 
 }
+\seealso{
+Other preprocessing: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{applyToIntensityMatrix}()},
+\code{\link{filter_proteins_by_peptide_count}()},
+\code{\link{normalize_log2_robscale}()},
+\code{\link{robust_scale}()},
+\code{\link{scale_with_subset_by_factors}()},
+\code{\link{scale_with_subset}()}
+}
+\concept{preprocessing}
+\keyword{internal}
