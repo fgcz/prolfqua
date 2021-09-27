@@ -1,0 +1,178 @@
+---
+title: "Benchmarking the proDA package using the Ionstar Dataset"
+author: "FGCZ - (Draft)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      toc_collapsed: true
+papersize: a4
+geometry: margin=.5in
+vignette: >
+  %\VignetteIndexEntry{Benchmarking the proDA package using the Ionstar Dataset} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+evalAll <- require(proDA)
+fromPEP <- TRUE
+
+```
+
+
+# proDA benchmark based on peptide.txt intensities and median polish
+
+
+```{r fromPeptideTXT , eval = fromPEP}
+
+datadir <- file.path(find.package("prolfquaData") , "quantdata")
+inputMQfile <-  file.path(datadir,
+                          "MAXQuant_IonStar2018_PXD003881.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
+mqdata <- list()
+mqdata$data <- tidyMQ_Peptides(inputMQfile)
+length(unique(mqdata$data$proteins))
+mqdata$config <- prolfqua::create_config_MQ_peptide()
+
+annotation <- readxl::read_xlsx(inputAnnotation)
+res <- add_annotation(
+  mqdata$data,
+  annotation,
+  fileName = "raw.file"
+)
+
+mqdata$config$table$factors[["dilution."]] = "sample"
+mqdata$config$table$factors[["run_Id"]] = "run_ID"
+mqdata$config$table$factorDepth <- 1
+mqdata$data <- setup_analysis(res, mqdata$config)
+
+
+lfqdata <- LFQData$new(mqdata$data, mqdata$config)
+lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
+lfqdata$filter_proteins_by_peptide_count()
+sr <- lfqdata$get_Summariser()
+sr$hierarchy_counts()
+
+lfqdata$remove_small_intensities()
+sr <- lfqdata$get_Summariser()
+sr$hierarchy_counts()
+
+tr <- lfqdata$get_Transformer()
+subset_h <- lfqdata$get_copy()
+subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
+subset_h <- subset_h$get_Transformer()$log2()$lfq
+lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
+
+lfqAggMedpol <- lfqdataNormalized$get_Aggregator()
+lfqAggMedpol$medpolish()
+lfqtrans <- lfqAggMedpol$lfq_agg
+
+```
+
+To use `proDA`, we need to create an `SummarizedExperiment`. We use the `to_wide` function of `prolfqua` to get the data in in the `SummarizedExperiment` compatible format.
+
+
+```{r createSummarizedExperiment, eval=evalAll}
+library(SummarizedExperiment)
+wide <- lfqtrans$to_wide(as.matrix = TRUE)
+library(SummarizedExperiment)
+ann <- data.frame(wide$annotation)
+rownames(ann) <- wide$annotation$sampleName
+
+se <- SummarizedExperiment(SimpleList(LFQ = wide$data), colData = ann)
+se
+
+```
+
+
+## Defining Contrasts and computing group comparisons
+
+As usual, two steps are required, first fit the models, then comptue the contrasts.
+
+
+```{r runProda, eval=evalAll, include=TRUE}
+# Not Run
+fit <- proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
+contr <- list()
+contr[["dilution_(9/7.5)_1.2"]] <- data.frame(contrast = "dilution_(9/7.5)_1.2",
+                                              test_diff(fit, contrast = "dilution.e - dilution.d"))
+contr[["dilution_(7.5/6)_1.25"]] <- data.frame(contrast = "dilution_(7.5/6)_1.25",
+                                               test_diff(fit, contrast = "dilution.d - dilution.c"))
+contr[["dilution_(6/4.5)_1.3(3)"]] <- data.frame(contrast = "dilution_(6/4.5)_1.3(3)", 
+                                                 test_diff(fit, contrast ="dilution.c - dilution.b"))
+contr[["dilution_(4.5/3)_1.5"]] <- data.frame(contrast = "dilution_(4.5/3)_1.5", 
+                                              test_diff(fit, contrast ="dilution.b - dilution.a" ))
+
+bb <- bind_rows(contr)
+# End Not Run
+
+```
+
+
+
+## Benchmarking
+
+```{r setUPBenchmark, eval = evalAll}
+
+bb$name %>% unique() %>% length()
+ttd <- prolfqua::ionstar_bench_preprocess( bb , idcol = "name" )
+
+benchmark_proDA <- make_benchmark(ttd$data,
+                                   contrast = "contrast",
+                                toscale = c("pval"),
+                                fcestimate = "diff",
+                                benchmark = list(
+                                  list(sc = "diff", desc = TRUE),
+                                  list(sc = "t_statistic", desc = TRUE),
+                                  list(sc = "scaled.pval", desc = TRUE)
+                                ),  
+                                model_description = "proDA_medpolishInt",
+                                model_name = "proDA_medpolishInt",
+                                FDRvsFDP = list(list(sc = "adj_pval", desc = FALSE))
+, hierarchy = c("name"), summarizeNA = "t_statistic"
+)
+
+sum(benchmark_proDA$smc$summary$name)
+sumarry <- benchmark_proDA$smc$summary
+table_facade(sumarry, caption = "nr of proteins with 0, 1, 2, 3 missing contrasts.")
+
+```
+
+
+```{r prepBenchmarkforComparison, include= FALSE, eval = evalAll}
+xdd <- ttd$data %>% dplyr::rename(protein_Id = name ,
+                                  contrast = contrast,
+                                  estimate = diff,
+                                  statistic = t_statistic,
+                                  p.value = pval,
+                                  FDR = adj_pval  
+)
+
+benchmark2_proDA <- make_benchmark(xdd, model_description = "proDA_medpolishInt", model_name = "proDA")
+saveRDS(benchmark2_proDA, file = "../inst/Benchresults/benchmark2_lfqInt_proDA.RDS")
+
+```
+
+```{r rocCurve, fig.cap="ROC curves", eval = evalAll}
+res <- benchmark_proDA$pAUC_summaries()
+res$barp
+```
+
+```{r pAUC02, fig.cap="plot ROC curves", eval = evalAll}
+#res$ftable
+benchmark_proDA$plot_ROC(xlim = 0.2)
+```
+
+```{r fdrfdp, fig.cap = "plot FDR vs FDP",eval = evalAll}
+benchmark_proDA$plot_FDRvsFDP()
+```
+
+```{r fdptpr,eval = evalAll}
+benchmark_proDA$plot_FDPvsTPR()
+```
