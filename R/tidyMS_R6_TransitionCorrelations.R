@@ -278,17 +278,6 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 
 #' compute median and mad on matrix
 #'
-#' @examples
-#'
-#' library(tidyverse)
-#' bb <- prolfqua::data_ionstar$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
-#' sample_analysis <- bb$data
-#' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
-#' mat <- toWideConfig(pepIntensityNormalized, conf,as.matrix = TRUE)$data
-#' rs <- robust_scale(mat, preserveMean = TRUE)
-#' .get_robscales(rs)
 #'
 .get_robscales <- function(data,
                         dim = 2)
