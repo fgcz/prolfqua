@@ -409,6 +409,22 @@ remotes::install_github('wolski/prolfqua',
 ```
 
 
+```{r}
+proda <- allBenchmarks$benchmark_proDA$data()
+imp <- allBenchmarks$benchmark_imputation$data()
+
+#imp <- allBenchmarks$benchmark_ProtModerated$data()
+x <- inner_join(imp, proda, by = c("contrast","protein_Id"), suffix = c(".imp",".proda"))
+plot(x$estimate.imp, x$estimate.proda, col = as.factor(x$species.imp))
+
+xy <- x %>% select(protein_Id   , contrast , estimate.imp,estimate.proda, species.imp) %>% filter( abs( x$estimate.imp - x$estimate.proda ) > 1)
+plot(xy$estimate.imp, xy$estimate.proda, col = as.factor(xy$species.imp))
+abline(0,1, col=2)
+
+
+```
+
+
 # Acknoledgements
 
 The authors thank the technology platform fund of the University of Zurich.

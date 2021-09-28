@@ -4,7 +4,7 @@
 \alias{get_imputed_contrasts}
 \title{compute contrasts based on peptide fold changes}
 \usage{
-get_imputed_contrasts(data, config, contrasts, global = TRUE)
+get_imputed_contrasts(data, config, contrasts, probs = 0.03, global = TRUE)
 }
 \arguments{
 \item{data}{data.frame}

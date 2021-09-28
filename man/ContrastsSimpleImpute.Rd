@@ -131,6 +131,7 @@ initialize
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
   method = "V1",
+  probs = 0.03,
   global = TRUE
 )}\if{html}{\out{</div>}}
 }

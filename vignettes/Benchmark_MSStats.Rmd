@@ -34,7 +34,7 @@ library(magrittr)
 
 The following code reads the data and creates and MSStats compatible annotation file.
 
-```{r}
+```{r eval = evalALL}
 
 # Read in MaxQuant files
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
@@ -61,7 +61,7 @@ msstas_annotation$raw.file <- NULL
 
 
 
-```{r}
+```{r eval = evalAll}
 raw <- MaxQtoMSstatsFormat(evidence = infile, 
                            annotation = msstas_annotation, 
                            proteinGroups = proteinGroups,
@@ -69,7 +69,7 @@ raw <- MaxQtoMSstatsFormat(evidence = infile,
 ```
 
 
-Remove reverse sequence and contaminants
+Remove reverse sequence and contaminants.
 
 ```{r eval = evalAll}
 
