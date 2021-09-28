@@ -18,10 +18,12 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE} 
+```{r setup, include=TRUE} 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 evalAll <- require(proDA)
-fromPEP <- TRUE
+library(prolfqua)
+library(tidyverse)
+
 
 ```
 
@@ -29,8 +31,7 @@ fromPEP <- TRUE
 # proDA benchmark based on peptide.txt intensities and median polish
 
 
-```{r fromPeptideTXT , eval = fromPEP}
-
+```{r fromPeptideTXT , eval = evalAll}
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
 inputMQfile <-  file.path(datadir,
                           "MAXQuant_IonStar2018_PXD003881.zip")

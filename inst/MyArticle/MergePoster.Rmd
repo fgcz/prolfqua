@@ -288,7 +288,7 @@ By plotting the $TPR$ versus the $FPR$ we obtain the receiver operator character
 ```{r}
 allBenchmarks <- readRDS("../../inst/Benchresults/allBenchmarks.RDS")
 benchmark_msstats <- readRDS("../../inst/Benchresults/benchmark_msstats.RDS")
-benchmark_prodA <- readRDS("../../inst/Benchresults/benchmark2_proDA.RDS")
+benchmark_prodA <- readRDS("../../inst/Benchresults/benchmark_medpolish_proDA.RDS")
 msFragger <- readRDS(file = "../../inst/Benchresults/MSFragger_medpol_benchmark.RDS")
 
 allBenchmarks$benchmark_mssstats <- benchmark_msstats

@@ -97,7 +97,9 @@ First we remove 0 intensity values, then filter for 2 peptides per protein.
 
 ```{r filterForHumans}
 lfqdata <- LFQData$new(mqdata$data, mqdata$config)
-lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
+#lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
+
+
 lfqdata$filter_proteins_by_peptide_count()
 sr <- lfqdata$get_Summariser()
 sr$hierarchy_counts()
@@ -114,15 +116,10 @@ To this task we subset the dataset by filtering for HUMAN proteins only and then
 
 ```{r}
 tr <- lfqdata$get_Transformer()
-if (SUBSETNORM) {
-  subset_h <- lfqdata$get_copy()
-  subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
-  subset_h <- subset_h$get_Transformer()$log2()$lfq
-  lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h)$lfq
-  
-} else{
-  lfqdataNormalized <- tr$log2()$robscale()$lfq
-}
+subset_h <- lfqdata$get_copy()
+subset_h$data <- subset_h$data %>% dplyr::filter(grepl("HUMAN", protein_Id))
+subset_h <- subset_h$get_Transformer()$log2()$lfq
+lfqdataNormalized <- tr$log2()$robscale_subset(lfqsubset = subset_h,  preserveMean = FALSE )$lfq
 
 ```
 
@@ -362,8 +359,7 @@ In order to estimate fold-changes, statistics and p-values of proteins for which
 
 
 ```{r contrastImputed}
-contrImp <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts)
-pl <- contrImp$get_Plotter()
+contrImp <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts, global = FALSE)
 bb <- contrImp$get_contrasts()
 plc <- contrImp$get_Plotter()
 plc$volcano()
@@ -382,12 +378,11 @@ benchmark_imputation <- make_benchmark(ttd$data,
                                    model_name = "prot_imputation",
                                    FDRvsFDP = list(list(sc = "FDR", desc = FALSE))
 )
-
-benchmark_imputation$plot_ROC()
+benchmark_imputation$plot_ROC(xlim = 0.1)
 benchmark_imputation$plot_FDRvsFDP()
 
 prolfqua::table_facade(benchmark_imputation$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
-
+benchmark_imputation$pAUC_summaries()
 
 allBenchmarks <- list()
 

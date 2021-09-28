@@ -56,9 +56,11 @@ Suggests:
     plyr,
     rmarkdown,
     testthat,
-    prolfquaData
+    prolfquaData,
+    limma,
+    MSstats,
+    proDA
 Remotes:
-    bioc::3.13/limma
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 
