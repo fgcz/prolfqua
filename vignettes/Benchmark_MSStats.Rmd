@@ -27,13 +27,14 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```{r}
 library(magrittr)
+evalAll <- FALSE
 evalAll <- require("MSstats")
 storeBench <- TRUE
 ```
 
 The following code reads the data and creates and MSStats compatible annotation file.
 
-```{r eval = evalALL}
+```{r eval = evalAll}
 
 # Read in MaxQuant files
 datadir <- file.path(find.package("prolfquaData") , "quantdata")
