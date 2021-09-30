@@ -101,6 +101,7 @@ Other benchmarking:
 \itemize{
 \item \href{#method-new}{\code{Benchmark$new()}}
 \item \href{#method-data}{\code{Benchmark$data()}}
+\item \href{#method-missing_contrasts}{\code{Benchmark$missing_contrasts()}}
 \item \href{#method-complete}{\code{Benchmark$complete()}}
 \item \href{#method-.get_confusion}{\code{Benchmark$.get_confusion()}}
 \item \href{#method-get_confusion_benchmark}{\code{Benchmark$get_confusion_benchmark()}}
@@ -177,6 +178,15 @@ get data
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-missing_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-missing_contrasts}{}}}
+\subsection{Method \code{missing_contrasts()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$missing_contrasts()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-complete"></a>}}

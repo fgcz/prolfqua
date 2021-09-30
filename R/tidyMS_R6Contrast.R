@@ -93,7 +93,7 @@ ContrastsSimpleImpute <- R6::R6Class(
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
                           method = "V1",
-                          probs = 0.03,
+                          probs = 0.01,
                           global = TRUE){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts

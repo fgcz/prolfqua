@@ -329,6 +329,7 @@ Benchmark <-
       hierarchy = "",
       #' @field smc summarize missing contrasts
       smc = NULL,
+      summarizeNA = character(),
       #' @field confusion todo
       confusion = NULL,
       #' @field species todo
@@ -372,6 +373,7 @@ Benchmark <-
         self$model_name <- model_name
         self$hierarchy <- hierarchy
         self$species <- species
+        self$summarizeNA <- summarizeNA
 
         self$smc <- .summarise_missing_contrasts(self$.data,
                                                  hierarchy = hierarchy,
@@ -392,6 +394,14 @@ Benchmark <-
         } else {
           return(self$.data)
         }
+      },
+
+      missing_contrasts = function(){
+        self$smc <- .summarise_missing_contrasts(self$.data,
+                                                 hierarchy = self$hierarchy,
+                                                 contrast = self$contrast,
+                                                 what = self$summarizeNA)
+        return(self$smc)
       },
       #' @description
       #' set or get complete

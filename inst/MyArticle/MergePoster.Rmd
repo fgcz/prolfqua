@@ -413,16 +413,38 @@ remotes::install_github('wolski/prolfqua',
 proda <- allBenchmarks$benchmark_proDA$data()
 imp <- allBenchmarks$benchmark_imputation$data()
 
-#imp <- allBenchmarks$benchmark_ProtModerated$data()
 x <- inner_join(imp, proda, by = c("contrast","protein_Id"), suffix = c(".imp",".proda"))
 plot(x$estimate.imp, x$estimate.proda, col = as.factor(x$species.imp))
 
 xy <- x %>% select(protein_Id   , contrast , estimate.imp,estimate.proda, species.imp) %>% filter( abs( x$estimate.imp - x$estimate.proda ) > 1)
 plot(xy$estimate.imp, xy$estimate.proda, col = as.factor(xy$species.imp))
 abline(0,1, col=2)
+abline(h=1, col=2)
+abline(v=1, col=2)
 
 
 ```
+
+#
+
+```{r}
+
+prodB <- allBenchmarks$benchmark_proDA$clone(deep=TRUE)
+proda <-prodB$.data
+modB <-allBenchmarks$benchmark_ProtModerated 
+mod <- modB$.data
+modB$smc$summary
+
+prodaMod <- semi_join(proda, mod, by = c("contrast", "protein_Id"))
+prodB$.data <- prodaMod
+prodB$smc
+
+pp <- prodB$pAUC_summaries()
+pq <- allBenchmarks$benchmark_ProtModerated$pAUC_summaries()
+
+gridExtra::grid.arrange(pp$barp, pq$barp)
+```
+
 
 
 # Acknoledgements

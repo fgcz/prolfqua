@@ -133,10 +133,10 @@ interaction_missing_stats <- function(pdata,
   if (!global) {
     mstats <- mstats %>%
       group_by(interaction) %>%
-      mutate(imputed = lowerMean(.data$meanArea,probs = 0.2))
+      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
   }else{
     mstats <- mstats %>%
-      mutate(imputed = lowerMean(.data$meanArea,probs = 0.2))
+      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
 
   }
 

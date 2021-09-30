@@ -93,17 +93,13 @@ mqdata$data <- setup_analysis(res, mqdata$config)
 ## Data normalization
 
 
-First we remove 0 intensity values, then filter for 2 peptides per protein.
+First we remove all contaminant, decoy proteins from the list, than we remove 0 intensity values, then filter for 2 peptides per protein.
 
 ```{r filterForHumans}
 lfqdata <- LFQData$new(mqdata$data, mqdata$config)
-#lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
-
-
+lfqdata$data <- lfqdata$data %>% filter(!grepl("^REV__|^CON__", protein_Id)) 
 lfqdata$filter_proteins_by_peptide_count()
 sr <- lfqdata$get_Summariser()
-sr$hierarchy_counts()
-
 lfqdata$remove_small_intensities()
 sr <- lfqdata$get_Summariser()
 sr$hierarchy_counts()
@@ -359,7 +355,13 @@ In order to estimate fold-changes, statistics and p-values of proteins for which
 
 
 ```{r contrastImputed}
-contrImp <- prolfqua::ContrastsSimpleImpute$new(protLFQ, relevantContrasts, global = FALSE)
+# ContrastsSimpleImpute$debug("get_contrasts")
+contrImp <- prolfqua::ContrastsSimpleImpute$new(
+  protLFQ,
+  relevantContrasts,
+  probs = 0.01)
+
+
 bb <- contrImp$get_contrasts()
 plc <- contrImp$get_Plotter()
 plc$volcano()
@@ -383,9 +385,7 @@ benchmark_imputation$plot_FDRvsFDP()
 
 prolfqua::table_facade(benchmark_imputation$smc$summary, caption = "Nr of proteins with Nr of estimated contrasts.")
 benchmark_imputation$pAUC_summaries()
-
 allBenchmarks <- list()
-
 allBenchmarks$benchmark_imputation <- benchmark_imputation
 
 ```
@@ -567,7 +567,6 @@ benchmark_ropeca$pAUC_summaries()$ftable$content
 Here we merge contrasts estimates from linear models and from the models with imputation.
 
 ```{r mergingContrasts}
-allContrasts$ProtModerated
 all <- prolfqua::addContrastResults(prefer = contrProtModerated, add = contrImp)
 
 merged <- all$merged
@@ -682,8 +681,9 @@ ggplot(bb, aes(x = Name, y = pAUC_20)) +
 
 ```{r fig.cap="NR of estimated contrasts", fig.width=5, fig.height=5}
 dd <- map_df(allBenchmarks, function(x){res <- x$smc$summary; res$name <- x$model_name;res})
-dd$nr_missing <- as.integer(dd$nr_missing) - 1
-dd <- dd %>% mutate(nrcontrasts = protein_Id * (4-nr_missing))
+
+
+dd <- dd %>% mutate(nrcontrasts = protein_Id * (4 - as.integer(nr_missing)))
 dds <- dd %>% group_by(name) %>% summarize(nrcontrasts = sum(nrcontrasts))
 
 dds %>% ggplot(aes(x = name, y = (nrcontrasts - min(nrcontrasts)))) + 
