@@ -177,6 +177,8 @@ saveRDS(benchmark2_proDA, file = "../inst/Benchresults/benchmark_LFQquant_proDA.
 
 ```{r rocCurve, fig.cap="ROC curves", eval = evalAll}
 res <- benchmark_proDA$pAUC_summaries()
+knitr::kable(res$ftable$content,caption = res$ftable$caption)
+
 res$barp
 ```
 

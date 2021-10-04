@@ -339,7 +339,7 @@ If an accurate estimate of the $log_2(FC)$ is essential, the linear models fitte
 
 There are only minor differences in the p-AUC when using the t-statistics or the scaled p-value  (see Figure \@ref(fig:benchmarkROC) right panel). In order to compute the confusion matrices based on the p-value we first need to rescale it (see Equation \@ref(eq:scalepvalue)). Thus, the p-value is a function of the t-statistics and the degrees of freedom. Interestingly, the pAUC increases when using p-values instead of the t-statistics for linear models, while it decreases for mixed effect models. The reason is erroneous denominator degrees of freedom estimation for many proteins in the mixed-effect models.
 
-We also benchmark if the FDR obtained from a model is an unbiased estimate of the false discovery proportion (FDP). Figure \@ref(fig:FDRfdp) right panel draws on the horizontal axis the FDR determined from the model, and on the vertical axis, the FDP obtained from the confusion matrix.  We see that most of the lines are below the diagonal, indicating that the FDR estimates obtained with _prolfqua_ are modestly conservative for this benchmark dataset provide. In the case of MSstats, we observe a high proportion of false discoveries for small FDR values. In the case of ROPECA, the FDR estimates, obtained when Benjamini-Hochberg correcting the regulation probabilities, strongly overestimate the FDP.
+We also benchmark if the $FDR$ obtained from a model is an unbiased estimate of the false discovery proportion $FDP$. Figure \@ref(fig:FDRfdp) right panel draws on the horizontal axis the FDR determined from the model, and on the vertical axis, the FDP obtained from the confusion matrix.  We see that most of the lines are below the diagonal, indicating that the FDR estimates obtained with _prolfqua_ are modestly conservative for this benchmark dataset provide. In the case of _MSstats_, we observe a high proportion of false discoveries for small $FDR$ values. In the case of _ROPECA_, the FDR estimates, obtained when Benjamini-Hochberg correcting the regulation probabilities, strongly overestimate the $FDP$.
 
 (ref:FDRfdp) Left panel - Number and percentage of estimated contrasts by modeling method. Right panel - Compare FDR estimate with false discovery proportion (FDP).
 
@@ -381,15 +381,22 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # Conclusions
 
-We assessed the performance of different modeling approaches implemented in prolfqua and MSstats using a benchmark dataset whose ground truth was known. However, the dataset used has several limitations. First, the design is a parallel-group design; secondly, essential sources of variation present in every experiment, such as the biochemical and biological, are not measured. The dataset captures only the variance from the chromatography, electrospray, and mass spectrometric measurement methods. Thus, while we can extrapolate some of the results obtained to more realistic datasets, we need to be careful not to over-interpret the results.
+We focused on comparing models to estimate fold changes, variances and to obtain false discovery rates. However, an essential parameter, not discussed further, is the normalization of the intensities within the samples to make them comparable. For this benchmark dataset, the fraction of regulated proteins (ECOLI) is relatively large. Therefore, to calibrate the measurement, we used human proteins only. In practice, it is unknown which proteins do and which don't change. Therefore, the assumption used when normalizing, scaling the data, and thus calibrating the measurement is that only a small subset of the proteins in the dataset is differentially regulated.
+
+The method used to infer protein intensities from more peptide intensities is an additional important factor. The original _proDA_ publication uses MaxLFQ [@cox2014accurate] protein estimates. When using those, _proDA_ performs significantly worse than _proDA_ when using the protein estimates obtained from peptide intensity estimates using Tukey's median polish,  $pAUC_10(t-statistics) = 66%$ and $pAUC_10(t-statistics) = 73%$ respectively (see Articles on [@prolfquaGithubIO] for more details).
+
+We assessed the performance of different modeling approaches implemented in prolfqua, MSstats and proDA, using a benchmark dataset whose ground truth was known. However, the dataset used has several limitations: first, the design is a parallel-group design, i.e. we could not benchmark how well interactions are modelled; secondly, essential sources of variation present in every experiment, such as the biochemical and biological, are not measured. The dataset captures only the variance from the chromatography, electro-spray, and mass spectrometric measurement method. Thus, while we can extrapolate some of the results obtained to more realistic datasets, we need to be careful not to over-interpret the results.
 
 We can conclude that if we want to order the proteins according to the likelihood of being differentially regulated, for instance, to perform gene enrichment analysis, the t-statistic is better suited than the fold-change estimate. Modeling the degrees of freedom when computing the p-values might improve the inference further. However, the observed change is minuscule. 
 
 For the fixed effect linear model, the empirical Bayes variance shrinkage, as first suggested by [@Smyth2004linear], gives a consistent improvement compared with the unmoderated estimates (data not shown). However, there is no such effect for the mixed effect model, most likely because the degrees of freedom are erroneously estimated for a large proportion of models.
 
-Computing the statistics at the peptide level, e.g., the t-statistics or p-value, then summarizing these statistics using their median produces the highest AUC scores among all the tested models. By using the beta distribution to model the number of peptides observed, we can further improve the pAUC scores (see Figure). However, the properties of beta-based probabilities are not well understood; for instance, they have no uniform distribution under the null hypothesis. The FDR estimates obtained when correcting multiple testing with the Benjamini-Hochberg method are strongly biased (see Figure \@ref()). Therefore, we can not recommend this method if an unbiased estimate of FDR is essential, which is frequently the case.
+Computing the statistics at the peptide level, e.g., the t-statistics or p-value, then summarizing these statistics using their median produces the highest AUC scores among all the tested models. By using the beta distribution to model the number of peptides observed, we can further improve the pAUC scores (see Figure). However, the properties of beta-based probabilities are not well understood; for instance, they have no uniform distribution under the null hypothesis. The FDR estimates obtained when correcting multiple testing with the Benjamini-Hochberg method are strongly biased (see Figure \@ref(fig:FDRfdp) right panel). Therefore, we can not recommend this method if an unbiased estimate of FDR is essential, which is frequently the case. Furthermore, peptides are stronger affected by missing values, reducing the number of contrasts we could estimate for the dataset (see Figure \@ref(fig:FDRfdp) left panel). To adress the issue of missing observation we could either run proDA or the imputation of group averages method discussed here and afterwards apply ROPECA. 
 
-Leveraging on these computer experiments, we can provide the following advice. First, aggregate the peptide intensities to protein intensities using a robust regression method. Second, use linear models as long as they suffice to model your experimental design. Use mixed effect models only if you have to (e.g., repeated measurements). If you use fixed-effect linear models, apply variance moderation since this improves the t-statistics and p-value estimates. If you want to sort your protein lists to perform gene set enrichment analysis, use the t-statistic instead of the fold change. If you plan to select proteins to study them further based on the FDR, you can expect some bias.
+The probabilistic dropout analysis implemented in the _proDA_ produces inferences comparable to other methods (Figure \@ref(fig:benchmarkROC) for the largest number of proteins (Figure \@ref(fig:FDRfdp) left panel). Moreover, the estimated fold changes are unbiased and show high diagnostic accuracy. Furthermore, the scaled p-values and t-statics are on par with those obtained by the linear model with variance moderation. Therefore, we plan to integrate the _proDA_ package as an additional modeling option into _prolfqua_ (see Figure \@ref(fig:ContrastUML)). 
+
+
+Leveraging on these computer experiments, we can provide the following advice. First, aggregate the peptide intensities to protein intensities using a robust regression method. Second, use linear models as long as they suffice to model your experimental design. Use mixed effect models only if you have to (e.g., repeated measurements). If you use fixed-effect linear models, apply variance moderation since this improves the t-statistics and p-value estimates. If you want to sort your protein lists to perform gene set enrichment analysis, use the t-statistic instead of the fold change. You can select proteins to study them further based on the FDR, although expect a $bias$.
 
 
 _prolfqua_ allows for considerable flexibility to model your experiments. Various types of models are available, and the contrast specification is consistent and intuitive for all models. The benchmarking results are comparable with other methods. The modular design of _prolfqua_, allows for customizing the analysis or adding new features, e.g., generalized linear models (_glm_'s) for missing data modeling or robust linear models (_rlm_'s), quickly.
@@ -409,40 +416,45 @@ remotes::install_github('wolski/prolfqua',
 ```
 
 
-```{r}
-proda <- allBenchmarks$benchmark_proDA$data()
-imp <- allBenchmarks$benchmark_imputation$data()
-
-x <- inner_join(imp, proda, by = c("contrast","protein_Id"), suffix = c(".imp",".proda"))
-plot(x$estimate.imp, x$estimate.proda, col = as.factor(x$species.imp))
-
-xy <- x %>% select(protein_Id   , contrast , estimate.imp,estimate.proda, species.imp) %>% filter( abs( x$estimate.imp - x$estimate.proda ) > 1)
-plot(xy$estimate.imp, xy$estimate.proda, col = as.factor(xy$species.imp))
-abline(0,1, col=2)
-abline(h=1, col=2)
-abline(v=1, col=2)
+# Supplement
 
 
-```
+# Comparing benchmark results
 
-#
+Here we compare the benchmark results for the proDA model and the linear model with variance moderation, but using only the protein where inference could be performed for both models. We see that the fold change estimates obtained with the proda pacakge show better diagnostic accuracy.
 
 ```{r}
 
 prodB <- allBenchmarks$benchmark_proDA$clone(deep=TRUE)
-proda <-prodB$.data
-modB <-allBenchmarks$benchmark_ProtModerated 
+proda <- prodB$.data
+modB <- allBenchmarks$benchmark_ProtModerated 
+
 mod <- modB$.data
-modB$smc$summary
+mod <- mod[!is.na(mod$statistic),]
+modSum <- modB$pAUC_summaries()
 
 prodaMod <- semi_join(proda, mod, by = c("contrast", "protein_Id"))
 prodB$.data <- prodaMod
-prodB$smc
+prodB$missing_contrasts()
+prodSum <- prodB$pAUC_summaries()
 
-pp <- prodB$pAUC_summaries()
-pq <- allBenchmarks$benchmark_ProtModerated$pAUC_summaries()
+tmp <- inner_join(prodSum$ftable$content, modSum$ftable$content, by=c("contrast","what"), suffix = c(".proDA",".lmMod"))
+tmp <- tmp %>% unite("score_contr" , what, contrast, remove = FALSE)
 
-gridExtra::grid.arrange(pp$barp, pq$barp)
+
+ggplot(tmp, aes(x = contrast, y = pAUC_10.proDA - pAUC_10.lmMod)) + geom_bar(stat="identity") + facet_wrap(~what) +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+
+
+```{r}
+proda <- allBenchmarks$benchmark_proDA$data()
+imp <- allBenchmarks$benchmark_imputation$data()
+
+x <- inner_join(imp, proda, by = c("contrast","protein_Id", "TP", "species"), suffix = c(".imp",".proda"))
+
+ggplot(x,aes( x = estimate.imp, y = estimate.proda) ) + geom_point() + facet_wrap(~contrast + species) + geom_hline(yintercept = 0, color="red") + geom_vline(xintercept = 0, color="red")
+
 ```
 
 
