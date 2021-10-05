@@ -46,7 +46,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-
+library(cowplot)
 library(ggplot2)
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 5)
@@ -117,7 +117,9 @@ We store all the data needed for analysis in a single data frame in a tidy table
 
 
 ```{r LFQData, echo=FALSE, fig.cap="Class Diagram for LFQData and related objects. The LFQData_Plotter class uses the LFQData class to implement methods for plotting.", out.width = '90%'}
-knitr::include_graphics("LFQDataUML.png")
+fig_svg <- cowplot::ggdraw() + cowplot::draw_image("LFQDataUML.svg")
+plot(fig_svg)
+
 ```
 
 __R__ linear model and linear mixed effect models allow modeling parallel designs, repeated measurements, factorial designs, and many more. __R__'s formula interface for linear models is flexible, widely used, and well documented. This makes it easy to reproduce an analysis performed with _prolfqua_ in other statistical programming languages. We implemented features specific to high throughput experiments, such as the experimental Bayes variance and p-value moderation, which utilizes the parallel structure of the protein measurements and the analysis [@Ritchie2015]. We also compute probabilities of differential protein regulation based on peptide level models [@Suomi2017bEnhanced]. We use R6 to model the statistical modeling functionality in `proflqua` (see Figure \@ref(fig:ContrastUML)).
@@ -125,7 +127,8 @@ __R__ linear model and linear mixed effect models allow modeling parallel design
 (ref:ContrastUML) UML diagram of modeling and contrast related classes. Different strategies e.g. _lm_, _lmer_, and _glm_ can be used to fit various types of models using a model builder (see code). All classes computing contrasts implement the _Contrast_ interface.
 
 ```{r ContrastUML, echo=FALSE, fig.cap="(ref:ContrastUML)", out.width = '90%'}
-knitr::include_graphics("ContrastUML.png")
+fig_svg <- cowplot::ggdraw() + cowplot::draw_image("ContrastClassesUML.svg")
+plot(fig_svg)
 ```
 
 ## Benchmark dataset
@@ -419,7 +422,7 @@ remotes::install_github('wolski/prolfqua',
 # Supplement
 
 
-# Comparing benchmark results
+## Comparing benchmark results
 
 Here we compare the benchmark results for the proDA model and the linear model with variance moderation, but using only the protein where inference could be performed for both models. We see that the fold change estimates obtained with the proda pacakge show better diagnostic accuracy.
 
@@ -435,7 +438,7 @@ modSum <- modB$pAUC_summaries()
 
 prodaMod <- semi_join(proda, mod, by = c("contrast", "protein_Id"))
 prodB$.data <- prodaMod
-prodB$missing_contrasts()
+d <- prodB$missing_contrasts()
 prodSum <- prodB$pAUC_summaries()
 
 tmp <- inner_join(prodSum$ftable$content, modSum$ftable$content, by=c("contrast","what"), suffix = c(".proDA",".lmMod"))
