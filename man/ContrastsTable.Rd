@@ -69,6 +69,9 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
+\section{Super class}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsTable}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -81,6 +84,13 @@ Other modelling:
 \item \href{#method-write}{\code{ContrastsTable$write()}}
 \item \href{#method-clone}{\code{ContrastsTable$clone()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides">}\href{../../prolfqua/html/ContrastsInterface.html#method-get_contrast_sides}{\code{prolfqua::ContrastsInterface$get_contrast_sides()}}\out{</span>}
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}

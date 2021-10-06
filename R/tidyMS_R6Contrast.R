@@ -1,3 +1,13 @@
+ContrastsInterface <- R6::R6Class(
+  "ContrastsInterface",
+  public = list(
+    get_contrast_sides = function(){stop("get_contrast_sides not implmented")},
+    get_contrasts = function(){stop("get_contrasts not implmented")},
+    get_Plotter = function(){stop("get_Plotter not implmented.") },
+    to_wide = function(){stop("to_wide not implemented.")}
+
+  )
+)
 # summarise_missing_contrasts
 #' @examples
 #' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
@@ -64,6 +74,10 @@
 #'
 ContrastsSimpleImpute <- R6::R6Class(
   "ContrastsSimpleImpute",
+  inherit = ContrastsInterface,
+  private = list(
+    method = "V1"
+  ),
   public = list(
     #' @field subject_Id subject_id e.g. protein_ID column
     subject_Id = character(),
@@ -75,13 +89,13 @@ ContrastsSimpleImpute <- R6::R6Class(
     contrast_result = NULL,
     #' @field lfqdata data frame
     lfqdata = NULL,
-    #' @field confint
+    #' @field confint confidence interval
     confint = 0.95,
-    #' @field p.adjust
+    #' @field p.adjust funciton to adjust p-values
     p.adjust = NULL,
-    method = "V1",
-    #' @field Take global or local values for imputation
+    #' @field global Take global or local values for imputation
     global = logical(),
+    #' @field probs qunatile to estimate missing values from.
     probs = 0.03,
     #' @description initialize
     #' @param lfqdata LFQData
@@ -93,7 +107,7 @@ ContrastsSimpleImpute <- R6::R6Class(
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
                           method = "V1",
-                          probs = 0.01,
+                          probs = 0.1,
                           global = TRUE){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
@@ -101,7 +115,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$lfqdata = lfqdata
       self$confint = confint
       self$p.adjust = p.adjust
-      self$method = method
+      private$method = method
       self$global  = global
       self$probs = probs
     },
@@ -227,6 +241,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
+  inherit = ContrastsInterface,
   public = list(
     #' @field models Model
     models = NULL,
@@ -422,7 +437,7 @@ Contrasts <- R6::R6Class(
 
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
-
+  inherit = ContrastsInterface,
   public = list(
     Contrast = NULL,
     #' @description initialize
@@ -565,7 +580,7 @@ ContrastsModerated <- R6::R6Class(
 #'
 ContrastsROPECA <- R6::R6Class(
   "ContrastsROPECA",
-
+  inherit = ContrastsInterface,
   public = list(
     Contrast = NULL,
     contrast_result = NULL,
@@ -698,7 +713,7 @@ ContrastsROPECA <- R6::R6Class(
 #'
 ContrastsTable <- R6::R6Class(
   "ContrastsTable",
-
+  inherit = ContrastsInterface,
   public = list(
     contrast_result = NULL,
     modelName = character(),

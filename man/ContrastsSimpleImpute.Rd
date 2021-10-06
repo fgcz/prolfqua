@@ -82,6 +82,9 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
+\section{Super class}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsSimpleImpute}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -95,14 +98,13 @@ Other modelling:
 
 \item{\code{lfqdata}}{data frame}
 
-\item{\code{Take}}{global or local values for imputation}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{Take}}{global or local values for imputation}
+\item{\code{confint}}{confidence interval}
+
+\item{\code{p.adjust}}{funciton to adjust p-values}
+
+\item{\code{global}}{Take global or local values for imputation}
+
+\item{\code{probs}}{qunatile to estimate missing values from.}
 }
 \if{html}{\out{</div>}}
 }
@@ -118,6 +120,12 @@ Other modelling:
 \item \href{#method-clone}{\code{ContrastsSimpleImpute$clone()}}
 }
 }
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
@@ -131,7 +139,7 @@ initialize
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
   method = "V1",
-  probs = 0.01,
+  probs = 0.1,
   global = TRUE
 )}\if{html}{\out{</div>}}
 }

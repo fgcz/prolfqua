@@ -61,4 +61,3 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
-\keyword{internal}

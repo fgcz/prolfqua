@@ -1,3 +1,17 @@
+# ModelInterface -----
+#' R6 interface class representing modelling result
+ModelInterface <- R6::R6Class(
+  "ModelInterface",
+  public = list(
+    get_coefficients = function(){ stop("get_coefficients not implmeneted")},
+    get_anova = function(){stop("get_anova not implmeneted")},
+    coef_histogram = function(){stop("coef_histogram not implmeneted")},
+    coef_volcano = function(){stop("coef_volcano not implmeneted")},
+    coef_pairs = function(){stop("coef_pairs not implmeneted")},
+    anova_histogram = function(){stop("anova_histogram not implmeneted")}
+  )
+)
+
 # Model -----
 #' R6 class representing modelling result
 #'
@@ -33,7 +47,9 @@
 #' mod$anova_histogram()
 #'
 Model <- R6::R6Class(
+
   "Model",
+  inherit = ModelInterface,
   public = list(
     #' @field modelDF data.frame with modelling data and model.
     modelDF = NULL,
@@ -217,7 +233,6 @@ Model <- R6::R6Class(
 
 
 #' likelihood ratio test
-#' @keywords internal
 #' @family modelling
 #' @export
 #' @examples

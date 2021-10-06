@@ -80,6 +80,9 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
+\section{Super class}{
+\code{\link[prolfqua:ModelInterface]{prolfqua::ModelInterface}} -> \code{Model}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -111,6 +114,12 @@ Other modelling:
 \item \href{#method-write_coef_figures}{\code{Model$write_coef_figures()}}
 \item \href{#method-clone}{\code{Model$clone()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
