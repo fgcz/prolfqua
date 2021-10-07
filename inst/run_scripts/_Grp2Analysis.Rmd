@@ -196,7 +196,6 @@ gridExtra::grid.arrange(p1,p2, nrow=1)
 
 ```{r, eval=TRUE}
 resR <- stR$stats_quantiles()
-
 res <- st$stats_quantiles()
 
 C <- bind_rows(
@@ -215,10 +214,11 @@ progress(0.1, "CVs")
 
 ## Clustering for Samples and Proteins
 
-```{r inlcude = FALSE}
+```{r generateHeatmaps, inlcude = FALSE}
 pl <- grp2$transformedlfqData$get_Plotter()
 ph <- pl$heatmap()
 phc <- pl$heatmap_cor()
+nah <- pl$NA_heatmap()
 ```
 
 ```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap of correlations (spearman) between samples.", eval=TRUE}
@@ -232,6 +232,11 @@ In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how s
 ```{r heatmapData, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of normalized data.", eval=TRUE}
 ph
 ```
+
+```{r heatmapNA, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of proteins containing missing values, white - present, black - basent.", eval=TRUE}
+nah
+```
+
 
 \pagebreak
 
@@ -286,7 +291,6 @@ if (length(x$Var1) == 2) {
 
 mycap <- paste0("Number of not significant and significant proteins with abs(log2_FC) > ", grp2$log2FCthreshold, " and FDR < ", grp2$FDRthreshold, "."  )
 knitr::kable(x, caption = mycap)
-
 ```
 
 
@@ -296,10 +300,8 @@ significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthres
 signif <- grp2$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
 showSignificant <- TRUE
-if (nrow(signif$data) == 1) {
+if (nrow(signif$data) > 0) {
   sigheat <- signif$get_Plotter()$raster()
-}  else if (nrow(signif$data) > 1) {
-  sigheat <- signif$get_Plotter()$heatmap()
 } else {
   showSignificant <- FALSE 
 }
@@ -340,7 +342,7 @@ plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
 
 `r if(plotMissing){"Figure \\@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions. The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset."}else{""}`
 
-```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height=10, eval = plotMissing}
+```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height=10, eval = plotMissing, eval = FALSE}
 grp2$imputedProteins$get_Plotter()$raster()
 ```
 

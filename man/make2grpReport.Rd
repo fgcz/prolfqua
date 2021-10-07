@@ -10,7 +10,10 @@ make2grpReport(
   GRP2,
   Accession = "Accession",
   Description = "Description",
-  outpath = "."
+  outpath = ".",
+  revpattern = "^REV_",
+  contpattern = "^zz|^CON__",
+  remove = FALSE
 )
 }
 \arguments{
@@ -23,6 +26,12 @@ make2grpReport(
 \item{Accession}{column with protein accession}
 
 \item{Description}{column with portein desciription e.g. (fasta header)}
+
+\item{revpattern}{default "REV_"}
+
+\item{contpattern}{default "^zz|^CON__"}
+
+\item{remove}{do you want to remove contaminants.}
 
 \item{outapth}{directory to write results too.}
 }
