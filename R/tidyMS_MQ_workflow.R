@@ -221,7 +221,7 @@ make2grpReport <- function(startdata,
                       path = file.path(outpath,"AnalysisResults.xlsx"))
 
 
-
+  prolfqua::copy_2grp_markdown()
   rmarkdown::render("_GRP2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
