@@ -113,7 +113,7 @@ plot intensities in raster
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(
   arrange = c("mean", "var"),
   not_na = FALSE,
-  y.labels = FALSE
+  rownames = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -134,7 +134,7 @@ ggplot
 \subsection{Method \code{heatmap()}}{
 heatmap of intensities
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3, rownames = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

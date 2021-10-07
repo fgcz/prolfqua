@@ -302,7 +302,7 @@ plot_heatmap_cor <- function(data,
                             scale = "none",
                             cluster_rows  = FALSE,
                             annotation_col = factors,
-                            show_rownames = F,
+                            show_rownames = FALSE,
                             border_color = NA,
                             main = ifelse(R2, "R^2", "correlation"),
                             silent = TRUE,
@@ -316,29 +316,31 @@ plot_heatmap_cor <- function(data,
 #' @keywords internal
 #' @family plotting
 #' @examples
+#' library(prolfqua)
 #' library(tidyverse)
 #' istar <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
+#' plot.new()
+#' p  <- plot_heatmap(analysis, config)
+#' p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
+#' plot.new()
+#' p2
 #'
-#'  plot.new()
-#'  p  <- plot_heatmap(analysis, config)
-#'
-#'
-plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
-  annot <- res$annotation
-  resdata <- res$data
+plot_heatmap <- function(data,
+                         config,
+                         na_fraction = 0.4,
+                         show_rownames = FALSE ,...){
+  wide <-  toWideConfig(data, config , as.matrix = TRUE)
+  annot <- wide$annotation
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
-
-  resdata <- t(scale(t(resdata)))
+  resdata <- t(scale(t(wide$data)))
   resdata <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
-
 
   # not showing row dendrogram trick
   # res <- pheatmap::pheatmap(resdata,
@@ -348,7 +350,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
                             cluster_rows  = FALSE,
                             scale = "row",
                             annotation_col = factors,
-                            show_rownames = F,
+                            show_rownames = show_rownames,
                             border_color = NA,
                             silent = TRUE,
                             ... = ...)
@@ -371,16 +373,16 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, ...){
 #'
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
-#' plot_raster(analysis, config)
-#'
+#' dev.off()
+#' rs <- plot_raster(analysis, config, show_rownames=FALSE)
+#' print(rs)
 #' plot_raster(analysis, config, "var")
-#' plot_raster(analysis, config, y.labels = TRUE)
-
+#' plot_raster(analysis, config, show_rownames = TRUE)
 plot_raster <- function(data,
                         config,
                         arrange = c("mean", "var"),
                         not_na = FALSE,
-                        y.labels = FALSE,
+                        show_rownames = FALSE,
                         ...) {
   arrange <- match.arg(arrange)
   res <-  toWideConfig(data, config , as.matrix = TRUE)
@@ -409,7 +411,7 @@ plot_raster <- function(data,
                             cluster_rows  = FALSE,
                             cluster_cols = FALSE,
                             annotation_col = factors,
-                            y.labels = y.labels,
+                            show_rownames = show_rownames,
                             border_color = NA,
                             silent = TRUE,
                             ... = ...)

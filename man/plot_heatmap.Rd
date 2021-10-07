@@ -4,22 +4,24 @@
 \alias{plot_heatmap}
 \title{plot heatmap with annotations}
 \usage{
-plot_heatmap(data, config, na_fraction = 0.4, ...)
+plot_heatmap(data, config, na_fraction = 0.4, show_rownames = FALSE, ...)
 }
 \description{
 plot heatmap with annotations
 }
 \examples{
+library(prolfqua)
 library(tidyverse)
 istar <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 
-
- plot.new()
- p  <- plot_heatmap(analysis, config)
-
+plot.new()
+p  <- plot_heatmap(analysis, config)
+p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
+plot.new()
+p2
 
 }
 \seealso{

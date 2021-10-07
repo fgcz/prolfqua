@@ -723,23 +723,24 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ggplot
     raster = function(arrange = c("mean", "var") ,
                       not_na = FALSE,
-                      y.labels = FALSE ){
+                      rownames = FALSE ){
       arrange <- match.arg(arrange)
       fig <- prolfqua::plot_raster(self$lfq$data,
                                    self$lfq$config,
                                    arrange = arrange,
                                    not_na = not_na,
-                                   y.labels = y.labels)
+                                   show_rownames = rownames)
       return(fig)
     },
     #' @description
     #' heatmap of intensities
     #' @param na_fraction max fraction of NA's per row
     #' @return pheatmap
-    heatmap = function(na_fraction = 0.3){
+    heatmap = function(na_fraction = 0.3, rownames = FALSE){
       fig <- prolfqua::plot_heatmap(self$lfq$data,
                                     self$lfq$config,
-                                    na_fraction = na_fraction)
+                                    na_fraction = na_fraction,
+                                    show_rownames = rownames)
       return(fig)
     },
     #' @description

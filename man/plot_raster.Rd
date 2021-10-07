@@ -9,7 +9,7 @@ plot_raster(
   config,
   arrange = c("mean", "var"),
   not_na = FALSE,
-  y.labels = FALSE,
+  show_rownames = FALSE,
   ...
 )
 }
@@ -32,10 +32,11 @@ istar <- prolfqua::data_IonstarProtein_subsetNorm
 
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
-plot_raster(analysis, config)
-
+dev.off()
+rs <- plot_raster(analysis, config, show_rownames=FALSE)
+print(rs)
 plot_raster(analysis, config, "var")
-plot_raster(analysis, config, y.labels = TRUE)
+plot_raster(analysis, config, show_rownames = TRUE)
 }
 \seealso{
 Other plotting: 
