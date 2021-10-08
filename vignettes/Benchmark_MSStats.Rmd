@@ -27,9 +27,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ```{r}
 library(magrittr)
-evalAll <- FALSE
 evalAll <- require("MSstats")
-storeBench <- TRUE
+storeBench <- FALSE & evalAll
 ```
 
 The following code reads the data and creates and MSStats compatible annotation file.
