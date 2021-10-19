@@ -62,6 +62,17 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 }
 
 
+#' copy Markdown for 2 Grp.
+#' @param workdir directory where to copy file - default is current working directory.
+#' @keywords internal
+#' @export
+#'
+copy_2grp_markdown <- function(workdir = getwd()){
+  runscripts <- c("run_scripts/_Grp2Analysis.Rmd")
+  .scriptCopyHelperVec(runscripts, workdir = workdir)
+}
+
+
 
 .run_markdown_with_params <-
   function(params,

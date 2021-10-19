@@ -76,13 +76,24 @@ filter_difference <- function(x, y, config){
 #' @param Accession column with protein accession
 #' @param Description column with portein desciription e.g. (fasta header)
 #' @param outapth directory to write results too.
+#' @param revpattern default "REV_"
+#' @param contpattern default "^zz|^CON__"
+#' @param remove do you want to remove contaminants.
 #' @export
 #'
-make2grpReport <- function(startdata, atable, GRP2, Accession = "Accession", Description = "Description", outpath = "."){
+make2grpReport <- function(startdata,
+                             atable,
+                             GRP2,
+                             Accession = "Accession",
+                             Description = "Description",
+                             outpath = ".",
+                             revpattern = "^REV_",
+                             contpattern = "^zz|^CON__",
+                             remove = FALSE){
 
   config <- prolfqua::AnalysisConfiguration$new(atable)
 
-  annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "^Y-FGCZ"){
+  annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "zzY-FGCZ"){
     GRP2 <- list()
     distinctprotid <- startdata %>% select(protein_Id = {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
     distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,protein_Id) ~ "REV",
@@ -95,13 +106,18 @@ make2grpReport <- function(startdata, atable, GRP2, Accession = "Accession", Des
     return(list(stats = GRP2, distinctprotid = distinctprotid))
   }
 
-  res <- annotProtein(startdata, !!sym(Accession), !!sym(Description))
+  res <- annotProtein(startdata, !!sym(Accession), !!sym(Description), revpattern = revpattern, contpattern = contpattern)
   GRP2 <- c(GRP2, res$stats)
-  distinctprotid <- res$distinctprotid
-  distinctprotid$geneName <- sub(".* GN=(.+) PE.*", "\\1", distinctprotid$fasta.headers)
+
+  if (remove) {
+    distinctprotid <- dplyr::filter(res$distinctprotid, .data$proteinAnnot == "FW")
+    startdata <- startdata %>% filter(!!sym(Accession) %in% distinctprotid$protein_Id)
+  } else {
+    distinctprotid <- res$distinctprotid
+  }
+
 
   ############################## Create configuration For MQ ####
-
   adata <- setup_analysis(startdata, config)
 
   ##################### Preprocess intensities ###################################
@@ -109,10 +125,17 @@ make2grpReport <- function(startdata, atable, GRP2, Accession = "Accession", Des
   lfqdata <- LFQData$new(adata, config)
   lfqdata$remove_small_intensities()
 
+
+
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
   transformed <- lt$log2()$robscale()$lfq
-
+  if (transformed$config$table$hierarchyDepth == 2) {
+    transformed$filter_proteins_by_peptide_count()
+    aggregator <- transformed$get_Aggregator()
+    aggregator$medpolish()
+    transformed <- aggregator$lfq_agg
+  }
 
   GRP2$lfqData <- lfqdata
   GRP2$transformedlfqData <- transformed
@@ -141,6 +164,7 @@ make2grpReport <- function(startdata, atable, GRP2, Accession = "Accession", Des
   conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
   res <- prolfqua::addContrastResults(conrM, conMI)
+
 
   GRP2$contrResult <- res$merged$get_contrasts()
   GRP2$contrMerged <- res$merged$get_Plotter()
@@ -185,19 +209,21 @@ make2grpReport <- function(startdata, atable, GRP2, Accession = "Accession", Des
   wr <- GRP2$lfqData$get_Writer()
   tmp <- wr$get_wide()
   tmp$data <- inner_join(distinctprotid, tmp$data)
-  names(tmp)
   tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
 
   names(tmp2) <- paste0(names(tmp2), ".normalized")
   tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized)
   res <- inner_join(distinctprotid, GRP2$contrResult)
 
+  dir.create(outpath)
+
   writexl::write_xlsx(c(tmp, tmp2,  contrasts = list(res)),
                       path = file.path(outpath,"AnalysisResults.xlsx"))
 
+
+  prolfqua::copy_2grp_markdown()
   rmarkdown::render("_GRP2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
   file.copy("_GRP2Analysis.html", file.path(outpath, "_GRP2Analysis.html"), overwrite = TRUE)
 }
-

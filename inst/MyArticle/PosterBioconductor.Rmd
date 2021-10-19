@@ -1,5 +1,5 @@
 ---
-title: prolfqua - R-package for analysing Proteomics Label Free Quantification Experiments
+title: prolfqua - R-package for Analysing Proteomics Label Free Quantification Experiments
 author: 
   - name: Witold Wolski
     affil: 1; 2
@@ -26,15 +26,15 @@ affiliation:
   - num: 2
     address: Swiss Institute of Bioinformatics (https://www.sib.swiss/)
 column_numbers: 5
-poster_height: "30in"
-poster_width: "58in"
-title_textsize:	"90pt"
+poster_height: "37in"
+poster_width: "65in"
+title_textsize:	"85pt"
 font_family: Monaco
-primary_colour: "#000C66"
+primary_colour: "#1F64C2"
 titletext_fontfamily: Arial
-body_textsize: "35px"
-logoleft_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/FGCZLogo.png
-logoright_name: C:/Users/wolski/__checkout/prolfqua/inst/Figures/hexStickerProlfqua.png
+body_textsize: "40px"
+logoleft_name: C:/Users/wewol/__checkout/prolfqua/inst/MyArticle/HUPO-2021.png
+logoright_name: C:/Users/wewol/__checkout/prolfqua/inst/Figures/FGCZLogo.png
 output: 
   posterdown::posterdown_html
 bibliography: bibliography.bib
@@ -234,7 +234,6 @@ remotes::install_gitlab("wolski/prolfquaData",
                         host="gitlab.bfabric.org")
 remotes::install_github('wolski/prolfqua',
                         build_vignettes = TRUE)
-
 ```
 
 The authors thank the technology platform fund of the University of Zurich.
