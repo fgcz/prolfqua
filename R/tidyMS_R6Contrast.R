@@ -1,3 +1,6 @@
+# ContrastsInterface ----
+#' ContrastsInterface
+#' @export
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
@@ -5,7 +8,6 @@ ContrastsInterface <- R6::R6Class(
     get_contrasts = function(){stop("get_contrasts not implmented")},
     get_Plotter = function(){stop("get_Plotter not implmented.") },
     to_wide = function(){stop("to_wide not implemented.")}
-
   )
 )
 # summarise_missing_contrasts
