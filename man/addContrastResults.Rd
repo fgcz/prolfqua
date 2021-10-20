@@ -18,6 +18,7 @@ add contrast results from two different functions. Tipically used with Contrast 
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},

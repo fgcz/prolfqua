@@ -44,6 +44,7 @@ pl$histogram()
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts}},
