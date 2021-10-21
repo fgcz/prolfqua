@@ -19,6 +19,7 @@ plot_lmer_model_and_data(m,"dumm")
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
