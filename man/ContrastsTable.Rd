@@ -148,7 +148,7 @@ get contrasts
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrast_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(fcthreshold = 1, fdrthreshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 }

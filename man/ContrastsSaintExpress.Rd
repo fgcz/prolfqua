@@ -131,7 +131,7 @@ get contrasts
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrast_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_Plotter(fcthreshold = 1, scthreshold = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_Plotter(fcthreshold = 1, bfdrthreshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

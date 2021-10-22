@@ -749,12 +749,12 @@ ContrastsSaintExpress <- R6::R6Class(
     #' @description get \code{\link{Contrast_Plotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param scthreshold BFDR threshold to show in the heatmap.
-    get_Plotter = function(fcthreshold = 1, scthreshold = 0.1){
+    get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = fcthreshold,
-        volcano = list(list(score = "BFDR", thresh = scthreshold)),
+        volcano = list(list(score = "BFDR", thresh = bfdrthreshold)),
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
         estimate = "log2FC",
@@ -840,11 +840,12 @@ ContrastsTable <- R6::R6Class(
       self$contrast_result
     },
     #' @description get \code{\link{Contrast_Plotter}}
-    get_Plotter = function(){
+    get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", thresh = 0.1)),
+        fcthresh = fcthreshold,
+        volcano = list(list(score = "FDR", thresh = fdrthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -874,80 +875,6 @@ ContrastsTable <- R6::R6Class(
     }
   ))
 
-
-ContrastsSaint <- R6::R6Class(
-  "ContrastsSaint",
-  inherit = ContrastsInterface,
-  public = list(
-    contrast_result = NULL,
-    modelName = character(),
-    subject_Id = character(),
-    initialize = function(contrastsdf,
-                          subject_Id = "Prey",
-                          modelName = "ContrastSaint"
-    ){
-
-
-      self$contrast_result = contrastsdf
-      self$subject_Id = subject_Id
-      self$modelName = modelName
-
-      self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
-                                                     c1_name = "Control",
-                                                     c2_name = Bait,
-                                                     c1 = log2(AvgIntensity) - log2(FoldChange)/2,
-                                                     c2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
-                                                     modelName = "SaintExpress")
-
-    },
-    get_contrast_sides = function(){
-      self$contrast_result %>% dplyr::select(Bait,c1 = c1_name,c2 = c2_name) %>% distinct()
-    },
-    get_linfct = function(){
-      NULL
-    },
-
-    #' @description
-    #' get contrasts
-    #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
-    #' @param all should all columns be returned (default FALSE)
-    #' @param global use a global linear function (determined by get_linfct)
-    get_contrasts = function(all = FALSE){
-      self$contrast_result
-    },
-    #' @description get \code{\link{Contrast_Plotter}}
-    get_Plotter = function(){
-      res <- Contrasts_Plotter$new(
-        self$contrast_result,
-        subject_Id = self$subject_Id,
-        volcano = list(list(score = "BFDR", thresh = 0.1)),
-        histogram = list(list(score = "BFDR", xlim = c(0,1,0.05))),
-        modelName = self$modelName,
-        estimate = "log2FC",
-        contrast = "Bait")
-      return(res)
-    },
-    #' @description convert to wide format
-    #' @param columns value column default beta.based.significance
-    to_wide = function(columns = c("SaintScore", "BFDR")){
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$subject_Id,
-                                                     columns = c("log2FC", columns),
-                                                     contrast = 'Bait')
-      return(contrasts_wide)
-    },
-    #' @description write results
-    #' @param path directory
-    #' @param format default xlsx \code{\link{lfq_write_table}}
-    write = function(path, filename, format = "xlsx"){
-      filename <- if (missing(filename)) {self$modelName} else (filename )
-      lfq_write_table(self$get_contrasts(),
-                      path = path,
-                      name  = paste0("Contrasts_",filename),
-                      format = format)
-    }
-  ))
 
 
 
