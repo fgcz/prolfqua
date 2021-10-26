@@ -53,6 +53,7 @@ mod <- build_model(
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
@@ -99,7 +100,7 @@ Other modelling:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ContrastsROPECA$new()}}
-\item \href{#method-get_contrasts_sides}{\code{ContrastsROPECA$get_contrasts_sides()}}
+\item \href{#method-get_contrast_sides}{\code{ContrastsROPECA$get_contrast_sides()}}
 \item \href{#method-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
@@ -111,7 +112,6 @@ Other modelling:
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides">}\href{../../prolfqua/html/ContrastsInterface.html#method-get_contrast_sides}{\code{prolfqua::ContrastsInterface$get_contrast_sides()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -129,11 +129,11 @@ Other modelling:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts_sides}{}}}
-\subsection{Method \code{get_contrasts_sides()}}{
+\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\subsection{Method \code{get_contrast_sides()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts_sides()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrast_sides()}\if{html}{\out{</div>}}
 }
 
 }

@@ -13,6 +13,7 @@ retrieve complete model.
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
+\code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},

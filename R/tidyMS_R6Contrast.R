@@ -1,3 +1,6 @@
+# ContrastsInterface ----
+#' ContrastsInterface
+#' @export
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
@@ -5,7 +8,6 @@ ContrastsInterface <- R6::R6Class(
     get_contrasts = function(){stop("get_contrasts not implmented")},
     get_Plotter = function(){stop("get_Plotter not implmented.") },
     to_wide = function(){stop("to_wide not implemented.")}
-
   )
 )
 # summarise_missing_contrasts
@@ -232,7 +234,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' contrastX <- prolfqua::Contrasts$new(mod,
 #'  Contr)
 #'
-#' contrastX$get_contrasts_sides()
+#' contrastX$get_contrast_sides()
 #'
 #' contrastX$get_linfct()
 #' xx <- contrastX$get_contrasts()
@@ -279,7 +281,7 @@ Contrasts <- R6::R6Class(
       self$global = global
     },
     #' @description get both sides of contrasts
-    get_contrasts_sides = function(){
+    get_contrast_sides = function(){
       # extract contrast sides
       tt <- self$contrasts[grep("-",self$contrasts)]
       tt <- tibble(contrast = names(tt) , rhs = tt)
@@ -315,7 +317,7 @@ Contrasts <- R6::R6Class(
 
         message("determine linear functions:")
         linfct <- self$get_linfct(global = self$global)
-        contrast_sides <- self$get_contrasts_sides()
+        contrast_sides <- self$get_contrast_sides()
         message("compute contrasts:")
         contrast_result <- contrasts_linfct(self$models,
                                             linfct,
@@ -455,8 +457,8 @@ ContrastsModerated <- R6::R6Class(
       self$p.adjust = p.adjust
     },
     #' @description get both sides of contrasts
-    get_contrasts_sides = function(){
-      self$Contrast$get_contrasts_sides()
+    get_contrast_sides = function(){
+      self$Contrast$get_contrast_sides()
     },
     #' @description get linear functions from contrasts
     #' @param global logical TRUE - get the a linear functions for all models, FALSE - linear function for each model
@@ -597,7 +599,7 @@ ContrastsROPECA <- R6::R6Class(
       self$subject_Id = Contrast$subject_Id
       self$p.adjust = p.adjust
     },
-    get_contrasts_sides = function(){
+    get_contrast_sides = function(){
       if (is.null(self$contrast_result)) {
         self$get_contrasts()
       }
@@ -687,6 +689,102 @@ ContrastsROPECA <- R6::R6Class(
   ))
 
 
+# ContrastsSaintExpress ----
+#' ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
+#'
+#' @export
+#' @family modelling
+#'
+ContrastsSaintExpress <- R6::R6Class(
+  "ContrastsSaint",
+  inherit = ContrastsInterface,
+  public = list(
+    contrast_result = NULL,
+    modelName = character(),
+    subject_Id = character(),
+    initialize = function(contrastsdf,
+                          subject_Id = "Prey",
+                          modelName = "ContrastSaint"
+    ){
+
+
+      self$contrast_result = contrastsdf
+      self$subject_Id = subject_Id
+      self$modelName = modelName
+
+      self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
+                                                     c1_name = "Control",
+                                                     c2_name = Bait,
+                                                     c1 = log2(AvgIntensity) - log2(FoldChange)/2,
+                                                     c2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
+                                                     modelName = modelName)
+
+    },
+    get_contrast_sides = function(){
+      self$contrast_result %>% dplyr::select(Bait,c1 = c1_name,c2 = c2_name) %>% distinct()
+    },
+    get_linfct = function(){
+      NULL
+    },
+
+    #' @description
+    #' get contrasts
+    #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
+    #' @param all should all columns be returned (default FALSE)
+    #' @param global use a global linear function (determined by get_linfct)
+    get_contrasts = function(all = FALSE){
+      res <- self$contrast_result %>% select(all_of(c(self$subject_Id,
+                                                      "modelName",
+                                                      "Bait",
+                                                      "c1_name",
+                                                      "c2_name",
+                                                      "c1",
+                                                      "c2",
+                                                      "log2FC",
+                                                      "SaintScore",
+                                                      "BFDR"
+      )))
+      res
+    },
+    #' @description get \code{\link{Contrast_Plotter}}
+    #' @param fcthreshold fold change threshold to show
+    #' @param scthreshold BFDR threshold to show in the heatmap.
+    get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
+      res <- Contrasts_Plotter$new(
+        self$contrast_result,
+        subject_Id = self$subject_Id,
+        fcthresh = fcthreshold,
+        volcano = list(list(score = "BFDR", thresh = bfdrthreshold)),
+        histogram = list(list(score = "BFDR", xlim = c(0,1,0.05))),
+        modelName = self$modelName,
+        estimate = "log2FC",
+        contrast = "Bait")
+      return(res)
+    },
+    #' @description convert to wide format
+    #' @param columns value column default SaintScore, BFDR
+    to_wide = function(columns = c("SaintScore", "BFDR")){
+      contrast_minimal <- self$get_contrasts()
+      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+                                                     subject_Id = self$subject_Id,
+                                                     columns = c("log2FC", columns),
+                                                     contrast = 'Bait')
+      return(contrasts_wide)
+    },
+    #' @description write results
+    #' @param path directory
+    #' @param format default xlsx \code{\link{lfq_write_table}}
+    write = function(path, filename, format = "xlsx"){
+      filename <- if (missing(filename)) {self$modelName} else (filename )
+      lfq_write_table(self$get_contrasts(),
+                      path = path,
+                      name  = paste0("Contrasts_",filename),
+                      format = format)
+    }
+  ))
+
+
+
 # ContrastsTable -----
 
 #'
@@ -726,7 +824,7 @@ ContrastsTable <- R6::R6Class(
       self$subject_Id = subject_Id
       self$modelName = modelName
     },
-    get_contrasts_sides = function(){
+    get_contrast_sides = function(){
       self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
     },
     get_linfct = function(){
@@ -742,11 +840,12 @@ ContrastsTable <- R6::R6Class(
       self$contrast_result
     },
     #' @description get \code{\link{Contrast_Plotter}}
-    get_Plotter = function(){
+    get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", thresh = 0.1)),
+        fcthresh = fcthreshold,
+        volcano = list(list(score = "FDR", thresh = fdrthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -758,7 +857,7 @@ ContrastsTable <- R6::R6Class(
     #' @param columns value column default beta.based.significance
     to_wide = function(columns = c("p.value", "FDR")){
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(self$contrast_minimal,
+      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
                                                      columns = c("estimate", columns),
                                                      contrast = 'contrast')
@@ -775,6 +874,8 @@ ContrastsTable <- R6::R6Class(
                       format = format)
     }
   ))
+
+
 
 
 # plot score distributions by species
@@ -911,7 +1012,7 @@ Contrasts_Plotter <- R6::R6Class(
       self$volcano_spec = volcano
       self$histogram_spec = histogram
       self$fcthresh = fcthresh
-
+      self$contrast = contrast
     },
     #' @description  plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
     histogram = function(){
@@ -1091,8 +1192,6 @@ Contrasts_Plotter <- R6::R6Class(
       return(plot)
     },
     .ma_plot = function(x, contrast, colour = NULL){
-
-
       x <- ggplot(x , aes(x = (c1 + c2)/2,
                           y = !!sym(self$estimate),
                           text = !!sym("subject_Id"),
