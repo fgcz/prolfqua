@@ -30,6 +30,7 @@ mod <- build_model(
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
     "dil.e_vs_a" = "dilution.e - dilution.b" )
  #prolfqua::Contrasts$debug("get_linfct")
+ #Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod,
  Contr)
 
