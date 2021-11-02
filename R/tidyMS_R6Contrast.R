@@ -37,9 +37,11 @@ ContrastsInterface <- R6::R6Class(
 }
 
 .requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
-                              "c1_name" , "c2_name" , "sigma","df","estimate","statistic","p.value","conf.low","conf.high","FDR")
-# Contrast simple impute----
+                              "c1_name" , "c2_name" , "sigma","df",
+                              "estimate","statistic","p.value",
+                              "conf.low","conf.high","FDR")
 
+# ContrastSimpleImpute----
 #' compute contrasts with data imputation (directly from data)
 #'
 #' if interaction average can not be computed infer it using the 10\%

@@ -1,5 +1,7 @@
 ---
-title: prolfqua - R-package for Analysing Proteomics Label Free Quantification Experiments
+title: |
+  <center>The __prolfqua__ R-package</center> 
+  <center>for Analysing Proteomics Label Free Quantification Experiments <center>
 author: 
   - name: Witold Wolski
     affil: 1; 2
@@ -26,9 +28,9 @@ affiliation:
   - num: 2
     address: Swiss Institute of Bioinformatics (https://www.sib.swiss/)
 column_numbers: 5
-poster_height: "37in"
+poster_height: "38in"
 poster_width: "65in"
-title_textsize:	"90pt"
+title_textsize:	"100pt"
 font_family: Monaco
 primary_colour: "#6f9e73"
 secondary_colour: "#7d5f60"
