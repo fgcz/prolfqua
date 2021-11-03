@@ -21,8 +21,8 @@ y <- data.frame(dilution.=c("a","b","c"),
      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 compute_pooled(y)
 yb <- y \%>\% dplyr::filter(not_na > 1)
-prolfqua:::pooled_V2(yb)
-prolfqua:::pooled_V1(yb)
+#prolfqua:::pooled_V2(yb)
+#prolfqua:::pooled_V1(yb)
 }
 \seealso{
 Other stats: 

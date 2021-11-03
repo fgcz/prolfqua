@@ -150,7 +150,7 @@ render_MQSummary_rmd <-
         project_conf = project_conf,
         pep = pep
       ),
-      markdown_path = c("doc/QCandSampleSize.Rmd", "doc/_CVReport.Rmd"),
+      markdown_path = c("doc/QCandSampleSize.Rmd", "doc/_CVReport.RmdT"),
       dest_path = dest_path,
       dest_file_name = dest_file_name,
       workdir = workdir,

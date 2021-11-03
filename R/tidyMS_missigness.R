@@ -174,7 +174,7 @@ interaction_missing_stats <- function(pdata,
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       meanAreaImputed <- mstats %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
-        tidyr::spread(interaction, imputed, sep = ".imputed.") %>%
+        tidyr::spread(interaction, .data$imputed, sep = ".imputed.") %>%
         arrange(!!!syms(pid)) %>% dplyr::ungroup()
 
       allTables <- list(meanArea = meanArea,
@@ -497,7 +497,7 @@ missigness_histogram <- function(x,
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  p <- ggplot(missingPrec, aes(x = meanArea, fill = nrNAs, colour = nrNAs)) +
+  p <- ggplot(missingPrec, aes(x = .data$meanArea, fill = .data$nrNAs, colour = .data$nrNAs)) +
     geom_histogram(alpha = 0.2, position = "identity") +
     facet_grid(as.formula(formula)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -535,16 +535,16 @@ missingness_per_condition_cumsum <- function(x,
     dplyr::summarize(nrTransitions = n())
 
   xxcs <- xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
-    dplyr::mutate(cumulative_sum = cumsum(nrTransitions))
-  res <- xxcs  %>% dplyr::select(-nrTransitions)
+    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
+  res <- xxcs  %>% dplyr::select(-.data$nrTransitions)
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
   nudgeval = mean(res$cumulative_sum) * 0.05
-  p <- ggplot(res, aes(x = nrNAs, y = cumulative_sum)) +
+  p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
-    geom_text(aes(label = cumulative_sum), nudge_y = nudgeval, angle = -45) +
+    geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
   res <- res %>% tidyr::spread("nrNAs","cumulative_sum")

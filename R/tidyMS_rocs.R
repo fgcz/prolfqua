@@ -53,19 +53,19 @@ compute_roc <- function(data, config){
                                                 response = config$table$fkeysDepth(),
                                                 predictor = config$table$getWorkIntensity() ))
 
-  nested <- nested %>% dplyr::mutate(cls = map_lgl(rocs, is.null))  %>%
+  nested <- nested %>% dplyr::mutate(cls = map_lgl(.data$rocs, is.null))  %>%
     dplyr::filter(cls == FALSE)
 
   #nested <- nested %>% mutate(names = map(rocs, names))
 
   dumm <- nested %>% dplyr::select(!!!syms(config$table$hierarchyKeys()),
-                                   rocs) %>%  tidyr::unnest(cols = c("rocs"))
+                                   .data$rocs) %>%  tidyr::unnest(cols = c("rocs"))
 
   dumm <- dumm %>%
     dplyr::mutate(comparison =
-                    purrr::map_chr(rocs, function(x){paste(x$levels, collapse = " ")}))
-  dumm <- dumm %>% tidyr::separate(comparison, into = c("response1" , "response2"), sep=" ")
-  dumm <- dumm %>% dplyr::mutate(auc = map_dbl(rocs, pROC::auc)) %>%
-    arrange(desc(auc))
+                    purrr::map_chr(.data$rocs, function(x){paste(x$levels, collapse = " ")}))
+  dumm <- dumm %>% tidyr::separate(.data$comparison, into = c("response1" , "response2"), sep = " ")
+  dumm <- dumm %>% dplyr::mutate(auc = map_dbl(.data$rocs, pROC::auc)) %>%
+    arrange(desc(.data$auc))
   return(dumm)
 }

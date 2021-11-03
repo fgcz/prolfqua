@@ -297,7 +297,7 @@ plot_heatmap_cor <- function(data,
   #                          scale = "none",
   #                          silent = TRUE)
 
-  gg <- hclust(dist(cres))
+  gg <- stats::hclust(stats::dist(cres))
   res <- pheatmap::pheatmap(cres[gg$order,],
                             scale = "none",
                             cluster_rows  = FALSE,
@@ -345,7 +345,7 @@ plot_heatmap <- function(data,
   # not showing row dendrogram trick
   # res <- pheatmap::pheatmap(resdata,
   #                           silent = TRUE)
-  gg <- hclust( dist( resdata ))
+  gg <- stats::hclust( stats::dist( resdata ))
   res <- pheatmap::pheatmap(resdata[gg$order,],
                             cluster_rows  = FALSE,
                             scale = "row",
@@ -398,7 +398,7 @@ plot_raster <- function(data,
   if (arrange == "mean") {
     bb <- apply(resdata, 1, mean, na.rm = TRUE)
   } else if (arrange == "var") {
-    bb <- apply(resdata, 1, var, na.rm = TRUE)
+    bb <- apply(resdata, 1, stats::var, na.rm = TRUE)
   }
   if (not_na) {
     bNA <- apply(resdata, 1, function(x){sum(is.na(x))})
@@ -539,7 +539,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_x = 0.25,
                     nudge_y = 0.25 )
 
-  x <- ggplot(xx, aes(x = PC1, y = PC2,
+  x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
                       color = !!sym(config$table$fkeysDepth()[1]),
                       text = !!sym(config$table$sampleName))) +
     point +

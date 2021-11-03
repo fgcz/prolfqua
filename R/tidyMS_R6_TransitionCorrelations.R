@@ -541,7 +541,7 @@ markDecorrelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- qvalFiltX %>%
     dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
   HLfigs2 <- qvalFiltX %>%
-    dplyr::mutate(srmDecor = map(spreadMatrix, .decorelatedPly,  minCorrelation))
+    dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 %>%
     dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") %>% tidyr::unnest()
   unnest_res <- unnest_res %>%
@@ -596,9 +596,9 @@ impute_correlationBased <- function(x , config){
     tidyr::gather(x,key = !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
 
-  nestedX <- nestedX %>% dplyr::mutate(imputed = map(spreadMatrix, simpleImpute))
+  nestedX <- nestedX %>% dplyr::mutate(imputed = map(.data$spreadMatrix, simpleImpute))
 
-  nestedX <- nestedX %>% dplyr::mutate(imputed = map(imputed, gatherItback, config))
+  nestedX <- nestedX %>% dplyr::mutate(imputed = map(.data$imputed, gatherItback, config))
   unnest_res <- nestedX %>% dplyr::select(config$table$hkeysDepth(), "imputed") %>% tidyr::unnest(cols = c(imputed))
   unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
 
@@ -708,7 +708,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
     dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$getWorkIntensity())) ~ 1,
                                             TRUE ~ 0))
   pepStats <- data %>% group_by_at(c(cf$table$hkeysDepth(), cf$table$sampleName)) %>%
-    summarize(nrPep = n(), present = sum(presentabsent), .groups = "drop")
+    summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
 
   annotColumns <- c(cf$table$fileName,
                     cf$table$sampleName,
@@ -860,7 +860,7 @@ filter_factor_levels_by_missing <- function(pdata,
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) %>%
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) %>%  dplyr::ungroup()
 
-  summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(fraction > percent)
+  summaryPerPrecursorFiltered <- summaryPerPrecursor %>% dplyr::filter(.data$fraction > percent)
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered %>%
     dplyr::select(c(table$hierarchyKeys())) %>% dplyr::distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))

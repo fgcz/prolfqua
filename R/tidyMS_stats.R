@@ -85,8 +85,8 @@ pooled_V1 <- function(x){
 #'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 #' compute_pooled(y)
 #' yb <- y %>% dplyr::filter(not_na > 1)
-#' prolfqua:::pooled_V2(yb)
-#' prolfqua:::pooled_V1(yb)
+#' #prolfqua:::pooled_V2(yb)
+#' #prolfqua:::pooled_V1(yb)
 compute_pooled <- function(x, method = c("V1","V2")){
   method <- match.arg(method)
   xm <- x %>% dplyr::filter(.data$not_na > 0)
@@ -403,10 +403,10 @@ lfq_power_t_test_quantiles <- function(pdata,
     getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n}
 
     sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-    sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
+    sampleSizes <- sampleSizes %>% mutate( N = ceiling(.data$N_exact))
     sampleSizes <- sampleSizes %>% mutate( FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes %>% dplyr::select( -N_exact, -delta) %>% spread(FC, N, sep="=")
+    summary <- sampleSizes %>% dplyr::select( -.data$N_exact, -.data$delta) %>% spread(.data$FC, .data$N, sep = "=")
     return(list(long = sampleSizes, summary = summary))
   }else{
     message("!!! ERROR !!! No standard deviation is available,
@@ -457,7 +457,7 @@ lfq_power_t_test_proteins <- function(stats_res,
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
   sampleSizes <- sd_delta %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-  sampleSizes <- sampleSizes %>% mutate( N = ceiling(N_exact))
+  sampleSizes <- sampleSizes %>% mutate( N = ceiling(.data$N_exact))
   return(sampleSizes)
 }
 

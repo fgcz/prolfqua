@@ -96,8 +96,8 @@ make2grpReport <- function(startdata,
   annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "zzY-FGCZ"){
     GRP2 <- list()
     distinctprotid <- startdata %>% select(protein_Id = {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
-    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,protein_Id) ~ "REV",
-                                                                         grepl(contpattern,protein_Id) ~ "CON",
+    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,.data$protein_Id) ~ "REV",
+                                                                         grepl(contpattern,.data$protein_Id) ~ "CON",
                                                                          TRUE ~ "FW"))
     GRP2$percentOfContaminants <-  round(mean(distinctprotid$proteinAnnot == "CON") * 100, digits = 2)
     GRP2$percentOfFalsePositives <- round(mean(distinctprotid$proteinAnnot == "REV") * 100, digits = 2)
@@ -173,13 +173,13 @@ make2grpReport <- function(startdata,
 
   GRP2$contrMore <- res$more$get_Plotter()
 
-  top20 <- GRP2$contrResult %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
-    arrange(FDR) %>%
+  top20 <- GRP2$contrResult %>% dplyr::select( .data$protein_Id,log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
+    arrange(.data$FDR) %>%
     head(20)
   GRP2$top20 <- top20
   #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
 
-  GRP2$top20confint <- ggplot(top20, aes(x = protein_Id, y = log2FC,
+  GRP2$top20confint <- ggplot(top20, aes(x = .data$protein_Id, y = .data$log2FC,
                                          ymin = conf.low, ymax = conf.high)) +
     geom_hline( yintercept = 0, color = 'red' ) +
     geom_linerange() + geom_point() + coord_flip() + theme_minimal()
@@ -195,11 +195,11 @@ make2grpReport <- function(startdata,
   xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
   if (nrow(xx) > 0) {
     xx <- xx %>% arrange(estimate)
-    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) +
+    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(.data$protein_Id, .data$estimate), y = .data$estimate)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()
-    missing$data <- missing$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
+    missing$data <- missing$data %>% dplyr::filter(.data$protein_Id %in% xx$protein_Id)
     missing$get_Plotter()$raster()
   }
 

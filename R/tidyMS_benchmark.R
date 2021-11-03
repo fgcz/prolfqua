@@ -171,7 +171,7 @@ do_confusion_c <- function(
 .plot_ROC <-
   function(pStats, fpr_lim = 0.2, contrast= "contrast") {
     p2 <-
-      ggplot(pStats , aes(x = FPR, y = TPR, color = what)) +
+      ggplot(pStats , aes(x = .data$FPR, y = .data$TPR, color = .data$what)) +
       geom_path()  +
       xlim(0, xlim = fpr_lim) +
       facet_wrap( as.formula(paste0("~",contrast )) )

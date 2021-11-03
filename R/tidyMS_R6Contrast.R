@@ -30,7 +30,7 @@ ContrastsInterface <- R6::R6Class(
   xxA <- data |>
     group_by_at(hierarchy) |>
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
-  summary <- xxA |> group_by(nr_na) |> summarize(n = n())
+  summary <- xxA |> group_by(.data$nr_na) |> summarize(n = n())
 
   colnames(summary) <- c("nr_missing", paste(hierarchy, collapse = "_"))
   return(list(summary = summary, nr_na = xxA))
@@ -1225,7 +1225,7 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
 
   stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
 
-  cA <- dplyr::filter(cA,!is.na(statistic))
+  cA <- dplyr::filter(cA,!is.na(.data$statistic))
   moreID <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
                   distinct(select(cA, c(add$subject_Id, "contrast"))))
   more <- inner_join(moreID, cB )

@@ -252,10 +252,10 @@ LR_test <- function(modelProteinF,
                                                                          !!sym("linear_model.y"),
                                                                          .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg %>%
-    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) %>%
+    dplyr::select(!!sym(subject_Id), .data$modelComparisonLikelihoodRatioTest) %>%
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
   likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
-    dplyr::rename(likelihood_ratio_test.pValue = modelComparisonLikelihoodRatioTest)
+    dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
 
   if (!is.null(path)) {

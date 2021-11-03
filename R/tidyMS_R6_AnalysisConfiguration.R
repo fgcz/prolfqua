@@ -524,10 +524,10 @@ hierarchy_counts_sample <- function(pdata,
         return(long)
       }else if (value == "plot") {
         nudgeval <- mean(long$nr) * 0.05
-        ggplot2::ggplot(long, aes(x = sampleName, y = nr)) +
+        ggplot2::ggplot(long, aes(x = .data$sampleName, y = .data$nr)) +
           geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           facet_wrap( ~ key, scales = "free_y", ncol = 1) +
-          geom_text(aes(label = nr), nudge_y = nudgeval, angle = 45) +
+          geom_text(aes(label = .data$nr), nudge_y = nudgeval, angle = 45) +
           theme(axis.text.x = element_text(angle = 90, hjust = 1))
       }
     }
@@ -619,9 +619,9 @@ spreadValueVarsIsotopeLabel <- function(resData, config){
   table <- config$table
   idVars <- table$idVars()
   resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
-  resData2 <- resData2 %>% tidyr::gather(variable, value, - idVars  )
-  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
-  HLData <- resData2 %>% tidyr::spread(temp,value)
+  resData2 <- resData2 %>% tidyr::gather(.data$variable, .data$value, -.data$idVars  )
+  resData2 <- resData2 %>%  tidyr::unite("temp", table$isotopeLabel, .data$variable )
+  HLData <- resData2 %>% tidyr::spread(.data$temp,.data$value)
   invisible(HLData)
 }
 

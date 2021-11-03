@@ -174,9 +174,9 @@ isSingular_lm <- function(m){
 #' @export
 #'
 get_complete_model_fit <- function(modelProteinF){
-  modelProteinF <- modelProteinF %>% dplyr::filter(!!sym("exists_lmer") == TRUE)
-  modelProteinF <- modelProteinF %>% dplyr::filter(nrcoeff_not_NA == max(nrcoeff_not_NA)) %>%
-    dplyr::arrange(dplyr::desc(nrcoeff_not_NA))
+  modelProteinF <- modelProteinF %>% dplyr::filter(.data$exists_lmer == TRUE)
+  modelProteinF <- modelProteinF %>% dplyr::filter(.data$nrcoeff_not_NA == max(.data$nrcoeff_not_NA)) %>%
+    dplyr::arrange(dplyr::desc(.data$nrcoeff_not_NA))
   # modelProteinF <- modelProteinF %>% dplyr::filter(df.residual > 0)
   return(modelProteinF)
 }
@@ -275,8 +275,10 @@ plot_lmer_peptide_predictions <- function(m){
   data$prediction <- predict(m)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
-  gg <- ggplot(data, aes(x = interaction , y = transformedIntensity)) + geom_point()
-  gg <- gg + geom_point(aes(x = interaction, y = prediction), color = 2) + facet_wrap(~peptide_Id)
+  gg <- ggplot(data, aes(x = .data$interaction ,
+                         y = .data$transformedIntensity)) + geom_point()
+  gg <- gg + geom_point(aes(x = .data$interaction,
+                            y = .data$prediction), color = 2) + facet_wrap(~peptide_Id)
   gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))
   return(gg)
 }
@@ -307,12 +309,14 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   head(ran)
   ran <- dplyr::inner_join(data, ran, by = randeffect)
 
-  ran <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - Intercept)
+  ran <- ran %>% dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - Intercept)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   ran <- make_interaction_column(ran,interactionColumns, sep = ":" )
 
   meanx <- function(x){mean(x,na.rm = TRUE)}
-  gg <- ggplot(ran,aes(x = interaction , y= int_randcorrected, color = peptide_Id)) +
+  gg <- ggplot(ran,aes(x = .data$interaction,
+                       y = .data$int_randcorrected,
+                       color = .data$peptide_Id)) +
     geom_point(position = position_jitterdodge())
   gg <- gg + stat_summary(fun = meanx, colour = "black", geom = "point",
                           shape = 12, size = 3,show.legend = FALSE)
@@ -369,7 +373,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
   ran_res <- make_interaction_column(ran_res,interactionColumns, sep = ":" )
 
   meanx <- function(x){mean(x,na.rm = TRUE)}
-  gg <- ggplot(ran_res,aes(x = interaction , y = int_randcorrected,
+  gg <- ggplot(ran_res,aes(x = .data$interaction , y = .data$int_randcorrected,
                            color = !!sym(randeffect[i1]))) +
     geom_point(position = position_jitterdodge(jitter.width = 0.2))
   gg <- gg + stat_summary(fun = meanx, colour = "black", geom = "point",
@@ -394,7 +398,10 @@ plot_lmer_predicted_interactions <- function(gg, m){
   ystart_end <- data.frame(xend = rownames(cm$mm), ystart = rep(0, nrow(cm$mm)),
                            yend = cm$mm %*% cm$coeffs)
   segments <- dplyr::inner_join(xstart_end, ystart_end, by = "xend")
-  gg <- gg + geom_segment(aes(x = xstart, y = ystart , xend = xend, yend =yend),
+  gg <- gg + geom_segment(aes(x = .data$xstart,
+                              y = .data$ystart,
+                              xend = .data$xend,
+                              yend = .data$yend),
                           data = segments, color = "blue", arrow = arrow())
   return(gg)
 }
@@ -669,7 +676,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     res <- list()
     for (i in 1:nrow(linfct)) {
       x <- multcomp::glht(model, linfct = linfct[i,,drop = FALSE])
-      RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+      RHS <- broom::tidy(confint(x)) %>% dplyr::select(-.data$estimate)
 
       RHS$df <- x$df
       RHS$sigma <- sigma(model)
@@ -685,7 +692,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     RHS$df <- x$df
     RHS$sigma <- sigma(model)
     res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) %>%
-      dplyr::select(-rhs)
+      dplyr::select(-.data$rhs)
     return(res)
   }
 }
@@ -871,7 +878,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
   }
   res <- tibble::as_tibble(res, rownames = "lhs")
   res$sigma <- sigma(model)
-  res <- res %>% dplyr::rename(estimate = Estimate,
+  res <- res %>% dplyr::rename(estimate = "Estimate",
                                std.error = "Std. Error",
                                statistic = "t value",
                                p.value = "Pr(>|t|)",
@@ -953,7 +960,7 @@ contrasts_linfct <- function(models,
   #computeGroupAverages
   message("computing contrasts.")
   modelcol <- "linear_model"
-  models <- models %>% dplyr::filter(exists_lmer == TRUE)
+  models <- models %>% dplyr::filter(.data$exists_lmer == TRUE)
 
   if ("list" %in% class(linfct)) {
     #stopifnot(length(linfct) == length(models[[modelcol]]))
@@ -982,8 +989,8 @@ contrasts_linfct <- function(models,
   }
 
   interaction_model_matrix <-  interaction_model_matrix %>%
-    dplyr::mutate(classC = purrr::map_chr(contrast,mclass)) %>%
-    dplyr::filter(classC != "logical")
+    dplyr::mutate(classC = purrr::map_chr(.data$contrast,mclass)) %>%
+    dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>%
@@ -1164,14 +1171,14 @@ get_model_coefficients <- function(modeldata, config){
   }
 
   xx <- modeldata %>%
-    dplyr::mutate(coefficients_values = purrr::map(linear_model, l_coeff)) %>%
-    dplyr::mutate(coefficients_names = purrr::map(linear_model, n_coeff))
+    dplyr::mutate(coefficients_values = purrr::map(.data$linear_model, l_coeff)) %>%
+    dplyr::mutate(coefficients_names = purrr::map(.data$linear_model, n_coeff))
 
   xxs <- xx %>% dplyr::select( config$table$hkeysDepth(),
-                               coefficients_values,
-                               coefficients_names)
+                               .data$coefficients_values,
+                               .data$coefficients_names)
   xxxn <- xxs %>% unnest_legacy()
-  xxcoef <- xxxn %>% spread(coefficients_names,coefficients_values)
+  xxcoef <- xxxn %>% spread(.data$coefficients_names,.data$coefficients_values)
   return(xxcoef)
 }
 

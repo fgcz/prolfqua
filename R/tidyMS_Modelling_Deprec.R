@@ -39,9 +39,9 @@ contrasts_linfct_deprec <- function(models,
                              linfct,
                              subject_Id = "protein_Id" ,
                              contrastfun = prolfqua::my_contest){
-  #computeGroupAverages
+
   modelcol <- "linear_model"
-  models <- models %>% dplyr::filter(exists_lmer == TRUE)
+  models <- models %>% dplyr::filter(.data$exists_lmer == TRUE)
 
 
   interaction_model_matrix <- models %>%
@@ -54,7 +54,7 @@ contrasts_linfct_deprec <- function(models,
 
   interaction_model_matrix <-  interaction_model_matrix %>%
     dplyr::mutate(classC = purrr::map_chr(contrast,mclass)) %>%
-    dplyr::filter(classC != "logical")
+    dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix %>%
     dplyr::select_at( c(subject_Id, "contrast") ) %>%
@@ -72,7 +72,7 @@ contrasts_linfct_deprec <- function(models,
 
   # adjust
   contrasts <- contrasts %>% group_by_at("lhs") %>%
-    dplyr::mutate(p.value.adjusted = p.adjust(p.value, method = "BH")) %>%
+    dplyr::mutate(p.value.adjusted = p.adjust(.data$p.value, method = "BH")) %>%
     dplyr::ungroup()
 
   return(contrasts)
