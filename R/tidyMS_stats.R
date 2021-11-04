@@ -169,8 +169,8 @@ summarize_stats <- function(pdata, config){
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
-                     sd = sd(!!intsym, na.rm = T),
-                     var = var(!!intsym, na.rm = T),
+                     sd = stats::sd(!!intsym, na.rm = T),
+                     var = stats::var(!!intsym, na.rm = T),
                      mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>%
@@ -277,7 +277,7 @@ summarize_stats_quantiles <- function(stats_res,
     tidyr::unnest(cols = c(q_column))
 
   xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysDepth())
-  wide <- xx %>%  spread("interaction", quantiles)
+  wide <- xx %>%  spread("interaction", .data$quantiles)
   return(list(long = sd_quantile_res2, wide = wide))
 }
 

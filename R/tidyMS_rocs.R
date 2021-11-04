@@ -54,7 +54,7 @@ compute_roc <- function(data, config){
                                                 predictor = config$table$getWorkIntensity() ))
 
   nested <- nested %>% dplyr::mutate(cls = map_lgl(.data$rocs, is.null))  %>%
-    dplyr::filter(cls == FALSE)
+    dplyr::filter(.data$cls == FALSE)
 
   #nested <- nested %>% mutate(names = map(rocs, names))
 

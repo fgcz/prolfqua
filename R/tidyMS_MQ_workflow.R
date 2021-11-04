@@ -180,7 +180,7 @@ make2grpReport <- function(startdata,
   #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
 
   GRP2$top20confint <- ggplot(top20, aes(x = .data$protein_Id, y = .data$log2FC,
-                                         ymin = conf.low, ymax = conf.high)) +
+                                         ymin = .data$conf.low, ymax = .data$conf.high)) +
     geom_hline( yintercept = 0, color = 'red' ) +
     geom_linerange() + geom_point() + coord_flip() + theme_minimal()
 
@@ -194,8 +194,8 @@ make2grpReport <- function(startdata,
 
   xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
   if (nrow(xx) > 0) {
-    xx <- xx %>% arrange(estimate)
-    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(.data$protein_Id, .data$estimate), y = .data$estimate)) +
+    xx <- xx %>% arrange(.data$estimate)
+    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = stats::reorder(.data$protein_Id, .data$estimate), y = .data$estimate)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()

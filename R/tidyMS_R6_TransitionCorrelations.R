@@ -599,7 +599,7 @@ impute_correlationBased <- function(x , config){
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(.data$spreadMatrix, simpleImpute))
 
   nestedX <- nestedX %>% dplyr::mutate(imputed = map(.data$imputed, gatherItback, config))
-  unnest_res <- nestedX %>% dplyr::select(config$table$hkeysDepth(), "imputed") %>% tidyr::unnest(cols = c(imputed))
+  unnest_res <- nestedX %>% dplyr::select(config$table$hkeysDepth(), "imputed") %>% tidyr::unnest(cols = .data$imputed)
   unnest_res <- unnest_res %>% tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,

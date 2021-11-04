@@ -478,7 +478,7 @@ plot_NA_heatmap <- function(data,
     #                               clustering_distance_cols = distance,
     #                               clustering_distance_rows = distance)
 
-    gg <- hclust( dist( res, method = distance ))
+    gg <- stats::hclust( stats::dist( res, method = distance ))
     resclust <- pheatmap::pheatmap(res[gg$order,],
                                    cluster_rows  = FALSE,
                                    clustering_distance_cols = distance,

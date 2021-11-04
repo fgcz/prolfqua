@@ -53,7 +53,7 @@ contrasts_linfct_deprec <- function(models,
   }
 
   interaction_model_matrix <-  interaction_model_matrix %>%
-    dplyr::mutate(classC = purrr::map_chr(contrast,mclass)) %>%
+    dplyr::mutate(classC = purrr::map_chr(.data$contrast,mclass)) %>%
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix %>%

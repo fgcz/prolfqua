@@ -309,7 +309,7 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   head(ran)
   ran <- dplyr::inner_join(data, ran, by = randeffect)
 
-  ran <- ran %>% dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - Intercept)
+  ran <- ran %>% dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - .data$Intercept)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   ran <- make_interaction_column(ran,interactionColumns, sep = ":" )
 
@@ -347,7 +347,7 @@ plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlas
     colnames(ran) <- name
     ran <- tibble::as_tibble(ran,rownames = rand_i)
     ran <- dplyr::inner_join(data, ran, by = rand_i)
-    ran_res <- ran %>% dplyr::mutate(int_randcorrected  = transformedIntensity  - !!sym(name))
+    ran_res <- ran %>% dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - !!sym(name))
     ran_res
   }
 
@@ -533,7 +533,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 
   l_factors <- .coeff_weights_factor_levels(cm_mm)
   linfct_factors <- l_factors %>%
-    dplyr::select(-factor_level) %>%
+    dplyr::select(-.data$factor_level) %>%
     data.matrix()
 
   rownames(linfct_factors) <- l_factors$factor_level
@@ -688,7 +688,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     return(res)
   }else{
     x <- multcomp::glht(model, linfct = linfct)
-    RHS <- broom::tidy(confint(x)) %>% dplyr::select(-estimate)
+    RHS <- broom::tidy(confint(x)) %>% dplyr::select(-.data$estimate)
     RHS$df <- x$df
     RHS$sigma <- sigma(model)
     res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) %>%
@@ -989,7 +989,7 @@ contrasts_linfct <- function(models,
   }
 
   interaction_model_matrix <-  interaction_model_matrix %>%
-    dplyr::mutate(classC = purrr::map_chr(.data$contrast,mclass)) %>%
+    dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass)) %>%
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix %>%
@@ -1294,27 +1294,27 @@ summary_ROPECA_median_p.scaled <- function(
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
       estimate = median(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),
-      median.p.scaled = median(scaled.p, na.rm = TRUE))
+      median.p.scaled = median(.data$scaled.p, na.rm = TRUE))
 
 
   if (rlang::has_name(contrasts_data, "c1_name")) {
     ccsummary <- contrasts_data %>%
       group_by_at(c(subject_Id, contrast)) %>%
       dplyr::summarize(
-        c1_name = unique(c1_name),
-        c1 = median(c1, na.rm = TRUE),
-        c2_name = unique(c2_name),
-        c2 = median(c2, na.rm = TRUE) )
+        c1_name = unique(.data$c1_name),
+        c1 = median(.data$c1, na.rm = TRUE),
+        c2_name = unique(.data$c2_name),
+        c2 = median(.data$c2, na.rm = TRUE) )
     summarized.protein <- inner_join(summarized.protein, ccsummary, by = c(subject_Id, contrast))
   }
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(median.p.value = 1 - abs(median.p.scaled))
+    dplyr::mutate(median.p.value = 1 - abs(.data$median.p.scaled))
 
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(beta.based.significance = get_p_values_pbeta(median.p.value, n_not_na, max.n = max.n))
+    dplyr::mutate(beta.based.significance = get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n))
   summarized.protein <- summarized.protein %>%
-    dplyr::mutate(n.beta = pmin(n_not_na, max.n))
+    dplyr::mutate(n.beta = pmin(.data$n_not_na, max.n))
 
   summarized.protein <- dplyr::inner_join(nrpepsPerProt,
                                           summarized.protein,

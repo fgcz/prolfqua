@@ -534,7 +534,7 @@ missingness_per_condition_cumsum <- function(x,
   xx <- missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
     dplyr::summarize(nrTransitions = n())
 
-  xxcs <- xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(nrNAs) %>%
+  xxcs <- xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(.data$nrNAs) %>%
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
   res <- xxcs  %>% dplyr::select(-.data$nrTransitions)
 
