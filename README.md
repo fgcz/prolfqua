@@ -100,14 +100,13 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 # Related resources
 
-- [Triqler](https://github.com/statisticalbiotechnology/triqler)
-- [MSQRob](https://github.com/statOmics/MSqRob)
-- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- [proDA](https://www.bioconductor.org/packages/release/bioc/html/proDA.html)
 - [MSstats](https://www.bioconductor.org/packages/release/bioc/html/MSstats.html)
-- PEPA test - analysis including shared peptides
-  - [DAPAR](https://github.com/samWieczorek/DAPAR/)
-  - [DAPARData](https://github.com/samWieczorek/DAPARdata/)
-  - [PEPA validation](https://github.com/ThomasBurger/pepa-validation)
+- [MSQRob](https://github.com/statOmics/MSqRob)
+- [Triqler](https://github.com/statisticalbiotechnology/triqler)
+- [DAPAR](https://github.com/samWieczorek/DAPAR/)
+- [DAPARData](https://github.com/samWieczorek/DAPARdata/)
+- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
 
 #  Relevant background information
 
@@ -122,7 +121,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
 - [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
-
+- [multcomp](https://CRAN.R-project.org/package=multcomp) computes contrast for linear models and adjusts p-values (multiple comparison)
 
 # Future interesting topics or packages to look at
 
@@ -145,7 +144,6 @@ What name should we use?
 https://twitter.com/WitoldE/status/1338799648149041156
 
 - prolfqua - PROteomics Label Free QUAntification package (read prolewka)
-
 - LFQService - we do proteomics LFQ services at the FGCZ.
 - nalfqua - Not Another Label Free QUAntification package (read nalewka)
 
