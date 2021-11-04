@@ -277,7 +277,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 }
 
 #' compute median and mad on matrix
-#'
+#' @keywords internal
 #'
 .get_robscales <- function(data,
                         dim = 2)
