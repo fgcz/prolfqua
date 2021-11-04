@@ -615,17 +615,26 @@ summarize_hierarchy <- function(pdata,
 #' x <- spreadValueVarsIsotopeLabel(analysis, conf)
 #' head(x[,5:ncol(x)])
 #'
-
 spreadValueVarsIsotopeLabel <- function(resData, config){
   table <- config$table
   idVars <- table$idVars()
-  resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
+  resData2 <- resData %>% dplyr::select(c(idVars, table$valueVars()) )
   resData2 <- resData2 %>% tidyr::gather(key = "variable", value = "value", -dplyr::all_of(idVars)  )
   resData2 <- resData2 %>%  tidyr::unite("temp", table$isotopeLabel, .data$variable )
   HLData <- resData2 %>% tidyr::spread(.data$temp,.data$value)
   invisible(HLData)
 }
 
+
+#spreadValueVarsIsotopeLabel <- function(resData, config){
+#  table <- config$table
+#  idVars <- table$idVars()
+#  resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
+#  resData2 <- resData2 %>% tidyr::gather(variable, value, - dplyr::all_of(idVars)  )
+#  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
+#  HLData <- resData2 %>% tidyr::spread(temp,value)
+#  invisible(HLData)
+#}
 # Computing protein Intensity summaries ---
 
 
