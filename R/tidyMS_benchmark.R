@@ -296,7 +296,7 @@ do_confusion_c <- function(
 #' bb <- benchmark$get_confusion_FDRvsFDP()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 #' bb <- benchmark$get_confusion_benchmark()
-#' bb %>% group_by(what, contrast) %>% summarize(n = n())
+#' bb %>% dplyr::group_by(what, contrast) %>% dplyr::summarize(n = n())
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_FDPvsTPR()
 #' benchmark$plot_FDRvsFDP()

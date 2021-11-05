@@ -84,7 +84,6 @@ filter_difference <- function(x, y, config){
 make2grpReport <- function(startdata,
                              atable,
                              GRP2,
-                             Accession = "Accession",
                              Description = "Description",
                              outpath = ".",
                              revpattern = "^REV_",
@@ -92,7 +91,6 @@ make2grpReport <- function(startdata,
                              remove = FALSE){
 
   config <- prolfqua::AnalysisConfiguration$new(atable)
-
   annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "zzY-FGCZ"){
     GRP2 <- list()
     distinctprotid <- startdata %>% select(protein_Id = {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
@@ -106,12 +104,12 @@ make2grpReport <- function(startdata,
     return(list(stats = GRP2, distinctprotid = distinctprotid))
   }
 
-  res <- annotProtein(startdata, !!sym(Accession), !!sym(Description), revpattern = revpattern, contpattern = contpattern)
+  res <- annotProtein(startdata, !!sym(atable$hierarchy[[1]]), !!sym(Description), revpattern = revpattern, contpattern = contpattern)
   GRP2 <- c(GRP2, res$stats)
 
   if (remove) {
     distinctprotid <- dplyr::filter(res$distinctprotid, .data$proteinAnnot == "FW")
-    startdata <- startdata %>% filter(!!sym(Accession) %in% distinctprotid$protein_Id)
+    startdata <- startdata %>% filter(!!sym(atable$hierarchy[[1]]) %in% distinctprotid$protein_Id)
   } else {
     distinctprotid <- res$distinctprotid
   }
