@@ -8,7 +8,6 @@ make2grpReport(
   startdata,
   atable,
   GRP2,
-  Accession = "Accession",
   Description = "Description",
   outpath = ".",
   revpattern = "^REV_",
@@ -23,8 +22,6 @@ make2grpReport(
 
 \item{GRP2}{list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold}
 
-\item{Accession}{column with protein accession}
-
 \item{Description}{column with portein desciription e.g. (fasta header)}
 
 \item{revpattern}{default "REV_"}
@@ -32,6 +29,8 @@ make2grpReport(
 \item{contpattern}{default "^zz|^CON__"}
 
 \item{remove}{do you want to remove contaminants.}
+
+\item{Accession}{column with protein accession}
 
 \item{outapth}{directory to write results too.}
 }

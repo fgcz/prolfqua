@@ -9,3 +9,4 @@
 \description{
 compute median and mad on matrix
 }
+\keyword{internal}
