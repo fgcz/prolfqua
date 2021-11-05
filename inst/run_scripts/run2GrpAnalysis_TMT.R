@@ -54,7 +54,7 @@ atable$factorDepth <- 1
 
 atable$setWorkIntensity("Abundance")
 
-prolfqua::make2grpReport(resAa, atable, GRP2, Accession = "Accession", Description = "Description", outpath)
+prolfqua::make2grpReport(resAa, atable, GRP2,  Description = "Description", outpath)
 
 
 

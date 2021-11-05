@@ -128,7 +128,7 @@ make2grpReport <- function(startdata,
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
   transformed <- lt$log2()$robscale()$lfq
-  if (transformed$config$table$hierarchyDepth == 2) {
+  if (length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth) {
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
     aggregator$medpolish()
@@ -148,7 +148,7 @@ make2grpReport <- function(startdata,
   modelName  <- "Model"
 
   mod <- prolfqua::build_model(
-    transformed$data,
+    transformed,
     formula_Condition,
     subject_Id = transformed$config$table$hierarchyKeys() )
 
@@ -171,7 +171,7 @@ make2grpReport <- function(startdata,
 
   GRP2$contrMore <- res$more$get_Plotter()
 
-  top20 <- GRP2$contrResult %>% dplyr::select( .data$protein_Id,log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
+  top20 <- GRP2$contrResult %>% dplyr::select( !!sym(transformed$config$table$hkeysDepth() ),log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
     arrange(.data$FDR) %>%
     head(20)
   GRP2$top20 <- top20
