@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -201,18 +207,21 @@
 <code><a href='removeLarge_Q_Values.html'>removeLarge_Q_Values</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_spectronautDIA250_A.html'>data_spectronautDIA250_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-<span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "FG.Quantity"</div><div class='input'>
-<span class='va'>res1</span> <span class='op'>&lt;-</span> <span class='fu'>remove_small_intensities</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, threshold<span class='op'>=</span><span class='fl'>1</span> <span class='op'>)</span>
-<span class='va'>res1000</span> <span class='op'>&lt;-</span> <span class='fu'>remove_small_intensities</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, threshold<span class='op'>=</span><span class='fl'>1000</span> <span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>res1</span><span class='op'>)</span> <span class='op'>&gt;</span>  <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>res1000</span><span class='op'>)</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_spectronautDIA250_A.html'>data_spectronautDIA250_A</a></span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> creating sampleName</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>getWorkIntensity</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "FG.Quantity"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res1</span> <span class='op'>&lt;-</span> <span class='fu'>remove_small_intensities</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, threshold<span class='op'>=</span><span class='fl'>1</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res1000</span> <span class='op'>&lt;-</span> <span class='fu'>remove_small_intensities</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, threshold<span class='op'>=</span><span class='fl'>1000</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>res1</span><span class='op'>)</span> <span class='op'>&gt;</span>  <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>res1000</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

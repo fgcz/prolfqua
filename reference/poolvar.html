@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -198,38 +204,42 @@
 <code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-
-<span class='va'>res1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 8</span>
-#&gt;   protein_Id       peptide_Id      dilution.     n not_na     sd    var    mean
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> CON__P01030~9~NA AELADQAASWLTR   a             4      1 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>      -<span style='color: #BB0000;'>1.73</span> 
-#&gt; <span style='color: #BCBCBC;'>2</span> CON__P01030~9~NA AELADQAASWLTR   b             4      1 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>      -<span style='color: #BB0000;'>2.40</span> 
-#&gt; <span style='color: #BCBCBC;'>3</span> CON__P01030~9~NA AELADQAASWLTR   c             4      0 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NaN</span>    
-#&gt; <span style='color: #BCBCBC;'>4</span> CON__P01030~9~NA AELADQAASWLTR   d             4      0 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NaN</span>    
-#&gt; <span style='color: #BCBCBC;'>5</span> CON__P01030~9~NA AELADQAASWLTR   e             4      2  0.647  0.419  -<span style='color: #BB0000;'>2.21</span> 
-#&gt; <span style='color: #BCBCBC;'>6</span> CON__P01030~9~NA ILSLAQDQVGGSAEK a             4      4  0.499  0.249  -<span style='color: #BB0000;'>0.973</span></div><div class='input'><span class='fu'>poolvar</span><span class='op'>(</span><span class='va'>res1</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,289 x 11</span>
-#&gt;    protein_Id    peptide_Id   n.groups     n    df     sd     var   mean meanAll
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> CON__P01030~~ AELADQAASWL~        1     2     1 0.647  0.419   -<span style='color: #BB0000;'>2.21</span>   -<span style='color: #BB0000;'>2.14</span> 
-#&gt; <span style='color: #BCBCBC;'> 2</span> CON__P01030~~ ILSLAQDQVGG~        5    20    15 0.449  0.202   -<span style='color: #BB0000;'>1.18</span>   -<span style='color: #BB0000;'>1.18</span> 
-#&gt; <span style='color: #BCBCBC;'> 3</span> CON__P01030~~ LLLFSPSVVR          5    20    15 0.297  0.087<span style='text-decoration: underline;'>9</span>  -<span style='color: #BB0000;'>1.82</span>   -<span style='color: #BB0000;'>1.82</span> 
-#&gt; <span style='color: #BCBCBC;'> 4</span> CON__P02769~~ AEFVEVTK            5    20    15 0.322  0.104    4.33    4.33 
-#&gt; <span style='color: #BCBCBC;'> 5</span> CON__P02769~~ DDPHACYSTVF~        5    20    15 0.095<span style='text-decoration: underline;'>3</span> 0.009<span style='text-decoration: underline;'>08</span>  3.10    3.10 
-#&gt; <span style='color: #BCBCBC;'> 6</span> CON__P02769~~ DDPHACYSTVF~        5    20    15 0.829  0.687    0.647   0.647
-#&gt; <span style='color: #BCBCBC;'> 7</span> CON__P02769~~ ECCHGDLLECA~        5    20    15 0.243  0.059<span style='text-decoration: underline;'>2</span>  -<span style='color: #BB0000;'>0.995</span>  -<span style='color: #BB0000;'>0.995</span>
-#&gt; <span style='color: #BCBCBC;'> 8</span> CON__P02769~~ ETYGDMADCCEK        5    20    15 0.404  0.163   -<span style='color: #BB0000;'>0.365</span>  -<span style='color: #BB0000;'>0.365</span>
-#&gt; <span style='color: #BCBCBC;'> 9</span> CON__P02769~~ EYEATLEECCAK        5    20    15 0.942  0.887   -<span style='color: #BB0000;'>0.272</span>  -<span style='color: #BB0000;'>0.272</span>
-#&gt; <span style='color: #BCBCBC;'>10</span> CON__P02769~~ FKDLGEEHFK          5    20    15 0.323  0.104    5.54    5.54 
-#&gt; <span style='color: #949494;'># ... with 1,279 more rows, and 2 more variables: not_na &lt;int&gt;, dilution. &lt;chr&gt;</span></div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 8</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   protein_Id       peptide_Id      dilution.     n not_na     sd    var    mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> CON__P01030~9~NA AELADQAASWLTR   a             4      1 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>      -<span style='color: #BB0000;'>1.73</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> CON__P01030~9~NA AELADQAASWLTR   b             4      1 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>      -<span style='color: #BB0000;'>2.40</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> CON__P01030~9~NA AELADQAASWLTR   c             4      0 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NaN</span>    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> CON__P01030~9~NA AELADQAASWLTR   d             4      0 <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NA</span>     <span style='color: #BB0000;'>NaN</span>    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> CON__P01030~9~NA AELADQAASWLTR   e             4      2  0.647  0.419  -<span style='color: #BB0000;'>2.21</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> CON__P01030~9~NA ILSLAQDQVGGSAEK a             4      4  0.499  0.249  -<span style='color: #BB0000;'>0.973</span></span>
+<span class='r-in'><span class='fu'>poolvar</span><span class='op'>(</span><span class='va'>res1</span>, <span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1,289 x 12</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    protein_Id    peptide_Id    n.groups     n    df     sd    sdT     var   mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> CON__P01030~~ AELADQAASWLTR        1     2     1 0.647  0.647  0.419   -<span style='color: #BB0000;'>2.21</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> CON__P01030~~ ILSLAQDQVGGS~        5    20    15 0.449  0.318  0.202   -<span style='color: #BB0000;'>1.18</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> CON__P01030~~ LLLFSPSVVR           5    20    15 0.297  0.210  0.087<span style='text-decoration: underline;'>9</span>  -<span style='color: #BB0000;'>1.82</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> CON__P02769~~ AEFVEVTK             5    20    15 0.322  0.228  0.104    4.33 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> CON__P02769~~ DDPHACYSTVFDK        5    20    15 0.095<span style='text-decoration: underline;'>3</span> 0.067<span style='text-decoration: underline;'>4</span> 0.009<span style='text-decoration: underline;'>08</span>  3.10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> CON__P02769~~ DDPHACYSTVFD~        5    20    15 0.829  0.586  0.687    0.647</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> CON__P02769~~ ECCHGDLLECAD~        5    20    15 0.243  0.172  0.059<span style='text-decoration: underline;'>2</span>  -<span style='color: #BB0000;'>0.995</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> CON__P02769~~ ETYGDMADCCEK         5    20    15 0.404  0.285  0.163   -<span style='color: #BB0000;'>0.365</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> CON__P02769~~ EYEATLEECCAK         5    20    15 0.942  0.666  0.887   -<span style='color: #BB0000;'>0.272</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> CON__P02769~~ FKDLGEEHFK           5    20    15 0.323  0.228  0.104    5.54 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 1,279 more rows, and 3 more variables: meanAll &lt;dbl&gt;, not_na &lt;int&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   dilution. &lt;chr&gt;</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

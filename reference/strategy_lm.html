@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -206,6 +212,7 @@
     <div class='dont-index'><p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
 <code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='ContrastsTable.html'>ContrastsTable</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
@@ -244,23 +251,27 @@
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>strategy_lm</span><span class='op'>(</span><span class='st'>"Intensity ~ condition"</span>, model_name <span class='op'>=</span> <span class='st'>"parallel design"</span><span class='op'>)</span>
-<span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Intensity ~ condition
-#&gt; &lt;environment: 0x0000000046b40c38&gt;</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span>
-</div><div class='output co'>#&gt; function(m){
-#&gt;   anyNA &lt;- any(is.na(coefficients(m)))
-#&gt;   if (anyNA) {
-#&gt;     return(TRUE)
-#&gt;   } else {
-#&gt;     if (df.residual(m) &gt; 0) {
-#&gt;       return(FALSE)
-#&gt;     }
-#&gt;     return(TRUE)
-#&gt;   }
-#&gt; }
-#&gt; &lt;bytecode: 0x0000000032a6e030&gt;
-#&gt; &lt;environment: namespace:prolfqua&gt;</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'>strategy_lm</span><span class='op'>(</span><span class='st'>"Intensity ~ condition"</span>, model_name <span class='op'>=</span> <span class='st'>"parallel design"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>model_fun</span><span class='op'>(</span>get_formula <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Intensity ~ condition</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x0000000053d8baa8&gt;</span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>isSingular</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (m) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     anyNA &lt;- any(is.na(coefficients(m)))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (anyNA) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         return(TRUE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (df.residual(m) &gt; 0) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             return(FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         return(TRUE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x000000004ba179d8&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

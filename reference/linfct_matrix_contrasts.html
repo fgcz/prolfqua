@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -201,6 +207,7 @@
     <div class='dont-index'><p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
 <code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='ContrastsTable.html'>ContrastsTable</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
@@ -239,40 +246,42 @@
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_basicModel_p1807.html'>data_basicModel_p1807</a></span>
-<span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>m</span>,as_list <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='va'>linfct</span>
-</div><div class='output co'>#&gt;                                   (Intercept) class_therapyc.NO
-#&gt; CelltypeCMP/MEP                             1         0.3333333
-#&gt; CelltypeHSC                                 1         0.3333333
-#&gt; class_therapyc.NO                           1         1.0000000
-#&gt; class_therapyp.HU                           1         0.0000000
-#&gt; class_therapyp.NO                           1         0.0000000
-#&gt; class_therapyc.NO:CelltypeCMP/MEP           1         1.0000000
-#&gt; class_therapyc.NO:CelltypeHSC               1         1.0000000
-#&gt; class_therapyp.HU:CelltypeCMP/MEP           1         0.0000000
-#&gt; class_therapyp.HU:CelltypeHSC               1         0.0000000
-#&gt; class_therapyp.NO:CelltypeCMP/MEP           1         0.0000000
-#&gt; class_therapyp.NO:CelltypeHSC               1         0.0000000
-#&gt;                                   class_therapyp.NO CelltypeHSC
-#&gt; CelltypeCMP/MEP                           0.3333333         0.0
-#&gt; CelltypeHSC                               0.3333333         1.0
-#&gt; class_therapyc.NO                         0.0000000         0.5
-#&gt; class_therapyp.HU                         0.0000000         0.5
-#&gt; class_therapyp.NO                         1.0000000         0.5
-#&gt; class_therapyc.NO:CelltypeCMP/MEP         0.0000000         0.0
-#&gt; class_therapyc.NO:CelltypeHSC             0.0000000         1.0
-#&gt; class_therapyp.HU:CelltypeCMP/MEP         0.0000000         0.0
-#&gt; class_therapyp.HU:CelltypeHSC             0.0000000         1.0
-#&gt; class_therapyp.NO:CelltypeCMP/MEP         1.0000000         0.0
-#&gt; class_therapyp.NO:CelltypeHSC             1.0000000         1.0</div><div class='input'>
-<span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CMP/MEP - HSC"</span> <span class='op'>=</span> <span class='st'>"`CelltypeCMP/MEP` - `CelltypeHSC`"</span>,
-<span class='st'>"someWeird"</span> <span class='op'>=</span> <span class='st'>"`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"</span><span class='op'>)</span>
-<span class='fu'>linfct_matrix_contrasts</span><span class='op'>(</span><span class='va'>linfct</span>, <span class='va'>Contrasts</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt;               (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC
-#&gt; CMP/MEP - HSC           0                 0                 0          -1
-#&gt; someWeird               0                 1                 0           0</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_basicModel_p1807.html'>data_basicModel_p1807</a></span></span>
+<span class='r-in'><span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>m</span>,as_list <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>linfct</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeCMP/MEP                             1         0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeHSC                                 1         0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO                           1         1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU                           1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO                           1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1         1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC               1         1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC               1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC               1         0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeCMP/MEP                           0.3333333         0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeHSC                               0.3333333         1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO                         0.0000000         0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU                         0.0000000         0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO                         1.0000000         0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP         0.0000000         0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC             0.0000000         1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP         0.0000000         0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC             0.0000000         1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP         1.0000000         0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC             1.0000000         1.0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CMP/MEP - HSC"</span> <span class='op'>=</span> <span class='st'>"`CelltypeCMP/MEP` - `CelltypeHSC`"</span>,</span>
+<span class='r-in'><span class='st'>"someWeird"</span> <span class='op'>=</span> <span class='st'>"`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>linfct_matrix_contrasts</span><span class='op'>(</span><span class='va'>linfct</span>, <span class='va'>Contrasts</span> <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CMP/MEP - HSC           0                 0                 0          -1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> someWeird               0                 1                 0           0</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ ROPECA reproducibility-optimization method" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -111,6 +111,15 @@ ROPECA reproducibility-optimization method" />
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -118,9 +127,6 @@ ROPECA reproducibility-optimization method" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -191,6 +197,7 @@ ROPECA reproducibility-optimization method" />
     <div class='dont-index'><p><code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a></code></p>
 <p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='ContrastsTable.html'>ContrastsTable</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
@@ -228,6 +235,9 @@ ROPECA reproducibility-optimization method" />
 <code><a href='strategy_lmer.html'>strategy_lmer</a>()</code>,
 <code><a href='strategy_lm.html'>strategy_lm</a>()</code>,
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='ContrastsInterface.html'>prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsROPECA</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -235,7 +245,7 @@ ROPECA reproducibility-optimization method" />
 
 <ul>
 <li><p><a href='#method-new'><code>ContrastsROPECA$new()</code></a></p></li>
-<li><p><a href='#method-get_contrasts_sides'><code>ContrastsROPECA$get_contrasts_sides()</code></a></p></li>
+<li><p><a href='#method-get_contrast_sides'><code>ContrastsROPECA$get_contrast_sides()</code></a></p></li>
 <li><p><a href='#method-get_linfct'><code>ContrastsROPECA$get_linfct()</code></a></p></li>
 <li><p><a href='#method-get_contrasts'><code>ContrastsROPECA$get_contrasts()</code></a></p></li>
 <li><p><a href='#method-get_Plotter'><code>ContrastsROPECA$get_Plotter()</code></a></p></li>
@@ -243,7 +253,12 @@ ROPECA reproducibility-optimization method" />
 <li><p><a href='#method-write'><code>ContrastsROPECA$write()</code></a></p></li>
 <li><p><a href='#method-clone'><code>ContrastsROPECA$clone()</code></a></p></li>
 </ul>
-<p><hr>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+
+<hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -254,10 +269,10 @@ ROPECA reproducibility-optimization method" />
 <span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-get_contrasts_sides"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_contrasts_sides()</code></h3>
+<a id="method-get_contrast_sides"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_contrast_sides()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>get_contrasts_sides</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>get_contrast_sides</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-get_linfct"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_linfct()</code></h3>
@@ -320,69 +335,92 @@ ROPECA reproducibility-optimization method" />
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>modelFunction</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='strategy_lm.html'>strategy_lm</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution."</span><span class='op'>)</span>
-<span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>istar_data</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>&lt;-</span> <span class='fl'>2</span>
-<span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "protein_Id" "peptide_Id"</div><div class='input'>
-<span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_model.html'>build_model</a></span><span class='op'>(</span>
- <span class='va'>pepIntensity</span>,
- <span class='va'>modelFunction</span>,
- subject_Id <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='warning'>Warning: WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("protein_Id", "peptide_Id")</span></div><div class='input'>
- <span class='va'>Contr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dil.b_vs_a"</span> <span class='op'>=</span> <span class='st'>"dilution.a - dilution.b"</span><span class='op'>)</span>
-
-
- <span class='va'>contr</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='Contrasts.html'>Contrasts</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>, <span class='va'>Contr</span><span class='op'>)</span>
- <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>contr</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>determine linear functions:</span></div><div class='output co'>#&gt; <span class='message'>compute contrasts:</span></div><div class='output co'>#&gt; <span class='message'>computing contrasts.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("contrast", "protein_Id", "peptide_Id")</span></div><div class='output co'>#&gt; [1] 774  16</div><div class='input'> <span class='va'>contrM</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ContrastsModerated.html'>ContrastsModerated</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contr</span><span class='op'>)</span>
- <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>contrM</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 774  16</div><div class='input'> <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contrM</span><span class='op'>)</span>
- <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 54 x 12</span>
-#&gt; <span style='color: #949494;'># Groups:   contrast [1]</span>
-#&gt;    modelName protein_Id contrast     n estimate statistic c1_name     c1 c2_name
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  
-#&gt; <span style='color: #BCBCBC;'> 1</span> ROPECA    CON__P027~ dil.b_v~    33 -<span style='color: #BB0000;'>8.81</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span>  -<span style='color: #BB0000;'>0.004</span><span style='color: #BB0000; text-decoration: underline;'>01</span> diluti~  3.43  diluti~
-#&gt; <span style='color: #BCBCBC;'> 2</span> ROPECA    CON__P349~ dil.b_v~    13  1.16<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.110   diluti~  2.78  diluti~
-#&gt; <span style='color: #BCBCBC;'> 3</span> ROPECA    sp|O15511~ dil.b_v~     4  5.30<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.414   diluti~  0.893 diluti~
-#&gt; <span style='color: #BCBCBC;'> 4</span> ROPECA    sp|O43660~ dil.b_v~     7 -<span style='color: #BB0000;'>1.51</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.047</span><span style='color: #BB0000; text-decoration: underline;'>2</span>  diluti~ -<span style='color: #BB0000;'>1.03</span>  diluti~
-#&gt; <span style='color: #BCBCBC;'> 5</span> ROPECA    sp|O95373~ dil.b_v~    26 -<span style='color: #BB0000;'>2.20</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.124</span>   diluti~  1.07  diluti~
-#&gt; <span style='color: #BCBCBC;'> 6</span> ROPECA    sp|P00505~ dil.b_v~    12  5.25<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.202   diluti~  0.746 diluti~
-#&gt; <span style='color: #BCBCBC;'> 7</span> ROPECA    sp|P01889~ dil.b_v~     8 -<span style='color: #BB0000;'>1.36</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>  -<span style='color: #BB0000;'>0.737</span>   diluti~  0.239 diluti~
-#&gt; <span style='color: #BCBCBC;'> 8</span> ROPECA    sp|P02924~ dil.b_v~     6 -<span style='color: #BB0000;'>7.36</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>  -<span style='color: #BB0000;'>3.79</span>    diluti~ -<span style='color: #BB0000;'>1.78</span>  diluti~
-#&gt; <span style='color: #BCBCBC;'> 9</span> ROPECA    sp|P07951~ dil.b_v~    21 -<span style='color: #BB0000;'>1.07</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.112</span>   diluti~  0.760 diluti~
-#&gt; <span style='color: #BCBCBC;'>10</span> ROPECA    sp|P08238~ dil.b_v~    41 -<span style='color: #BB0000;'>1.17</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.120</span>   diluti~  4.34  diluti~
-#&gt; <span style='color: #949494;'># ... with 44 more rows, and 3 more variables: c2 &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   beta.based.significance &lt;dbl&gt;, FDR.beta.based.significance &lt;dbl&gt;</span></div><div class='input'> <span class='co'>#ContrastsROPECA$debug("to_wide")</span>
- <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contr</span><span class='op'>)</span>
- <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span>
- <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 54 12</div><div class='input'> <span class='va'>pl</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span>
- <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>to_wide</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 54 x 4</span>
-#&gt;    protein_Id       estimate.dil.b_v~ beta.based.signific~ FDR.beta.based.signi~
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> CON__P02769~18~~         -<span style='color: #BB0000;'>0.000</span><span style='color: #BB0000; text-decoration: underline;'>881</span>              1.00                   1.00  
-#&gt; <span style='color: #BCBCBC;'> 2</span> CON__P34955~32~~          0.011<span style='text-decoration: underline;'>6</span>                1.00                   1.00  
-#&gt; <span style='color: #BCBCBC;'> 3</span> sp|O15511|ARPC5~          0.053<span style='text-decoration: underline;'>0</span>                0.821                  1.00  
-#&gt; <span style='color: #BCBCBC;'> 4</span> sp|O43660|PLRG1~         -<span style='color: #BB0000;'>0.015</span><span style='color: #BB0000; text-decoration: underline;'>1</span>                1.00                   1.00  
-#&gt; <span style='color: #BCBCBC;'> 5</span> sp|O95373|IPO7_~         -<span style='color: #BB0000;'>0.022</span><span style='color: #BB0000; text-decoration: underline;'>0</span>                1.00                   1.00  
-#&gt; <span style='color: #BCBCBC;'> 6</span> sp|P00505|AATM_~          0.052<span style='text-decoration: underline;'>5</span>                0.999                  1.00  
-#&gt; <span style='color: #BCBCBC;'> 7</span> sp|P01889|HLAB_~         -<span style='color: #BB0000;'>0.136</span>                 0.477                  1.00  
-#&gt; <span style='color: #BCBCBC;'> 8</span> sp|P02924|ARAF_~         -<span style='color: #BB0000;'>0.736</span>                 0.001<span style='text-decoration: underline;'>04</span>                0.011<span style='text-decoration: underline;'>2</span>
-#&gt; <span style='color: #BCBCBC;'> 9</span> sp|P07951|TPM2_~         -<span style='color: #BB0000;'>0.010</span><span style='color: #BB0000; text-decoration: underline;'>7</span>                1.00                   1.00  
-#&gt; <span style='color: #BCBCBC;'>10</span> sp|P08238|HS90B~         -<span style='color: #BB0000;'>0.011</span><span style='color: #BB0000; text-decoration: underline;'>7</span>                1.00                   1.00  
-#&gt; <span style='color: #949494;'># ... with 44 more rows</span></div><div class='input'> <span class='va'>pl</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $beta.based.significance</div><div class='img'><img src='ContrastsROPECA-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; $FDR.beta.based.significance</div><div class='img'><img src='ContrastsROPECA-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'> <span class='va'>pl</span><span class='op'>$</span><span class='fu'>ma_plot</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='img'><img src='ContrastsROPECA-3.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>istar</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>istar_data</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>istar</span><span class='op'>$</span><span class='va'>data</span> ,<span class='va'>protein_Id</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>protein_Id</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>modelFunction</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>  <span class='fu'><a href='strategy_lm.html'>strategy_lm</a></span><span class='op'>(</span><span class='st'>"transformedIntensity  ~ dilution."</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pepIntensity</span> <span class='op'>&lt;-</span> <span class='va'>istar_data</span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>istar</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>&lt;-</span> <span class='fl'>2</span></span>
+<span class='r-in'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "protein_Id" "peptide_Id"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_model.html'>build_model</a></span><span class='op'>(</span></span>
+<span class='r-in'> <span class='va'>pepIntensity</span>,</span>
+<span class='r-in'> <span class='va'>modelFunction</span>,</span>
+<span class='r-in'> subject_Id <span class='op'>=</span> <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Joining, by = c("protein_Id", "peptide_Id")</span>
+<span class='r-in'></span>
+<span class='r-in'> <span class='va'>Contr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dil.b_vs_a"</span> <span class='op'>=</span> <span class='st'>"dilution.a - dilution.b"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'> <span class='va'>contr</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='Contrasts.html'>Contrasts</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>mod</span>, <span class='va'>Contr</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>contr</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> determine linear functions:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> compute contrasts:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> computing contrasts.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Joining, by = c("contrast", "protein_Id", "peptide_Id")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 774  16</span>
+<span class='r-in'> <span class='va'>contrM</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='ContrastsModerated.html'>ContrastsModerated</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contr</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>contrM</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 774  16</span>
+<span class='r-in'> <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contrM</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 54 x 12</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   contrast [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    modelName protein_Id contrast     n estimate statistic c1_name     c1 c2_name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> ROPECA    CON__P027~ dil.b_v~    33 -<span style='color: #BB0000;'>8.81</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span>  -<span style='color: #BB0000;'>0.004</span><span style='color: #BB0000; text-decoration: underline;'>01</span> diluti~  3.43  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> ROPECA    CON__P349~ dil.b_v~    13  1.16<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.110   diluti~  2.78  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> ROPECA    sp|O15511~ dil.b_v~     4  5.30<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.414   diluti~  0.893 diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> ROPECA    sp|O43660~ dil.b_v~     7 -<span style='color: #BB0000;'>1.51</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.047</span><span style='color: #BB0000; text-decoration: underline;'>2</span>  diluti~ -<span style='color: #BB0000;'>1.03</span>  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> ROPECA    sp|O95373~ dil.b_v~    26 -<span style='color: #BB0000;'>2.20</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.124</span>   diluti~  1.07  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> ROPECA    sp|P00505~ dil.b_v~    12  5.25<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>   0.202   diluti~  0.746 diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> ROPECA    sp|P01889~ dil.b_v~     8 -<span style='color: #BB0000;'>1.36</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>  -<span style='color: #BB0000;'>0.737</span>   diluti~  0.239 diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> ROPECA    sp|P02924~ dil.b_v~     6 -<span style='color: #BB0000;'>7.36</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>  -<span style='color: #BB0000;'>3.79</span>    diluti~ -<span style='color: #BB0000;'>1.78</span>  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> ROPECA    sp|P07951~ dil.b_v~    21 -<span style='color: #BB0000;'>1.07</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.112</span>   diluti~  0.760 diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> ROPECA    sp|P08238~ dil.b_v~    41 -<span style='color: #BB0000;'>1.17</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>  -<span style='color: #BB0000;'>0.120</span>   diluti~  4.34  diluti~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 44 more rows, and 3 more variables: c2 &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   beta.based.significance &lt;dbl&gt;, FDR.beta.based.significance &lt;dbl&gt;</span></span>
+<span class='r-in'> <span class='co'>#ContrastsROPECA$debug("to_wide")</span></span>
+<span class='r-in'> <span class='va'>contrast</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'>ContrastsROPECA</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>contr</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 54 12</span>
+<span class='r-in'> <span class='va'>pl</span> <span class='op'>&lt;-</span> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='va'>contrast</span><span class='op'>$</span><span class='fu'>to_wide</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 54 x 4</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    protein_Id       estimate.dil.b_v~ beta.based.signific~ FDR.beta.based.signi~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> CON__P02769~18~~         -<span style='color: #BB0000;'>0.000</span><span style='color: #BB0000; text-decoration: underline;'>881</span>              1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> CON__P34955~32~~          0.011<span style='text-decoration: underline;'>6</span>                1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> sp|O15511|ARPC5~          0.053<span style='text-decoration: underline;'>0</span>                0.821                  1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> sp|O43660|PLRG1~         -<span style='color: #BB0000;'>0.015</span><span style='color: #BB0000; text-decoration: underline;'>1</span>                1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> sp|O95373|IPO7_~         -<span style='color: #BB0000;'>0.022</span><span style='color: #BB0000; text-decoration: underline;'>0</span>                1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> sp|P00505|AATM_~          0.052<span style='text-decoration: underline;'>5</span>                0.999                  1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> sp|P01889|HLAB_~         -<span style='color: #BB0000;'>0.136</span>                 0.477                  1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> sp|P02924|ARAF_~         -<span style='color: #BB0000;'>0.736</span>                 0.001<span style='text-decoration: underline;'>04</span>                0.011<span style='text-decoration: underline;'>2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> sp|P07951|TPM2_~         -<span style='color: #BB0000;'>0.010</span><span style='color: #BB0000; text-decoration: underline;'>7</span>                1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> sp|P08238|HS90B~         -<span style='color: #BB0000;'>0.011</span><span style='color: #BB0000; text-decoration: underline;'>7</span>                1.00                   1.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 44 more rows</span></span>
+<span class='r-in'> <span class='va'>pl</span><span class='op'>$</span><span class='fu'>histogram</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $beta.based.significance</span>
+<span class='r-plt img'><img src='ContrastsROPECA-1.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $FDR.beta.based.significance</span>
+<span class='r-plt img'><img src='ContrastsROPECA-2.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'> <span class='va'>pl</span><span class='op'>$</span><span class='fu'>ma_plot</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='ContrastsROPECA-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

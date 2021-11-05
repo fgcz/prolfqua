@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>robust scale warpper — robust_scale • prolfqua</title>
+<title>robust scale wrapper — robust_scale • prolfqua</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="robust scale warpper — robust_scale" />
-<meta property="og:description" content="robust scale warpper" />
+<meta property="og:title" content="robust scale wrapper — robust_scale" />
+<meta property="og:description" content="robust scale wrapper" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -168,18 +174,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>robust scale warpper</h1>
+    <h1>robust scale wrapper</h1>
     <small class="dont-index">Source: <a href='https://github.com/wolski/prolfqua/blob/master/R/tidyMS_R6_TransitionCorrelations.R'><code>R/tidyMS_R6_TransitionCorrelations.R</code></a></small>
     <div class="hidden name"><code>robust_scale.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>robust scale warpper</p>
+    <p>robust scale wrapper</p>
     </div>
 
-    <pre class="usage"><span class='fu'>robust_scale</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>robust_scale</span><span class='op'>(</span><span class='va'>data</span>, dim <span class='op'>=</span> <span class='fl'>2</span>, preserveMean <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other preprocessing: 
+<code><a href='INTERNAL_FUNCTIONS_BY_FAMILY.html'>INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href='applyToIntensityMatrix.html'>applyToIntensityMatrix</a>()</code>,
+<code><a href='filter_proteins_by_peptide_count.html'>filter_proteins_by_peptide_count</a>()</code>,
+<code><a href='get_robscales.html'>get_robscales</a>()</code>,
+<code><a href='normalize_log2_robscale.html'>normalize_log2_robscale</a>()</code>,
+<code><a href='scale_with_subset_by_factors.html'>scale_with_subset_by_factors</a>()</code>,
+<code><a href='scale_with_subset.html'>scale_with_subset</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

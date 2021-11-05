@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -182,330 +188,333 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_spectronautDIA250_A.html'>data_spectronautDIA250_A</a></span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating sampleName</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>toWideConfig</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>toWideConfig</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, as.matrix <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                                                                                                                    Control~F~11~3182
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  7128.054
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          2658.064
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    1773.140
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 3267.900
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8643.606
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         9271.758
-#&gt;                                                                                                                                    Control~F~13~3279
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  188.6561
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6782.7216
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   2677.3942
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2173.9446
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5864.3705
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4311.1298
-#&gt;                                                                                                                                    Control~F~5~3097
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 2585.688
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         5157.208
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3406.725
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2927.300
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        4034.454
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        2617.215
-#&gt;                                                                                                                                    Control~F~5~3272
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 6083.377
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         4656.013
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   4846.725
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                6289.162
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       11137.188
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        7240.994
-#&gt;                                                                                                                                    Control~F~5~3428
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 4240.659
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         7426.951
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3135.835
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                4135.598
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        6272.389
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4745.359
-#&gt;                                                                                                                                    Control~F~7~3232
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 3089.830
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         8571.769
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   5867.077
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2089.991
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       11343.739
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       11049.000
-#&gt;                                                                                                                                    Control~F~9~3427
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 4914.941
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6341.637
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3675.283
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2025.311
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        7128.608
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        6154.817
-#&gt;                                                                                                                                    Control~M~10~3187
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  6551.935
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6508.212
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3128.093
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4259.232
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         6161.099
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         3849.381
-#&gt;                                                                                                                                    Control~M~10~3246
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  1971.945
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          3725.550
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3901.554
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4974.539
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8465.330
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5253.311
-#&gt;                                                                                                                                    Control~M~11~3092
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  6045.672
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          8114.789
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    5806.041
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 5176.002
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         7854.483
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5967.676
-#&gt;                                                                                                                                    Control~M~12~3339
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  4796.789
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          7920.314
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    4917.178
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4642.357
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8768.164
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5832.688
-#&gt;                                                                                                                                    Control~M~13~3149
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                     1.000
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          4396.940
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    2751.130
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 1950.773
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         2413.888
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         3316.143
-#&gt;                                                                                                                                    Control~M~15~3179
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  83.26703
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        5563.83344
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2995.35326
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               5618.04493
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       6455.58270
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       5384.56399
-#&gt;                                                                                                                                    Control~M~4~3386
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 218.8825
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        6679.7372
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1890.4171
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               2629.7783
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       4211.4312
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       2547.0170
-#&gt;                                                                                                                                    Control~M~5~3058
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 40.45218
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3       4933.41744
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                 1239.88052
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                              2620.01654
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                      3647.25286
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                      1982.90755
-#&gt;                                                                                                                                    Control~M~5~3091
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 158.9989
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        6572.6585
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2745.0606
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               7245.9189
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       9788.6175
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       8477.2219
-#&gt;                                                                                                                                    Control~M~5~3167
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 141.9996
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        3372.7781
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1733.8356
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                978.9888
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       2945.6173
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       2117.9414
-#&gt;                                                                                                                                    Control~M~5~3299
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 2.014406
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3      2966.463843
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                1025.253222
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                             1021.681299
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                     3171.970806
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                     1206.314747
-#&gt;                                                                                                                                    Control~M~5~3323
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  106.473
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6340.059
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   1388.860
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                3273.982
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5444.976
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4289.669
-#&gt;                                                                                                                                    Control~M~5~3395
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 1992.584
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         7356.415
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3652.368
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                7058.631
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       10680.019
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        9167.556
-#&gt;                                                                                                                                    Control~M~6~2941
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 119.9102
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        8326.2242
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2954.4008
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               5213.6451
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       7553.9439
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       6568.3934
-#&gt;                                                                                                                                    Control~M~9~3080
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 5820.129
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         4861.439
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   2160.990
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2923.913
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5067.924
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4250.132
-#&gt;                                                                                                                                    Control~M~9~3255
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 166.5060
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        3858.9509
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1656.2450
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                835.6914
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       6297.3281
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       4726.1755
-#&gt;                                                                                                                                    NonResponders~M~11~2386
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                        196.2579
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3               8572.9198
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         3813.7393
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      2042.8083
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              6921.5696
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              6172.7433
-#&gt;                                                                                                                                    NonResponders~M~13~2897
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                        3468.694
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                4867.619
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                          2601.737
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                       7693.561
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              11329.880
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              10724.202
-#&gt;                                                                                                                                    NonResponders~M~4~2133
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       4411.266
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3              10352.522
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         6135.857
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      6228.952
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              8372.965
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              8299.202
-#&gt;                                                                                                                                    NonResponders~M~5~2951
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       2786.813
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3               7838.035
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         4614.949
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      6577.906
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              9633.274
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              7483.550
-#&gt;                                                                                                                                    NonResponders~M~8~2765
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       124.9625
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3              2720.2000
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         919.1628
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                     1432.2114
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                             3208.5423
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                             2223.8847
-#&gt;                                                                                                                                    PartialResponders~F~10~2680
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            118.0299
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   3919.6295
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2859.5479
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          4546.8821
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  5569.7546
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  5231.2081
-#&gt;                                                                                                                                    PartialResponders~F~10~2781
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            2443.924
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    3980.337
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              1919.350
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           3726.051
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                   5437.660
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   4882.597
-#&gt;                                                                                                                                    PartialResponders~F~14~2214
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                               1.000
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    8948.997
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              4366.205
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           4219.439
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                   6469.946
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   5261.437
-#&gt;                                                                                                                                    PartialResponders~F~8~2021
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1506.365
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   7955.743
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2375.868
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          3816.324
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  7111.945
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4026.663
-#&gt;                                                                                                                                    PartialResponders~F~9~2496
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           36.15841
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                 7372.04844
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                           3380.03263
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                        8505.15037
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                               13337.16076
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                               11020.61674
-#&gt;                                                                                                                                    PartialResponders~M~14~2927
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            3644.259
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    8762.899
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              4072.590
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           8723.555
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  14332.821
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   9356.852
-#&gt;                                                                                                                                    PartialResponders~M~5~1724
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           3547.608
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   3627.722
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2468.887
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          4726.476
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  7882.176
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4830.119
-#&gt;                                                                                                                                    PartialResponders~M~5~2553
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                          1854.4071
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   788.8672
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                            2011.6240
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                         3477.3674
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                 5345.2310
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                 3989.5006
-#&gt;                                                                                                                                    PartialResponders~M~5~2563
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1776.656
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   4539.148
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2987.537
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          3434.477
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  5030.286
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4780.619
-#&gt;                                                                                                                                    PartialResponders~M~6~2545
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           97.54432
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                 4604.37981
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                           1688.92452
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                        4323.30144
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                5970.16272
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                3934.71702
-#&gt;                                                                                                                                    PartialResponders~M~6~2639
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1.800809
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                5069.275508
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                          1338.532632
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                       3820.976874
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                811.174704
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                               4372.094554
-#&gt;                                                                                                                                    Responders~F~16~2052
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                     6299.807
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3             7010.853
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                       3547.767
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                    1126.908
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                            6191.727
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                            3309.768
-#&gt;                                                                                                                                    Responders~F~7~1736
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    60.15771
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6690.95465
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3312.73962
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 5652.35710
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8954.87581
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         6307.03124
-#&gt;                                                                                                                                    Responders~M~12~2588
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    205.69791
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3           4214.86661
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                       49.69327
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  6217.71307
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                          8153.61419
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                          5724.52319
-#&gt;                                                                                                                                    Responders~M~5~2130
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    129.3622
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3           4593.8823
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                     1120.2550
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  2438.2782
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                          3170.0388
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                          3032.1138
-#&gt;                                                                                                                                    Responders~M~5~2476
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    65.80857
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          2922.45791
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                     820.60440
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  271.83499
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         3021.95334
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         2155.78285
-#&gt;                                                                                                                                    Responders~M~7~1994
-#&gt; A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    90.47732
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6221.19247
-#&gt; A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    2613.55321
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 1149.42960
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         4927.56045
-#&gt; A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         4682.86090</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_spectronautDIA250_A.html'>data_spectronautDIA250_A</a></span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>config_f</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>dd</span><span class='op'>$</span><span class='fu'>analysis</span><span class='op'>(</span><span class='va'>dd</span><span class='op'>$</span><span class='va'>data</span>,<span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> creating sampleName</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>toWideConfig</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>toWideConfig</span><span class='op'>(</span><span class='va'>analysis</span>, <span class='va'>config</span>, as.matrix <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~11~3182</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  7128.054</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          2658.064</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    1773.140</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 3267.900</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8643.606</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         9271.758</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~13~3279</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  188.6561</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6782.7216</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   2677.3942</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2173.9446</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5864.3705</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4311.1298</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~5~3097</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 2585.688</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         5157.208</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3406.725</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2927.300</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        4034.454</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        2617.215</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~5~3272</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 6083.377</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         4656.013</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   4846.725</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                6289.162</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       11137.188</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        7240.994</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~5~3428</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 4240.659</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         7426.951</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3135.835</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                4135.598</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        6272.389</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4745.359</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~7~3232</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 3089.830</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         8571.769</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   5867.077</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2089.991</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       11343.739</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       11049.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~F~9~3427</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 4914.941</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6341.637</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3675.283</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2025.311</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        7128.608</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        6154.817</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~10~3187</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  6551.935</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6508.212</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3128.093</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4259.232</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         6161.099</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         3849.381</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~10~3246</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  1971.945</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          3725.550</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3901.554</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4974.539</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8465.330</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5253.311</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~11~3092</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  6045.672</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          8114.789</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    5806.041</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 5176.002</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         7854.483</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5967.676</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~12~3339</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  4796.789</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          7920.314</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    4917.178</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 4642.357</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8768.164</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         5832.688</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~13~3149</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                     1.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          4396.940</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    2751.130</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 1950.773</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         2413.888</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         3316.143</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~15~3179</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  83.26703</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        5563.83344</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2995.35326</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               5618.04493</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       6455.58270</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       5384.56399</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~4~3386</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 218.8825</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        6679.7372</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1890.4171</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               2629.7783</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       4211.4312</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       2547.0170</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3058</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 40.45218</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3       4933.41744</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                 1239.88052</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                              2620.01654</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                      3647.25286</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                      1982.90755</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3091</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 158.9989</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        6572.6585</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2745.0606</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               7245.9189</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       9788.6175</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       8477.2219</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3167</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 141.9996</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        3372.7781</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1733.8356</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                978.9888</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       2945.6173</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       2117.9414</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3299</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 2.014406</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3      2966.463843</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                1025.253222</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                             1021.681299</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                     3171.970806</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                     1206.314747</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3323</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                  106.473</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         6340.059</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   1388.860</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                3273.982</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5444.976</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4289.669</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~5~3395</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 1992.584</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         7356.415</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   3652.368</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                7058.631</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       10680.019</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        9167.556</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~6~2941</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 119.9102</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        8326.2242</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  2954.4008</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                               5213.6451</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       7553.9439</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       6568.3934</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~9~3080</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 5820.129</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3         4861.439</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                   2160.990</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                2923.913</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                        5067.924</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                        4250.132</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Control~M~9~3255</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                 166.5060</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3        3858.9509</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                  1656.2450</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                835.6914</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                       6297.3281</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                       4726.1755</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    NonResponders~M~11~2386</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                        196.2579</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3               8572.9198</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         3813.7393</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      2042.8083</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              6921.5696</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              6172.7433</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    NonResponders~M~13~2897</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                        3468.694</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                4867.619</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                          2601.737</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                       7693.561</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              11329.880</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              10724.202</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    NonResponders~M~4~2133</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       4411.266</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3              10352.522</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         6135.857</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      6228.952</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              8372.965</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              8299.202</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    NonResponders~M~5~2951</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       2786.813</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3               7838.035</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         4614.949</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                      6577.906</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                              9633.274</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                              7483.550</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    NonResponders~M~8~2765</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                       124.9625</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3              2720.2000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                         919.1628</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                     1432.2114</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                             3208.5423</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                             2223.8847</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~F~10~2680</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            118.0299</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   3919.6295</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2859.5479</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          4546.8821</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  5569.7546</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  5231.2081</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~F~10~2781</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            2443.924</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    3980.337</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              1919.350</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           3726.051</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                   5437.660</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   4882.597</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~F~14~2214</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                               1.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    8948.997</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              4366.205</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           4219.439</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                   6469.946</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   5261.437</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~F~8~2021</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1506.365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   7955.743</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2375.868</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          3816.324</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  7111.945</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4026.663</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~F~9~2496</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           36.15841</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                 7372.04844</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                           3380.03263</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                        8505.15037</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                               13337.16076</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                               11020.61674</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~14~2927</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                            3644.259</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                    8762.899</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                              4072.590</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                           8723.555</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  14332.821</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                   9356.852</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~5~1724</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           3547.608</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   3627.722</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2468.887</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          4726.476</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  7882.176</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4830.119</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~5~2553</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                          1854.4071</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   788.8672</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                            2011.6240</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                         3477.3674</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                 5345.2310</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                 3989.5006</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~5~2563</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1776.656</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                   4539.148</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                             2987.537</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                          3434.477</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                  5030.286</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                  4780.619</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~6~2545</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           97.54432</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                 4604.37981</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                           1688.92452</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                        4323.30144</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                5970.16272</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                                3934.71702</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    PartialResponders~M~6~2639</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                           1.800809</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3                5069.275508</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                          1338.532632</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                       3820.976874</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                                811.174704</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                               4372.094554</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~F~16~2052</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                     6299.807</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3             7010.853</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                       3547.767</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                    1126.908</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                            6191.727</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                            3309.768</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~F~7~1736</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    60.15771</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6690.95465</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    3312.73962</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 5652.35710</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         8954.87581</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         6307.03124</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~M~12~2588</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    205.69791</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3           4214.86661</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                       49.69327</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  6217.71307</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                          8153.61419</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                          5724.52319</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~M~5~2130</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    129.3622</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3           4593.8823</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                     1120.2550</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  2438.2782</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                          3170.0388</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                          3032.1138</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~M~5~2476</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    65.80857</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          2922.45791</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                     820.60440</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                  271.83499</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         3021.95334</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         2155.78285</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                    Responders~M~7~1994</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6I0~lfq~FSGSILGNK~lfq~_FSGSILGNK_~lfq~_FSGSILGNK_~2                                                                                    90.47732</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVM[+16]TQSPLSLPVTPGEPASISC[+57]R_~3          6221.19247</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~DIVMTQSPLSLPVTPGEPASISCR~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~lfq~_DIVMTQSPLSLPVTPGEPASISC[+57]R_~3                    2613.55321</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSN[+1]R_~lfq~_PGQSPQLLIYLGSN[+1]R_~2                                                 1149.42960</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~2                                                         4927.56045</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A0A075B6P5;P01615~lfq~PGQSPQLLIYLGSNR~lfq~_PGQSPQLLIYLGSNR_~lfq~_PGQSPQLLIYLGSNR_~3                                                         4682.86090</span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

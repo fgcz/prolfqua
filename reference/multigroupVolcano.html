@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -269,20 +275,21 @@
 <code><a href='table_facade.html'>table_facade</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/slowkow/ggrepel'>ggrepel</a></span><span class='op'>)</span>
-<span class='va'>show</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_multigroupFC.html'>data_multigroupFC</a></span> <span class='op'>%&gt;%</span>
-   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Condition</span>  <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TTB7_38h_test - TTB7_16h_test"</span>,<span class='st'>"TTB7_96h_test - TTB7_96h_sys"</span><span class='op'>)</span> <span class='op'>)</span>
-<span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='va'>show</span>,
-effect<span class='op'>=</span><span class='st'>"logFC"</span>,
-p.value<span class='op'>=</span><span class='st'>"adj.P.Val"</span>,condition<span class='op'>=</span><span class='st'>"Condition"</span>,colour<span class='op'>=</span><span class='cn'>NULL</span>,label<span class='op'>=</span><span class='st'>"Name"</span>,
-maxNrOfSignificantText <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span>
-</div><div class='img'><img src='multigroupVolcano-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>#.multigroupVolcano(show,condition="Condition",</span>
-<span class='co'>#effect="logFC",</span>
-<span class='co'>#p.value="adj.P.Val",</span>
-<span class='co'># colour="colour")</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/slowkow/ggrepel'>ggrepel</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>show</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_multigroupFC.html'>data_multigroupFC</a></span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Condition</span>  <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"TTB7_38h_test - TTB7_16h_test"</span>,<span class='st'>"TTB7_96h_test - TTB7_96h_sys"</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>prolfqua</span><span class='fu'>::</span><span class='fu'>multigroupVolcano</span><span class='op'>(</span><span class='va'>show</span>,</span>
+<span class='r-in'>effect<span class='op'>=</span><span class='st'>"logFC"</span>,</span>
+<span class='r-in'>p.value<span class='op'>=</span><span class='st'>"adj.P.Val"</span>,condition<span class='op'>=</span><span class='st'>"Condition"</span>,colour<span class='op'>=</span><span class='cn'>NULL</span>,label<span class='op'>=</span><span class='st'>"Name"</span>,</span>
+<span class='r-in'>maxNrOfSignificantText <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='multigroupVolcano-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='co'>#.multigroupVolcano(show,condition="Condition",</span></span>
+<span class='r-in'><span class='co'>#effect="logFC",</span></span>
+<span class='r-in'><span class='co'>#p.value="adj.P.Val",</span></span>
+<span class='r-in'><span class='co'># colour="colour")</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -229,25 +235,31 @@
 <code><a href='summarize_stats.html'>summarize_stats</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span>
-
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span><span class='op'>$</span><span class='va'>summary</span>
-</div><div class='output co'>#&gt;   quantile probs        sd FC=2
-#&gt; 1      50%   0.5 0.1964909    3
-#&gt; 2      60%   0.6 0.2398376    3
-#&gt; 3      70%   0.7 0.2951539    3
-#&gt; 4      80%   0.8 0.3731692    4
-#&gt; 5      90%   0.9 0.5566183    6</div><div class='input'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>stats_res</span><span class='op'>$</span><span class='va'>dilution.</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "a" "b" "c" "d" "e"</div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>bb1</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span> deep <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data2</span> <span class='op'>&lt;-</span> <span class='va'>bb1</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>res</span><span class='op'>$</span><span class='va'>summary</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   quantile probs        sd FC=2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      50%   0.5 0.1964909    3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      60%   0.6 0.2398376    3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      70%   0.7 0.2951539    3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      80%   0.8 0.3731692    4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      90%   0.9 0.5566183    6</span>
+<span class='r-in'><span class='va'>stats_res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summarize_stats.html'>summarize_stats</a></span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>stats_res</span><span class='op'>$</span><span class='va'>dilution.</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "a" "b" "c" "d" "e"</span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lfq_power_t_test_quantiles</span><span class='op'>(</span><span class='va'>data2</span>, <span class='va'>config</span>, delta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

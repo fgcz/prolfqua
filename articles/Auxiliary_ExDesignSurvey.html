@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -69,6 +69,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -76,9 +85,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -124,21 +130,22 @@
 
       
 
-      </header><script src="Auxiliary_ExDesignSurvey_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Auxiliary - Bioinformatics Project Meeting Agenda</h1>
                         <h4 class="author">FGCZ - (Draft)</h4>
             
-            <h4 class="date">14 July, 2021</h4>
+            <h4 class="date">04 November, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Auxiliary_ExDesignSurvey.Rmd"><code>vignettes/Auxiliary_ExDesignSurvey.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/../vignettes/Auxiliary_ExDesignSurvey.Rmd"><code>../vignettes/Auxiliary_ExDesignSurvey.Rmd</code></a></small>
       <div class="hidden name"><code>Auxiliary_ExDesignSurvey.Rmd</code></div>
 
     </div>
 
     
     
+
 <p>Project Nr :</p>
 <p>Order Id :</p>
 <p>Participants:</p>
@@ -148,7 +155,7 @@
 <li>Coach :</li>
 </ul>
 <p>When?</p>
-<ul class="task-list">
+<ul>
 <li>
 <input type="checkbox" disabled>
 before start of experiment</li>
@@ -188,7 +195,7 @@ after main experiment sample preparation</li>
 <h1 class="hasAnchor">
 <a href="#genomics-analysis" class="anchor"></a>Genomics Analysis</h1>
 <p>Did you perform a genomics experiment on the same samples?</p>
-<ul class="task-list">
+<ul>
 <li>
 <input type="checkbox" disabled>
 no</li>
@@ -317,7 +324,7 @@ Without human contaminants</li>
 <h2 class="hasAnchor">
 <a href="#does-the-variance-within-groups-differ" class="anchor"></a>Does the variance within groups differ?</h2>
 <p>Is the variance within the groups the same or different? E.g., do you expect some groups with larger within group differences?</p>
-<ul class="task-list">
+<ul>
 <li>
 <input type="checkbox" disabled>
 yes</li>
@@ -355,7 +362,7 @@ no</li>
 <h1 class="hasAnchor">
 <a href="#designs" class="anchor"></a>Designs</h1>
 <p>This section covers the most frequently used designs.</p>
-<ul class="task-list">
+<ul>
 <li><p><input type="checkbox" disabled>
 Parallel Group Design - Evaluates a single factor<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p></li>
 <li><p><input type="checkbox" disabled>
@@ -365,7 +372,7 @@ Factorial Design - Evaluates multiple factors simultaneously</p></li>
 <h2 class="hasAnchor">
 <a href="#parallel-group-design" class="anchor"></a>Parallel Group Design</h2>
 <p>How many groups?</p>
-<ul class="task-list">
+<ul>
 <li>
 <input type="checkbox" disabled>
 2</li>
@@ -445,7 +452,7 @@ more. How many?</li>
 <h2 class="hasAnchor">
 <a href="#repeated-measurements" class="anchor"></a>Repeated measurements</h2>
 <p>Applies when measurements are repeated on the same subject, e.g. over time <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
-<ul class="task-list">
+<ul>
 <li>
 <input type="checkbox" disabled>
 Yes</li>
@@ -563,13 +570,13 @@ No</li>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>In statistics, the size of a test is the probability of falsely rejecting the null hypothesis.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>A parallel design, also called a parallel group study, compares two or more treatments. Participants are randomly assigned to either group, treatments are administered, and then the results are compared (statistics how to).<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p><em>camel case</em> - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>In statistics, a full factorial experiment is an experiment whose design consists of two or more factors, each with discrete possible values or “levels”, and whose experimental units take on all possible combinations of these levels across all such factors. Such an experiment allows the investigator to study the effect of each factor on the response variable, as well as the effects of interactions between factors on the response variable.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>Repeated measures design is a research design that involves multiple measures of the same variable taken on the same or matched subjects either under different conditions or over two or more time periods. For instance, repeated measurements are collected in a longitudinal study in which change over time is assessed (Wikipedia).<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>A blocking factor is a factor used to create blocks. It is some variable that has an effect on an experimental outcome, but is itself of no interest. Blocking factors vary wildly depending on the experiment. For example: in human studies age or gender are often used as blocking factors. Blocking factors can be included into the model to describe the variance of the data <a href="https://www.statisticshowto.datasciencecentral.com/blocking-factor/">data science central</a>.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
-<li id="fn7"><p>The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. <a href="https://en.wikipedia.org/wiki/Power_(statistics)">Wikipedia</a><a href="#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>In statistics, the size of a test is the probability of falsely rejecting the null hypothesis.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>A parallel design, also called a parallel group study, compares two or more treatments. Participants are randomly assigned to either group, treatments are administered, and then the results are compared (statistics how to).<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p><em>camel case</em> - a typographical convention in which an initial capital is used for the first letter of a word-forming the second element of a closed compound, e.g., PayPal, iPhone, MasterCard.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>In statistics, a full factorial experiment is an experiment whose design consists of two or more factors, each with discrete possible values or “levels”, and whose experimental units take on all possible combinations of these levels across all such factors. Such an experiment allows the investigator to study the effect of each factor on the response variable, as well as the effects of interactions between factors on the response variable.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Repeated measures design is a research design that involves multiple measures of the same variable taken on the same or matched subjects either under different conditions or over two or more time periods. For instance, repeated measurements are collected in a longitudinal study in which change over time is assessed (Wikipedia).<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>A blocking factor is a factor used to create blocks. It is some variable that has an effect on an experimental outcome, but is itself of no interest. Blocking factors vary wildly depending on the experiment. For example: in human studies age or gender are often used as blocking factors. Blocking factors can be included into the model to describe the variance of the data <a href="https://www.statisticshowto.datasciencecentral.com/blocking-factor/">data science central</a>.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>The power of a binary hypothesis test is the probability that the test rejects the null hypothesis (H0) when a specific alternative hypothesis (H1) is true. The statistical power ranges from 0 to 1, and as statistical power increases, the probability of making a type II error (wrongly failing to reject the null hypothesis) decreases. <a href="https://en.wikipedia.org/wiki/Power_(statistics)">Wikipedia</a><a href="#fnref7" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

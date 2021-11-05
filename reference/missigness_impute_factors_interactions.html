@@ -75,7 +75,7 @@ should generalize at some stage" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -113,6 +113,15 @@ should generalize at some stage" />
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -120,9 +129,6 @@ should generalize at some stage" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -185,7 +191,7 @@ should generalize at some stage</p>
     <pre class="usage"><span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span>
   <span class='va'>pdata</span>,
   <span class='va'>config</span>,
-  probs <span class='op'>=</span> <span class='fl'>0.1</span>,
+  probs <span class='op'>=</span> <span class='fl'>0.03</span>,
   value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nrReplicates"</span>, <span class='st'>"nrMeasured"</span>, <span class='st'>"meanArea"</span>, <span class='st'>"imputed"</span><span class='op'>)</span>,
   add.prefix <span class='op'>=</span> <span class='cn'>FALSE</span>,
   global <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -226,52 +232,60 @@ should generalize at some stage</p>
 <code><a href='missingness_per_condition.html'>missingness_per_condition</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
-<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-<span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 9</span>
-#&gt;   value     protein_Id     peptide_Id   isotope dilution.a dilution.b dilution.c
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> nrReplic~ CON__P01030~9~ AELADQAASWL~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>2</span> nrReplic~ CON__P01030~9~ ILSLAQDQVGG~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>3</span> nrReplic~ CON__P01030~9~ LLLFSPSVVR   light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>4</span> nrReplic~ CON__P02769~1~ AEFVEVTK     light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>5</span> nrReplic~ CON__P02769~1~ DDPHACYSTVF~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>6</span> nrReplic~ CON__P02769~1~ DDPHACYSTVF~ light            4          4          4
-#&gt; <span style='color: #949494;'># ... with 2 more variables: dilution.d &lt;int&gt;, dilution.e &lt;int&gt;</span></div><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"imputed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 9</span>
-#&gt;   value   protein_Id      peptide_Id    isotope dilution.a dilution.b dilution.c
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> imputed CON__P01030~9~~ AELADQAASWLTR light      7<span style='text-decoration: underline;'>982</span>100    4<span style='text-decoration: underline;'>949</span>600   5<span style='text-decoration: underline;'>965</span>153.
-#&gt; <span style='color: #BCBCBC;'>2</span> imputed CON__P01030~9~~ ILSLAQDQVGGS~ light     13<span style='text-decoration: underline;'>181</span>700   12<span style='text-decoration: underline;'>526</span>225  10<span style='text-decoration: underline;'>191</span>650 
-#&gt; <span style='color: #BCBCBC;'>3</span> imputed CON__P01030~9~~ LLLFSPSVVR    light      7<span style='text-decoration: underline;'>158</span>275    6<span style='text-decoration: underline;'>398</span>750   6<span style='text-decoration: underline;'>205</span>275 
-#&gt; <span style='color: #BCBCBC;'>4</span> imputed CON__P02769~18~ AEFVEVTK      light    528<span style='text-decoration: underline;'>425</span>000  507<span style='text-decoration: underline;'>305</span>000 471<span style='text-decoration: underline;'>840</span>000 
-#&gt; <span style='color: #BCBCBC;'>5</span> imputed CON__P02769~18~ DDPHACYSTVFDK light    217<span style='text-decoration: underline;'>962</span>500  212<span style='text-decoration: underline;'>912</span>500 178<span style='text-decoration: underline;'>570</span>000 
-#&gt; <span style='color: #BCBCBC;'>6</span> imputed CON__P02769~18~ DDPHACYSTVFD~ light     44<span style='text-decoration: underline;'>412</span>000   42<span style='text-decoration: underline;'>483</span>750  38<span style='text-decoration: underline;'>225</span>250 
-#&gt; <span style='color: #949494;'># ... with 2 more variables: dilution.d &lt;dbl&gt;, dilution.e &lt;dbl&gt;</span></div><div class='input'><span class='va'>fun</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"nrMeasured"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>fun</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,289 x 9</span>
-#&gt;    value    protein_Id    peptide_Id    isotope dilution.a dilution.b dilution.c
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> nrMeasu~ CON__P01030~~ AELADQAASWLTR light            1          1          0
-#&gt; <span style='color: #BCBCBC;'> 2</span> nrMeasu~ CON__P01030~~ ILSLAQDQVGGS~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 3</span> nrMeasu~ CON__P01030~~ LLLFSPSVVR    light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 4</span> nrMeasu~ CON__P02769~~ AEFVEVTK      light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 5</span> nrMeasu~ CON__P02769~~ DDPHACYSTVFDK light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 6</span> nrMeasu~ CON__P02769~~ DDPHACYSTVFD~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 7</span> nrMeasu~ CON__P02769~~ ECCHGDLLECAD~ light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 8</span> nrMeasu~ CON__P02769~~ ETYGDMADCCEK  light            4          4          4
-#&gt; <span style='color: #BCBCBC;'> 9</span> nrMeasu~ CON__P02769~~ EYEATLEECCAK  light            4          4          4
-#&gt; <span style='color: #BCBCBC;'>10</span> nrMeasu~ CON__P02769~~ FKDLGEEHFK    light            4          4          4
-#&gt; <span style='color: #949494;'># ... with 1,279 more rows, and 2 more variables: dilution.d &lt;int&gt;,</span>
-#&gt; <span style='color: #949494;'>#   dilution.e &lt;int&gt;</span></div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='complete_cases.html'>complete_cases</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   value        protein_Id   peptide_Id  isotope dilution.a dilution.b dilution.c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> nrReplicates CON__P01030~ AELADQAASW~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> nrReplicates CON__P01030~ ILSLAQDQVG~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> nrReplicates CON__P01030~ LLLFSPSVVR  light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> nrReplicates CON__P02769~ AEFVEVTK    light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> nrReplicates CON__P02769~ DDPHACYSTV~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> nrReplicates CON__P02769~ DDPHACYSTV~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 2 more variables: dilution.d &lt;int&gt;, dilution.e &lt;int&gt;</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"imputed"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   value   protein_Id        peptide_Id  isotope dilution.a dilution.b dilution.c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> imputed CON__P01030~9~NA  AELADQAASW~ light      7<span style='text-decoration: underline;'>982</span>100    4<span style='text-decoration: underline;'>949</span>600   2<span style='text-decoration: underline;'>908</span>300.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> imputed CON__P01030~9~NA  ILSLAQDQVG~ light     13<span style='text-decoration: underline;'>181</span>700   12<span style='text-decoration: underline;'>526</span>225  10<span style='text-decoration: underline;'>191</span>650 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> imputed CON__P01030~9~NA  LLLFSPSVVR  light      7<span style='text-decoration: underline;'>158</span>275    6<span style='text-decoration: underline;'>398</span>750   6<span style='text-decoration: underline;'>205</span>275 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> imputed CON__P02769~18~NA AEFVEVTK    light    528<span style='text-decoration: underline;'>425</span>000  507<span style='text-decoration: underline;'>305</span>000 471<span style='text-decoration: underline;'>840</span>000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> imputed CON__P02769~18~NA DDPHACYSTV~ light    217<span style='text-decoration: underline;'>962</span>500  212<span style='text-decoration: underline;'>912</span>500 178<span style='text-decoration: underline;'>570</span>000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> imputed CON__P02769~18~NA DDPHACYSTV~ light     44<span style='text-decoration: underline;'>412</span>000   42<span style='text-decoration: underline;'>483</span>750  38<span style='text-decoration: underline;'>225</span>250 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 2 more variables: dilution.d &lt;dbl&gt;, dilution.e &lt;dbl&gt;</span></span>
+<span class='r-in'><span class='va'>fun</span> <span class='op'>&lt;-</span> <span class='fu'>missigness_impute_factors_interactions</span><span class='op'>(</span><span class='va'>xx</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"nrMeasured"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>fun</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1,289 x 9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    value      protein_Id   peptide_Id   isotope dilution.a dilution.b dilution.c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> nrMeasured CON__P01030~ AELADQAASWL~ light            1          1          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> nrMeasured CON__P01030~ ILSLAQDQVGG~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> nrMeasured CON__P01030~ LLLFSPSVVR   light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> nrMeasured CON__P02769~ AEFVEVTK     light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> nrMeasured CON__P02769~ DDPHACYSTVF~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> nrMeasured CON__P02769~ DDPHACYSTVF~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> nrMeasured CON__P02769~ ECCHGDLLECA~ light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> nrMeasured CON__P02769~ ETYGDMADCCEK light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> nrMeasured CON__P02769~ EYEATLEECCAK light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> nrMeasured CON__P02769~ FKDLGEEHFK   light            4          4          4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 1,279 more rows, and 2 more variables: dilution.d &lt;int&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   dilution.e &lt;int&gt;</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ ContrastTable (place holder future baseclass?)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -111,6 +111,15 @@ ContrastTable (place holder future baseclass?)" />
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -118,9 +127,6 @@ ContrastTable (place holder future baseclass?)" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -187,6 +193,7 @@ ContrastTable (place holder future baseclass?)" />
 <p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
 <code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
 <code><a href='Contrasts.html'>Contrasts</a></code>,
@@ -223,6 +230,9 @@ ContrastTable (place holder future baseclass?)" />
 <code><a href='strategy_lmer.html'>strategy_lmer</a>()</code>,
 <code><a href='strategy_lm.html'>strategy_lm</a>()</code>,
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='ContrastsInterface.html'>prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsTable</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
@@ -230,7 +240,7 @@ ContrastTable (place holder future baseclass?)" />
 
 <ul>
 <li><p><a href='#method-new'><code>ContrastsTable$new()</code></a></p></li>
-<li><p><a href='#method-get_contrasts_sides'><code>ContrastsTable$get_contrasts_sides()</code></a></p></li>
+<li><p><a href='#method-get_contrast_sides'><code>ContrastsTable$get_contrast_sides()</code></a></p></li>
 <li><p><a href='#method-get_linfct'><code>ContrastsTable$get_linfct()</code></a></p></li>
 <li><p><a href='#method-get_contrasts'><code>ContrastsTable$get_contrasts()</code></a></p></li>
 <li><p><a href='#method-get_Plotter'><code>ContrastsTable$get_Plotter()</code></a></p></li>
@@ -238,7 +248,12 @@ ContrastTable (place holder future baseclass?)" />
 <li><p><a href='#method-write'><code>ContrastsTable$write()</code></a></p></li>
 <li><p><a href='#method-clone'><code>ContrastsTable$clone()</code></a></p></li>
 </ul>
-<p><hr>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+
+<hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
@@ -249,10 +264,10 @@ ContrastTable (place holder future baseclass?)" />
 <span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-get_contrasts_sides"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_contrasts_sides()</code></h3>
+<a id="method-get_contrast_sides"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_contrast_sides()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>get_contrasts_sides</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>get_contrast_sides</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-get_linfct"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_linfct()</code></h3>
@@ -275,7 +290,7 @@ ContrastTable (place holder future baseclass?)" />
 <p><hr>
 <a id="method-get_Plotter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_Plotter()</code></h3>
 <p>get <code>Contrast_Plotter</code></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span>fcthreshold <span class='op'>=</span> <span class='fl'>1</span>, fdrthreshold <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-to_wide"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>to_wide()</code></h3>
@@ -313,22 +328,31 @@ ContrastTable (place holder future baseclass?)" />
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>&lt;-</span> <span class='fl'>2</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-<span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span>
-<span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dilution.b-a"</span> <span class='op'>=</span> <span class='st'>"dilution.b - dilution.a"</span>,
-<span class='st'>"dilution.c-e"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.b"</span><span class='op'>)</span>
-<span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqdata</span>, contrasts <span class='op'>=</span> <span class='va'>Contrasts</span><span class='op'>)</span>
-<span class='va'>ctr</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.b</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='input'><span class='va'>xcx</span> <span class='op'>&lt;-</span> <span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>ctr</span>, subject_Id <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>subject_Id</span>, modelName <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>modelName</span><span class='op'>)</span>
-<span class='va'>xcx</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $FDR</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 100 rows containing missing values (geom_point).</span></div><div class='img'><img src='ContrastsTable-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>hierarchyDepth</span> <span class='op'>&lt;-</span> <span class='fl'>2</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'><span class='va'>lfqdata</span> <span class='op'>&lt;-</span> <span class='va'><a href='LFQData.html'>LFQData</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dilution.b-a"</span> <span class='op'>=</span> <span class='st'>"dilution.b - dilution.a"</span>,</span>
+<span class='r-in'><span class='st'>"dilution.c-e"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.b"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>lfqdata</span>, contrasts <span class='op'>=</span> <span class='va'>Contrasts</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ctr</span> <span class='op'>&lt;-</span> <span class='va'>tmp</span><span class='op'>$</span><span class='fu'>get_contrasts</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.c-e=dilution.c - dilution.b</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-in'><span class='va'>xcx</span> <span class='op'>&lt;-</span> <span class='va'>ContrastsTable</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>ctr</span>, subject_Id <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>subject_Id</span>, modelName <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>modelName</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>xcx</span><span class='op'>$</span><span class='fu'>get_Plotter</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>volcano</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $FDR</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Removed 100 rows containing missing values (geom_point).</span>
+<span class='r-plt img'><img src='ContrastsTable-1.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

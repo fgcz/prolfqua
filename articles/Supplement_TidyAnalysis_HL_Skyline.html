@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -69,6 +69,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -76,9 +85,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -124,15 +130,15 @@
 
       
 
-      </header><script src="Supplement_TidyAnalysis_HL_Skyline_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Supplement - Data preprocessing of SRM Heavy Light data</h1>
                         <h4 class="author">Functional Genomics Center Zurich</h4>
             
-            <h4 class="date">14 July, 2021</h4>
+            <h4 class="date">04 November, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd"><code>vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/../vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd"><code>../vignettes/Supplement_TidyAnalysis_HL_Skyline.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_TidyAnalysis_HL_Skyline.Rmd</code></div>
 
     </div>
@@ -140,7 +146,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/conflicted">conflicted</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span></code></pre></div>
@@ -167,9 +173,9 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/write_yaml.html">write_yaml</a></span><span class="op">(</span><span class="va">tt</span>, file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>,<span class="st">"testSkyline.yml"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">proteinIDsymbol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tidyeval-compat.html">sym</a></span><span class="op">(</span><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">proteinIDsymbol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">sym</a></span><span class="op">(</span><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 
-<span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">resData</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">resData</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,
                       <span class="va">xnested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,
                       <span class="va">skylineconfig</span><span class="op">)</span></code></pre></div>
@@ -188,12 +194,13 @@ transitions in one plot.
 transitions in separate plot.
 </p>
 </div>
+
 <div id="example-how-to-report-all-proteins-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-how-to-report-all-proteins-" class="anchor"></a>Example how to report all proteins.</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">figs</span> <span class="op">&lt;-</span> <span class="va">xnested</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">figs</span> <span class="op">&lt;-</span> <span class="va">xnested</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span>,
                             <span class="va">plot_hierarchies_line</span>, <span class="va">skylineconfig</span>, separate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">outdir</span>,<span class="st">"allProteins.pdf"</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">10</span>, height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -215,7 +222,7 @@ transitions in separate plot.
 <a href="#computing-l-to-heavy-fold-changes" class="anchor"></a>Computing L to Heavy fold changes</h1>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">HLData</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spreadValueVarsIsotopeLabel.html">spreadValueVarsIsotopeLabel</a></span><span class="op">(</span><span class="va">resData</span>, <span class="va">skylineconfig</span><span class="op">)</span>
-<span class="va">HLData</span> <span class="op">&lt;-</span> <span class="va">HLData</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>log2L_log2H <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">light_Area</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">heavy_Area</span><span class="op">)</span><span class="op">)</span>
+<span class="va">HLData</span> <span class="op">&lt;-</span> <span class="va">HLData</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>log2L_log2H <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">light_Area</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">heavy_Area</span><span class="op">)</span><span class="op">)</span>
 <span class="va">HLData</span><span class="op">$</span><span class="va">Isotope.Label</span> <span class="op">&lt;-</span> <span class="st">"L/H"</span>
 
 <span class="va">skylineconfigHL</span> <span class="op">&lt;-</span> <span class="va">skylineconfig</span>
@@ -224,7 +231,7 @@ transitions in separate plot.
 <span class="va">skylineconfigHL</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">isotopeLabel</span></code></pre></div>
 <pre><code>## [1] "Isotope.Label"</code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">HLData</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">HLData</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">skylineconfigHL</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "log2L_log2H"</code></pre>
 <div id="plot-heavy-to-light-ratio" class="section level2">
@@ -234,7 +241,7 @@ transitions in separate plot.
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">xnested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">skylineconfigHL</span><span class="op">)</span></code></pre></div>
 <p><img src="Supplement_TidyAnalysis_HL_Skyline_files/figure-html/PlotHierarchiesLight-1.png" width="960"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">HLfigs</span> <span class="op">&lt;-</span> <span class="va">xnested</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span> , <span class="va">plot_hierarchies_line</span>, <span class="va">skylineconfig</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">HLfigs</span> <span class="op">&lt;-</span> <span class="va">xnested</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span> , <span class="va">plot_hierarchies_line</span>, <span class="va">skylineconfig</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#pdf(file.path(outdir,"allHLProteins.pdf"), width = 10, height = 10)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">HLfigs</span><span class="op">$</span><span class="va">plot</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -254,13 +261,13 @@ transitions in separate plot.
 <span class="va">HLfigs3</span> <span class="op">&lt;-</span> <span class="fu">HLfigs3</span><span class="op">(</span><span class="st">"nested"</span><span class="op">)</span>
 <span class="va">HLfigs3</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">HLfigs3</span><span class="op">$</span><span class="va">xnested</span>, <span class="va">HLfigs</span>, by <span class="op">=</span> <span class="va">skylineconfigHL</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">xnested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">skylineconfigHL</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">xnested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">skylineconfigHL</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a></span><span class="op">(</span><span class="va">HLfigs3</span><span class="op">$</span><span class="va">medpolishPly</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"medpolish"</span>, <span class="va">skylineconfigHL</span><span class="op">)</span>
 <span class="va">p</span></code></pre></div>
 <p><img src="Supplement_TidyAnalysis_HL_Skyline_files/figure-html/summarizeProteinMedpolish-1.png" width="960"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">HLfigs3</span> <span class="op">&lt;-</span> <span class="va">HLfigs3</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>figsMed <span class="op">=</span> <span class="fu">map2</span><span class="op">(</span><span class="va">plot</span>, <span class="va">medpolishPly</span>, <span class="va">plot_hierarchies_add_quantline</span>, <span class="st">"medpolish"</span>, <span class="va">skylineconfig</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">HLfigs3</span> <span class="op">&lt;-</span> <span class="va">HLfigs3</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>figsMed <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">plot</span>, <span class="va">medpolishPly</span>, <span class="va">plot_hierarchies_add_quantline</span>, <span class="st">"medpolish"</span>, <span class="va">skylineconfig</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">#pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">HLfigs3</span><span class="op">$</span><span class="va">figsMed</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="va">print</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -272,7 +279,7 @@ transitions in separate plot.
 <h1 class="hasAnchor">
 <a href="#get-protein-intensities" class="anchor"></a>Get Protein intensities</h1>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prots</span> <span class="op">&lt;-</span> <span class="va">HLfigs3</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span>,  <span class="va">medpolishPly</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">prots</span> <span class="op">&lt;-</span> <span class="va">HLfigs3</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">proteinIDsymbol</span><span class="op">)</span>,  <span class="va">medpolishPly</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="st">"medpolishPly"</span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">prots</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time_c</span>, y <span class="op">=</span> <span class="va">medpolish</span>, group <span class="op">=</span> <span class="va">treatment_c</span>, color <span class="op">=</span> <span class="va">treatment_c</span> <span class="op">)</span><span class="op">)</span> <span class="op">+</span>

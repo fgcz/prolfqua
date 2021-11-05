@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -213,12 +219,13 @@
 <code><a href='table_facade.html'>table_facade</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bla_ra0/2_run0"</span>,<span class='st'>"bla_ra1/2_run0"</span>,<span class='st'>"bla_ra2/2_run0"</span><span class='op'>)</span>
-<span class='fu'>split2table</span><span class='op'>(</span><span class='va'>dat</span>,split<span class='op'>=</span><span class='st'>"\\_|\\/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;      [,1]  [,2]  [,3] [,4]  
-#&gt; [1,] "bla" "ra0" "2"  "run0"
-#&gt; [2,] "bla" "ra1" "2"  "run0"
-#&gt; [3,] "bla" "ra2" "2"  "run0"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bla_ra0/2_run0"</span>,<span class='st'>"bla_ra1/2_run0"</span>,<span class='st'>"bla_ra2/2_run0"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>split2table</span><span class='op'>(</span><span class='va'>dat</span>,split<span class='op'>=</span><span class='st'>"\\_|\\/"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [,1]  [,2]  [,3] [,4]  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,] "bla" "ra0" "2"  "run0"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] "bla" "ra1" "2"  "run0"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,] "bla" "ra2" "2"  "run0"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

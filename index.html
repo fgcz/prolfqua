@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -69,6 +69,15 @@
       <a href="articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -76,9 +85,6 @@
     </li>
     <li>
       <a href="articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -138,19 +144,19 @@
 <h1 class="hasAnchor">
 <a href="#how-to-install-prolfqua" class="anchor"></a>How to install prolfqua?</h1>
 <p>Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher To install the package please execute in R</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
-remotes::install_github('wolski/prolfqua')</a></code></pre>
+<pre><code>install.packages('remotes')
+remotes::install_github('wolski/prolfqua')</code></pre>
 <p>If you want to build the vignettes</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('remotes')
+<pre><code>install.packages('remotes')
 remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
 remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
-</a></code></pre>
+</code></pre>
 <p>Let us please know about any installation problems or errors when using the package <a href="https://github.com/wolski/prolfqua/issues" class="uri">https://github.com/wolski/prolfqua/issues</a></p>
 </div>
 <div id="how-to-get-started" class="section level1">
 <h1 class="hasAnchor">
 <a href="#how-to-get-started" class="anchor"></a>How to get started</h1>
-<p>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t">EuroBioc2020</a> on YouTube.</p>
+<p>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html">Bioconductor 2021 Conference poster</a>. Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t">EuroBioc2020</a> on YouTube.</p>
 <p>Or read the pkgdown generate website <a href="https://wolski.github.io/prolfqua/index.html" class="uri">https://wolski.github.io/prolfqua/index.html</a></p>
 <p>Detailed documentation with R code:</p>
 <ul>
@@ -192,17 +198,13 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <h1 class="hasAnchor">
 <a href="#related-resources" class="anchor"></a>Related resources</h1>
 <ul>
-<li><a href="https://github.com/statisticalbiotechnology/triqler">Triqler</a></li>
-<li><a href="https://github.com/statOmics/MSqRob">MSQRob</a></li>
-<li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html">PECA/ROPECA</a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/proDA.html">proDA</a></li>
 <li><a href="https://www.bioconductor.org/packages/release/bioc/html/MSstats.html">MSstats</a></li>
-<li>PEPA test - analysis including shared peptides
-<ul>
+<li><a href="https://github.com/statOmics/MSqRob">MSQRob</a></li>
+<li><a href="https://github.com/statisticalbiotechnology/triqler">Triqler</a></li>
 <li><a href="https://github.com/samWieczorek/DAPAR/">DAPAR</a></li>
 <li><a href="https://github.com/samWieczorek/DAPARdata/">DAPARData</a></li>
-<li><a href="https://github.com/ThomasBurger/pepa-validation">PEPA validation</a></li>
-</ul>
-</li>
+<li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html">PECA/ROPECA</a></li>
 </ul>
 </div>
 <div id="relevant-background-information" class="section level1">
@@ -225,6 +227,8 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <a href="https://CRAN.R-project.org/package=emmeans">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
 <li>
 <a href="https://CRAN.R-project.org/package=lmerTest">lmerTest</a> computes contrast for <a href="https://CRAN.R-project.org/package=lme4">lme4</a> models</li>
+<li>
+<a href="https://CRAN.R-project.org/package=multcomp">multcomp</a> computes contrast for linear models and adjusts p-values (multiple comparison)</li>
 </ul>
 </div>
 <div id="future-interesting-topics-or-packages-to-look-at" class="section level1">
@@ -257,9 +261,9 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <p>What name should we use?</p>
 <p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
 <ul>
-<li><p>prolfqua - PROteomics Label Free QUAntification package (read prolewka)</p></li>
-<li><p>LFQService - we do proteomics LFQ services at the FGCZ.</p></li>
-<li><p>nalfqua - Not Another Label Free QUAntification package (read nalewka)</p></li>
+<li>prolfqua - PROteomics Label Free QUAntification package (read prolewka)</li>
+<li>LFQService - we do proteomics LFQ services at the FGCZ.</li>
+<li>nalfqua - Not Another Label Free QUAntification package (read nalewka)</li>
 </ul>
 </div>
 
@@ -280,6 +284,12 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing prolfqua</a></li>
 </ul>
 </div>
 <div class="developers">

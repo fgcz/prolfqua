@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -193,6 +199,7 @@
     <div class='dont-index'><p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
 <code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='ContrastsTable.html'>ContrastsTable</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
@@ -231,115 +238,124 @@
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>#if(FALSE){</span>
-
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_basicModel_p1807.html'>data_basicModel_p1807</a></span>
-<span class='va'>m</span>
-</div><div class='output co'>#&gt; Linear mixed model fit by REML ['lmerModLmerTest']
-#&gt; Formula: formula
-#&gt;    Data: x
-#&gt; REML criterion at convergence: 1042.722
-#&gt; Random effects:
-#&gt;  Groups     Name        Std.Dev.
-#&gt;  peptide_Id (Intercept) 1.2305  
-#&gt;  Residual               0.5906  
-#&gt; Number of obs: 542, groups:  peptide_Id, 13
-#&gt; Fixed Effects:
-#&gt;       (Intercept)  class_therapyc.NO  class_therapyp.NO        CelltypeHSC  
-#&gt;          -0.70171            0.09960            0.01728            0.13356  </div><div class='input'><span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-
-<span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span>
-</div><div class='output co'>#&gt;                   (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC
-#&gt; CelltypeCMP/MEP             1         0.3333333         0.3333333         0.0
-#&gt; CelltypeHSC                 1         0.3333333         0.3333333         1.0
-#&gt; class_therapyc.NO           1         1.0000000         0.0000000         0.5
-#&gt; class_therapyp.HU           1         0.0000000         0.0000000         0.5
-#&gt; class_therapyp.NO           1         0.0000000         1.0000000         0.5</div><div class='input'><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span>
-</div><div class='output co'>#&gt;                                   (Intercept) class_therapyc.NO
-#&gt; class_therapyc.NO:CelltypeCMP/MEP           1                 1
-#&gt; class_therapyc.NO:CelltypeHSC               1                 1
-#&gt; class_therapyp.HU:CelltypeCMP/MEP           1                 0
-#&gt; class_therapyp.HU:CelltypeHSC               1                 0
-#&gt; class_therapyp.NO:CelltypeCMP/MEP           1                 0
-#&gt; class_therapyp.NO:CelltypeHSC               1                 0
-#&gt;                                   class_therapyp.NO CelltypeHSC
-#&gt; class_therapyc.NO:CelltypeCMP/MEP                 0           0
-#&gt; class_therapyc.NO:CelltypeHSC                     0           1
-#&gt; class_therapyp.HU:CelltypeCMP/MEP                 0           0
-#&gt; class_therapyp.HU:CelltypeHSC                     0           1
-#&gt; class_therapyp.NO:CelltypeCMP/MEP                 1           0
-#&gt; class_therapyp.NO:CelltypeHSC                     1           1</div><div class='input'>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_interactionModel_p1807.html'>data_interactionModel_p1807</a></span>
-<span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span><span class='op'>[</span><span class='st'>"CelltypeCMP/MEP"</span>,<span class='op'>]</span> ,
- <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"CelltypeCMP/MEP"</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>)</span><span class='op'>)</span>,<span class='op'>]</span>,<span class='fl'>2</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span>
-</div><div class='output co'>#&gt;                                   (Intercept) class_therapyc.NO
-#&gt; class_therapyc.NO:CelltypeCMP/MEP           1                 1
-#&gt; class_therapyc.NO:CelltypeHSC               1                 1
-#&gt; class_therapyp.HU:CelltypeCMP/MEP           1                 0
-#&gt; class_therapyp.HU:CelltypeHSC               1                 0
-#&gt; class_therapyp.NO:CelltypeCMP/MEP           1                 0
-#&gt; class_therapyp.NO:CelltypeHSC               1                 0
-#&gt;                                   class_therapyp.NO CelltypeHSC
-#&gt; class_therapyc.NO:CelltypeCMP/MEP                 0           0
-#&gt; class_therapyc.NO:CelltypeHSC                     0           1
-#&gt; class_therapyp.HU:CelltypeCMP/MEP                 0           0
-#&gt; class_therapyp.HU:CelltypeHSC                     0           1
-#&gt; class_therapyp.NO:CelltypeCMP/MEP                 1           0
-#&gt; class_therapyp.NO:CelltypeHSC                     1           1</div><div class='input'><span class='co'>#}</span>
-
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Petal.Width</span> <span class='op'>~</span> <span class='va'>Species</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
-<span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $linfct_factors
-#&gt;                   (Intercept) Speciesversicolor Speciesvirginica
-#&gt; Speciessetosa               1                 0                0
-#&gt; Speciesversicolor           1                 1                0
-#&gt; Speciesvirginica            1                 0                1
-#&gt; 
-#&gt; $linfct_interactions
-#&gt;                   (Intercept) Speciesversicolor Speciesvirginica
-#&gt; Speciessetosa               1                 0                0
-#&gt; Speciesversicolor           1                 1                0
-#&gt; Speciesvirginica            1                 0                1
-#&gt; </div><div class='input'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"b"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span>
-<span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $linfct_factors
-#&gt;            (Intercept) Conditionb
-#&gt; Conditiona           1          0
-#&gt; Conditionb           1          1
-#&gt; 
-#&gt; $linfct_interactions
-#&gt;            (Intercept) Conditionb
-#&gt; Conditiona           1          0
-#&gt; Conditionb           1          1
-#&gt; </div><div class='input'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"b.b"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span>
-<span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $linfct_factors
-#&gt;              (Intercept) Conditionb.b
-#&gt; Conditiona             1            0
-#&gt; Conditionb.b           1            1
-#&gt; 
-#&gt; $linfct_interactions
-#&gt;              (Intercept) Conditionb.b
-#&gt; Conditiona             1            0
-#&gt; Conditionb.b           1            1
-#&gt; </div><div class='input'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ab"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span>
-<span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $linfct_factors
-#&gt;             (Intercept) Conditionab
-#&gt; Conditiona            1           0
-#&gt; Conditionab           1           1
-#&gt; 
-#&gt; $linfct_interactions
-#&gt;             (Intercept) Conditionab
-#&gt; Conditiona            1           0
-#&gt; Conditionab           1           1
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>#if(FALSE){</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_basicModel_p1807.html'>data_basicModel_p1807</a></span></span>
+<span class='r-in'><span class='va'>m</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Linear mixed model fit by REML ['lmerModLmerTest']</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Formula: formula</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Data: x</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> REML criterion at convergence: 1042.722</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Random effects:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Groups     Name        Std.Dev.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  peptide_Id (Intercept) 1.2305  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Residual               0.5906  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of obs: 542, groups:  peptide_Id, 13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fixed Effects:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       (Intercept)  class_therapyc.NO  class_therapyp.NO        CelltypeHSC  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          -0.70171            0.09960            0.01728            0.13356  </span>
+<span class='r-in'><span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeCMP/MEP             1         0.3333333         0.3333333         0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CelltypeHSC                 1         0.3333333         0.3333333         1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO           1         1.0000000         0.0000000         0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU           1         0.0000000         0.0000000         0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO           1         0.0000000         1.0000000         0.5</span>
+<span class='r-in'><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC               1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC               1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP                 0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC                     0           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP                 0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_interactionModel_p1807.html'>data_interactionModel_p1807</a></span></span>
+<span class='r-in'><span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_factors</span><span class='op'>[</span><span class='st'>"CelltypeCMP/MEP"</span>,<span class='op'>]</span> ,</span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='op'>(</span><span class='st'>"CelltypeCMP/MEP"</span>, <span class='fu'><a href='https://tibble.tidyverse.org/reference/rownames.html'>rownames</a></span><span class='op'>(</span><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span><span class='op'>)</span><span class='op'>)</span>,<span class='op'>]</span>,<span class='fl'>2</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='va'>linfct</span><span class='op'>$</span><span class='va'>linfct_interactions</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC               1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC               1                 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP                 0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyc.NO:CelltypeHSC                     0           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP                 0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
+<span class='r-in'><span class='co'>#}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Petal.Width</span> <span class='op'>~</span> <span class='va'>Species</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_factors</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   (Intercept) Speciesversicolor Speciesvirginica</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciessetosa               1                 0                0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciesversicolor           1                 1                0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciesvirginica            1                 0                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_interactions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   (Intercept) Speciesversicolor Speciesvirginica</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciessetosa               1                 0                0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciesversicolor           1                 1                0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Speciesvirginica            1                 0                1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"b"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_factors</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            (Intercept) Conditionb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona           1          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionb           1          1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_interactions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            (Intercept) Conditionb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona           1          0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionb           1          1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"b.b"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_factors</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              (Intercept) Conditionb.b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona             1            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionb.b           1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_interactions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              (Intercept) Conditionb.b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona             1            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionb.b           1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span> Y <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> , Condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='fl'>5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"ab"</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Y</span> <span class='op'>~</span> <span class='va'>Condition</span>, data <span class='op'>=</span> <span class='va'>xx</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>linfct_from_model</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_factors</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             (Intercept) Conditionab</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona            1           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionab           1           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $linfct_interactions</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             (Intercept) Conditionab</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditiona            1           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Conditionab           1           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

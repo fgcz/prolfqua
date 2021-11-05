@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -189,43 +195,49 @@
 <code><a href='summarize_hierarchy.html'>summarize_hierarchy</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
-<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-
-<span class='fu'>nr_B_in_A_per_sample</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, nested <span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,260 x 7</span>
-#&gt;    raw.file            sampleName protein_Id     dilution. isotope nrPep present
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> b03_02_150304_huma~ b~02       CON__P01030~9~ b         light       3       2
-#&gt; <span style='color: #BCBCBC;'> 2</span> b03_02_150304_huma~ b~02       CON__P02769~1~ b         light      34      33
-#&gt; <span style='color: #BCBCBC;'> 3</span> b03_02_150304_huma~ b~02       CON__P34955~3~ b         light      13      12
-#&gt; <span style='color: #BCBCBC;'> 4</span> b03_02_150304_huma~ b~02       CON__Q28107~4~ b         light       4       3
-#&gt; <span style='color: #BCBCBC;'> 5</span> b03_02_150304_huma~ b~02       CON__Q3SZR3~5~ b         light       7       6
-#&gt; <span style='color: #BCBCBC;'> 6</span> b03_02_150304_huma~ b~02       sp|L0R819|ASU~ b         light       2       2
-#&gt; <span style='color: #BCBCBC;'> 7</span> b03_02_150304_huma~ b~02       sp|O00148|DX3~ b         light      11       8
-#&gt; <span style='color: #BCBCBC;'> 8</span> b03_02_150304_huma~ b~02       sp|O14548|COX~ b         light       2       2
-#&gt; <span style='color: #BCBCBC;'> 9</span> b03_02_150304_huma~ b~02       sp|O14745|NHR~ b         light      11       8
-#&gt; <span style='color: #BCBCBC;'>10</span> b03_02_150304_huma~ b~02       sp|O15145|ARP~ b         light       3       2
-#&gt; <span style='color: #949494;'># ... with 3,250 more rows</span></div><div class='input'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_IonstarProtein_subsetNorm.html'>data_IonstarProtein_subsetNorm</a></span>
-<span class='fu'>nr_B_in_A_per_sample</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>, nested<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: here is no B in A</span></div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3,260 x 7</span>
-#&gt;    raw.file            sampleName protein_Id     dilution. isotope nrPep present
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> b03_02_150304_huma~ b~02       CON__P01030~9~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 2</span> b03_02_150304_huma~ b~02       CON__P02769~1~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 3</span> b03_02_150304_huma~ b~02       CON__P34955~3~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 4</span> b03_02_150304_huma~ b~02       CON__Q28107~4~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 5</span> b03_02_150304_huma~ b~02       CON__Q3SZR3~5~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 6</span> b03_02_150304_huma~ b~02       sp|L0R819|ASU~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 7</span> b03_02_150304_huma~ b~02       sp|O00148|DX3~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 8</span> b03_02_150304_huma~ b~02       sp|O14548|COX~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'> 9</span> b03_02_150304_huma~ b~02       sp|O14745|NHR~ b         light       1       1
-#&gt; <span style='color: #BCBCBC;'>10</span> b03_02_150304_huma~ b~02       sp|O15145|ARP~ b         light       1       1
-#&gt; <span style='color: #949494;'># ... with 3,250 more rows</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>nr_B_in_A_per_sample</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, nested <span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,260 x 7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    raw.file            sampleName protein_Id     dilution. isotope nrPep present</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> b03_02_150304_huma~ b~02       CON__P01030~9~ b         light       3       2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> b03_02_150304_huma~ b~02       CON__P02769~1~ b         light      34      33</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> b03_02_150304_huma~ b~02       CON__P34955~3~ b         light      13      12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> b03_02_150304_huma~ b~02       CON__Q28107~4~ b         light       4       3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> b03_02_150304_huma~ b~02       CON__Q3SZR3~5~ b         light       7       6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> b03_02_150304_huma~ b~02       sp|L0R819|ASU~ b         light       2       2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> b03_02_150304_huma~ b~02       sp|O00148|DX3~ b         light      11       8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> b03_02_150304_huma~ b~02       sp|O14548|COX~ b         light       2       2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> b03_02_150304_huma~ b~02       sp|O14745|NHR~ b         light      11       8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> b03_02_150304_huma~ b~02       sp|O15145|ARP~ b         light       3       2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 3,250 more rows</span></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_IonstarProtein_subsetNorm.html'>data_IonstarProtein_subsetNorm</a></span></span>
+<span class='r-in'><span class='fu'>nr_B_in_A_per_sample</span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>, <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>, nested<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>here is no B in A</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,260 x 7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    raw.file            sampleName protein_Id     dilution. isotope nrPep present</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> b03_02_150304_huma~ b~02       CON__P01030~9~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> b03_02_150304_huma~ b~02       CON__P02769~1~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> b03_02_150304_huma~ b~02       CON__P34955~3~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> b03_02_150304_huma~ b~02       CON__Q28107~4~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> b03_02_150304_huma~ b~02       CON__Q3SZR3~5~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> b03_02_150304_huma~ b~02       sp|L0R819|ASU~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> b03_02_150304_huma~ b~02       sp|O00148|DX3~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> b03_02_150304_huma~ b~02       sp|O14548|COX~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> b03_02_150304_huma~ b~02       sp|O14745|NHR~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> b03_02_150304_huma~ b~02       sp|O15145|ARP~ b         light       1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 3,250 more rows</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

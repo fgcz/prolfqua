@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -204,53 +210,60 @@
 <code><a href='tidyMQ_top_protein_name.html'>tidyMQ_top_protein_name</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>protein_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/MSQC1.ZIP"</span>,package <span class='op'>=</span> <span class='st'>"prolfqua"</span><span class='op'>)</span>
-<span class='va'>protein_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>unz</a></span><span class='op'>(</span><span class='va'>protein_txt</span>,<span class='st'>"proteinGroups.txt"</span><span class='op'>)</span>, header<span class='op'>=</span><span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep<span class='op'>=</span><span class='st'>"\t"</span><span class='op'>)</span>
-<span class='va'>mq_proteins</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_ProteinGroups</span><span class='op'>(</span><span class='va'>protein_txt</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mq_proteins</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                          protein.ids
-#&gt; 1 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt; 2 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt; 3 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt; 4 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt; 5 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt; 6 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761
-#&gt;                                 majority.protein.ids nr.peptides
-#&gt; 1 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt; 2 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt; 3 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt; 4 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt; 5 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt; 6 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1
-#&gt;                                                                                                                                          fasta.headers
-#&gt; 1 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt; 2 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt; 3 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt; 4 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt; 5 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt; 6 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).
-#&gt;   protein.group.id protein.score           proteinID
-#&gt; 1                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt; 2                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt; 3                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt; 4                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt; 5                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt; 6                0         9.291 zz|ZZ_FGCZCont0179|
-#&gt;                                     raw.file mq.protein.intensity
-#&gt; 1         m20150511_04_fgczpaolo_msqc1_60min               116400
-#&gt; 2         m20150518_03_fgczpaolo_msqc1_60min                    0
-#&gt; 3         m20150528_03_fgczpaolo_msqc1_60min               374750
-#&gt; 4         m20150528_04_fgczpaolo_msqc1_60min               441300
-#&gt; 5 m20150601_03_fgczpaolo_msqc1_60min_correct               140390
-#&gt; 6         m20150609_04_fgczpaolo_msqc1_60min               235550
-#&gt;   mq.protein.lfq.intensity
-#&gt; 1                        0
-#&gt; 2                        0
-#&gt; 3                        0
-#&gt; 4                        0
-#&gt; 5                        0
-#&gt; 6                        0</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>protein_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"samples/maxquant_txt/MSQC1.ZIP"</span>,package <span class='op'>=</span> <span class='st'>"prolfqua"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>protein_txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>unz</a></span><span class='op'>(</span><span class='va'>protein_txt</span>,<span class='st'>"proteinGroups.txt"</span><span class='op'>)</span>, header<span class='op'>=</span><span class='cn'>TRUE</span>, stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>, sep<span class='op'>=</span><span class='st'>"\t"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mq_proteins</span> <span class='op'>&lt;-</span><span class='fu'>tidyMQ_ProteinGroups</span><span class='op'>(</span><span class='va'>protein_txt</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mq_proteins</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                          protein.ids</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                 majority.protein.ids nr.peptides</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 zz|ZZ_FGCZCont0179|;sp|P00761|TRYP_PIG;CON__P00761           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                                                                                          fasta.headers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 &gt;zz|ZZ_FGCZCont0179| sp|TRYP_PIG|;&gt;sp|P00761|TRYP_PIG Trypsin OS=Sus scrofa PE=1 SV=1;&gt;P00761 SWISS-PROT:P00761|TRYP_PIG Trypsin - Sus scrofa (Pig).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   protein.group.id protein.score           proteinID</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                0         9.291 zz|ZZ_FGCZCont0179|</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                     raw.file mq.protein.intensity</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         m20150511_04_fgczpaolo_msqc1_60min               116400</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         m20150518_03_fgczpaolo_msqc1_60min                    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         m20150528_03_fgczpaolo_msqc1_60min               374750</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         m20150528_04_fgczpaolo_msqc1_60min               441300</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 m20150601_03_fgczpaolo_msqc1_60min_correct               140390</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6         m20150609_04_fgczpaolo_msqc1_60min               235550</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mq.protein.lfq.intensity</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                        0</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mq_proteins</span><span class='op'>$</span><span class='va'>mq.protein.intensity</span>, <span class='va'>mq_proteins</span><span class='op'>$</span><span class='va'>mq.protein.lfq.intensity</span>, log<span class='op'>=</span><span class='st'>"xy"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>1840 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>2270 y values &lt;= 0 omitted from logarithmic plot</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>, col<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='tidyMQ_ProteinGroups-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

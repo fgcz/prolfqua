@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -198,36 +204,39 @@
 <code><a href='table_factors.html'>table_factors</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='st'>"a"</span>,<span class='st'>"a"</span><span class='op'>)</span>, B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"d"</span>,<span class='st'>"d"</span>,<span class='st'>"e"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># debug(make_interaction_column)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>xx</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>,<span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>xx</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Column added : nr_peptide_Id_IN_protein_Id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span>
-<span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-
-<span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>factorKeys</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "dilution." "run_Id"   </div><div class='input'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>factorDepth</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
-<span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>analysis</span>,
-   <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>fkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 25,780 x 11</span>
-#&gt;    protein_Id    raw.file        sampleName dilution. run_Id isotope peptide_Id 
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'> 1</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   AKGPLASQIS~
-#&gt; <span style='color: #BCBCBC;'> 2</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   FPILSANIK  
-#&gt; <span style='color: #BCBCBC;'> 3</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GAEVAHFMNA~
-#&gt; <span style='color: #BCBCBC;'> 4</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GPLASQISGL~
-#&gt; <span style='color: #BCBCBC;'> 5</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GVDVVVGGHS~
-#&gt; <span style='color: #BCBCBC;'> 6</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   HDSGDQDINV~
-#&gt; <span style='color: #BCBCBC;'> 7</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~
-#&gt; <span style='color: #BCBCBC;'> 8</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~
-#&gt; <span style='color: #BCBCBC;'> 9</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   KVPVVQAYAF~
-#&gt; <span style='color: #BCBCBC;'>10</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   TIVYLDGSSQ~
-#&gt; <span style='color: #949494;'># ... with 25,770 more rows, and 4 more variables: peptide.intensity &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   pep &lt;dbl&gt;, nr_peptide_Id_IN_protein_Id &lt;int&gt;, interaction &lt;fct&gt;</span></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>,<span class='st'>"a"</span>,<span class='st'>"a"</span><span class='op'>)</span>, B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"d"</span>,<span class='st'>"d"</span>,<span class='st'>"e"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># debug(make_interaction_column)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>xx</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>,<span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>xx</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>filtered</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>25780</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>config</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>analysis</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>factorKeys</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "dilution." "run_Id"   </span>
+<span class='r-in'><span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='va'>factorDepth</span> <span class='op'>&lt;-</span> <span class='fl'>1</span></span>
+<span class='r-in'><span class='fu'>make_interaction_column</span><span class='op'>(</span><span class='va'>analysis</span>,</span>
+<span class='r-in'>   <span class='va'>config</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>fkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 25,780 x 11</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    protein_Id    raw.file        sampleName dilution. run_Id isotope peptide_Id </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   AKGPLASQIS~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   FPILSANIK  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GAEVAHFMNA~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GPLASQISGL~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   GVDVVVGGHS~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   HDSGDQDINV~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   IIALGHSGFE~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   KVPVVQAYAF~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> sp|P21589|5N~ b03_02_150304_~ b~02       b         02     light   TIVYLDGSSQ~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># ... with 25,770 more rows, and 4 more variables: peptide.intensity &lt;dbl&gt;,</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   pep &lt;dbl&gt;, nr_peptide_Id_IN_protein_Id &lt;int&gt;, interaction &lt;fct&gt;</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

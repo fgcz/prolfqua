@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -201,6 +207,7 @@
     <div class='dont-index'><p>Other modelling: 
 <code><a href='ContrastsModerated.html'>ContrastsModerated</a></code>,
 <code><a href='ContrastsROPECA.html'>ContrastsROPECA</a></code>,
+<code><a href='ContrastsSaintExpress.html'>ContrastsSaintExpress</a></code>,
 <code><a href='ContrastsSimpleImpute.html'>ContrastsSimpleImpute</a></code>,
 <code><a href='ContrastsTable.html'>ContrastsTable</a></code>,
 <code><a href='Contrasts_Plotter.html'>Contrasts_Plotter</a></code>,
@@ -239,51 +246,54 @@
 <code><a href='summary_ROPECA_median_p.scaled.html'>summary_ROPECA_median_p.scaled</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_modellingResult_A.html'>data_modellingResult_A</a></span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>$</span><span class='va'>linear_model</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-<span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>$</span><span class='va'>linfct_factors</span>
-<span class='va'>m</span>
-</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; lm(formula = formula, data = x)
-#&gt; 
-#&gt; Coefficients:
-#&gt;     (Intercept)      MortalityM1  InterventionINT         NRSNRS_4  
-#&gt;         3.48757         -0.12750         -0.03844         -0.17283  
-#&gt;        NRSNRS_5  
-#&gt;         0.04707  
-#&gt; </div><div class='input'><span class='fu'>my_contrast_V1</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>linfct</span>, confint <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                               lhs     sigma  df estimate std.error statistic
-#&gt; InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396
-#&gt; InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684
-#&gt; MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457
-#&gt; MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353
-#&gt; NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801
-#&gt; NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591
-#&gt; NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763
-#&gt;                       p.value conf.low conf.high
-#&gt; InterventionCTRL 1.535612e-50 3.127613  3.636184
-#&gt; InterventionINT  3.386937e-47 3.071440  3.615473
-#&gt; MortalityM0      5.590555e-58 3.208995  3.643862
-#&gt; MortalityM1      1.039621e-40 2.984214  3.613639
-#&gt; NRSNRS_3         3.276337e-41 3.083889  3.725305
-#&gt; NRSNRS_4         1.021351e-39 2.915581  3.547957
-#&gt; NRSNRS_5         2.363770e-42 3.135685  3.767647</div><div class='input'><span class='fu'>my_contrast_V1</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>linfct</span>, confint <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                               lhs     sigma  df estimate std.error statistic
-#&gt; InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396
-#&gt; InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684
-#&gt; MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457
-#&gt; MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353
-#&gt; NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801
-#&gt; NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591
-#&gt; NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763
-#&gt;                       p.value conf.low conf.high
-#&gt; InterventionCTRL 1.535612e-50 3.045652  3.718145
-#&gt; InterventionINT  3.386937e-47 2.983764  3.703149
-#&gt; MortalityM0      5.590555e-58 3.138912  3.713945
-#&gt; MortalityM1      1.039621e-40 2.882776  3.715076
-#&gt; NRSNRS_3         3.276337e-41 2.980519  3.828675
-#&gt; NRSNRS_4         1.021351e-39 2.813668  3.649870
-#&gt; NRSNRS_5         2.363770e-42 3.033838  3.869494</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_modellingResult_A.html'>data_modellingResult_A</a></span><span class='op'>$</span><span class='va'>modelProtein</span><span class='op'>$</span><span class='va'>linear_model</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>linfct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='linfct_from_model.html'>linfct_from_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>$</span><span class='va'>linfct_factors</span></span>
+<span class='r-in'><span class='va'>m</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Call:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> lm(formula = formula, data = x)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     (Intercept)      MortalityM1  InterventionINT         NRSNRS_4  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         3.48757         -0.12750         -0.03844         -0.17283  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        NRSNRS_5  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         0.04707  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>my_contrast_V1</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>linfct</span>, confint <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       p.value conf.low conf.high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionCTRL 1.535612e-50 3.127613  3.636184</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionINT  3.386937e-47 3.071440  3.615473</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM0      5.590555e-58 3.208995  3.643862</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM1      1.039621e-40 2.984214  3.613639</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_3         3.276337e-41 3.083889  3.725305</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_4         1.021351e-39 2.915581  3.547957</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_5         2.363770e-42 3.135685  3.767647</span>
+<span class='r-in'><span class='fu'>my_contrast_V1</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>linfct</span>, confint <span class='op'>=</span> <span class='fl'>0.99</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                       p.value conf.low conf.high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionCTRL 1.535612e-50 3.045652  3.718145</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> InterventionINT  3.386937e-47 2.983764  3.703149</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM0      5.590555e-58 3.138912  3.713945</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MortalityM1      1.039621e-40 2.882776  3.715076</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_3         3.276337e-41 2.980519  3.828675</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_4         1.021351e-39 2.813668  3.649870</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NRSNRS_5         2.363770e-42 3.033838  3.869494</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

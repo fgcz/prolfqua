@@ -73,7 +73,7 @@ keep track of folder paths and create them if needed" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -111,6 +111,15 @@ keep track of folder paths and create them if needed" />
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -118,9 +127,6 @@ keep track of folder paths and create them if needed" />
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -297,23 +303,30 @@ keep track of folder paths and create them if needed" />
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>ProjectStructure</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='st'>"./test_project"</span>,
-project_Id  <span class='op'>=</span> <span class='fl'>3000</span>,
-order_Id <span class='op'>=</span> <span class='fl'>6200</span>,
-workunit_Id <span class='op'>=</span> <span class='fl'>23000</span>,
-inputAnnotation <span class='op'>=</span> <span class='st'>"."</span>,
-inputData <span class='op'>=</span> <span class='st'>"."</span>
-<span class='op'>)</span>
-<span class='va'>tmp</span><span class='op'>$</span><span class='fu'>qc_path</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "./test_project/qc_results"</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "./test_project/modelling_results"</div><div class='input'>
-<span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "./test_project/modelling_results"</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>modelling_dir</span>
-</div><div class='output co'>#&gt; [1] "modelling_results"</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='st'>"second_model"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "./test_project/modelling_results" "./test_project/second_model"     </div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>create</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>tmp</span> <span class='op'>&lt;-</span> <span class='va'>ProjectStructure</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='st'>"./test_project"</span>,</span>
+<span class='r-in'>project_Id  <span class='op'>=</span> <span class='fl'>3000</span>,</span>
+<span class='r-in'>order_Id <span class='op'>=</span> <span class='fl'>6200</span>,</span>
+<span class='r-in'>workunit_Id <span class='op'>=</span> <span class='fl'>23000</span>,</span>
+<span class='r-in'>inputAnnotation <span class='op'>=</span> <span class='st'>"."</span>,</span>
+<span class='r-in'>inputData <span class='op'>=</span> <span class='st'>"."</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>qc_path</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "./test_project/qc_results"</span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "./test_project/modelling_results"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "./test_project/modelling_results"</span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='va'>modelling_dir</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "modelling_results"</span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>modelling_path</span><span class='op'>(</span><span class='st'>"second_model"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "./test_project/modelling_results" "./test_project/second_model"     </span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>create</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>tmp</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

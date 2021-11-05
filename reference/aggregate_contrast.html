@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,6 +110,15 @@
       <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
     </li>
     <li>
+      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
+    </li>
+    <li>
+      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
+    </li>
+    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -117,9 +126,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/MSStatsBenchmark.html">Benchmarking MSstats using the Ionstar Dataset</a>
     </li>
     <li>
       <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
@@ -196,39 +202,51 @@
 <code><a href='missingness_per_condition.html'>missingness_per_condition</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span>
-
-<span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dilution.b-a"</span> <span class='op'>=</span> <span class='st'>"dilution.b - dilution.a"</span>, <span class='st'>"dilution.c-e"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.e"</span><span class='op'>)</span>
-<span class='va'>mean</span> <span class='op'>&lt;-</span> <span class='fu'><a href='missigness_impute_factors_interactions.html'>missigness_impute_factors_interactions</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"meanArea"</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>mean</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_contrast.html'>get_contrast</a></span><span class='op'>(</span><span class='va'>mean</span>, <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>Contrasts</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.e</span></div><div class='input'><span class='va'>meanProt</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_contrast</span><span class='op'>(</span><span class='va'>mean</span>,  subject_Id <span class='op'>=</span>  <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>imputed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='missigness_impute_factors_interactions.html'>missigness_impute_factors_interactions</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"imputed"</span> <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>completing cases</span></div><div class='input'><span class='va'>imputed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_contrast.html'>get_contrast</a></span><span class='op'>(</span><span class='va'>imputed</span>, <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>Contrasts</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>dilution.b-a=dilution.b - dilution.a</span></div><div class='output co'>#&gt; <span class='message'>dilution.c-e=dilution.c - dilution.e</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>imputed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 8</span>
-#&gt;   protein_Id    peptide_Id        c1     c2 estimate c1_name  c2_name  contrast 
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
-#&gt; <span style='color: #BCBCBC;'>1</span> CON__P01030~~ AELADQAASWLTR -<span style='color: #BB0000;'>2.40</span>  -<span style='color: #BB0000;'>1.73</span>   -<span style='color: #BB0000;'>0.664</span>  dilutio~ dilutio~ dilution~
-#&gt; <span style='color: #BCBCBC;'>2</span> CON__P01030~~ ILSLAQDQVGGS~ -<span style='color: #BB0000;'>1.03</span>  -<span style='color: #BB0000;'>0.973</span>  -<span style='color: #BB0000;'>0.055</span><span style='color: #BB0000; text-decoration: underline;'>7</span> dilutio~ dilutio~ dilution~
-#&gt; <span style='color: #BCBCBC;'>3</span> CON__P01030~~ LLLFSPSVVR    -<span style='color: #BB0000;'>1.87</span>  -<span style='color: #BB0000;'>1.83</span>   -<span style='color: #BB0000;'>0.042</span><span style='color: #BB0000; text-decoration: underline;'>7</span> dilutio~ dilutio~ dilution~
-#&gt; <span style='color: #BCBCBC;'>4</span> CON__P02769~~ AEFVEVTK       4.38   4.39   -<span style='color: #BB0000;'>0.016</span><span style='color: #BB0000; text-decoration: underline;'>4</span> dilutio~ dilutio~ dilution~
-#&gt; <span style='color: #BCBCBC;'>5</span> CON__P02769~~ DDPHACYSTVFDK  3.17   3.15    0.018<span style='text-decoration: underline;'>5</span> dilutio~ dilutio~ dilution~
-#&gt; <span style='color: #BCBCBC;'>6</span> CON__P02769~~ DDPHACYSTVFD~  0.815  0.847  -<span style='color: #BB0000;'>0.032</span><span style='color: #BB0000; text-decoration: underline;'>5</span> dilutio~ dilutio~ dilution~</div><div class='input'>
-<span class='va'>imputedProt</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_contrast</span><span class='op'>(</span><span class='va'>imputed</span>,  subject_Id <span class='op'>=</span>  <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>c1</span> <span class='op'>-</span> <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>c2</span>, <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>, col<span class='op'>=</span><span class='fl'>2</span>, pch <span class='op'>=</span> <span class='st'>"*"</span><span class='op'>)</span>
-</div><div class='img'><img src='aggregate_contrast-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 326   9</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>0</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>0</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>$</span><span class='va'>estimate_median</span> <span class='op'>-</span> <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span> <span class='op'>)</span>
-</div><div class='img'><img src='aggregate_contrast-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/wolski/prolfqua'>prolfqua</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bb</span> <span class='op'>&lt;-</span> <span class='fu'>prolfqua</span><span class='fu'>::</span><span class='va'><a href='data_ionstar.html'>data_ionstar</a></span><span class='op'>$</span><span class='fu'>normalized</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>configur</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>config</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>bb</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>Contrasts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dilution.b-a"</span> <span class='op'>=</span> <span class='st'>"dilution.b - dilution.a"</span>, <span class='st'>"dilution.c-e"</span> <span class='op'>=</span> <span class='st'>"dilution.c - dilution.e"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mean</span> <span class='op'>&lt;-</span> <span class='fu'><a href='missigness_impute_factors_interactions.html'>missigness_impute_factors_interactions</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"meanArea"</span> <span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>mean</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_contrast.html'>get_contrast</a></span><span class='op'>(</span><span class='va'>mean</span>, <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>Contrasts</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class='r-in'><span class='va'>meanProt</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_contrast</span><span class='op'>(</span><span class='va'>mean</span>,  subject_Id <span class='op'>=</span>  <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>imputed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='missigness_impute_factors_interactions.html'>missigness_impute_factors_interactions</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>configur</span>, value <span class='op'>=</span> <span class='st'>"imputed"</span> <span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> completing cases</span>
+<span class='r-in'><span class='va'>imputed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_contrast.html'>get_contrast</a></span><span class='op'>(</span><span class='va'>imputed</span>, <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hierarchyKeys</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>Contrasts</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>imputed</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 8</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   protein_Id        peptide_Id      c1     c2 estimate c1_name  c2_name contrast</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> CON__P01030~9~NA  AELADQAASW~ -<span style='color: #BB0000;'>2.40</span>  -<span style='color: #BB0000;'>1.73</span>   -<span style='color: #BB0000;'>0.664</span>  dilutio~ diluti~ dilutio~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> CON__P01030~9~NA  ILSLAQDQVG~ -<span style='color: #BB0000;'>1.03</span>  -<span style='color: #BB0000;'>0.973</span>  -<span style='color: #BB0000;'>0.055</span><span style='color: #BB0000; text-decoration: underline;'>7</span> dilutio~ diluti~ dilutio~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> CON__P01030~9~NA  LLLFSPSVVR  -<span style='color: #BB0000;'>1.87</span>  -<span style='color: #BB0000;'>1.83</span>   -<span style='color: #BB0000;'>0.042</span><span style='color: #BB0000; text-decoration: underline;'>7</span> dilutio~ diluti~ dilutio~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> CON__P02769~18~NA AEFVEVTK     4.38   4.39   -<span style='color: #BB0000;'>0.016</span><span style='color: #BB0000; text-decoration: underline;'>4</span> dilutio~ diluti~ dilutio~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> CON__P02769~18~NA DDPHACYSTV~  3.17   3.15    0.018<span style='text-decoration: underline;'>5</span> dilutio~ diluti~ dilutio~</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> CON__P02769~18~NA DDPHACYSTV~  0.815  0.847  -<span style='color: #BB0000;'>0.032</span><span style='color: #BB0000; text-decoration: underline;'>5</span> dilutio~ diluti~ dilutio~</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>imputedProt</span> <span class='op'>&lt;-</span> <span class='fu'>aggregate_contrast</span><span class='op'>(</span><span class='va'>imputed</span>,  subject_Id <span class='op'>=</span>  <span class='va'>configur</span><span class='op'>$</span><span class='va'>table</span><span class='op'>$</span><span class='fu'>hkeysDepth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>c1</span> <span class='op'>-</span> <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>c2</span>, <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>, col<span class='op'>=</span><span class='fl'>2</span>, pch <span class='op'>=</span> <span class='st'>"*"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='aggregate_contrast-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 326   9</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>0</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>0</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>meanProt</span><span class='op'>$</span><span class='va'>estimate_median</span> <span class='op'>-</span> <span class='va'>imputedProt</span><span class='op'>$</span><span class='va'>estimate_median</span> <span class='op'>)</span></span>
+<span class='r-plt img'><img src='aggregate_contrast-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
