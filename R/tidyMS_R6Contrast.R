@@ -691,6 +691,8 @@ ContrastsROPECA <- R6::R6Class(
   ))
 
 
+
+
 # ContrastsSaintExpress ----
 #' ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
 #'

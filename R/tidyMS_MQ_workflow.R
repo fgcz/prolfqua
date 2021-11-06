@@ -90,12 +90,14 @@ make2grpReport <- function(startdata,
                              contpattern = "^zz|^CON__",
                              remove = FALSE){
 
+
+  proteinID <- atable$hkeysDepth()
   config <- prolfqua::AnalysisConfiguration$new(atable)
   annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "zzY-FGCZ"){
     GRP2 <- list()
-    distinctprotid <- startdata %>% select(protein_Id = {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
-    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,.data$protein_Id) ~ "REV",
-                                                                         grepl(contpattern,.data$protein_Id) ~ "CON",
+    distinctprotid <- startdata %>% select(proteinID := {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
+    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,!!sym(proteinID)) ~ "REV",
+                                                                         grepl(contpattern,!!sym(proteinID)) ~ "CON",
                                                                          TRUE ~ "FW"))
     GRP2$percentOfContaminants <-  round(mean(distinctprotid$proteinAnnot == "CON") * 100, digits = 2)
     GRP2$percentOfFalsePositives <- round(mean(distinctprotid$proteinAnnot == "REV") * 100, digits = 2)
@@ -109,7 +111,7 @@ make2grpReport <- function(startdata,
 
   if (remove) {
     distinctprotid <- dplyr::filter(res$distinctprotid, .data$proteinAnnot == "FW")
-    startdata <- startdata %>% filter(!!sym(atable$hierarchy[[1]]) %in% distinctprotid$protein_Id)
+    startdata <- startdata %>% filter(!!sym(atable$hierarchy[[1]]) %in% distinctprotid[[proteinID ]])
   } else {
     distinctprotid <- res$distinctprotid
   }
@@ -171,13 +173,13 @@ make2grpReport <- function(startdata,
 
   GRP2$contrMore <- res$more$get_Plotter()
 
-  top20 <- GRP2$contrResult %>% dplyr::select( !!sym(transformed$config$table$hkeysDepth() ),log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
+  top20 <- GRP2$contrResult %>% dplyr::select( !!sym(proteinID ),log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
     arrange(.data$FDR) %>%
     head(20)
   GRP2$top20 <- top20
   #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
 
-  GRP2$top20confint <- ggplot(top20, aes(x = .data$protein_Id, y = .data$log2FC,
+  GRP2$top20confint <- ggplot(top20, aes(x = !!sym(proteinID), y = .data$log2FC,
                                          ymin = .data$conf.low, ymax = .data$conf.high)) +
     geom_hline( yintercept = 0, color = 'red' ) +
     geom_linerange() + geom_point() + coord_flip() + theme_minimal()
@@ -185,19 +187,21 @@ make2grpReport <- function(startdata,
 
   protMore <- GRP2$transformedlfqData$get_copy()
   protMore$complete_cases()
-  protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$contrast_result$protein_Id)
+  moreID <-  res$more$get_contrasts()[[proteinID]]
+  protMore$data <-  dplyr::filter(protMore$data ,!!sym(proteinID ) %in% moreID)
   GRP2$imputedProteins <- protMore
 
   # Plot proteins without p-values
 
-  xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
+  xx <- res$more$contrast_result[rowSums(is.na(res$more$get_contrasts())) > 0,]
   if (nrow(xx) > 0) {
     xx <- xx %>% arrange(.data$estimate)
-    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = stats::reorder(.data$protein_Id, .data$estimate), y = .data$estimate)) +
+    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = stats::reorder(!!sym(proteinID), .data$estimate), y = .data$estimate)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()
-    missing$data <- missing$data %>% dplyr::filter(.data$protein_Id %in% xx$protein_Id)
+    missingID <- xx[[ proteinID ]]
+    missing$data <- missing$data %>% dplyr::filter(!!sym(proteinID ) %in% missingID)
     missing$get_Plotter()$raster()
   }
 
