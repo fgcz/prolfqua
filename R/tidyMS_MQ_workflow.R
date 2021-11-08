@@ -93,11 +93,12 @@ make2grpReport <- function(startdata,
 
   proteinID <- atable$hkeysDepth()
   config <- prolfqua::AnalysisConfiguration$new(atable)
+
   annotProtein <- function(startdata , Accession, Description, revpattern = "^REV_", contpattern = "zzY-FGCZ"){
     GRP2 <- list()
-    distinctprotid <- startdata %>% select(proteinID := {{Accession}}, fasta.headers = {{Description}}) %>% distinct()
-    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,!!sym(proteinID)) ~ "REV",
-                                                                         grepl(contpattern,!!sym(proteinID)) ~ "CON",
+    distinctprotid <- startdata %>% select(pID = !!sym(Accession), fasta.headers = {{Description}}) %>% distinct()
+    distinctprotid <- distinctprotid %>% mutate(proteinAnnot = case_when(grepl(revpattern,pID) ~ "REV",
+                                                                         grepl(contpattern,pID) ~ "CON",
                                                                          TRUE ~ "FW"))
     GRP2$percentOfContaminants <-  round(mean(distinctprotid$proteinAnnot == "CON") * 100, digits = 2)
     GRP2$percentOfFalsePositives <- round(mean(distinctprotid$proteinAnnot == "REV") * 100, digits = 2)
@@ -106,12 +107,12 @@ make2grpReport <- function(startdata,
     return(list(stats = GRP2, distinctprotid = distinctprotid))
   }
 
-  res <- annotProtein(startdata, !!sym(atable$hierarchy[[1]]), !!sym(Description), revpattern = revpattern, contpattern = contpattern)
+  res <- annotProtein(startdata, Accession = atable$hierarchy[[1]], !!sym(Description), revpattern = revpattern, contpattern = contpattern)
   GRP2 <- c(GRP2, res$stats)
 
   if (remove) {
     distinctprotid <- dplyr::filter(res$distinctprotid, .data$proteinAnnot == "FW")
-    startdata <- startdata %>% filter(!!sym(atable$hierarchy[[1]]) %in% distinctprotid[[proteinID ]])
+    startdata <- startdata %>% filter(!!sym(atable$hierarchy[[1]]) %in% distinctprotid$pID)
   } else {
     distinctprotid <- res$distinctprotid
   }
@@ -210,12 +211,12 @@ make2grpReport <- function(startdata,
 
   wr <- GRP2$lfqData$get_Writer()
   tmp <- wr$get_wide()
-  tmp$data <- inner_join(distinctprotid, tmp$data)
+  tmp$data <- inner_join(distinctprotid, tmp$data, by= c(pID = proteinID) )
   tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
 
   names(tmp2) <- paste0(names(tmp2), ".normalized")
-  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized)
-  res <- inner_join(distinctprotid, GRP2$contrResult)
+  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized, by= c(pID = proteinID))
+  res <- inner_join(distinctprotid, GRP2$contrResult, by= c(pID = proteinID))
 
   dir.create(outpath)
 
