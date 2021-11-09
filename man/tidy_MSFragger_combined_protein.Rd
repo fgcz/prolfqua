@@ -2,17 +2,18 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{tidy_MSFragger_combined_protein}
 \alias{tidy_MSFragger_combined_protein}
-\title{read MSFragger combined protein file}
+\title{read MSFragger combined protein file up to Version 15}
 \usage{
 tidy_MSFragger_combined_protein(
   combprot,
   intnames = c("total.intensity", "unique.intensity", "razor.intensity",
     "total.ion.count", "unique.ion.count", "razor.ion.count", "total.spectral.count",
-    "unique.spectral.count", "razor.spectral.count")
+    "unique.spectral.count", "razor.spectral.count"),
+  protIDcol = "protein.group"
 )
 }
 \description{
-read MSFragger combined protein file
+read MSFragger combined protein file up to Version 15
 }
 \examples{
 
