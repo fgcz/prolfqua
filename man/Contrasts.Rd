@@ -64,6 +64,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
@@ -226,7 +227,7 @@ write results
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-return Contrast_Plotter
+return Contrasts_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter()}\if{html}{\out{</div>}}
 }

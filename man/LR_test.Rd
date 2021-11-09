@@ -13,6 +13,19 @@ LR_test(
   path = NULL
 )
 }
+\arguments{
+\item{modelProteinF}{table with models (see build model)}
+
+\item{modelName}{name of model}
+
+\item{modelProteinF_Int}{reduced model}
+
+\item{modelName_Int}{name of reduced model}
+
+\item{subject_Id}{subject id typically Assession or protein_Id}
+
+\item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
+}
 \description{
 likelihood ratio test
 }
@@ -41,6 +54,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},

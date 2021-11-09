@@ -10,6 +10,8 @@ addContrastResults(prefer, add, modelName = "mergedModel")
 \item{prefer}{contrasts to use preferentially}
 
 \item{add}{contrasts to add from if missing in prefer}
+
+\item{modelName}{name of the merged model default "mergedModel"}
 }
 \description{
 add contrast results from two different functions. Tipically used with Contrast and Cotnrast simple imputed.
@@ -36,6 +38,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},

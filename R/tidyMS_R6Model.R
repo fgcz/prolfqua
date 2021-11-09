@@ -235,6 +235,12 @@ Model <- R6::R6Class(
 #' likelihood ratio test
 #' @family modelling
 #' @export
+#' @param modelProteinF table with models (see build model)
+#' @param modelName name of model
+#' @param modelProteinF_Int reduced model
+#' @param modelName_Int name of reduced model
+#' @param subject_Id subject id typically Assession or protein_Id
+#' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
 #' #todo add example
 LR_test <- function(modelProteinF,
@@ -337,6 +343,9 @@ build_model <- function(data,
 }
 
 #' summarize modelling and error reporting
+#' @param mod model table see \code{\link{build_model}}
+#' @keywords internal
+#' @family modelling
 #' @export
 modelSummary <- function(mod){
   res <- list()

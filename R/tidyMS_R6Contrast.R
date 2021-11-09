@@ -177,7 +177,7 @@ ContrastsSimpleImpute <- R6::R6Class(
                       name  = paste0("Contrasts_",self$modelName) ,
                       format = format)
     },
-    #' @description get Contrast_Plotter
+    #' @description get Contrasts_Plotter
     get_Plotter = function(){
       res <- Contrasts_Plotter$new(
         self$get_contrasts(),
@@ -380,7 +380,7 @@ Contrasts <- R6::R6Class(
                       format = format)
     },
     #' @description
-    #' return Contrast_Plotter
+    #' return Contrasts_Plotter
     get_Plotter = function(){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -500,7 +500,7 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
       return(dplyr::ungroup(contrast_result))
     },
-    #' @description get \code{\link{Contrast_Plotter}}
+    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
     get_Plotter = function(){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -652,7 +652,7 @@ ContrastsROPECA <- R6::R6Class(
 
       return(res)
     },
-    #' @description get \code{\link{Contrast_Plotter}}
+    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
     get_Plotter = function(){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -750,7 +750,7 @@ ContrastsSaintExpress <- R6::R6Class(
       )))
       res
     },
-    #' @description get \code{\link{Contrast_Plotter}}
+    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param scthreshold BFDR threshold to show in the heatmap.
     get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
@@ -843,7 +843,7 @@ ContrastsTable <- R6::R6Class(
     get_contrasts = function(all = FALSE){
       self$contrast_result
     },
-    #' @description get \code{\link{Contrast_Plotter}}
+    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
     get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
@@ -907,7 +907,7 @@ ContrastsTable <- R6::R6Class(
 }
 
 
-# Contrast_Plotter ----
+# Contrasts_Plotter ----
 #' plot contrasts
 #' @export
 #' @family modelling
@@ -964,7 +964,7 @@ ContrastsTable <- R6::R6Class(
 #'   cp$write_plotly("c:/Temp")
 #' }
 Contrasts_Plotter <- R6::R6Class(
-  "Contrast_Plotter"
+  "Contrasts_Plotter"
   ,
   public = list(
     #' @field contrastDF data frame with contrasts
@@ -1218,6 +1218,7 @@ Contrasts_Plotter <- R6::R6Class(
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
+#' @param modelName name of the merged model default "mergedModel"
 #' @export
 #' @family modelling
 #'

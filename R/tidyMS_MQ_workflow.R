@@ -73,9 +73,8 @@ filter_difference <- function(x, y, config){
 #' @param startdata table in long format
 #' @param atable AnalysisTableAnnotation annotate startdata table
 #' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold
-#' @param Accession column with protein accession
 #' @param Description column with portein desciription e.g. (fasta header)
-#' @param outapth directory to write results too.
+#' @param outpath directory to write results too.
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
 #' @param remove do you want to remove contaminants.

@@ -10,14 +10,25 @@ This package is developed at the [FGCZ](http://www.fgcz.ch/).
 # How to install prolfqua?
 
 Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher
-To install the package please execute in R
+
+
+We recommend to install the package using the latest [release](https://github.com/wolski/prolfqua/releases)
+Download the `prolfqua_X.Y.Z.tar.gz` from the [github release page](https://github.com/wolski/prolfqua/releases). and then execute:
+
+```
+install.packages("prolfqua_X.Y.Z.tar.gz",repos = NULL, type="source")
+```
+
+
+To install the package without vignettes from github you can execute in R
 
 ```
 install.packages('remotes')
 remotes::install_github('wolski/prolfqua')
 ```
 
-If you want to build the vignettes
+
+If you want to build the vignettes on you system:
 
 ```
 install.packages('remotes')
@@ -26,8 +37,11 @@ remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
 
 ```
 
-Let us please know about any installation problems or errors when using the package
+Depending on the performance of you system building the package with all vignettes can take up to 1h.
+
+Let us please know about any installation problems or errors when using the package:
 https://github.com/wolski/prolfqua/issues
+
 
 
 # How to get started

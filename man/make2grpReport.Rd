@@ -24,15 +24,13 @@ make2grpReport(
 
 \item{Description}{column with portein desciription e.g. (fasta header)}
 
+\item{outpath}{directory to write results too.}
+
 \item{revpattern}{default "REV_"}
 
 \item{contpattern}{default "^zz|^CON__"}
 
 \item{remove}{do you want to remove contaminants.}
-
-\item{Accession}{column with protein accession}
-
-\item{outapth}{directory to write results too.}
 }
 \description{
 For use examples see run_scripts directory

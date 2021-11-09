@@ -25,6 +25,8 @@ make_benchmark(
 
 \item{toscale}{todo}
 
+\item{fcestimate}{column with FC estimate}
+
 \item{benchmark}{todo}
 
 \item{FDRvsFDP}{todo}
@@ -34,6 +36,8 @@ make_benchmark(
 \item{model_name}{todo}
 
 \item{hierarchy}{todo}
+
+\item{summarizeNA}{summarizeNA}
 }
 \value{
 Benchmark

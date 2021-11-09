@@ -72,7 +72,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 
   # remove transitions with large numbers of NA's
   data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
-  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(srm_NrNotNAs > config$parameter$min_nr_of_notNA)
+  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   if(nrow(data_NA_QVal) == 0){
     warning("no rows left after filtering for min_nr_of_notNA")
   }
@@ -87,7 +87,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 
   data_NA_QVal <- transform_work_intensity(data_NA_QVal, config, log2)
   data_NA_QVal <- markDecorrelated(data_NA_QVal, config, minCorrelation = minCorrelation)
-  keepCorrelated <- dplyr::filter(data_NA_QVal, srm_decorelated == FALSE)
+  keepCorrelated <- dplyr::filter(data_NA_QVal, .data$srm_decorelated == FALSE)
 
   stat_correlated  <- hierarchy_counts(keepCorrelated, config)
 
@@ -140,7 +140,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 
   # remove transitions with large numbers of NA's
   data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
-  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(srm_NrNotNAs > config$parameter$min_nr_of_notNA)
+  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   stat_min_nr_of_notNA <- hierarchy_counts(data_NA_QVal, config)
 
   # remove single hit wonders
@@ -151,7 +151,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
   # filter decorrelated.
   data_NA_QVal <- transform_work_intensity(data_NA_QVal, config, log2)
   data_NA_QVal <- markDecorrelated(data_NA_QVal, config, minCorrelation = minCorrelation)
-  keepCorrelated <- dplyr::filter(data_NA_QVal, srm_decorelated == FALSE)
+  keepCorrelated <- dplyr::filter(data_NA_QVal, .data$srm_decorelated == FALSE)
 
   stat_correlated  <- hierarchy_counts(keepCorrelated, config)
   keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)

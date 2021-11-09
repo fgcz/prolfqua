@@ -234,7 +234,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
   if (as.matrix) {
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
     names <- res %>% dplyr::select_at(config$table$hierarchyKeys()) %>%
-      tidyr::unite(precursor_id, !!!syms(config$table$hierarchyKeys()), sep=sep) %>% dplyr::pull()
+      tidyr::unite(.data$precursor_id, !!!syms(config$table$hierarchyKeys()), sep=sep) %>% dplyr::pull()
     rownames(resMat) <- names
     res <- resMat
   }

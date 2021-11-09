@@ -268,7 +268,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   }
   xx <- dplyr::inner_join(meta , PepIntensities, by = "mod.peptide.id")
   xx$proteotypic <- !grepl(";",xx$protein.group.id)
-  xx <- xx %>% separate_rows(protein.group.id, sep = ";",convert  = TRUE)
+  xx <- xx %>% separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
 
@@ -326,7 +326,7 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
 
   PepIntensities <- pint %>%
     tidyr::gather(key = "raw.file", value = "peptide.intensity", starts_with("intensity.")) %>%
-    dplyr::mutate(raw.file = gsub("intensity.","",raw.file))
+    dplyr::mutate(raw.file = gsub("intensity.","",.data$raw.file))
 
   # review what happens here
   idtype <- dplyr::select(MQPeptides, "peptide.id" = "id", starts_with("identification.type."))
@@ -341,7 +341,7 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
 
   xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
   xx$proteotypic <- !grepl(";", xx$protein.group.id)
-  xx <- xx %>% separate_rows( protein.group.id, sep = ";", convert  = TRUE)
+  xx <- xx %>% separate_rows( .data$protein.group.id, sep = ";", convert  = TRUE)
 
   xx <- xx %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
   xx$isotope <- "light"
@@ -425,36 +425,6 @@ tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) 
   return(peptides)
 }
 
-#' Same protein group id might have different names in the protein field.
-#' this function selects the protein name mentioned most in association with a protein group id.
-#'
-#' @param modSpecData obtained by either colling tidyMQ_Peptides or tidyMQ_modificationSpecificPeptides
-#' @family MaxQuant
-#' @export
-#' @keywords internal
-#'
-tidyMQ_top_protein_name <- function(modSpecData, prot_col = c("proteins","leading.razor.protein")) {
-  prot_col <- match.arg(prot_col)
-  modSpecData <- modSpecData %>% dplyr::filter(!is.na(!!sym(prot_col)))
-  nrProteinGroups <- modSpecData %>% dplyr::select(protein.group.id) %>% dplyr::distinct() %>% nrow()
-  groupIDprotein <- modSpecData %>% dplyr::select(protein.group.id, !!sym(prot_col)) %>% dplyr::distinct()
-  groupIDprotein_Separated <- groupIDprotein %>% separate_rows(!!sym(prot_col), sep = ";",convert = TRUE)
-  groupIDprotein_Separated %>%
-    dplyr::group_by(.data$protein.group.id) %>%
-    tidyr::nest() -> groupIDprotein_Separated
-
-  extractMostFreqNamePerGroup <- function(ff){
-    aa <- sort(table(ff),decreasing = TRUE)
-    sort(names(aa[aa == max(aa)]), decreasing = TRUE)[1]
-  }
-  topProtein <- groupIDprotein_Separated %>%
-    dplyr::mutate(top_protein = purrr::map_chr(data,  extractMostFreqNamePerGroup)) %>%
-    dplyr::select(.data$protein.group.id, .data$top_protein)
-  stopifnot(nrow(topProtein) == nrProteinGroups)
-  mqData <- dplyr::inner_join(modSpecData,topProtein )
-  return(mqData)
-}
-
 
 #' Read Sites.txt and convert into longish format
 #' @param dPat sitespecific file read by read.csv()
@@ -496,7 +466,7 @@ tidyMQ_from_Sites <- function(pDat){
   intensities <- pDat %>% dplyr::select("site.id" = "id", contains("___") )
   longish <- intensities %>% gather(key = "raw.file", value = "intensity", contains("___"))
   longish <- longish %>% separate(.data$raw.file, into = c("raw.file", "multiplicity"), sep="___")
-  longish <- longish %>% mutate(raw.file = gsub("intensity\\.", "", raw.file))
+  longish <- longish %>% mutate(raw.file = gsub("intensity\\.", "", .data$raw.file))
 
   res <- inner_join(longish, annotation, by = "site.id")
   return(list(data = res, annotation = annotation))

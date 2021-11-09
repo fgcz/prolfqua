@@ -125,9 +125,6 @@ NULL
 #'
 'data_IonstarProtein_subsetNorm'
 
-# data_exampleForRopeca <- exampleDataForRopeca
-# usethis::use_data(data_exampleForRopeca, compress = TRUE, overwrite = TRUE)
-# file.remove("data/exampleDataForRopeca")
 
 #' example data for check
 #' @family data
