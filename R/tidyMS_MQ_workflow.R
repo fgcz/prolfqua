@@ -210,12 +210,12 @@ make2grpReport <- function(startdata,
 
   wr <- GRP2$lfqData$get_Writer()
   tmp <- wr$get_wide()
-  tmp$data <- inner_join(distinctprotid, tmp$data, by= c(pID = proteinID) )
+  tmp$data <- inner_join(distinctprotid, tmp$data, by = c(pID = proteinID) )
   tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
 
   names(tmp2) <- paste0(names(tmp2), ".normalized")
-  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized, by= c(pID = proteinID))
-  res <- inner_join(distinctprotid, GRP2$contrResult, by= c(pID = proteinID))
+  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized, by = c(pID = proteinID))
+  res <- inner_join(distinctprotid, GRP2$contrResult, by = c(pID = proteinID))
 
   dir.create(outpath)
 
