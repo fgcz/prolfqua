@@ -58,6 +58,7 @@ Suggests:
     testthat,
     prolfquaData,
     limma,
+    SummarizedExperiment,
     MSstats,
     proDA
 Remotes:

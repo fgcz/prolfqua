@@ -39,7 +39,8 @@ stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
-\code{\link{LFQDataSummariser}}
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
 \section{Public fields}{

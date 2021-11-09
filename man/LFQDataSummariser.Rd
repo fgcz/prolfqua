@@ -31,6 +31,7 @@ sum$plot_missingness_per_condition_cumsum()
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
+\code{\link{LFQDataToSummarizedExperiment}()},
 \code{\link{LFQData}}
 }
 \concept{LFQData}
