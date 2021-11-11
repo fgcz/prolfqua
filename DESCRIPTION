@@ -4,10 +4,19 @@ Title: Proteomics Label Free Quantification
 Version: 0.2.5
 Author: Witold Wolski <wewolski@gmail.com>
 Maintainer: Witold Wolski <wewolski@gmail.com>
-Description: Analysing complex label free quantification (LFQ) experiments using linear models.
+Description: The _prolfqua_ package integrates essential steps
+    of the mass spectrometry based label free quantification data
+    analysis workflow: quality control, data normalization, protein aggregation,
+    modeling, hypothesis testing and sample size estimation.
+    We use _prolfqua_ to develop highly customizable, visually appealing,
+    and interactive data analysis reports in pdf or HTML format.
+    We use _prolfqua_ to visualize and model simple experimental designs
+    with a single explanatory variable and complex experiments with multiple factors.
+    Furthermore, we use _prolfqua_ to benchmark data acquisition, data preprocessing or data modeling methods.
+    We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 VignetteBuilder: knitr
 URL: https://github.com/wolski/prolfqua
 BugReports: https://github.com/wolski/prolfqua/issues
@@ -61,7 +70,6 @@ Suggests:
     SummarizedExperiment,
     MSstats,
     proDA
-Remotes:
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 

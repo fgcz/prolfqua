@@ -39,7 +39,7 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
                                                                    "total.spectral.count",
                                                                    "unique.spectral.count",
                                                                    "razor.spectral.count"),
-                                            protIDcol = "protein.group") {
+                                            protIDcol = "protein.group", subgroup = "subgroup") {
   if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))
@@ -53,7 +53,7 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
   annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
   head(annot)
   extractDataLong <- function(Cprotein, what = "total.intensity"){
-    gg <- Cprotein %>% dplyr::select( protIDcol, .data$subgroup, dplyr::ends_with(what))
+    gg <- Cprotein %>% dplyr::select( protIDcol, subgroup, dplyr::ends_with(what))
     gg <- gg %>% tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
     gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
     gg
@@ -94,6 +94,6 @@ tidy_MSFragger_combined_protein_V16 <- function(combprot, intnames = c("total.in
                                                                        "unique.spectral.count",
                                                                        "spectral.count"
 )) {
-  res <- tidy_MSFragger_combined_protein(combprot, intnames = intnames, protIDcol = "protein.id")
+  res <- tidy_MSFragger_combined_protein(combprot, intnames = intnames, protIDcol = "protein.id", subgroup = NULL)
   return(res)
 }

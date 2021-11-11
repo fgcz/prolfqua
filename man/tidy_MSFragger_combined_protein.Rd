@@ -9,7 +9,8 @@ tidy_MSFragger_combined_protein(
   intnames = c("total.intensity", "unique.intensity", "razor.intensity",
     "total.ion.count", "unique.ion.count", "razor.ion.count", "total.spectral.count",
     "unique.spectral.count", "razor.spectral.count"),
-  protIDcol = "protein.group"
+  protIDcol = "protein.group",
+  subgroup = "subgroup"
 )
 }
 \description{
