@@ -156,6 +156,9 @@ xdd <- ttd$data %>% dplyr::rename(protein_Id = name ,
 )
 
 benchmark2_proDA <- make_benchmark(xdd, model_description = "proDA_medpolishInt", model_name = "proDA")
+```
+
+```{r eval=FALSE, include=FALSE}
 saveRDS(benchmark2_proDA, file = "../inst/Benchresults/benchmark_medpolish_proDA.RDS")
 
 ```

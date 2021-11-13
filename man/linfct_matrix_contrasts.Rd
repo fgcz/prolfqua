@@ -48,6 +48,7 @@ Other modelling:
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},

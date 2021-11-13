@@ -68,6 +68,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},

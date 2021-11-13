@@ -974,13 +974,13 @@ contrasts_linfct <- function(models,
     }
 
     rown <- lapply(res, rownames)
-    intersect <- Reduce(intersect, rown)
+    intersect <- Reduce(base::intersect, rown)
     res <- lapply(res , function(x){ x[rownames(x) %in% intersect,]})
     interaction_model_matrix <- models
     interaction_model_matrix$contrast <- res
   } else {
     interaction_model_matrix <- models %>%
-      dplyr::mutate(contrast = purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+      dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
 
   }
 
@@ -1325,5 +1325,34 @@ summary_ROPECA_median_p.scaled <- function(
   return(ungroup( summarized.protein ))
 }
 
+# simulate pairwise experiment data.
+createPairedData <- function(Nsubject = 20, Nprotein = 10){
+  xd <- data.frame(Subject = sort(rep(LETTERS[1:Nsubject],times = 2)),
+                   Treatment = rep(c("placebo", "treatment"),Nsubject))
+  xd <- replicate(Nprotein, xd ,simplify = FALSE)
+  for (i in 1:Nprotein) {
+    xd[[i]]$proteinID <- letters[i]
+  }
+  dd <- Reduce(rbind, xd)
+  dd <- dd %>% unite(col = "sampleID", .data$Subject, .data$Treatment, remove = FALSE)
 
 
+  dd$intensity <- rnorm(nrow(dd), mean = 10, sd = 2)
+
+  dd1 <- filter(dd, .data$proteinID %in% letters[1:6])
+  dd1 <- dplyr::sample_n(dd1, 7 )
+  dd2 <- filter(dd, .data$proteinID %in% letters[7:10])
+  dNA <- bind_rows(dd1,dd2)
+
+
+  annotation <- select(dNA, .data$sampleID, .data$Subject, .data$Treatment) %>% distinct()
+  rownames(annotation) <- annotation$sampleID
+
+  wideData <- dNA %>% dplyr::pivot_wider(id_cols = .data$proteinID,
+                                         names_from = "sampleID",
+                                         values_from = .data$intensity)
+  withRowNames <- data.frame(wideData)
+  rownames(withRowNames) <- withRowNames$proteinID
+  withRowNames$proteinID <- NULL
+  withRowNames <- as.matrix(withRowNames)
+}

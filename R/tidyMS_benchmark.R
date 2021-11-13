@@ -2,6 +2,7 @@
 #' @export
 #' @family benchmarking
 #' @param data analysis results
+#' @param idcol default "protein_Id"
 ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   tmp <- data %>%
     ungroup() %>%
@@ -565,11 +566,13 @@ Benchmark <-
 #' @param prpr todo
 #' @param contrast todo
 #' @param toscale todo
+#' @param fcestimate column with FC estimate
 #' @param benchmark todo
 #' @param FDRvsFDP todo
 #' @param model_description todo
 #' @param model_name todo
 #' @param hierarchy todo
+#' @param summarizeNA summarizeNA
 #' @return Benchmark
 make_benchmark <- function(prpr,
                            contrast = "contrast",

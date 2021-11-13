@@ -8,6 +8,8 @@ ionstar_bench_preprocess(data, idcol = "protein_Id")
 }
 \arguments{
 \item{data}{analysis results}
+
+\item{idcol}{default "protein_Id"}
 }
 \description{
 prepare benchmark data

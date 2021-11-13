@@ -73,9 +73,8 @@ filter_difference <- function(x, y, config){
 #' @param startdata table in long format
 #' @param atable AnalysisTableAnnotation annotate startdata table
 #' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold
-#' @param Accession column with protein accession
 #' @param Description column with portein desciription e.g. (fasta header)
-#' @param outapth directory to write results too.
+#' @param outpath directory to write results too.
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
 #' @param remove do you want to remove contaminants.
@@ -211,12 +210,12 @@ make2grpReport <- function(startdata,
 
   wr <- GRP2$lfqData$get_Writer()
   tmp <- wr$get_wide()
-  tmp$data <- inner_join(distinctprotid, tmp$data, by= c(pID = proteinID) )
+  tmp$data <- inner_join(distinctprotid, tmp$data, by = c(pID = proteinID) )
   tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
 
   names(tmp2) <- paste0(names(tmp2), ".normalized")
-  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized, by= c(pID = proteinID))
-  res <- inner_join(distinctprotid, GRP2$contrResult, by= c(pID = proteinID))
+  tmp2$data.normalized <- inner_join(distinctprotid, tmp2$data.normalized, by = c(pID = proteinID))
+  res <- inner_join(distinctprotid, GRP2$contrResult, by = c(pID = proteinID))
 
   dir.create(outpath)
 

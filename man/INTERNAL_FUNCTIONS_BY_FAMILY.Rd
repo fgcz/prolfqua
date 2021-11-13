@@ -104,6 +104,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{modelSummary}()},
 \code{\link{model_analyse}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
@@ -164,8 +165,7 @@ Other MaxQuant:
 \code{\link{tidyMQ_from_Sites}()},
 \code{\link{tidyMQ_from_modSpecific_to_peptide}()},
 \code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()},
-\code{\link{tidyMQ_top_protein_name}()}
+\code{\link{tidyMQ_modificationSpecificPeptides}()}
 
 Other MSFragger: 
 \code{\link{tidy_MSFragger_MSstats_csv}()},

@@ -4,7 +4,11 @@
 \alias{tidy_MSFragger_combined_protein_V16}
 \title{read MSFragger combined protein file}
 \usage{
-tidy_MSFragger_combined_protein_V16(combprot)
+tidy_MSFragger_combined_protein_V16(
+  combprot,
+  intnames = c("total.intensity", "unique.intensity", "intensity",
+    "total.spectral.count", "unique.spectral.count", "spectral.count")
+)
 }
 \description{
 read MSFragger combined protein file

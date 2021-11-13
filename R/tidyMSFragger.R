@@ -13,7 +13,9 @@ tidy_MSFragger_MSstats_csv <- function(file){
 }
 
 
-#' read MSFragger combined protein file
+
+
+#' read MSFragger combined protein file up to Version 15
 #' @export
 #' @param
 #' @examples
@@ -28,38 +30,39 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #'   tidy_MSFragger_combined_protein(protein)
 #' }
 #'
-
-tidy_MSFragger_combined_protein_V16 <- function(combprot) {
+tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intensity",
+                                                                   "unique.intensity",
+                                                                   "razor.intensity",
+                                                                   "total.ion.count",
+                                                                   "unique.ion.count",
+                                                                   "razor.ion.count",
+                                                                   "total.spectral.count",
+                                                                   "unique.spectral.count",
+                                                                   "razor.spectral.count"),
+                                            protIDcol = "protein.group", subgroup = "subgroup") {
   if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
-                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+                                  header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 
-  } else if("tbl_df" %in% class(combprot)) {
+  } else if ("tbl_df" %in% class(combprot)) {
     Cprotein <- combprot
   }
 
   ### start processing
   colnames(Cprotein) <- tolower(colnames(Cprotein))
   annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
+  head(annot)
   extractDataLong <- function(Cprotein, what = "total.intensity"){
-    gg <- Cprotein %>% dplyr::select( protein.id, ends_with(what))
-    gg <- gg %>% tidyr::pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
-    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
+    gg <- Cprotein %>% dplyr::select( protIDcol, subgroup, dplyr::ends_with(what))
+    gg <- gg %>% tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
+    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
     gg
   }
-  intnames <- c("total.intensity",
-                "unique.intensity",
-                "intensity",
-                "total.spectral.count",
-                "unique.spectral.count",
-                "spectral.count"
-                )
 
   res <- vector( mode = "list", length = length(intnames))
   names(res)  <- intnames
 
   for (i in 1:length(intnames)) {
-    message(intnames[i] )
     res[[intnames[i]]] <- extractDataLong(Cprotein, what = intnames[i] )
   }
 
@@ -84,43 +87,13 @@ tidy_MSFragger_combined_protein_V16 <- function(combprot) {
 #'   tidy_MSFragger_combined_protein(protein)
 #' }
 #'
-tidy_MSFragger_combined_protein <- function(combprot) {
-  if (is.character(combprot) && file.exists(combprot)) {
-    Cprotein <- as_tibble(read.csv(combprot,
-                                  header = TRUE, sep = "\t", stringsAsFactors = FALSE))
-
-  } else if("tbl_df" %in% class(combprot)) {
-    Cprotein <- combprot
-  }
-
-  ### start processing
-  colnames(Cprotein) <- tolower(colnames(Cprotein))
-  annot <- Cprotein %>% dplyr::select(colnames(Cprotein)[1:14])
-  head(annot)
-  extractDataLong <- function(Cprotein, what = "total.intensity"){
-    gg <- Cprotein %>% dplyr::select( protein.group, subgroup, ends_with(what))
-    gg <- gg %>% tidyr::pivot_longer(cols = ends_with(what), names_to = "raw.file",values_to = what)
-    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", raw.file))
-    gg
-  }
-  intnames <- c("total.intensity",
-                "unique.intensity",
-                "razor.intensity",
-                "total.ion.count",
-                "unique.ion.count",
-                "razor.ion.count",
-                "total.spectral.count",
-                "unique.spectral.count",
-                "razor.spectral.count")
-
-  res <- vector( mode = "list", length = length(intnames))
-  names(res)  <- intnames
-
-  for (i in 1:length(intnames)) {
-    res[[intnames[i]]] <- extractDataLong(Cprotein, what = intnames[i] )
-  }
-
-  merged <- Reduce(inner_join, res)
-  merged <- inner_join(annot, merged)
-  return(merged)
+tidy_MSFragger_combined_protein_V16 <- function(combprot, intnames = c("total.intensity",
+                                                                       "unique.intensity",
+                                                                       "intensity",
+                                                                       "total.spectral.count",
+                                                                       "unique.spectral.count",
+                                                                       "spectral.count"
+)) {
+  res <- tidy_MSFragger_combined_protein(combprot, intnames = intnames, protIDcol = "protein.id", subgroup = NULL)
+  return(res)
 }

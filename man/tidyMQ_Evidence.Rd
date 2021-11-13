@@ -29,8 +29,7 @@ Other MaxQuant:
 \code{\link{tidyMQ_from_Sites}()},
 \code{\link{tidyMQ_from_modSpecific_to_peptide}()},
 \code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()},
-\code{\link{tidyMQ_top_protein_name}()}
+\code{\link{tidyMQ_modificationSpecificPeptides}()}
 }
 \concept{MaxQuant}
 \keyword{internal}
