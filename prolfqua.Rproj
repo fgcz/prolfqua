@@ -22,3 +22,5 @@ PackageBuildArgs: --no-build-vignettes
 PackageBuildBinaryArgs: --no-build-vignettes
 PackageCheckArgs: --no-build-vignettes --no-vignettes
 PackageRoxygenize: rd,collate,namespace
+
+QuitChildProcessesOnExit: Yes
