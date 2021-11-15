@@ -1337,7 +1337,7 @@ createPairedData <- function(Nsubject = 20, Nprotein = 10){
   dd <- dd %>% unite(col = "sampleID", .data$Subject, .data$Treatment, remove = FALSE)
 
 
-  dd$intensity <- rnorm(nrow(dd), mean = 10, sd = 2)
+  dd$intensity <- stats::rnorm(nrow(dd), mean = 10, sd = 2)
 
   dd1 <- filter(dd, .data$proteinID %in% letters[1:6])
   dd1 <- dplyr::sample_n(dd1, 7 )
