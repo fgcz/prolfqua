@@ -4,9 +4,13 @@
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
+    #' @description get table with sides of the contrast
     get_contrast_sides = function(){stop("get_contrast_sides not implmented")},
+    #' @description get table with contrast results (simliar to limma topTable)
     get_contrasts = function(){stop("get_contrasts not implmented")},
+    #' @description initialize plotter
     get_Plotter = function(){stop("get_Plotter not implmented.") },
+    #' @description create wide representation of data.
     to_wide = function(){stop("to_wide not implemented.")}
   )
 )
@@ -104,14 +108,19 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @description initialize
     #' @param lfqdata LFQData
     #' @param contrasts array of contrasts (see example)
+    #' @param confint confidence interval
+    #' @param p.adjust method for p-value adjustement - default benjamini hochberg
     #' @param modelName default "groupAverage"
+    #' @param method internal default V1
+    #' @param probs which quantile to use for imputation default 0.3
+    #' @param global default TRUE use all or per condition data to impute from
     initialize = function(lfqdata,
                           contrasts,
                           confint = 0.95,
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
                           method = "V1",
-                          probs = 0.1,
+                          probs = 0.03,
                           global = TRUE){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
@@ -132,6 +141,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
     },
     #' @description table with results of contrast computation
+    #' @param all FALSE, do not show all columns (default)
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result)) {
         result = get_imputed_contrasts(self$lfqdata$data, self$lfqdata$config, self$contrasts, probs = self$probs, global = self$global)

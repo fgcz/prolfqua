@@ -112,9 +112,11 @@ LFQData <- R6::R6Class(
       invisible(self)
     },
     #' @description
-    #' Omit NA from intensities per hierarchy, idea is to use it for normalization
+    #' Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
     #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
     #' it will be removed
+    #' @param nrNA number of NA values
+    #' @param factorDepth you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment
     #' @return LFQData with NA omitted.
     omit_NA = function(nrNA = 0, factorDepth = FALSE){
       if(!factorDepth)
@@ -298,6 +300,7 @@ LFQDataTransformer <- R6::R6Class(
       self$lfq = lfqdata$clone(deep = TRUE)
     },
     #' @description log2 transform data
+    #' @param force if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.
     #' @return Transformer
     log2 = function(force = FALSE){
       if (self$lfq$is_transformed() == FALSE | force ) {
@@ -453,11 +456,11 @@ LFQDataStats <- R6::R6Class(
     statsdf = NULL,
     #' @description create analyse variances and CV
     #' @param lfqdata LFQData object
-    #'
-    initialize = function(lfqdata, stats = c("interaction","all","pooled")){
+    #' @param stats if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)
+    initialize = function(lfqdata, stats = c("interaction", "all" ,"pooled")){
       stats <- match.arg(stats)
       self$lfq = lfqdata
-      self$stat <- if (!self$lfq$is_transformed()) {"CV"}else{"sd"}
+      self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
       if(stats == "interaction" ){
         self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
       } else if (stats == "all" ){
@@ -719,7 +722,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' plot intensities in raster
     #' @param arrange arrange by either mean or var
-    #' @param
+    #' @param not_na TRUE arrange by number of NA's, FALSE by arrange by intensity
+    #' @param rownames show rownames (default FALSE - do not show.)
     #' @return ggplot
     raster = function(arrange = c("mean", "var") ,
                       not_na = FALSE,
@@ -735,6 +739,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' heatmap of intensities
     #' @param na_fraction max fraction of NA's per row
+    #' @param rownames show rownames (default FALSE - do not show.)
     #' @return pheatmap
     heatmap = function(na_fraction = 0.3, rownames = FALSE){
       fig <- prolfqua::plot_heatmap(self$lfq$data,
@@ -760,6 +765,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' pca plot
+    #' @param add_txt show sample names
     #' @return plotly
     pca_plotly = function(add_txt = FALSE){
       fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$table$sampleName)
@@ -787,6 +793,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' density distribution of intensities
+    #' @param legend show legend TRUE, FALSE do not show.
     #' @return ggplot
     intensity_distribution_density = function(legend = TRUE){
       prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config, legend = legend)
