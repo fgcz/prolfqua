@@ -110,7 +110,7 @@ data_spectronautDIA250_A$analysis(data_spectronautDIA250_A$data, data_spectronau
 Given a sample DIA dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
-longFormat <- prolfqua::data_spectronautDIA250_A$data
+longFormat <- data_spectronautDIA250_A$data
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
 
@@ -139,7 +139,7 @@ knitr::kable(head(prolfqua::interaction_missing_stats(longQSummaries, config)$da
 knitr::kable(prolfqua::hierarchy_counts(longQSummaries, config))
 ```
 
-Then we remove precrusors that do not pass the  `qVal_experiment_threshold`, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.
+Then we remove precursors that do not pass the  `qVal_experiment_threshold`, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.
 
 ```{r}
 config$parameter$qVal_experiment_threshold 

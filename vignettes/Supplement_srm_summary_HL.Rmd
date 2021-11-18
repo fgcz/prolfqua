@@ -7,7 +7,7 @@ output:
   pdf_document: default
 params:
   configuration:  !r parse(text="data('data_skylineSRM_HL_A'); data_skylineSRM_HL_A$config_f()")
-  data: !r parse(text = "data('data_skylineSRM_HL_A');data_skylineSRM_HL_A$analysis(prolfqua::data_skylineSRM_HL_A$data, data_skylineSRM_HL_A$config_f())")
+  data: !r parse(text = "data('data_skylineSRM_HL_A');data_skylineSRM_HL_A$analysis(data_skylineSRM_HL_A$data, data_skylineSRM_HL_A$config_f())")
 vignette: >
   %\VignetteIndexEntry{Supplement - Summarize heavy light Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
