@@ -16,7 +16,7 @@ Description: The prolfqua package integrates essential steps
     We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: false
+LazyData: true
 VignetteBuilder: knitr
 URL: https://github.com/wolski/prolfqua
 BugReports: https://github.com/wolski/prolfqua/issues
