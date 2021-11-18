@@ -72,4 +72,4 @@ RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 
     R (>= 4.1)
-biocViews: MassSpectrometry, Proteomics, Metabolomics, ExperimentHubSoftware
+biocViews: MassSpectrometry, Proteomics, Metabolomics, ExperimentHubSoftware, Normalization, Preprocessing, QualityControl
