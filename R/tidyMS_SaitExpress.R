@@ -1,4 +1,3 @@
-
 #' Network visualization.
 #' look at https://www.jessesadler.com/post/network-analysis-with-r/
 #' https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
@@ -46,12 +45,34 @@ runSaint <- function(si,
 }
 
 
-#' Convert tidy table with protein quants into saintExpress compatible inputs
+#' Convert tidy table with protein quants into SaintExpress compatible inputs
 #' @export
+#' @param xx data.frame in long format
+#' @param quantcolumn intensity column
+#' @param proteinID protein accession
+#' @param proteinLength column with protein lengths
+#' @param IP_name raw.file
+#' @param baitCol column with bait definition (condition)
+#' @param CorTCol is it control or T (SaintExpress speach)
+#' @example
+#'
+#' xx <- prolfqua::data_IonstarProtein_subsetNorm
+#'exampleDat <- xx$data %>% mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
+#'# sample protein lengths
+#'exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
+#'res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
+#'                    proteinID = "protein_Id",
+#'                    proteinLength = "proteinLength",
+#'                    IP_name = "raw.file",
+#'                    baitCol = "dilution.",
+#'                    CorTCol = "CorT"
+#'                    )
+#'stopifnot(names(res) == c( "inter", "prey",  "bait"))
+#'
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
                                 proteinID = "protein_Id",
-                                geneNames  = "protein_Id",
+                                geneNames  = proteinID,
                                 proteinLength = "protein.length",
                                 IP_name = "raw.file",
                                 baitCol = "bait",
@@ -82,9 +103,10 @@ protein_2localSaint <- function(xx,
 }
 
 
-
-
 #' add protein lengths from fasta file to data frame (id_col - protein id column.)
+#' @param indata data.frame
+#' @param fasta.file
+#' @param id_col
 #' @export
 addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
   fasta <- prozor::readPeptideFasta(file = fasta_file)
