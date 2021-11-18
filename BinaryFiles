@@ -1,4 +1,4 @@
-SaintExpress-int
-SaintExpress-src
-SaintExpress-int.exe
-SaintExpress-src.exe
+inst/SaintExpress/bin/Linux64/SAINTexpress-int
+inst/SaintExpress/bin/Linux64/SAINTexpress-spc
+inst/SaintExpress/bin/Windows64/SAINTexpress-int.exe
+inst/SaintExpress/bin/Windows64/SAINTexpress-spc.exe
