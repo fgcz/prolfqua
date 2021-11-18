@@ -6,8 +6,8 @@ output:
   html_document: default
   pdf_document: default
 params:
-  configuration:  !r parse(text="data(data_skylinePRMSample_A);data_skylinePRMSample_A$config_f()")
-  data: !r parse(text = "data(data_skylinePRMSample_A); data_skylinePRMSample_A$analysis(data_skylinePRMSample_A$data, data_skylinePRMSample_A$config_f() ) ")
+  configuration:  !r parse(text="data('data_skylinePRMSample_A');data_skylinePRMSample_A$config_f()")
+  data: !r parse(text = "data('data_skylinePRMSample_A'); data_skylinePRMSample_A$analysis(data_skylinePRMSample_A$data, data_skylinePRMSample_A$config_f() ) ")
 vignette: >
   %\VignetteIndexEntry{Supplement - Summarize Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}

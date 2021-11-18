@@ -10,9 +10,9 @@ output:
     toc: yes
     toc_depth: 2
 params:
-  configuration:  !r parse(text="data(data_ionstar);data_ionstar$filtered()$config$clone(deep=TRUE)" )
+  configuration:  !r parse(text="data('data_ionstar');data_ionstar$filtered()$config$clone(deep=TRUE)" )
   project_conf: NULL
-  data: !r parse(text="data(data_ionstar);prolfqua::data_ionstar$filtered()$data")
+  data: !r parse(text="data('data_ionstar');prolfqua::data_ionstar$filtered()$data")
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
   pep: TRUE
