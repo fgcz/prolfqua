@@ -10,7 +10,6 @@ LFQData R6 class
 }
 \examples{
 library(tidyverse)
-library(prolfqua)
 
 istar <- prolfqua::data_ionstar$filtered()
 
@@ -234,13 +233,22 @@ self
 \if{html}{\out{<a id="method-omit_NA"></a>}}
 \if{latex}{\out{\hypertarget{method-omit_NA}{}}}
 \subsection{Method \code{omit_NA()}}{
-Omit NA from intensities per hierarchy, idea is to use it for normalization
+Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0, factorDepth = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{nrNA}}{number of NA values}
+
+\item{\code{factorDepth}}{you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 LFQData with NA omitted.
 }

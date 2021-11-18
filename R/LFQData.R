@@ -5,7 +5,6 @@
 #' @family LFQData
 #' @examples
 #' library(tidyverse)
-#' library(prolfqua)
 #'
 #' istar <- prolfqua::data_ionstar$filtered()
 #'
@@ -239,9 +238,6 @@ LFQData <- R6::R6Class(
 #'
 #' @examples
 #' library(tidyverse)
-#' library(prolfqua)
-#'
-#' library(prolfqua)
 #' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -668,7 +664,7 @@ LFQDataSummariser <- R6::R6Class(
 #' @import dplyr
 #' @examples
 #'
-#' library(prolfqua)
+#' #library(prolfqua)
 #' istar <- prolfqua::data_IonstarProtein_subsetNorm
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -1005,7 +1001,7 @@ LFQDataWriter <- R6::R6Class(
 #' Aggregate LFQ data
 #' @examples
 #' library(tidyverse)
-#' library(prolfqua)
+#' #library(prolfqua)
 #'
 #' istar <- prolfqua::data_ionstar$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -1182,7 +1178,7 @@ LFQDataAggregator <- R6::R6Class(
 #' @export
 #'
 LFQDataToSummarizedExperiment <- function(lfqdata){
-  if (require("SummarizedExperiment")) {
+  if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation$sampleName

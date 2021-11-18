@@ -16,7 +16,7 @@ Histogram summarizing missigness
 }
 \examples{
 library(tidyverse)
-library(prolfqua)
+#library(prolfqua)
 bb <- prolfqua::data_ionstar
 configur <- bb$config
 data <- bb$data

@@ -60,7 +60,7 @@ plot_hierarchies_line_default <- function(data,
 #' @keywords internal
 #' @examples
 #'
-#' library(prolfqua)
+#' #library(prolfqua)
 #' library(tidyverse)
 #' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
@@ -665,7 +665,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' @examples
 #'
 #'
-#' library(prolfqua)
+#' #library(prolfqua)
 #' library(tidyverse)
 #' dd <- prolfqua::data_ionstar$filtered()
 #' config <- dd$config
@@ -735,7 +735,7 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 #' @export
 #' @examples
 #'
-#' library(prolfqua)
+#' #library(prolfqua)
 #' library(tidyverse)
 #' bb <- prolfqua::data_ionstar$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
@@ -829,7 +829,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @family deprecated
 #' @examples
 #' library(tidyverse)
-#' library(prolfqua)
+#' #library(prolfqua)
 #' istar <- prolfqua::data_ionstar$normalized()
 #'
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))

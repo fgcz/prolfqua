@@ -22,6 +22,7 @@ ContrastsInterface
 \if{html}{\out{<a id="method-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+get table with sides of the contrast
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_contrast_sides()}\if{html}{\out{</div>}}
 }
@@ -31,6 +32,7 @@ ContrastsInterface
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
+get table with contrast results (simliar to limma topTable)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_contrasts()}\if{html}{\out{</div>}}
 }
@@ -40,6 +42,7 @@ ContrastsInterface
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
+initialize plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_Plotter()}\if{html}{\out{</div>}}
 }
@@ -49,6 +52,7 @@ ContrastsInterface
 \if{html}{\out{<a id="method-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
+create wide representation of data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$to_wide()}\if{html}{\out{</div>}}
 }

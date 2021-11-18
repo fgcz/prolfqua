@@ -141,7 +141,7 @@ initialize
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
   method = "V1",
-  probs = 0.1,
+  probs = 0.03,
   global = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -153,7 +153,17 @@ initialize
 
 \item{\code{contrasts}}{array of contrasts (see example)}
 
+\item{\code{confint}}{confidence interval}
+
+\item{\code{p.adjust}}{method for p-value adjustement - default benjamini hochberg}
+
 \item{\code{modelName}}{default "groupAverage"}
+
+\item{\code{method}}{internal default V1}
+
+\item{\code{probs}}{which quantile to use for imputation default 0.3}
+
+\item{\code{global}}{default TRUE use all or per condition data to impute from}
 }
 \if{html}{\out{</div>}}
 }
@@ -177,6 +187,13 @@ table with results of contrast computation
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{all}}{FALSE, do not show all columns (default)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write"></a>}}

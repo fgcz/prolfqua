@@ -10,7 +10,7 @@ Benchmark R6 class
 }
 \examples{
 library(ggpubr)
-library(prolfqua)
+#library(prolfqua)
 library(tidyverse)
 ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua::data_benchmarkExample, !is.na(statistic)))
 medpol_benchmark <- make_benchmark(ttd$data,

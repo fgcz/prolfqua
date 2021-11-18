@@ -17,7 +17,7 @@ Compute fold changes given Contrasts
 \examples{
 
 
-library(prolfqua)
+#library(prolfqua)
 library(tidyverse)
 bb <- prolfqua::data_ionstar$filtered()
 stopifnot(nrow(bb$data) == 25780)

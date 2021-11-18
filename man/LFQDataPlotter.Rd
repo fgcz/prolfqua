@@ -10,7 +10,7 @@ Create various visualization of the LFQdata
 }
 \examples{
 
-library(prolfqua)
+#library(prolfqua)
 istar <- prolfqua::data_IonstarProtein_subsetNorm
 
 istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
@@ -122,6 +122,10 @@ plot intensities in raster
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{arrange}}{arrange by either mean or var}
+
+\item{\code{not_na}}{TRUE arrange by number of NA's, FALSE by arrange by intensity}
+
+\item{\code{rownames}}{show rownames (default FALSE - do not show.)}
 }
 \if{html}{\out{</div>}}
 }
@@ -142,6 +146,8 @@ heatmap of intensities
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{na_fraction}}{max fraction of NA's per row}
+
+\item{\code{rownames}}{show rownames (default FALSE - do not show.)}
 }
 \if{html}{\out{</div>}}
 }
@@ -191,6 +197,13 @@ pca plot
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(add_txt = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{add_txt}}{show sample names}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 plotly
 }
@@ -243,6 +256,13 @@ density distribution of intensities
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density(legend = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{legend}}{show legend TRUE, FALSE do not show.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 ggplot
 }

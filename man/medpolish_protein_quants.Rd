@@ -11,7 +11,7 @@ median polish from normalized peptide intensities
 }
 \examples{
 library(tidyverse)
-library(prolfqua)
+#library(prolfqua)
 istar <- prolfqua::data_ionstar$normalized()
 
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))

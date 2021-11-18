@@ -14,6 +14,7 @@
 #' @importFrom rlang := UQ sym syms .data
 #' @importFrom stats as.formula cor
 #' @importFrom tidyr gather nest nesting separate_rows spread unite unnest unnest_legacy separate
+#' @importFrom tidyr pivot_wider
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
 #' @importFrom forcats fct_relevel
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow

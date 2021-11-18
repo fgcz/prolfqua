@@ -10,9 +10,6 @@ Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
 library(tidyverse)
-library(prolfqua)
-
-library(prolfqua)
 istar <- prolfqua::data_ionstar$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -107,6 +104,13 @@ log2 transform data
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2(force = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{force}}{if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Transformer
 }
