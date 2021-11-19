@@ -222,7 +222,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+#'  iostar <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
@@ -369,7 +369,7 @@ plot_heatmap <- function(data,
 #' @family plotting
 #' @export
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+#' istar <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #'
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data

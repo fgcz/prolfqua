@@ -61,7 +61,7 @@ runSaint <- function(si,
 #' @param CorTCol is it control or T (SaintExpress speach)
 #' @example
 #'
-#' xx <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+#' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #'exampleDat <- xx$data %>% mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #'# sample protein lengths
 #'exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))

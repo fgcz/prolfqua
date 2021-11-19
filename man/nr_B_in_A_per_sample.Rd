@@ -18,7 +18,7 @@ configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
 
 nr_B_in_A_per_sample(data, configur, nested =FALSE)
-bb <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
 nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 }
 \seealso{

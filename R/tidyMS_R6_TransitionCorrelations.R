@@ -664,7 +664,7 @@ impute_correlationBased <- function(x , config){
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-#' bb <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #' nr_B_in_A(bb$data, bb$config)
 #' #undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
@@ -693,7 +693,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' data <- bb$data
 #'
 #' nr_B_in_A_per_sample(data, configur, nested =FALSE)
-#' bb <- prolfqua_data('data_ionstar')$Protein_subsetNorm
+#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   cf <- config
