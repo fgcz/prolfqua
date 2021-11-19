@@ -14,9 +14,7 @@ editor_options:
 ---
 
 
-This vignette describes how QValue filtering, missing value filtering and than `correlation filtering` can be implemented.
-
-
+This vignette describes how QValue filtering, missing value filtering and than `correlation filtering` can be implemented in prolfqua.
 
 
 ```{r setup, include=FALSE}
@@ -80,10 +78,8 @@ config$table$valueVars()
 config$table$idVars()
 
 #'
-data("data_spectronautDIA250_A")
+
 data <- data_spectronautDIA250_A
-colnames(data$data)
-data$data$EG.TotalQuantity..Settings.
 pIDS <- sample(unique(data$data$PG.ProteinAccessions),50)
 
 
@@ -110,6 +106,7 @@ data_spectronautDIA250_A$analysis(data_spectronautDIA250_A$data, data_spectronau
 Given a sample DIA dataset and the configuration the `setup_analysis` function assures that all required columns are present.
 
 ```{r}
+data("data_spectronautDIA250_A")
 longFormat <- data_spectronautDIA250_A$data
 "PEP.StrippedSequence" %in% colnames(longFormat)
 longFormat$Isotope.Label <- "Light"
