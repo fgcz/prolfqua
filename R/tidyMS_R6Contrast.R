@@ -348,8 +348,8 @@ Contrasts <- R6::R6Class(
         get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
           data.frame(lhs = contrast_table[i, "contrast"],
                      dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("c1","c2")]))),
-                     c1_name = contrast_table[i,"c1", drop = T],
-                     c2_name = contrast_table[i,"c2", drop = T], stringsAsFactors = FALSE)
+                     c1_name = contrast_table[i,"c1", drop = TRUE],
+                     c2_name = contrast_table[i,"c2", drop = TRUE], stringsAsFactors = FALSE)
         }
 
         contrast_sides <- purrr::map_df(1:nrow(contrast_sides),
@@ -511,7 +511,7 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
       return(dplyr::ungroup(contrast_result))
     },
-    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
+    #' @description get \code{\link{Contrasts_Plotter}}
     get_Plotter = function(){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -663,7 +663,7 @@ ContrastsROPECA <- R6::R6Class(
 
       return(res)
     },
-    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
+    #' @description get \code{\link{Contrasts_Plotter}}
     get_Plotter = function(){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -761,7 +761,7 @@ ContrastsSaintExpress <- R6::R6Class(
       )))
       res
     },
-    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
+    #' @description get \code{\link{Contrasts_Plotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param scthreshold BFDR threshold to show in the heatmap.
     get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
@@ -854,7 +854,7 @@ ContrastsTable <- R6::R6Class(
     get_contrasts = function(all = FALSE){
       self$contrast_result
     },
-    #' @description get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
+    #' @description get \code{\link{Contrasts_Plotter}}
     get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,

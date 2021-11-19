@@ -169,9 +169,9 @@ summarize_stats <- function(pdata, config){
     dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
-                     sd = stats::sd(!!intsym, na.rm = T),
-                     var = stats::var(!!intsym, na.rm = T),
-                     mean = mean(!!intsym, na.rm = T),.groups = "drop_last") %>%  dplyr::ungroup()
+                     sd = stats::sd(!!intsym, na.rm = TRUE),
+                     var = stats::var(!!intsym, na.rm = TRUE),
+                     mean = mean(!!intsym, na.rm = TRUE),.groups = "drop_last") %>%  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor %>%
     dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
@@ -213,9 +213,9 @@ summarize_stats_all <- function(pdata, config){
     dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
-                     sd = sd(!!intsym,na.rm = T),
-                     var = sd(!!intsym,na.rm = T),
-                     mean = mean(!!intsym,na.rm = T))
+                     sd = sd(!!intsym,na.rm = TRUE),
+                     var = sd(!!intsym,na.rm = TRUE),
+                     mean = mean(!!intsym,na.rm = TRUE))
 
   hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
   hierarchyFactor <- hierarchy
@@ -262,7 +262,7 @@ summarize_stats_quantiles <- function(stats_res,
                                    probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
   stats <- match.arg(stats)
   toQuantiles <- function(x, probs_i = probs) {
-    tibble(probs = probs, quantiles = quantile(x, probs_i , na.rm = T))
+    tibble(probs = probs, quantiles = quantile(x, probs_i , na.rm = TRUE))
   }
   q_column <- paste0(stats,"_quantiles")
 

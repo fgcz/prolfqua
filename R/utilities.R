@@ -191,8 +191,8 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 
     } else {
 
-      warning(paste0("Warning: No row names to preserve. ",
-                     "Object otherwise converted to tibble successfully."))
+      warning("Warning: No row names to preserve. ",
+                     "Object otherwise converted to tibble successfully.")
       tibble::as_tibble(x, ...)
     }
 

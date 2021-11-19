@@ -440,7 +440,7 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
   config <- config$clone(deep = TRUE)
   dl <- group_by(data, across(config$table$fkeysDepth())) %>% nest()
   sl <- group_by(subset, across(config$table$fkeysDepth())) %>% nest()
-  cf <- config$clone(deep = T)
+  cf <- config$clone(deep = TRUE)
   cf$table$factors <- NULL
   cf$table$factorDepth <- 0
   N <- length(dl$data)
