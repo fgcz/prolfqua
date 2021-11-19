@@ -5,8 +5,7 @@
 #' @family LFQData
 #' @examples
 #' library(tidyverse)
-#'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -238,7 +237,7 @@ LFQData <- R6::R6Class(
 #'
 #' @examples
 #' library(tidyverse)
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -413,8 +412,7 @@ LFQDataTransformer <- R6::R6Class(
 #'     stopifnot(is.null(x$power_t_test_quantiles()))
 #'   }
 #' }
-#'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
@@ -422,7 +420,8 @@ LFQDataTransformer <- R6::R6Class(
 #' x<-lfqstats
 #'
 #' #study variance of normalized data
-#' istar <- prolfqua::data_ionstar$normalized()
+#'
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar$config$table$is_intensity_transformed
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -431,7 +430,8 @@ LFQDataTransformer <- R6::R6Class(
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
-#' bb <- prolfqua::data_ionstar$filtered()
+#'
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
@@ -457,9 +457,9 @@ LFQDataStats <- R6::R6Class(
       stats <- match.arg(stats)
       self$lfq = lfqdata
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
-      if(stats == "interaction" ){
+      if (stats == "interaction" ) {
         self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
-      } else if (stats == "all" ){
+      } else if (stats == "all" ) {
         self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       } else if (stats == "pooled" ){
         self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
@@ -580,7 +580,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::data_ionstar
+#' istar <- prolfqua_data('data_ionstar')
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
@@ -665,7 +665,8 @@ LFQDataSummariser <- R6::R6Class(
 #' @examples
 #'
 #' #library(prolfqua)
-#' istar <- prolfqua::data_IonstarProtein_subsetNorm
+#' data('data_IonstarProtein_subsetNorm')
+#' istar <- data_IonstarProtein_subsetNorm
 #'
 #' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
@@ -1002,8 +1003,7 @@ LFQDataWriter <- R6::R6Class(
 #' @examples
 #' library(tidyverse)
 #' #library(prolfqua)
-#'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'

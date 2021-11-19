@@ -55,7 +55,7 @@ plot volcano given multiple conditions
 library(ggplot2)
 library(tidyverse)
 library(ggrepel)
-show <- prolfqua::data_multigroupFC \%>\%
+show <- prolfqua_data('data_multigroupFC') \%>\%
    dplyr::filter(Condition  \%in\% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
 prolfqua::multigroupVolcano(show,
 effect="logFC",

@@ -9,7 +9,7 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -38,7 +38,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -69,7 +69,7 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -118,7 +118,7 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' conf <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -147,7 +147,7 @@ plot_sample_correlation <- function(pdata, config){
 #'    beeswarm = FALSE )
 #' stopifnot("ggplot" %in% class(p))
 #'
-#' bb <- prolfqua::data_skylineSRM_HL_A
+#' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, config)
 #' data <- prolfqua::transform_work_intensity(analysis, config, log2)
@@ -208,7 +208,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  iostar <- prolfqua::data_ionstar$filtered()
+#'  iostar <- prolfqua_data('data_ionstar')$filtered()
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
@@ -222,7 +222,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- prolfqua::data_IonstarProtein_subsetNorm
+#'  iostar <- prolfqua_data('data_ionstar')$Protein_subsetNorm
 #'  iostar$data <- iostar$data %>%
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
@@ -264,7 +264,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @family plotting
 #' @examples
 #' library(tidyverse)
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
@@ -318,7 +318,7 @@ plot_heatmap_cor <- function(data,
 #' @examples
 #' library(prolfqua)
 #' library(tidyverse)
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -369,7 +369,7 @@ plot_heatmap <- function(data,
 #' @family plotting
 #' @export
 #' @examples
-#' istar <- prolfqua::data_IonstarProtein_subsetNorm
+#' istar <- prolfqua_data('data_ionstar')$Protein_subsetNorm
 #'
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -431,7 +431,7 @@ plot_raster <- function(data,
 #'
 #' library(tidyverse)
 #' library(prolfqua)
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
@@ -508,7 +508,7 @@ plot_NA_heatmap <- function(data,
 #' library(tidyverse)
 #' library(prolfqua)
 #'
-#' istar <- prolfqua::data_ionstar$filtered()
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data

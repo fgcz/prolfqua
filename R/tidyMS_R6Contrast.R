@@ -16,11 +16,12 @@ ContrastsInterface <- R6::R6Class(
 )
 # summarise_missing_contrasts
 #' @examples
-#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+#'
+#' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
 #' x <- .summarise_missing_contrasts(ttd$data)
 #' x2 <- as_tibble(x$summary)
 #'
-#debug(.summarise_missing_contrasts)
+# debug(.summarise_missing_contrasts)
 .summarise_missing_contrasts <- function(data,
                                          hierarchy = c("protein_Id"),
                                          contrast = "contrast",
@@ -58,7 +59,7 @@ ContrastsInterface <- R6::R6Class(
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::data_ionstar$normalized()
+#' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
 #' data <- bb$data
@@ -227,7 +228,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::data_ionstar$normalized()
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
@@ -425,7 +426,7 @@ Contrasts <- R6::R6Class(
 #' @examples
 #'
 #' library(prolfqua)
-#' istar <- prolfqua::data_ionstar$normalized()
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1|sampleName)")
@@ -560,7 +561,7 @@ ContrastsModerated <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua::data_ionstar$normalized()
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   strategy_lm("transformedIntensity  ~ dilution.")
@@ -811,7 +812,7 @@ ContrastsSaintExpress <- R6::R6Class(
 #'
 #' library(prolfqua)
 #' library(tidyverse)
-#' bb <- prolfqua::data_ionstar$normalized()
+#' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
 #' data <- bb$data
@@ -928,7 +929,7 @@ ContrastsTable <- R6::R6Class(
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' istar <- prolfqua::data_ionstar$normalized()
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-

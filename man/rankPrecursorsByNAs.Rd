@@ -19,7 +19,7 @@ Ranks precursors by NAs (adds new column .NARank)
 }
 \examples{
 library(tidyverse)
-bb <- prolfqua::data_spectronautDIA250_A
+bb <- prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 res <- removeLarge_Q_Values(analysis, config)

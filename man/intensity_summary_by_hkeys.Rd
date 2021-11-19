@@ -19,7 +19,7 @@ Summarizes the intensities within hierarchy
 
 #library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::data_ionstar$filtered()
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data

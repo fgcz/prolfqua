@@ -211,7 +211,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -237,7 +237,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -299,7 +299,7 @@ R6extractValues <- function(r6class){
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(prolfqua::data_skylinePRMSample_A$data, skylineconfig)
+#' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   configuration <- configuration$clone(deep = TRUE)
@@ -391,7 +391,7 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -439,7 +439,7 @@ sample_subset <- function(size, pdata, config){
 #' @examples
 #'
 #' library(tidyverse)
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -470,7 +470,7 @@ table_factors <- function(pdata, configuration){
 #' @examples
 #' library(tidyverse)
 #' library(prolfqua)
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -496,7 +496,7 @@ hierarchy_counts <- function(pdata, config){
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -551,7 +551,7 @@ hierarchy_counts_sample <- function(pdata,
 #' library(prolfqua)
 #' library(tidyverse)
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -597,7 +597,7 @@ summarize_hierarchy <- function(pdata,
 #' @examples
 #' library(prolfqua)
 #'
-#' bb <- prolfqua::data_ionstar$filtered()
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -605,11 +605,11 @@ summarize_hierarchy <- function(pdata,
 #' x<-spreadValueVarsIsotopeLabel(data,configur)
 #' head(x)
 #'
-#' bb <- prolfqua::data_skylineSRM_HL_A
+#' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
 #'
-#' bb <- prolfqua::data_skylineSRM_HL_A
+#' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' x <- spreadValueVarsIsotopeLabel(analysis, conf)

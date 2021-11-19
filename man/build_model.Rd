@@ -31,7 +31,7 @@ build from data and modelFunction Model
 rm(list = ls())
 library(prolfqua)
 library(tidyverse)
-D <- prolfqua::data_ionstar$normalized()
+D <- prolfqua_data('data_ionstar')$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"

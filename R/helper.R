@@ -4,7 +4,7 @@
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' data_correlatedPeptideList <- prolfqua::data_correlatedPeptideList
+#' data('data_correlatedPeptideList')
 #' transitionCorrelations(data_correlatedPeptideList[[1]])
 transitionCorrelations <- function(dataX) {
   if (nrow(dataX) > 1) {
@@ -22,7 +22,7 @@ transitionCorrelations <- function(dataX) {
 #' @keywords internal
 #' @family transitionCorrelations
 #' @examples
-#' data_correlatedPeptideList <- prolfqua::data_correlatedPeptideList
+#' data(data_correlatedPeptideList)
 #' transitionCorrelationsJack(data_correlatedPeptideList[[1]])
 transitionCorrelationsJack <- function(dataX,
                                        distmethod =
@@ -35,4 +35,15 @@ transitionCorrelationsJack <- function(dataX,
     message("Could not compute correlation, nr rows : ", nrow(dataX))
   }
 }
+
+#' load data from prolfqua
+#' @param datastr name of dataset
+#' @param package default prolfqua
+#' @export
+#' @family data
+prolfqua_data <- function(datastr, package="prolfqua"){
+  data(list = datastr, package = package)
+  return(eval(parse(text = datastr)))
+}
+
 

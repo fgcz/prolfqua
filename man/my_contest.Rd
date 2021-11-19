@@ -18,7 +18,7 @@ applies contrast computation using lmerTest::contest function
 }
 \examples{
 library(prolfqua)
-mb <- prolfqua::data_basicModel_p1807
+mb <- prolfqua_data('data_basicModel_p1807')
 summary(mb)
 
 linfct <- linfct_from_model(mb)

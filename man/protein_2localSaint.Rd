@@ -22,6 +22,8 @@ protein_2localSaint(
 
 \item{proteinID}{protein accession}
 
+\item{geneNames}{column with gene names}
+
 \item{proteinLength}{column with protein lengths}
 
 \item{IP_name}{raw.file}

@@ -13,7 +13,7 @@ pooled variance
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::data_ionstar$normalized()
+bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config
 data <- bb$data
 

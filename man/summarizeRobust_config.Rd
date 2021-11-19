@@ -16,7 +16,7 @@ same as summarize robust but with config
 }
 \examples{
 library(tidyverse)
-bb <- prolfqua::data_ionstar$filtered()
+bb <- prolfqua_data('data_ionstar')$filtered()
 conf <- bb$config
 data <- bb$data
 conf$table$hierarchyDepth = 1

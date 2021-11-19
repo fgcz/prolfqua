@@ -12,7 +12,7 @@ scale within factor levels (e.g. use for pulldown data)
 \examples{
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::data_ionstar$filtered()
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data

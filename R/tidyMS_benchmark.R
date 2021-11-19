@@ -210,7 +210,8 @@ do_confusion_c <- function(
 
 # summarise_missing_contrasts
 #' @examples
-#' ttd <- ionstar_bench_preprocess(prolfqua::data_benchmarkExample)
+#'
+#' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
 #' x <- .summarise_missing_contrasts(ttd$data)
 #' x2 <- as_tibble(x$summary)
 #'
@@ -228,7 +229,7 @@ do_confusion_c <- function(
   xxA <- data |>
     group_by_at(hierarchy) |>
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
-  summary <- xxA |> group_by(nr_na) |> summarize(n = n())
+  summary <- xxA |> group_by(.data$nr_na) |> summarize(n = n())
 
   colnames(summary) <- c("nr_missing", paste(hierarchy, collapse = "_"))
   return(list(summary = summary, nr_na = xxA))
@@ -268,7 +269,7 @@ do_confusion_c <- function(
 #' library(ggpubr)
 #' #library(prolfqua)
 #' library(tidyverse)
-#' ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua::data_benchmarkExample, !is.na(statistic)))
+#' ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic)))
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
 #'                                    model_name = "prot_med_lm"

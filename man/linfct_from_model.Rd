@@ -15,14 +15,14 @@ get linfct from model
 \examples{
 #if(FALSE){
 
-m <- prolfqua::data_basicModel_p1807
+m <- prolfqua_data('data_basicModel_p1807')
 m
 linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
 linfct$linfct_interactions
 
-m <- prolfqua::data_interactionModel_p1807
+m <- prolfqua_data('data_interactionModel_p1807')
 linfct <- linfct_from_model(m)
 all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))

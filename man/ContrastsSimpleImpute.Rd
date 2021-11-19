@@ -17,7 +17,7 @@ if interaction average can not be computed infer it using the 10\%
 
 library(prolfqua)
 library(tidyverse)
-bb <- prolfqua::data_ionstar$normalized()
+bb <- prolfqua_data('data_ionstar')$normalized()
 configur <- bb$config$clone(deep=TRUE)
 configur$table$hierarchyDepth <- 2
 data <- bb$data

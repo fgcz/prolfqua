@@ -10,7 +10,7 @@ linfct_all_possible_contrasts(lin_int)
 create all possible contrasts
 }
 \examples{
-m <- prolfqua::data_basicModel_p1807
+m <- prolfqua_data('data_basicModel_p1807')
 m
 linfct <- linfct_from_model(m)
 

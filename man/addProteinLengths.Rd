@@ -7,11 +7,11 @@
 addProteinLengths(intdata, fasta_file, id_col = "protein_Id")
 }
 \arguments{
+\item{intdata}{data.frame}
+
+\item{fasta_file}{path to fasta file}
+
 \item{id_col}{column with protein ids/accessions.}
-
-\item{indata}{data.frame}
-
-\item{fasta.file}{path to fasta file}
 }
 \description{
 add protein lengths from fasta file to data frame (id_col - protein id column.)

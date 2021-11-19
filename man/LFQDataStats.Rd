@@ -31,8 +31,7 @@ runallfuncs <- function(x){
     stopifnot(is.null(x$power_t_test_quantiles()))
   }
 }
-
-istar <- prolfqua::data_ionstar$filtered()
+istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
@@ -40,7 +39,8 @@ runallfuncs(lfqstats)
 x<-lfqstats
 
 #study variance of normalized data
-istar <- prolfqua::data_ionstar$normalized()
+
+istar <- prolfqua_data('data_ionstar')$normalized()
 istar$config$table$is_intensity_transformed
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -49,7 +49,8 @@ lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
 #Slightly different dataset
-bb <- prolfqua::data_ionstar$filtered()
+
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data

@@ -30,7 +30,7 @@ compute missingness statistics per hierarchy and factor level
 library(tidyverse)
 #library(prolfqua)
 
-bb <- prolfqua::data_ionstar$filtered()
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 stopifnot(nrow(bb$data) == 25780)
 #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")

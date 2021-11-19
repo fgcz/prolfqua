@@ -17,7 +17,7 @@ my_contrast_V2(m, linfct, confint = 0.95)
 only keeps non NA coefficients.
 }
 \examples{
-m <- prolfqua::data_modellingResult_A$modelProtein$linear_model[[1]]
+m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
 linfct <- linfct_from_model(m)$linfct_factors
 my_contrast_V2(m, linfct, confint = 0.95)
 my_contrast_V2(m, linfct, confint = 0.99)

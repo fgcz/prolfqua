@@ -19,9 +19,9 @@ plot_aggregation(data, config, data_aggr, config_reduced, show.legend = FALSE)
 Plot feature data and result of aggretation
 }
 \examples{
-library( prolfqua )
+#library( prolfqua )
 library(tidyverse)
-dd <- prolfqua::data_ionstar$filtered()
+dd <- prolfqua_data('data_ionstar')$filtered()
 config <- dd$config
 data <- dd$data
 

@@ -123,7 +123,7 @@ copy_2grp_markdown <- function(workdir = getwd()){
 #' @keywords internal
 #' @export
 #' @examples
-#' bb <- prolfqua::data_skylinePRMSample_A
+#' bb <- prolfqua_data('data_skylinePRMSample_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")

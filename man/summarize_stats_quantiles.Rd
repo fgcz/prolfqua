@@ -26,14 +26,14 @@ summarize stats output (compute quantiles)
 \examples{
 library(ggplot2)
 library(prolfqua)
-bb1 <- prolfqua::data_ionstar$filtered()
+bb1 <- prolfqua_data('data_ionstar')$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "CV")
 stats_res
-bb <- prolfqua::data_ionstar$normalized()
+bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 config$table$getWorkIntensity()

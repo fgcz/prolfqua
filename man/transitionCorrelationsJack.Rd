@@ -17,7 +17,7 @@ transitionCorrelationsJack(
 Compute correlation matrix with jack
 }
 \examples{
-data_correlatedPeptideList <- prolfqua::data_correlatedPeptideList
+data(data_correlatedPeptideList)
 transitionCorrelationsJack(data_correlatedPeptideList[[1]])
 }
 \seealso{

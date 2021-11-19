@@ -54,13 +54,14 @@ runSaint <- function(si,
 #' @param xx data.frame in long format
 #' @param quantcolumn intensity column
 #' @param proteinID protein accession
+#' @param geneNames column with gene names
 #' @param proteinLength column with protein lengths
 #' @param IP_name raw.file
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or T (SaintExpress speach)
 #' @example
 #'
-#' xx <- prolfqua::data_IonstarProtein_subsetNorm
+#' xx <- prolfqua_data('data_ionstar')$Protein_subsetNorm
 #'exampleDat <- xx$data %>% mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #'# sample protein lengths
 #'exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
@@ -108,8 +109,8 @@ protein_2localSaint <- function(xx,
 
 
 #' add protein lengths from fasta file to data frame (id_col - protein id column.)
-#' @param indata data.frame
-#' @param fasta.file path to fasta file
+#' @param intdata data.frame
+#' @param fasta_file path to fasta file
 #' @param id_col column with protein ids/accessions.
 #' @export
 addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){

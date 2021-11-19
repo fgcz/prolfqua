@@ -17,7 +17,7 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 linfct_matrix_contrasts
 }
 \examples{
-m <- prolfqua::data_basicModel_p1807
+m <- prolfqua_data('data_basicModel_p1807')
 linfct <- linfct_from_model(m,as_list = FALSE)
 linfct
 

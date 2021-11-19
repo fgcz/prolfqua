@@ -16,7 +16,7 @@ Compute nr of B per A
 }
 \examples{
 library(tidyverse)
-bb <- prolfqua::data_ionstar$filtered()
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data \%>\% select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -29,7 +29,7 @@ res$data \%>\%
   dplyr::pull() \%>\% table()
 
 
-bb <- prolfqua::data_skylineSRM_HL_A
+bb <- prolfqua_data('data_skylineSRM_HL_A')
 config <- bb$config_f()
 resDataStart <- bb$analysis(bb$data, bb$config_f())
 
@@ -38,7 +38,7 @@ nr_B_in_A(resDataStart, config, merge = FALSE)
 config$table$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
-bb <- prolfqua::data_IonstarProtein_subsetNorm
+bb <- prolfqua_data('data_ionstar')$Protein_subsetNorm
 nr_B_in_A(bb$data, bb$config)
 #undebug(nr_B_in_A)
 }
