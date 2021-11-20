@@ -1143,7 +1143,7 @@ LFQDataAggregator <- R6::R6Class(
       pb <- progress::progress_bar$new(total = nrow(pl))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
       pdf(filepath , width = width, height = height)
-      for (i in 1:nrow(pl)) {
+      for (i in seq_len(nrow(pl))) {
         print(pl$plots[[i]])
         pb$tick()
       }

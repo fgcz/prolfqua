@@ -304,13 +304,13 @@ R6extractValues <- function(r6class){
 setup_analysis <- function(data, configuration, cc = TRUE ){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
-  for (i in 1:length(table$hierarchy))
+  for (i in seq_along(table$hierarchy))
   {
     data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
 
-  for (i in 1:length(table$factors))
+  for (i in seq_along(table$factors))
   {
     if ( length(table$factors[[i]]) > 1) {
       data <- tidyr::unite(data, UQ(sym(table$factorKeys()[i])), table$factors[[i]],remove = FALSE, sep = configuration$sep)

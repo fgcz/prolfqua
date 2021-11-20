@@ -170,7 +170,7 @@ get contrasts
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link[Contrasts_Plotter]{Contrasts_Plotter}}
+get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter()}\if{html}{\out{</div>}}
 }

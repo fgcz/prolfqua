@@ -18,7 +18,7 @@ matrix or data.frame to tibble (taken from tidyquant)
 }
 \examples{
 x <- matrix(rnorm(20), ncol=4)
-rownames(x) <- LETTERS[1:nrow(x)]
+rownames(x) <- LETTERS[seq_len(nrow(x))]
 matrix_to_tibble(x)
 !(is.matrix(x) || is.data.frame(x))
 

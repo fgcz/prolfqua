@@ -62,7 +62,7 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
   res <- vector( mode = "list", length = length(intnames))
   names(res)  <- intnames
 
-  for (i in 1:length(intnames)) {
+  for (i in seq_along(intnames)) {
     res[[intnames[i]]] <- extractDataLong(Cprotein, what = intnames[i] )
   }
 

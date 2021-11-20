@@ -173,7 +173,7 @@ multigroupVolcano <- function(.data,
 #' @keywords internal
 #' @examples
 #' x <- matrix(rnorm(20), ncol=4)
-#' rownames(x) <- LETTERS[1:nrow(x)]
+#' rownames(x) <- LETTERS[seq_len(nrow(x))]
 #' matrix_to_tibble(x)
 #' !(is.matrix(x) || is.data.frame(x))
 #'
@@ -183,7 +183,6 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
   if (!is.null(preserve_row_names)) {
     row.names <- rownames(x)
     if (!is.null(row.names)  ) {
-      #&& !identical(row.names, 1:nrow(x) %>% as.character())
       dplyr::bind_cols(
         tibble::tibble(!! preserve_row_names := row.names),
         tibble::as_tibble(x, ...)
@@ -219,15 +218,15 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 #' my_jackknife(xx, cortest)
 #' my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
 my_jackknife <- function(xdata, .method, ... ) {
-  x <- 1:nrow(xdata)
+  x <- seq_len(nrow(xdata))
   call <- match.call()
   n <- length(x)
   u <- vector( "list", length = n )
-  for (i in 1:n) {
+  for (i in seq_len(n)) {
     tmp <- xdata[x[-i],]
     u[[i]] <- .method(tmp, ...)
   }
-  names(u) <- 1:n
+  names(u) <- seq_len(n)
   thetahat <- .method(xdata, ...)
   invisible(list(thetahat = thetahat, jack.values = u, call = call ))
 }
@@ -242,8 +241,8 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' @return summarizes results producced with my_jackknife
 #' @examples
 #' dataX <- matrix(rnorm(20), ncol=4)
-#' rownames(dataX)<- paste("R",1:nrow(dataX),sep="")
-#' colnames(dataX)<- paste("C",1:ncol(dataX),sep="")
+#' rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
+#' colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
 #' tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
 #'
 #' res <- jackknifeMatrix(dataX, cor)
@@ -254,10 +253,10 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' res
 jackknifeMatrix <- function(dataX, distmethod , ... ){
   if (is.null(colnames(dataX))) {
-    colnames(dataX) <- paste("C", 1:ncol(dataX), sep = "")
+    colnames(dataX) <- paste("C", seq_len(ncol(dataX)), sep = "")
   }
   if (is.null(rownames(dataX))) {
-    rownames(dataX) <- paste("R", 1:nrow(dataX), sep = "")
+    rownames(dataX) <- paste("R", seq_len(nrow(dataX)), sep = "")
   }
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
@@ -330,7 +329,7 @@ panel.hist <- function(x, ...)
 {
   usr <- par("usr")
   on.exit(par(usr))
-  par(usr = c(usr[1:2], 0, 1.5))
+  par(usr = c(usr[seq_len(2)], 0, 1.5))
   h <- hist(x, plot = FALSE)
   breaks <- h$breaks
   nB <- length(breaks)

@@ -30,7 +30,7 @@ protein_2localSaint(
 
 \item{baitCol}{column with bait definition (condition)}
 
-\item{CorTCol}{is it control or T (SaintExpress speach)}
+\item{CorTCol}{is it control or TRUE (SaintExpress speach)}
 }
 \description{
 Convert tidy table with protein quants into SaintExpress compatible inputs

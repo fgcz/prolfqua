@@ -30,7 +30,7 @@ summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
 summarizeRobust(prolfqua_data('data_checksummarizationrobust87'),"log2Area", "peptide_Id", "sampleName")
 summarizeRobust(prolfqua_data('data_checksummarizerobust69'),"log2Area", "peptide_Id", "sampleName")
 res <- vector(100,mode = "list")
-for (i in 1:100) {
+for (i in seq_len(100)) {
   xx3 <- xx2
   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
   res[[i]] <- list(data = xx3, summary = summarizeRobust(xx3, "log2Area", "peptide_Id", "sampleName"))

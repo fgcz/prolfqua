@@ -464,7 +464,7 @@ plot_lmer_model_and_data_TWO <- function(m,
   colnames(mm) <- names(coeffs)
   mm[,1] <- 1
   coefi <- coeffs[-1]
-  for (i in 1:length(coefi)) {
+  for (i in seq_along(coefi)) {
     positionIDX <- grep(names(coefi)[i], inter)
     mm[positionIDX, i + 1 ] <- 1
   }
@@ -571,7 +571,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
                              contrasts)
   {
     cnams <- setdiff(colnames(data),"interaction")
-    for (i in 1:length(contrasts)) {
+    for (i in seq_along(contrasts)) {
       if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
@@ -604,7 +604,7 @@ linfct_all_possible_contrasts <- function(lin_int ){
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))
   new_lin_fct <- matrix(NA,  nrow = ncol(combs), ncol = ncol(lin_int))
-  for (i in 1:ncol(combs)) {
+  for (i in seq_len(ncol(combs))) {
     newnames[i] <- paste(names[combs[,i]], collapse = " - ")
     new_lin_fct[i,] <- lin_int[combs[1,i],] - lin_int[combs[2,i],]
   }
@@ -631,7 +631,7 @@ linfct_factors_contrasts <- function(m){
 
   factorDepths <- rownames(linfct_factors)
   res <- vector(length(ffac), mode = "list")
-  for (i in 1:length(ffac)) {
+  for (i in seq_along(ffac)) {
     fac <- ffac[i]
     idx <- grep(fac, factorDepths)
     linfct_m <- linfct_factors[idx,]
@@ -674,7 +674,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
   }
   if (sep) {
     res <- list()
-    for (i in 1:nrow(linfct)) {
+    for (i in seq_len(nrow(linfct))) {
       x <- multcomp::glht(model, linfct = linfct[i,,drop = FALSE])
       RHS <- broom::tidy(confint(x)) %>% dplyr::select(-.data$estimate)
 
@@ -805,7 +805,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
   Sigma.hat <- vcov(m)
   coef <- coefficients(m)
   res <- vector(nrow(linfct), mode = "list")
-  for (i in 1:nrow(linfct)) {
+  for (i in seq_len(nrow(linfct))) {
     linfct_v <- linfct[i,,drop = FALSE]
     idx <- which(linfct_v != 0)
     nam <- colnames(linfct_v)[idx]
@@ -844,7 +844,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
+#' #library(prolfqua)
 #' mb <- prolfqua_data('data_basicModel_p1807')
 #' summary(mb)
 #'
@@ -929,7 +929,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #' factor_contrasts
-#'
+#' class(factor_contrasts)
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
 #'         subject_Id = "Compound",
@@ -962,26 +962,8 @@ contrasts_linfct <- function(models,
   modelcol <- "linear_model"
   models <- models %>% dplyr::filter(.data$exists_lmer == TRUE)
 
-  if ("list" %in% class(linfct)) {
-    #stopifnot(length(linfct) == length(models[[modelcol]]))
-    #interaction_model_matrix <- models %>%
-    #  dplyr::mutate(contrast = purrr::map2(!!sym(modelcol) , linfct, function(x, y){ contrastfun(x, linfct = y) } ))
-
-    stopifnot(length(linfct) == length(models[[modelcol]]))
-    res <- vector(mode = "list", length = length(linfct))
-    for (i in 1:length(linfct)) {
-      res[[i]] <- contrast$contrastfun(models$linear_model[[i]], linfct = linfct[[i]])
-    }
-
-    rown <- lapply(res, rownames)
-    intersect <- Reduce(base::intersect, rown)
-    res <- lapply(res , function(x){ x[rownames(x) %in% intersect,]})
-    interaction_model_matrix <- models
-    interaction_model_matrix$contrast <- res
-  } else {
-    interaction_model_matrix <- models %>%
-      dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
-  }
+  interaction_model_matrix <- models %>%
+    dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
 
   mclass <- function(x){
     class(x)[1]

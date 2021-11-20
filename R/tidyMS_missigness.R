@@ -382,13 +382,13 @@ get_contrast <- function(data,
   }
 
 
-  for (i in 1:length(contrasts)) {
+  for (i in seq_along(contrasts)) {
     message(names(contrasts)[i], "=", contrasts[i],"\n")
     data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
   res <- vector(mode = "list", length(contrasts))
   names(res) <- names(contrasts)
-  for (i in 1:length(contrasts)) {
+  for (i in seq_along(contrasts)) {
     sides <- get_sides(contrasts[i], colnames(data))
     df  <- select(data , c( hierarchyKeys, c1 = sides[1], c2 = sides[2], estimate = names(contrasts)[i]))
     df$c1_name <- sides[1]

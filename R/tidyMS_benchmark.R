@@ -54,7 +54,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 
 
   data <- data %>% mutate(
-    R = 1:dplyr::n()
+    R = seq_len(dplyr::n())
     , FDP = dplyr::cummean(!.data$TP)
     , TP_hits = cumsum(.data$TP)
     , FN_hits = .data$T_ - .data$TP_hits

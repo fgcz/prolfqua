@@ -14,7 +14,7 @@ runSaint <- function(si,
                      CLEANUP = TRUE){
   stopifnot(names(si) == c("inter","prey","bait"))
   paths <- character(3)
-  for (i in 1:length(si)) {
+  for (i in seq_along(si)) {
     filen <- file.path(filedir , paste0(names(si)[i],".txt"))
     paths[i] <- filen
     message(filen)

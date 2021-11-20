@@ -466,7 +466,7 @@ plot_NA_heatmap <- function(data,
   if (nrow(res) > 1) {
     res <- if (nrow(res) > limitrows ) {
       message("limiting nr of rows to:", limitrows,"\n")
-      res[sample( 1:nrow(res),limitrows),]
+      res[sample( seq_len(nrow(res)),limitrows),]
     }else{
       res
     }
@@ -546,7 +546,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
     if (add_txt) {text}
 
   if (!is.na(sh)) {
-    x <- x +  ggplot2::scale_shape_manual(values = 1:length(unique(xx[[sh]])))
+    x <- x +  ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }
   return(x)
 }

@@ -352,7 +352,7 @@ Contrasts <- R6::R6Class(
                      c2_name = contrast_table[i,"c2", drop = TRUE], stringsAsFactors = FALSE)
         }
 
-        contrast_sides <- purrr::map_df(1:nrow(contrast_sides),
+        contrast_sides <- purrr::map_df(seq_len(nrow(contrast_sides)),
                                         get_contrast_cols,
                                         xx,
                                         contrast_sides,
@@ -1065,7 +1065,7 @@ Contrasts_Plotter <- R6::R6Class(
     volcano_plotly = function(colour = "modelName"){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
-      for (i in 1:length(res)) {
+      for (i in seq_along(res)) {
         res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
       }
       self$figures_plotly[["volcano"]] <- list(fig = res,
@@ -1143,7 +1143,7 @@ Contrasts_Plotter <- R6::R6Class(
 
       for (fig in self$figures) {
         if ("list" %in% class(fig$fig)) {
-          for (i in 1:length(fig$fig)) {
+          for (i in seq_along(fig$fig)) {
             plotX(fig$fig[[i]], width, height, path, fname = fig$name, xname = names(fig$fig)[i] )
           }
         }else{
@@ -1168,7 +1168,7 @@ Contrasts_Plotter <- R6::R6Class(
 
       for (fig in self$figures_plotly) {
         if ("list" %in% class(fig$fig)) {
-          for (i in 1:length(fig$fig)) {
+          for (i in seq_along(fig$fig)) {
             plotX(fig$fig[[i]], path, fname = fig$name, xname = names(fig$fig)[i] )
           }
         }else{

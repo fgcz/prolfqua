@@ -124,7 +124,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
   resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
   pooled <- vector(length = length(resp$data), mode = "list")
-  for (i in 1:length(resp$data)) {
+  for (i in seq_along(resp$data)) {
     #print(i)
     pooled[[i]] <- compute_pooled(resp$data[[i]], method = method)
   }
@@ -340,7 +340,7 @@ lfq_power_t_test_quantiles_V2 <-
            min.n = 1.5){
 
     res <- vector(mode = "list", length = length(delta))
-    for (i in 1:length(delta)) {
+    for (i in seq_along(delta)) {
       #message("i", i , "delta_i", delta[i], "\n")
       res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
                                               delta = delta[i],

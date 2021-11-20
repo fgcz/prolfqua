@@ -315,7 +315,7 @@ sigheat
 pl <-  signif$get_Plotter()
 bp <- pl$boxplots()$boxplot
 nrb <- min(length(bp), 6)
-bp <- bp[1:nrb]
+bp <- bp[seq_len(nrb)]
 ```
 
 (ref:boxplot) Boxplot of `r nrb` significant proteins.

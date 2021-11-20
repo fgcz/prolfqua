@@ -9,7 +9,7 @@
   }
   res <- list()
   comparisons <- combn(levels, 2)
-  for (i in 1:ncol(comparisons)) {
+  for (i in seq_len(ncol(comparisons))) {
     comp <- comparisons[,i]
     res[[i]] <-  tryCatch(pROC::roc(response = responseX,
                                     predictor = predictorX,

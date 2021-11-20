@@ -458,7 +458,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' summarizeRobust(prolfqua_data('data_checksummarizationrobust87'),"log2Area", "peptide_Id", "sampleName")
 #' summarizeRobust(prolfqua_data('data_checksummarizerobust69'),"log2Area", "peptide_Id", "sampleName")
 #' res <- vector(100,mode = "list")
-#' for (i in 1:100) {
+#' for (i in seq_len(100)) {
 #'   xx3 <- xx2
 #'   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
 #'   res[[i]] <- list(data = xx3, summary = summarizeRobust(xx3, "log2Area", "peptide_Id", "sampleName"))
@@ -564,7 +564,7 @@ aggregate_intensity <- function(data, config, .func)
   message("starting aggregation")
 
   res <- vector( mode = "list" , length = nrow(xnested) )
-  for (i in 1:nrow(xnested)) {
+  for (i in seq_len(nrow(xnested))) {
     pb$tick()
     aggr <- .func(xnested$data[[i]], config)
     res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
@@ -624,7 +624,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
   plots <- vector(mode = "list", length = nrow(xnested_all))
 
   pb <- progress::progress_bar$new(total = nrow(xnested_all))
-  for (i in 1:nrow(xnested_all)) {
+  for (i in seq_len(nrow(xnested_all))) {
     p1 <- plot_hierarchies_line(xnested_all$data[[i]],
                                 xnested_all[[hierarchy_ID]][i],
                                 config = config, show.legend = show.legend)
@@ -721,7 +721,7 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
   newconfig <- make_reduced_hierarchy_config(
     config,
     workIntensity = newcol,
-    hierarchy = config$table$hierarchy[1:config$table$hierarchyDepth])
+    hierarchy = config$table$hierarchy[seq_len(config$table$hierarchyDepth)])
   return(list(data = sumTopInt, config = newconfig))
 }
 
