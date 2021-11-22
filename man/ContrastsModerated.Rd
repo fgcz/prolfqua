@@ -108,6 +108,15 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Class implementing the Contrast interface
+
+
+columns with subject_Id (proteinID)
+
+
+function to adjust p-values
+
+
 initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
@@ -120,7 +129,11 @@ initialize
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{Contrast}}{class implementing a method get_contrasts e.g. Contrasts}
+\item{\code{Contrast}}{class implementing the ContrastInterface}
+
+\item{\code{modelName}}{name of the model}
+
+\item{\code{p.adjust}}{function to adjust p-values - default BH}
 }
 \if{html}{\out{</div>}}
 }

@@ -60,9 +60,9 @@ runSaint <- function(si,
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
 #' @examples
-#'
+#' library(tidyverse)
 #' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'exampleDat <- xx$data %>% mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
+#'exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
 #'# sample protein lengths
 #' exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
 #' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
