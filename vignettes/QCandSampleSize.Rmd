@@ -10,9 +10,9 @@ output:
     toc: yes
     toc_depth: 2
 params:
-  configuration:  !r parse(text="data('data_ionstar');data_ionstar$filtered()$config$clone(deep=TRUE)" )
+  configuration:  !r quote(prolfqua::prolfqua_data('data_ionstar')$filtered()$config$clone(deep=TRUE))
   project_conf: NULL
-  data: !r parse(text="data('data_ionstar');data_ionstar$filtered()$data")
+  data: !r quote(prolfqua::prolfqua_data('data_ionstar')$filtered()$data)
   plot_density: TRUE
   plot_sd_vs_mean: FALSE
   pep: TRUE
@@ -47,7 +47,7 @@ knitr::opts_chunk$set(
 
 data <- eval(params$data)
 
-local_project_conf <- eval(params$project_conf)
+local_project_conf <- params$project_conf
 local_config <- eval(params$configuration)
 
 if (is.null(local_project_conf)) {

@@ -26,7 +26,7 @@ library(prolfqua)
 library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
-data("data_Yeast2Factor")
+data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
 
 pMerged <- data_Yeast2Factor
 pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
