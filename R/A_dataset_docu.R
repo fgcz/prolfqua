@@ -222,7 +222,7 @@ NULL
 
 #' example data for check
 #' @family data
-#' @keywards internal
+#' @keywords internal
 'data_spectronautDIA250_A'
 
 

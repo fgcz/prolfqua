@@ -18,6 +18,15 @@ setup_analysis(data, configuration, cc = TRUE)
 Extracts columns relevant for a configuration from a data frame
 and create new columns i sampleName column etc.
 }
+\examples{
+
+skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
+ ident_qValue = "Detection.Q.Value")
+skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+
+sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
+
+}
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},

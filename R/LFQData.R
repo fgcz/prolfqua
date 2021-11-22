@@ -466,10 +466,9 @@ LFQDataStats <- R6::R6Class(
       }
     },
     #' @description
-    #' compute CV sd and mean of e.g. peptide protein in each condition.
-    #'
-    #' @return data.frame
-    stats = function(all = FALSE){
+    #' access data.frame with statistics
+    #' @return data.frame with computed statistics
+    stats = function(){
       self$statsdf
     },
     #' @description

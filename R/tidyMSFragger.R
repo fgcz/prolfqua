@@ -17,8 +17,8 @@ tidy_MSFragger_MSstats_csv <- function(file){
 
 #' read MSFragger combined protein file up to Version 15
 #' @export
-#' @param
-#' @examples
+#' @param combprot path to combined_protein.tsv file
+#' @param intnames intensity column prefix
 #' @family MSFragger
 #' @keywords internal
 #' @examples
@@ -74,8 +74,8 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
 
 #' read MSFragger combined protein file
 #' @export
-#' @param
-#' @examples
+#' @param combprot path to combined_protein.tsv file
+#' @param intnames intensity column prefix
 #' @family MSFragger
 #' @keywords internal
 #' @examples

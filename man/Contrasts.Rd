@@ -153,6 +153,10 @@ create Contrast
 \item{\code{contrasts}}{a character vector with contrast specificiation}
 
 \item{\code{p.adjust}}{function to adjust the p-values}
+
+\item{\code{global}}{development/internal argument (if FALSE determine linfct for each model.)}
+
+\item{\code{modelName}}{name of contrast method, default WaldTest}
 }
 \if{html}{\out{</div>}}
 }
@@ -217,6 +221,8 @@ write results
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{path}}{directory}
+
+\item{\code{filename}}{name of excel file to write to.}
 
 \item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
 }

@@ -10,6 +10,11 @@ tidy_MSFragger_combined_protein_V16(
     "total.spectral.count", "unique.spectral.count", "spectral.count")
 )
 }
+\arguments{
+\item{combprot}{path to combined_protein.tsv file}
+
+\item{intnames}{intensity column prefix}
+}
 \description{
 read MSFragger combined protein file
 }

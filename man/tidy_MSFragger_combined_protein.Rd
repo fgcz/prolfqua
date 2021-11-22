@@ -13,6 +13,11 @@ tidy_MSFragger_combined_protein(
   subgroup = "subgroup"
 )
 }
+\arguments{
+\item{combprot}{path to combined_protein.tsv file}
+
+\item{intnames}{intensity column prefix}
+}
 \description{
 read MSFragger combined protein file up to Version 15
 }

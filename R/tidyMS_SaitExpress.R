@@ -59,20 +59,20 @@ runSaint <- function(si,
 #' @param IP_name raw.file
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
-#' @example
+#' @examples
 #'
 #' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #'exampleDat <- xx$data %>% mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
 #'# sample protein lengths
-#'exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
-#'res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
+#' exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
+#' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
 #'                    proteinID = "protein_Id",
 #'                    proteinLength = "proteinLength",
 #'                    IP_name = "raw.file",
 #'                    baitCol = "dilution.",
 #'                    CorTCol = "CorT"
 #'                    )
-#'stopifnot(names(res) == c( "inter", "prey",  "bait"))
+#' stopifnot(names(res) == c( "inter", "prey",  "bait"))
 #'
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",

@@ -268,7 +268,7 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_interactionModel_p1807
+#' m <- prolfqua_data('data_interactionModel_p1807')
 #' plot_lmer_peptide_predictions(m)
 plot_lmer_peptide_predictions <- function(m){
   data <- m@frame

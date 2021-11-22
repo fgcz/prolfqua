@@ -294,12 +294,11 @@ R6extractValues <- function(r6class){
 #' @family configuration
 #' @examples
 #'
-#'
 #' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A$data, skylineconfig)
+#' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE ){
   configuration <- configuration$clone(deep = TRUE)

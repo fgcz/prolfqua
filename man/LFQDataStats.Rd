@@ -119,13 +119,13 @@ create analyse variances and CV
 \if{html}{\out{<a id="method-stats"></a>}}
 \if{latex}{\out{\hypertarget{method-stats}{}}}
 \subsection{Method \code{stats()}}{
-compute CV sd and mean of e.g. peptide protein in each condition.
+access data.frame with statistics
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats(all = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-data.frame
+data.frame with computed statistics
 }
 }
 \if{html}{\out{<hr>}}

@@ -9,6 +9,10 @@ plot_lmer_peptide_predictions(m)
 \description{
 Plot prdictions
 }
+\examples{
+m <- prolfqua_data('data_interactionModel_p1807')
+plot_lmer_peptide_predictions(m)
+}
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},

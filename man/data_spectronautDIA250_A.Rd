@@ -37,4 +37,4 @@ Other data:
 \code{\link{prolfqua_data}()}
 }
 \concept{data}
-\keyword{datasets}
+\keyword{internal}
