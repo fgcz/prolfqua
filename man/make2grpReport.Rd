@@ -8,7 +8,7 @@ make2grpReport(
   startdata,
   atable,
   GRP2,
-  Description = "Description",
+  protein_annot = "Description",
   outpath = ".",
   revpattern = "^REV_",
   contpattern = "^zz|^CON__",
@@ -22,7 +22,7 @@ make2grpReport(
 
 \item{GRP2}{list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold}
 
-\item{Description}{column with portein desciription e.g. (fasta header)}
+\item{protein_annot}{column with portein desciription e.g. (fasta header)}
 
 \item{outpath}{directory to write results too.}
 

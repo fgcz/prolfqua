@@ -1,6 +1,86 @@
+#' add protein lengths from fasta file to data frame (id_col - protein id column.)
+#' @rdname saintExpress
+#' @param intdata data.frame
+#' @param fasta_file path to fasta file
+#' @param id_col column with protein ids/accessions.
+#' @export
+addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
+  fasta <- prozor::readPeptideFasta(file = fasta_file)
+  plengths <- data.frame(id = names(fasta) , protein.length = sapply(fasta, stringr::str_length))
+  byx <- "id"
+  names(byx) <- id_col
+  intdata <- dplyr::left_join(intdata, plengths , by = byx)
+  intdata$protein.length[is.na(intdata$protein.length)] <- as.integer(mean(intdata$protein.length, na.rm = TRUE))
+  return(intdata)
+}
+
+#' Convert tidy table with protein quants into SaintExpress compatible inputs
+#' @param xx data.frame in long format
+#' @export
+#' @rdname saintExpress
+#' @param quantcolumn intensity column
+#' @param proteinID protein accession
+#' @param geneNames column with gene names
+#' @param proteinLength column with protein lengths
+#' @param IP_name raw.file
+#' @param baitCol column with bait definition (condition)
+#' @param CorTCol is it control or TRUE (SaintExpress speach)
+#' @examples
+#' library(tidyverse)
+#' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
+#'# sample protein lengths
+#' exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
+#' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
+#'                    proteinID = "protein_Id",
+#'                    proteinLength = "proteinLength",
+#'                    IP_name = "raw.file",
+#'                    baitCol = "dilution.",
+#'                    CorTCol = "CorT"
+#'                    )
+#' stopifnot(names(res) == c( "inter", "prey",  "bait"))
+#' runSaint(res)
+protein_2localSaint <- function(xx,
+                                quantcolumn = "mq.protein.intensity",
+                                proteinID = "protein_Id",
+                                geneNames  = proteinID,
+                                proteinLength = "protein.length",
+                                IP_name = "raw.file",
+                                baitCol = "bait",
+                                CorTCol = "CorT"
+){
+  reqcolumns <- c(quantcolumn,proteinID,geneNames,proteinLength,IP_name,baitCol,CorTCol)
+  if ( !all(reqcolumns %in% colnames(xx)) ) {
+
+    stop("columns not found ", paste0(reqcolumns[which(!reqcolumns %in% colnames(xx))]))
+  }
+  res <- list()
+  bait <- xx |> dplyr::select(!!!syms(c(IP_name,baitCol,CorTCol)))
+  bait <- dplyr::distinct(bait)
+  res$bait <- bait
+  prey <- xx |> dplyr::select(!!!syms(c(proteinID,
+                                        proteinLength ,geneNames)))
+  prey <- distinct(prey)
+  res$prey <- prey
+  inter <- xx |>
+    dplyr::select(!!!syms(c(IP_name,
+                            baitCol,
+                            proteinID ,
+                            quantcolumn))) |>
+    filter(!!sym(quantcolumn) > 0)
+  res$inter <- inter
+  res <- res[c("inter","prey","bait")]
+  return(res)
+}
+
+
+
+
 #' Network visualization.
 #' look at https://www.jessesadler.com/post/network-analysis-with-r/
 #' https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
+#' @export
+#' @rdname saintExpress
 #' @param si output of protein_2localSaint function
 #' @param filedir where to store the saint express inputs
 #' @param spc if TRUE spectum counts if FALSE intensities (see SaintExpress documentation for more details)
@@ -48,77 +128,3 @@ runSaint <- function(si,
   return(res)
 }
 
-
-#' Convert tidy table with protein quants into SaintExpress compatible inputs
-#' @export
-#' @param xx data.frame in long format
-#' @param quantcolumn intensity column
-#' @param proteinID protein accession
-#' @param geneNames column with gene names
-#' @param proteinLength column with protein lengths
-#' @param IP_name raw.file
-#' @param baitCol column with bait definition (condition)
-#' @param CorTCol is it control or TRUE (SaintExpress speach)
-#' @examples
-#' library(tidyverse)
-#' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
-#'# sample protein lengths
-#' exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
-#' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
-#'                    proteinID = "protein_Id",
-#'                    proteinLength = "proteinLength",
-#'                    IP_name = "raw.file",
-#'                    baitCol = "dilution.",
-#'                    CorTCol = "CorT"
-#'                    )
-#' stopifnot(names(res) == c( "inter", "prey",  "bait"))
-#'
-protein_2localSaint <- function(xx,
-                                quantcolumn = "mq.protein.intensity",
-                                proteinID = "protein_Id",
-                                geneNames  = proteinID,
-                                proteinLength = "protein.length",
-                                IP_name = "raw.file",
-                                baitCol = "bait",
-                                CorTCol = "CorT"
-){
-  reqcolumns <- c(quantcolumn,proteinID,geneNames,proteinLength,IP_name,baitCol,CorTCol)
-  if ( !all(reqcolumns %in% colnames(xx)) ) {
-
-    stop("columns not found ", paste0(reqcolumns[which(!reqcolumns %in% colnames(xx))]))
-  }
-  res <- list()
-  bait <- xx |> dplyr::select(!!!syms(c(IP_name,baitCol,CorTCol)))
-  bait <- dplyr::distinct(bait)
-  res$bait <- bait
-  prey <- xx |> dplyr::select(!!!syms(c(proteinID,
-                                        proteinLength ,geneNames)))
-  prey <- distinct(prey)
-  res$prey <- prey
-  inter <- xx |>
-    dplyr::select(!!!syms(c(IP_name,
-                            baitCol,
-                            proteinID ,
-                            quantcolumn))) |>
-    filter(!!sym(quantcolumn) > 0)
-  res$inter <- inter
-  res <- res[c("inter","prey","bait")]
-  return(res)
-}
-
-
-#' add protein lengths from fasta file to data frame (id_col - protein id column.)
-#' @param intdata data.frame
-#' @param fasta_file path to fasta file
-#' @param id_col column with protein ids/accessions.
-#' @export
-addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
-  fasta <- prozor::readPeptideFasta(file = fasta_file)
-  plengths <- data.frame(id = names(fasta) , protein.length = sapply(fasta, stringr::str_length))
-  byx <- "id"
-  names(byx) <- id_col
-  intdata <- dplyr::left_join(intdata, plengths , by = byx)
-  intdata$protein.length[is.na(intdata$protein.length)] <- as.integer(mean(intdata$protein.length, na.rm = TRUE))
-  return(intdata)
-}
