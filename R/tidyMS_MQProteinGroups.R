@@ -26,6 +26,9 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
 
   pint <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("intensity."))
   pintLFQ <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("lfq.intensity."))
+  pintMSCount <- dplyr::select(MQProteinGroups, "protein.group.id" = "id", starts_with("ms.ms.count."))
+
+
   meta <- dplyr::select(MQProteinGroups,
                         "protein.ids" = "protein.ids",
                         "majority.protein.ids" = "majority.protein.ids",
@@ -43,7 +46,13 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
     tidyr::gather(key = "raw.file", value = "mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",.data$raw.file))
 
+  pintCount <- pintLFQ %>%
+    tidyr::gather(key = "raw.file", value = "mq.protein.ms.ms.count", starts_with("ms.ms.count.")) %>%
+    dplyr::mutate(raw.file = gsub("ms.ms.count.","",.data$raw.file))
+
+
   pint <- dplyr::inner_join(pint, pintLFQ , by = c("protein.group.id","raw.file"))
+  pint <- dplyr::inner_join(pint, pintCount , by = c("protein.group.id","raw.file"))
 
 
   res <- dplyr::inner_join(meta, pint , by = "protein.group.id")
