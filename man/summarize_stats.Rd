@@ -2,23 +2,43 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{summarize_stats}
 \alias{summarize_stats}
+\alias{summarize_stats_all}
+\alias{summarize_stats_quantiles}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
 summarize_stats(pdata, config)
+
+summarize_stats_all(pdata, config)
+
+summarize_stats_quantiles(
+  stats_res,
+  config,
+  stats = c("sd", "CV"),
+  probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
+)
 }
 \arguments{
 \item{pdata}{data.frame}
 
 \item{config}{AnalysisConfiguration}
 
+\item{stats_res}{result of running `summarize_stats`}
+
+\item{stats}{summarize either sd or CV}
+
+\item{probs}{for which quantiles 10, 20 etc.}
+
 \item{all}{also compute for all samples (default), or only of conditions (set to FALSE)}
 }
 \description{
 Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
+
+Compute mean, sd, and CV for e.g. Peptides, or proteins, for all samples.
+
+summarize stats output (compute quantiles)
 }
 \examples{
 
-library(prolfqua)
 library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config
@@ -35,11 +55,46 @@ head(d)
 d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 res1 \%>\% dplyr::filter(dilution. == "pooled")
 
+
+library(tidyverse)
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- bb$config
+data <- bb$data
+
+res1 <- summarize_stats_all(data, config)
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+head(d)
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+head(d)
+#CON__P02769~18~NA VHKECCHGDLLECADDR
+d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+res1 \%>\% dplyr::filter(dilution. == "pooled")
+
+library(ggplot2)
+bb1 <- prolfqua_data('data_ionstar')$filtered()
+config <- bb1$config$clone( deep = TRUE)
+data <- bb1$data
+stats_res <- summarize_stats(data, config)
+summarize_stats_quantiles(stats_res, config)
+summarize_stats_quantiles(stats_res, config, stats = "CV")
+stats_res
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- bb$config$clone(deep = TRUE)
+data <- bb$data
+config$table$getWorkIntensity()
+stats_res <- summarize_stats(data, config)
+summarize_stats_quantiles(stats_res, config)
+summarize_stats_quantiles(stats_res, config, stats = "sd")
+
+stats_res <- summarize_stats(data, config)
+xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
+ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = dilution.)) + geom_line() + geom_point()
+
+
 }
 \seealso{
 Other stats: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
 \code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{lfq_power_t_test_quantiles}()},
@@ -48,9 +103,31 @@ Other stats:
 \code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
-\code{\link{poolvar}()},
-\code{\link{summarize_stats_all}()},
-\code{\link{summarize_stats_quantiles}()}
+\code{\link{pooled_V2}()}
+
+Other stats: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{lfq_power_t_test_proteins}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
+\code{\link{lfq_power_t_test_quantiles}()},
+\code{\link{plot_stat_density_median}()},
+\code{\link{plot_stat_density}()},
+\code{\link{plot_stat_violin_median}()},
+\code{\link{plot_stat_violin}()},
+\code{\link{plot_stdv_vs_mean}()},
+\code{\link{pooled_V2}()}
+
+Other stats: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{lfq_power_t_test_proteins}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
+\code{\link{lfq_power_t_test_quantiles}()},
+\code{\link{plot_stat_density_median}()},
+\code{\link{plot_stat_density}()},
+\code{\link{plot_stat_violin_median}()},
+\code{\link{plot_stat_violin}()},
+\code{\link{plot_stdv_vs_mean}()},
+\code{\link{pooled_V2}()}
 }
 \concept{stats}
 \keyword{internal}
