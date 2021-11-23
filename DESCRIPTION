@@ -2,8 +2,10 @@ Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
 Version: 0.2.5
-Author: Witold Wolski <wewolski@gmail.com>
-Maintainer: Witold Wolski <wewolski@gmail.com>
+Authors@R: c(person("Witold", "Wolski",
+        email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-6468-120X")))
 Description: The prolfqua package integrates essential steps
     of the mass spectrometry based label free quantification data
     analysis workflow: quality control, data normalization, protein aggregation,
