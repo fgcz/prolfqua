@@ -30,6 +30,7 @@
 #' @import tidyverse
 #' @importFrom yaml write_yaml
 #' @importFrom stats .lm.fit glm model.matrix residuals
+#' @importFrom vsn justvsn
 NULL
 
 #' Internal Functions by category

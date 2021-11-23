@@ -85,17 +85,15 @@ pooled_V1 <- function(x){
 #'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 #' compute_pooled(y)
 #' yb <- y %>% dplyr::filter(not_na > 1)
-#' #prolfqua:::pooled_V2(yb)
-#' #prolfqua:::pooled_V1(yb)
 compute_pooled <- function(x, method = c("V1","V2")){
   method <- match.arg(method)
   xm <- x %>% dplyr::filter(.data$not_na > 0)
   meanAll <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
   not_na  = sum(xm$not_na)
 
-  func <- prolfqua:::pooled_V1
+  func <- pooled_V1
   if (method == "V2") {
-    func <- prolfqua:::pooled_V2
+    func <- pooled_V2
   }
   x <- x %>% dplyr::filter(.data$not_na > 1)
 

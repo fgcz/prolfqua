@@ -60,14 +60,15 @@ Suggests:
     KernSmooth,
     knitr,
     multcomp,
+    MSstats,
     pROC,
     plyr,
     rmarkdown,
     testthat,
     prolfquaData,
     SummarizedExperiment,
-    MSstats,
-    proDA
+    proDA,
+    vsn
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 

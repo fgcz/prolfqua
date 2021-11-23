@@ -73,7 +73,7 @@ filter_difference <- function(x, y, config){
 #' @param startdata table in long format
 #' @param atable AnalysisTableAnnotation annotate startdata table
 #' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold
-#' @param Description column with portein desciription e.g. (fasta header)
+#' @param protein_annot column with portein desciription e.g. (fasta header)
 #' @param outpath directory to write results too.
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
@@ -83,7 +83,7 @@ filter_difference <- function(x, y, config){
 make2grpReport <- function(startdata,
                              atable,
                              GRP2,
-                             Description = "Description",
+                             protein_annot = "Description",
                              outpath = ".",
                              revpattern = "^REV_",
                              contpattern = "^zz|^CON__",
@@ -106,7 +106,7 @@ make2grpReport <- function(startdata,
     return(list(stats = GRP2, distinctprotid = distinctprotid))
   }
 
-  res <- annotProtein(startdata, Accession = atable$hierarchy[[1]], !!sym(Description), revpattern = revpattern, contpattern = contpattern)
+  res <- annotProtein(startdata, Accession = atable$hierarchy[[1]], !!sym(protein_annot), revpattern = revpattern, contpattern = contpattern)
   GRP2 <- c(GRP2, res$stats)
 
   if (remove) {
