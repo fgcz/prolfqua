@@ -120,9 +120,7 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
-\code{\link{strategy_glm}()},
 \code{\link{strategy_lmer}()},
-\code{\link{strategy_lm}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
 Other workflows: 
@@ -173,7 +171,6 @@ Other MSFragger:
 \code{\link{tidy_MSFragger_combined_protein}()}
 
 Other stats: 
-\code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
 \code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{lfq_power_t_test_quantiles}()},
@@ -182,9 +179,7 @@ Other stats:
 \code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
-\code{\link{poolvar}()},
-\code{\link{summarize_stats_all}()},
-\code{\link{summarize_stats_quantiles}()},
+\code{\link{pooled_V2}()},
 \code{\link{summarize_stats}()}
 }
 \concept{MSFragger}

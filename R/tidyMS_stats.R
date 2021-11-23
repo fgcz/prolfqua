@@ -1,4 +1,7 @@
+#' compute pooled variance
+#' @rdname pooled_var
 #' @examples
+#' @param x data.frame
 #' library(tidyverse)
 #' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 #' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
@@ -36,6 +39,9 @@ pooled_V2 <- function(x){
   return(res)
 }
 
+#' compute pooled variance V1
+#' @rdname pooled_var
+#' @param x data.frame
 pooled_V1 <- function(x){
   n <- x$not_na
   sample.var <- x$var
@@ -71,6 +77,7 @@ pooled_V1 <- function(x){
 #' https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
 #'
 #' @export
+#' @rdname pooled_var
 #' @keywords internal
 #' @family stats
 #'
@@ -105,11 +112,11 @@ compute_pooled <- function(x, method = c("V1","V2")){
 }
 #' pooled variance
 #' @export
+#' @rdname pooled_var
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#' library(prolfqua)
 #' library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' config <- bb$config
@@ -139,11 +146,11 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' @param config AnalysisConfiguration
 #' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
+#' @rdname summarize_stats
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#' library(prolfqua)
 #' library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' config <- bb$config
@@ -185,11 +192,11 @@ summarize_stats <- function(pdata, config){
 #' @param config AnalysisConfiguration
 #' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
+#' @rdname summarize_stats
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#' library(prolfqua)
 #' library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' config <- bb$config
@@ -228,12 +235,12 @@ summarize_stats_all <- function(pdata, config){
 #' @param config AnalysisConfiguration
 #' @param stats summarize either sd or CV
 #' @param probs for which quantiles 10, 20 etc.
+#' @rdname summarize_stats
 #' @export
 #' @keywords internal
 #' @family stats
 #' @examples
 #' library(ggplot2)
-#' library(prolfqua)
 #' bb1 <- prolfqua_data('data_ionstar')$filtered()
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data

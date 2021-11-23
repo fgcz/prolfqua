@@ -1,3 +1,5 @@
+#' @importFrom conflicted conflict_prefer
+#' @importFrom forcats fct_relevel
 #' @importFrom dplyr all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr one_of rename select select_at summarize_at summarize ungroup vars
@@ -7,30 +9,29 @@
 #' @importFrom ggplot2 stat_summary scale_x_continuous scale_y_continuous theme
 #'
 #' @importFrom ggrepel geom_text_repel
+#' @importFrom GGally ggpairs
 #' @importFrom glue glue
 #' @importFrom graphics par rect hist
+#' @importFrom graphics abline pairs plot text
+#' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
+#' @importFrom htmlwidgets saveWidget
 #' @importFrom pheatmap pheatmap
+#' @importFrom plotly ggplotly
+#' @importFrom prozor readPeptideFasta
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := UQ sym syms .data
 #' @importFrom stats as.formula cor
+#' @importFrom stats .lm.fit glm model.matrix residuals
 #' @importFrom tidyr gather nest nesting separate_rows spread unite unnest unnest_legacy separate
 #' @importFrom tidyr pivot_wider
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
-#' @importFrom forcats fct_relevel
-#' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
-#' @importFrom graphics abline pairs plot text
 #' @importFrom stats anova coef coefficients confint cor.test df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
-#' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom stringr str_trim
-#' @importFrom GGally ggpairs
-#' @importFrom conflicted conflict_prefer
-#' @importFrom htmlwidgets saveWidget
-#' @importFrom plotly ggplotly
 #' @import tidyverse
-#' @importFrom yaml write_yaml
-#' @importFrom stats .lm.fit glm model.matrix residuals
+#' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom vsn justvsn
+#' @importFrom yaml write_yaml
 NULL
 
 #' Internal Functions by category

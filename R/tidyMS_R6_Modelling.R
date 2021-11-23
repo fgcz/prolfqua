@@ -6,8 +6,8 @@
   as.character(e)
 }
 
-
 #' Create custom lmer model
+#' @rdname strategy
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report
@@ -49,6 +49,7 @@ strategy_lmer <- function(modelstr,
 }
 
 #' Create custom lm model
+#' @rdname strategy
 #' @export
 #' @param modelstr model formula
 #' @param model_name name of model
@@ -90,6 +91,7 @@ strategy_lm <- function(modelstr,
 
 #' Create custom quasibinomial glm model
 #' @export
+#' @rdname strategy
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report

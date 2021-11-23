@@ -51,9 +51,7 @@ Other modelling:
 \code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_predicted_interactions}()},
-\code{\link{strategy_glm}()},
 \code{\link{strategy_lmer}()},
-\code{\link{strategy_lm}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}

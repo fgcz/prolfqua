@@ -14,32 +14,7 @@ ContrastsInterface <- R6::R6Class(
     to_wide = function(){stop("to_wide not implemented.")}
   )
 )
-# summarise_missing_contrasts
-#' @examples
-#'
-#' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
-#' x <- .summarise_missing_contrasts(ttd$data)
-#' x2 <- as_tibble(x$summary)
-#'
-# debug(.summarise_missing_contrasts)
-.summarise_missing_contrasts <- function(data,
-                                         hierarchy = c("protein_Id"),
-                                         contrast = "contrast",
-                                         what = "statistic") {
-  data <- tidyr::complete(
-    data,
-    tidyr::nesting(!!!syms(contrast)),
-    tidyr::nesting(!!!syms(hierarchy))
-  )
 
-  xxA <- data |>
-    group_by_at(hierarchy) |>
-    summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
-  summary <- xxA |> group_by(.data$nr_na) |> summarize(n = n())
-
-  colnames(summary) <- c("nr_missing", paste(hierarchy, collapse = "_"))
-  return(list(summary = summary, nr_na = xxA))
-}
 
 .requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
                               "c1_name" , "c2_name" , "sigma","df",
@@ -898,33 +873,6 @@ ContrastsTable <- R6::R6Class(
                       format = format)
     }
   ))
-
-
-
-
-# plot score distributions by species
-.plot_score_distribution <- function(data,
-                                     score =list(list(score = "estimate",xlim = c(-1,2) ),
-                                                 list(score = "statistic", xlim = c(-3,10) )),
-                                     contrast = "contrast",
-
-                                     annot = "peptide level statistics density"){
-  plots <- list()
-  for (i in score) {
-    xlim = i$xlim
-    score = i$score
-    plots[[score]] <- data %>% ggplot(aes(x = !!sym(score),
-                                          y = !!sym(contrast))) +
-      ggridges::geom_density_ridges(alpha = 0.1) + xlim(xlim)
-  }
-  fig <- ggpubr::ggarrange(plotlist = plots,
-                           nrow = 1,
-                           common.legend = TRUE,
-                           legend = "bottom")
-
-  fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(annot, size = 10))
-  return(fig)
-}
 
 
 # Contrasts_Plotter ----
