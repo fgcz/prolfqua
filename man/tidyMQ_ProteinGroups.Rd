@@ -19,6 +19,7 @@ protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, strin
 mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 head(mq_proteins)
 plot(mq_proteins$mq.protein.intensity, mq_proteins$mq.protein.lfq.intensity, log="xy")
+plot(mq_proteins$mq.protein.intensity, mq_proteins$mq.protein.ms.ms.count, log="xy")
 abline(0,1, col=2)
 
 }

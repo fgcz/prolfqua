@@ -10,8 +10,6 @@ plot contrasts
 }
 \examples{
 
-rm(list = ls())
-library(prolfqua)
 library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')$normalized()
@@ -32,22 +30,25 @@ mod <- build_model(
  #mod$get_coefficients()
 
  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
-  "dil.e_vs_a" = "dilution.e - dilution.a",
-  "dil.e_vs_b" = "dilution.e - dilution.b",
-  "dil.c_vs_b" = "dilution.c - dilution.b"
+  "dil.e_vs_a" = "dilution.e - dilution.a"
+  #,"dil.e_vs_b" = "dilution.e - dilution.b",
+  #"dil.c_vs_b" = "dilution.c - dilution.b"
  )
 #Contrasts$debug("get_contrasts")
 contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
-
+#Contrasts_Plotter$debug("score_plot")
 cp <- Contrasts_Plotter$new(tmp ,
  contrast$subject_Id,
 volcano = list(list(score = "FDR", thresh = 1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                 list(score = "FDR", xlim = c(0,1,0.05))))
-cp$histogram()
-cp$histogram_estimate()
+                 list(score = "FDR", xlim = c(0,1,0.05))),
+score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
+p <- cp$score_plot()
+cp$score_plotly()
+p <- cp$histogram()
+p <- cp$histogram_estimate()
 res <- cp$volcano()
 length(res)
 res
@@ -137,11 +138,9 @@ Other plotting:
 
 \item{\code{contrast}}{column with contrasts names, default "contrast"}
 
-\item{\code{figures}}{list of generated figures}
-
-\item{\code{figures_plotly}}{list of generated figures}
-
 \item{\code{volcano_spec}}{volcano plot specification}
+
+\item{\code{score_spec}}{score plot specification}
 
 \item{\code{histogram_spec}}{plot specification}
 }
@@ -157,9 +156,8 @@ Other plotting:
 \item \href{#method-volcano_plotly}{\code{Contrasts_Plotter$volcano_plotly()}}
 \item \href{#method-ma_plot}{\code{Contrasts_Plotter$ma_plot()}}
 \item \href{#method-ma_plotly}{\code{Contrasts_Plotter$ma_plotly()}}
-\item \href{#method-all_figs}{\code{Contrasts_Plotter$all_figs()}}
-\item \href{#method-write_pdf}{\code{Contrasts_Plotter$write_pdf()}}
-\item \href{#method-write_plotly}{\code{Contrasts_Plotter$write_plotly()}}
+\item \href{#method-score_plot}{\code{Contrasts_Plotter$score_plot()}}
+\item \href{#method-score_plotly}{\code{Contrasts_Plotter$score_plotly()}}
 \item \href{#method-clone}{\code{Contrasts_Plotter$clone()}}
 }
 }
@@ -175,6 +173,7 @@ create Crontrast_Plotter
   volcano = list(list(score = "FDR", thresh = 0.1)),
   histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
     xlim = c(0, 1, 0.05))),
+  score = list(list(score = "statistic", thresh = NULL)),
   fcthresh = 1,
   modelName = "Model",
   estimate = "estimate",
@@ -248,6 +247,16 @@ plotly volcano plots
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(colour = "modelName")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colour}}{column in contrast matrix with colour coding}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+list of ggplots
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ma_plot"></a>}}
@@ -255,15 +264,20 @@ plotly volcano plots
 \subsection{Method \code{ma_plot()}}{
 ma plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc = 1, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fc}}{fold change abline}
+
+\item{\code{colour}}{column in contrast matrix with colour coding}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
 }
 }
 \if{html}{\out{<hr>}}
@@ -272,63 +286,64 @@ ma plot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc = 1, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fc}}{fold change abline}
+
+\item{\code{colour}}{column in contrast matrix with colour coding.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+list of ggplots
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-all_figs"></a>}}
-\if{latex}{\out{\hypertarget{method-all_figs}{}}}
-\subsection{Method \code{all_figs()}}{
-generate all figures
+\if{html}{\out{<a id="method-score_plot"></a>}}
+\if{latex}{\out{\hypertarget{method-score_plot}{}}}
+\subsection{Method \code{score_plot()}}{
+plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$all_figs()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_pdf"></a>}}
-\if{latex}{\out{\hypertarget{method-write_pdf}{}}}
-\subsection{Method \code{write_pdf()}}{
-write figures in pdf format
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_pdf(path, width = 10, height = 10)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plot(scorespec, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{path}
+\item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
 
-\item{\code{width}}{figure with}
-
-\item{\code{height}}{figure height}
+\item{\code{colour}}{column with colour coding}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+list of ggplots
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_plotly"></a>}}
-\if{latex}{\out{\hypertarget{method-write_plotly}{}}}
-\subsection{Method \code{write_plotly()}}{
-write figures into thml
+\if{html}{\out{<a id="method-score_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-score_plotly}{}}}
+\subsection{Method \code{score_plotly()}}{
+plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$write_plotly(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plotly(scorespec, colour = "modelName")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{path}
+\item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
+
+\item{\code{colour}}{column with colour coding}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+list of ggplots
 }
 }
 \if{html}{\out{<hr>}}

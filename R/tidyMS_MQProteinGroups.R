@@ -10,6 +10,7 @@
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
 #' plot(mq_proteins$mq.protein.intensity, mq_proteins$mq.protein.lfq.intensity, log="xy")
+#' plot(mq_proteins$mq.protein.intensity, mq_proteins$mq.protein.ms.ms.count, log="xy")
 #' abline(0,1, col=2)
 #'
 tidyMQ_ProteinGroups <- function(MQProteinGroups) {
@@ -46,7 +47,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
     tidyr::gather(key = "raw.file", value = "mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",.data$raw.file))
 
-  pintCount <- pintLFQ %>%
+  pintCount <- pintMSCount %>%
     tidyr::gather(key = "raw.file", value = "mq.protein.ms.ms.count", starts_with("ms.ms.count.")) %>%
     dplyr::mutate(raw.file = gsub("ms.ms.count.","",.data$raw.file))
 

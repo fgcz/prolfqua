@@ -623,13 +623,13 @@ ContrastsROPECA <- R6::R6Class(
           p.value = "p.value",
           max.n = 10)
         contrast_result <- self$p.adjust(contrast_result,
-                                        column = "beta.based.significance",
-                                        group_by_col = "contrast",
-                                        newname = "FDR.beta.based.significance")
+                                         column = "beta.based.significance",
+                                         group_by_col = "contrast",
+                                         newname = "FDR.beta.based.significance")
         contrast_result <- self$p.adjust(contrast_result,
-                                        column = "median.p.value",
-                                        group_by_col = "contrast",
-                                        newname = "FDR.median.p.value")
+                                         column = "median.p.value",
+                                         group_by_col = "contrast",
+                                         newname = "FDR.median.p.value")
         contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
         self$contrast_result <- contrast_result
 
@@ -711,12 +711,23 @@ ContrastsSaintExpress <- R6::R6Class(
       self$subject_Id = subject_Id
       self$modelName = modelName
 
-      self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
-                                                     c1_name = "Control",
-                                                     c2_name = Bait,
-                                                     c1 = log2(AvgIntensity) - log2(FoldChange)/2,
-                                                     c2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
-                                                     modelName = modelName)
+      if ( "AvgIntensity" %in% colnames(contrastsdf)) {
+        self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
+                                                       c1_name = "Control",
+                                                       c2_name = Bait,
+                                                       c1 = log2(AvgIntensity) - log2(FoldChange)/2,
+                                                       c2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
+                                                       modelName = modelName)
+
+      }else{
+        self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
+                                                       c1_name = "Control",
+                                                       c2_name = Bait,
+                                                       c1 = log2(AvgSpec) - log2(FoldChange)/2,
+                                                       c2 = log2(AvgSpec) + log2(FoldChange)/2 ,
+                                                       modelName = modelName)
+
+      }
 
     },
     get_contrast_sides = function(){
@@ -748,13 +759,14 @@ ContrastsSaintExpress <- R6::R6Class(
     #' @description get \code{\link{Contrasts_Plotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param scthreshold BFDR threshold to show in the heatmap.
-    get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
+    get_Plotter = function(fcthreshold = 1, saintscore = 0.75, bfdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = fcthreshold,
         volcano = list(list(score = "BFDR", thresh = bfdrthreshold)),
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05))),
+        score = list(list(score = "SaintScore", thresh = saintscore )),
         modelName = self$modelName,
         estimate = "log2FC",
         contrast = "Bait")
@@ -882,8 +894,6 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
-#' rm(list = ls())
-#' library(prolfqua)
 #' library(tidyverse)
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
@@ -904,22 +914,25 @@ ContrastsTable <- R6::R6Class(
 #'  #mod$get_coefficients()
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
-#'   "dil.e_vs_a" = "dilution.e - dilution.a",
-#'   "dil.e_vs_b" = "dilution.e - dilution.b",
-#'   "dil.c_vs_b" = "dilution.c - dilution.b"
+#'   "dil.e_vs_a" = "dilution.e - dilution.a"
+#'   #,"dil.e_vs_b" = "dilution.e - dilution.b",
+#'   #"dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' #Contrasts$debug("get_contrasts")
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
-#'
+#' #Contrasts_Plotter$debug("score_plot")
 #' cp <- Contrasts_Plotter$new(tmp ,
 #'  contrast$subject_Id,
 #' volcano = list(list(score = "FDR", thresh = 1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-#'                  list(score = "FDR", xlim = c(0,1,0.05))))
-#' cp$histogram()
-#' cp$histogram_estimate()
+#'                  list(score = "FDR", xlim = c(0,1,0.05))),
+#' score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
+#' p <- cp$score_plot()
+#' cp$score_plotly()
+#' p <- cp$histogram()
+#' p <- cp$histogram_estimate()
 #' res <- cp$volcano()
 #' length(res)
 #' res
@@ -947,15 +960,11 @@ Contrasts_Plotter <- R6::R6Class(
     estimate = "estimate",
     #' @field contrast column with contrasts names, default "contrast"
     contrast = "contrast",
-    #' @field figures list of generated figures
-    figures = list(),
-    #' @field figures_plotly list of generated figures
-    figures_plotly = list(),
     #' @field volcano_spec volcano plot specification
-    #'
     volcano_spec = NULL,
+    #' @field score_spec score plot specification
+    score_spec = NULL,
     #' @field histogram_spec plot specification
-    #'
     histogram_spec = NULL,
     fcthresh = 1,
     #' @description create Crontrast_Plotter
@@ -971,8 +980,8 @@ Contrasts_Plotter <- R6::R6Class(
                           volcano = list(list(score = "FDR", thresh = 0.1)),
                           histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                                            list(score = "FDR", xlim = c(0,1,0.05))),
+                          score = list(list(score = "statistic",  thresh = NULL)),
                           fcthresh = 1,
-                          #list(score = "statistic" , xlim = c(0,4,0.1))),
                           modelName = "Model",
                           estimate = "estimate",
                           contrast = "contrast"
@@ -982,6 +991,7 @@ Contrasts_Plotter <- R6::R6Class(
       self$subject_Id = subject_Id
       self$estimate = estimate
       self$volcano_spec = volcano
+      self$score_spec = score
       self$histogram_spec = histogram
       self$fcthresh = fcthresh
       self$contrast = contrast
@@ -993,9 +1003,6 @@ Contrasts_Plotter <- R6::R6Class(
         for (spec in self$histogram_spec) {
           fig <- private$.histogram(score = spec )
           res[[spec$score]] <- fig
-          self$figures[[paste0("histogram_", spec$score)]] <-
-            list(fig = fig,
-                 name = paste0(self$prefix, "_Histogram_", spec$score, "_", self$modelName))
         }
         return(res)
       }
@@ -1007,132 +1014,94 @@ Contrasts_Plotter <- R6::R6Class(
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
       fig <- private$.histogram(score = list(score =  self$estimate, xlim = c(re,binwidth)))
-      self$figures[["histogram_estimate"]] <- list(fig = fig,
-                                                   name = paste0(self$prefix,"_Histogram_Estimate_", self$modelName))
       return(fig)
-
     },
     #' @description volcano plots (fold change vs FDR)
     volcano = function(colour = "modelName"){
       fig <- private$.volcano(self$contrastDF, self$volcano_spec, colour = colour )
-      self$figures[["volcano"]] <- list(fig = fig, name = paste0(self$prefix, "_Volcano_", self$modelName))
       return(fig)
     },
     #' @description plotly volcano plots
+    #' @param colour column in contrast matrix with colour coding
+    #' @return list of ggplots
     volcano_plotly = function(colour = "modelName"){
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
       for (i in seq_along(res)) {
         res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
       }
-      self$figures_plotly[["volcano"]] <- list(fig = res,
-                                               name = paste0(self$prefix, "_Volcano_Plolty_", self$modelName))
       return(res)
     },
     #' @description
     #' ma plot
     #' @param fc fold change abline
-    ma_plot = function(fc = 1, colour = "modelName"){
+    #' @param colour column in contrast matrix with colour coding
+    #' @return ggplot
+    ma_plot = function(fc, colour = "modelName"){
+      if ( missing(fc))
+        fc <- self$fcthresh
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
         # pdf version
-        fig <- private$.ma_plot(contrastDF ,self$contrast, colour = colour)
-        self$figures[["ma_plot"]] <- list(fig = fig,
-                                          name = paste0(self$prefix, "_MA_", self$modelName))
+        fig <- private$.ma_plot(contrastDF ,self$contrast, fc, colour = colour)
       }else{
         warning("no c1 c2 columns can't generate MA")
         fig <- NULL
       }
       return(fig)
     },
+
     #' @description
     #' ma plotly
     #' @param fc fold change abline
-    ma_plotly = function(fc =1, colour = "modelName"){
+    #' @param colour column in contrast matrix with colour coding.
+    #' @return list of ggplots
+    ma_plotly = function(fc, colour = "modelName"){
       # html version
+      if (missing(fc))
+        fc <- self$fcthresh
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
-
         contrastDF  <- contrastDF %>%
           plotly::highlight_key(~subject_Id)
-        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, colour = colour) %>%
+        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour) %>%
           plotly::ggplotly(tooltip = "subject_Id")
 
-        self$figures_plotly[["ma_plot"]] <-
-          list(fig = fig_plotly,
-               name = paste0(self$prefix, "_MA_Plolty_", self$modelName))
         return(fig_plotly)
-
       }else{
         return(NULL)
       }
     },
     #' @description
-    #' generate all figures
-    #'
-    all_figs = function(){
-      self$ma_plotly()
-      self$volcano_plotly()
-      self$ma_plot()
-      self$volcano()
-      self$histogram()
-      self$histogram_estimate()
-      invisible(NULL)
+    #' plot a score against the log2 fc e.g. t-statistic
+    #' @param scorespec list(score="statistics", fcthres = 2, thresh = 5)
+    #' @param colour column with colour coding
+    #' @return list of ggplots
+    score_plot = function(scorespec,  colour = "modelName" ){
+      if (!missing(scorespec)) {
+        self$score_spec[[scorespec$score]] <- scorespec
+      }
+      res <- list()
+      if (length(self$score_spec) > 0) {
+          res <- private$.score_plot(self$contrastDF, self$score_spec, colour = colour )
+      }
+      return(res)
     },
-    #' @description write figures in pdf format
-    #' @param path path
-    #' @param width figure with
-    #' @param height figure height
-    #'
-    write_pdf = function(path,
-                         width = 10,
-                         height = 10){
-      message("Writing: ",path,"\n")
-
-      plotX <- function(fig, width, height, path, fname, xname){
-        fpath <- file.path(path,
-                           paste(c(fname, if (!is.null(xname)) { c("_" , xname) }, ".pdf"),
-                                 collapse = ""))
-        pdf(fpath, width = width, height = height)
-        print(fig)
-        dev.off()
+    #' @description
+    #' plot a score against the log2 fc e.g. t-statistic
+    #' @param scorespec list(score="statistics", fcthres = 2, thresh = 5)
+    #' @param colour column with colour coding
+    #' @return list of ggplots
+    score_plotly = function(scorespec,  colour = "modelName" ){
+      if (!missing(scorespec)) {
+        self$score_spec[[scorespec$score]] <- scorespec
       }
-
-      for (fig in self$figures) {
-        if ("list" %in% class(fig$fig)) {
-          for (i in seq_along(fig$fig)) {
-            plotX(fig$fig[[i]], width, height, path, fname = fig$name, xname = names(fig$fig)[i] )
-          }
-        }else{
-          plotX(fig$fig, width, height, path, fname = fig$name, xname = NULL )
-        }
-
+      contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
+      res <- private$.score_plot(contrastDF, self$score_spec, colour = colour )
+      for (i in seq_along(res)) {
+        res[[i]] <- plotly::ggplotly(res[[i]], tooltip = "subject_Id")
       }
-    },
-    #' @description write figures into thml
-    #' @param path path
-    write_plotly = function(path){
-      message("Writing: ",path,"\n")
-
-      plotX <- function(fig,path, fname, xname){
-        fname <- paste(c(fname, if (!is.null(xname)) { c("_" , xname) }, ".html"),
-                       collapse = "")
-        fpath <- file.path(path,fname)
-        message("Writing: ",fpath,"\n")
-        htmlwidgets::saveWidget(widget = fig, fname, selfcontained = TRUE)
-        file.rename(fname, fpath)
-      }
-
-      for (fig in self$figures_plotly) {
-        if ("list" %in% class(fig$fig)) {
-          for (i in seq_along(fig$fig)) {
-            plotX(fig$fig[[i]], path, fname = fig$name, xname = names(fig$fig)[i] )
-          }
-        }else{
-          plotX(fig$fig,  path, fname = fig$name, xname = NULL )
-        }
-
-      }
+      return(res)
     }
   ),
   private = list(
@@ -1160,10 +1129,11 @@ Contrasts_Plotter <- R6::R6Class(
       score = score$score
       plot <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
         geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
-        facet_wrap(vars(!!sym(self$contrast)))
+        facet_wrap(vars(!!sym(self$contrast))) +
+        theme_light()
       return(plot)
     },
-    .ma_plot = function(x, contrast, colour = NULL){
+    .ma_plot = function(x, contrast, fc, colour = NULL){
       x <- ggplot(x , aes(x = (c1 + c2)/2,
                           y = !!sym(self$estimate),
                           text = !!sym("subject_Id"),
@@ -1171,11 +1141,33 @@ Contrasts_Plotter <- R6::R6Class(
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
         facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        geom_hline(yintercept = c(-self$fcthresh, self$fcthresh), linetype = "dashed",colour = "red") +
-        ylab("log fold change (M)") + xlab("mean log intensities (A)")
+        geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red") +
+        ylab("log fold change (M)") + xlab("mean log intensities (A)") +
+        theme_light()
       return(x)
+    },
+    .score_plot = function(x, scores, colour){
+      fig <- list()
+      for (score in scores) {
+        xlim = self$fcthresh
+        ylim = score$thresh
+        score = score$score
+        fig[[score]] <- ggplot(x, aes(x = !!sym(self$estimate),
+                                      y = !!sym(score),
+                                      text = !!sym("subject_Id"),
+                                      colour = !!sym(colour))) +
+          scale_colour_manual(values = c("black", "green")) +
+          geom_point(alpha = 0.5) +
+          facet_wrap(vars(!!sym(self$contrast))) +
+          geom_hline(yintercept = c(0), colour = 1) +
+          geom_vline(xintercept = c(0), colour = 1 ) +
+          geom_hline(yintercept = c(ylim), colour = 2, linetype = "dashed") +
+          geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) +
+          theme_light()
+      }
+      return(fig)
     }
-  )
+ )
 )
 
 
@@ -1198,7 +1190,7 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
 
   cA <- dplyr::filter(cA,!is.na(.data$statistic))
   moreID <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
-                  distinct(select(cA, c(add$subject_Id, "contrast"))))
+                    distinct(select(cA, c(add$subject_Id, "contrast"))))
   more <- inner_join(moreID, cB )
 
   sameID <- select(cA, c(add$subject_Id, "contrast"))
