@@ -17,7 +17,6 @@
 #' @importFrom htmlwidgets saveWidget
 #' @importFrom pheatmap pheatmap
 #' @importFrom plotly ggplotly
-#' @importFrom prozor readPeptideFasta
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := UQ sym syms .data
 #' @importFrom stats as.formula cor
@@ -30,9 +29,12 @@
 #' @importFrom stringr str_trim
 #' @import tidyverse
 #' @importFrom utils combn data head read.csv tail unzip
-#' @importFrom vsn justvsn
 #' @importFrom yaml write_yaml
 NULL
+
+
+## @importFrom vsn justvsn
+## @importFrom prozor readPeptideFasta
 
 #' Internal Functions by category
 #' @family configuration

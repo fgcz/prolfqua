@@ -264,7 +264,7 @@ list of ggplots
 \subsection{Method \code{ma_plot()}}{
 ma plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -286,7 +286,7 @@ ggplot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -308,7 +308,7 @@ list of ggplots
 \subsection{Method \code{score_plot()}}{
 plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plot(scorespec, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plot(scorespec, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -317,6 +317,8 @@ plot a score against the log2 fc e.g. t-statistic
 \item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
 
 \item{\code{colour}}{column with colour coding}
+
+\item{\code{legend}}{enable legend default TRUE}
 }
 \if{html}{\out{</div>}}
 }
@@ -330,7 +332,7 @@ list of ggplots
 \subsection{Method \code{score_plotly()}}{
 plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plotly(scorespec, colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plotly(scorespec, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -339,6 +341,8 @@ plot a score against the log2 fc e.g. t-statistic
 \item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
 
 \item{\code{colour}}{column with colour coding}
+
+\item{\code{legend}}{enable legend default TRUE}
 }
 \if{html}{\out{</div>}}
 }

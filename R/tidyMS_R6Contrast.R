@@ -1037,13 +1037,13 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param fc fold change abline
     #' @param colour column in contrast matrix with colour coding
     #' @return ggplot
-    ma_plot = function(fc, colour = "modelName"){
+    ma_plot = function(fc, colour = "modelName", legend = TRUE){
       if ( missing(fc))
         fc <- self$fcthresh
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
         # pdf version
-        fig <- private$.ma_plot(contrastDF ,self$contrast, fc, colour = colour)
+        fig <- private$.ma_plot(contrastDF ,self$contrast, fc, colour = colour, legend = legend)
       }else{
         warning("no c1 c2 columns can't generate MA")
         fig <- NULL
@@ -1056,7 +1056,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param fc fold change abline
     #' @param colour column in contrast matrix with colour coding.
     #' @return list of ggplots
-    ma_plotly = function(fc, colour = "modelName"){
+    ma_plotly = function(fc, colour = "modelName", legend = TRUE){
       # html version
       if (missing(fc))
         fc <- self$fcthresh
@@ -1064,7 +1064,7 @@ Contrasts_Plotter <- R6::R6Class(
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
         contrastDF  <- contrastDF %>%
           plotly::highlight_key(~subject_Id)
-        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour) %>%
+        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour, legend = legend) %>%
           plotly::ggplotly(tooltip = "subject_Id")
 
         return(fig_plotly)
@@ -1076,14 +1076,19 @@ Contrasts_Plotter <- R6::R6Class(
     #' plot a score against the log2 fc e.g. t-statistic
     #' @param scorespec list(score="statistics", fcthres = 2, thresh = 5)
     #' @param colour column with colour coding
+    #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    score_plot = function(scorespec,  colour = "modelName" ){
+    score_plot = function(scorespec,  colour = "modelName", legend = TRUE ){
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
       res <- list()
       if (length(self$score_spec) > 0) {
-          res <- private$.score_plot(self$contrastDF, self$score_spec, colour = colour )
+          res <- private$.score_plot(
+            self$contrastDF,
+            self$score_spec,
+            colour = colour,
+            legend = legend )
       }
       return(res)
     },
@@ -1091,13 +1096,19 @@ Contrasts_Plotter <- R6::R6Class(
     #' plot a score against the log2 fc e.g. t-statistic
     #' @param scorespec list(score="statistics", fcthres = 2, thresh = 5)
     #' @param colour column with colour coding
+    #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    score_plotly = function(scorespec,  colour = "modelName" ){
+    score_plotly = function(scorespec,  colour = "modelName", legend = TRUE ){
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
       contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
-      res <- private$.score_plot(contrastDF, self$score_spec, colour = colour )
+      res <- private$.score_plot(
+        contrastDF,
+        self$score_spec,
+        colour = colour,
+        legend = legend )
+
       for (i in seq_along(res)) {
         res[[i]] <- plotly::ggplotly(res[[i]], tooltip = "subject_Id")
       }
@@ -1105,11 +1116,11 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores,  colour = NULL){
+    .volcano = function(contrasts, scores,  colour = NULL, legend = TRUE){
       fig <- list()
       for (score in scores) {
         column <- score$score
-        fig[[column]] <- prolfqua:::.multigroupVolcano(
+        p <- prolfqua:::.multigroupVolcano(
           contrasts,
           effect = self$estimate,
           p.value = column,
@@ -1119,10 +1130,10 @@ Contrasts_Plotter <- R6::R6Class(
           yintercept = score$thresh,
           colour = colour,
           scales = "free_y")
-
+        p <- p + guides(colour = legend)
+        fig[[column]] <- p
       }
       return(fig)
-
     },
     .histogram  = function(score){
       xlim = score$xlim
@@ -1133,8 +1144,8 @@ Contrasts_Plotter <- R6::R6Class(
         theme_light()
       return(plot)
     },
-    .ma_plot = function(x, contrast, fc, colour = NULL){
-      x <- ggplot(x , aes(x = (c1 + c2)/2,
+    .ma_plot = function(x, contrast, fc, colour = NULL, legend = TRUE){
+      p <- ggplot(x , aes(x = (c1 + c2)/2,
                           y = !!sym(self$estimate),
                           text = !!sym("subject_Id"),
                           colour = !!sym(colour))) +
@@ -1144,9 +1155,12 @@ Contrasts_Plotter <- R6::R6Class(
         geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red") +
         ylab("log fold change (M)") + xlab("mean log intensities (A)") +
         theme_light()
-      return(x)
+      if (!legend) {
+        p <- p + guides(colour = FALSE)
+      }
+      return(p)
     },
-    .score_plot = function(x, scores, colour){
+    .score_plot = function(x, scores, colour, legend = TRUE){
       fig <- list()
       for (score in scores) {
         xlim = self$fcthresh
@@ -1159,7 +1173,7 @@ Contrasts_Plotter <- R6::R6Class(
         }
 
         ylims <- c( sign(min(scoreVal, na.rm = TRUE)) * ylim, sign( max(scoreVal, na.rm = TRUE)) * ylim)
-        fig[[score]] <- ggplot(x, aes(x = !!sym(self$estimate),
+        p <- ggplot(x, aes(x = !!sym(self$estimate),
                                       y = !!sym(score),
                                       text = !!sym("subject_Id"),
                                       colour = !!sym(colour))) +
@@ -1171,6 +1185,10 @@ Contrasts_Plotter <- R6::R6Class(
           geom_hline(yintercept = ylims, colour = 2, linetype = "dashed") +
           geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) +
           theme_light()
+        if (!legend) {
+          p <- p + guides(colour = FALSE)
+        }
+        fig[[score]] <- p
       }
       return(fig)
     }

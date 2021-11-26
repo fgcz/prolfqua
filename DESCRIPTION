@@ -55,7 +55,9 @@ Imports:
     tidyr,
     tibble,
     yaml,
-    writexl
+    writexl,
+    prozor,
+    vsn
 Suggests:
     corrplot,
     docopt,
@@ -69,9 +71,7 @@ Suggests:
     testthat,
     prolfquaData,
     SummarizedExperiment,
-    proDA,
-    prozor,
-    vsn
+    proDA
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 
