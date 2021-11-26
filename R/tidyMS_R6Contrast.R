@@ -1152,6 +1152,13 @@ Contrasts_Plotter <- R6::R6Class(
         xlim = self$fcthresh
         ylim = score$thresh
         score = score$score
+        scoreVal <- if ("data.frame" %in% class(x)) {
+           x[[score]]
+        } else {
+           x$data()[[score]]
+        }
+
+        ylims <- c( sign(min(scoreVal, na.rm = TRUE)) * ylim, sign( max(scoreVal, na.rm = TRUE)) * ylim)
         fig[[score]] <- ggplot(x, aes(x = !!sym(self$estimate),
                                       y = !!sym(score),
                                       text = !!sym("subject_Id"),
@@ -1161,7 +1168,7 @@ Contrasts_Plotter <- R6::R6Class(
           facet_wrap(vars(!!sym(self$contrast))) +
           geom_hline(yintercept = c(0), colour = 1) +
           geom_vline(xintercept = c(0), colour = 1 ) +
-          geom_hline(yintercept = c(ylim), colour = 2, linetype = "dashed") +
+          geom_hline(yintercept = ylims, colour = 2, linetype = "dashed") +
           geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) +
           theme_light()
       }
