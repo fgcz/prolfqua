@@ -72,6 +72,17 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsTable}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{contrast_result}}{contrast results}
+
+\item{\code{modelName}}{model name}
+
+\item{\code{subject_Id}}{default protein_Id}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -81,7 +92,6 @@ Other modelling:
 \item \href{#method-get_contrasts}{\code{ContrastsTable$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsTable$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsTable$to_wide()}}
-\item \href{#method-write}{\code{ContrastsTable$write()}}
 \item \href{#method-clone}{\code{ContrastsTable$clone()}}
 }
 }
@@ -95,6 +105,7 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+intitialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$new(
   contrastsdf,
@@ -103,20 +114,36 @@ Other modelling:
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contrastsdf}}{data.frame}
+
+\item{\code{subject_Id}}{default protein_Id}
+
+\item{\code{modelName}}{default ContrastTable}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+return sides of contrast
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_contrast_sides()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_linfct"></a>}}
 \if{latex}{\out{\hypertarget{method-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
+not implemented
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_linfct()}\if{html}{\out{</div>}}
 }
@@ -150,6 +177,18 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(fcthreshold = 1, fdrthreshold = 0.1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fcthreshold}}{fold change threshold}
+
+\item{\code{fdrthreshold}}{fdr threshold}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{Contrasts_Plotter}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}
@@ -167,24 +206,8 @@ convert to wide format
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{directory}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

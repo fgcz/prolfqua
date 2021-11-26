@@ -320,7 +320,7 @@ Benchmark <-
       contrast = "",
       #' @field toscale which columns to scale
       toscale = c(""),
-      #' @field fc estimate column
+      #' @field fcestimate estimate column
       fcestimate = "",
       #' @field benchmark todo
       benchmark = list(),
@@ -332,6 +332,7 @@ Benchmark <-
       hierarchy = "",
       #' @field smc summarize missing contrasts
       smc = NULL,
+      #' @field summarizeNA statistic to use for missigness summarization (e.g. statistic, or p-value)
       summarizeNA = character(),
       #' @field confusion todo
       confusion = NULL,
@@ -343,6 +344,7 @@ Benchmark <-
       #' create Benchmark
       #' @param data data.frame
       #' @param toscale columns ot scale
+      #' @param fcestimate column with fold change estimates
       #' @param benchmark columns to benchmark
       #' @param FDRvsFDP score for which to generate FDR vs FDP
       #' @param columns to create FPR vs FDP analysis for
@@ -351,6 +353,7 @@ Benchmark <-
       #' @param contrast contrast
       #' @param species species (todo rename)
       #' @param hierarchy e.g. protein_Id
+      #' @param summarizeNA examine this column to determine the proportion of missing values default statistic
       initialize = function(data,
                             toscale = c("p.value"),
                             fcestimate = "estimate",
@@ -398,7 +401,9 @@ Benchmark <-
           return(self$.data)
         }
       },
-
+      #' @description
+      #' summarize missing contrasts
+      #' @return data.frame
       missing_contrasts = function(){
         self$smc <- .summarise_missing_contrasts(self$.data,
                                                  hierarchy = self$hierarchy,
@@ -435,14 +440,16 @@ Benchmark <-
       get_confusion_benchmark = function(){
         self$.get_confusion(arrange = self$benchmark)
       },
-      #' @description nr of elements used to determine ROC curve
+      #' @description
+      #' nr of elements used to determine ROC curve
       #'
       n_confusion_benchmark = function(){
         bb1 <- self$get_confusion_benchmark()
         n <- bb1 %>% na.omit() |> group_by(what, contrast) |> summarise(n = n())
         return(n)
       },
-      #' @description plot FDP vs TPR
+      #' @description
+      #' plot FDP vs TPR
       #' @param xlim limit x axis
       plot_FDPvsTPR = function(xlim = 0.5){
         confusion <- self$get_confusion_benchmark()
@@ -494,7 +501,8 @@ Benchmark <-
         xx <- self$.get_confusion(arrange = self$FDRvsFDP)
         return(xx)
       },
-      #' @description nr of elements used to determine ROC curve
+      #' @description
+      #' nr of elements used to determine ROC curve
       #'
       n_confusion_FDRvsFDP = function(){
         bb1 <- self$get_confusion_FDRvsFDP()

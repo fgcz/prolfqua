@@ -4,7 +4,9 @@
 \alias{AnalysisConfiguration}
 \title{Analysis Configuration}
 \description{
-Hello world
+Analysis Configuration
+
+Analysis Configuration
 }
 \seealso{
 Other configuration: 

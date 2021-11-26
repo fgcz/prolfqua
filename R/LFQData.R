@@ -56,7 +56,8 @@ LFQData <- R6::R6Class(
     get_copy = function(){
       return(self$clone(deep = TRUE))
     },
-    #' @description samples subset of data
+    #' @description
+    #' samples subset of data
     #' @param size size of subset default 100
     #' @param seed set seed
     get_sample = function(size = 100, seed = NULL){
@@ -64,7 +65,8 @@ LFQData <- R6::R6Class(
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
-    #' @description get subset of data
+    #' @description
+    #' get subset of data
     #' @param x data frame with columns containing subjectId
     get_subset = function(x){
       x <- select(x, all_of(self$subjectId())) |> distinct()
@@ -76,7 +78,8 @@ LFQData <- R6::R6Class(
     subjectId = function(){
       return(self$config$table$hkeysDepth())
     },
-    #' @description is data trasfromed
+    #' @description
+    #' is data trasfromed
     #' @param is_transformed logical
     #' @return logical
     is_transformed = function(is_transformed){
@@ -86,7 +89,8 @@ LFQData <- R6::R6Class(
         self$config$table$is_intensity_transformed = is_transformed
       }
     },
-    #' @description return name of intensity column
+    #' @description
+    #' return name of intensity column
     #' @return name of intensity column
     intensity_column = function(){
       return(self$config$table$getWorkIntensity())
@@ -289,14 +293,17 @@ LFQDataTransformer <- R6::R6Class(
   public = list(
     #' @field lfq LFQData object
     lfq = NULL,
-    #' @description  initialize
-    #' @param lfqdata LFQData object to transform
+    #' @description
+    #' initialize
+    #' @param lfqdata
+    #' LFQData object to transform
     initialize = function(lfqdata){
       self$lfq = lfqdata$clone(deep = TRUE)
     },
-    #' @description log2 transform data
+    #' @description
+    #' log2 transform data
     #' @param force if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.
-    #' @return Transformer
+    #' @return LFQDataTransformer
     log2 = function(force = FALSE){
       if (self$lfq$is_transformed() == FALSE | force ) {
         self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data ,
@@ -308,16 +315,18 @@ LFQDataTransformer <- R6::R6Class(
       invisible(self)
 
     },
-    #' @description get mean and variance and standard deviation in each sample
+    #' @description
+    #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
     get_scales = function()
     {
       get_robscales(self$lfq$data, self$lfq$config)
     },
-    #' @description robust scale data
+    #' @description
+    #' robust scale data
     #' @param colname new name of transformed column
     #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
-    #' @return LFQData
+    #' @return LFQDataTransformer (self)
     robscale = function(preserveMean = TRUE, colname = "transformedIntensity"){
       res <- self$robscale_subset(self$lfq, preserveMean = preserveMean, colname = colname)
       invisible(res)
@@ -327,7 +336,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param lfqsubset LFQData subset to use for normalization
     #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @param colname - how to name the transformed intensities, default transformedIntensity
-    #' @return LFQData
+    #' @return LFQDataTransformer (self)
     #'
     robscale_subset = function(lfqsubset,
                                preserveMean = TRUE,
@@ -450,7 +459,8 @@ LFQDataStats <- R6::R6Class(
     stat = "CV",
     #' @field statsdf frame with statistics.
     statsdf = NULL,
-    #' @description create analyse variances and CV
+    #' @description
+    #' create analyse variances and CV
     #' @param lfqdata LFQData object
     #' @param stats if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)
     initialize = function(lfqdata, stats = c("interaction", "all" ,"pooled")){
@@ -1044,7 +1054,8 @@ LFQDataAggregator <- R6::R6Class(
     prefix = character(),
     ## @field filepath
     ## filepath = character(),
-    #' @description initialize
+    #' @description
+    #' initialize
     #' @param lfq LFQData
     #' @param prefix default protein
     initialize = function(lfq, prefix = "protein"){
@@ -1131,7 +1142,8 @@ LFQDataAggregator <- R6::R6Class(
         show.legend = show.legend)
       invisible(df)
     },
-    #' @description writes plots to folder
+    #' @description
+    #' writes plots to folder
     #' @param qcpath qcpath
     #' @param show.legend legend
     #' @param width figure width

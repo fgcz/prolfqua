@@ -45,7 +45,7 @@ volcano = list(list(score = "FDR", thresh = 1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
 score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
-p <- cp$score_plot()
+p <- cp$score_plot(legend=FALSE)
 cp$score_plotly()
 p <- cp$histogram()
 p <- cp$histogram_estimate()
@@ -56,10 +56,6 @@ respltly <- cp$volcano_plotly()
 length(respltly)
 cp$ma_plot()
 cp$ma_plotly
-if(FALSE){
-  cp$write_pdf("c:/Temp")
-  cp$write_plotly("c:/Temp")
-}
 }
 \seealso{
 Other modelling: 
@@ -143,6 +139,8 @@ Other plotting:
 \item{\code{score_spec}}{score plot specification}
 
 \item{\code{histogram_spec}}{plot specification}
+
+\item{\code{fcthresh}}{fold change threshold}
 }
 \if{html}{\out{</div>}}
 }
@@ -192,6 +190,10 @@ create Crontrast_Plotter
 
 \item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
 
+\item{\code{score}}{score parameters}
+
+\item{\code{fcthresh}}{default 1 (log2 FC threshold)}
+
 \item{\code{modelName}}{name of model}
 
 \item{\code{estimate}}{estimate column}
@@ -237,6 +239,13 @@ volcano plots (fold change vs FDR)
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(colour = "modelName")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colour}}{column name with color information default modelName}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-volcano_plotly"></a>}}
@@ -273,6 +282,8 @@ ma plot
 \item{\code{fc}}{fold change abline}
 
 \item{\code{colour}}{column in contrast matrix with colour coding}
+
+\item{\code{legend}}{enable legend default TRUE}
 }
 \if{html}{\out{</div>}}
 }
@@ -295,6 +306,8 @@ ma plotly
 \item{\code{fc}}{fold change abline}
 
 \item{\code{colour}}{column in contrast matrix with colour coding.}
+
+\item{\code{legend}}{enable legend default TRUE}
 }
 \if{html}{\out{</div>}}
 }

@@ -115,7 +115,6 @@ Other modelling:
 \item \href{#method-get_contrast_sides}{\code{Contrasts$get_contrast_sides()}}
 \item \href{#method-get_linfct}{\code{Contrasts$get_linfct()}}
 \item \href{#method-get_contrasts}{\code{Contrasts$get_contrasts()}}
-\item \href{#method-write}{\code{Contrasts$write()}}
 \item \href{#method-get_Plotter}{\code{Contrasts$get_Plotter()}}
 \item \href{#method-to_wide}{\code{Contrasts$to_wide()}}
 \item \href{#method-clone}{\code{Contrasts$clone()}}
@@ -207,35 +206,34 @@ data.frame with contrasts
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write results
+\if{html}{\out{<a id="method-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\subsection{Method \code{get_Plotter()}}{
+return \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter(
+  volcano = list(list(score = "FDR", thresh = 0.1)),
+  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
+    xlim = c(0, 1, 0.05))),
+  score = list(list(score = "statistic", thresh = 5))
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{directory}
+\item{\code{volcano}}{volcano parameters}
 
-\item{\code{filename}}{name of excel file to write to.}
+\item{\code{histogram}}{histogram parameters}
 
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
+\item{\code{score}}{score parameters
+creates Contrast_Plotter}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+\code{\link{Contrasts_Plotter}}
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
-\subsection{Method \code{get_Plotter()}}{
-return Contrasts_Plotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}
@@ -252,6 +250,9 @@ convert to wide format
 \item{\code{columns}}{value column default p.value}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

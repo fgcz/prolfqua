@@ -55,6 +55,17 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsSaint}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{contrast_result}}{data.frame with the contrast computation results}
+
+\item{\code{modelName}}{model name}
+
+\item{\code{subject_Id}}{subject id defualt 'Prey'}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -64,7 +75,6 @@ Other modelling:
 \item \href{#method-get_contrasts}{\code{ContrastsSaintExpress$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsSaintExpress$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsSaintExpress$to_wide()}}
-\item \href{#method-write}{\code{ContrastsSaintExpress$write()}}
 \item \href{#method-clone}{\code{ContrastsSaintExpress$clone()}}
 }
 }
@@ -78,6 +88,7 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$new(
   contrastsdf,
@@ -86,20 +97,36 @@ Other modelling:
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contrastsdf}}{return value of \code{\link{runSaint}}}
+
+\item{\code{subject_Id}}{default "Prey"}
+
+\item{\code{modelName}}{name of model}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+show contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_contrast_sides()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_linfct"></a>}}
 \if{latex}{\out{\hypertarget{method-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
+no available for SaintExpress
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_linfct()}\if{html}{\out{</div>}}
 }
@@ -142,9 +169,14 @@ get \code{\link{Contrasts_Plotter}}
 \describe{
 \item{\code{fcthreshold}}{fold change threshold to show}
 
-\item{\code{scthreshold}}{BFDR threshold to show in the heatmap.}
+\item{\code{saintscore}}{SaintScore threshold to show in the heatmap.}
+
+\item{\code{bfdrthreshold}}{BDRF threshold}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\line{\code{Contrasts_Plotter}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -163,24 +195,8 @@ convert to wide format
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{directory}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

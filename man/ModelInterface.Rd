@@ -24,55 +24,79 @@ R6 interface class representing modelling result
 \if{html}{\out{<a id="method-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-get_coefficients}{}}}
 \subsection{Method \code{get_coefficients()}}{
+return model coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$get_coefficients()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_anova"></a>}}
 \if{latex}{\out{\hypertarget{method-get_anova}{}}}
 \subsection{Method \code{get_anova()}}{
+perform ANOVA analysis
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$get_anova()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-coef_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_histogram}{}}}
 \subsection{Method \code{coef_histogram()}}{
+plot histogram of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_histogram()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-coef_volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_volcano}{}}}
 \subsection{Method \code{coef_volcano()}}{
+plot volcano of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_volcano()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
+pairs plot of coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_pairs()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
+histogram of p-values and FDR for anova results
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$anova_histogram()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ggplot
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

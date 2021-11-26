@@ -114,7 +114,6 @@ Other modelling:
 \item \href{#method-new}{\code{ContrastsSimpleImpute$new()}}
 \item \href{#method-get_contrast_sides}{\code{ContrastsSimpleImpute$get_contrast_sides()}}
 \item \href{#method-get_contrasts}{\code{ContrastsSimpleImpute$get_contrasts()}}
-\item \href{#method-write}{\code{ContrastsSimpleImpute$write()}}
 \item \href{#method-get_Plotter}{\code{ContrastsSimpleImpute$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsSimpleImpute$to_wide()}}
 \item \href{#method-clone}{\code{ContrastsSimpleImpute$clone()}}
@@ -194,25 +193,6 @@ table with results of contrast computation
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write contrasts computation results to
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$write(path, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder to write to}
-
-\item{\code{format}}{default xlsx (can be csv or html)}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
@@ -221,6 +201,9 @@ get Contrasts_Plotter
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_Plotter()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Contrast_Plotter
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}
@@ -237,6 +220,9 @@ convert contrast results to wide format
 \item{\code{columns}}{value column default p.value}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

@@ -95,6 +95,21 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsROPECA}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{Contrast}}{Contrast}
+
+\item{\code{contrast_result}}{contrast result}
+
+\item{\code{modelName}}{model name}
+
+\item{\code{subject_Id}}{columns with protein ID's}
+
+\item{\code{p.adjust}}{method to use for p.value adjustment}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -104,7 +119,6 @@ Other modelling:
 \item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsROPECA$to_wide()}}
-\item \href{#method-write}{\code{ContrastsROPECA$write()}}
 \item \href{#method-clone}{\code{ContrastsROPECA$clone()}}
 }
 }
@@ -118,6 +132,7 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$new(
   Contrast,
@@ -126,24 +141,43 @@ Other modelling:
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{Contrast}}{e.g. instance of Contrasts class, or ContrastsModerated}
+
+\item{\code{modelName}}{default ROPECA}
+
+\item{\code{p.adjust}}{function to use for p.value adjustement}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+show names of contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrast_sides()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_linfct"></a>}}
 \if{latex}{\out{\hypertarget{method-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
+get linear function used to determine contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_linfct()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
@@ -163,6 +197,9 @@ get contrasts
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_Plotter"></a>}}
@@ -173,6 +210,9 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+\code{\link{Contrasts_Plotter}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}
@@ -192,24 +232,8 @@ convert to wide format
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{directory}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

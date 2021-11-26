@@ -2,7 +2,8 @@ library(R6)
 
 # AnalysisParameters ----
 #' Analysis parameters
-#' @description Analysis parameters
+#' @description
+#' Analysis parameters
 #' @keywords internal
 #' @family configuration
 #' @export
@@ -30,7 +31,8 @@ AnalysisParameters <- R6::R6Class(
 
 #'
 #' Create Annotation
-#' @description Annotates Data Table
+#' @description
+#' Annotates Data Table
 #' @keywords internal
 #' @family configuration
 #' @export
@@ -177,7 +179,6 @@ AnalysisTableAnnotation <- R6::R6Class(
 
 # AnalysisConfiguration ----
 #' Analysis Configuration
-#' @description Hello world
 #' @keywords internal
 #' @family configuration
 #' @export

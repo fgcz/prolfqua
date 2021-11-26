@@ -83,6 +83,19 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsModerated}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{Contrast}}{Class implementing the Contrast interface}
+
+\item{\code{modelName}}{name of model}
+
+\item{\code{subject_Id}}{columns with subject_Id (proteinID)}
+
+\item{\code{p.adjust}}{function to adjust p-values}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -92,7 +105,6 @@ Other modelling:
 \item \href{#method-get_contrasts}{\code{ContrastsModerated$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsModerated$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsModerated$to_wide()}}
-\item \href{#method-write}{\code{ContrastsModerated$write()}}
 \item \href{#method-clone}{\code{ContrastsModerated$clone()}}
 }
 }
@@ -106,15 +118,6 @@ Other modelling:
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Class implementing the Contrast interface
-
-
-columns with subject_Id (proteinID)
-
-
-function to adjust p-values
-
-
 initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
@@ -208,24 +211,8 @@ convert to wide format
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
-\subsection{Method \code{write()}}{
-write results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{directory}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

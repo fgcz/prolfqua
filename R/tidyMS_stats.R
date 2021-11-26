@@ -1,7 +1,8 @@
 #' compute pooled variance
 #' @rdname pooled_var
-#' @examples
 #' @param x data.frame
+#' @return data.frame
+#' @examples
 #' library(tidyverse)
 #' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 #' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )

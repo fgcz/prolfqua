@@ -70,7 +70,7 @@ Other benchmarking:
 
 \item{\code{toscale}}{which columns to scale}
 
-\item{\code{fc}}{estimate column}
+\item{\code{fcestimate}}{estimate column}
 
 \item{\code{benchmark}}{todo}
 
@@ -82,18 +82,13 @@ Other benchmarking:
 
 \item{\code{smc}}{summarize missing contrasts}
 
+\item{\code{summarizeNA}}{statistic to use for missigness summarization (e.g. statistic, or p-value)}
+
 \item{\code{confusion}}{todo}
 
 \item{\code{species}}{todo}
 
 \item{\code{FDRvsFDP}}{todo}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{fc}}{estimate column}
 }
 \if{html}{\out{</div>}}
 }
@@ -148,6 +143,8 @@ create Benchmark
 
 \item{\code{toscale}}{columns ot scale}
 
+\item{\code{fcestimate}}{column with fold change estimates}
+
 \item{\code{benchmark}}{columns to benchmark}
 
 \item{\code{FDRvsFDP}}{score for which to generate FDR vs FDP}
@@ -161,6 +158,8 @@ create Benchmark
 \item{\code{species}}{species (todo rename)}
 
 \item{\code{hierarchy}}{e.g. protein_Id}
+
+\item{\code{summarizeNA}}{examine this column to determine the proportion of missing values default statistic}
 
 \item{\code{columns}}{to create FPR vs FDP analysis for}
 }
@@ -184,10 +183,14 @@ data.frame
 \if{html}{\out{<a id="method-missing_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-missing_contrasts}{}}}
 \subsection{Method \code{missing_contrasts()}}{
+summarize missing contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$missing_contrasts()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-complete"></a>}}
