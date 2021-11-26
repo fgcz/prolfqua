@@ -1130,7 +1130,9 @@ Contrasts_Plotter <- R6::R6Class(
           yintercept = score$thresh,
           colour = colour,
           scales = "free_y")
-        p <- p + guides(colour = legend)
+        if (!legend) {
+          p <- p + guides(colour = FALSE)
+        }
         fig[[column]] <- p
       }
       return(fig)
