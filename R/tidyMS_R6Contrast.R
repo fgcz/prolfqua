@@ -785,7 +785,7 @@ ContrastsSaintExpress <- R6::R6Class(
     #' @param fcthreshold fold change threshold to show
     #' @param saintscore SaintScore threshold to show in the heatmap.
     #' @param bfdrthreshold BDRF threshold
-    #' @return \line{\code{Contrasts_Plotter}}
+    #' @return \code{\link{Contrasts_Plotter}}
     get_Plotter = function(fcthreshold = 1, saintscore = 0.75, bfdrthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,

@@ -176,7 +176,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\line{\code{Contrasts_Plotter}}
+\code{\link{Contrasts_Plotter}}
 }
 }
 \if{html}{\out{<hr>}}
