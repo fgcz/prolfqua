@@ -70,6 +70,7 @@ Suggests:
     prolfquaData,
     SummarizedExperiment,
     proDA,
+    prozor,
     vsn
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
