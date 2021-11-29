@@ -28,6 +28,7 @@
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom stringr str_trim
 #' @import tidyverse
+#' @importFrom S4Vectors SimpleList
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom yaml write_yaml
 NULL
@@ -69,6 +70,7 @@ NULL
 #' Model for debugging
 #' @family data
 #' @keywords internal
+#' @docType data
 #' @format a linear model
 "data_basicModel_p1807"
 
@@ -79,6 +81,7 @@ NULL
 #' Benchmark data Example
 #' @format A data frame
 #' @family data
+#' @docType data
 #' @keywords internal
 "data_benchmarkExample"
 
@@ -88,6 +91,7 @@ NULL
 
 #' example data for check
 #' @family data
+#' @docType data
 #' @keywords internal
 'data_checksummarizationrobust87'
 
@@ -97,6 +101,7 @@ NULL
 
 #' example data for check
 #' @family data
+#' @docType data
 #' @keywords internal
 'data_checksummarizerobust'
 
@@ -106,6 +111,7 @@ NULL
 
 #' example data for check
 #' @family data
+#' @docType data
 #' @keywords internal
 #'
 'data_checksummarizerobust69'
@@ -116,6 +122,7 @@ NULL
 
 #' example data for check
 #' @family data
+#' @docType data
 #' @keywords internal
 #'
 'data_correlatedPeptideList'

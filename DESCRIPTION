@@ -51,6 +51,7 @@ Imports:
     readxl,
     rlang,
     stringr,
+    S4Vectors,
     tidyverse,
     tidyr,
     tibble,
