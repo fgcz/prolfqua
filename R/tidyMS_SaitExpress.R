@@ -4,7 +4,11 @@
 #' @param fasta_file path to fasta file
 #' @param id_col column with protein ids/accessions.
 #' @export
-addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
+addProteinLengths <- function(
+  intdata,
+  fasta_file,
+  id_col = "protein_Id" ){
+
   fasta <- prozor::readPeptideFasta(file = fasta_file)
   plengths <- data.frame(id = names(fasta) , protein.length = sapply(fasta, stringr::str_length))
   byx <- "id"
@@ -26,6 +30,7 @@ addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
 #' @examples
+#' \donttest{
 #' library(tidyverse)
 #' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #'exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
@@ -40,6 +45,7 @@ addProteinLengths <- function(intdata, fasta_file , id_col = "protein_Id" ){
 #'                    )
 #' stopifnot(names(res) == c( "inter", "prey",  "bait"))
 #' runSaint(res)
+#' }
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
                                 proteinID = "protein_Id",

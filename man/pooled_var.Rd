@@ -30,7 +30,7 @@ library(tidyverse)
 x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
 x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
 prolfqua:::pooled_V2(na.omit(x))
-proflqua:::pooled_V1(na.omit(x))
+prolfqua:::pooled_V1(na.omit(x))
 x <- x[1,, drop=FALSE]
 x
 na.omit(x)

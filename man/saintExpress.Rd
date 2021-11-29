@@ -62,6 +62,7 @@ look at https://www.jessesadler.com/post/network-analysis-with-r/
 https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 }
 \examples{
+\donttest{
 library(tidyverse)
 xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
 exampleDat <- xx$data \%>\% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
@@ -76,6 +77,7 @@ res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
                    )
 stopifnot(names(res) == c( "inter", "prey",  "bait"))
 runSaint(res)
+}
 library(tidyverse)
 
 }
