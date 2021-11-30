@@ -28,7 +28,6 @@
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom stringr str_trim
 #' @import tidyverse
-#' @importFrom S4Vectors SimpleList
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom yaml write_yaml
 NULL

@@ -1193,7 +1193,7 @@ LFQDataToSummarizedExperiment <- function(lfqdata){
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation$sampleName
-    se <- SummarizedExperiment::SummarizedExperiment(SimpleList(LFQ = wide$data), colData = ann)
+    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(LFQ = wide$data), colData = ann)
     return(se)
   }
 }
