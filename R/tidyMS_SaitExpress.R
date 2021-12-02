@@ -1,16 +1,15 @@
 #' add protein lengths from fasta file to data frame (id_col - protein id column.)
 #' @rdname saintExpress
 #' @param intdata data.frame
-#' @param fasta_file path to fasta file
+#' @param fasta list of sequences created with \code{\link[seqinr]{read.fasta}}
 #' @param id_col column with protein ids/accessions.
 #' @export
 addProteinLengths <- function(
   intdata,
-  fasta_file,
+  fasta,
   id_col = "protein_Id" ){
 
-  fasta <- prozor::readPeptideFasta(file = fasta_file)
-  plengths <- data.frame(id = names(fasta) , protein.length = sapply(fasta, stringr::str_length))
+  plengths <- data.frame(id = names(fasta) , protein.length = vapply(fasta, stringr::str_length, integer(1)))
   byx <- "id"
   names(byx) <- id_col
   intdata <- dplyr::left_join(intdata, plengths , by = byx)

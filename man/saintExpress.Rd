@@ -6,7 +6,7 @@
 \alias{runSaint}
 \title{add protein lengths from fasta file to data frame (id_col - protein id column.)}
 \usage{
-addProteinLengths(intdata, fasta_file, id_col = "protein_Id")
+addProteinLengths(intdata, fasta, id_col = "protein_Id")
 
 protein_2localSaint(
   xx,
@@ -24,7 +24,7 @@ runSaint(si, filedir = getwd(), spc = TRUE, CLEANUP = TRUE)
 \arguments{
 \item{intdata}{data.frame}
 
-\item{fasta_file}{path to fasta file}
+\item{fasta}{list of sequences created with \code{\link[seqinr]{read.fasta}}}
 
 \item{id_col}{column with protein ids/accessions.}
 
