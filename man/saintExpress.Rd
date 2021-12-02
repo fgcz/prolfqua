@@ -65,9 +65,13 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 \donttest{
 library(tidyverse)
 xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-exampleDat <- xx$data \%>\% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
+exampleDat <- xx$data \%>\% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 # sample protein lengths
-exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
+
+tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))
+tmp$proteinLength <- as.integer(runif(nrow(tmp), min = 150, max = 2500))
+exampleDat <- inner_join(tmp, exampleDat)
+#undebug(protein_2localSaint)
 res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
                    proteinID = "protein_Id",
                    proteinLength = "proteinLength",
@@ -75,8 +79,11 @@ res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
                    baitCol = "dilution.",
                    CorTCol = "CorT"
                    )
+
 stopifnot(names(res) == c( "inter", "prey",  "bait"))
-runSaint(res)
+
+undebug(runSaint)
+res <- runSaint(res)
 }
 library(tidyverse)
 

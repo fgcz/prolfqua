@@ -33,9 +33,13 @@ addProteinLengths <- function(
 #' \donttest{
 #' library(tidyverse)
 #' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "TRUE"))
+#' exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #'# sample protein lengths
-#' exampleDat$proteinLength <- as.integer(runif(nrow(exampleDat), min = 150, max = 2500))
+#'
+#' tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))
+#' tmp$proteinLength <- as.integer(runif(nrow(tmp), min = 150, max = 2500))
+#' exampleDat <- inner_join(tmp, exampleDat)
+#' #undebug(protein_2localSaint)
 #' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
 #'                    proteinID = "protein_Id",
 #'                    proteinLength = "proteinLength",
@@ -43,8 +47,11 @@ addProteinLengths <- function(
 #'                    baitCol = "dilution.",
 #'                    CorTCol = "CorT"
 #'                    )
+#'
 #' stopifnot(names(res) == c( "inter", "prey",  "bait"))
-#' runSaint(res)
+#'
+#' undebug(runSaint)
+#' res <- runSaint(res)
 #' }
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
@@ -64,8 +71,9 @@ protein_2localSaint <- function(xx,
   bait <- xx |> dplyr::select(!!!syms(c(IP_name,baitCol,CorTCol)))
   bait <- dplyr::distinct(bait)
   res$bait <- bait
-  prey <- xx |> dplyr::select(!!!syms(c(proteinID,
-                                        proteinLength ,geneNames)))
+  prey <- xx |> dplyr::select(proteinID = !!sym(proteinID),
+                              proteinLength = !!sym(proteinLength),
+                              geneNames = !!sym(geneNames))
   prey <- distinct(prey)
   res$prey <- prey
   inter <- xx |>
@@ -121,6 +129,8 @@ runSaint <- function(si,
                  stderr = TRUE,
                  wait = TRUE,
                  minimized = TRUE)
+  message(cat(out,sep = "\n"))
+
   Sys.sleep(2) # needed otherwise the list.txt file can't be deleted
   listFile <- file.path(getwd(),"list.txt")
   res <- read.csv(file = listFile, sep = "\t")
