@@ -391,11 +391,18 @@ LFQDataSummarizer
 \if{html}{\out{<a id="method-get_Stats"></a>}}
 \if{latex}{\out{\hypertarget{method-get_Stats}{}}}
 \subsection{Method \code{get_Stats()}}{
-get Stats
+Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats(stats = c("interaction", "all", "pooled"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{stats}}{default interaction, computes statistics within interaction.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 LFQDataStats
 }

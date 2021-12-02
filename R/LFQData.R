@@ -199,10 +199,12 @@ LFQData <- R6::R6Class(
       return(LFQDataSummariser$new(self))
     },
     #' @description
-    #' get Stats
+    #' Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
+    #' @param stats default interaction, computes statistics within interaction.
     #' @return LFQDataStats
-    get_Stats = function(){
-      return(LFQDataStats$new(self))
+    get_Stats = function(stats = c("interaction", "all", "pooled")){
+      stats <- match.arg(stats)
+      return(LFQDataStats$new(self, stats = stats))
     },
     #' @description
     #' get Stats
@@ -446,10 +448,11 @@ LFQDataTransformer <- R6::R6Class(
 #' analysis <- bb$data
 #'
 #' lfqdata <- LFQData$new(analysis, config)
-#'
-#' lfqstats <- lfqdata$get_Stats()
+#' # estimates statistics for all samples
+#' lfqstats <- lfqdata$get_Stats(stats = "all")
 #' runallfuncs(lfqstats)
-#'
+#' lfqstats <- lfqdata$get_Stats(stats = "pooled")
+#' runallfuncs(lfqstats)
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
@@ -471,7 +474,7 @@ LFQDataStats <- R6::R6Class(
         self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
       } else if (stats == "all" ) {
         self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
-      } else if (stats == "pooled" ){
+      } else if (stats == "pooled" ) {
         self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       }
     },

@@ -107,7 +107,7 @@ runSaint <- function(si,
     readr::write_tsv(si[[i]], file = filen , col_names = FALSE)
   }
 
-  pkg <- find.package("MSProteinInteraction4R")
+  pkg <- find.package("prolfqua")
   if (spc) {
     exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-spc.exe"
   } else {

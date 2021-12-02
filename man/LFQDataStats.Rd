@@ -56,10 +56,11 @@ config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data
 
 lfqdata <- LFQData$new(analysis, config)
-
-lfqstats <- lfqdata$get_Stats()
+# estimates statistics for all samples
+lfqstats <- lfqdata$get_Stats(stats = "all")
 runallfuncs(lfqstats)
-
+lfqstats <- lfqdata$get_Stats(stats = "pooled")
+runallfuncs(lfqstats)
 }
 \seealso{
 Other LFQData: 
