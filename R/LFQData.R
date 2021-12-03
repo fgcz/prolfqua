@@ -282,8 +282,8 @@ LFQData <- R6::R6Class(
 #' lfqTransCheck$log2()
 #' lfqTransCheck$get_scales()
 #' lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
-#' is_vsn <- require("vsn")
-#' if(is_vsn){
+#'
+#' if(require("vsn")){
 #'  res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
 #'  res$lfq$get_Plotter()$intensity_distribution_density()
 #'  res$get_scales()

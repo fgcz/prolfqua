@@ -34,7 +34,6 @@ NULL
 
 
 ## @importFrom vsn justvsn
-## @importFrom prozor readPeptideFasta
 
 #' Internal Functions by category
 #' @family configuration

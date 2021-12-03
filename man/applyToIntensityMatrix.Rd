@@ -33,8 +33,8 @@ conf$table$workIntensity <- "peptide.intensity"
 res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 
 # Normalize data using the vsn method from bioconductor
-is_vsn <- require("vsn")
-if(is_vsn){
+
+if( require("vsn")){
  res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
 }
 
