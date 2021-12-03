@@ -47,7 +47,7 @@ jobs:
       - name: Install prolfqua
         run: |
           remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org");
-          remotes::install_github("wolski/prozor")
+          remotes::install_github("protViz/prozor")
         shell: Rscript {0}
 
       - name: rcmdcheck::rcmdcheck
