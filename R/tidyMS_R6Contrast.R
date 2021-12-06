@@ -792,7 +792,7 @@ ContrastsSaintExpress <- R6::R6Class(
         subject_Id = self$subject_Id,
         fcthresh = fcthreshold,
         volcano = list(list(score = "BFDR", thresh = bfdrthreshold)),
-        histogram = list(list(score = "BFDR", xlim = c(0,1,0.05))),
+        histogram = list(list(score = "BFDR", xlim = c(0,1,0.05)), list(score = "SaintScore", xlim = c(0,1,0.05))),
         score = list(list(score = "SaintScore", thresh = saintscore )),
         modelName = self$modelName,
         estimate = "log2FC",
