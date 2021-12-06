@@ -768,17 +768,18 @@ ContrastsSaintExpress <- R6::R6Class(
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
-      res <- self$contrast_result %>% select(all_of(c(self$subject_Id,
-                                                      "modelName",
-                                                      "Bait",
-                                                      "c1_name",
-                                                      "c2_name",
-                                                      "c1",
-                                                      "c2",
-                                                      "log2FC",
-                                                      "SaintScore",
-                                                      "BFDR"
-      )))
+      res <- self$contrast_result %>% select(
+        all_of(c(self$subject_Id,
+                 "modelName",
+                 "Bait",
+                 "c1_name",
+                 "c2_name",
+                 "c1",
+                 "c2",
+                 "log2FC",
+                 "SaintScore",
+                 "BFDR"
+        )))
       res
     },
     #' @description get \code{\link{Contrasts_Plotter}}
