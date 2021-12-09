@@ -20,7 +20,7 @@ install.packages("prolfqua_X.Y.Z.tar.gz",repos = NULL, type="source")
 ```
 
 
-To install the package without vignettes from github you can execute in R
+To install the package without vignettes from github you can execute in R.
 
 ```
 install.packages('remotes')
