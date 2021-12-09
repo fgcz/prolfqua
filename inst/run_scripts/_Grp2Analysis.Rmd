@@ -305,13 +305,14 @@ if (nrow(signif$data) > 0) {
 } else {
   showSignificant <- FALSE 
 }
+nrb <- 0
 ```
 
 ```{r siproteins, fig.cap="Heatmap of Significant Proteins.", eval = showSignificant}
 sigheat
 ```
 
-```{r}
+```{r, eval = showSignificant}
 pl <-  signif$get_Plotter()
 bp <- pl$boxplots()$boxplot
 nrb <- min(length(bp), 6)
@@ -320,7 +321,7 @@ bp <- bp[seq_len(nrb)]
 
 (ref:boxplot) Boxplot of `r nrb` significant proteins.
 
-```{r boxplot, fig.cap="(ref:boxplot)"}
+```{r boxplot, fig.cap="(ref:boxplot)", eval = showSignificant}
 gridExtra::grid.arrange(grobs = bp, ncol = 3) 
 ```
 
@@ -333,14 +334,16 @@ knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
 ```{r CI, fig.cap="Confidence interfals for proteins with 20 smallest FDR.", fig.height=4, fig.width=7, eval=TRUE}
 grp2$top20confint
 existsNoPvalEstimate <- !is.null(grp2$noPvalEstimate)
-
 plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
   FALSE
-}else {TRUE}
+} else { 
+  TRUE 
+}
   
 ```
 
 `r if(plotMissing){"Figure \\@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions. The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset."}else{""}`
+
 
 ```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height=10, eval = plotMissing, eval = FALSE}
 grp2$imputedProteins$get_Plotter()$raster()

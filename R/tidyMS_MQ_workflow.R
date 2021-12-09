@@ -194,7 +194,7 @@ make2grpReport <- function(startdata,
   # Plot proteins without p-values
 
   xx <- res$more$contrast_result[rowSums(is.na(res$more$get_contrasts())) > 0,]
-  if (nrow(xx) > 0) {
+  if (nrow(xx) > 1) {
     xx <- xx %>% arrange(.data$estimate)
     GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = stats::reorder(!!sym(proteinID), .data$estimate), y = .data$estimate)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()

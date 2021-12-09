@@ -402,9 +402,9 @@ plot_raster <- function(data,
   }
   if (not_na) {
     bNA <- apply(resdata, 1, function(x){sum(is.na(x))})
-    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)),]
+    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)), , drop=FALSE]
   } else {
-    resdata <- resdata[order(bb, decreasing =  TRUE),]
+    resdata <- resdata[order(bb, decreasing =  TRUE), , drop = FALSE]
   }
 
   res <- pheatmap::pheatmap(resdata,
