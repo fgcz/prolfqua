@@ -118,6 +118,7 @@ filter_difference <- function(x, y, config){
 #' #undebug(make2grpReport)
 #' grp <- make2grpReport(data,atab, GRP2, NULL)
 #' write_2GRP(grp,tempdir())
+#' render_2GRP(grp, tempdir())
 make2grpReport <- function(startdata,
                            atable,
                            GRP2,
@@ -248,7 +249,7 @@ write_2GRP <- function(GRP2, outpath){
   names(tmp2) <- paste0(names(tmp2), ".normalized")
   dir.create(outpath)
 
-  writexl::write_xlsx(c(tmp, tmp2,  contrasts = GRP2$contrResult),
+  writexl::write_xlsx(c(tmp, tmp2,  list(contrasts = GRP2$contrResult)),
                       path = file.path(outpath,"AnalysisResults.xlsx"))
 }
 
