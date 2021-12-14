@@ -2,6 +2,8 @@
 % Please edit documentation in R/tidyMS_MQ_workflow.R
 \name{make2grpReport}
 \alias{make2grpReport}
+\alias{write_2GRP}
+\alias{render_2GRP}
 \title{Create 2 grp report in html and write data to xlsx table}
 \usage{
 make2grpReport(
@@ -14,17 +16,21 @@ make2grpReport(
   contpattern = "^zz|^CON__",
   remove = FALSE
 )
+
+write_2GRP(GRP2, outpath)
+
+render_2GRP(GRP2, outpath)
 }
 \arguments{
 \item{startdata}{table in long format}
 
 \item{atable}{AnalysisTableAnnotation annotate startdata table}
 
-\item{GRP2}{list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold}
+\item{GRP2}{return value of \code{\link{make2grpReport}}}
 
 \item{protein_annot}{column with portein desciription e.g. (fasta header)}
 
-\item{outpath}{directory to write results too.}
+\item{outpath}{path to place output}
 
 \item{revpattern}{default "REV_"}
 
@@ -35,3 +41,4 @@ make2grpReport(
 \description{
 For use examples see run_scripts directory
 }
+\concept{workflow}

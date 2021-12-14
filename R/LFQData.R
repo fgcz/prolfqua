@@ -121,7 +121,7 @@ LFQData <- R6::R6Class(
     #' @param factorDepth you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment
     #' @return LFQData with NA omitted.
     omit_NA = function(nrNA = 0, factorDepth = FALSE){
-      if(!factorDepth)
+      if (!factorDepth)
       {
         missing <- interaction_missing_stats(self$data, self$config)
       } else {
@@ -209,13 +209,13 @@ LFQData <- R6::R6Class(
     #' @description
     #' get Stats
     #' @return LFQDataTransformer
-    get_Transformer = function(){
+    get_Transformer = function() {
       return(LFQDataTransformer$new(self))
     },
     #' @description
     #' get Aggregator
     #' @return LFQDataAggregator
-    get_Aggregator = function(){
+    get_Aggregator = function() {
       return(LFQDataAggregator$new(self))
     },
     #' @description
@@ -234,6 +234,93 @@ LFQData <- R6::R6Class(
     }
   )
 )
+
+.annotProtein <- function(
+  startdata,
+  Accession,
+  revpattern = "^REV_",
+  contpattern = "zz"){
+
+  GRP2 <- list()
+  distinctprotid <- startdata %>% select(pID = !!sym(Accession)) %>% distinct()
+  distinctprotid <- distinctprotid %>% mutate(
+    proteinAnnot = case_when(grepl(revpattern,pID) ~ "REV",
+                             grepl(contpattern,pID) ~ "CON",
+                             TRUE ~ "FW"))
+  GRP2$percentOfContaminants <-  round(mean(distinctprotid$proteinAnnot == "CON") * 100, digits = 2)
+  GRP2$percentOfFalsePositives <- round(mean(distinctprotid$proteinAnnot == "REV") * 100, digits = 2)
+  GRP2$totalNrOfProteins <- sum( table( distinctprotid$proteinAnnot ) )
+  GRP2$NrOfProteinsNoDecoys <- sum(distinctprotid$proteinAnnot == "FW")
+  return(list(stats = GRP2, distinctprotid = distinctprotid))
+}
+
+# LFQDataProtein ----
+#' Expends LFQData with some protein specific functions.
+#'
+#' @export
+#' @family
+#' @examples
+#' @family LFQData
+#'
+#' library(tidyverse)
+#' library(prolfqua)
+#' istar <- prolfqua_data('data_ionstar')$filtered()
+#'
+#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQDataProtein$new( data, istar$config )
+#'
+#' stopifnot(lfqdata$annotateREV() == 0)
+#' stopifnot(lfqdata$annotateCON() == 0)
+#'
+#' lfqdata$nr_clean()
+#' dd <- lfqdata$clean()
+#' tmp <- lfqdata$get_subset(dd)
+#' tmp$complete_cases()
+LFQDataProtein <-
+  R6::R6Class("LFQDataProtein",
+          inherit = LFQData,
+          public = list(
+            #' @field data.frame containing further information
+            row_annot = NULL,
+            initialize = function(data, config, row_annot){
+              super$initialize(data, config)
+              if (!missing(row_annot)) {
+                stopifnot(config$table$hkeysDepth() %in% colnames(row_annot))
+                self$row_annot <- row_annot
+              } else {
+                self$row_annot <- distinct(select(data,config$table$hkeysDepth()))
+              }
+            },
+            annotateREV = function(pattern = "REV_") {
+              pID <- self$config$table$hkeysDepth()
+              self$row_annot <- self$row_annot %>% mutate(
+                REV = case_when(grepl(pattern, pID) ~ TRUE,
+                                         TRUE ~ FALSE))
+
+              return(sum(self$row_annot$REV))
+            },
+            annotateCON = function(pattern = "^zz|^CON"){
+              pID <- self$config$table$hkeysDepth()
+              self$row_annot <- self$row_annot %>% mutate(
+                CON = case_when(grepl(pattern, pID) ~ TRUE,
+                                TRUE ~ FALSE))
+              return(sum(self$row_annot$CON))
+            },
+            nr_clean = function(){
+              if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
+              if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
+              return(sum(!self$row_annot$REV & !self$row_annot$CON))
+            },
+            clean = function(){
+              if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
+              if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
+              return(filter(self$row_annot , !self$row_annot$REV & !self$row_annot$CON) )
+            }
+
+          )
+  )
+
+
 
 # LFQDataTransformer ----
 
