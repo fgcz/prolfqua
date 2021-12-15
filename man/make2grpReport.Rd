@@ -40,4 +40,44 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp")
 \description{
 For use examples see run_scripts directory
 }
+\examples{
+\dontrun{
+library(tidyverse)
+istar <- prolfqua_data('data_ionstar')$filtered()
+data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+
+GRP2 <- list()
+GRP2$projectID <- "3765"
+GRP2$projectName <- "Order_26863"
+GRP2$workunitID <- "2057368.zip"
+
+#at least 2 peptides per protein
+GRP2$nrPeptides <- 2
+
+# Set FC to >= |2| and FRD to 0.1
+GRP2$log2FCthreshold <- 1
+GRP2$FDRthreshold <- 0.1
+GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
+data$Description <-"AAAAA"
+
+
+
+ atab <- AnalysisTableAnnotation$new()
+
+atab$fileName = "raw.file"
+atab$hierarchy["protein_Id"] = "protein_Id"
+atab$hierarchy["peptide_Id"] = "peptide_Id"
+
+atab$factors["dilution."] = "dilution."
+atab$setWorkIntensity("peptide.intensity")
+atab$isotopeLabel = "isotope"
+config <- prolfqua::AnalysisConfiguration$new(atab)
+
+protein_annot = "Description"
+#undebug(make2grpReport)
+grp <- make2grpReport(data,atab, GRP2, NULL)
+write_2GRP(grp,tempdir())
+render_2GRP(grp, tempdir())
+}
+}
 \concept{workflow}

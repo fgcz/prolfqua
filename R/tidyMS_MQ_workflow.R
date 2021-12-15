@@ -118,6 +118,7 @@ filter_difference <- function(x, y, config){
 #' grp <- make2grpReport(data,atab, GRP2, NULL)
 #' write_2GRP(grp,tempdir())
 #' render_2GRP(grp, tempdir())
+#' }
 make2grpReport <- function(startdata,
                            atable,
                            GRP2,
@@ -260,8 +261,8 @@ write_2GRP <- function(GRP2, outpath){
 #' @family workflow
 render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
   prolfqua::copy_2grp_markdown()
-  rmarkdown::render("_GRP2Analysis.Rmd",
+  rmarkdown::render("_Grp2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
-  file.copy("_GRP2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
+  file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
 }
