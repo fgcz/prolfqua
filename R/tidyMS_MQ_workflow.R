@@ -263,5 +263,5 @@ render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
   rmarkdown::render("_GRP2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
-  file.copy("_GRP2Analysis.html", file.path(outpath, paste0(htmlname,".html"), overwrite = TRUE)
+  file.copy("_GRP2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
 }
