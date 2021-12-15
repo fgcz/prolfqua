@@ -75,7 +75,6 @@ filter_difference <- function(x, y, config){
 #' @param atable AnalysisTableAnnotation annotate startdata table
 #' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold
 #' @param protein_annot column with portein desciription e.g. (fasta header)
-#' @param outpath directory to write results too.
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
 #' @param remove do you want to remove contaminants.
@@ -123,7 +122,6 @@ make2grpReport <- function(startdata,
                            atable,
                            GRP2,
                            protein_annot = "Description",
-                           outpath = ".",
                            revpattern = "^REV_",
                            contpattern = "^zz|^CON__",
                            remove = FALSE) {
@@ -133,9 +131,10 @@ make2grpReport <- function(startdata,
 
 
   adata <- setup_analysis(startdata, config)
-  annot <- select( startdata , c( atable$hkeysDepth(), protein_annot)) %>% distinct()
+  prot_annot <- select( startdata , c( atable$hierarchy[[atable$hkeysDepth()]], protein_annot)) %>% distinct()
+  prot_annot <- rename(prot_annot, !!atable$hkeysDepth() := (!!atable$hierarchy[[atable$hkeysDepth()]]))
 
-  lfqdata <- LFQDataProtein$new(adata, config, row_annot = annot)
+  lfqdata <- LFQDataProtein$new(adata, config, row_annot = prot_annot)
   lfqdata$remove_small_intensities()
 
 
@@ -259,10 +258,10 @@ write_2GRP <- function(GRP2, outpath){
 #' @param outpath path to place output
 #' @export
 #' @family workflow
-render_2GRP <- function(GRP2, outpath){
+render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
   prolfqua::copy_2grp_markdown()
   rmarkdown::render("_GRP2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
-  file.copy("_GRP2Analysis.html", file.path(outpath, "_GRP2Analysis.html"), overwrite = TRUE)
+  file.copy("_GRP2Analysis.html", file.path(outpath, paste0(htmlname,".html"), overwrite = TRUE)
 }
