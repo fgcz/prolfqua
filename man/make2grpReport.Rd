@@ -11,7 +11,6 @@ make2grpReport(
   atable,
   GRP2,
   protein_annot = "Description",
-  outpath = ".",
   revpattern = "^REV_",
   contpattern = "^zz|^CON__",
   remove = FALSE
@@ -30,13 +29,13 @@ render_2GRP(GRP2, outpath)
 
 \item{protein_annot}{column with portein desciription e.g. (fasta header)}
 
-\item{outpath}{path to place output}
-
 \item{revpattern}{default "REV_"}
 
 \item{contpattern}{default "^zz|^CON__"}
 
 \item{remove}{do you want to remove contaminants.}
+
+\item{outpath}{path to place output}
 }
 \description{
 For use examples see run_scripts directory
