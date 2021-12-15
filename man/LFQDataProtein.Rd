@@ -8,14 +8,13 @@ Expends LFQData with some protein specific functions.
 
 Expends LFQData with some protein specific functions.
 }
-\concept{}
-\concept{LFQData
+\examples{
 
 library(tidyverse)
 library(prolfqua)
 istar <- prolfqua_data('data_ionstar')$filtered()
 
-data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQDataProtein$new( data, istar$config )
 
 stopifnot(lfqdata$annotateREV() == 0)
@@ -24,7 +23,18 @@ stopifnot(lfqdata$annotateCON() == 0)
 lfqdata$nr_clean()
 dd <- lfqdata$clean()
 tmp <- lfqdata$get_subset(dd)
-tmp$complete_cases()}
+tmp$complete_cases()
+
+}
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataStats}},
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQData}}
+}
+\concept{LFQData}
 \section{Super class}{
 \code{\link[prolfqua:LFQData]{prolfqua::LFQData}} -> \code{LFQDataProtein}
 }
@@ -85,10 +95,22 @@ tmp$complete_cases()}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataProtein$new(data, config, row_annot)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{data frame from \code{\link{setup_analysis}}}
+
+\item{\code{config}}{\code{\link{AnalysisConfiguration}}}
+
+\item{\code{row_annot}}{data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-annotateREV"></a>}}

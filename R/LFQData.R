@@ -258,9 +258,8 @@ LFQData <- R6::R6Class(
 #' Expends LFQData with some protein specific functions.
 #'
 #' @export
-#' @family
-#' @examples
 #' @family LFQData
+#' @examples
 #'
 #' library(tidyverse)
 #' library(prolfqua)
@@ -276,12 +275,17 @@ LFQData <- R6::R6Class(
 #' dd <- lfqdata$clean()
 #' tmp <- lfqdata$get_subset(dd)
 #' tmp$complete_cases()
+#'
 LFQDataProtein <-
   R6::R6Class("LFQDataProtein",
           inherit = LFQData,
           public = list(
             #' @field data.frame containing further information
             row_annot = NULL,
+            #' @description initialize
+            #' @param data data frame from \code{\link{setup_analysis}}
+            #' @param config \code{\link{AnalysisConfiguration}}
+            #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
             initialize = function(data, config, row_annot){
               super$initialize(data, config)
               if (!missing(row_annot)) {

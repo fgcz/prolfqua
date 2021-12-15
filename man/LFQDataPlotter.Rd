@@ -44,6 +44,7 @@ prolfqua::plot_sample_correlation(istar$data, istar$config)
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQDataProtein}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},

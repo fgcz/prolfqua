@@ -18,6 +18,7 @@ For compatibility with Bioconductor
 \seealso{
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
+\code{\link{LFQDataProtein}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQData}}
