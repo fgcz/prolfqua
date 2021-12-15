@@ -1,6 +1,5 @@
 library(tidyverse)
 
-outpath <- "resultsProLFQua/"
 protein <- as_tibble(
   read.csv("combined_protein.tsv",
            header = TRUE, sep = "\t",
@@ -43,7 +42,7 @@ atable$factorDepth <- 1
 atable$setWorkIntensity("intensity")
 
 
-# compute all possible 2 grps.
+# compute all possible 2 grps to avoid specifying reference.
 
 levels <- annot$Experiment |> unique()
 
