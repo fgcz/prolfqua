@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.2.5
+Version: 0.2.6
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
@@ -14,7 +14,8 @@ Description: The prolfqua package integrates essential steps
     and interactive data analysis reports in pdf or HTML format.
     We use prolfqua to visualize and model simple experimental designs
     with a single explanatory variable and complex experiments with multiple factors.
-    Furthermore, we use prolfqua to benchmark data acquisition, data preprocessing or data modeling methods.
+    Furthermore, we use prolfqua to benchmark data acquisition,
+    data preprocessing or data modeling methods.
     We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
 License: MIT + file LICENSE
 Encoding: UTF-8
