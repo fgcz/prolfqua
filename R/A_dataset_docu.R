@@ -36,22 +36,22 @@ NULL
 ## @importFrom vsn justvsn
 
 #' Internal Functions by category
-#' @family configuration
-#' @family concrete_configuration
-#' @family summary
 #' @family aggregation
-#' @family plotting
-#' @family utilities
-#' @family modelling
-#' @family workflows
-#' @family vignetteHelpers
-#' @family deprecated
-#' @family transitionCorrelation
-#' @family preprocessing
 #' @family benchmarking
+#' @family concrete_configuration
+#' @family configuration
+#' @family deprecated
 #' @family MaxQuant
+#' @family modelling
 #' @family MSFragger
+#' @family plotting
+#' @family preprocessing
 #' @family stats
+#' @family summary
+#' @family transitionCorrelation
+#' @family utilities
+#' @family vignetteHelpers
+#' @family workflows
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 NULL
