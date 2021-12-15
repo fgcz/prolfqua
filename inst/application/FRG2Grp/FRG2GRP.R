@@ -1,4 +1,3 @@
-library(tidyverse)
 
 protein <- as_tibble(
   read.csv("combined_protein.tsv",
