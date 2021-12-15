@@ -18,7 +18,7 @@ make2grpReport(
 
 write_2GRP(GRP2, outpath)
 
-render_2GRP(GRP2, outpath)
+render_2GRP(GRP2, outpath, htmlname = "Result2Grp")
 }
 \arguments{
 \item{startdata}{table in long format}
