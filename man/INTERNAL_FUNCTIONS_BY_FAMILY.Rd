@@ -7,33 +7,6 @@
 Internal Functions by category
 }
 \seealso{
-Other configuration: 
-\code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
-\code{\link{R6extractValues}()},
-\code{\link{complete_cases}()},
-\code{\link{make_interaction_column}()},
-\code{\link{make_reduced_hierarchy_config}()},
-\code{\link{sample_subset}()},
-\code{\link{separate_factors}()},
-\code{\link{separate_hierarchy}()},
-\code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
-\code{\link{table_factors}()}
-
-Other concrete_configuration: 
-\code{\link{create_config_MQ_peptide}()},
-\code{\link{create_config_MSFragger_MSstats}()},
-\code{\link{create_config_Skyline}()},
-\code{\link{create_config_Spectronaut_Peptide}()}
-
-Other summary: 
-\code{\link{hierarchy_counts_sample}()},
-\code{\link{hierarchy_counts}()},
-\code{\link{nr_B_in_A_per_sample}()},
-\code{\link{summarize_hierarchy}()}
-
 Other aggregation: 
 \code{\link{aggregateTopNIntensities}()},
 \code{\link{aggregate_intensity}()},
@@ -49,39 +22,50 @@ Other aggregation:
 \code{\link{summarizeRobust_config}()},
 \code{\link{summarizeRobust}()}
 
-Other plotting: 
-\code{\link{Contrasts_Plotter}},
-\code{\link{medpolishPlydf}()},
-\code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{missingness_per_condition}()},
-\code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
-\code{\link{plot_heatmap_cor}()},
-\code{\link{plot_heatmap}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_boxplot_df}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_intensity_distribution_violin}()},
-\code{\link{plot_pca}()},
-\code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+Other benchmarking: 
+\code{\link{Benchmark}},
+\code{\link{ionstar_bench_preprocess}()},
+\code{\link{ms_bench_auc}()}
 
-Other utilities: 
-\code{\link{get_UniprotID_from_fasta_header}()},
-\code{\link{jackknifeMatrix}()},
-\code{\link{matrix_to_tibble}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
-\code{\link{pairs_smooth}()},
-\code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
-\code{\link{table_facade.list}()},
-\code{\link{table_facade}()}
+Other concrete_configuration: 
+\code{\link{create_config_MQ_peptide}()},
+\code{\link{create_config_MSFragger_MSstats}()},
+\code{\link{create_config_Skyline}()},
+\code{\link{create_config_Spectronaut_Peptide}()}
+
+Other configuration: 
+\code{\link{AnalysisConfiguration}},
+\code{\link{AnalysisParameters}},
+\code{\link{AnalysisTableAnnotation}},
+\code{\link{R6extractValues}()},
+\code{\link{complete_cases}()},
+\code{\link{make_interaction_column}()},
+\code{\link{make_reduced_hierarchy_config}()},
+\code{\link{sample_subset}()},
+\code{\link{separate_factors}()},
+\code{\link{separate_hierarchy}()},
+\code{\link{setup_analysis}()},
+\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{table_factors}()}
+
+Other deprecated: 
+\code{\link{compute_roc}()},
+\code{\link{intensity_summary_by_hkeys}()},
+\code{\link{medpolish_protein_quants}()},
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+
+Other MaxQuant: 
+\code{\link{plot_MQ_intensity_vs_retention_time}()},
+\code{\link{tidyMQ_Evidence}()},
+\code{\link{tidyMQ_PeptideProtein}()},
+\code{\link{tidyMQ_Peptides}()},
+\code{\link{tidyMQ_ProteinGroups}()},
+\code{\link{tidyMQ_allPeptides}()},
+\code{\link{tidyMQ_from_Sites}()},
+\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
+\code{\link{tidyMQ_merged}()},
+\code{\link{tidyMQ_modificationSpecificPeptides}()}
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
@@ -123,21 +107,27 @@ Other modelling:
 \code{\link{strategy_lmer}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
-Other workflows: 
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_corr_filter_impute}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+Other MSFragger: 
+\code{\link{tidy_MSFragger_MSstats_csv}()}
 
-Other vignetteHelpers: 
-\code{\link{render_MQSummary_rmd}()},
-\code{\link{render_SummarizeFiltering_rmd}()}
-
-Other deprecated: 
-\code{\link{compute_roc}()},
-\code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+Other plotting: 
+\code{\link{Contrasts_Plotter}},
+\code{\link{medpolishPlydf}()},
+\code{\link{missigness_histogram}()},
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{missingness_per_condition}()},
+\code{\link{plot_NA_heatmap}()},
+\code{\link{plot_aggregation}()},
+\code{\link{plot_heatmap_cor}()},
+\code{\link{plot_heatmap}()},
+\code{\link{plot_hierarchies_add_quantline}()},
+\code{\link{plot_hierarchies_boxplot_df}()},
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{plot_hierarchies_line}()},
+\code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_raster}()},
+\code{\link{plot_sample_correlation}()}
 
 Other preprocessing: 
 \code{\link{applyToIntensityMatrix}()},
@@ -147,28 +137,6 @@ Other preprocessing:
 \code{\link{robust_scale}()},
 \code{\link{scale_with_subset_by_factors}()},
 \code{\link{scale_with_subset}()}
-
-Other benchmarking: 
-\code{\link{Benchmark}},
-\code{\link{ionstar_bench_preprocess}()},
-\code{\link{ms_bench_auc}()}
-
-Other MaxQuant: 
-\code{\link{plot_MQ_intensity_vs_retention_time}()},
-\code{\link{tidyMQ_Evidence}()},
-\code{\link{tidyMQ_PeptideProtein}()},
-\code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()},
-\code{\link{tidyMQ_allPeptides}()},
-\code{\link{tidyMQ_from_Sites}()},
-\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
-\code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()}
-
-Other MSFragger: 
-\code{\link{tidy_MSFragger_MSstats_csv}()},
-\code{\link{tidy_MSFragger_combined_protein_V16}()},
-\code{\link{tidy_MSFragger_combined_protein}()}
 
 Other stats: 
 \code{\link{lfq_power_t_test_proteins}()},
@@ -181,6 +149,36 @@ Other stats:
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{pooled_V2}()},
 \code{\link{summarize_stats}()}
+
+Other summary: 
+\code{\link{hierarchy_counts_sample}()},
+\code{\link{hierarchy_counts}()},
+\code{\link{nr_B_in_A_per_sample}()},
+\code{\link{summarize_hierarchy}()}
+
+Other utilities: 
+\code{\link{get_UniprotID_from_fasta_header}()},
+\code{\link{jackknifeMatrix}()},
+\code{\link{matrix_to_tibble}()},
+\code{\link{multigroupVolcano}()},
+\code{\link{my_jackknife}()},
+\code{\link{pairs_smooth}()},
+\code{\link{pairs_w_abline}()},
+\code{\link{panel.cor}()},
+\code{\link{panel.hist}()},
+\code{\link{removeNArows}()},
+\code{\link{split2table}()},
+\code{\link{table_facade.list}()},
+\code{\link{table_facade}()}
+
+Other vignetteHelpers: 
+\code{\link{render_MQSummary_rmd}()},
+\code{\link{render_SummarizeFiltering_rmd}()}
+
+Other workflows: 
+\code{\link{workflow_DIA_NA_preprocessing}()},
+\code{\link{workflow_corr_filter_impute}()},
+\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{MSFragger}
 \concept{MaxQuant}
