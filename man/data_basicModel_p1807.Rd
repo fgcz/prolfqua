@@ -8,7 +8,7 @@
 a linear model
 }
 \usage{
-data_basicModel_p1807
+data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
 }
 \description{
 Model for debugging

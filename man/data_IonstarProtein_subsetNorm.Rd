@@ -8,7 +8,7 @@
 An object of class \code{list} of length 2.
 }
 \usage{
-data_IonstarProtein_subsetNorm
+data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 }
 \description{
 example data for check

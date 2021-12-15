@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 19 columns.
 }
 \usage{
-data_exampleForRopeca
+data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
 }
 \description{
 example data for check

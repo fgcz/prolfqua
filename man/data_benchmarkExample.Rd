@@ -8,7 +8,7 @@
 A data frame
 }
 \usage{
-data_benchmarkExample
+data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
 }
 \description{
 Benchmark data Example

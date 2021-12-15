@@ -8,7 +8,7 @@
 An object of class \code{data.frame} with 34494 rows and 5 columns.
 }
 \usage{
-data_multigroupFC
+data_multigroupFC <- prolfqua_data("data_multigroupFC")
 }
 \description{
 example data for check

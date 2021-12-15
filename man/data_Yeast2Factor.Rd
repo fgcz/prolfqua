@@ -8,7 +8,7 @@
 LFQData
 }
 \usage{
-data_Yeast2Factor
+data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
 }
 \description{
 example of 2 Factor data
