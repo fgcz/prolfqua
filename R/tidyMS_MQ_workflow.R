@@ -242,15 +242,14 @@ make2grpReport <- function(startdata,
 #' @export
 #' @family workflow
 #'
-write_2GRP <- function(GRP2, outpath){
+write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults") {
   wr <- GRP2$lfqData$get_Writer()
   tmp <- wr$get_wide()
   tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
   names(tmp2) <- paste0(names(tmp2), ".normalized")
   dir.create(outpath)
-
   writexl::write_xlsx(c(tmp, tmp2,  list(contrasts = GRP2$contrResult)),
-                      path = file.path(outpath,"AnalysisResults.xlsx"))
+                      path = file.path(outpath, paste0(xlsxname,".xlsx")))
 }
 
 #' render 2GRP analysis report
