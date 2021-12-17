@@ -16,7 +16,7 @@ make2grpReport(
   remove = FALSE
 )
 
-write_2GRP(GRP2, outpath)
+write_2GRP(GRP2, outpath, xlsxname = "AnalysisResults")
 
 render_2GRP(GRP2, outpath, htmlname = "Result2Grp")
 }
