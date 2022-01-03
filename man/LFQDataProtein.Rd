@@ -116,19 +116,35 @@ initialize
 \if{html}{\out{<a id="method-annotateREV"></a>}}
 \if{latex}{\out{\hypertarget{method-annotateREV}{}}}
 \subsection{Method \code{annotateREV()}}{
+annotate rev sequences
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataProtein$annotateREV(pattern = "REV_")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pattern}}{default "REV_"}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-annotateCON"></a>}}
 \if{latex}{\out{\hypertarget{method-annotateCON}{}}}
 \subsection{Method \code{annotateCON()}}{
+annotate contaminants
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataProtein$annotateCON(pattern = "^zz|^CON")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pattern}}{default "^zz|^CON"}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-nr_clean"></a>}}

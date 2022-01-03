@@ -9,7 +9,7 @@ summary_ROPECA_median_p.scaled(
   contrasts_data,
   contrast = "contrast",
   subject_Id = "protein_Id",
-  estimate = "estimate",
+  estimate = "diff",
   statistic = "statistic",
   p.value = "moderated.p.value",
   max.n = 10

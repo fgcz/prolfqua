@@ -28,10 +28,10 @@ Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 bb <- tmp$get_contrasts()
 tmp$get_contrast_sides()
-
+tmp$to_wide()
 pl <- tmp$get_Plotter()
 pl$histogram()
-pl$histogram_estimate()
+pl$histogram_diff()
 pl$ma_plot()
 pl$volcano()
 

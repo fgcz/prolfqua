@@ -4,7 +4,12 @@
 \alias{moderated_p_limma_long}
 \title{Moderate p-value for long table}
 \usage{
-moderated_p_limma_long(mm, group_by_col = "lhs", robust = FALSE)
+moderated_p_limma_long(
+  mm,
+  group_by_col = "lhs",
+  estimate = "estimate",
+  robust = FALSE
+)
 }
 \arguments{
 \item{mm}{result of \code{\link{contrasts_linfct}}}
@@ -26,6 +31,7 @@ factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
                                                    contrastfun = my_contrast_V2)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+
 plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
 abline(0,1, col = 2)
 

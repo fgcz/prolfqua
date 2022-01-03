@@ -150,6 +150,7 @@ Other plotting:
 \item \href{#method-new}{\code{Contrasts_Plotter$new()}}
 \item \href{#method-histogram}{\code{Contrasts_Plotter$histogram()}}
 \item \href{#method-histogram_estimate}{\code{Contrasts_Plotter$histogram_estimate()}}
+\item \href{#method-histogram_diff}{\code{Contrasts_Plotter$histogram_diff()}}
 \item \href{#method-volcano}{\code{Contrasts_Plotter$volcano()}}
 \item \href{#method-volcano_plotly}{\code{Contrasts_Plotter$volcano_plotly()}}
 \item \href{#method-ma_plot}{\code{Contrasts_Plotter$ma_plot()}}
@@ -174,7 +175,7 @@ create Crontrast_Plotter
   score = list(list(score = "statistic", thresh = NULL)),
   fcthresh = 1,
   modelName = "Model",
-  estimate = "estimate",
+  estimate = "diff",
   contrast = "contrast"
 )}\if{html}{\out{</div>}}
 }
@@ -196,7 +197,7 @@ create Crontrast_Plotter
 
 \item{\code{modelName}}{name of model}
 
-\item{\code{estimate}}{estimate column}
+\item{\code{estimate}}{fold change (difference) estimate column}
 
 \item{\code{contrast}}{contrast column}
 }
@@ -220,6 +221,23 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 plot histogram of estimated fold change
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_estimate(binwidth = 0.05)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{binwidth}}{with of bin in histogram}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-histogram_diff"></a>}}
+\if{latex}{\out{\hypertarget{method-histogram_diff}{}}}
+\subsection{Method \code{histogram_diff()}}{
+plot histogram of differences (estimates) fold change
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_diff(binwidth = 0.05)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -25,7 +25,7 @@ ContrastsInterface <- R6::R6Class(
                               "estimate","statistic","p.value",
                               "conf.low","conf.high","FDR")
 
-# ContrastSimpleImpute----
+# ContrastsSimpleImpute----
 #' compute contrasts with data imputation (directly from data)
 #'
 #' if interaction average can not be computed infer it using the 10\%
@@ -49,10 +49,10 @@ ContrastsInterface <- R6::R6Class(
 #' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 #' bb <- tmp$get_contrasts()
 #' tmp$get_contrast_sides()
-#'
+#' tmp$to_wide()
 #' pl <- tmp$get_Plotter()
 #' pl$histogram()
-#' pl$histogram_estimate()
+#' pl$histogram_diff()
 #' pl$ma_plot()
 #' pl$volcano()
 #'
@@ -155,7 +155,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 
         }
 
-        result <- result %>% rename(estimate = estimate_median, sigma = sd)
+        result <- result %>% rename(diff = estimate_median, sigma = sd)
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- result
       }
@@ -172,7 +172,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "estimate",
+        estimate = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -184,7 +184,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("estimate"),
+                                                     columns = c("diff", columns),
                                                      contrast = 'contrast')
       return(contrasts_wide)
     }
@@ -200,7 +200,6 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' rm(list = ls())
 #' library(prolfqua)
 #' library(tidyverse)
 #'
@@ -218,9 +217,9 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'  subject_Id = config$table$hkeysDepth())
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
-#'     "dil.e_vs_a" = "dilution.e - dilution.b" )
+#'     "dil.e_vs_b" = "dilution.e - dilution.b" )
 #'  #prolfqua::Contrasts$debug("get_linfct")
-#'  #Contrasts$debug("get_contrasts")
+#' #prolfqua::Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod,
 #'  Contr)
 #'
@@ -230,6 +229,8 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' xx <- contrastX$get_contrasts()
 #'
 #'
+#' contrastX$get_contrasts()
+#' contrastX$to_wide()
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -319,10 +320,10 @@ Contrasts <- R6::R6Class(
                                             subject_Id = self$subject_Id,
                                             contrastfun = self$contrastfun )
 
-        contrast_result <- dplyr::rename(contrast_result, contrast = lhs)
+        contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
 
-        xx <- dplyr::select(contrast_result, self$subject_Id, "contrast", "estimate")
-        xx <- xx %>% tidyr::pivot_wider(names_from = "contrast", values_from = "estimate")
+        xx <- dplyr::select(contrast_result, self$subject_Id, "contrast", "diff")
+        xx <- xx %>% tidyr::pivot_wider(names_from = "contrast", values_from = "diff")
 
         contrast_result <- dplyr::filter(contrast_result, contrast %in% names(self$contrasts))
 
@@ -380,7 +381,7 @@ Contrasts <- R6::R6Class(
         volcano = volcano,
         histogram = histogram,
         modelName = self$modelName,
-        estimate = "estimate",
+        estimate = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -392,7 +393,7 @@ Contrasts <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("estimate", columns),
+                                                     columns = c("diff", columns),
                                                      contrast = 'contrast')
       return(contrasts_wide)
     }
@@ -426,7 +427,7 @@ Contrasts <- R6::R6Class(
 #'  Contr)
 #'  contrast <- ContrastsModerated$new(contrast)
 #'  bb <- contrast$get_contrasts()
-#'  bb
+#'
 #'  plotter <- contrast$get_Plotter()
 #'  plotter$histogram()
 #'  plotter$ma_plot()
@@ -477,8 +478,10 @@ ContrastsModerated <- R6::R6Class(
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
       contrast_result <- self$Contrast$get_contrasts(all = FALSE)
-      contrast_result <- moderated_p_limma_long(contrast_result ,
-                                                group_by_col = "contrast")
+      contrast_result <- moderated_p_limma_long(
+        contrast_result ,
+        group_by_col = "contrast",
+        estimate = "diff")
       if (!all) {
         contrast_result <- contrast_result %>% select(-c( "sigma","df",
                                                           "statistic", "p.value","conf.low","conf.high",
@@ -515,7 +518,7 @@ ContrastsModerated <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "estimate",
+        estimate = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -527,8 +530,9 @@ ContrastsModerated <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("estimate", columns),
+                                                     columns = c("diff", columns),
                                                      contrast = 'contrast')
+      return(contrasts_wide)
     }
   )
 )
@@ -563,7 +567,7 @@ ContrastsModerated <- R6::R6Class(
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
-#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#'  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
 #'
 #'
 #'  contr <- prolfqua::Contrasts$new(mod, Contr)
@@ -638,10 +642,11 @@ ContrastsROPECA <- R6::R6Class(
           contrast_result,
           contrast = "contrast",
           subject_Id = self$subject_Id[length(self$subject_Id) - 1],
-          estimate = "estimate",
+          estimate = "diff",
           statistic = "statistic",
           p.value = "p.value",
           max.n = 10)
+        contrast_result <- dplyr::rename(contrast_result, diff = "estimate")
         contrast_result <- self$p.adjust(contrast_result,
                                          column = "beta.based.significance",
                                          group_by_col = "contrast",
@@ -679,7 +684,7 @@ ContrastsROPECA <- R6::R6Class(
         histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
                          list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "estimate",
+        estimate = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -691,7 +696,7 @@ ContrastsROPECA <- R6::R6Class(
       contrasts_wide <- pivot_model_contrasts_2_Wide(
         contrast_minimal,
         subject_Id = self$subject_Id[length(self$subject_Id) - 1],
-        columns = c("estimate", columns),
+        columns = c("diff", columns),
         contrast = 'contrast')
       return(contrasts_wide)
     }
@@ -896,7 +901,7 @@ ContrastsTable <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "estimate",
+        estimate = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -907,7 +912,7 @@ ContrastsTable <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("estimate", columns),
+                                                     columns = c("diff", columns),
                                                      contrast = 'contrast')
       return(contrasts_wide)
     }
@@ -971,8 +976,7 @@ ContrastsTable <- R6::R6Class(
 #' cp$ma_plot()
 #' cp$ma_plotly
 Contrasts_Plotter <- R6::R6Class(
-  "Contrasts_Plotter"
-  ,
+  "Contrasts_Plotter",
   public = list(
     #' @field contrastDF data frame with contrasts
     contrastDF = NULL,
@@ -1003,7 +1007,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param score score parameters
     #' @param fcthresh default 1 (log2 FC threshold)
     #' @param modelName name of model
-    #' @param estimate estimate column
+    #' @param estimate fold change (difference) estimate column
     #' @param contrast contrast column
     initialize = function(contrastDF,
                           subject_Id,
@@ -1013,7 +1017,7 @@ Contrasts_Plotter <- R6::R6Class(
                           score = list(list(score = "statistic",  thresh = NULL)),
                           fcthresh = 1,
                           modelName = "Model",
-                          estimate = "estimate",
+                          estimate = "diff",
                           contrast = "contrast"
     ){
       self$contrastDF <- contrastDF %>% tidyr::unite("subject_Id", subject_Id, sep = "~", remove = FALSE)
@@ -1047,6 +1051,12 @@ Contrasts_Plotter <- R6::R6Class(
       re[2] <- ceiling(re[2])
       fig <- private$.histogram(score = list(score =  self$estimate, xlim = c(re,binwidth)))
       return(fig)
+    },
+    #' @description
+    #' plot histogram of differences (estimates) fold change
+    #' @param binwidth with of bin in histogram
+    histogram_diff = function(binwidth = 0.05){
+      self$histogram_estimate(binwidth = binwidth)
     },
     #' @description
     #' volcano plots (fold change vs FDR)
@@ -1233,7 +1243,6 @@ Contrasts_Plotter <- R6::R6Class(
     }
   )
 )
-
 
 
 

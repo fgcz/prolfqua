@@ -295,6 +295,9 @@ LFQDataProtein <-
                 self$row_annot <- distinct(select(data,config$table$hkeysDepth()))
               }
             },
+            #' @description
+            #' annotate rev sequences
+            #' @param pattern default "REV_"
             annotateREV = function(pattern = "REV_") {
               pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot %>% mutate(
@@ -303,6 +306,9 @@ LFQDataProtein <-
 
               return(sum(self$row_annot$REV))
             },
+            #' @description
+            #' annotate contaminants
+            #' @param pattern default "^zz|^CON"
             annotateCON = function(pattern = "^zz|^CON"){
               pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot %>% mutate(

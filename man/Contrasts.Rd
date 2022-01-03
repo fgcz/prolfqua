@@ -10,7 +10,6 @@ Estimate contrasts using Wald Test
 }
 \examples{
 
-rm(list = ls())
 library(prolfqua)
 library(tidyverse)
 
@@ -28,9 +27,9 @@ mod <- build_model(
  subject_Id = config$table$hkeysDepth())
 
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
-    "dil.e_vs_a" = "dilution.e - dilution.b" )
+    "dil.e_vs_b" = "dilution.e - dilution.b" )
  #prolfqua::Contrasts$debug("get_linfct")
- #Contrasts$debug("get_contrasts")
+#prolfqua::Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod,
  Contr)
 
@@ -40,6 +39,8 @@ contrastX$get_linfct()
 xx <- contrastX$get_contrasts()
 
 
+contrastX$get_contrasts()
+contrastX$to_wide()
 
 }
 \seealso{

@@ -28,7 +28,7 @@ mod <- build_model(
  Contr)
  contrast <- ContrastsModerated$new(contrast)
  bb <- contrast$get_contrasts()
- bb
+
  plotter <- contrast$get_Plotter()
  plotter$histogram()
  plotter$ma_plot()

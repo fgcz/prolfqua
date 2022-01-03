@@ -29,7 +29,7 @@ mod <- build_model(
  modelFunction,
  subject_Id = config$table$hkeysDepth())
 
- Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+ Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
 
 
  contr <- prolfqua::Contrasts$new(mod, Contr)

@@ -1000,7 +1000,7 @@ contrasts_linfct <- function(models,
 #' @family modelling
 #' @keywords internal
 #'
-moderated_p_limma <- function(mm, df = "df", robust = FALSE, confint = 0.95){
+moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95){
   sv <- limma::squeezeVar(mm$sigma^2, df = mm[[df]],robust = robust)
   sv <- tibble::as_tibble(sv)
   sv <- sv %>% setNames(paste0('moderated.', names(.)))
@@ -1011,8 +1011,8 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE, confint = 0.95){
                                                        df = .data$moderated.df.total, lower.tail = FALSE) )
 
   prqt <- -qt((1 - confint)/2, df = mm$moderated.df.total)
-  mm$moderated.conf.low <- mm$estimate  - prqt * sqrt(mm$moderated.var.post)
-  mm$moderated.conf.high <- mm$estimate + prqt * sqrt(mm$moderated.var.post)
+  mm$moderated.conf.low <- mm[[estimate]]  - prqt * sqrt(mm$moderated.var.post)
+  mm$moderated.conf.high <- mm[[estimate]] + prqt * sqrt(mm$moderated.var.post)
   mm <-  dplyr::ungroup(mm)
 
 
@@ -1031,12 +1031,14 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE, confint = 0.95){
 #' modelSummary_A <- prolfqua_data('data_modellingResult_A')
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
-#' factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
-#'                                                    factor_contrasts,
-#'                                                    subject_Id = "Compound",
-#'                                                    contrastfun = my_contrast_V2)
+#' factor_levelContrasts <- contrasts_linfct(
+#'   modelSummary_A$modelProtein,
+#'   factor_contrasts,
+#'   subject_Id = "Compound",
+#'   contrastfun = my_contrast_V2)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
+#'
 #' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
 #' abline(0,1, col = 2)
 #'
@@ -1057,11 +1059,12 @@ moderated_p_limma <- function(mm, df = "df", robust = FALSE, confint = 0.95){
 #'
 moderated_p_limma_long <- function(mm ,
                                    group_by_col = "lhs",
+                                   estimate = "estimate",
                                    robust = FALSE){
   dfg <- mm %>%
     dplyr::group_by_at(group_by_col) %>%
     dplyr::group_split()
-  xx <- purrr::map_df(dfg, moderated_p_limma, robust = robust)
+  xx <- purrr::map_df(dfg, moderated_p_limma, estimate = estimate, robust = robust)
   return(xx)
 }
 
@@ -1257,14 +1260,14 @@ summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
   contrast = "contrast",
   subject_Id = "protein_Id",
-  estimate = "estimate",
+  estimate = "diff",
   statistic = "statistic",
   p.value = "moderated.p.value",
   max.n = 10){
 
   nrpepsPerProt <- contrasts_data %>%
     group_by_at(c(subject_Id, contrast)) %>%
-    dplyr::summarize(n = n() )
+    dplyr::summarize(n = dplyr::n() )
 
   contrasts_data <- contrasts_data %>%
     # dplyr::filter(!is.na(!!sym(p.value))) %>%
