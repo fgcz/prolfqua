@@ -25,10 +25,11 @@ library(prolfqua)
 modelSummary_A <- prolfqua_data('data_modellingResult_A')
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
-factor_levelContrasts <- contrasts_linfct( modelSummary_A$modelProtein,
-                                                   factor_contrasts,
-                                                   subject_Id = "Compound",
-                                                   contrastfun = my_contrast_V2)
+factor_levelContrasts <- contrasts_linfct(
+  modelSummary_A$modelProtein,
+  factor_contrasts,
+  subject_Id = "Compound",
+  contrastfun = my_contrast_V2)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 
