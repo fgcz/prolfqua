@@ -1,1 +1,5 @@
 /Experiment*/
+*.Rmd
+*.tsv
+*.bib
+*.html
