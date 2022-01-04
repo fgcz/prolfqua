@@ -112,7 +112,7 @@ pMerged$config$table$fkeysDepth()
 contrSimple <- ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
-pl$histogram_estimate()
+pl$histogram_diff()
 pl$volcano()
 
 ```

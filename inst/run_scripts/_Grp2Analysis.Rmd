@@ -254,7 +254,7 @@ P-values and Q-values are a measure of how likely it is to observe the data give
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "Top : Distribution of log2(FC). red dashed line - median fold change. Bottom left panel - Histogram of moderated p values. Bottom right panel - Histogram of FDR"}
 
-p1 <- grp2$contrMerged$histogram_estimate()
+p1 <- grp2$contrMerged$histogram_diff()
 p2 <- grp2$contrMerged$histogram()$FDR
 gridExtra::grid.arrange(p1,p2)
 

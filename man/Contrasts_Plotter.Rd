@@ -48,7 +48,7 @@ score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
 p <- cp$score_plot(legend=FALSE)
 cp$score_plotly()
 p <- cp$histogram()
-p <- cp$histogram_estimate()
+p <- cp$histogram_diff()
 res <- cp$volcano()
 length(res)
 res
