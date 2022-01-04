@@ -150,6 +150,7 @@ annotate contaminants
 \if{html}{\out{<a id="method-nr_clean"></a>}}
 \if{latex}{\out{\hypertarget{method-nr_clean}{}}}
 \subsection{Method \code{nr_clean()}}{
+return number of cleans
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataProtein$nr_clean()}\if{html}{\out{</div>}}
 }

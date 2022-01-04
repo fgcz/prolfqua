@@ -46,7 +46,6 @@ xx30 <- summary_ROPECA_median_p.scaled(testdata,
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 30)
-xx30$mad.estimate
 xx2 <- summary_ROPECA_median_p.scaled(testdata,
 
                                     subject_Id = "protein_Id",
@@ -64,8 +63,7 @@ hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
 hist(xx2$mad.estimate)
 
-summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast")
-xx2$mad.estimate
+summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast", estimate = "estimate")
 
 
 }

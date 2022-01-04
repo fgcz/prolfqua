@@ -316,6 +316,9 @@ LFQDataProtein <-
                                 TRUE ~ FALSE))
               return(sum(self$row_annot$CON))
             },
+            #' @description
+            #' return number of cleans
+            #' @
             nr_clean = function(){
               if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
               if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }

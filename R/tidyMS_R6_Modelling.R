@@ -1234,7 +1234,6 @@ get_p_values_pbeta <- function(median.p.value,
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 30)
-#' xx30$mad.estimate
 #' xx2 <- summary_ROPECA_median_p.scaled(testdata,
 #'
 #'                                     subject_Id = "protein_Id",
@@ -1252,8 +1251,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(xx2$mad.estimate)
 #'
-#' summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast")
-#' xx2$mad.estimate
+#' summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast", estimate = "estimate")
 #'
 #'
 summary_ROPECA_median_p.scaled <- function(
@@ -1270,7 +1268,6 @@ summary_ROPECA_median_p.scaled <- function(
     dplyr::summarize(n = dplyr::n() )
 
   contrasts_data <- contrasts_data %>%
-    # dplyr::filter(!is.na(!!sym(p.value))) %>%
     dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
 
   summarized.protein <- contrasts_data %>%
