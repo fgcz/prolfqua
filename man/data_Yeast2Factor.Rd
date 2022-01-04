@@ -5,7 +5,7 @@
 \alias{data_Yeast2Factor}
 \title{example of 2 Factor data}
 \format{
-LFQData
+An object of class \code{LFQData} (inherits from \code{R6}) of length 25.
 }
 \usage{
 data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
@@ -37,4 +37,4 @@ Other data:
 \code{\link{prolfqua_data}()}
 }
 \concept{data}
-\keyword{datasets}
+\keyword{internal}

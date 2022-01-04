@@ -32,7 +32,7 @@ get table with sides of the contrast
 \if{html}{\out{<a id="method-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
-get table with contrast results (simliar to limma topTable)
+get table with contrast results (similar to limma topTable function)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_contrasts()}\if{html}{\out{</div>}}
 }

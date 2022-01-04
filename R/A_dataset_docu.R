@@ -269,6 +269,6 @@ NULL
 #' @family data
 #' @docType data
 #' @usage data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
-#' @format LFQData
+#' @keywords internal
 'data_Yeast2Factor'
 
