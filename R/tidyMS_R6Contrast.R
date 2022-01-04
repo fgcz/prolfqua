@@ -8,7 +8,7 @@ ContrastsInterface <- R6::R6Class(
     #' get table with sides of the contrast
     get_contrast_sides = function(){stop("get_contrast_sides not implmented")},
     #' @description
-    #' get table with contrast results (simliar to limma topTable)
+    #' get table with contrast results (similar to limma topTable function)
     get_contrasts = function(){stop("get_contrasts not implmented")},
     #' @description
     #' initialize plotter
@@ -21,9 +21,9 @@ ContrastsInterface <- R6::R6Class(
 
 
 .requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
-                              "c1_name" , "c2_name" , "sigma","df",
-                              "estimate","statistic","p.value",
-                              "conf.low","conf.high","FDR")
+                              "c1_name" , "c2_name" , "sigma", "df",
+                              "diff", "statistic", "p.value",
+                              "conf.low", "conf.high", "FDR")
 
 # ContrastsSimpleImpute----
 #' compute contrasts with data imputation (directly from data)
@@ -159,7 +159,9 @@ ContrastsSimpleImpute <- R6::R6Class(
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- result
       }
-      invisible(ungroup(self$contrast_result))
+      res <- ungroup(self$contrast_result)
+      stopifnot(all(.requiredContrastColumns %in% colnames(res)))
+      invisible(res)
     },
     #' @description
     #' get Contrasts_Plotter
@@ -308,6 +310,7 @@ Contrasts <- R6::R6Class(
     #' get table with contrast estimates
     #' @param all should all columns be returned (default FALSE)
     #' @return data.frame with contrasts
+    #'
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result) ) {
 
@@ -359,7 +362,11 @@ Contrasts <- R6::R6Class(
       }else{
         self$contrast_result
       }
-      return(ungroup(res))
+      res <- ungroup(res)
+
+      stopifnot(all(.requiredContrastColumns %in% colnames(res)))
+      return(res)
+
     },
     #' @description
     #' return \code{\link{Contrasts_Plotter}}
@@ -505,7 +512,10 @@ ContrastsModerated <- R6::R6Class(
                                          newname = "FDR.moderated")
       }
       contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
-      return(dplyr::ungroup(contrast_result))
+      contrast_result <- dplyr::ungroup(contrast_result)
+      stopifnot(all(.requiredContrastColumns %in% colnames(contrast_result)))
+
+      return(contrast_result)
     },
     #' @description
     #' get \code{\link{Contrasts_Plotter}}
