@@ -36,11 +36,16 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp")
 \item{remove}{do you want to remove contaminants.}
 
 \item{outpath}{path to place output}
+
+\item{xlsxname}{file name for xlsx}
+
+\item{htmlname}{name for html file}
 }
 \description{
 For use examples see run_scripts directory
 }
 \examples{
+
 \dontrun{
 library(tidyverse)
 istar <- prolfqua_data('data_ionstar')$filtered()

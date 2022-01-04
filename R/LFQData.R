@@ -280,7 +280,7 @@ LFQDataProtein <-
   R6::R6Class("LFQDataProtein",
           inherit = LFQData,
           public = list(
-            #' @field data.frame containing further information
+            #' @field row_annot data.frame containing further information
             row_annot = NULL,
             #' @description initialize
             #' @param data data frame from \code{\link{setup_analysis}}
@@ -309,7 +309,7 @@ LFQDataProtein <-
             #' @description
             #' annotate contaminants
             #' @param pattern default "^zz|^CON"
-            annotateCON = function(pattern = "^zz|^CON"){
+            annotateCON = function(pattern = "^zz|^CON") {
               pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot %>% mutate(
                 CON = case_when(grepl(pattern, pID) ~ TRUE,
@@ -318,12 +318,13 @@ LFQDataProtein <-
             },
             #' @description
             #' return number of cleans
-            #' @
             nr_clean = function(){
               if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
               if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
               return(sum(!self$row_annot$REV & !self$row_annot$CON))
             },
+            #' @description
+            #' remove REV and CON sequences
             clean = function(){
               if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
               if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }

@@ -41,14 +41,7 @@ Other LFQData:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{data.frame}}{containing further information}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data.frame}}{containing further information}
+\item{\code{row_annot}}{data.frame containing further information}
 }
 \if{html}{\out{</div>}}
 }
@@ -160,6 +153,7 @@ return number of cleans
 \if{html}{\out{<a id="method-clean"></a>}}
 \if{latex}{\out{\hypertarget{method-clean}{}}}
 \subsection{Method \code{clean()}}{
+remove REV and CON sequences
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataProtein$clean()}\if{html}{\out{</div>}}
 }

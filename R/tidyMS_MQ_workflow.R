@@ -81,6 +81,7 @@ filter_difference <- function(x, y, config){
 #' @export
 #' @family workflow
 #' @examples
+#'
 #' \dontrun{
 #' library(tidyverse)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
@@ -239,6 +240,7 @@ make2grpReport <- function(startdata,
 #' @rdname make2grpReport
 #' @param GRP2 return value of \code{\link{make2grpReport}}
 #' @param outpath path to place output
+#' @param xlsxname file name for xlsx
 #' @export
 #' @family workflow
 #'
@@ -256,6 +258,7 @@ write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults") {
 #' @rdname make2grpReport
 #' @param GRP2 return value of \code{\link{make2grpReport}}
 #' @param outpath path to place output
+#' @param htmlname name for html file
 #' @export
 #' @family workflow
 render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
