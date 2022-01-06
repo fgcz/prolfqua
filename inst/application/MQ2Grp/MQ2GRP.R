@@ -44,7 +44,7 @@ atable$hierarchy[["protein_Id"]] <- c("entry.name")
 ##
 atable$hierarchyDepth <- 1
 atable$factors[["Experiment_"]] = "Experiment"
-## only factor 1 ''group'' is important
+## only factor 1 ''Experiment_'' is important
 atable$factorDepth <- 1
 atable$setWorkIntensity("intensity")
 
