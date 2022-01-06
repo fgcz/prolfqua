@@ -155,8 +155,10 @@ make2grpReport <- function(startdata,
   lt <- lfqdata$get_Transformer()
   transformed <- lt$log2()$robscale()$lfq
   if (length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth) {
+    message("AGGREGATING PEPTIDE DATA!")
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
+
     aggregator$medpolish()
     transformed <- aggregator$lfq_agg
   }
@@ -167,9 +169,10 @@ make2grpReport <- function(startdata,
 
   ################## Run Modelling ###############
 
-
-  formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ",
-                                           transformed$config$table$fkeysDepth()))
+  formula <- paste0(transformed$config$table$getWorkIntensity(), " ~ ",
+         paste(transformed$config$table$fkeysDepth(), collapse = "+"))
+  message("FORMULA :",  formula)
+  formula_Condition <-  strategy_lm(formula)
   # specify model definition
   modelName  <- "Model"
 
@@ -195,13 +198,18 @@ make2grpReport <- function(startdata,
 
   GRP2$contrMore <- res$more$get_Plotter()
 
-  top20 <- GRP2$contrResult %>% dplyr::select( !!sym(proteinID ),log2FC = .data$estimate,.data$conf.low,.data$conf.high, .data$FDR ) %>%
+  top20 <- GRP2$contrResult %>%
+    dplyr::select( !!sym(proteinID ),
+                   diff = .data$diff,
+                   .data$conf.low,
+                   .data$conf.high,
+                   .data$FDR ) %>%
     arrange(.data$FDR) %>%
     head(20)
   GRP2$top20 <- top20
   #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
 
-  GRP2$top20confint <- ggplot(top20, aes(x = !!sym(proteinID), y = .data$log2FC,
+  GRP2$top20confint <- ggplot(top20, aes(x = !!sym(proteinID), y = .data$diff,
                                          ymin = .data$conf.low, ymax = .data$conf.high)) +
     geom_hline( yintercept = 0, color = 'red' ) +
     geom_linerange() + geom_point() + coord_flip() + theme_minimal()
@@ -217,11 +225,12 @@ make2grpReport <- function(startdata,
 
   xx <- res$more$contrast_result[rowSums(is.na(res$more$get_contrasts())) > 0,]
   if (nrow(xx) > 1) {
-    xx <- xx %>% arrange(.data$estimate)
-    GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,
-                                           aes(x = stats::reorder(!!sym(proteinID),
-                                                                  .data$estimate),
-                                               y = .data$estimate)) +
+    xx <- xx %>% arrange(.data$diff)
+    GRP2$noPvalEstimate <- ggplot2::ggplot(
+      xx ,
+      aes(x = stats::reorder(!!sym(proteinID),
+                             .data$diff),
+          y = .data$diff)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()

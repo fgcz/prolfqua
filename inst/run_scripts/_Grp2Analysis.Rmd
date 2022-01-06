@@ -282,7 +282,7 @@ grp2$contrMerged$ma_plotly(fc = GRP2$log2FCthreshold)
 
 ```{r nrsignificant, results="markup", eval=TRUE}
 
-x <- data.frame(table(abs(grp2$contrMerged$contrastDF$estimate) >  grp2$log2FCthreshold  & grp2$contrMerged$contrastDF$FDR < grp2$FDRthreshold))
+x <- data.frame(table(abs(grp2$contrMerged$contrastDF$diff) >  grp2$log2FCthreshold  & grp2$contrMerged$contrastDF$FDR < grp2$FDRthreshold))
 
 if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant" , "Significant")
@@ -296,7 +296,7 @@ knitr::kable(x, caption = mycap)
 
 ```{r prepareHeatmap}
 
-significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthreshold & abs(estimate) > grp2$log2FCthreshold )
+significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthreshold & abs(diff) > grp2$log2FCthreshold )
 signif <- grp2$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
 showSignificant <- TRUE
