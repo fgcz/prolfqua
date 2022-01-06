@@ -1,14 +1,23 @@
+library(prolfqua)
+library(tidyverse)
+
+cpf <- "combined_protein.tsv"
+dsf <- "dataset.csv"
+
+message("Checking input files for two-group prolfqua script ...")
+stopifnot(file.exists(cpf), file.exists(dsf))
+
 
 protein <- as_tibble(
-  read.csv("combined_protein.tsv",
+  read.csv(cpf,
            header = TRUE, sep = "\t",
            stringsAsFactors = FALSE))
 
-annot <- read.csv("Dataset_32335_item_.csv")
+annot <- read.csv(dsf)
 protein <- prolfqua::tidy_MSFragger_combined_protein_V16(protein)
 
 annot <- annot %>% dplyr::mutate(raw.file =
-                                   make.names(paste0("x",tolower(gsub(".d.zip$","",basename(Relative.Path))))))
+                                   make.names(paste0("x",tolower(gsub(".d.zip$|.raw$","",basename(Relative.Path))))))
 
 
 annot$Relative.Path <- NULL
@@ -21,9 +30,9 @@ protein <- protein |> dplyr::filter(unique.spectral.count > 1)
 GRP2 <- list()
 
 
-GRP2$projectID <- "3061"
-GRP2$projectName <- "o25954"
-GRP2$workunitID <- "MSFragger ionQuant"
+GRP2$projectID <- NA
+GRP2$projectName <- NA
+GRP2$workunitID <- "MSFragger IonQuant"
 GRP2$nrPeptides <- 2
 GRP2$log2FCthreshold <- 1
 GRP2$FDRthreshold <- 0.1
