@@ -243,6 +243,10 @@ nah
 
 # Two Group Comparison
 
+The following linear model was fitted:
+
+_`r grp2$formula`_.
+
 
 In the following analysis, it is assumed that most of the proteins are not regulated (most log2 fold change should be around zero). We compare the the following 2 conditions:
 

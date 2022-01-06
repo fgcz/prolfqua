@@ -170,8 +170,9 @@ make2grpReport <- function(startdata,
   ################## Run Modelling ###############
 
   formula <- paste0(transformed$config$table$getWorkIntensity(), " ~ ",
-         paste(transformed$config$table$factorKeys(), collapse = "+"))
+         paste(transformed$config$table$factorKeys(), collapse = " + "))
   message("FORMULA :",  formula)
+  GRP2$formula <- formula
   formula_Condition <-  strategy_lm(formula)
   # specify model definition
   modelName  <- "Model"
