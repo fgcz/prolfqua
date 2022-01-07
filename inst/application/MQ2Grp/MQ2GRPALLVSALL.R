@@ -80,7 +80,6 @@ levels <- annot$Experiment |> unique()
 for (i in 1:length(levels)) {
   for (j in 1:length(levels)) {
     if (i != j) {
-
       cat(levels[i], levels[j], "\n")
       GRP2$Contrasts <- paste0("Experiment_",levels[i], " - ", "Experiment_",levels[j])
       names(GRP2$Contrasts) <- paste0("Experiment" , levels[i], "_vs_", levels[j])
@@ -88,11 +87,13 @@ for (i in 1:length(levels)) {
       outpath <- paste0("Experiment_" , levels[i], "_vs_", levels[j])
       proteinF <- peptide |> dplyr::filter( .data$Experiment == levels[i] | .data$Experiment == levels[j])
 
+      debug(prolfqua::make2grpReport)
       grp2 <- prolfqua::make2grpReport(proteinF, atable, GRP2, protein_annot = "fasta.headers",
                                        remove = TRUE)
 
       prolfqua::write_2GRP(grp2, outpath = outpath)
       prolfqua::render_2GRP(grp2, outpath = outpath, htmlname = outpath)
+
     }
   }
 }

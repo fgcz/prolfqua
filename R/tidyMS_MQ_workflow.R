@@ -82,7 +82,7 @@ filter_difference <- function(x, y, config){
 #' @family workflow
 #' @examples
 #'
-#' \dontrun{
+#'
 #' library(tidyverse)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -115,8 +115,10 @@ filter_difference <- function(x, y, config){
 #' config <- prolfqua::AnalysisConfiguration$new(atab)
 #'
 #' protein_annot = "Description"
-#' #undebug(make2grpReport)
+#' #debug(make2grpReport)
 #' grp <- make2grpReport(data,atab, GRP2, NULL)
+#'
+#' \dontrun{
 #' write_2GRP(grp,tempdir())
 #' render_2GRP(grp, tempdir())
 #' }
@@ -136,16 +138,10 @@ make2grpReport <- function(startdata,
   prot_annot <- select( startdata , c( atable$hierarchy[[atable$hkeysDepth()]], protein_annot)) %>% distinct()
   prot_annot <- rename(prot_annot, !!atable$hkeysDepth() := (!!atable$hierarchy[[atable$hkeysDepth()]]))
 
-  lfqdata <- LFQDataProtein$new(adata, config, row_annot = prot_annot)
+  lfqdata <- LFQData$new(adata, config)
   lfqdata$remove_small_intensities()
 
 
-  stat <- list()
-  allProt <- nrow( lfqdata$row_annot )
-  stat$totalNrOfProteins <- allProt
-  stat$percentOfContaminants <- round(lfqdata$annotateREV()/allProt * 100 , digits = 2)
-  stat$percentOfFalsePositives  <- round(lfqdata$annotateCON()/allProt * 100 , digits = 2)
-  stat$NrOfProteinsNoDecoys <- lfqdata$nr_clean()
 
   if (remove) {
     lfqdata <- lfqdata$get_subset(lfqdata$clean())
@@ -154,7 +150,7 @@ make2grpReport <- function(startdata,
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
   transformed <- lt$log2()$robscale()$lfq
-  if (length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth) {
+  if ( length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth ) {
     message("AGGREGATING PEPTIDE DATA!")
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
@@ -163,9 +159,20 @@ make2grpReport <- function(startdata,
     transformed <- aggregator$lfq_agg
   }
 
+
+  transformed <- LFQDataProtein$new(
+    transformed$data,
+    transformed$config,
+    row_annot = prot_annot)
+
+  allProt <- nrow( transformed$row_annot )
+  GRP2$totalNrOfProteins <- allProt
+  GRP2$percentOfContaminants <- round(transformed$annotateREV()/allProt * 100 , digits = 2)
+  GRP2$percentOfFalsePositives  <- round(transformed$annotateCON()/allProt * 100 , digits = 2)
+  GRP2$NrOfProteinsNoDecoys <- transformed$nr_clean()
+
   GRP2$lfqData <- lfqdata
   GRP2$transformedlfqData <- transformed
-  #GRP2$transformedlfqData$data$transformedIntensity <- GRP2$transformedlfqData$data$transformedIntensity * 3
 
   ################## Run Modelling ###############
 

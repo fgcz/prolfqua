@@ -46,7 +46,7 @@ For use examples see run_scripts directory
 }
 \examples{
 
-\dontrun{
+
 library(tidyverse)
 istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
@@ -79,8 +79,10 @@ atab$isotopeLabel = "isotope"
 config <- prolfqua::AnalysisConfiguration$new(atab)
 
 protein_annot = "Description"
-#undebug(make2grpReport)
+#debug(make2grpReport)
 grp <- make2grpReport(data,atab, GRP2, NULL)
+
+\dontrun{
 write_2GRP(grp,tempdir())
 render_2GRP(grp, tempdir())
 }
