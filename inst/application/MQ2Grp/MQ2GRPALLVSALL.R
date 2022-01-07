@@ -50,7 +50,6 @@ GRP2$projectID <- PROJECTID
 GRP2$orderID <- ORDERID
 GRP2$workunitID <- WORKUNITID
 
-
 GRP2$Software <- "MaxQuant"
 
 GRP2$inputID <- INPUT_ID
@@ -66,7 +65,7 @@ atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
 atable$hierarchy[["peptide_Id"]] <- c("sequence")
 
-##
+#
 atable$hierarchyDepth <- 1
 atable$factors[["Experiment_"]] = "Experiment"
 if (!is.null(annot$Subject) & REPEATED) {
@@ -75,12 +74,13 @@ if (!is.null(annot$Subject) & REPEATED) {
 atable$factorDepth <- 1
 atable$setWorkIntensity("peptide.intensity")
 
-# compute all possible 2 grps to avoid specifying reference.
+# Compute all possible 2 Grps to avoid specifying reference.
 levels <- annot$Experiment |> unique()
 
 for (i in 1:length(levels)) {
   for (j in 1:length(levels)) {
     if (i != j) {
+
       cat(levels[i], levels[j], "\n")
       GRP2$Contrasts <- paste0("Experiment_",levels[i], " - ", "Experiment_",levels[j])
       names(GRP2$Contrasts) <- paste0("Experiment" , levels[i], "_vs_", levels[j])
