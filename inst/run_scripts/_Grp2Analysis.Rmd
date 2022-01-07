@@ -48,25 +48,18 @@ grp2 <- params$grp
 
 The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)) by computing the $log_2$ fold change $\log_2(condition/reference)$, and tests if they are non-zero.
 
-The protein identification and quantification were performed using `r grp2$Software`. We run a set of functions implemented in the R package prolfqua [@SRMService2018] to generate visualizations, normalize the data and to compute _moderated p-values_ [@Smyth2004] for all proteins quantified.
+The protein identification and quantification were performed using `r grp2$Software`. The outputs are available in b-fabric [`r GRP2$inputID`](`r GRP2$inputURL`).
 
+We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated p-values_ [@Smyth2004] for all proteins quantified.
 
 ## Experiment summary
 
-This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`,  
-with the workunit name : `r grp2$projectName`.
-
-This report was created from data stored in _bfabric_ with the following identifiers:
-
-- workunit Id : `r grp2$workunitID`
-- project Id: `r grp2$projectID`.
+This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`, order `r grp2$orderID`, with the workunit name `r grp2$workunitID`.
 
 
 The protein matrix is filtered using the following threshold:
 
 - Minimum number of peptides / protein: `r grp2$nrPeptides`
-
-
 - The total number of proteins in this experiment is: `r grp2$totalNrOfProteins` 
 - Total number without decoys sequences is `r grp2$NrOfProteinsNoDecoys` 
 

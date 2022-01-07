@@ -1,21 +1,34 @@
 library(prolfqua)
 library(tidyverse)
 
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  ymlfile <- "config_WU273293.yaml"
+} else {
+  ymlfile <- args[1]
+
+}
+yml = yaml::read_yaml(ymlfile)
+
+
+
+WORKUNITID = yml$job_configuration$workunit_id
+PROJECTID = yml$job_configuration$project_id
+ORDERID = yml$job_configuration$order_id
+INPUT_ID = yml$job_configuration$input[[1]][[1]]$resource_id
+INPUT_URL = yml$job_configuration$input[[1]][[1]]$resource_url
+
 peptidef <- "peptides.txt"
 proteinf <- "proteinGroups.txt"
 dsf <- "dataset.csv"
 REPEATED <- TRUE
 
-unzip("../data/2062292.zip",peptidef)
-unzip("../data/2062292.zip",proteinf)
 
 stopifnot(file.exists(peptidef), file.exists(proteinf), file.exists(dsf))
 
 protein <- prolfqua::tidyMQ_ProteinGroups(proteinf)
 peptide <- prolfqua::tidyMQ_Peptides(peptidef)
-
-annot <- read.csv("../data/datasetAVSA.csv")
-annot <- read.csv("../data/datasetCompareControlRepeated.csv")
+annot <- read.csv(dsf)
 
 annot <- annot %>% dplyr::mutate(
   raw.file = gsub("^x|.d.zip$|.raw$","",
@@ -26,17 +39,22 @@ annot <- annot %>% dplyr::mutate(
 
 annot$Relative.Path <- NULL
 
-proteinAnnot <- select(protein, proteinID, fasta.headers ) %>% distinct()
+proteinAnnot <- dplyr::select(protein, proteinID, fasta.headers ) %>% distinct()
 peptide <- dplyr::inner_join(annot, peptide)
 peptide <- dplyr::inner_join(proteinAnnot, peptide, by = c(proteinID = "leading.razor.protein"))
 
 ################### annotations
 GRP2 <- list()
 
+GRP2$projectID <- PROJECTID
+GRP2$orderID <- ORDERID
+GRP2$workunitID <- WORKUNITID
 
-GRP2$projectID <- NA
-GRP2$projectName <- NA
-GRP2$workunitID <- "MaxQuant"
+
+GRP2$Software <- "MaxQuant"
+
+GRP2$inputID <- INPUT_ID
+GRP2$inputURL <- INPUT_URL
 GRP2$nrPeptides <- 2
 GRP2$log2FCthreshold <- 1
 GRP2$FDRthreshold <- 0.1
@@ -53,16 +71,11 @@ atable$hierarchyDepth <- 1
 atable$factors[["Experiment_"]] = "Experiment"
 if (!is.null(annot$Subject) & REPEATED) {
   atable$factors[["Subject"]] = "Subject"
-
 }
 atable$factorDepth <- 1
-## only factor 1 ''Experiment_'' is important
-
 atable$setWorkIntensity("peptide.intensity")
 
-
 # compute all possible 2 grps to avoid specifying reference.
-
 levels <- annot$Experiment |> unique()
 
 for (i in 1:length(levels)) {
