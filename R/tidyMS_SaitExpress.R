@@ -132,9 +132,9 @@ runSaint <- function(si,
                    minimized = TRUE)
   } else if (Sys.info()["sysname"] == "Linux") {
     if (spc) {
-      exeS2 <- "SaintExpress\\bin\\Linux64\\SAINTexpress-spc"
+      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-spc"
     } else {
-      exeS2 <- "SaintExpress\\bin\\Linux64\\SAINTexpress-int"
+      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-int"
     }
     exeT <- file.path(pkg, exeS2)
 
