@@ -115,19 +115,38 @@ runSaint <- function(si,
   }
 
   pkg <- find.package("prolfqua")
-  if (spc) {
-    exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-spc.exe"
-  } else {
-    exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-int.exe"
-  }
-  exeT <- file.path(pkg, exeS2)
 
-  out <- system2(exeT,
-                 args = paths,
-                 stdout = TRUE,
-                 stderr = TRUE,
-                 wait = TRUE,
-                 minimized = TRUE)
+  if (Sys.info()["sysname"] == "Windows") {
+    if (spc) {
+      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-spc.exe"
+    } else {
+      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-int.exe"
+    }
+    exeT <- file.path(pkg, exeS2)
+
+    out <- system2(exeT,
+                   args = paths,
+                   stdout = TRUE,
+                   stderr = TRUE,
+                   wait = TRUE,
+                   minimized = TRUE)
+  } else if (Sys.info()["sysname"] == "Linux") {
+    if (spc) {
+      exeS2 <- "SaintExpress\\bin\\Linux64\\SAINTexpress-spc"
+    } else {
+      exeS2 <- "SaintExpress\\bin\\Linux64\\SAINTexpress-int"
+    }
+    exeT <- file.path(pkg, exeS2)
+
+    out <- system2(exeT,
+                   args = paths,
+                   stdout = TRUE,
+                   stderr = TRUE,
+                   wait = TRUE)
+  } else {
+    stop("System",Sys.info()["sysname"] , "not supported.")
+  }
+
   message(cat(out,sep = "\n"))
 
   Sys.sleep(2) # needed otherwise the list.txt file can't be deleted

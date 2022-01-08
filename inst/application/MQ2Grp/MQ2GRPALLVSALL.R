@@ -87,8 +87,11 @@ for (i in 1:length(levels)) {
       outpath <- paste0("Experiment_" , levels[i], "_vs_", levels[j])
       proteinF <- peptide |> dplyr::filter( .data$Experiment == levels[i] | .data$Experiment == levels[j])
 
-      debug(prolfqua::make2grpReport)
-      grp2 <- prolfqua::make2grpReport(proteinF, atable, GRP2, protein_annot = "fasta.headers",
+      #debug(prolfqua::make2grpReport)
+      grp2 <- prolfqua::make2grpReport(proteinF,
+                                       atable,
+                                       GRP2,
+                                       protein_annot = "fasta.headers",
                                        remove = TRUE)
 
       prolfqua::write_2GRP(grp2, outpath = outpath)
