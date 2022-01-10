@@ -108,7 +108,7 @@ ReportData$cse <- cse
 ReportData$pcse <- pcse
 
 
-rm(list = setdiff(ls(), c("ReportData","ZIPDIR"))
+rm(list = setdiff(ls(), c("ReportData","ZIPDIR")))
 
 rmarkdown::render("SaintExpressReportMsFragger.Rmd",
                   params = list(sep = ReportData),
