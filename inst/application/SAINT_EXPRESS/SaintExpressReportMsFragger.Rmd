@@ -31,7 +31,7 @@ BFABRIC <- SEP$BFABRIC
 
 The inputs are available in b-fabric workunit: [`r BFABRIC$inputID`](`r BFABRIC$inputURL`). The bfabric dataset `r BFABRIC$datasetID` was used to annotate the samples.
 
-The outputs are available in b-fabric workunit: `r BFABRIC$workunitID`, in project ID `r BFABRIC$projectID` with order ID `r BFABRIC$orderID`.
+The outputs are available in b-fabric workunit: [`r BFABRIC$workunitID`](`r BFABRIC$workunitURL`), in project ID `r BFABRIC$projectID` with order ID `r BFABRIC$orderID`.
 
 # Introduction
 

@@ -6,19 +6,19 @@ library(prolfqua)
 yml <- yaml::read_yaml("config.yaml")
 
 BFABRIC <- list()
-
 BFABRIC$workunitID = yml$job_configuration$workunit_id
+BFABRIC$workunitURL = paste0("https://fgcz-bfabric.uzh.ch/bfabric/workunit/show.html?id=",BFABRIC$workunitID,"&tab=details")
 BFABRIC$projectID = yml$job_configuration$project_id
 BFABRIC$orderID = yml$job_configuration$order_id
-BFABRIC$InputID = yml$job_configuration$input[[1]][[1]]$resource_id
+BFABRIC$inputID = yml$job_configuration$input[[1]][[1]]$resource_id
 BFABRIC$inputURL = yml$job_configuration$input[[1]][[1]]$resource_url
 
-BFABRIC$datasetID <- as.numeric(yml$application$parameters$datasetId)
+BFABRIC$datasetID <- yml$application$parameters$datasetId
 
 
 spc <- if ( yml$application$parameters$SpcInt == "spc") { TRUE } else {FALSE}
-FCthreshold <- as.numeric(yml$application$parameters$FCthreshold)
-SSthreshold <- as.numeric(yml$application$parameters$SAINTscore)
+FCthreshold <- as.numeric( yml$application$parameters$FCthreshold )
+SSthreshold <- as.numeric( yml$application$parameters$SAINTscore )
 
 
 ZIPDIR = paste0("C",BFABRIC$projectID,"WU",BFABRIC$workunitID)
@@ -98,7 +98,7 @@ tt <- tt$robscale()
 lfqdata <- tt$lfq
 
 ReportData <- list()
-ReportData <- BFABRIC
+ReportData$BFABRIC <- BFABRIC
 ReportData$SSthreshold <- SSthreshold
 ReportData$FCthreshold <- FCthreshold
 ReportData$spc <- spc
