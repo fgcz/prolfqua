@@ -1,0 +1,41 @@
+application:
+  input:
+    FragPipe-RESOURCE:
+    - bfabric@fgcz-ms.uzh.ch://srv/www/htdocs//p26666/bfabric/Proteomics/FragPipe-RESOURCE/2022/2022-01/2022-01-04/workunit_273247/2071533.zip
+  output:
+  - bfabric@fgcz-ms.uzh.ch:/srv/www/htdocs/p3000/bfabric/Proteomics/SaintExpress-Fragpipe/2022/2022-01/2022-01-10//workunit_273330//2074423.zip
+  parameters:
+    FCthreshold: '4'
+    SAINTscore: '0.95'
+    SpcInt: spc
+    datasetId: '41414'
+    memory: 1G
+    nodelist: fgcz-r-033
+    partition: prx
+  protocol: scp
+job_configuration:
+  executable: /home/bfabric/slurmworker/bin/fgcz_slurm_SaintExpress_prolfqua.bash
+  external_job_id: 103377
+  fastasequence: ''
+  input:
+    FragPipe-RESOURCE:
+    - resource_id: 2071533
+      resource_url: https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-resource.html?id=2071533
+  inputdataset: null
+  order_id: null
+  output:
+    protocol: scp
+    resource_id: 2074423
+    ssh_args: -o StrictHostKeyChecking=no -2 -l bfabric -x
+  project_id: 3000
+  stderr:
+    protocol: file
+    resource_id: 2074424
+    url: /home/bfabric/slurmworker/log/workunitid-273330_resourceid-2074423.err
+  stdout:
+    protocol: file
+    resource_id: 2074425
+    url: /home/bfabric/slurmworker/log/workunitid-273330_resourceid-2074423.out
+  workunit_id: 273330
+  workunit_url: https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?workunitId=273330
+
