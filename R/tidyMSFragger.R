@@ -124,7 +124,6 @@ tidy_MSFragger_combined_protein_V16 <- function(
     stop(class(combprot), " not supported.")
   }
 
-  Cprotein <- protein
   cnam <- gsub("Total.Razor.", "Total.",
                gsub("Unique.Razor.","Unique.",
                     gsub("\\.Intensity$",".Razor.Intensity",
