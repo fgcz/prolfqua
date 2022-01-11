@@ -17,11 +17,7 @@ tidy_MSFragger_combined_protein(
   subgroup = "subgroup"
 )
 
-tidy_MSFragger_combined_protein_V16(
-  combprot,
-  intnames = c("total.intensity", "unique.intensity", "intensity",
-    "total.spectral.count", "unique.spectral.count", "spectral.count")
-)
+tidy_MSFragger_combined_protein_V16(combprot, as_list = FALSE)
 }
 \arguments{
 \item{file}{MSstats formatted file}
@@ -29,6 +25,11 @@ tidy_MSFragger_combined_protein_V16(
 \item{combprot}{path to combined_protein.tsv file}
 
 \item{intnames}{intensity column prefix}
+
+\item{as_list}{return as list}
+}
+\value{
+tidy dataframe or list with df (e.g. total.spectral.count or total.intensity etc).
 }
 \description{
 read MSFragger generated MSstats formatted csv files.
