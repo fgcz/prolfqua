@@ -101,7 +101,6 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
 #'
 tidy_MSFragger_combined_protein_V16 <- function(
   combprot,
-
   as_list = FALSE
 ) {
   spcnames = c("total.spectral.count",
@@ -153,23 +152,29 @@ tidy_MSFragger_combined_protein_V16 <- function(
     gg
   }
 
-  res <- vector( mode = "list", length = length(c(intnames, spcnames, maxlfqnames)))
-  names(res)  <- c(intnames, spcnames, maxlfqnames)
+  res <- vector( mode = "list", length = length(c(intnames, spcnames)))
+  names(res)  <- c(intnames, spcnames)
 
   for (i in seq_along(c(intnames, spcnames))) {
     message("DD: ", c(intnames, spcnames)[i] )
     res[[c(intnames, spcnames)[i]]] <- extractDataLong(Cprotein, what = c(intnames, spcnames)[i], butNot = "maxlfq" )
   }
 
-  for (i in seq_along(maxlfqnames)) {
-    message("DD: ", maxlfqnames[i] )
-    res[[maxlfqnames[i] ]] <-  extractDataLong(Cprotein, what = maxlfqnames[i], butNot = NULL )
+  if (sum(grepl(".maxlfq.", colnames(Cprotein))) > 0) {
+    res_maxlfq <- vector( mode = "list", length(maxlfqnames))
+    names(res_maxlfq)  <- maxlfqnames
+    for (i in seq_along(maxlfqnames)) {
+      message("DD: ", maxlfqnames[i] )
+      res_maxlfq[[maxlfqnames[i] ]] <-  extractDataLong(Cprotein, what = maxlfqnames[i], butNot = NULL )
+    }
+    res <- c(res, res_maxlfq)
   }
 
   if (as_list) {
-    return(res)
+    return( res )
   }
-  merged <- Reduce(inner_join, res)
-  merged <- inner_join(annot, merged)
-  return(merged)
+
+  merged <- Reduce( inner_join , res )
+  merged <- inner_join( annot, merged )
+  return( merged )
 }
