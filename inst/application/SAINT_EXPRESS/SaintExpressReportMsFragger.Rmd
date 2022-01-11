@@ -111,7 +111,7 @@ SEP$lfqdata$get_Plotter()$pca_plotly()
 
 To analyse the data we used the [SaintExpress software](http://saint-apms.sourceforge.net/Main.html).
 
-Protein interactions will be filtered with an _SaintScore_ of `r SEP$SSthreshold` and a fold change threshold of `r SEP$FCthreshold` which corresponds to a $\log_2(SEP$FCthreshold)$ of `r log2(SEP$FCthreshold)`.
+Protein interactions will be filtered with an _SaintScore_ of `r SEP$SSthreshold` and a fold change threshold of `r SEP$FCthreshold` which corresponds to a $\log_2(`r SEP$FCthreshold`)$ of `r log2(SEP$FCthreshold)`.
 
 
 
