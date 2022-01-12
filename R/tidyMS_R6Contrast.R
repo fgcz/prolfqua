@@ -370,26 +370,27 @@ Contrasts <- R6::R6Class(
     },
     #' @description
     #' return \code{\link{Contrasts_Plotter}}
-    #' @param volcano volcano parameters
-    #' @param histogram histogram parameters
-    #' @param score score parameters
     #' creates Contrast_Plotter
+    #' @param FCthreshold fold change threshold to show in plots
+    #' @param FDRthrshold FDR threshold to show in plots
     #' @return \code{\link{Contrasts_Plotter}}
-    get_Plotter = function(volcano = list(list(score = "FDR", thresh = 0.1)),
-                           histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                                            list(score = "FDR", xlim = c(0,1,0.05))),
-                           score = list(list(score = "statistic", thresh = 5))
-
+    get_Plotter = function(
+      FCthreshold = 1,
+      FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
-        volcano = volcano,
-        histogram = histogram,
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
+        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+                         list(score = "FDR", xlim = c(0,1,0.05))),
+        score = list(list(score = "statistic", thresh = 5)),
         modelName = self$modelName,
         estimate = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+        )
       return(res)
     },
     #' @description
@@ -432,6 +433,7 @@ Contrasts <- R6::R6Class(
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
 #'  contrast <- prolfqua::Contrasts$new(mod,
 #'  Contr)
+#'  ContrastsModerated$debug("get_Plotter")
 #'  contrast <- ContrastsModerated$new(contrast)
 #'  bb <- contrast$get_contrasts()
 #'
@@ -519,17 +521,26 @@ ContrastsModerated <- R6::R6Class(
     },
     #' @description
     #' get \code{\link{Contrasts_Plotter}}
-    get_Plotter = function(){
+    #' @param FCthreshold fold change threshold to show in plots
+    #' @param FDRthrshold FDR threshold to show in plots
+    #'
+    get_Plotter = function(
+      FCthreshold = 1,
+      FDRthreshold = 0.1
+    ){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", thresh = 0.1)),
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
+        score = list(list(score = "statistic", thresh = 5)),
         modelName = self$modelName,
         estimate = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+      )
       return(res)
     },
     #' @description
@@ -685,12 +696,13 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' get \code{\link{Contrasts_Plotter}}
     #' @return \code{\link{Contrasts_Plotter}}
-    get_Plotter = function(){
+    get_Plotter = function(FDRthreshold = 0.1, FCthreshold = 2){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
-        volcano = list(list(score = "FDR.beta.based.significance", thresh = 0.1)),
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR.beta.based.significance", thresh = FDRthreshold)),
         histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
                          list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -798,18 +810,18 @@ ContrastsSaintExpress <- R6::R6Class(
       res
     },
     #' @description get \code{\link{Contrasts_Plotter}}
-    #' @param fcthreshold fold change threshold to show
-    #' @param saintscore SaintScore threshold to show in the heatmap.
-    #' @param bfdrthreshold BDRF threshold
+    #' @param FCthreshold fold change threshold to show
+    #' @param SaintScore SaintScore threshold to show in the heatmap.
+    #' @param BFDRthreshold BDRF threshold
     #' @return \code{\link{Contrasts_Plotter}}
-    get_Plotter = function(fcthreshold = 1, saintscore = 0.75, bfdrthreshold = 0.1){
+    get_Plotter = function(FCthreshold = 1, SaintScore = 0.75, BFDRthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        fcthresh = fcthreshold,
-        volcano = list(list(score = "BFDR", thresh = bfdrthreshold)),
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "BFDR", thresh = BFDRthreshold)),
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05)), list(score = "SaintScore", xlim = c(0,1,0.05))),
-        score = list(list(score = "SaintScore", thresh = saintscore )),
+        score = list(list(score = "SaintScore", thresh = SaintScore )),
         modelName = self$modelName,
         estimate = "log2FC",
         contrast = "Bait")
