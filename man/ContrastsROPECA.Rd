@@ -207,7 +207,7 @@ data.frame
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

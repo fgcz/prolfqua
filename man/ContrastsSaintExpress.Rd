@@ -158,20 +158,20 @@ get contrasts
 get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_Plotter(
-  fcthreshold = 1,
-  saintscore = 0.75,
-  bfdrthreshold = 0.1
+  FCthreshold = 1,
+  SaintScore = 0.75,
+  BFDRthreshold = 0.1
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{fcthreshold}}{fold change threshold to show}
+\item{\code{FCthreshold}}{fold change threshold to show}
 
-\item{\code{saintscore}}{SaintScore threshold to show in the heatmap.}
+\item{\code{SaintScore}}{SaintScore threshold to show in the heatmap.}
 
-\item{\code{bfdrthreshold}}{BDRF threshold}
+\item{\code{BFDRthreshold}}{BDRF threshold}
 }
 \if{html}{\out{</div>}}
 }

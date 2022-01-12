@@ -26,6 +26,7 @@ mod <- build_model(
  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
  contrast <- prolfqua::Contrasts$new(mod,
  Contr)
+ ContrastsModerated$debug("get_Plotter")
  contrast <- ContrastsModerated$new(contrast)
  bb <- contrast$get_contrasts()
 
@@ -191,9 +192,18 @@ applies limma moderation
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_Plotter()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{FCthreshold}}{fold change threshold to show in plots}
+
+\item{\code{FDRthrshold}}{FDR threshold to show in plots}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-to_wide"></a>}}

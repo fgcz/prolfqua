@@ -211,24 +211,17 @@ data.frame with contrasts
 \if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 return \code{\link{Contrasts_Plotter}}
+creates Contrast_Plotter
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter(
-  volcano = list(list(score = "FDR", thresh = 0.1)),
-  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
-    xlim = c(0, 1, 0.05))),
-  score = list(list(score = "statistic", thresh = 5))
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{volcano}}{volcano parameters}
+\item{\code{FCthreshold}}{fold change threshold to show in plots}
 
-\item{\code{histogram}}{histogram parameters}
-
-\item{\code{score}}{score parameters
-creates Contrast_Plotter}
+\item{\code{FDRthrshold}}{FDR threshold to show in plots}
 }
 \if{html}{\out{</div>}}
 }
