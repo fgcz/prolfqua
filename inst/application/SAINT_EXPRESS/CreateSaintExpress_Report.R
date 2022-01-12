@@ -1,3 +1,7 @@
+# Author : Witold Wolski <wew@fgcz.ethz.ch>
+# compatible with prolfqua 2.9.0 release available from https://github.com/wolski/prolfqua/releases/tag/v0.2.9
+
+
 # Read b-fabric related information
 yml <- yaml::read_yaml("config.yaml")
 
