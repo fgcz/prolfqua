@@ -433,7 +433,7 @@ Contrasts <- R6::R6Class(
 #'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
 #'  contrast <- prolfqua::Contrasts$new(mod,
 #'  Contr)
-#'  ContrastsModerated$debug("get_Plotter")
+#'  #ContrastsModerated$debug("get_Plotter")
 #'  contrast <- ContrastsModerated$new(contrast)
 #'  bb <- contrast$get_contrasts()
 #'
