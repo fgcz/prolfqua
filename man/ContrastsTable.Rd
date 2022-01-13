@@ -180,9 +180,9 @@ get \code{\link{Contrasts_Plotter}}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{fcthreshold}}{fold change threshold}
+\item{\code{FCthreshold}}{fold change threshold}
 
-\item{\code{fdrthreshold}}{fdr threshold}
+\item{\code{FDRthreshold}}{fdr threshold}
 }
 \if{html}{\out{</div>}}
 }
