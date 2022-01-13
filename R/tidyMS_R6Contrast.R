@@ -914,12 +914,12 @@ ContrastsTable <- R6::R6Class(
     #' @param fdrthreshold fdr threshold
     #' @return \code{\link{Contrasts_Plotter}}
     #'
-    get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1){
+    get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1){
       res <- Contrasts_Plotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        fcthresh = fcthreshold,
-        volcano = list(list(score = "FDR", thresh = fdrthreshold)),
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
@@ -1302,7 +1302,6 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
     prefermodelName <- prefer$modelName
     addmodelName <- add$modelName
   }
-
 
   merged$modelName <- factor(merged$modelName,
                              levels = c(levels(factor(cA$modelName)), addmodelName))
