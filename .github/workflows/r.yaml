@@ -36,7 +36,7 @@ jobs:
           install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org');
           pkgs <- c('DT', 'MASS');
           pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'docopt'));
-          pkgs <- c(pkgs, c('dplyr', 'flextable', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2'));
+          pkgs <- c(pkgs, c('dplyr', 'forcats', 'ggbeeswarm', 'ggfortify', 'ggplot2'));
           pkgs <- c(pkgs, c('ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr'));
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC'));
           pkgs <- c(pkgs, c('pheatmap', 'prozor', 'plotly', 'progress', 'purrr', 'readr'));
