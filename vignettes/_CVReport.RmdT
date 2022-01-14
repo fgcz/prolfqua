@@ -6,14 +6,14 @@ Without applying any intensity scaling and data preprocessing, the peptide inten
 ```{r plotDistributions, fig.cap="Density plot of peptide level Coefficient of Variations (CV).", fig.height=6, fig.width=8}
 stats_res <- summarize_stats(data_cc, local_config)
 if (params$plot_density) {
-  p1 <- prolfqua::plot_stat_density(stats_res, local_config, stat="CV") + 
-    labs(tag = "A") + 
-    xlim(0, 150) +
-    theme(legend.position = "none")
-  p2 <- prolfqua::plot_stat_density_median(stats_res, local_config, stat="CV") + 
-    labs(tag = "B") + 
-    xlim(0, 150) +
-    theme(legend.position = "bottom")
+  p1 <- prolfqua::plot_stat_density(stats_res, local_config, stat="CV") +
+    ggplot2::labs(tag = "A") +
+    ggplot2::xlim(0, 150) +
+    ggplot2::theme(legend.position = "none")
+  p2 <- prolfqua::plot_stat_density_median(stats_res, local_config, stat="CV") +
+    ggplot2::labs(tag = "B") +
+    ggplot2::xlim(0, 150) +
+    ggplot2::theme(legend.position = "bottom")
   gridExtra::grid.arrange(p1,p2)
 } else {
   p1 <- prolfqua::plot_stat_violin(stats_res, local_config, stat="CV") + labs(tag='A')
@@ -45,8 +45,8 @@ prolfqua::table_facade(cv_quantiles_res,
 
 ```{r intensityDistribution, fig.cap="Distribution of unnormalized intensities.",fig.height = 6, fig.width=width}
 if(params$plot_density){
-  p0 <- prolfqua::plot_intensity_distribution_density(data_cc, local_config) + 
-    theme(legend.text = element_text(size=5))
+  p0 <- prolfqua::plot_intensity_distribution_density(data_cc, local_config) +
+    ggplot2::theme(legend.text = ggplot2::element_text(size=5))
   p0
 } else{
   p1 <- prolfqua::plot_intensity_distribution_violin(data_cc, local_config)
