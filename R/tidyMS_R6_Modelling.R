@@ -683,7 +683,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
       RHS$df <- x$df
       RHS$sigma <- sigma(model)
 
-      x <- dplyr::inner_join(broom::tidy(summary(x)),RHS,by = c("contrast"))# %>% dplyr::select(-contrast)
+      x <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) # %>% dplyr::select(-contrast)
       res[[i]] <- x
     }
     res <- dplyr::bind_rows(res)
