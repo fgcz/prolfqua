@@ -32,7 +32,7 @@ If you want to build the vignettes on you system:
 
 ```
 install.packages('remotes')
-remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
+remotes::install_gitlab("wolski/prolfquadata", host="gitlab.bfabric.org")
 remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
 
 ```

@@ -31,7 +31,7 @@ library(tidyverse)
 Specify the path to the MaxQuant proteinGroups.txt file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a long format.
 
 ```{r LoadDataAndConfigure}
-datadir <- file.path(find.package("prolfquaData") , "quantdata")
+datadir <- file.path(find.package("prolfquadata") , "quantdata")
 inputMQfile <-  file.path(datadir, "MAXQuant_ComboCourse_p2691_March_2018_WU183012.zip")
 inputAnnotation <- file.path(datadir, "annotation_ComboCourse_p2691_March_2018_WU183012.xlsx")
 
