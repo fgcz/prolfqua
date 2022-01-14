@@ -79,9 +79,9 @@ split2table <- function(names,split="\\||\\_")
 #' @keywords internal
 #' @family utilities
 #' @examples
-#' library(ggplot2)
-#' library(tidyverse)
-#' library(ggrepel)
+#' #library(ggplot2)
+#' #library(tidyverse)
+#' #library(ggrepel)
 #' show <- prolfqua_data('data_multigroupFC') %>%
 #'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
 #' prolfqua::multigroupVolcano(show,
@@ -244,7 +244,6 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
 #' colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
 #' tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
-#' debug(jackknifeMatrix)
 #' res <- jackknifeMatrix(dataX, cor)
 #' res
 #' dim(res)

@@ -55,7 +55,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
+#' #library(tidyverse)
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
@@ -157,7 +157,7 @@ summariseQValues <- function(pdata,
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
+#' #library(tidyverse)
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
@@ -208,7 +208,7 @@ toWide <- function(data,
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
+#' #library(tidyverse)
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
@@ -294,7 +294,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #' @family preprocessing
 #' @examples
 #'
-#' library(tidyverse)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
@@ -343,7 +343,7 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @family preprocessing
 #' @examples
 #'
-#' library(tidyverse)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
@@ -377,8 +377,8 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' @family preprocessing
 #' @examples
 #'
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
@@ -424,8 +424,8 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #'
 #' @family preprocessing
 #' @examples
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
@@ -527,7 +527,7 @@ normalize_log2_robscale <- function(pdata, config){
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #'
-#' library(prolfqua)
+#' #library(prolfqua)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
@@ -571,8 +571,8 @@ simpleImpute <- function(data){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #'
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' config <- bb$config$clone(deep=TRUE)
@@ -641,7 +641,7 @@ impute_correlationBased <- function(x , config){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
@@ -685,8 +685,8 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @family summary
 #' @examples
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
@@ -757,8 +757,8 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
-#' library(prolfqua)
+#' #library(tidyverse)
+#' #library(prolfqua)
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
@@ -793,7 +793,7 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' @export
 #' @keywords internal
 #' @examples
-#' library(tidyverse)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
@@ -831,8 +831,8 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' @examples
 #'
 #' rm(list=ls())
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())

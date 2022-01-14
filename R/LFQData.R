@@ -4,7 +4,6 @@
 #' @export
 #' @family LFQData
 #' @examples
-#' library(tidyverse)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -261,15 +260,13 @@ LFQData <- R6::R6Class(
 #' @family LFQData
 #' @examples
 #'
-#' library(tidyverse)
-#' library(prolfqua)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQDataProtein$new( data, istar$config )
 #'
-#' stopifnot(lfqdata$annotateREV() == 0)
-#' stopifnot(lfqdata$annotateCON() == 0)
+#' lfqdata$annotateREV()
+#' lfqdata$annotateCON()
 #'
 #' lfqdata$nr_clean()
 #' dd <- lfqdata$clean()
@@ -343,7 +340,6 @@ LFQDataProtein <-
 #' @export
 #'
 #' @examples
-#' library(tidyverse)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -691,7 +687,6 @@ LFQDataStats <- R6::R6Class(
 #' @export
 #' @family LFQData
 #' @examples
-#' library(tidyverse)
 #'
 #' istar <- prolfqua_data('data_ionstar')
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -1114,8 +1109,6 @@ LFQDataWriter <- R6::R6Class(
 #'
 #' Aggregate LFQ data
 #' @examples
-#' library(tidyverse)
-#' #library(prolfqua)
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)

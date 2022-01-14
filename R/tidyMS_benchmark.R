@@ -266,9 +266,8 @@ do_confusion_c <- function(
 #' @export
 #' @family benchmarking
 #' @examples
-#' library(ggpubr)
-#' #library(prolfqua)
-#' library(tidyverse)
+#' #library(ggpubr)
+#' #library(tidyverse)
 #' ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic)))
 #' medpol_benchmark <- make_benchmark(ttd$data,
 #'                                    model_description = "med. polish and lm. density",
@@ -298,7 +297,6 @@ do_confusion_c <- function(
 #' bb <- benchmark$get_confusion_FDRvsFDP()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 #' bb <- benchmark$get_confusion_benchmark()
-#' bb %>% dplyr::group_by(what, contrast) %>% dplyr::summarize(n = n())
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_FDPvsTPR()
 #' benchmark$plot_FDRvsFDP()
@@ -558,11 +556,11 @@ Benchmark <-
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
             ylim(ylim)
         }
-        fig <- ggarrange(plotlist = plots,
+        fig <- ggpubr::ggarrange(plotlist = plots,
                          nrow = 1,
                          common.legend = TRUE,
                          legend = "bottom")
-        fig <- annotate_figure(fig, bottom = ggpubr::text_grob(self$model_typ , size = 10))
+        fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(self$model_typ , size = 10))
         return(fig)
       }
 

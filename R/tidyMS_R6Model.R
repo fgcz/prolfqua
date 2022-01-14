@@ -37,8 +37,8 @@ ModelInterface <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' library(prolfqua)
-#' library(tidyverse)
+#' #library(prolfqua)
+#' #library(tidyverse)
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
@@ -315,9 +315,7 @@ LR_test <- function(modelProteinF,
 #'
 #' @export
 #' @examples
-#' rm(list = ls())
-#' library(prolfqua)
-#' library(tidyverse)
+#' # library(tidyverse)
 #' D <- prolfqua_data('data_ionstar')$normalized()
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #'

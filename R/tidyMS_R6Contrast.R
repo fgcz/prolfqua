@@ -36,8 +36,7 @@ ContrastsInterface <- R6::R6Class(
 #' @export
 #' @examples
 #'
-#' library(prolfqua)
-#' library(tidyverse)
+#' # library(tidyverse)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
@@ -202,8 +201,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' library(prolfqua)
-#' library(tidyverse)
+#' # library(tidyverse)
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
@@ -372,7 +370,7 @@ Contrasts <- R6::R6Class(
     #' return \code{\link{Contrasts_Plotter}}
     #' creates Contrast_Plotter
     #' @param FCthreshold fold change threshold to show in plots
-    #' @param FDRthrshold FDR threshold to show in plots
+    #' @param FDRthreshold FDR threshold to show in plots
     #' @return \code{\link{Contrasts_Plotter}}
     get_Plotter = function(
       FCthreshold = 1,
@@ -522,7 +520,7 @@ ContrastsModerated <- R6::R6Class(
     #' @description
     #' get \code{\link{Contrasts_Plotter}}
     #' @param FCthreshold fold change threshold to show in plots
-    #' @param FDRthrshold FDR threshold to show in plots
+    #' @param FDRthreshold FDR threshold to show in plots
     #'
     get_Plotter = function(
       FCthreshold = 1,
@@ -696,7 +694,8 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' get \code{\link{Contrasts_Plotter}}
     #' @return \code{\link{Contrasts_Plotter}}
-    get_Plotter = function(FDRthreshold = 0.1, FCthreshold = 2){
+    get_Plotter = function(FDRthreshold = 0.1,
+                           FCthreshold = 2){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
         contrast_result,
@@ -852,8 +851,7 @@ ContrastsSaintExpress <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' library(prolfqua)
-#' library(tidyverse)
+#' # library(prolfqua)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
@@ -951,7 +949,7 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
-#' library(tidyverse)
+#' #library(tidyverse)
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
