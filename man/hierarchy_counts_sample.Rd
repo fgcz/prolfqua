@@ -16,8 +16,8 @@ Count distinct elements for each level of hierarchy per sample
 }
 \examples{
 
-library(prolfqua)
-library(tidyverse)
+#library(prolfqua)
+#library(tidyverse)
 
 bb <- prolfqua_data('data_ionstar')$filtered()
 config <- bb$config$clone(deep=TRUE)

@@ -47,7 +47,7 @@ For use examples see run_scripts directory
 \examples{
 
 
-library(tidyverse)
+#library(tidyverse)
 istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 

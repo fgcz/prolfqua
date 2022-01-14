@@ -15,7 +15,7 @@ summarizeRobust_config(pdata, config, name = FALSE)
 same as summarize robust but with config
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$filtered()
 conf <- bb$config
 data <- bb$data

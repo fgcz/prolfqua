@@ -19,8 +19,7 @@ Keep only those proteins with 2 IDENTIFIED peptides
 }
 \examples{
 
-library(prolfqua)
-library(tidyverse)
+#library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')$Pep()
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))

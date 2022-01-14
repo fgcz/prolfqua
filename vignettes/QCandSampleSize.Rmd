@@ -32,7 +32,7 @@ header-includes:
 
 
 ```{r setup, include=FALSE}
-library(tidyverse)
+#library(tidyverse)
 library(prolfqua)
 
 knitr::opts_chunk$set(

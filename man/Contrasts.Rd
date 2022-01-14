@@ -10,8 +10,7 @@ Estimate contrasts using Wald Test
 }
 \examples{
 
-library(prolfqua)
-library(tidyverse)
+# library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
@@ -221,7 +220,7 @@ creates Contrast_Plotter
 \describe{
 \item{\code{FCthreshold}}{fold change threshold to show in plots}
 
-\item{\code{FDRthrshold}}{FDR threshold to show in plots}
+\item{\code{FDRthreshold}}{FDR threshold to show in plots}
 }
 \if{html}{\out{</div>}}
 }

@@ -18,7 +18,7 @@ data.frame
 Ranks precursors by NAs (adds new column .NARank)
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 bb <- prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())

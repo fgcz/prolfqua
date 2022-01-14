@@ -20,8 +20,7 @@ peptide fold change is computed based on the average of intensities in the condi
 \examples{
 
 
-#library(prolfqua)
-library(tidyverse)
+#library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$normalized()
 configur <- bb$config
 data <- bb$data

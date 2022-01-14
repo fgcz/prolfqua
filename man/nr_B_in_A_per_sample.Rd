@@ -10,8 +10,8 @@ nr_B_in_A_per_sample(data, config, nested = TRUE)
 how many peptides per protein in each sample
 }
 \examples{
-library(prolfqua)
-library(tidyverse)
+#library(prolfqua)
+#library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)

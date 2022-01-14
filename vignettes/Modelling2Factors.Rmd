@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```{r specifyModel}
 library(prolfqua)
-library(tidyverse)
+#library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
 data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")

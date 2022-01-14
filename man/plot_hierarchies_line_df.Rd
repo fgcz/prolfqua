@@ -15,7 +15,6 @@ plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 generates peptide level plots for all Proteins
 }
 \examples{
-library(tidyverse)
 
 
 istar <- prolfqua_data('data_ionstar')$normalized()

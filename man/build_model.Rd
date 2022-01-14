@@ -28,9 +28,7 @@ a object of class \code{\link{Model}}
 build from data and modelFunction Model
 }
 \examples{
-rm(list = ls())
-library(prolfqua)
-library(tidyverse)
+# library(tidyverse)
 D <- prolfqua_data('data_ionstar')$normalized()
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 

@@ -18,8 +18,8 @@ data.frame
 ranks precursor - peptide by intensity.
 }
 \examples{
-library(tidyverse)
-library(prolfqua)
+#library(tidyverse)
+#library(prolfqua)
 bb <- prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())

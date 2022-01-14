@@ -10,15 +10,13 @@ Expends LFQData with some protein specific functions.
 }
 \examples{
 
-library(tidyverse)
-library(prolfqua)
 istar <- prolfqua_data('data_ionstar')$filtered()
 
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQDataProtein$new( data, istar$config )
 
-stopifnot(lfqdata$annotateREV() == 0)
-stopifnot(lfqdata$annotateCON() == 0)
+lfqdata$annotateREV()
+lfqdata$annotateCON()
 
 lfqdata$nr_clean()
 dd <- lfqdata$clean()

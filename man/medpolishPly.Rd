@@ -18,7 +18,7 @@ data.frame with number of rows equal to number of columns of input matrix.
 compute Tukeys median polish from peptide or precursor intensities
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 medpolishPly(name = TRUE)
 gg <- matrix(runif(20),4,5)
 rownames(gg) <- paste0("A",1:4)

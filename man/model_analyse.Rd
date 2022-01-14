@@ -16,8 +16,8 @@ used in project p2901
 }
 \examples{
 
-library(tidyverse)
-library(prolfqua)
+#library(tidyverse)
+#library(prolfqua)
 ionstar <- prolfqua_data('data_ionstar')$normalized()
 ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
 prolfqua::table_factors(ionstar$data, ionstar$config)

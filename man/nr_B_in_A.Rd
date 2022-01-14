@@ -15,7 +15,7 @@ nr_B_in_A(pdata, config, merge = TRUE)
 Compute nr of B per A
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)

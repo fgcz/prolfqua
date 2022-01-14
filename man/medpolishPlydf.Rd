@@ -22,7 +22,7 @@ data.frame
 medpolish dataframe
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config

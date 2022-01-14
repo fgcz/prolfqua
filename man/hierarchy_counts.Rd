@@ -15,8 +15,8 @@ hierarchy_counts(pdata, config)
 Count distinct elements for each level of hierarchy
 }
 \examples{
-library(tidyverse)
-library(prolfqua)
+#library(tidyverse)
+#library(prolfqua)
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)

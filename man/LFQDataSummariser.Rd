@@ -9,7 +9,6 @@ Summarize LFQData
 Summarize LFQData
 }
 \examples{
-library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')
 data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))

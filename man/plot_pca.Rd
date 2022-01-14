@@ -11,8 +11,7 @@ plot PCA
 }
 \examples{
 
-library(tidyverse)
-library(prolfqua)
+# library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(istar$data) == 25780)

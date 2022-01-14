@@ -19,7 +19,7 @@ summarizeRobust(pdata, expression, feature, samples, maxIt = 20)
 summarize proteins using MASS:rlm
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 
 bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)

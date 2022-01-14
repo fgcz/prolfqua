@@ -200,7 +200,7 @@ get \code{\link{Contrasts_Plotter}}
 \describe{
 \item{\code{FCthreshold}}{fold change threshold to show in plots}
 
-\item{\code{FDRthrshold}}{FDR threshold to show in plots}
+\item{\code{FDRthreshold}}{FDR threshold to show in plots}
 }
 \if{html}{\out{</div>}}
 }

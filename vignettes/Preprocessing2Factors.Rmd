@@ -28,7 +28,7 @@ fig.height = 10
 
 ```{r}
 library(prolfqua)
-library(tidyverse)
+#library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
 

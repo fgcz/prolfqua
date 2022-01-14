@@ -10,7 +10,7 @@ plot contrasts
 }
 \examples{
 
-library(tidyverse)
+#library(tidyverse)
 
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))

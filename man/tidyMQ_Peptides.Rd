@@ -13,7 +13,7 @@ tidyMQ_Peptides(MQPeptides, proteotypic_only = TRUE)
 parse MQ peptides.txt
 }
 \examples{
-library(tidyverse)
+#library(tidyverse)
 
 peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")

@@ -26,8 +26,6 @@ extracts the relevant information from the configuration to make the plot.
 }
 \examples{
 
-#library(prolfqua)
-library(tidyverse)
 
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

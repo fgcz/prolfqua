@@ -24,7 +24,7 @@ Load the required packages.
 
 ```{r createConfig}
 library(prolfqua)
-library(tidyverse)
+
 
 ```
 
@@ -293,7 +293,7 @@ plotter$ma_plotly()
 
 ```{r checkProteinsInOutput}
 myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
-filter(contrdf, protein_Id %in% myProteinIDS)
+dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 
 ```
 
