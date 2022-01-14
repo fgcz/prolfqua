@@ -24,7 +24,7 @@ dataX <- matrix(rnorm(20), ncol=4)
 rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
 colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
 tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
-
+debug(jackknifeMatrix)
 res <- jackknifeMatrix(dataX, cor)
 res
 dim(res)

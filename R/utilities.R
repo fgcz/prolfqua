@@ -244,7 +244,7 @@ my_jackknife <- function(xdata, .method, ... ) {
 #' rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
 #' colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
 #' tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
-#'
+#' debug(jackknifeMatrix)
 #' res <- jackknifeMatrix(dataX, cor)
 #' res
 #' dim(res)
@@ -261,9 +261,7 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- my_jackknife( dataX, distmethod, ... )
-    x <- plyr::ldply(tmp$jack.values, prolfqua::matrix_to_tibble)
     x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
-
     dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
     ddd <- dd %>%
       group_by(UQ(sym("row.names")), UQ(sym("col.names"))) %>%

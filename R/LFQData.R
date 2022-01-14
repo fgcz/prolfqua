@@ -301,7 +301,7 @@ LFQDataProtein <-
             annotateREV = function(pattern = "REV_") {
               pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot %>% mutate(
-                REV = case_when(grepl(pattern, pID) ~ TRUE,
+                REV = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
                                          TRUE ~ FALSE))
 
               return(sum(self$row_annot$REV))
@@ -312,7 +312,7 @@ LFQDataProtein <-
             annotateCON = function(pattern = "^zz|^CON") {
               pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot %>% mutate(
-                CON = case_when(grepl(pattern, pID) ~ TRUE,
+                CON = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
                                 TRUE ~ FALSE))
               return(sum(self$row_annot$CON))
             },

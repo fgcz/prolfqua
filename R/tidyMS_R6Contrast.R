@@ -972,17 +972,19 @@ ContrastsTable <- R6::R6Class(
 #'
 #'  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
 #'   "dil.e_vs_a" = "dilution.e - dilution.a"
-#'   #,"dil.e_vs_b" = "dilution.e - dilution.b",
-#'   #"dil.c_vs_b" = "dilution.c - dilution.b"
+#'   ,"dil.e_vs_b" = "dilution.e - dilution.b",
+#'   "dil.c_vs_b" = "dilution.c - dilution.b"
 #'  )
 #' #Contrasts$debug("get_contrasts")
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
 #' #Contrasts_Plotter$debug("score_plot")
+#'
+#'
 #' cp <- Contrasts_Plotter$new(tmp ,
 #'  contrast$subject_Id,
-#' volcano = list(list(score = "FDR", thresh = 1)),
+#' volcano = list(list(score = "FDR", thresh = 0.1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
 #'                  list(score = "FDR", xlim = c(0,1,0.05))),
 #' score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
@@ -996,7 +998,8 @@ ContrastsTable <- R6::R6Class(
 #' respltly <- cp$volcano_plotly()
 #' length(respltly)
 #' cp$ma_plot()
-#' cp$ma_plotly
+#' cp$ma_plotly()
+#' res  <- cp$barplot_threshold()
 Contrasts_Plotter <- R6::R6Class(
   "Contrasts_Plotter",
   public = list(
@@ -1042,7 +1045,10 @@ Contrasts_Plotter <- R6::R6Class(
                           estimate = "diff",
                           contrast = "contrast"
     ){
-      self$contrastDF <- contrastDF %>% tidyr::unite("subject_Id", subject_Id, sep = "~", remove = FALSE)
+      self$contrastDF <- tidyr::unite(
+        contrastDF,
+        "subject_Id", subject_Id, sep = "~", remove = FALSE)
+
       self$modelName  = modelName
       self$subject_Id = subject_Id
       self$estimate = estimate
@@ -1121,7 +1127,7 @@ Contrasts_Plotter <- R6::R6Class(
 
     #' @description
     #' ma plotly
-    #' @param fc fold change abline
+    #' @param fc horizontal lines
     #' @param colour column in contrast matrix with colour coding.
     #' @param legend enable legend default TRUE
     #' @return list of ggplots
@@ -1182,6 +1188,21 @@ Contrasts_Plotter <- R6::R6Class(
         res[[i]] <- plotly::ggplotly(res[[i]], tooltip = "subject_Id")
       }
       return(res)
+    },
+    #' @description
+    #' shows the number of significant protens per contrasts
+    #' @return list which contains ggplots and summary tables
+    barplot_threshold = function(){
+      resBar <- list()
+      for (i in seq_along(self$volcano_spec) ) {
+        scN <- self$volcano_spec[[i]]$score
+        scT <- self$volcano_spec[[i]]$thresh
+        filt <- self$contrastDF  |> filter(!is.na(!!sym(scN)) & !!sym(scN)  < scT)
+        sumC <- filt %>% group_by(contrast, modelName) %>% dplyr::summarize(n = n())
+        p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) + geom_bar(position = "stack", stat = "identity")
+        resBar[[scN]] <- list(plot = p, summary = sumC)
+      }
+      return(resBar)
     }
   ),
   private = list(

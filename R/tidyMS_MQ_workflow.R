@@ -142,11 +142,6 @@ make2grpReport <- function(startdata,
   lfqdata$remove_small_intensities()
 
 
-
-  if (remove) {
-    lfqdata <- lfqdata$get_subset(lfqdata$clean())
-  }
-
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
   transformed <- lt$log2()$robscale()$lfq
@@ -167,9 +162,16 @@ make2grpReport <- function(startdata,
 
   allProt <- nrow( transformed$row_annot )
   GRP2$totalNrOfProteins <- allProt
-  GRP2$percentOfContaminants <- round(transformed$annotateREV()/allProt * 100 , digits = 2)
-  GRP2$percentOfFalsePositives  <- round(transformed$annotateCON()/allProt * 100 , digits = 2)
+  GRP2$percentOfContaminants <- round(transformed$annotateREV(revpattern)/allProt * 100 , digits = 2)
+  GRP2$percentOfFalsePositives  <- round(transformed$annotateCON(contpattern)/allProt * 100 , digits = 2)
   GRP2$NrOfProteinsNoDecoys <- transformed$nr_clean()
+
+  if (remove) {
+    message("REMOVING: contaminants and reverse sequences")
+    lfqdata <- lfqdata$get_subset(transformed$clean())
+    transformed <- transformed$clean()
+  }
+
 
   GRP2$lfqData <- lfqdata
   GRP2$transformedlfqData <- transformed
@@ -261,14 +263,19 @@ make2grpReport <- function(startdata,
 #' @export
 #' @family workflow
 #'
-write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults") {
-  wr <- GRP2$lfqData$get_Writer()
-  tmp <- wr$get_wide()
-  tmp2 <- GRP2$transformedlfqData$get_Writer()$get_wide()
-  names(tmp2) <- paste0(names(tmp2), ".normalized")
+write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
   dir.create(outpath)
-  writexl::write_xlsx(c(tmp, tmp2,  list(contrasts = GRP2$contrResult)),
-                      path = file.path(outpath, paste0(xlsxname,".xlsx")))
+  rd <- GRP2$lfqData
+  tr <- GRP2$transformedlfqData
+  wideraw <- inner_join(tr$row_annot, rd$to_wide()$data)
+  widetr <- inner_join(tr$row_annot , tr$to_wide()$data )
+  ctr <- inner_join(tr$row_annot , GRP2$contrResult )
+  resultList <- list()
+  resultList$annotation = tr$to_wide()$annot
+  resultList$raw_data = wideraw
+  resultList$transformed_data = widetr
+  resultList$contrasts = ctr
+  writexl::write_xlsx(resultList, path = file.path(outpath, paste0(xlsxname, ".xlsx")))
 }
 
 #' render 2GRP analysis report
@@ -283,5 +290,6 @@ render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
   rmarkdown::render("_Grp2Analysis.Rmd",
                     params = list(grp = GRP2) ,
                     output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
+  dir.create(outpath)
   file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
 }

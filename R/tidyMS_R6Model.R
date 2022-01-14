@@ -198,8 +198,8 @@ Model <- R6::R6Class(
         dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) %>%
         tidyr::spread(factor, Estimate )
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
-      Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
-      return(list(plot = Pairsplot_Coef, name = fname_Pairsplot_Coef))
+      #Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
+      return(list(plot = forPairs, name = fname_Pairsplot_Coef))
 
     },
     #' @description

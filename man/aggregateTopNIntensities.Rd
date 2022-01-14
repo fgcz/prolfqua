@@ -30,10 +30,10 @@ dd <- prolfqua_data('data_ionstar')$filtered()
 config <- dd$config
 res <- dd$data
 ranked <- rankPrecursorsByIntensity(res,config)
-ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),
-"srm_meanInt"  ,"srm_meanIntRank")) \%>\%
-distinct() \%>\%
-arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
+ ranked \%>\% dplyr::select(c(config$table$hierarchyKeys(),
+ "srm_meanInt"  ,"srm_meanIntRank")) \%>\%
+ distinct() \%>\%
+ arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
 
 mean_f <- function(x, name = FALSE){
  if(name){return("mean")};mean(x, na.rm=TRUE)

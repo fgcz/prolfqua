@@ -146,7 +146,7 @@ summariseQValues <- function(pdata,
                                                     !!QValueNR  := npass(., qVal_experiment_threshold)
     ))
   pdata <- dplyr::inner_join(pdata, qValueSummaries, by = c(precursorIDs))
-  message(glue::glue("Columns added : {QValueMin}, {QValueNR}"))
+  message("Columns added :",QValueMin, QValueNR)
   return(pdata)
 }
 

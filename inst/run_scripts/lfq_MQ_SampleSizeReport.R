@@ -104,8 +104,6 @@ prolfqua::render_MQSummary_rmd(
   format = "html"
 )
 
-
-
 peptideStats <- summarize_stats_raw_transformed(resPep$data, resPep$config)
 lfq_write_table(separate_hierarchy(peptideStats, resPep$config),
                 path = outputDir,
@@ -124,7 +122,11 @@ results <- normalize_log2_robscale(res$data, resPep$config)
 protintensity <- medpolish_protein_quants( results$data, results$config )
 xx <- protintensity("unnest")
 data <- prolfqua::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
+
+
 stats_res <- summarize_stats(data, xx$config, all = FALSE)
+
+
 data_wide <-
   inner_join(
     stats_res,

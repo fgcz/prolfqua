@@ -674,10 +674,10 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' config <- dd$config
 #' res <- dd$data
 #' ranked <- rankPrecursorsByIntensity(res,config)
-#' ranked %>% dplyr::select(c(config$table$hierarchyKeys(),
-#' "srm_meanInt"  ,"srm_meanIntRank")) %>%
-#' distinct() %>%
-#' arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
+#'  ranked %>% dplyr::select(c(config$table$hierarchyKeys(),
+#'  "srm_meanInt"  ,"srm_meanIntRank")) %>%
+#'  distinct() %>%
+#'  arrange(!!!syms(c(config$table$hkeysDepth(),"srm_meanIntRank")))
 #'
 #' mean_f <- function(x, name = FALSE){
 #'  if(name){return("mean")};mean(x, na.rm=TRUE)
@@ -706,7 +706,8 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
 
   xcall <- as.list( match.call() )
-  newcol <- make.names(glue::glue("srm_{.func(name=TRUE)}_{xcall$N}"))
+  newcol <- make.names(paste0("srm_",.func(name = TRUE),"_",xcall$N))
+
   topInt <- pdata %>%
     dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) %>%
     dplyr::group_by_at(c( config$table$hkeysDepth(),

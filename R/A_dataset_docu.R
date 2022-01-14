@@ -9,8 +9,6 @@
 #' @importFrom ggplot2 stat_summary scale_x_continuous scale_y_continuous theme
 #'
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom GGally ggpairs
-#' @importFrom glue glue
 #' @importFrom graphics par rect hist
 #' @importFrom graphics abline pairs plot text
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow

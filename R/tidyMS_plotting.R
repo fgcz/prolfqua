@@ -501,7 +501,6 @@ plot_NA_heatmap <- function(data,
 #' plot PCA
 #' @export
 #' @keywords internal
-#' @import ggfortify
 #' @family plotting
 #' @examples
 #'

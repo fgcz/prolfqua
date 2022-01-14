@@ -31,17 +31,19 @@ mod <- build_model(
 
  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
   "dil.e_vs_a" = "dilution.e - dilution.a"
-  #,"dil.e_vs_b" = "dilution.e - dilution.b",
-  #"dil.c_vs_b" = "dilution.c - dilution.b"
+  ,"dil.e_vs_b" = "dilution.e - dilution.b",
+  "dil.c_vs_b" = "dilution.c - dilution.b"
  )
 #Contrasts$debug("get_contrasts")
 contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
 #Contrasts_Plotter$debug("score_plot")
+
+
 cp <- Contrasts_Plotter$new(tmp ,
  contrast$subject_Id,
-volcano = list(list(score = "FDR", thresh = 1)),
+volcano = list(list(score = "FDR", thresh = 0.1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
 score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
@@ -55,7 +57,8 @@ res
 respltly <- cp$volcano_plotly()
 length(respltly)
 cp$ma_plot()
-cp$ma_plotly
+cp$ma_plotly()
+res  <- cp$barplot_threshold()
 }
 \seealso{
 Other modelling: 
@@ -157,6 +160,7 @@ Other plotting:
 \item \href{#method-ma_plotly}{\code{Contrasts_Plotter$ma_plotly()}}
 \item \href{#method-score_plot}{\code{Contrasts_Plotter$score_plot()}}
 \item \href{#method-score_plotly}{\code{Contrasts_Plotter$score_plotly()}}
+\item \href{#method-barplot_threshold}{\code{Contrasts_Plotter$barplot_threshold()}}
 \item \href{#method-clone}{\code{Contrasts_Plotter$clone()}}
 }
 }
@@ -321,7 +325,7 @@ ma plotly
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{fc}}{fold change abline}
+\item{\code{fc}}{horizontal lines}
 
 \item{\code{colour}}{column in contrast matrix with colour coding.}
 
@@ -379,6 +383,19 @@ plot a score against the log2 fc e.g. t-statistic
 }
 \subsection{Returns}{
 list of ggplots
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-barplot_threshold"></a>}}
+\if{latex}{\out{\hypertarget{method-barplot_threshold}{}}}
+\subsection{Method \code{barplot_threshold()}}{
+shows the number of significant protens per contrasts
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$barplot_threshold()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+list which contains ggplots and summary tables
 }
 }
 \if{html}{\out{<hr>}}

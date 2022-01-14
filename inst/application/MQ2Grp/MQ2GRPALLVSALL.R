@@ -68,11 +68,28 @@ atable$hierarchy[["peptide_Id"]] <- c("sequence")
 #
 atable$hierarchyDepth <- 1
 atable$factors[["Experiment_"]] = "Experiment"
+
 if (!is.null(annot$Subject) & REPEATED) {
   atable$factors[["Subject"]] = "Subject"
 }
 atable$factorDepth <- 1
 atable$setWorkIntensity("peptide.intensity")
+
+
+ps <- prolfqua::ProjectStructure$new(outpath = ".",
+                                     project_Id = "",
+                                     workunit_Id = basename(getwd()),
+                                     order_Id = "",
+                                     inputAnnotation = NULL,
+                                     inputData = NULL)
+
+ps$create()
+prolfqua::render_MQSummary_rmd(lfqdata$data,
+                               config$clone(deep = TRUE),
+                               ps, format = "html")
+
+
+
 
 # Compute all possible 2 Grps to avoid specifying reference.
 levels <- annot$Experiment |> unique()
