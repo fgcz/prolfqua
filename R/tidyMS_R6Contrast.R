@@ -119,7 +119,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         self$get_contrasts()
       }
-      self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
     },
     #' @description
     #' table with results of contrast computation
@@ -154,7 +154,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 
         }
 
-        result <- result %>% rename(diff = estimate_median, sigma = sd)
+        result <- result |> rename(diff = estimate_median, sigma = sd)
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- result
       }
@@ -280,7 +280,7 @@ Contrasts <- R6::R6Class(
       # extract contrast sides
       tt <- self$contrasts[grep("-",self$contrasts)]
       tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt %>% mutate(rhs = gsub("[` ]","",rhs)) %>%
+      tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
         tidyr::separate(rhs, c("c1", "c2"), sep = "-")
       return(tt)
     },
@@ -295,7 +295,7 @@ Contrasts <- R6::R6Class(
         return( rbind( linfct, linfct_A ) )
       }
       if (global) {
-        models <- self$models %>% dplyr::filter(exists_lmer == TRUE)
+        models <- self$models |> dplyr::filter(exists_lmer == TRUE)
         model <- get_complete_model_fit(models)$linear_model[[1]]
         return( linfct( model, self$contrasts ))
       }else{
@@ -324,7 +324,7 @@ Contrasts <- R6::R6Class(
         contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
 
         xx <- dplyr::select(contrast_result, self$subject_Id, "contrast", "diff")
-        xx <- xx %>% tidyr::pivot_wider(names_from = "contrast", values_from = "diff")
+        xx <- xx |> tidyr::pivot_wider(names_from = "contrast", values_from = "diff")
 
         contrast_result <- dplyr::filter(contrast_result, contrast %in% names(self$contrasts))
 
@@ -351,7 +351,7 @@ Contrasts <- R6::R6Class(
       }
 
       res <- if (!all) {
-        self$contrast_result %>%
+        self$contrast_result |>
           select( -all_of(c("sigma.model",
                             "df.residual.model",
                             "std.error",
@@ -415,7 +415,6 @@ Contrasts <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' library(prolfqua)
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
@@ -440,7 +439,7 @@ Contrasts <- R6::R6Class(
 #'  plotter$ma_plot()
 #'  plotter$volcano()
 #'
-#' #bb %>% dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
+#' #bb |> dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
   inherit = ContrastsInterface,
@@ -490,12 +489,12 @@ ContrastsModerated <- R6::R6Class(
         group_by_col = "contrast",
         estimate = "diff")
       if (!all) {
-        contrast_result <- contrast_result %>% select(-c( "sigma","df",
+        contrast_result <- contrast_result |> select(-c( "sigma","df",
                                                           "statistic", "p.value","conf.low","conf.high",
                                                           "FDR",  "moderated.df.prior" ,
                                                           "moderated.var.prior"))
-        contrast_result <- contrast_result %>% mutate(sigma = sqrt(moderated.var.post),.keep = "unused")
-        contrast_result <- contrast_result %>% rename(
+        contrast_result <- contrast_result |> mutate(sigma = sqrt(moderated.var.post),.keep = "unused")
+        contrast_result <- contrast_result |> rename(
           conf.low = "moderated.conf.low",
           conf.high = "moderated.conf.high",
           statistic = "moderated.statistic" ,
@@ -640,7 +639,7 @@ ContrastsROPECA <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         self$get_contrasts()
       }
-      self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
     },
     #' @description
     #' get linear function used to determine contrasts
@@ -759,7 +758,7 @@ ContrastsSaintExpress <- R6::R6Class(
       self$modelName = modelName
 
       if ( "AvgIntensity" %in% colnames(contrastsdf)) {
-        self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
+        self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
                                                        c1_name = "Control",
                                                        c2_name = Bait,
                                                        c1 = log2(AvgIntensity) - log2(FoldChange)/2,
@@ -767,7 +766,7 @@ ContrastsSaintExpress <- R6::R6Class(
                                                        modelName = modelName)
 
       }else{
-        self$contrast_result <- contrastsdf %>% mutate(log2FC = log2(FoldChange),
+        self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
                                                        c1_name = "Control",
                                                        c2_name = Bait,
                                                        c1 = log2(AvgSpec) - log2(FoldChange)/2,
@@ -781,7 +780,7 @@ ContrastsSaintExpress <- R6::R6Class(
     #' show contrasts
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast_result %>% dplyr::select(Bait,c1 = c1_name,c2 = c2_name) %>% distinct()
+      self$contrast_result |> dplyr::select(Bait,c1 = c1_name,c2 = c2_name) |> distinct()
     },
     #' @description
     #' no available for SaintExpress
@@ -796,7 +795,7 @@ ContrastsSaintExpress <- R6::R6Class(
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE){
-      res <- self$contrast_result %>% select(
+      res <- self$contrast_result |> select(
         all_of(c(self$subject_Id,
                  "modelName",
                  "Bait",
@@ -853,7 +852,6 @@ ContrastsSaintExpress <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' # library(prolfqua)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
@@ -893,7 +891,7 @@ ContrastsTable <- R6::R6Class(
     #' return sides of contrast
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast_result %>% dplyr::select(contrast,c1 = c1_name,c2 = c2_name) %>% distinct()
+      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
     },
     #' @description not implemented
     get_linfct = function(){
@@ -1098,10 +1096,10 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column in contrast matrix with colour coding
     #' @return list of ggplots
     volcano_plotly = function(colour = "modelName"){
-      contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
+      contrastDF <- self$contrastDF |> plotly::highlight_key(~ subject_Id)
       res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
       for (i in seq_along(res)) {
-        res[[i]] <- res[[i]] %>% plotly::ggplotly(tooltip = "subject_Id")
+        res[[i]] <- res[[i]] |> plotly::ggplotly(tooltip = "subject_Id")
       }
       return(res)
     },
@@ -1137,9 +1135,9 @@ Contrasts_Plotter <- R6::R6Class(
         fc <- self$fcthresh
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
-        contrastDF  <- contrastDF %>%
+        contrastDF  <- contrastDF |>
           plotly::highlight_key(~subject_Id)
-        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour, legend = legend) %>%
+        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour, legend = legend) |>
           plotly::ggplotly(tooltip = "subject_Id")
 
         return(fig_plotly)
@@ -1177,7 +1175,7 @@ Contrasts_Plotter <- R6::R6Class(
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
-      contrastDF <- self$contrastDF %>% plotly::highlight_key(~ subject_Id)
+      contrastDF <- self$contrastDF |> plotly::highlight_key(~ subject_Id)
       res <- private$.score_plot(
         contrastDF,
         self$score_spec,
@@ -1198,7 +1196,7 @@ Contrasts_Plotter <- R6::R6Class(
         scN <- self$volcano_spec[[i]]$score
         scT <- self$volcano_spec[[i]]$thresh
         filt <- self$contrastDF  |> filter(!is.na(!!sym(scN)) & !!sym(scN)  < scT)
-        sumC <- filt %>% group_by(contrast, modelName) %>% dplyr::summarize(n = n())
+        sumC <- filt |> group_by(contrast, modelName) |> dplyr::summarize(n = n())
         p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) + geom_bar(position = "stack", stat = "identity")
         resBar[[scN]] <- list(plot = p, summary = sumC)
       }
@@ -1230,7 +1228,7 @@ Contrasts_Plotter <- R6::R6Class(
     .histogram  = function(score){
       xlim = score$xlim
       score = score$score
-      plot <- self$contrastDF %>% ggplot(aes(x = !!sym(score))) +
+      plot <- self$contrastDF |> ggplot(aes(x = !!sym(score))) +
         geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
         facet_wrap(vars(!!sym(self$contrast))) +
         theme_light()

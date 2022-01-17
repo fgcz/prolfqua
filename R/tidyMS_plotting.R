@@ -124,8 +124,8 @@ plot_sample_correlation <- function(pdata, config){
 #' conf$table$hierarchyDepth
 #' conf$table$hkeysDepth()
 #'
-#' xnested <- analysis %>%
-#'  group_by_at(conf$table$hkeysDepth()) %>% tidyr::nest()
+#' xnested <- analysis |>
+#'  group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' #debug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
@@ -154,7 +154,7 @@ plot_sample_correlation <- function(pdata, config){
 #' res$boxplot[[1]]
 #'
 #' hierarchy = config$table$hkeysDepth()
-#' xnested <- data %>% dplyr::group_by_at(hierarchy) %>% tidyr::nest()
+#' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
 #' p
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
@@ -208,7 +208,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @examples
 #'
 #'  iostar <- prolfqua_data('data_ionstar')$filtered()
-#'  iostar$data <- iostar$data %>%
+#'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
 #'
@@ -222,7 +222,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'  res$boxplot[[1]]
 #'
 #'  iostar <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'  iostar$data <- iostar$data %>%
+#'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
 #'
@@ -240,13 +240,13 @@ plot_hierarchies_boxplot_df <- function(pdata,
                                         hierarchy = config$table$hkeysDepth(),
                                         facet_grid_on = NULL){
 
-  xnested <- pdata %>% dplyr::group_by_at(hierarchy) %>% tidyr::nest()
+  xnested <- pdata |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
   newcol <- paste(hierarchy, collapse = "+")
-  xnested <- xnested %>% tidyr::unite(!!sym(newcol), one_of(hierarchy))
+  xnested <- xnested |> tidyr::unite(!!sym(newcol), one_of(hierarchy))
 
   pb <- progress::progress_bar$new(total = nrow(xnested))
 
-  figs <- xnested %>%
+  figs <- xnested |>
     dplyr::mutate(boxplot = map2(data, !!sym(newcol),
                                  plot_hierarchies_boxplot,
                                  config ,

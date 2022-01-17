@@ -412,7 +412,7 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
+#'
 #' m <- prolfqua_data('data_interactionModel_p1807')
 #' plot_lmer_model_and_data(m,"dumm")
 #'
@@ -619,7 +619,7 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
+#'
 #' m <- prolfqua_data('data_basicModel_p1807')
 #' xl <- linfct_factors_contrasts(m)
 #' xl
@@ -650,7 +650,7 @@ linfct_factors_contrasts <- function(m){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
+#'
 #' mb <- prolfqua_data('data_basicModel_p1807')
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
@@ -845,7 +845,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @export
 #' @keywords internal
 #' @examples
-#' #library(prolfqua)
+#'
 #' mb <- prolfqua_data('data_basicModel_p1807')
 #' summary(mb)
 #'
@@ -1026,7 +1026,7 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #' @keywords internal
 #' @examples
 #'
-#' library(prolfqua)
+#'
 #' modelSummary_A <- prolfqua_data('data_modellingResult_A')
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
@@ -1073,7 +1073,7 @@ moderated_p_limma_long <- function(mm ,
 #' @export
 #' @keywords internal
 #' @examples
-#' library(prolfqua)
+#'
 #' bb <- c(runif(1000), rexp(1500,rate=5))
 #' length(bb)
 #' bb <- bb[bb < 1]
