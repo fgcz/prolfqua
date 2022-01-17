@@ -336,7 +336,7 @@ summarize_stats_quantiles <- function(stats_res,
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb %>%
 #'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>%
-#'  spread(delta, N, sep = "=")
+#'  tidyr::spread(delta, N, sep = "=")
 #' summary
 lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd,

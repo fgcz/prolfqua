@@ -34,7 +34,7 @@ protein <- as_tibble(
 annot <- read.csv(dsf)
 protein <- prolfqua::tidy_MSFragger_combined_protein_V16(protein)
 
-annot <- annot %>% dplyr::mutate(raw.file =
+annot <- annot |> dplyr::mutate(raw.file =
                                    make.names(paste0("x",tolower(gsub(".d.zip$|.raw$","",basename(Relative.Path))))))
 
 

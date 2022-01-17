@@ -20,8 +20,8 @@ bb <- prolfqua_data('data_ionstar')$filtered()
 conf <- bb$config
 data <- bb$data
 conf$table$hierarchyDepth = 1
-xnested <- data \%>\%
-  group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
+xnested <- data |>
+  group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]

@@ -35,12 +35,12 @@ annotation <- readxl::read_xlsx(inputAnnotation)
 
 startdata <- inner_join(annotation, startdata, by = "raw.file")
 startdata <- filter(startdata, nr.peptides >= GRP2$nrPeptides)
-startdata <- startdata %>% mutate(proteinAnnot = case_when(grepl("^REV_",majority.protein.ids) ~ "REV",
+startdata <- startdata |> mutate(proteinAnnot = case_when(grepl("^REV_",majority.protein.ids) ~ "REV",
                                               grepl("^zz|^CON",majority.protein.ids) ~ "CON",
                                               TRUE ~ "FW"))
 
-distinctprotid <- startdata %>% select(protein_Id = majProtID, fasta.headers, proteinAnnot) %>% distinct()
-desc <- distinctprotid %>% select(-proteinAnnot)
+distinctprotid <- startdata |> select(protein_Id = majProtID, fasta.headers, proteinAnnot) |> distinct()
+desc <- distinctprotid |> select(-proteinAnnot)
 
 GRP2$percentOfContaminants <-  table(distinctprotid$proteinAnnot)["CON"]/sum(table(distinctprotid$proteinAnnot)) * 100
 GRP2$percentOfFalsePositives <- table(distinctprotid$proteinAnnot)["REV"]/sum(table(distinctprotid$proteinAnnot)) * 100
@@ -110,8 +110,8 @@ GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
 
 GRP2$contrMore <- res$more$get_Plotter()
 
-top20 <- GRP2$contrResult %>% dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) %>%
-  arrange(FDR) %>%
+top20 <- GRP2$contrResult |> dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) |>
+  arrange(FDR) |>
   head(20)
 GRP2$top20 <- top20
 #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
@@ -124,7 +124,7 @@ GRP2$top20confint <- ggplot(top20, aes(x = protein_Id, y = log2FC,
 
 protMore <- GRP2$transformedlfqData$get_copy()
 protMore$complete_cases()
-protMore$data <- protMore$data %>% filter(.data$protein_Id %in% res$more$contrast_result$protein_Id)
+protMore$data <- protMore$data |> filter(.data$protein_Id %in% res$more$contrast_result$protein_Id)
 
 GRP2$imputedProteins <- protMore
 
@@ -132,12 +132,12 @@ GRP2$imputedProteins <- protMore
 
 xx <- res$more$contrast_result[rowSums(is.na(res$more$contrast_result)) > 0,]
 if (nrow(xx) > 0) {
-  xx <- xx %>% arrange(estimate)
+  xx <- xx |> arrange(estimate)
   GRP2$noPvalEstimate <- ggplot2::ggplot(xx ,aes(x = reorder(protein_Id, estimate), y = estimate)) +
     ggplot2::geom_bar(stat = "identity") + coord_flip()
   missing <- GRP2$transformedlfqData$get_copy()
   missing$complete_cases()
-  missing$data <- missing$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
+  missing$data <- missing$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
   missing$get_Plotter()$raster()
 }
 

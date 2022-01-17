@@ -40,7 +40,7 @@ bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb \%>\%
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\%
- spread(delta, N, sep = "=")
+ tidyr::spread(delta, N, sep = "=")
 summary
 }
 \seealso{

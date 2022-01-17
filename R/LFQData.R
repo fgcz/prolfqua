@@ -6,7 +6,7 @@
 #' @examples
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' stopifnot("data.frame" %in% class(tmp$data))
@@ -128,13 +128,13 @@ LFQData <- R6::R6Class(
         cfg$table$factorDepth <- factorDepth
         missing <- interaction_missing_stats(self$data, cfg)
       }
-      notNA <- missing$data %>% dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA %>% group_by_at(self$config$table$hierarchyKeys()) %>%
+      notNA <- missing$data |> dplyr::filter(nrNAs <= nrNA)
+      sumN <- notNA |> group_by_at(self$config$table$hierarchyKeys()) |>
         summarise(n = n())
-      notNA <- sumN %>% dplyr::filter(n == max(n))
+      notNA <- sumN |> dplyr::filter(n == max(n))
 
-      notNA <- notNA %>% dplyr::select(self$config$table$hierarchyKeys())
-      notNAdata <- dplyr::inner_join( notNA, self$data) %>% ungroup()
+      notNA <- notNA |> dplyr::select(self$config$table$hierarchyKeys())
+      notNAdata <- dplyr::inner_join( notNA, self$data) |> ungroup()
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
     #'
@@ -241,8 +241,8 @@ LFQData <- R6::R6Class(
   contpattern = "zz"){
 
   GRP2 <- list()
-  distinctprotid <- startdata %>% select(pID = !!sym(Accession)) %>% distinct()
-  distinctprotid <- distinctprotid %>% mutate(
+  distinctprotid <- startdata |> select(pID = !!sym(Accession)) |> distinct()
+  distinctprotid <- distinctprotid |> mutate(
     proteinAnnot = case_when(grepl(revpattern,pID) ~ "REV",
                              grepl(contpattern,pID) ~ "CON",
                              TRUE ~ "FW"))
@@ -262,7 +262,7 @@ LFQData <- R6::R6Class(
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQDataProtein$new( data, istar$config )
 #'
 #' lfqdata$annotateREV()
@@ -297,7 +297,7 @@ LFQDataProtein <-
             #' @param pattern default "REV_"
             annotateREV = function(pattern = "REV_") {
               pID <- self$config$table$hkeysDepth()
-              self$row_annot <- self$row_annot %>% mutate(
+              self$row_annot <- self$row_annot |> mutate(
                 REV = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
                                          TRUE ~ FALSE))
 
@@ -308,7 +308,7 @@ LFQDataProtein <-
             #' @param pattern default "^zz|^CON"
             annotateCON = function(pattern = "^zz|^CON") {
               pID <- self$config$table$hkeysDepth()
-              self$row_annot <- self$row_annot %>% mutate(
+              self$row_annot <- self$row_annot |> mutate(
                 CON = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
                                 TRUE ~ FALSE))
               return(sum(self$row_annot$CON))
@@ -341,7 +341,7 @@ LFQDataProtein <-
 #'
 #' @examples
 #' istar <- prolfqua_data('data_ionstar')$filtered()
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
 #' lfqcopy <- lfqdata$get_copy()
@@ -451,7 +451,7 @@ LFQDataTransformer <- R6::R6Class(
                                             preserveMean = preserveMean)
       self$lfq$data  <- scales$data
       if (!is.null(colname)) {
-        self$lfq$data <- self$lfq$data %>%
+        self$lfq$data <- self$lfq$data |>
           dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
         self$lfq$config$table$popWorkIntensity()
         self$lfq$config$table$setWorkIntensity(colname)
@@ -521,7 +521,7 @@ LFQDataTransformer <- R6::R6Class(
 #'   }
 #' }
 #' istar <- prolfqua_data('data_ionstar')$filtered()
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' runallfuncs(lfqstats)
@@ -531,7 +531,7 @@ LFQDataTransformer <- R6::R6Class(
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar$config$table$is_intensity_transformed
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
@@ -689,7 +689,7 @@ LFQDataStats <- R6::R6Class(
 #' @examples
 #'
 #' istar <- prolfqua_data('data_ionstar')
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
 #' sum
@@ -776,7 +776,7 @@ LFQDataSummariser <- R6::R6Class(
 #' data('data_IonstarProtein_subsetNorm')
 #' istar <- data_IonstarProtein_subsetNorm
 #'
-#' istar$data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar$data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
 #' lfqdata <- LFQData$new(
 #'  istar$data,
@@ -916,12 +916,12 @@ LFQDataPlotter <- R6::R6Class(
     pairs_smooth = function(max=10){
       dataTransformed <- self$lfq$data
       config <- self$lfq$config
-      samples <- dplyr::select(self$lfq$data, config$table$sampleName) %>%
-        distinct() %>%
+      samples <- dplyr::select(self$lfq$data, config$table$sampleName) |>
+        distinct() |>
         pull()
       if (length(samples) > max) {
-        limit <- samples %>% sample(max)
-        ldata <- dataTransformed %>%
+        limit <- samples |> sample(max)
+        ldata <- dataTransformed |>
           dplyr::filter(!!sym(config$table$sampleName) %in% limit)
         prolfqua::pairs_smooth( prolfqua::toWideConfig(ldata, config, as.matrix = TRUE)$data )
       }else{
@@ -1110,7 +1110,7 @@ LFQDataWriter <- R6::R6Class(
 #' Aggregate LFQ data
 #' @examples
 #' istar <- prolfqua_data('data_ionstar')$filtered()
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
 #' lfqTrans <- lfqdata$clone()$get_Transformer()

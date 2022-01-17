@@ -25,7 +25,7 @@ data <- bb$data
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
 res <- x("unnest")
-x("unnest")$data \%>\% dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
+x("unnest")$data |> dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
 config <- bb$config$clone(deep = TRUE)
 config$table$hierarchyDepth <- 1
 x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)

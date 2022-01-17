@@ -14,7 +14,7 @@ Create various visualization of the LFQdata
 data('data_IonstarProtein_subsetNorm')
 istar <- data_IonstarProtein_subsetNorm
 
-istar$data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+istar$data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
 lfqdata <- LFQData$new(
  istar$data,

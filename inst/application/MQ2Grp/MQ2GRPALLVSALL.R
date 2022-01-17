@@ -29,7 +29,7 @@ protein <- prolfqua::tidyMQ_ProteinGroups(proteinf)
 peptide <- prolfqua::tidyMQ_Peptides(peptidef)
 annot <- read.csv(dsf)
 
-annot <- annot %>% dplyr::mutate(
+annot <- annot |> dplyr::mutate(
   raw.file = gsub("^x|.d.zip$|.raw$","",
                   tolower(make.names(basename(annot$Relative.Path)))
   )
@@ -38,7 +38,7 @@ annot <- annot %>% dplyr::mutate(
 
 annot$Relative.Path <- NULL
 
-proteinAnnot <- dplyr::select(protein, proteinID, fasta.headers ) %>% distinct()
+proteinAnnot <- dplyr::select(protein, proteinID, fasta.headers ) |> distinct()
 peptide <- dplyr::inner_join(annot, peptide)
 peptide <- dplyr::inner_join(proteinAnnot, peptide, by = c(proteinID = "leading.razor.protein"))
 

@@ -97,10 +97,10 @@ x3 <- lfqSum$summarize_hierarchy()
 if (FALSE) {
   if (ncol(x3) >= 4) {
     cnames_x3 <- colnames(x3)[4]
-    x3 <- x3 %>% dplyr::mutate(protein_with = case_when(!!sym(cnames_x3) == 1 ~ "one",
+    x3 <- x3 |> dplyr::mutate(protein_with = case_when(!!sym(cnames_x3) == 1 ~ "one",
                                                         !!sym(cnames_x3) > 1 ~ "two and more"))
     
-    pltdt <- x3 %>% 
+    pltdt <- x3 |> 
       count(protein_with)
     nudgeval <- max(pltdt$n) * 0.05
     ggplot(pltdt, aes(x = protein_with, y = n)) + 
@@ -192,10 +192,10 @@ print(chmap)
 
 
 ```{r pairsplotSmooth, fig.cap = "Pairsplot - scatterplot of samples.", fig.height=12, fig.width=12}
-samples <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull()
+samples <- dplyr::select(dataTransformed, local_config$table$sampleName) |> distinct() |>  pull()
 if (length(samples) > 10) {
-  limit <- dplyr::select(dataTransformed, local_config$table$sampleName) %>% distinct() %>%  pull() %>% sample(10)
-  ldata <- dataTransformed %>% dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
+  limit <- dplyr::select(dataTransformed, local_config$table$sampleName) |> distinct() |>  pull() |> sample(10)
+  ldata <- dataTransformed |> dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
   prolfqua::pairs_smooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
 }else{
   prolfqua::pairs_smooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )

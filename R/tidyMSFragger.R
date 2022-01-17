@@ -60,12 +60,12 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
   cnam <- cnam[1:which(cnam == "combined.total.spectral.count")]
   message("annotation columns : ", paste(cnam, collapse = "\n"))
 
-  annot <- Cprotein %>% dplyr::select(all_of(cnam))
+  annot <- Cprotein |> dplyr::select(all_of(cnam))
 
   extractDataLong <- function(Cprotein, what = "total.intensity"){
-    gg <- Cprotein %>% dplyr::select( protIDcol, subgroup, dplyr::ends_with(what))
-    gg <- gg %>% tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
-    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
+    gg <- Cprotein |> dplyr::select( protIDcol, subgroup, dplyr::ends_with(what))
+    gg <- gg |> tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
+    gg <- gg |> dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
     gg
   }
 
@@ -138,16 +138,16 @@ tidy_MSFragger_combined_protein_V16 <- function(
   cnam <- cnam[1:which(cnam == "combined.total.spectral.count")]
 
   message("annotation columns : ", paste(cnam, collapse = "\n"))
-  annot <- Cprotein %>% dplyr::select(all_of(cnam))
+  annot <- Cprotein |> dplyr::select(all_of(cnam))
   colnames(Cprotein)
 
   extractDataLong <- function(Cprotein, what = "total.intensity", butNot = NULL){
     cols <- colnames(Cprotein)
     cols <- setdiff( grep(paste0(what,"$"), cols, value = TRUE) , if (is.null(butNot)) {NULL} else { grep(butNot, cols, value = TRUE) })
-    gg <- Cprotein %>% dplyr::select( all_of(protIDcol), all_of(cols) )
+    gg <- Cprotein |> dplyr::select( all_of(protIDcol), all_of(cols) )
 
-    gg <- gg %>% tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
-    gg <- gg %>% dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
+    gg <- gg |> tidyr::pivot_longer(cols = dplyr::ends_with(what), names_to = "raw.file",values_to = what)
+    gg <- gg |> dplyr::mutate(raw.file = gsub(paste0(".",what,"$"),"", .data$raw.file))
     gg
   }
 

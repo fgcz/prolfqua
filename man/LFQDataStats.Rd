@@ -32,7 +32,7 @@ runallfuncs <- function(x){
   }
 }
 istar <- prolfqua_data('data_ionstar')$filtered()
-data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
@@ -42,7 +42,7 @@ x<-lfqstats
 
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar$config$table$is_intensity_transformed
-data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()

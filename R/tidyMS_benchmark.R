@@ -4,15 +4,15 @@
 #' @param data analysis results
 #' @param idcol default "protein_Id"
 ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
-  tmp <- data %>%
-    ungroup() %>%
+  tmp <- data |>
+    ungroup() |>
     mutate(species  = case_when(
       grepl("HUMAN", !!sym(idcol)) ~ "HUMAN",
       grepl("ECOLI", !!sym(idcol)) ~ "ECOLI",
       TRUE ~ "OTHER"
     ))
-  res <- tmp %>% dplyr::filter(!.data$species == "OTHER")
-  res <- res %>% mutate(TP = (.data$species == "ECOLI"))
+  res <- tmp |> dplyr::filter(!.data$species == "OTHER")
+  res <- res |> mutate(TP = (.data$species == "ECOLI"))
   return(list(data = res , table = table(tmp$species)))
 }
 
@@ -34,11 +34,11 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   #data <- est
 
   data <- if (!desc) {
-    data %>% arrange(!!sym(arrangeby))
+    data |> arrange(!!sym(arrangeby))
   } else{
-    data %>% arrange(desc(!!sym(arrangeby)))
+    data |> arrange(desc(!!sym(arrangeby)))
   }
-  data <- data %>% select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
+  data <- data |> select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
 
   if (TRUE) { # drop missing so that TPR goes up to 1.
@@ -53,7 +53,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 
 
 
-  data <- data %>% mutate(
+  data <- mutate(data,
     R = seq_len(dplyr::n())
     , FDP = dplyr::cummean(!.data$TP)
     , TP_hits = cumsum(.data$TP)
@@ -64,7 +64,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
     , TPR  = .data$TP_hits / .data$T_
     , ACC = (.data$TP_hits + .data$TN_hits) / (.data$T_ + .data$F_)
     , FDP_ = .data$FDP * 1/max(.data$FDP)
-  ) %>% ungroup
+  ) |> ungroup()
   return(data)
 }
 
@@ -101,7 +101,7 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
     addScaledP <- function(data , fcestimate , scale) {
       scaled.p = paste0("scaled.", scale)
       data <-
-        data %>% dplyr::mutate(!!scaled.p := ifelse(!!sym(fcestimate) > 0,
+        data |> dplyr::mutate(!!scaled.p := ifelse(!!sym(fcestimate) > 0,
                                                     1 - !!sym(scale) , !!sym(scale) - 1))
       return(data)
     }
@@ -121,7 +121,7 @@ do_confusion <-
                             list(sc = "statistic", desc = TRUE),
                             list(sc = "scaled.p.value" , desc = TRUE))) {
     # TODO add to prolfqua
-    est <- data %>% ungroup %>%
+    est <- data |> ungroup() |>
       dplyr::select_at(c("TP",
                          purrr::map_chr(arrangeby, "sc")))
     res <- list()
@@ -143,17 +143,17 @@ do_confusion_c <- function(
   contrast = "contrast",
   arrangeby = list(list(sc = "scaled.p.value", desc = FALSE))) {
 
-  txx <- data %>% group_by_at(contrast) %>% nest()
-  txx <- txx %>% mutate(out  = map(data,
+  txx <- data |> group_by_at(contrast) |> nest()
+  txx <- txx |> mutate(out  = map(data,
                                    do_confusion,
                                    arrangeby = arrangeby))
-  xx <- txx  %>% select_at(c(contrast, "out")) %>%
-    unnest("out") %>%
+  xx <- txx  |> select_at(c(contrast, "out")) |>
+    unnest("out") |>
     ungroup()
 
   # computes FDR FDP for all contrasts
   xy <- do_confusion(data, arrangeby = arrangeby)
-  xy <- xy %>% dplyr::mutate(!!contrast := "all")
+  xy <- xy |> dplyr::mutate(!!contrast := "all")
   #xy <- tibble::add_column(data, contrast = "all", .before = 1)
   xx <- dplyr::bind_rows(xy, xx)
   return(xx)
@@ -182,7 +182,7 @@ do_confusion_c <- function(
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model",
                                  contrast = "contrast"){
-  summaryS <- pStats %>% dplyr::group_by(!!sym(contrast), .data$what) %>%
+  summaryS <- pStats |> dplyr::group_by(!!sym(contrast), .data$what) |>
     dplyr::summarize(
       AUC = ms_bench_auc(.data$FPR, .data$TPR),
       pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
@@ -246,9 +246,9 @@ do_confusion_c <- function(
   for (i in score) {
     xlim = i$xlim
     score = i$score
-    plots[[score]] <- data %>% ggplot(aes(x = !!sym(score),
-                                          y = !!sym(contrast),
-                                          color = !!sym(species))) +
+    plots[[score]] <- ggplot(data, aes(x = !!sym(score),
+                                       y = !!sym(contrast),
+                                       color = !!sym(species))) +
       ggridges::geom_density_ridges(alpha = 0.1) + xlim(xlim)
   }
   fig <- ggpubr::ggarrange(plotlist = plots,
@@ -393,7 +393,7 @@ Benchmark <-
       #' @return data.frame
       data = function(){
         if (self$is_complete) {
-          nr_na <- self$smc$nr_na %>% dplyr::filter(n == n - .data$nr_na)
+          nr_na <- self$smc$nr_na |> dplyr::filter(n == n - .data$nr_na)
           return(dplyr::inner_join(self$.data, nr_na, by = self$hierarchy))
         } else {
           return(self$.data)
@@ -443,7 +443,7 @@ Benchmark <-
       #'
       n_confusion_benchmark = function(){
         bb1 <- self$get_confusion_benchmark()
-        n <- bb1 %>% na.omit() |> group_by(what, contrast) |> summarise(n = n())
+        n <- bb1 |> na.omit() |> group_by(what, contrast) |> summarise(n = n())
         return(n)
       },
       #' @description
@@ -484,7 +484,7 @@ Benchmark <-
       #'
       pAUC = function(){
         pStats <- self$get_confusion_benchmark()
-        summaryS <- pStats %>% dplyr::group_by(.data$contrast, .data$what) %>%
+        summaryS <- pStats |> dplyr::group_by(.data$contrast, .data$what) |>
           dplyr::summarize(
             AUC = ms_bench_auc(.data$FPR, .data$TPR),
             pAUC_10 =  ms_bench_auc(.data$FPR, .data$TPR, 0.1),
@@ -504,7 +504,7 @@ Benchmark <-
       #'
       n_confusion_FDRvsFDP = function(){
         bb1 <- self$get_confusion_FDRvsFDP()
-        n <- bb1 %>% na.omit() |> group_by(what, contrast) |> summarise(n = n())
+        n <- bb1 |> na.omit() |> group_by(what, contrast) |> summarise(n = n())
         return(n)
       },
 
@@ -543,15 +543,14 @@ Benchmark <-
                                            list(score = "statistic", ylim = c(-3,10) ))){
         x <- self$data()
 
-        x <- x %>% arrange(desc(!!sym(self$species)))
+        x <- x |> arrange(desc(!!sym(self$species)))
         plots <- list()
 
         for (i in score) {
           score <- i$score
           ylim <- i$ylim
 
-          plots[[score]] <- x %>%
-            ggplot(aes(x = (c1 + c2)/2, y = !!sym(score), color = !!sym(self$species) )) +
+          plots[[score]] <- ggplot(x, aes(x = (c1 + c2)/2, y = !!sym(score), color = !!sym(self$species) )) +
             geom_point(alpha = 0.2) +
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
             ylim(ylim)

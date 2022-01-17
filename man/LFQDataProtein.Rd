@@ -12,7 +12,7 @@ Expends LFQData with some protein specific functions.
 
 istar <- prolfqua_data('data_ionstar')$filtered()
 
-data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQDataProtein$new( data, istar$config )
 
 lfqdata$annotateREV()

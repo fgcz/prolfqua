@@ -32,8 +32,8 @@ stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data
 
-xnested <- analysis \%>\%
- group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
+xnested <- analysis |>
+ group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 
 prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 
@@ -41,7 +41,7 @@ bb <- prolfqua_data('data_skylineSRM_HL_A')
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 
-nest <- analysis \%>\% group_by(conf$table$hkeysDepth()) \%>\% nest()
+nest <- analysis |> group_by(conf$table$hkeysDepth()) |> nest()
 prolfqua::plot_hierarchies_line(nest$data[[1]],
                                   "DUM",
                                   conf,

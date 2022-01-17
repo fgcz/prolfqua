@@ -17,12 +17,12 @@ stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 
-xnested <- data \%>\%
- group_by_at( configur$table$hkeysDepth() ) \%>\%
+xnested <- data |>
+ group_by_at( configur$table$hkeysDepth() ) |>
  tidyr::nest()
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) \%>\%
- distinct() \%>\% nrow()
+nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) |>
+ distinct() |> nrow()
 
 xx <- extractIntensities(x,configur)
 stopifnot(dim(xx)==c(nn,20))
@@ -31,14 +31,14 @@ stopifnot(dim(xx)==c(nn,20))
 conf <- configur$clone(deep=TRUE)
 conf$table$hierarchyDepth = 1
 
-xnested <- data \%>\%
- group_by_at(conf$table$hkeysDepth()) \%>\%
+xnested <- data |>
+ group_by_at(conf$table$hkeysDepth()) |>
  tidyr::nest()
 head(xnested)
 
 x <- xnested$data[[1]]
-nn  <- x \%>\% dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) \%>\%
- distinct() \%>\% nrow()
+nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) |>
+ distinct() |> nrow()
 
 xx <- extractIntensities(x,conf)
 stopifnot(dim(xx)==c(nn,20))
