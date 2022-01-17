@@ -58,7 +58,7 @@ atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
 
-config <- AnalysisConfiguration$new(atable)
+config <- prolfqua::AnalysisConfiguration$new(atable)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
