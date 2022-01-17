@@ -37,11 +37,11 @@ jobs:
           pkgs <- c('DT', 'MASS');
           pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'docopt'));
           pkgs <- c(pkgs, c('dplyr', 'forcats', 'ggbeeswarm',  'ggplot2'));
-          pkgs <- c(pkgs, c('ggpubr', 'ggrepel', 'ggridges', 'glue', 'htmlwidgets', 'knitr'));
+          pkgs <- c(pkgs, c('ggpubr', 'ggrepel', 'ggridges', 'htmlwidgets', 'knitr'));
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest', 'magrittr', 'multcomp', 'pROC'));
           pkgs <- c(pkgs, c('pheatmap', 'prozor', 'plotly', 'progress', 'purrr', 'readr'));
           pkgs <- c(pkgs, c('readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr'));
-          pkgs <- c(pkgs, c('tidyverse', 'vsn', 'yaml', 'writexl')) ;
+          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl')) ;
           lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}});
         shell: Rscript {0}
       - name: Cache R packages

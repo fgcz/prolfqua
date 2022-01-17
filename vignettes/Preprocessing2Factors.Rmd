@@ -27,8 +27,6 @@ fig.height = 10
 
 
 ```{r}
-library(prolfqua)
-#library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
 
@@ -46,7 +44,7 @@ startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment = "p2691"
 
-data <- inner_join(annotation, startdata, by = "raw.file")
+data <- dplyr::inner_join(annotation, startdata, by = "raw.file")
 
 ```
 
@@ -54,7 +52,7 @@ Add annotation information data to configuration and data.
 
 ```{r configp2691}
 
-atable <- AnalysisTableAnnotation$new()
+atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
@@ -97,13 +95,13 @@ startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 
 annotation <- readxl::read_xlsx(inputAnnotation)
 annotation$experiment <- "p2370"
-data <- inner_join(annotation, startdata , by = "raw.file")
+data <- dplyr::inner_join(annotation, startdata , by = "raw.file")
 ```
 
 Code snipped below shows how to add annotation to the data and configuration.
 
 ```{r configp2370}
-atable <- AnalysisTableAnnotation$new()
+atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
@@ -132,7 +130,7 @@ To simulate a factorial design we merge both datasets.
 
 ```{r}
 outpath <- "results_modelling"
-data <- bind_rows(p2691$data, p2370$data)
+data <- dplyr::bind_rows(p2691$data, p2370$data)
 
 config <- p2691$config$clone(deep = TRUE)
 config$table$factorDepth <- 2

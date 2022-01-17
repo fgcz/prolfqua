@@ -21,8 +21,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 
 ```{r createConfig}
-library(prolfqua)
-#library(tidyverse)
 
 
 ```
@@ -51,7 +49,7 @@ head(annotation)
 
 
 ```{r}
-startdata <- inner_join(annotation, startdata, by = "raw.file")
+startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
 head(startdata)
 ```
 
@@ -60,8 +58,8 @@ We also remove all proteins identified only by a single peptide.
 
 
 ```{r}
-startdata <- startdata %>% dplyr::filter(condition  == "Ethanol")
-startdata <- startdata %>% dplyr::filter(nr.peptides > 1)
+startdata <- startdata |> dplyr::filter(condition  == "Ethanol")
+startdata <- startdata |> dplyr::filter(nr.peptides > 1)
 
 ```
 
@@ -74,7 +72,7 @@ You also need to specify the column containing the protein identifiers and the p
 
 ```{r}
 
-atable <- AnalysisTableAnnotation$new()
+atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
 atable$hierarchyDepth <- 1
@@ -85,10 +83,10 @@ atable$factors[["Run_ID"]] = "Run_ID"
 atable$factorDepth <- 1
 
 
-config <- AnalysisConfiguration$new(atable)
+config <- prolfqua::AnalysisConfiguration$new(atable)
 
 
-adata <- setup_analysis(startdata, config)
+adata <- prolfqua::setup_analysis(startdata, config)
 
 ```
 
@@ -96,7 +94,7 @@ adata <- setup_analysis(startdata, config)
 Create the LFQData class instance, remove zeros from data.
 
 ```{r filterdata}
-lfqdata <- LFQData$new(adata, config)
+lfqdata <- prolfqua::LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 ```
 
@@ -155,7 +153,7 @@ stats$density_median()
 
 
 ```{r fig.cap="Scatter plot of standard deviation vs mean"}
-stdm_raw <- stats$stdv_vs_mean(size = 10000) + scale_x_log10() + scale_y_log10()
+stdm_raw <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_raw
 ```
 
@@ -222,7 +220,7 @@ lines(x*median(chsq) , dchisq(x, df = 4 ), col = 2)
 Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
 
 ```{r checkForHeteroskedasticity, fig.cap="Scatter plot of sd vs mean of protein intensity"}
-stdm_trans <- stats$stdv_vs_mean(size = 10000) + scale_x_log10() + scale_y_log10()
+stdm_trans <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_trans
 #gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
 ```
@@ -240,16 +238,16 @@ stats$density(ggstat = "ecdf")
 
 
 ```{r estimateSampleSizes}
-sampleSize <- stats$power_t_test_quantiles() %>% 
+sampleSize <- stats$power_t_test_quantiles() |> 
   dplyr::filter(condition_ != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
 ```
 
 ```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
-sampleSize %>%
-  ggplot(aes(x = factor(probs) , y = N)) +
-  facet_wrap(~delta) +
-  geom_bar(stat = "identity")
+sampleSize |>
+  ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
+  ggplot2::facet_wrap(~delta) +
+  ggplot2::geom_bar(stat = "identity")
 
 ```
 
@@ -266,14 +264,14 @@ Getting the sample size for each protein.
 ```{r statsWithN, eval = TRUE}
 
 x <- stats$power_t_test()
-x <- x %>% dplyr::filter(condition_ == "Ethanol") %>% arrange(desc(N),protein_Id)
+x <- x |> dplyr::filter(condition_ == "Ethanol") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1000:1007,], caption = "Sample size for each protein")
 
 ```
 
 
 ```{r fig.cap="Distribution of the required sample sizes for three fold change thresholds for all the proteins."}
-x %>% ggplot(aes(x = N)) + geom_histogram() + facet_wrap(~delta) + xlim(0,100)
+x |> ggplot2::ggplot(ggplot2::aes(x = N)) + ggplot2::geom_histogram() + ggplot2::facet_wrap(~delta) + ggplot2::xlim(0,100)
 
 ```
 

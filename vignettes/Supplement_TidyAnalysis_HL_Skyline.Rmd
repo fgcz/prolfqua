@@ -62,7 +62,7 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 
 
 ```{r plotHierarchies, fig.cap="transitions in one plot."}
-proteinIDsymbol <- sym(skylineconfig$table$hierarchyKeys()[1])
+proteinIDsymbol <- rlang::sym(skylineconfig$table$hierarchyKeys()[1])
 
 xnested <- resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
 plot_hierarchies_line(xnested$data[[2]],
@@ -86,7 +86,7 @@ plot_hierarchies_line(xnested$data[[3]],
 
 ```{r  printAllproteins, eval=FALSE}
 figs <- xnested %>%
-  dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol),
+  dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol),
                             plot_hierarchies_line, skylineconfig, separate = TRUE))
 
 pdf(file.path(outdir,"allProteins.pdf"), width = 10, height = 10)
@@ -124,7 +124,7 @@ skylineconfigHL$table$getWorkIntensity()
 
 ```{r PlotHierarchiesLight}
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
-HLfigs <- xnested %>% dplyr::mutate(plot = map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
+HLfigs <- xnested %>% dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 ```
 
@@ -154,7 +154,7 @@ p
 ```{r writeSummaries ,eval=TRUE}
 
 HLfigs3 <- HLfigs3 %>%
-  dplyr::mutate(figsMed = map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
+  dplyr::mutate(figsMed = purrr::map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 #pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
 invisible(lapply(HLfigs3$figsMed[2:5], print))
@@ -167,21 +167,21 @@ invisible(lapply(HLfigs3$figsMed[2:5], print))
 prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly) %>% 
   tidyr::unnest(cols = "medpolishPly")
 
-ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~protein_Id) +
-  theme_classic()
+ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
+  ggplot2::geom_point() +
+  ggplot2::geom_line() +
+  ggplot2::facet_wrap(~protein_Id) +
+  ggplot2::theme_classic()
 
 ```
 
 
 ```{r plotProteinIntensitiesFreeY, fig.cap="Plot protein intensities"}
-ggplot(prots, aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~protein_Id, scales = "free_y" ) +
-  theme_classic()
+ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
+  ggplot2::geom_point() +
+  ggplot2::geom_line() +
+  ggplot2::facet_wrap(~protein_Id, scales = "free_y" ) +
+  ggplot2::theme_classic()
 ```
 
 

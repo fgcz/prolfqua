@@ -28,7 +28,7 @@ library(prolfqua)
 
 ```
 
-Specify the path to the MaxQuant proteinGroups.txt file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a long format.
+Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy data-frame.
 
 ```{r LoadDataAndConfigure}
 datadir <- file.path(find.package("prolfquadata") , "quantdata")

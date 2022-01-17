@@ -499,7 +499,7 @@ missigness_histogram <- function(x,
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
   if (!config$table$is_intensity_transformed) {
-    p <- p + scale_x_log10()
+    p <- p + ggplot2::scale_x_log10()
   }
   p
 }

@@ -1,5 +1,4 @@
 library(prolfqua)
-library(tidyverse)
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
