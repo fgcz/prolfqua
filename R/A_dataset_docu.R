@@ -1,6 +1,6 @@
 #' @importFrom conflicted conflict_prefer
 #' @importFrom forcats fct_relevel
-#' @importFrom dplyr all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
+#' @importFrom dplyr across all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by group_by_at
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr one_of rename select select_at starts_with summarize_at summarize ungroup vars
 #'

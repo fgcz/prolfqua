@@ -85,7 +85,7 @@ project_conf$workunit_Id <- workunit
 
 
 resPep <- setup_analysis(resPep, config)
-resPep <- remove_small_intensities(resPep, config) %>%
+resPep <- remove_small_intensities(resPep, config) |>
   complete_cases(config)
 resPepL <- list()
 resPepL$data <- resPep

@@ -8,18 +8,18 @@ outpath <- "results_SamplesRemoved_V2/"
 PG2a <- readxl::read_xlsx("data/Export_for_WW/o25914_Proteins..xlsx")
 res <- pivot_longer(PG2a, starts_with("Abundance"),names_to = "colname", values_to = "Abundance" )
 colnames(res) <- make.names(colnames(res))
-resA <- res %>% separate(colname, c(NA, "F", "channel", NA,"Condition"))
+resA <- res |> separate(colname, c(NA, "F", "channel", NA,"Condition"))
 resA <- rename(resA, nr.peptides = X..Peptides)
 
 
 annotation <- readxl::read_xlsx("TMT_lableling_o25914.xlsx")
 colnames(annotation) <- make.names(colnames(annotation))
-annotation <- annotation %>% mutate(channel = gsub("^TMT","", TMT.Tag)) %>% select(channel,Sample )
+annotation <- annotation |> mutate(channel = gsub("^TMT","", TMT.Tag)) |> select(channel,Sample )
 annotation$channel[!annotation$channel %in% unique(resA$channel)]
-annotation <- annotation %>% separate(Sample, c(NA, "ID"), remove = FALSE)
+annotation <- annotation |> separate(Sample, c(NA, "ID"), remove = FALSE)
 
 resAa <- inner_join(annotation, resA)
-resAa <- resAa %>% filter(!ID %in% c("SL1105","SL1665") )
+resAa <- resAa |> filter(!ID %in% c("SL1105","SL1665") )
 
 
 

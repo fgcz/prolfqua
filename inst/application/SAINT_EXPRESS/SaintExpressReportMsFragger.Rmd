@@ -116,23 +116,23 @@ Protein interactions will be filtered with an _SaintScore_ of `r SEP$SSthreshold
 
 
 ```{r include = FALSE}
-dd <- SEP$cse$get_contrasts() %>% select(Bait, BFDR)
-dd <- dd %>% mutate(FDRrange =  cut(BFDR , breaks = c( -0.01, 0.05, 0.1, 0.25, 1)) )
-xt <- dd %>% group_by(Bait, FDRrange) %>% summarize(n = n()) %>% na.omit()
+dd <- SEP$cse$get_contrasts() |> select(Bait, BFDR)
+dd <- dd |> mutate(FDRrange =  cut(BFDR , breaks = c( -0.01, 0.05, 0.1, 0.25, 1)) )
+xt <- dd |> group_by(Bait, FDRrange) |> summarize(n = n()) |> na.omit()
 lv <- levels(xt$FDRrange)
-xt <- xt %>% pivot_wider(id_cols = "Bait", names_from = "FDRrange", values_from = n)
-xt[,c("Bait",lv)] %>% knitr::kable(caption = "# of interactions reported with FDR < 0.05; < 0.1; < 0.25; < 1.")
+xt <- xt |> pivot_wider(id_cols = "Bait", names_from = "FDRrange", values_from = n)
+xt[,c("Bait",lv)] |> knitr::kable(caption = "# of interactions reported with FDR < 0.05; < 0.1; < 0.25; < 1.")
 
 ```
 
 ```{r}
-dd <- SEP$cse$get_contrasts() %>% select(Bait, SaintScore)
+dd <- SEP$cse$get_contrasts() |> select(Bait, SaintScore)
 
-dd <- dd %>% mutate(SaintScorerange =  cut(SaintScore , breaks = c(-0.01, SEP$SSthreshold, 1)))
-xt <- dd %>% group_by(Bait, SaintScorerange) %>% summarize(n = n()) %>% na.omit()
+dd <- dd |> mutate(SaintScorerange =  cut(SaintScore , breaks = c(-0.01, SEP$SSthreshold, 1)))
+xt <- dd |> group_by(Bait, SaintScorerange) |> summarize(n = n()) |> na.omit()
 
 lv <- levels(xt$SaintScorerange)
-xt <- xt %>% pivot_wider(id_cols = "Bait", names_from = "SaintScorerange", values_from = n)
+xt <- xt |> pivot_wider(id_cols = "Bait", names_from = "SaintScorerange", values_from = n)
 xt[is.na(xt)] <- 0
 
 xt <- xt[,c("Bait",rev(lv))]
@@ -182,7 +182,7 @@ ggraph(inn,layout = 'kk') +
 
 
 ```{r vennDiagram, fig.cap="(ref:vennDiagram)"}
-b1 <- bbSE %>% select(from, to)
+b1 <- bbSE |> select(from, to)
 xx <-  split(b1$to, b1$from)
 ggVennDiagram::ggVennDiagram(xx)
 

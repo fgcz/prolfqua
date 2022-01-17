@@ -130,8 +130,8 @@ pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 9
 In Figure \@ref(fig:scaling) the log2 fold change of the average sample intensity versus the mean average intensity of all samples is shown. It is getting critical if a samples average deviates more than 5 times (linear scale) from the average of all samples.
 
 ```{r  scaling,dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
-xb <- grp2$lfqData$data %>% 
-  group_by(!!sym(grp2$lfqData$config$table$sampleName)) %>%
+xb <- grp2$lfqData$data |> 
+  group_by(!!sym(grp2$lfqData$config$table$sampleName)) |>
   summarize(median = median(!!sym(grp2$lfqData$config$table$getWorkIntensity())))
 
 bb <- xb$median
@@ -192,9 +192,9 @@ resR <- stR$stats_quantiles()
 res <- st$stats_quantiles()
 
 C <- bind_rows(
-CV = resR$wide  %>% filter(probs == 0.5),
-sd = res$wide %>% filter(probs == 0.5))
-C <- C %>% mutate( what = c("CV","sd"), .before = 1 )
+CV = resR$wide  |> filter(probs == 0.5),
+sd = res$wide |> filter(probs == 0.5))
+C <- C |> mutate( what = c("CV","sd"), .before = 1 )
 
 
 knitr::kable(C, caption = 'median of cv and sd')
@@ -293,7 +293,7 @@ knitr::kable(x, caption = mycap)
 
 ```{r prepareHeatmap}
 
-significant <- grp2$contrMerged$contrastDF %>% dplyr::filter(FDR < grp2$FDRthreshold & abs(diff) > grp2$log2FCthreshold )
+significant <- grp2$contrMerged$contrastDF |> dplyr::filter(FDR < grp2$FDRthreshold & abs(diff) > grp2$log2FCthreshold )
 signif <- grp2$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
 showSignificant <- TRUE
