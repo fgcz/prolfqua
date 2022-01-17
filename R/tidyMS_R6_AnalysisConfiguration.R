@@ -438,7 +438,7 @@ sample_subset <- function(size, pdata, config){
 #' @family configuration
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
@@ -468,8 +468,8 @@ table_factors <- function(pdata, configuration){
 #' @keywords internal
 #' @family summary
 #' @examples
-#' #library(tidyverse)
-#' #library(prolfqua)
+#'
+#'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
@@ -493,8 +493,7 @@ hierarchy_counts <- function(pdata, config){
 #' @family summary
 #' @examples
 #'
-#' #library(prolfqua)
-#' #library(tidyverse)
+#'
 #'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' config <- bb$config$clone(deep=TRUE)
@@ -548,8 +547,7 @@ hierarchy_counts_sample <- function(pdata,
 #'
 #' @examples
 #'
-#' #library(prolfqua)
-#' #library(tidyverse)
+#'
 #'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)

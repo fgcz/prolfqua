@@ -80,8 +80,9 @@ split2table <- function(names,split="\\||\\_")
 #' @family utilities
 #' @examples
 #' #library(ggplot2)
-#' #library(tidyverse)
+#'
 #' #library(ggrepel)
+#'
 #' show <- prolfqua_data('data_multigroupFC') %>%
 #'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
 #' prolfqua::multigroupVolcano(show,

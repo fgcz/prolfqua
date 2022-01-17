@@ -9,7 +9,7 @@
 #' @export
 #' @keywords internal
 #' @examples
-#' #library(tidyverse)
+#'
 #'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
@@ -290,7 +290,7 @@ missigness_impute_factors_interactions <-
 #'
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config
 #' data <- bb$data
@@ -350,7 +350,7 @@ aggregate_contrast <- function(
 #'
 #'
 #' #library(prolfqua)
-#' #library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
@@ -416,7 +416,7 @@ get_contrast <- function(data,
 #' @examples
 #'
 #'
-#' #library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config
 #' data <- bb$data
@@ -451,7 +451,7 @@ get_imputed_contrasts <- function(data, config, contrasts, probs = 0.03, global 
 #' @family plotting
 #' @family imputation
 #' @examples
-#' #library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')
 #' configur <- bb$config
 #' data <- bb$data

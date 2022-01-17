@@ -1,6 +1,5 @@
 # Author Witold Wolski
 # wew@fgcz.ethz.ch
-rm(list = ls())
 library(prolfqua)
 library(tidyverse)
 

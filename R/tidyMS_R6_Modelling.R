@@ -193,8 +193,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' @keywords internal
 #' @examples
 #'
-#' #library(tidyverse)
-#' #library(prolfqua)
+#'
 #' ionstar <- prolfqua_data('data_ionstar')$normalized()
 #' ionstar$data <- ionstar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id,10))
 #' prolfqua::table_factors(ionstar$data, ionstar$config)
@@ -294,8 +293,8 @@ plot_lmer_peptide_predictions <- function(m){
 #' @export
 #' @keywords internal
 #' @examples
-#' #library(tidyverse)
-#' #library(prolfqua)
+#'
+#'
 #' m <- prolfqua_data('data_basicModel_p1807')
 #' plot_lmer_peptide_noRandom(m)
 #'
@@ -1215,8 +1214,8 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' @examples
 #'
-#' #library(prolfqua)
-#' #library(tidyverse)
+#'
+#'
 #' nrPep <- 10000
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)

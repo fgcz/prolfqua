@@ -67,7 +67,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
 #' @keywords internal
 #' @family MaxQuant
 #' @examples
-#' #library(tidyverse)
+#'
 #' evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 #' evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
@@ -190,7 +190,7 @@ tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
 #' @export
 #' @keywords internal
 #' @examples
-#' #library(tidyverse)
+#'
 #' if(FALSE){
 #' peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 #' peptides_txt <- read.csv(peptides_txt,
@@ -288,7 +288,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @export
 #' @keywords internal
 #' @examples
-#' #library(tidyverse)
+#'
 #'
 #' peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")

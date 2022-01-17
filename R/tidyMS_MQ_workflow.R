@@ -9,7 +9,7 @@
 #' @family preprocessing
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #'
 #' istar <- prolfqua_data('data_ionstar')$Pep()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -46,7 +46,7 @@ filter_proteins_by_peptide_count <-
 #'
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #'
 #' istar <-prolfqua_data('data_ionstar')$Pep()
 #' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -81,7 +81,7 @@ filter_difference <- function(x, y, config){
 #' @examples
 #'
 #'
-#' #library(tidyverse)
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'

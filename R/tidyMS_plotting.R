@@ -116,7 +116,7 @@ plot_sample_correlation <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' conf <- istar$config$clone(deep=TRUE)
@@ -262,7 +262,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @keywords internal
 #' @family plotting
 #' @examples
-#' #library(tidyverse)
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -315,7 +315,7 @@ plot_heatmap_cor <- function(data,
 #' @keywords internal
 #' @family plotting
 #' @examples
-#' #library(tidyverse)
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
@@ -427,7 +427,7 @@ plot_raster <- function(data,
 #' @family plotting
 #' @examples
 #'
-#' # library(tidyverse)
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -501,7 +501,7 @@ plot_NA_heatmap <- function(data,
 #' @family plotting
 #' @examples
 #'
-#' # library(tidyverse)
+#'
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)

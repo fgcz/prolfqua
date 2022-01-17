@@ -36,7 +36,7 @@ ContrastsInterface <- R6::R6Class(
 #' @export
 #' @examples
 #'
-#' # library(tidyverse)
+#'
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
@@ -201,7 +201,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' # library(tidyverse)
+#'
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
@@ -951,7 +951,7 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
-#' #library(tidyverse)
+#'
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
