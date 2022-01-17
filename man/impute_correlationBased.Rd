@@ -10,8 +10,8 @@ impute_correlationBased(x, config)
 imputation based on correlation assumption
 }
 \examples{
-#library(prolfqua)
-#library(tidyverse)
+
+
 
 bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config$clone(deep=TRUE)

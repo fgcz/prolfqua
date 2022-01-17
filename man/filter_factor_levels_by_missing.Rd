@@ -20,8 +20,8 @@ removes measurments with less than percent=60 missing values in factor_level = 1
 \examples{
 
 rm(list=ls())
-#library(prolfqua)
-#library(tidyverse)
+
+
 bb <- prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())

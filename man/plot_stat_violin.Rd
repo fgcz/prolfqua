@@ -17,8 +17,8 @@ plot_stat_violin(pdata, config, stat = c("CV", "mean", "sd"))
 plot Violin plot of sd CV or mean
 }
 \examples{
-#library(prolfqua)
-#library(tidyverse)
+
+
 bb1 <- prolfqua_data('data_ionstar')$filtered()
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data

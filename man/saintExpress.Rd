@@ -63,7 +63,7 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 }
 \examples{
 \donttest{
-#library(tidyverse)
+
 xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
 exampleDat <- xx$data \%>\% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 # sample protein lengths
@@ -85,6 +85,6 @@ stopifnot(names(res) == c( "inter", "prey",  "bait"))
 undebug(runSaint)
 res <- runSaint(res)
 }
-#library(tidyverse)
+
 
 }

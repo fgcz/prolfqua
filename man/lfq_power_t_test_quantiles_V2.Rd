@@ -28,9 +28,9 @@ estimate sample sizes
 }
 \examples{
 
-#library(tidyverse)
+
 #library(ggplot2)
-#library(prolfqua)
+
 bb1 <- prolfqua_data('data_ionstar')$normalized()
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data

@@ -11,7 +11,7 @@ plot heatmap of NA values
 }
 \examples{
 
-# library(tidyverse)
+
 istar <- prolfqua_data('data_ionstar')$filtered()
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

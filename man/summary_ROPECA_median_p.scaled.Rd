@@ -27,8 +27,8 @@ takes p-value of the scaled p-value
 }
 \examples{
 
-#library(prolfqua)
-#library(tidyverse)
+
+
 nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)

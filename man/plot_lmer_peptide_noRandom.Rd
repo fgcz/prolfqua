@@ -15,8 +15,8 @@ plot_lmer_peptide_noRandom(m, legend.position = "none")
 plot peptide intensities per interaction with random effects removed
 }
 \examples{
-#library(tidyverse)
-#library(prolfqua)
+
+
 m <- prolfqua_data('data_basicModel_p1807')
 plot_lmer_peptide_noRandom(m)
 

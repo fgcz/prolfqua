@@ -19,7 +19,7 @@ plot_aggregation(data, config, data_aggr, config_reduced, show.legend = FALSE)
 Plot feature data and result of aggretation
 }
 \examples{
-#library(tidyverse)
+
 dd <- prolfqua_data('data_ionstar')$filtered()
 config <- dd$config
 data <- dd$data

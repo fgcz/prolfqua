@@ -13,7 +13,7 @@ tidyMQ_Evidence(Evidence)
 read evidence file
 }
 \examples{
-#library(tidyverse)
+
 evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
 evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)

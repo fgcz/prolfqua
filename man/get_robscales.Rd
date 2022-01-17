@@ -11,7 +11,7 @@ compute median and standard deviation for each sample
 }
 \examples{
 
-#library(tidyverse)
+
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)

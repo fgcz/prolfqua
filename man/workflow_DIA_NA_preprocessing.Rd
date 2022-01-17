@@ -26,7 +26,7 @@ filter QVAlues and NA's and factor information
 \examples{
 
 library(prolfqua)
-#library(tidyverse)
+
 rm(list=ls())
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

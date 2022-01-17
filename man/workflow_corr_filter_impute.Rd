@@ -18,7 +18,7 @@ Apply correlation filtering and impute missing values
 }
 \examples{
 rm(list=ls())
-#library(tidyverse)
+
 #library(prolfqua)
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

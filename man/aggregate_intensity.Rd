@@ -18,7 +18,7 @@ Summarizes the intensities within hierarchy
 \examples{
 
 #library( prolfqua )
-#library(tidyverse)
+
 dd <- prolfqua_data('data_ionstar')$filtered()
 config <- dd$config
 data <- dd$data

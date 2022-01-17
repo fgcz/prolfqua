@@ -24,7 +24,7 @@ run \link{rankPrecursorsByIntensity} first
 \examples{
 
 
-#library(tidyverse)
+
 dd <- prolfqua_data('data_ionstar')$filtered()
 config <- dd$config
 res <- dd$data

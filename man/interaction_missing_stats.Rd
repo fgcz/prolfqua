@@ -27,7 +27,7 @@ interaction_missing_stats(
 compute missingness statistics per hierarchy and factor level
 }
 \examples{
-#library(tidyverse)
+
 
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

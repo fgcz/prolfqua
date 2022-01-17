@@ -25,8 +25,7 @@ Summarize hierarchy counts
 }
 \examples{
 
-#library(prolfqua)
-#library(tidyverse)
+
 
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

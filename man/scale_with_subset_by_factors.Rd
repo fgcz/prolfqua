@@ -10,8 +10,8 @@ scale_with_subset_by_factors(data, subset, config, preserveMean = TRUE)
 scale within factor levels (e.g. use for pulldown data)
 }
 \examples{
-#library(prolfqua)
-#library(tidyverse)
+
+
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)

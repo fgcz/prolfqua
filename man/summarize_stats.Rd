@@ -39,7 +39,7 @@ summarize stats output (compute quantiles)
 }
 \examples{
 
-#library(tidyverse)
+
 bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config
 data <- bb$data
@@ -56,7 +56,7 @@ d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  ==
 res1 \%>\% dplyr::filter(dilution. == "pooled")
 
 
-#library(tidyverse)
+
 bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config
 data <- bb$data

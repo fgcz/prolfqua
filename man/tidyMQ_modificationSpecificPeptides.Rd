@@ -13,7 +13,7 @@ tidyMQ_modificationSpecificPeptides(MQPeptides)
 parse MQ modificationSpecificPeptides.txt
 }
 \examples{
-#library(tidyverse)
+
 if(FALSE){
 peptides_txt <- "d:/Dropbox/DataAnalysis/p2621_HumanAgeInteraction/data/721705/modificationSpecificPeptides.txt"
 peptides_txt <- read.csv(peptides_txt,

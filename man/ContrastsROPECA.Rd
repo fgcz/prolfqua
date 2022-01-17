@@ -210,6 +210,15 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{FDRthreshold}}{FDR threshold}
+
+\item{\code{FCthreshold}}{FC threshold}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 \code{\link{Contrasts_Plotter}}
 }

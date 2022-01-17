@@ -10,7 +10,7 @@ toWideConfig(data, config, as.matrix = FALSE, fileName = FALSE, sep = "~lfq~")
 transform long to wide
 }
 \examples{
-#library(tidyverse)
+
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)

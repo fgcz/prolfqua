@@ -21,7 +21,7 @@ get the difference of two dataset where one is a subset of the other.
 }
 \examples{
 
-#library(tidyverse)
+
 
 istar <-prolfqua_data('data_ionstar')$Pep()
 istar_data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
