@@ -71,13 +71,12 @@ config$table$factorDepth <- 1
 Preprocess and normalize Data.
 
 ```{r preprocessp2691}
-undebug(setup_analysis)
 config$table$isotopeLabel
-adata <- setup_analysis(data, config)
+adata <- prolfqua::setup_analysis(data, config)
 
 adata <- prolfqua::remove_small_intensities(adata,config)
 
-p2691 <- LFQData$new(adata, config)
+p2691 <- prolfqua::LFQData$new(adata, config)
 p2691$get_Plotter()$intensity_distribution_density()
 
 ```
@@ -107,7 +106,7 @@ atable$hierarchy[["protein_Id"]] <- c("majority.protein.ids")
 atable$hierarchyDepth <- 1
 atable$setWorkIntensity("mq.protein.intensity")
 
-config <- AnalysisConfiguration$new(atable)
+config <- prolfqua::AnalysisConfiguration$new(atable)
 
 config$table$factors[["condition_"]] = "condition"
 config$table$factors[["batch_"]] = "experiment"
@@ -116,10 +115,10 @@ config$table$factorDepth <- 1
 ```
 
 ```{r transformp2370}
-adata <- setup_analysis(data, config)
+adata <- prolfqua::setup_analysis(data, config)
 adata <- prolfqua::remove_small_intensities(adata,config)
 
-p2370 <- LFQData$new(adata, config)
+p2370 <- prolfqua::LFQData$new(adata, config)
 p2370$get_Plotter()$intensity_distribution_density()
 
 ```
@@ -144,7 +143,7 @@ config$table$factorDepth <- 2
 
 
 ```{r mergeData}
-pMerged <- LFQData$new(data, config)
+pMerged <- prolfqua::LFQData$new(data, config)
 bb <- pMerged$complete_cases()
 tr <- pMerged$get_Transformer()
 pMerged <- tr$log2()$robscale()$lfq
