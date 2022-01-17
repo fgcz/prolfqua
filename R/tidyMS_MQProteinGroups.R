@@ -38,17 +38,17 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
                         "protein.group.id" = "id",
                         "protein.score" = one_of("score")
   )
-  meta <- meta %>% mutate( proteinID = gsub(";.*$","", .data$majority.protein.ids) )
-  pint <- pint %>%
-    tidyr::gather(key = "raw.file", value = "mq.protein.intensity", starts_with("intensity.")) %>%
+  meta <- meta |> mutate( proteinID = gsub(";.*$","", .data$majority.protein.ids) )
+  pint <- pint |>
+    tidyr::gather(key = "raw.file", value = "mq.protein.intensity", starts_with("intensity.")) |>
     dplyr::mutate(raw.file = gsub("intensity.","",.data$raw.file))
 
-  pintLFQ <- pintLFQ %>%
-    tidyr::gather(key = "raw.file", value = "mq.protein.lfq.intensity", starts_with("lfq.intensity.")) %>%
+  pintLFQ <- pintLFQ |>
+    tidyr::gather(key = "raw.file", value = "mq.protein.lfq.intensity", starts_with("lfq.intensity.")) |>
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",.data$raw.file))
 
-  pintCount <- pintMSCount %>%
-    tidyr::gather(key = "raw.file", value = "mq.protein.ms.ms.count", starts_with("ms.ms.count.")) %>%
+  pintCount <- pintMSCount |>
+    tidyr::gather(key = "raw.file", value = "mq.protein.ms.ms.count", starts_with("ms.ms.count.")) |>
     dplyr::mutate(raw.file = gsub("ms.ms.count.","",.data$raw.file))
 
 
@@ -105,10 +105,10 @@ tidyMQ_Evidence <- function(Evidence){
                        "missed.cleavages",
                        "reverse"
                        )
-  res <- res %>% dplyr::mutate(reverse = dplyr::case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
-  res %>% dplyr::mutate(raw.file = tolower(.data$raw.file)) -> res
+  res <- res |> dplyr::mutate(reverse = dplyr::case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
+  res |> dplyr::mutate(raw.file = tolower(.data$raw.file)) -> res
   res$proteotypic <- !grepl(";",res$protein.group.id)
-  res <- res %>% separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
+  res <- res |> separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
 #' Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
@@ -253,24 +253,24 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
     meta <- dplyr::inner_join(meta, mod_cols2, by = c("mod.peptide.id" = "site.ids.id"))
   }
   sc <- sym("potential.contaminant")
-  meta <- meta %>%  dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
+  meta <- meta |>  dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) |>
     dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
-                                                  !!sym("unique.groups") == "no" ~ FALSE)) %>%
+                                                  !!sym("unique.groups") == "no" ~ FALSE)) |>
     dplyr::mutate(!!"unique.proteins" := case_when( !!sym("unique.proteins") == "yes" ~ TRUE,
-                                                    !!sym("unique.proteins") == "no" ~ FALSE)) %>%
+                                                    !!sym("unique.proteins") == "no" ~ FALSE)) |>
     dplyr::mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                             !!sym("reverse") == "" ~ FALSE))
 
 
   pint <- dplyr::select(MQPeptides,"mod.peptide.id" = "id", starts_with("intensity."))
-  PepIntensities <- pint %>%
-    tidyr::gather(key = "raw.file", value = "mod.peptide.intensity", starts_with("intensity.")) %>%
+  PepIntensities <- pint |>
+    tidyr::gather(key = "raw.file", value = "mod.peptide.intensity", starts_with("intensity.")) |>
     dplyr::mutate(raw.file = gsub("intensity.","",.data$raw.file))
 
   idtype <- dplyr::select(MQPeptides, "mod.peptide.id" = "id", starts_with("identification.type."))
   if (ncol(idtype) > 1) { # if only one file no id type is provided
-    PepIDType <- idtype %>%
-      tidyr::gather(key = "raw.file", value = "mod.id.type", starts_with("identification.type.")) %>%
+    PepIDType <- idtype |>
+      tidyr::gather(key = "raw.file", value = "mod.id.type", starts_with("identification.type.")) |>
       dplyr::mutate(raw.file = gsub("identification.type.","",.data$raw.file))
     PepIntensities <- dplyr::inner_join(PepIntensities,PepIDType, by = c("mod.peptide.id", "raw.file" ))
   }else{
@@ -278,7 +278,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
   }
   xx <- dplyr::inner_join(meta , PepIntensities, by = "mod.peptide.id")
   xx$proteotypic <- !grepl(";",xx$protein.group.id)
-  xx <- xx %>% separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
+  xx <- xx |> separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
   return(xx)
 }
 
@@ -325,24 +325,24 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
                         "unique.groups" = "unique..groups.",
                         "potential.contaminant" = ends_with("contaminant"),
                         "reverse" = "reverse"
-                        ) %>%
-    dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) %>%
+                        ) |>
+    dplyr::mutate(!!"potential.contaminant" := case_when( !!sc == "" ~ FALSE, !!sc == "+" ~ TRUE)) |>
     dplyr::mutate(!!"unique.groups" := case_when( !!sym("unique.groups") == "yes" ~ TRUE,
-                                                  !!sym("unique.groups") == "no" ~ FALSE)) %>%
+                                                  !!sym("unique.groups") == "no" ~ FALSE)) |>
     dplyr::mutate(!!"reverse" := case_when( !!sym("reverse") == "+" ~ TRUE,
                                             !!sym("reverse") == "" ~ FALSE))
 
   pint <- dplyr::select(MQPeptides,"peptide.id" =  "id", starts_with("intensity."))
 
-  PepIntensities <- pint %>%
-    tidyr::gather(key = "raw.file", value = "peptide.intensity", starts_with("intensity.")) %>%
+  PepIntensities <- pint |>
+    tidyr::gather(key = "raw.file", value = "peptide.intensity", starts_with("intensity.")) |>
     dplyr::mutate(raw.file = gsub("intensity.","",.data$raw.file))
 
   # review what happens here
   idtype <- dplyr::select(MQPeptides, "peptide.id" = "id", starts_with("identification.type."))
   if (ncol(idtype) > 1) { # if only one file no id type is provided
-    PepIDType <- idtype %>%
-      tidyr::gather(key = "raw.file", value = "id.type", starts_with("identification.type.")) %>%
+    PepIDType <- idtype |>
+      tidyr::gather(key = "raw.file", value = "id.type", starts_with("identification.type.")) |>
       dplyr::mutate(raw.file = gsub("identification.type.","",.data$raw.file))
     PepIntensities <- dplyr::inner_join(PepIntensities,PepIDType, by = c("peptide.id", "raw.file" ))
   }else{
@@ -351,12 +351,12 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
 
   xx <- dplyr::inner_join(meta , PepIntensities, by = "peptide.id")
   xx$proteotypic <- !grepl(";", xx$protein.group.id)
-  xx <- xx %>% separate_rows( .data$protein.group.id, sep = ";", convert  = TRUE)
+  xx <- xx |> separate_rows( .data$protein.group.id, sep = ";", convert  = TRUE)
 
-  xx <- xx %>% mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
+  xx <- xx |> mutate(proteins = case_when(proteins == "" ~ leading.razor.protein, TRUE ~ proteins))
   xx$isotope <- "light"
   if (proteotypic_only) {
-    xx <- xx %>% dplyr::filter(.data$proteotypic == TRUE)
+    xx <- xx |> dplyr::filter(.data$proteotypic == TRUE)
   }
   return(xx)
 }
@@ -374,9 +374,9 @@ tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
 #' head(MQPeptides)
 #' mq_peptides <- tidyMQ_allPeptides(peptides_txt)
 #' dim(mq_peptides)
-#' mq_peptides %>% dplyr::filter(ms.ms.count != 0) -> idid
+#' mq_peptides |> dplyr::filter(ms.ms.count != 0) -> idid
 #' dim(idid)
-#' mq_peptides %>% dplyr::filter(sequence != "") -> idid
+#' mq_peptides |> dplyr::filter(sequence != "") -> idid
 #' head(idid)
 #' unique(idid$modified.sequence)
 #' head(mq_peptides)
@@ -399,7 +399,7 @@ tidyMQ_allPeptides <- function(MQPeptides){
                       "proteins",
                       "peptide.score" = "score",
                       "intensity",
-                      "ms.ms.count") %>%
+                      "ms.ms.count") |>
     dplyr::mutate(sequence = str_trim(sequence), modified.sequence = str_trim(.data$modified.sequence))
   return(xx)
 }
@@ -417,19 +417,19 @@ tidyMQ_allPeptides <- function(MQPeptides){
 #'
 tidyMQ_from_modSpecific_to_peptide <- function(mq_modSpecPeptides, mq_peptides) {
   warning("use only if you want to disable MQ default precursor filter")
-  mq_modSpecPeptides <- mq_modSpecPeptides %>% dplyr::filter(.data$unique.groups)
+  mq_modSpecPeptides <- mq_modSpecPeptides |> dplyr::filter(.data$unique.groups)
   relevantColumns <- setdiff(colnames(mq_peptides) , c("leading.razor.protein","id.type"))
 
-  xx <- mq_modSpecPeptides %>%
-    dplyr::group_by(.data$peptide.id, .data$raw.file ) %>%
+  xx <- mq_modSpecPeptides |>
+    dplyr::group_by(.data$peptide.id, .data$raw.file ) |>
     dplyr::mutate(peptide.intensity = sum(.data$mod.peptide.intensity, na.rm = TRUE),
                   pep = min(.data$pep, na.rm = TRUE),
-                  peptide.score = max(.data$mod.peptide.score, na.rm = TRUE)) %>%  dplyr::ungroup()
+                  peptide.score = max(.data$mod.peptide.score, na.rm = TRUE)) |>  dplyr::ungroup()
 
-  dimcheck <- mq_modSpecPeptides %>% dplyr::select(.data$peptide.id, .data$raw.file ) %>%
-    dplyr::distinct() %>% nrow()
+  dimcheck <- mq_modSpecPeptides |> dplyr::select(.data$peptide.id, .data$raw.file ) |>
+    dplyr::distinct() |> nrow()
 
-  peptides <- xx %>% dplyr::select( one_of(relevantColumns) ) %>%
+  peptides <- xx |> dplyr::select( one_of(relevantColumns) ) |>
     dplyr::distinct()
   stopifnot( dimcheck == nrow(peptides) )
   return(peptides)
@@ -446,7 +446,7 @@ tidyMQ_from_Sites <- function(pDat){
   colnames(pDat) <- tolower(colnames(pDat) )
   # Cut PhosphoSTY down to useful columns
 
-  annotation <-  pDat %>% dplyr::select("localization.prob",
+  annotation <-  pDat |> dplyr::select("localization.prob",
                                         "protein",
                                         "leading.proteins",
                                         "positions.within.proteins",
@@ -473,10 +473,10 @@ tidyMQ_from_Sites <- function(pDat){
   annotation <- mutate(annotation, reverse = case_when(reverse == "+" ~ TRUE, TRUE ~ FALSE))
   annotation <- mutate(annotation, stripped.sequence = gsub("\\(.+\\)","", .data$peptide.sequence.prob))
 
-  intensities <- pDat %>% dplyr::select("site.id" = "id", contains("___") )
-  longish <- intensities %>% gather(key = "raw.file", value = "intensity", contains("___"))
-  longish <- longish %>% separate(.data$raw.file, into = c("raw.file", "multiplicity"), sep="___")
-  longish <- longish %>% mutate(raw.file = gsub("intensity\\.", "", .data$raw.file))
+  intensities <- pDat |> dplyr::select("site.id" = "id", contains("___") )
+  longish <- intensities |> gather(key = "raw.file", value = "intensity", contains("___"))
+  longish <- longish |> separate(.data$raw.file, into = c("raw.file", "multiplicity"), sep="___")
+  longish <- longish |> mutate(raw.file = gsub("intensity\\.", "", .data$raw.file))
 
   res <- inner_join(longish, annotation, by = "site.id")
   return(list(data = res, annotation = annotation))
@@ -502,7 +502,7 @@ plot_MQ_intensity_vs_retention_time <- function(MQtxtfolder, qc_path ) {
       height <- length(unique(mqData$raw.file))/2 * 300
       png(file.path(qc_path, "retention_time_plot.png"), height = height, width = 1200)
       {
-        resPepProtVis <- mqData %>% dplyr::filter(.data$mod.peptide.intensity > 4)
+        resPepProtVis <- mqData |> dplyr::filter(.data$mod.peptide.intensity > 4)
         tmp <- ggplot(resPepProtVis, aes(x = .data$retention.time, y = log2(.data$mod.peptide.intensity))) +
           geom_point(alpha = 1/20, size = 0.3) +
           facet_wrap(~raw.file, ncol = 2)

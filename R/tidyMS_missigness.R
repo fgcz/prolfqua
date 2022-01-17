@@ -22,7 +22,7 @@
 #' xx <- prolfqua::removeLarge_Q_Values(data,
 #'    configur)
 #' xx <- complete_cases(xx, configur)
-#' x <- interaction_missing_stats(xx, configur)$data %>% arrange(desc(nrNAs))
+#' x <- interaction_missing_stats(xx, configur)$data |> arrange(desc(nrNAs))
 #'
 #' #readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
 #' stopifnot(nrow(x) == 5540)
@@ -49,16 +49,16 @@ interaction_missing_stats <- function(pdata,
 {
   pdata <- complete_cases(pdata, config)
   table <- config$table
-  missingPrec <- pdata %>% group_by_at(c(factors,
+  missingPrec <- pdata |> group_by_at(c(factors,
                                          hierarchy,
                                          table$isotopeLabel
   ))
-  missingPrec <- missingPrec %>%
+  missingPrec <- missingPrec |>
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
-                     medianArea = median(!!sym(workIntensity), na.rm = TRUE)) %>%
-    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) %>% dplyr::ungroup()
+                     medianArea = median(!!sym(workIntensity), na.rm = TRUE)) |>
+    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea", "medianArea")))
 }
@@ -130,11 +130,11 @@ interaction_missing_stats <- function(pdata,
   }
 
   if (!global) {
-    mstats <- mstats %>%
-      group_by(interaction) %>%
+    mstats <- mstats |>
+      group_by(interaction) |>
       mutate(imputed = lowerMean(.data$meanArea,probs = probs))
   }else{
-    mstats <- mstats %>%
+    mstats <- mstats |>
       mutate(imputed = lowerMean(.data$meanArea,probs = probs))
 
   }
@@ -156,25 +156,25 @@ interaction_missing_stats <- function(pdata,
     if (value == "long") {
       return(mstats)
     }else{
-      mstats <- mstats %>% dplyr::select(-one_of(factors))
+      mstats <- mstats |> dplyr::select(-one_of(factors))
 
       pid <- config$table$hkeysDepth()
-      nrReplicates <- mstats %>%
-        dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) %>%
-        tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") %>%
-        arrange(!!!syms(pid)) %>%
+      nrReplicates <- mstats |>
+        dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
+        tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") |>
+        arrange(!!!syms(pid)) |>
         dplyr::ungroup()
-      nrMeasured <- mstats %>% dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) %>%
-        tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") %>%
-        arrange(!!!syms(pid)) %>% dplyr::ungroup()
+      nrMeasured <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) |>
+        tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") |>
+        arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanArea <- mstats %>% dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) %>%
-        tidyr::spread(interaction, meanArea, sep = ".meanArea.") %>%
-        arrange(!!!syms(pid)) %>% dplyr::ungroup()
+      meanArea <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) |>
+        tidyr::spread(interaction, meanArea, sep = ".meanArea.") |>
+        arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanAreaImputed <- mstats %>% dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) %>%
-        tidyr::spread(interaction, .data$imputed, sep = ".imputed.") %>%
-        arrange(!!!syms(pid)) %>% dplyr::ungroup()
+      meanAreaImputed <- mstats |> dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) |>
+        tidyr::spread(interaction, .data$imputed, sep = ".imputed.") |>
+        arrange(!!!syms(pid)) |> dplyr::ungroup()
 
       allTables <- list(meanArea = meanArea,
                         nrMeasured = nrMeasured,
@@ -210,8 +210,8 @@ interaction_missing_stats <- function(pdata,
     }
   }
 
-  #  nrMeasured %>% dplyr::select(starts_with("interaction")) -> nrMeasuredM
-  #  nrReplicates %>% dplyr::select(starts_with("interaction")) -> nrReplicatesM
+  #  nrMeasured |> dplyr::select(starts_with("interaction")) -> nrMeasuredM
+  #  nrReplicates |> dplyr::select(starts_with("interaction")) -> nrReplicatesM
   return(res_fun)
 }
 
@@ -320,15 +320,15 @@ aggregate_contrast <- function(
   contrast = "contrast")
 {
   grouping_columns <- c(contrast, subject_Id, "c1_name","c2_name")
-  dataG <- data %>%
+  dataG <- data |>
     group_by(!!!syms(grouping_columns))
 
-  resN <- dataG %>% dplyr::summarise(n = n(), .groups="drop")
-  resE <- dataG %>% dplyr::summarise(across(.data$estimate,
+  resN <- dataG |> dplyr::summarise(n = n(), .groups="drop")
+  resE <- dataG |> dplyr::summarise(across(.data$estimate,
                                      agg_func
                                     ), .groups = "drop")
   agg_func_c <- agg_func[1]
-  resC <- dataG %>% dplyr::summarise(across(all_of(c("c1", "c2")),
+  resC <- dataG |> dplyr::summarise(across(all_of(c("c1", "c2")),
                                      agg_func_c,
                                      .names = "{col}"
                                      ),
@@ -474,16 +474,16 @@ missigness_histogram <- function(x,
                                  factors = config$table$fkeysDepth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
-  missingPrec <- missingPrec %>%
-    dplyr::ungroup() %>% dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
+  missingPrec <- missingPrec |>
+    dplyr::ungroup() |> dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
     if (config$table$is_intensity_transformed) {
-      missingPrec <- missingPrec %>%
+      missingPrec <- missingPrec |>
         dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 1,
                                         .data$meanArea))
     }else{
-      missingPrec <- missingPrec %>%
+      missingPrec <- missingPrec |>
         dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),min(.data$meanArea, na.rm = TRUE) - 20,.data$meanArea))
     }
 
@@ -527,12 +527,12 @@ missingness_per_condition_cumsum <- function(x,
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config,factors)$data
 
-  xx <- missingPrec %>% group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) %>%
+  xx <- missingPrec |> group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) |>
     dplyr::summarize(nrTransitions = n())
 
-  xxcs <- xx %>% group_by_at( c(table$isotopeLabel,factors)) %>% arrange(.data$nrNAs) %>%
+  xxcs <- xx |> group_by_at( c(table$isotopeLabel,factors)) |> arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
-  res <- xxcs  %>% dplyr::select(-.data$nrTransitions)
+  res <- xxcs  |> dplyr::select(-.data$nrTransitions)
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
@@ -543,7 +543,7 @@ missingness_per_condition_cumsum <- function(x,
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
-  res <- res %>% tidyr::spread("nrNAs","cumulative_sum")
+  res <- res |> tidyr::spread("nrNAs","cumulative_sum")
   return(list(data = res, figure = p))
 }
 
@@ -568,8 +568,8 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
   missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
-  xx <- missingPrec %>% group_by_at(c(table$isotopeLabel,
-                                      factors,"nrNAs","nrReplicates")) %>%
+  xx <- missingPrec |> group_by_at(c(table$isotopeLabel,
+                                      factors,"nrNAs","nrReplicates")) |>
     dplyr::summarize( !!sym(hierarchyKey) := n())
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
@@ -581,7 +581,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
-  xx <- xx %>% tidyr::spread("nrNAs",hierarchyKey)
+  xx <- tidyr::spread(xx, "nrNAs",hierarchyKey)
 
   return(list(data = xx ,figure = p))
 }

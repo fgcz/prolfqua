@@ -41,10 +41,10 @@ contrasts_linfct_deprec <- function(models,
                              contrastfun = prolfqua::my_contest){
 
   modelcol <- "linear_model"
-  models <- models %>% dplyr::filter(.data$exists_lmer == TRUE)
+  models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
 
-  interaction_model_matrix <- models %>%
+  interaction_model_matrix <- models |>
     dplyr::mutate(contrast = map(!!sym(modelcol) , contrastfun , linfct = linfct ))
 
 
@@ -52,27 +52,27 @@ contrasts_linfct_deprec <- function(models,
     class(x)[1]
   }
 
-  interaction_model_matrix <-  interaction_model_matrix %>%
-    dplyr::mutate(classC = purrr::map_chr(.data$contrast,mclass)) %>%
+  interaction_model_matrix <-  interaction_model_matrix |>
+    dplyr::mutate(classC = purrr::map_chr(.data$contrast,mclass)) |>
     dplyr::filter(.data$classC != "logical")
 
-  contrasts <- interaction_model_matrix %>%
-    dplyr::select_at( c(subject_Id, "contrast") ) %>%
+  contrasts <- interaction_model_matrix |>
+    dplyr::select_at( c(subject_Id, "contrast") ) |>
     tidyr::unnest_legacy()
 
   # take sigma and df from somewhere else.
-  modelInfos <- models %>%
+  modelInfos <- models |>
     dplyr::select_at(c(subject_Id,
                        "isSingular",
                        "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" )) %>%
+                       "df.residual.model" = "df.residual" )) |>
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
 
   # adjust
-  contrasts <- contrasts %>% group_by_at("lhs") %>%
-    dplyr::mutate(p.value.adjusted = p.adjust(.data$p.value, method = "BH")) %>%
+  contrasts <- contrasts |> group_by_at("lhs") |>
+    dplyr::mutate(p.value.adjusted = p.adjust(.data$p.value, method = "BH")) |>
     dplyr::ungroup()
 
   return(contrasts)

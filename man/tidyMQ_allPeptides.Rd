@@ -20,9 +20,9 @@ MQPeptides <- peptides_txt
 head(MQPeptides)
 mq_peptides <- tidyMQ_allPeptides(peptides_txt)
 dim(mq_peptides)
-mq_peptides \%>\% dplyr::filter(ms.ms.count != 0) -> idid
+mq_peptides |> dplyr::filter(ms.ms.count != 0) -> idid
 dim(idid)
-mq_peptides \%>\% dplyr::filter(sequence != "") -> idid
+mq_peptides |> dplyr::filter(sequence != "") -> idid
 head(idid)
 unique(idid$modified.sequence)
 head(mq_peptides)
