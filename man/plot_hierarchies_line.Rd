@@ -33,7 +33,7 @@ conf <- bb$config
 analysis <- bb$data
 
 xnested <- analysis |>
- group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+ dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 
 prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 

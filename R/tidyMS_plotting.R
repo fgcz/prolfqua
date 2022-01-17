@@ -125,7 +125,7 @@ plot_sample_correlation <- function(pdata, config){
 #' conf$table$hkeysDepth()
 #'
 #' xnested <- analysis |>
-#'  group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'  dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' #debug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],

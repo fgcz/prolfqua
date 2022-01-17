@@ -67,7 +67,7 @@ plot_hierarchies_line_default <- function(data,
 #' analysis <- bb$data
 #'
 #' xnested <- analysis |>
-#'  group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'  dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
 #'
@@ -305,7 +305,7 @@ extractIntensities <- function(pdata, config ){
 #'
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data |>
-#'   group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'   dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -337,7 +337,7 @@ medpolishPlydf <- function(pdata, expression, feature, samples  ){
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data |>
-#'   group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'   dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -470,7 +470,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data |>
-#'   group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'   dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
@@ -501,7 +501,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data |>
-#'   group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'   dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]

@@ -30,7 +30,7 @@ data <- bb$data
 
 conf$table$hierarchyDepth = 1
 xnested <- data |>
-  group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+  dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
