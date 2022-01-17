@@ -84,7 +84,9 @@ While the overall number of `r if(params$pep){"proteins and peptides"}else{"prot
 
 ```{r hierarchyCounts}
 library(rlang)
-x <- hierarchy_counts(data, local_config)
+library(prolfqua)
+
+x <- prolfqua::hierarchy_counts(data, local_config)
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
 
 prolfqua::table_facade( 
