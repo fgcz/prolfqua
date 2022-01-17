@@ -70,7 +70,7 @@ exampleDat <- xx$data \%>\% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C
 
 tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))
 tmp$proteinLength <- as.integer(runif(nrow(tmp), min = 150, max = 2500))
-exampleDat <- inner_join(tmp, exampleDat)
+exampleDat <- dplyr::inner_join(tmp, exampleDat)
 #undebug(protein_2localSaint)
 res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
                    proteinID = "protein_Id",

@@ -41,7 +41,7 @@ dd$plot[[2]]
 # example how to add peptide count information
 
 tmp <- summarize_hierarchy(data, config)
-tmp <- inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
+tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 
 }
 \seealso{
