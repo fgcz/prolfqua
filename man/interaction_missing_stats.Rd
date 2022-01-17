@@ -40,7 +40,7 @@ configur$parameter$qVal_individual_threshold <- 0.01
 xx <- prolfqua::removeLarge_Q_Values(data,
    configur)
 xx <- complete_cases(xx, configur)
-x <- interaction_missing_stats(xx, configur)$data |> arrange(desc(nrNAs))
+x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 
 #readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
 stopifnot(nrow(x) == 5540)
