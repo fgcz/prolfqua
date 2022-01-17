@@ -92,10 +92,10 @@ pooled_V1 <- function(x){
 #'      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
 #'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 #' compute_pooled(y)
-#' yb <- y %>% dplyr::filter(not_na > 1)
+#' yb <- y |> dplyr::filter(not_na > 1)
 compute_pooled <- function(x, method = c("V1","V2")){
   method <- match.arg(method)
-  xm <- x %>% dplyr::filter(.data$not_na > 0)
+  xm <- x |> dplyr::filter(.data$not_na > 0)
   meanAll <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
   not_na  = sum(xm$not_na)
 
@@ -103,7 +103,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
   if (method == "V2") {
     func <- pooled_V2
   }
-  x <- x %>% dplyr::filter(.data$not_na > 1)
+  x <- x |> dplyr::filter(.data$not_na > 1)
 
   res <- func(x)
 
@@ -128,7 +128,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' poolvar(res1, config)
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
-  resp <- res1 %>% nest(data = -all_of(config$table$hierarchyKeys()) )
+  resp <- res1 |> nest(data = -all_of(config$table$hierarchyKeys()) )
   pooled <- vector(length = length(resp$data), mode = "list")
   for (i in seq_along(resp$data)) {
     #print(i)
@@ -137,7 +137,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
   pooled =  bind_rows(pooled)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
-  resp <- resp %>% mutate(!!config$table$factorKeys()[1] := "pooled")
+  resp <- resp |> mutate(!!config$table$factorKeys()[1] := "pooled")
   return(resp)
 }
 
@@ -160,29 +160,29 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' res1 <- summarize_stats(data, config)
 #' head(res1)
 #' #View(res1)
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
 #' head(d)
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
 #' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' res1 %>% dplyr::filter(dilution. == "pooled")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+#' res1 |> dplyr::filter(dilution. == "pooled")
 #'
 summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$getWorkIntensity())
-  hierarchyFactor <- pdata %>%
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) %>%
+  hierarchyFactor <- pdata |>
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) |>
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = stats::sd(!!intsym, na.rm = TRUE),
                      var = stats::var(!!intsym, na.rm = TRUE),
-                     mean = mean(!!intsym, na.rm = TRUE),.groups = "drop_last") %>%  dplyr::ungroup()
+                     mean = mean(!!intsym, na.rm = TRUE),.groups = "drop_last") |>  dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor %>%
+  hierarchyFactor <- hierarchyFactor |>
     dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
   if (config$table$is_intensity_transformed == FALSE) {
-    hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+    hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
   return(ungroup(hierarchyFactor))
 }
@@ -204,19 +204,19 @@ summarize_stats <- function(pdata, config){
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats_all(data, config)
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
 #' head(d)
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
 #' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
-#' d <- res1 %>% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' res1 %>% dplyr::filter(dilution. == "pooled")
+#' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+#' res1 |> dplyr::filter(dilution. == "pooled")
 #'
 summarize_stats_all <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$getWorkIntensity())
-  hierarchy <- pdata %>%
-    dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) %>%
+  hierarchy <- pdata |>
+    dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) |>
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym,na.rm = TRUE),
@@ -226,7 +226,7 @@ summarize_stats_all <- function(pdata, config){
   hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
   hierarchyFactor <- hierarchy
   if (config$table$is_intensity_transformed == FALSE) {
-    hierarchyFactor %>% dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+    hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
   return(ungroup(hierarchyFactor))
 }
@@ -272,18 +272,18 @@ summarize_stats_quantiles <- function(stats_res,
   }
   q_column <- paste0(stats,"_quantiles")
 
-  xx2 <- stats_res %>%
-    dplyr::group_by(!!!syms(config$table$fkeysDepth())) %>%
+  xx2 <- stats_res |>
+    dplyr::group_by(!!!syms(config$table$fkeysDepth())) |>
     tidyr::nest()
 
 
-  sd_quantile_res2 <- xx2 %>%
-    dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  %>%
-    dplyr::select(!!!syms(c(config$table$fkeysDepth(),q_column))) %>%
+  sd_quantile_res2 <- xx2 |>
+    dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  |>
+    dplyr::select(!!!syms(c(config$table$fkeysDepth(),q_column))) |>
     tidyr::unnest(cols = c(q_column))
 
-  xx <- sd_quantile_res2 %>% tidyr::unite("interaction",config$table$fkeysDepth())
-  wide <- xx %>%  spread("interaction", .data$quantiles)
+  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$table$fkeysDepth())
+  wide <- xx |>  spread("interaction", .data$quantiles)
   return(list(long = sd_quantile_res2, wide = wide))
 }
 
@@ -299,7 +299,7 @@ summarize_stats_quantiles <- function(stats_res,
                          sd = NULL,
                          power = power,
                          sig.level = sig.level)$sd
-  quantile_sd <- quantile_sd %>%
+  quantile_sd <- quantile_sd |>
     mutate("sdtrimmed" := case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
 
   #, delta = delta, power = power, sig.level = sig.level
@@ -308,7 +308,7 @@ summarize_stats_quantiles <- function(stats_res,
   }
   #  return(getSampleSize)
 
-  sampleSizes <- quantile_sd %>%
+  sampleSizes <- quantile_sd |>
     mutate( N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
   return(sampleSizes)
 }
@@ -334,8 +334,8 @@ summarize_stats_quantiles <- function(stats_res,
 #' xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- dplyr::bind_rows(bbb)
-#' summary <- bbb %>%
-#'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) %>%
+#' summary <- bbb |>
+#'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
 #'  tidyr::spread(delta, N, sep = "=")
 #' summary
 lfq_power_t_test_quantiles_V2 <-
@@ -408,11 +408,11 @@ lfq_power_t_test_quantiles <- function(pdata,
 
     getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n}
 
-    sampleSizes <- sampleSizes %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-    sampleSizes <- sampleSizes %>% mutate( N = ceiling(.data$N_exact))
-    sampleSizes <- sampleSizes %>% mutate( FC = round(2^delta, digits = 2))
+    sampleSizes <- sampleSizes |> mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+    sampleSizes <- sampleSizes |> mutate( N = ceiling(.data$N_exact))
+    sampleSizes <- sampleSizes |> mutate( FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes %>% dplyr::select( -.data$N_exact, -.data$delta) %>% spread(.data$FC, .data$N, sep = "=")
+    summary <- sampleSizes |> dplyr::select( -.data$N_exact, -.data$delta) |> spread(.data$FC, .data$N, sep = "=")
     return(list(long = sampleSizes, summary = summary))
   }else{
     message("!!! ERROR !!! No standard deviation is available,
@@ -436,12 +436,15 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
-#' stats_res <- summarize_stats(data2, config)
+#' ldata <- LFQData$new(data2, config)
+#' ldata <- ldata$get_sample(20)
+#' stats_res <- summarize_stats(ldata$data, ldata$config)
+#'
 #' bb <- lfq_power_t_test_proteins(stats_res)
-#' head(bb)
+#'
 lfq_power_t_test_proteins <- function(stats_res,
                                       delta = c(0.59,1,2),
                                       power = 0.8,
@@ -450,7 +453,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 
 
   stats_res <- na.omit(stats_res)
-  sd_delta <- purrr::map_df(delta, function(x){mutate(stats_res, delta = x)} )
+  sd_delta <- purrr::map_df(delta, function(x){dplyr::mutate(stats_res, delta = x)} )
 
   getSampleSize <- function(sd, delta){
     sd_threshold <- power.t.test(delta = delta,
@@ -458,12 +461,10 @@ lfq_power_t_test_proteins <- function(stats_res,
                                  sd = NULL,
                                  power = power,
                                  sig.level = sig.level)$sd
-    #cat("delta",delta," sd ", sd, " sd_threshold ", max(sd_threshold, sd) , " sig.level ", sig.level, "\n" )
-
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
-  sampleSizes <- sd_delta %>% mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-  sampleSizes <- sampleSizes %>% mutate( N = ceiling(.data$N_exact))
+  sampleSizes <- sd_delta |> dplyr::mutate( N_exact = purrr::map2_dbl(sd, delta,  getSampleSize))
+  sampleSizes <- sampleSizes |> dplyr::mutate( N = ceiling(.data$N_exact))
   return(sampleSizes)
 }
 
@@ -520,8 +521,8 @@ plot_stat_density <- function(pdata,
 plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  pdata <- pdata %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
-  res <- pdata %>% dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
+  pdata <- pdata |> dplyr::filter_at(stat, all_vars(!is.na(.)))
+  res <- pdata |> dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
     geom_line(stat = ggstat) + facet_wrap(config$table$factorKeys()[1])
   return(p)
@@ -576,9 +577,9 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
     names(out) <- c("ymin","y","ymax")
     return(out)
   }
-  pdata <- pdata %>% dplyr::filter_at(stat, all_vars(!is.na(.)))
+  pdata <- pdata |> dplyr::filter_at(stat, all_vars(!is.na(.)))
 
-  res <- pdata %>%
+  res <- pdata |>
     dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
@@ -618,14 +619,14 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
 plot_stdv_vs_mean <- function(pdata, config, size=2000){
-  summary <- pdata %>%
-    group_by_at(config$table$fkeysDepth()) %>%
+  summary <- pdata |>
+    group_by_at(config$table$fkeysDepth()) |>
     dplyr::summarize(n = n(),.groups = "drop")
   size <- min(size, min(summary$n))
 
-  pdata <- pdata %>%
-    group_by_at(config$table$fkeysDepth()) %>%
-    sample_n(size = size) %>%
+  pdata <- pdata |>
+    group_by_at(config$table$fkeysDepth()) |>
+    sample_n(size = size) |>
     ungroup()
 
   p <- ggplot(pdata, aes(x = mean, y = sd)) +

@@ -44,7 +44,7 @@ y <- data.frame(dilution.=c("a","b","c"),
      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
 compute_pooled(y)
-yb <- y \%>\% dplyr::filter(not_na > 1)
+yb <- y |> dplyr::filter(not_na > 1)
 
 
 bb <- prolfqua_data('data_ionstar')$normalized()

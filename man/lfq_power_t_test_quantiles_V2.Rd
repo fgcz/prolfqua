@@ -38,8 +38,8 @@ stats_res <- summarize_stats(data2, config)
 xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
-summary <- bbb \%>\%
- dplyr::select( -N_exact, -quantiles, -sdtrimmed ) \%>\%
+summary <- bbb |>
+ dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
  tidyr::spread(delta, N, sep = "=")
 summary
 }

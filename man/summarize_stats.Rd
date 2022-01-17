@@ -47,13 +47,13 @@ data <- bb$data
 res1 <- summarize_stats(data, config)
 head(res1)
 #View(res1)
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
 head(d)
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
 head(d)
 #CON__P02769~18~NA VHKECCHGDLLECADDR
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-res1 \%>\% dplyr::filter(dilution. == "pooled")
+d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+res1 |> dplyr::filter(dilution. == "pooled")
 
 
 
@@ -62,13 +62,13 @@ config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats_all(data, config)
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
+d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
 head(d)
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
+d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
 head(d)
 #CON__P02769~18~NA VHKECCHGDLLECADDR
-d <- res1 \%>\% dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-res1 \%>\% dplyr::filter(dilution. == "pooled")
+d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
+res1 |> dplyr::filter(dilution. == "pooled")
 
 library(ggplot2)
 bb1 <- prolfqua_data('data_ionstar')$filtered()
