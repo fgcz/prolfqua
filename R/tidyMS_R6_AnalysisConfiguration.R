@@ -258,7 +258,7 @@ make_interaction_column <- function(data, columns, sep="."){
 
   colnames(intr) <- paste0("interaction_",columns)
   colname <- "interaction"
-  data <- data %>% dplyr::mutate(!!colname := interaction(intr, sep = sep))
+  data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
   return(data)
 }
 
@@ -325,15 +325,15 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   if (!sampleName  %in% names(data)) {
     message("creating sampleName")
 
-    data <- data %>%  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) %>%
-      dplyr::select(sampleName, table$fileName) %>% dplyr::distinct() %>%
-      dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) %>%
+    data <- data |>  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
+      dplyr::select(sampleName, table$fileName) |> dplyr::distinct() |>
+      dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
       dplyr::inner_join(data, by = table$fileName)
   } else {
     warning(sampleName, " already exists")
   }
 
-  data <- data %>% dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
+  data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
 
   # Make implicit NA's explicit
 
@@ -342,7 +342,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     data[[configuration$table$isotopeLabel]] <- "light"
   }
 
-  data <- data %>% dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
+  data <- data |> dplyr::select(c(configuration$table$idVars(),configuration$table$valueVars()))
 
   if (cc) {
     data <- complete_cases( data , configuration)
@@ -362,7 +362,7 @@ separate_hierarchy <- function(data, config){
     if (length(config$table$hierarchy[[hkey]]) == 1 & hkey == config$table$hierarchy[[hkey]]) {
       data <- data
     }else {
-      data <- data %>% tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+      data <- data |> tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
     }
   }
   return(data)
@@ -377,7 +377,7 @@ separate_hierarchy <- function(data, config){
 #' @family configuration
 separate_factors <- function(data, config) {
   for (fkey in config$table$factorKeys()) {
-    data <- data %>% tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
+    data <- data |> tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -420,7 +420,7 @@ complete_cases <- function(pdata, config) {
 sample_subset <- function(size, pdata, config){
   hk <- config$table$hkeysDepth()
   message("Sampling ", size, paste(hk, collapse = "," ) )
-  hkdf <- pdata %>% select(all_of(hk)) %>% distinct() %>% sample_n(size = size)
+  hkdf <- pdata |> select(all_of(hk)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
   return(sdata)
 }
@@ -446,12 +446,12 @@ sample_subset <- function(size, pdata, config){
 #'
 #' xx <- table_factors(data,config )
 #' xx
-#' xx %>% dplyr::group_by(!!!syms(config$table$factorKeys())) %>%
+#' xx |> dplyr::group_by(!!!syms(config$table$factorKeys())) |>
 #'  dplyr::summarize(n = n())
 #'
 table_factors <- function(pdata, configuration){
-  factorsTab <- pdata %>% dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) %>%
-    dplyr::distinct() %>%
+  factorsTab <- pdata |> dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) |>
+    dplyr::distinct() |>
     arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
 }
@@ -478,8 +478,8 @@ table_factors <- function(pdata, configuration){
 #' hierarchy_counts(data, config)
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$table$hierarchyKeys()
-  res <- pdata %>%
-    dplyr::group_by_at(config$table$isotopeLabel) %>%
+  res <- pdata |>
+    dplyr::group_by_at(config$table$isotopeLabel) |>
     dplyr::summarise_at( hierarchy, n_distinct )
   return(res)
 }
@@ -507,8 +507,8 @@ hierarchy_counts_sample <- function(pdata,
                                     configuration)
 {
   hierarchy <- configuration$table$hierarchyKeys()
-  summary <- pdata %>% dplyr::filter(!is.na(!!sym(configuration$table$getWorkIntensity() ))) %>%
-    dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) %>%
+  summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$getWorkIntensity() ))) |>
+    dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) |>
     dplyr::summarise_at( hierarchy, n_distinct )
 
   res <- function(value = c("wide", "long", "plot")){
@@ -516,7 +516,7 @@ hierarchy_counts_sample <- function(pdata,
     if (value == "wide") {
       return(summary)
     }else{
-      long <- summary %>% tidyr::gather("key",
+      long <- summary |> tidyr::gather("key",
                                         "nr",-dplyr::one_of(configuration$table$isotopeLabel,
                                                             configuration$table$sampleName))
       if (value == "long") {
@@ -578,8 +578,8 @@ summarize_hierarchy <- function(pdata,
 {
   all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchyKeys() )
 
-  precursor <- pdata %>% dplyr::select(factors, all_hierarchy) %>% dplyr::distinct()
-  x3 <- precursor %>% dplyr::group_by_at(c(factors, hierarchy)) %>%
+  precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
+  x3 <- precursor |> dplyr::group_by_at(c(factors, hierarchy)) |>
     dplyr::summarize_at( setdiff(all_hierarchy, hierarchy),
                          list( n = dplyr::n_distinct))
   return(x3)
@@ -615,23 +615,14 @@ summarize_hierarchy <- function(pdata,
 spreadValueVarsIsotopeLabel <- function(resData, config){
   table <- config$table
   idVars <- table$idVars()
-  resData2 <- resData %>% dplyr::select(c(idVars, table$valueVars()) )
-  resData2 <- resData2 %>% tidyr::gather(key = "variable", value = "value", -dplyr::all_of(idVars)  )
-  resData2 <- resData2 %>%  tidyr::unite("temp", table$isotopeLabel, .data$variable )
-  HLData <- resData2 %>% tidyr::spread(.data$temp,.data$value)
+  resData2 <- resData |> dplyr::select(c(idVars, table$valueVars()) )
+  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(idVars)  )
+  resData2 <- resData2 |>  tidyr::unite("temp", table$isotopeLabel, .data$variable )
+  HLData <- resData2 |> tidyr::spread(.data$temp,.data$value)
   invisible(HLData)
 }
 
 
-#spreadValueVarsIsotopeLabel <- function(resData, config){
-#  table <- config$table
-#  idVars <- table$idVars()
-#  resData2 <- resData %>% dplyr::select(c(table$idVars(), table$valueVars()) )
-#  resData2 <- resData2 %>% tidyr::gather(variable, value, - dplyr::all_of(idVars)  )
-#  resData2 <- resData2 %>%  tidyr::unite(temp, table$isotopeLabel, variable )
-#  HLData <- resData2 %>% tidyr::spread(temp,value)
-#  invisible(HLData)
-#}
 # Computing protein Intensity summaries ---
 
 

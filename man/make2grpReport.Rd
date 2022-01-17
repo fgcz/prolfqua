@@ -49,7 +49,7 @@ For use examples see run_scripts directory
 
 
 istar <- prolfqua_data('data_ionstar')$filtered()
-data <- istar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
 GRP2 <- list()
 GRP2$projectID <- "3765"

@@ -72,7 +72,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 
   # remove transitions with large numbers of NA's
   data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
-  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
+  data_NA_QVal <- data_NA_QVal |> dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   if(nrow(data_NA_QVal) == 0){
     warning("no rows left after filtering for min_nr_of_notNA")
   }
@@ -140,7 +140,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 
   # remove transitions with large numbers of NA's
   data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
-  data_NA_QVal <- data_NA_QVal %>% dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
+  data_NA_QVal <- data_NA_QVal |> dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   stat_min_nr_of_notNA <- hierarchy_counts(data_NA_QVal, config)
 
   # remove single hit wonders
@@ -213,12 +213,12 @@ workflow_DIA_NA_preprocessing <- function(pdata,
                                                     percent = percent)
 
   stat_naFilter <- hierarchy_counts(resNACondition, config)
-  protID <- summarize_hierarchy(resNACondition,config) %>%
+  protID <- summarize_hierarchy(resNACondition,config) |>
     dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[hierarchy_level],"_n"))
                   >= min_peptides_protein)
 
-  data_NA_QVal_condition <- protID %>%
-    dplyr::select(config$table$hierarchyKeys()[1]) %>%
+  data_NA_QVal_condition <- protID |>
+    dplyr::select(config$table$hierarchyKeys()[1]) |>
     dplyr::inner_join(resNACondition)
 
   # Complete cases

@@ -18,7 +18,7 @@ used in project p2901
 
 
 ionstar <- prolfqua_data('data_ionstar')$normalized()
-ionstar$data <- ionstar$data \%>\% dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
+ionstar$data <- ionstar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
 prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")

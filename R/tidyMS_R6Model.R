@@ -103,16 +103,15 @@ Model <- R6::R6Class(
     get_coefficients = function(){
       lmermodel <- "linear_model"
       modelProteinF <- get_complete_model_fit(self$modelDF)
-      # modelProteinF <- modelProteinF %>% dplyr::filter(nrcoef == max(nrcoef))
       # Extract coefficients
       .coef_df <-  function(x){
         x <- coef(summary(x));
         x <- data.frame(factor = row.names(x), x);
         return(x)
       }
-      Model_Coeff <- modelProteinF %>%
+      Model_Coeff <- modelProteinF |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
-      Model_Coeff <- Model_Coeff %>%
+      Model_Coeff <- Model_Coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
       Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
       return(Model_Coeff)
@@ -130,16 +129,16 @@ Model <- R6::R6Class(
         return(x)
       }
 
-      Model_Anova <- modelProteinF %>% dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
+      Model_Anova <- modelProteinF |> dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
 
-      Model_Anova <- Model_Anova %>%
+      Model_Anova <- Model_Anova |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
       Model_Anova <- tidyr::unnest_legacy(Model_Anova)
 
 
 
-      Model_Anova <- Model_Anova %>% dplyr::filter(factor != "Residuals")
-      Model_Anova <- Model_Anova %>% dplyr::filter(factor != "NULL")
+      Model_Anova <- Model_Anova |> dplyr::filter(factor != "Residuals")
+      Model_Anova <- Model_Anova |> dplyr::filter(factor != "NULL")
 
       Model_Anova <- self$p.adjust(Model_Anova,
                                    column = "Pr..F.",
@@ -177,8 +176,8 @@ Model <- R6::R6Class(
       Model_Coeff <- self$get_coefficients()
       Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
       fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
-      VolcanoPlot <- Model_Coeff %>%
-        dplyr::filter(factor != "(Intercept)") %>%
+      VolcanoPlot <- Model_Coeff |>
+        dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroupVolcano(
           effect = "Estimate",
           p.value = "Pr...t..",
@@ -194,8 +193,8 @@ Model <- R6::R6Class(
       Model_Coeff <- self$get_coefficients()
       Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
       ## Coef_Pairsplot
-      forPairs <- Model_Coeff %>%
-        dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) %>%
+      forPairs <- Model_Coeff |>
+        dplyr::select(!!sym("subject_Id") , factor ,  Estimate ) |>
         tidyr::spread(factor, Estimate )
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName,".pdf")
       #Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
@@ -210,7 +209,7 @@ Model <- R6::R6Class(
       what <- match.arg(what)
       Model_Anova <- self$get_anova()
       fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
-      histogram_anova_p.values <-  Model_Anova %>%
+      histogram_anova_p.values <-  Model_Anova |>
         ggplot( aes(x = !!sym(what), group = factor)) +
         geom_histogram(breaks = seq(0,1,by = 0.05)) +
         facet_wrap(~factor)
@@ -271,13 +270,13 @@ LR_test <- function(modelProteinF,
   reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
                            dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by = subject_Id)
 
-  reg <- reg %>% dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
+  reg <- reg |> dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
                                                                          !!sym("linear_model.y"),
                                                                          .likelihood_ratio_test ))
-  likelihood_ratio_test_result <- reg %>%
-    dplyr::select(!!sym(subject_Id), .data$modelComparisonLikelihoodRatioTest) %>%
+  likelihood_ratio_test_result <- reg |>
+    dplyr::select(!!sym(subject_Id), .data$modelComparisonLikelihoodRatioTest) |>
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
-  likelihood_ratio_test_result <- likelihood_ratio_test_result %>%
+  likelihood_ratio_test_result <- likelihood_ratio_test_result |>
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
 

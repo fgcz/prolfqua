@@ -7,11 +7,15 @@
 #' @param idcol columns to extrac uniprot id's from
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 {
-  map <- df %>% dplyr::select(idcolumn) %>% distinct() %>%
-    dplyr::filter(grepl(pattern = "^sp|^tr", !!sym(idcolumn))) %>%
-    tidyr::separate(col = !!sym(idcolumn), sep = "_", into = c("begin",
-                                                               "end"), remove = FALSE) %>% tidyr::separate(col = !!sym("begin"),
-                                                                                                           sep = "\\|", into = c("prefix", "UniprotID", "Symbol")) %>%
+  map <- df |> dplyr::select(idcolumn) |> distinct() |>
+    dplyr::filter(grepl(pattern = "^sp|^tr", !!sym(idcolumn))) |>
+    tidyr::separate(col = !!sym(idcolumn),
+                    sep = "_",
+                    into = c("begin",
+                             "end"), remove = FALSE) |>
+    tidyr::separate(col = !!sym("begin"),
+                    sep = "\\|",
+                    into = c("prefix", "UniprotID", "Symbol")) |>
     dplyr::select(-!!sym("prefix"), -!!sym("Symbol"), -!!sym("end"))
   res <- dplyr::right_join(map, df, by = idcolumn)
   return(res)
@@ -83,7 +87,7 @@ split2table <- function(names,split="\\||\\_")
 #'
 #' #library(ggrepel)
 #'
-#' show <- prolfqua_data('data_multigroupFC') %>%
+#' show <- prolfqua_data('data_multigroupFC') |>
 #'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
 #' prolfqua::multigroupVolcano(show,
 #' effect="logFC",
@@ -118,7 +122,7 @@ multigroupVolcano <- function(.data,
   if (!is.null(label)) {
     effectX <- misspX[,effect]
     typeX <- misspX[,p.value]
-    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) %>%
+    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) |>
       head(n = maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
       p <- p + ggrepel::geom_text_repel(data = subsetData,
@@ -151,12 +155,12 @@ multigroupVolcano <- function(.data,
                       scales = scales) + labs(y = colname)
   log2FC <- effect
   p <- p + geom_vline(xintercept = xintercept,linetype = "dashed",
-               colour = "red")
+                      colour = "red")
   p_value <- paste0("-log10(",yintercept,")")
   p <- p + geom_hline(aes(yintercept = -log10(yintercept),
-               linetype = p_value),linetype = "dashed",
-               color = "blue",
-               show.legend = FALSE)
+                          linetype = p_value),linetype = "dashed",
+                      color = "blue",
+                      show.legend = FALSE)
   p <- p + theme_light()
 
   return(p)
@@ -192,7 +196,7 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
     } else {
 
       warning("Warning: No row names to preserve. ",
-                     "Object otherwise converted to tibble successfully.")
+              "Object otherwise converted to tibble successfully.")
       tibble::as_tibble(x, ...)
     }
 
@@ -263,8 +267,8 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
     tmp <- my_jackknife( dataX, distmethod, ... )
     x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
     dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
-    ddd <- dd %>%
-      group_by(UQ(sym("row.names")), UQ(sym("col.names"))) %>%
+    ddd <- dd |>
+      group_by(UQ(sym("row.names")), UQ(sym("col.names"))) |>
       summarize_at(c("jcor" = "correlation"), function(x){max(x, na.rm = TRUE)})
 
     dddd <- tidyr::spread(ddd, UQ(sym("col.names")), UQ(sym("jcor"))  )
@@ -291,9 +295,9 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
 #' pairs_w_abline(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
 pairs_w_abline <- function(dataframe,
-                   legend = FALSE,
-                   pch = ".",
-                   ...) {
+                           legend = FALSE,
+                           pch = ".",
+                           ...) {
   pairs(
     dataframe,
     panel = function(x, y) {

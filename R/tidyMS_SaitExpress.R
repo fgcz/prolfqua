@@ -32,7 +32,7 @@ addProteinLengths <- function(
 #' \donttest{
 #'
 #' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' exampleDat <- xx$data %>% dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
+#' exampleDat <- xx$data |> dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #'# sample protein lengths
 #'
 #' tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))

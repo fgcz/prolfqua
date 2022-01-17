@@ -25,7 +25,7 @@ hist(bb)
 data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
 
 data <- adjust_p_values(data)
-Adata <- data \%>\% dplyr::filter(contrast == "A")
+Adata <- data |> dplyr::filter(contrast == "A")
 stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method="BH")))
 data2 <- adjust_p_values(data, group_by_col = NULL)
 stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))

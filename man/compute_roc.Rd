@@ -23,7 +23,7 @@ bb <- prolfqua_data('data_ionstar')$normalized()
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 x <- sample(data$protein_Id,2)
-data <- data \%>\% dplyr::filter(protein_Id \%in\% x)
+data <- data |> dplyr::filter(protein_Id \%in\% x)
 res <- compute_roc(na.omit(data), config)
 i <- 1
 

@@ -12,7 +12,7 @@
 #'
 #'
 #' istar <- prolfqua_data('data_ionstar')$Pep()
-#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #'  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
 #' stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
@@ -49,7 +49,7 @@ filter_proteins_by_peptide_count <-
 #'
 #'
 #' istar <-prolfqua_data('data_ionstar')$Pep()
-#' istar_data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #' tmp <- filter_difference(istar_data, filterPep$data, istar$config)
 #' stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
@@ -83,7 +83,7 @@ filter_difference <- function(x, y, config){
 #'
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
-#' data <- istar$data %>% dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
 #' GRP2 <- list()
 #' GRP2$projectID <- "3765"
@@ -133,7 +133,7 @@ make2grpReport <- function(startdata,
 
 
   adata <- setup_analysis(startdata, config)
-  prot_annot <- select( startdata , c( atable$hierarchy[[atable$hkeysDepth()]], protein_annot)) %>% distinct()
+  prot_annot <- select( startdata , c( atable$hierarchy[[atable$hkeysDepth()]], protein_annot)) |> distinct()
   prot_annot <- rename(prot_annot, !!atable$hkeysDepth() := (!!atable$hierarchy[[atable$hkeysDepth()]]))
 
   lfqdata <- LFQData$new(adata, config)
@@ -206,13 +206,13 @@ make2grpReport <- function(startdata,
 
   GRP2$contrMore <- res$more$get_Plotter()
 
-  top20 <- GRP2$contrResult %>%
+  top20 <- GRP2$contrResult |>
     dplyr::select( !!sym(proteinID ),
                    diff = .data$diff,
                    .data$conf.low,
                    .data$conf.high,
-                   .data$FDR ) %>%
-    arrange(.data$FDR) %>%
+                   .data$FDR ) |>
+    arrange(.data$FDR) |>
     head(20)
   GRP2$top20 <- top20
   #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
@@ -233,7 +233,7 @@ make2grpReport <- function(startdata,
 
   xx <- res$more$contrast_result[rowSums(is.na(res$more$get_contrasts())) > 0,]
   if (nrow(xx) > 1) {
-    xx <- xx %>% arrange(.data$diff)
+    xx <- xx |> arrange(.data$diff)
     GRP2$noPvalEstimate <- ggplot2::ggplot(
       xx ,
       aes(x = stats::reorder(!!sym(proteinID),
@@ -243,11 +243,9 @@ make2grpReport <- function(startdata,
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()
     missingID <- xx[[ proteinID ]]
-    missing$data <- missing$data %>% dplyr::filter(!!sym(proteinID ) %in% missingID)
+    missing$data <- missing$data |> dplyr::filter(!!sym(proteinID ) %in% missingID)
     missing$get_Plotter()$raster()
   }
-
-  ### -----
 
   return(GRP2)
 }
