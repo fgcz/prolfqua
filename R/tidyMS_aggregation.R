@@ -75,7 +75,7 @@ plot_hierarchies_line_default <- function(data,
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, conf)
 #'
-#' nest <- analysis |> group_by(conf$table$hkeysDepth()) |> nest()
+#' nest <- analysis |> group_by(conf$table$hkeysDepth()) |> tidyr::nest()
 #' prolfqua::plot_hierarchies_line(nest$data[[1]],
 #'                                   "DUM",
 #'                                   conf,
