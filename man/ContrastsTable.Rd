@@ -10,7 +10,6 @@ ContrastTable (place holder future baseclass?)
 }
 \examples{
 
-# library(prolfqua)
 bb <- prolfqua_data('data_ionstar')$normalized()
 configur <- bb$config$clone(deep=TRUE)
 configur$table$hierarchyDepth <- 2

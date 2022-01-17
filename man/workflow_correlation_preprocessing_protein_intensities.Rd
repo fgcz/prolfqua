@@ -22,7 +22,7 @@ correlation preprocessing
 }
 \examples{
 
-library(prolfqua)
+
 
 rm(list=ls())
 bb <- prolfqua_data('data_ionstar')$filtered()

@@ -10,7 +10,6 @@ spreadValueVarsIsotopeLabel(resData, config)
 spreads isotope label heavy light into two columns
 }
 \examples{
-library(prolfqua)
 
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

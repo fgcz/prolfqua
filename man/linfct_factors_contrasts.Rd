@@ -10,7 +10,7 @@ linfct_factors_contrasts(m)
 create contrasts between factor levels
 }
 \examples{
-library(prolfqua)
+
 m <- prolfqua_data('data_basicModel_p1807')
 xl <- linfct_factors_contrasts(m)
 xl

@@ -10,7 +10,7 @@ my_glht(model, linfct, sep = TRUE)
 apply multcomp::glht method to linfct
 }
 \examples{
-library(prolfqua)
+
 mb <- prolfqua_data('data_basicModel_p1807')
 linfct <- linfct_from_model(mb)
 names(linfct)

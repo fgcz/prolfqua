@@ -37,8 +37,8 @@ analysis <- istar$data
 conf$table$hierarchyDepth
 conf$table$hkeysDepth()
 
-xnested <- analysis \%>\%
- group_by_at(conf$table$hkeysDepth()) \%>\% tidyr::nest()
+xnested <- analysis |>
+ group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
 
 #debug(plot_hierarchies_boxplot)
 p <- plot_hierarchies_boxplot(xnested$data[[3]],
@@ -67,7 +67,7 @@ res <- plot_hierarchies_boxplot_df(data, config)
 res$boxplot[[1]]
 
 hierarchy = config$table$hkeysDepth()
-xnested <- data \%>\% dplyr::group_by_at(hierarchy) \%>\% tidyr::nest()
+xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
 p
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)

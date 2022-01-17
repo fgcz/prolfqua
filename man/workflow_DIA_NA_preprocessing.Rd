@@ -25,7 +25,7 @@ filter QVAlues and NA's and factor information
 }
 \examples{
 
-library(prolfqua)
+
 
 rm(list=ls())
 bb <- prolfqua_data('data_ionstar')$filtered()

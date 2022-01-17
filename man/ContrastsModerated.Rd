@@ -10,7 +10,6 @@ Limma moderated contrasts
 }
 \examples{
 
-library(prolfqua)
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
@@ -35,7 +34,7 @@ mod <- build_model(
  plotter$ma_plot()
  plotter$volcano()
 
-#bb \%>\% dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
+#bb |> dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
 }
 \seealso{
 \code{\link{moderated_p_limma_long}}

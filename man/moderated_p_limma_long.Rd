@@ -21,7 +21,7 @@ Moderate p-value for long table
 }
 \examples{
 
-library(prolfqua)
+
 modelSummary_A <- prolfqua_data('data_modellingResult_A')
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
