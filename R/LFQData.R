@@ -253,8 +253,8 @@ LFQData <- R6::R6Class(
   return(list(stats = GRP2, distinctprotid = distinctprotid))
 }
 
-# LFQDataProtein ----
-#' Expends LFQData with some protein specific functions.
+# RowAnnotProtein ----
+#' Decorates LFQData with a row annotation and some protein specific functions.
 #'
 #' @export
 #' @family LFQData
@@ -263,7 +263,7 @@ LFQData <- R6::R6Class(
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQDataProtein$new( data, istar$config )
+#' lfqdata <- RowAnnotProtein$new( LFQData$new(data, istar$config) )
 #'
 #' lfqdata$annotateREV()
 #' lfqdata$annotateCON()
@@ -279,8 +279,7 @@ RowAnnotProtein <-
             #' @field row_annot data.frame containing further information
             row_annot = NULL,
             #' @description initialize
-            #' @param data data frame from \code{\link{setup_analysis}}
-            #' @param config \code{\link{AnalysisConfiguration}}
+            #' @param lfqdata data frame from \code{\link{setup_analysis}}
             #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
             initialize = function(lfqdata, row_annot){
               if (!missing(row_annot)) {

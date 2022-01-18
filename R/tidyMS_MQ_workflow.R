@@ -153,20 +153,20 @@ make2grpReport <- function(startdata,
   }
 
 
-  protAnnot <- LFQDataProtein$new(
+  protAnnot <- RowAnnotProtein$new(
     transformed,
     row_annot = prot_annot)
 
   allProt <- nrow( transformed$row_annot )
   GRP2$totalNrOfProteins <- allProt
-  GRP2$percentOfContaminants <- round(transformed$annotateREV(revpattern)/allProt * 100 , digits = 2)
-  GRP2$percentOfFalsePositives  <- round(transformed$annotateCON(contpattern)/allProt * 100 , digits = 2)
-  GRP2$NrOfProteinsNoDecoys <- transformed$nr_clean()
+  GRP2$percentOfContaminants <- round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2)
+  GRP2$percentOfFalsePositives  <- round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2)
+  GRP2$NrOfProteinsNoDecoys <- protAnnot$nr_clean()
 
   if (remove) {
     message("REMOVING: contaminants and reverse sequences")
-    lfqdata <- lfqdata$get_subset(transformed$clean())
-    transformed <- transformed$lfqdata$get_subset(transformed$clean())
+    lfqdata <- lfqdata$get_subset(protAnnot$clean())
+    transformed <- transformed$get_subset(protAnnot$clean())
   }
 
 

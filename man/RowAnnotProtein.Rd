@@ -2,18 +2,18 @@
 % Please edit documentation in R/LFQData.R
 \name{RowAnnotProtein}
 \alias{RowAnnotProtein}
-\title{Expends LFQData with some protein specific functions.}
+\title{Decorates LFQData with a row annotation and some protein specific functions.}
 \description{
-Expends LFQData with some protein specific functions.
+Decorates LFQData with a row annotation and some protein specific functions.
 
-Expends LFQData with some protein specific functions.
+Decorates LFQData with a row annotation and some protein specific functions.
 }
 \examples{
 
 istar <- prolfqua_data('data_ionstar')$filtered()
 
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- LFQDataProtein$new( data, istar$config )
+lfqdata <- RowAnnotProtein$new( LFQData$new(data, istar$config) )
 
 lfqdata$annotateREV()
 lfqdata$annotateCON()
@@ -63,11 +63,9 @@ initialize
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{lfqdata}}{data frame from \code{\link{setup_analysis}}}
+
 \item{\code{row_annot}}{data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}}
-
-\item{\code{data}}{data frame from \code{\link{setup_analysis}}}
-
-\item{\code{config}}{\code{\link{AnalysisConfiguration}}}
 }
 \if{html}{\out{</div>}}
 }
