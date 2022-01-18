@@ -1002,7 +1002,7 @@ contrasts_linfct <- function(models,
 moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95){
   sv <- limma::squeezeVar(mm$sigma^2, df = mm[[df]],robust = robust)
   sv <- tibble::as_tibble(sv)
-  sv <- sv |> setNames(paste0('moderated.', names(.)))
+  sv <- setNames(sv, paste0('moderated.', names(sv)))
   mm <- dplyr::bind_cols(mm, sv)
   mm <- mm |> dplyr::mutate(moderated.statistic  =  .data$statistic * .data$sigma /  sqrt(.data$moderated.var.post))
   mm <- mm |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
