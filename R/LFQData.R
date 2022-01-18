@@ -284,7 +284,7 @@ RowAnnotProtein <-
             #' @param lfqdata data frame from \code{\link{setup_analysis}}
             #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
             initialize = function(lfqdata, row_annot){
-              stopifnot(istar$config$table$hierarchyDepth == 1)
+              stopifnot(lfqdata$config$table$hierarchyDepth == 1)
 
               self$pID = lfqdata$config$table$hkeysDepth()
               if (!missing(row_annot)) {
