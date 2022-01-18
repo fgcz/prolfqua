@@ -19,7 +19,7 @@ Compute nr of B per A
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
-data <- bb$data |> select(-all_of("nr_peptide_Id_IN_protein_Id"))
+data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
 hierarchy <- config$table$hierarchyKeys()
 res <- nr_B_in_A(data, config)
 
