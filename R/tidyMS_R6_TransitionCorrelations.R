@@ -767,7 +767,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' res <- rankPrecursorsByIntensity(res,config)
 #' X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-#' X |> arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
+#' X |> dplyr::arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
 rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
