@@ -162,6 +162,7 @@ make2grpReport <- function(startdata,
   GRP2$percentOfContaminants <- round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2)
   GRP2$percentOfFalsePositives  <- round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2)
   GRP2$NrOfProteinsNoDecoys <- protAnnot$nr_clean()
+  GRP2$rowAnnot <- protAnnot
 
   if (remove) {
     message("REMOVING: contaminants and reverse sequences")
@@ -262,9 +263,10 @@ write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
   dir.create(outpath)
   rd <- GRP2$lfqData
   tr <- GRP2$transformedlfqData
-  wideraw <- inner_join(tr$row_annot, rd$to_wide()$data)
-  widetr <- inner_join(tr$row_annot , tr$to_wide()$data )
-  ctr <- inner_join(tr$row_annot , GRP2$contrResult )
+  ra <- GRP2$rowAnnot
+  wideraw <- inner_join(ra$row_annot, rd$to_wide()$data)
+  widetr <- inner_join(ra$row_annot , tr$to_wide()$data )
+  ctr <- inner_join(ra$row_annot , GRP2$contrResult )
   resultList <- list()
   resultList$annotation = tr$to_wide()$annot
   resultList$raw_data = wideraw

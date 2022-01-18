@@ -766,7 +766,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' #debug(rankPrecursorsByIntensity)
 #' res <- rankPrecursorsByIntensity(res,config)
 #' X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
-#'  srm_meanInt, srm_meanIntRank)) |> distinct()
+#'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
 #' X |> arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
 rankPrecursorsByIntensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
@@ -841,7 +841,7 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' data <- removeLarge_Q_Values(data, config)
 #' hierarchy_counts(data, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
-#' data1 <-complete_cases(data, config)
+#' data1 <- complete_cases(data, config)
 #' hierarchy_counts(res, config)
 #' summarize_hierarchy(res,config) |>
 #'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
