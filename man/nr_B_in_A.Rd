@@ -25,7 +25,7 @@ res <- nr_B_in_A(data, config)
 
 res$data |>
   dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) |>
-  distinct() |>
+  dplyr::distinct() |>
   dplyr::pull() |> table()
 
 

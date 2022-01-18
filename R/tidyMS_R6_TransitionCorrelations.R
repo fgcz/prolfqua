@@ -651,7 +651,7 @@ impute_correlationBased <- function(x , config){
 #'
 #' res$data |>
 #'   dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) |>
-#'   distinct() |>
+#'   dplyr::distinct() |>
 #'   dplyr::pull() |> table()
 #'
 #'
@@ -802,11 +802,11 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' colnames(res)
 #' x <- res |>
 #'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
-#'   distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
+#'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 #' res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
-#'  distinct() |>
-#'  arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
+#'  dplyr::distinct() |>
+#'  dplyr::arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 rankPrecursorsByNAs <- function(pdata, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
