@@ -24,7 +24,7 @@ data <- bb$data
 
 xx <- table_factors(data,config )
 xx
-xx |> dplyr::group_by(!!!syms(config$table$factorKeys())) |>
+xx |> dplyr::group_by(!!!rlang::syms(config$table$factorKeys())) |>
  dplyr::summarize(n = n())
 
 }

@@ -31,6 +31,6 @@ x <- res |>
 stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
 res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
  dplyr::distinct() |>
- dplyr::arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
+ dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 }
 \keyword{internal}

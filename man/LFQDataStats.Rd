@@ -104,7 +104,7 @@ Other LFQData:
 \subsection{Method \code{new()}}{
 create analyse variances and CV
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata, stats = c("interaction", "all", "pooled"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata, stats = c("everything", "interaction", "all"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

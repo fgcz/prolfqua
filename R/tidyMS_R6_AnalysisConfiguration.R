@@ -446,7 +446,7 @@ sample_subset <- function(size, pdata, config){
 #'
 #' xx <- table_factors(data,config )
 #' xx
-#' xx |> dplyr::group_by(!!!syms(config$table$factorKeys())) |>
+#' xx |> dplyr::group_by(!!!rlang::syms(config$table$factorKeys())) |>
 #'  dplyr::summarize(n = n())
 #'
 table_factors <- function(pdata, configuration){

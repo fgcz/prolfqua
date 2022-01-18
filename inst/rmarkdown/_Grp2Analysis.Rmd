@@ -50,20 +50,19 @@ The following analysis compares protein intensities recorded in two groups of sa
 
 The protein identification and quantification were performed using `r grp2$Software`. The outputs are available in b-fabric [`r GRP2$inputID`](`r GRP2$inputURL`).
 
-We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated p-values_ [@Smyth2004] for all proteins quantified.
+We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified.
 
 ## Experiment summary
 
-This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`, order `r grp2$orderID`, with the workunit name `r grp2$workunitID`.
+This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`, order `r grp2$orderID`, `r if(!is.null(grp2$workunitID)){ "with the workunit name :" }`  `r grp2$workunitID`.
 
 
 The protein matrix is filtered using the following threshold:
+- Minimum number of peptides / protein: `r grp2$nrPeptides`.
 
-- Minimum number of peptides / protein: `r grp2$nrPeptides`
+
 - The total number of proteins in this experiment is: `r grp2$totalNrOfProteins` 
 - Total number without decoys sequences is `r grp2$NrOfProteinsNoDecoys` 
-
-
 - Percentage of contaminants : `r grp2$percentOfContaminants` %
 - Percentage of false positives : `r grp2$percentOfFalsePositives` %
 
@@ -97,7 +96,6 @@ The input matrix has the following structure (Figure \@ref(fig:overview)).
 
 # Quality Control
 
-
 ## Missing Data and Intensity Distribution
 
 Figure \@ref(fig:missingValuesPerProtein) A shows the number of proteins (y) axis with $0-N$ missing values (x - axis), while
@@ -120,14 +118,14 @@ gridExtra::grid.arrange(p1,p2, nrow=1)
 progress(0.1, "Summary")
 ```
 
-Shown in Figure \@ref(fig:distributionRaw) are the distributions of raw log2 transformed protein intensity values for each sample. Ideally the violins should look very similar (have the same shape and span the same range).
+Shown in Figure \@ref(fig:distributionRaw) are the distributions of raw log2 transformed protein intensity values for each sample. Ideally the violins should look very similar (have the same shape and span the same intensity range).
 
 ```{r distributionRaw, fig.width=8, fig.height=5, fig.cap="Violin plots for quantifyable proteins (log2 transformed)", eval= TRUE}
-pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 ```
 
-In Figure \@ref(fig:scaling) the log2 fold change of the average sample intensity versus the mean average intensity of all samples is shown. It is getting critical if a samples average deviates more than 5 times (linear scale) from the average of all samples.
+In Figure \@ref(fig:scaling) the $\log_2$ fold change of the average sample intensity versus the mean average intensity of all samples is shown. It is critical if a samples average deviates more than 5 times from the average of all samples (linear scale).
 
 ```{r  scaling,dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
 xb <- grp2$lfqData$data |> 
@@ -153,7 +151,7 @@ progress(0.2, "Normalization")
 
 ## Normalization
 
-Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. To do this the z-score of the log2 transformed intensities is computed, which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have a similar distribution.
+Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. To do this the z-score of the log2 transformed intensities is computed, which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have an equal mean and variance and a similar distribution.
 
 
 ```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="Violin plots of normalized protein intensity values (z-score)", eval=TRUE}
@@ -165,16 +163,14 @@ pl$intensity_distribution_violin() +
 \pagebreak
 
 
-The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations for all proteins in each condition and overall computed on not normalized data. To observe differences between conditions the variation within a condition should ideally be smaller than within all conditions.
+The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations (CV) for all proteins in each condition and overall computed on not normalized data. To observe differences between conditions the variation within a condition should ideally be smaller than within all conditions.
 
 
 ```{r CViolin, eval=FALSE}
 
 ```
 
-
-
-The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
+The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations (sd) for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
 
 ```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within condition and overall, Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and overall", eval=TRUE}
 

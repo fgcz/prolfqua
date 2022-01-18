@@ -563,16 +563,21 @@ LFQDataStats <- R6::R6Class(
     #' create analyse variances and CV
     #' @param lfqdata LFQData object
     #' @param stats if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)
-    initialize = function(lfqdata, stats = c("interaction", "all" ,"pooled")){
+    initialize = function(lfqdata, stats = c("everything", "interaction", "all")){
       stats <- match.arg(stats)
       self$lfq = lfqdata
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
       if (stats == "interaction" ) {
         self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
       } else if (stats == "all" ) {
-        self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
-      } else if (stats == "pooled" ) {
-        self$statsdf <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+        self$statsdf <-
+          prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+      } else if (stats == "everything" ) {
+
+        self$statsdf <- bind_rows(
+          prolfqua::summarize_stats(self$lfq$data, self$lfq$config),
+          prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+          )
       }
     },
     #' @description
