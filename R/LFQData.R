@@ -263,13 +263,14 @@ LFQData <- R6::R6Class(
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- RowAnnotProtein$new( LFQData$new(data, istar$config) )
+#' lfqdata <- LFQData$new(data, istar$config)
+#' pannot <- RowAnnotProtein$new( lfqdata )
 #'
-#' lfqdata$annotateREV()
-#' lfqdata$annotateCON()
+#' pannot$annotateREV()
+#' pannot$annotateCON()
 #'
-#' lfqdata$nr_clean()
-#' dd <- lfqdata$clean()
+#' pannot$nr_clean()
+#' dd <- pannot$clean()
 #' tmp <- lfqdata$get_subset(dd)
 #' tmp$complete_cases()
 #'
@@ -278,24 +279,27 @@ RowAnnotProtein <-
           public = list(
             #' @field row_annot data.frame containing further information
             row_annot = NULL,
+            pID = character(),
             #' @description initialize
             #' @param lfqdata data frame from \code{\link{setup_analysis}}
             #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
             initialize = function(lfqdata, row_annot){
+              stopifnot(istar$config$table$hierarchyDepth == 1)
+
+              self$pID = lfqdata$config$table$hkeysDepth()
               if (!missing(row_annot)) {
-                stopifnot(lfqdata$config$table$hkeysDepth() %in% colnames(row_annot))
+                stopifnot(self$pID %in% colnames(row_annot))
                 self$row_annot <- row_annot
               } else {
-                self$row_annot <- distinct(select(lfqdata$data,config$table$hkeysDepth()))
+                self$row_annot <- distinct(select(lfqdata$data,self$pID))
               }
             },
             #' @description
             #' annotate rev sequences
             #' @param pattern default "REV_"
             annotateREV = function(pattern = "REV_") {
-              pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot |> mutate(
-                REV = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
+                REV = case_when(grepl(pattern, !!sym(self$pID)) ~ TRUE,
                                          TRUE ~ FALSE))
 
               return(sum(self$row_annot$REV))
@@ -304,9 +308,8 @@ RowAnnotProtein <-
             #' annotate contaminants
             #' @param pattern default "^zz|^CON"
             annotateCON = function(pattern = "^zz|^CON") {
-              pID <- self$config$table$hkeysDepth()
               self$row_annot <- self$row_annot |> mutate(
-                CON = case_when(grepl(pattern, !!sym(pID)) ~ TRUE,
+                CON = case_when(grepl(pattern, !!sym(self$pID)) ~ TRUE,
                                 TRUE ~ FALSE))
               return(sum(self$row_annot$CON))
             },

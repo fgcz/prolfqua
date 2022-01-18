@@ -157,7 +157,7 @@ make2grpReport <- function(startdata,
     transformed,
     row_annot = prot_annot)
 
-  allProt <- nrow( transformed$row_annot )
+  allProt <- nrow( protAnnot$row_annot )
   GRP2$totalNrOfProteins <- allProt
   GRP2$percentOfContaminants <- round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2)
   GRP2$percentOfFalsePositives  <- round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2)

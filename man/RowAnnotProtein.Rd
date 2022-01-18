@@ -13,13 +13,14 @@ Decorates LFQData with a row annotation and some protein specific functions.
 istar <- prolfqua_data('data_ionstar')$filtered()
 
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- RowAnnotProtein$new( LFQData$new(data, istar$config) )
+lfqdata <- LFQData$new(data, istar$config)
+pannot <- RowAnnotProtein$new( lfqdata )
 
-lfqdata$annotateREV()
-lfqdata$annotateCON()
+pannot$annotateREV()
+pannot$annotateCON()
 
-lfqdata$nr_clean()
-dd <- lfqdata$clean()
+pannot$nr_clean()
+dd <- pannot$clean()
 tmp <- lfqdata$get_subset(dd)
 tmp$complete_cases()
 
