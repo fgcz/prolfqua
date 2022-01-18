@@ -29,10 +29,10 @@ sum$plot_missingness_per_condition_cumsum()
 \seealso{
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
-\code{\link{LFQDataProtein}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQData}}
+\code{\link{LFQData}},
+\code{\link{RowAnnotProtein}}
 }
 \concept{LFQData}
 \section{Public fields}{

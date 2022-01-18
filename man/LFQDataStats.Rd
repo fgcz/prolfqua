@@ -65,10 +65,10 @@ runallfuncs(lfqstats)
 \seealso{
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
-\code{\link{LFQDataProtein}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQData}}
+\code{\link{LFQData}},
+\code{\link{RowAnnotProtein}}
 }
 \concept{LFQData}
 \section{Public fields}{

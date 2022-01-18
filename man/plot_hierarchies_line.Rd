@@ -41,7 +41,7 @@ bb <- prolfqua_data('data_skylineSRM_HL_A')
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 
-nest <- analysis |> group_by(conf$table$hkeysDepth()) |> tidyr::nest()
+nest <- analysis |> dplyr::group_by(conf$table$hkeysDepth()) |> tidyr::nest()
 prolfqua::plot_hierarchies_line(nest$data[[1]],
                                   "DUM",
                                   conf,

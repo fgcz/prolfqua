@@ -35,10 +35,10 @@ stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
 \seealso{
 Other LFQData: 
 \code{\link{LFQDataPlotter}},
-\code{\link{LFQDataProtein}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{RowAnnotProtein}}
 }
 \concept{LFQData}
 \section{Public fields}{

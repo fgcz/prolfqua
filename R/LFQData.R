@@ -273,9 +273,8 @@ LFQData <- R6::R6Class(
 #' tmp <- lfqdata$get_subset(dd)
 #' tmp$complete_cases()
 #'
-LFQDataProtein <-
-  R6::R6Class("LFQDataProtein",
-          inherit = LFQData,
+RowAnnotProtein <-
+  R6::R6Class("RowAnnotProtein",
           public = list(
             #' @field row_annot data.frame containing further information
             row_annot = NULL,
@@ -283,13 +282,12 @@ LFQDataProtein <-
             #' @param data data frame from \code{\link{setup_analysis}}
             #' @param config \code{\link{AnalysisConfiguration}}
             #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
-            initialize = function(data, config, row_annot){
-              super$initialize(data, config)
+            initialize = function(lfqdata, row_annot){
               if (!missing(row_annot)) {
-                stopifnot(config$table$hkeysDepth() %in% colnames(row_annot))
+                stopifnot(lfqdata$config$table$hkeysDepth() %in% colnames(row_annot))
                 self$row_annot <- row_annot
               } else {
-                self$row_annot <- distinct(select(data,config$table$hkeysDepth()))
+                self$row_annot <- distinct(select(lfqdata$data,config$table$hkeysDepth()))
               }
             },
             #' @description

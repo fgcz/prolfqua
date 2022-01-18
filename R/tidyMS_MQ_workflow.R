@@ -153,9 +153,8 @@ make2grpReport <- function(startdata,
   }
 
 
-  transformed <- LFQDataProtein$new(
-    transformed$data,
-    transformed$config,
+  protAnnot <- LFQDataProtein$new(
+    transformed,
     row_annot = prot_annot)
 
   allProt <- nrow( transformed$row_annot )
@@ -167,7 +166,7 @@ make2grpReport <- function(startdata,
   if (remove) {
     message("REMOVING: contaminants and reverse sequences")
     lfqdata <- lfqdata$get_subset(transformed$clean())
-    transformed <- transformed$clean()
+    transformed <- transformed$lfqdata$get_subset(transformed$clean())
   }
 
 
