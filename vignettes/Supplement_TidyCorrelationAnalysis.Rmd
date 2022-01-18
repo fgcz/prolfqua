@@ -87,8 +87,8 @@ colnames(data$data)
 toremove <- c("EG.TotalQuantity..Settings.",
  "EG.UsedForPeptideQuantity","EG.UsedForProteinGroupQuantity")
 
-dataval <- data$data# %>% select(-all_of(toremove))
-dataval <- dataval %>% dplyr::filter(PG.ProteinAccessions %in% pIDS)
+dataval <- data$data# |> select(-all_of(toremove))
+dataval <- dataval |> dplyr::filter(PG.ProteinAccessions %in% pIDS)
 
 
 setup <- function(data, config){
@@ -140,7 +140,7 @@ Then we remove precursors that do not pass the  `qVal_experiment_threshold`, tha
 
 ```{r}
 config$parameter$qVal_experiment_threshold 
-qvalFilt <- longQSummaries %>% 
+qvalFilt <- longQSummaries |> 
   filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
 prolfqua::hierarchy_counts(qvalFilt, config)
 ```
@@ -151,7 +151,7 @@ The next code snipped computes the number of observed values for each precursor,
 
 ```{r}
 longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
-longQNASummaries <- longQNASummaries %>%
+longQNASummaries <- longQNASummaries |>
   dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(prolfqua::hierarchy_counts(longQNASummaries, config))
 
@@ -192,7 +192,7 @@ mean(xx$srm_decorelated)
 ```
 
 ```{r shownotcorrelated}
-nested <- xx %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
+nested <- xx |> group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
 
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd = 0.2) 
@@ -238,18 +238,18 @@ proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
 
 ```{r doplottingOFProtein}
 # nest transtions
-xnested <- qvalFiltImputed %>% group_by_at(config$table$hkeysDepth()) %>% tidyr::nest()
+xnested <- qvalFiltImputed |> group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
 
 
 plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
 plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
 #plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
-figs3 <- xnested %>% dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchyKeys()[1])),plot_hierarchies_line, config))
+figs3 <- xnested |> dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchyKeys()[1])),plot_hierarchies_line, config))
 figs3
 
-ff <- proteinIntensities %>% 
-  group_by_at(config$table$hierarchyKeys()[1]) %>% 
+ff <- proteinIntensities |> 
+  group_by_at(config$table$hierarchyKeys()[1]) |> 
   tidyr::nest(.key = "topNIntensity")
 
 figs4 <- dplyr::inner_join(figs3,ff, by = config$table$hierarchyKeys()[1])
@@ -259,8 +259,8 @@ plot_hierarchies_add_quantline(figs4$plotlog[[2]], figs4$topNIntensity[[2]], "sr
 plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "srm_mean_na_3", config)
 
 
-nrPep <- qvalFiltImputed %>% 
-  select_at(c(config$table$hierarchyKeys()[1], "nr_peptide_Id_IN_protein_Id")) %>% 
+nrPep <- qvalFiltImputed |> 
+  select_at(c(config$table$hierarchyKeys()[1], "nr_peptide_Id_IN_protein_Id")) |> 
   distinct()
 
 nrPep

@@ -249,10 +249,10 @@ mod$anova_histogram("FDR.Pr..F.")
 aovtable <- mod$get_anova()
 head(aovtable)
 dim(aovtable)
-xx <- aovtable %>% dplyr::filter(FDR.Pr..F. < 0.2)
+xx <- aovtable |> dplyr::filter(FDR.Pr..F. < 0.2)
 dim(xx)
 signif <- transformed$get_copy()
-signif$data <- signif$data %>% dplyr::filter(protein_Id %in% xx$protein_Id)
+signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
 hmSig <- signif$get_Plotter()$heatmap()
 
 ```
@@ -326,7 +326,7 @@ Look at proteins which could not be fitted using the linear model.
 merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
-moreProt$data <- moreProt$data %>% dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)
+moreProt$data <- moreProt$data |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)
 moreProt$get_Plotter()$raster()
 ```
 

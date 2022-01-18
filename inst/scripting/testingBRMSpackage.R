@@ -9,10 +9,10 @@ model <- "~ condition * batch + (1|peptide_Id)"
 data <- summarised$results$pepIntensityNormalized
 config <- summarised$results$config_pepIntensityNormalized
 datacomp <- prolfqua::complete_cases(data, config)
-data <- datacomp %>% rename(condition = condition_, batch = batch_)
+data <- datacomp |> rename(condition = condition_, batch = batch_)
 
 
-data_split <- data %>% dplyr::group_by_at(config$table$hierarchyKeys()[1]) %>% tidyr::nest()
+data_split <- data |> dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()
 
 
 data_split$data[[1]]
@@ -27,7 +27,7 @@ for(i in 1:5){
   res[[i]] <- tmp_i
 }
 
-tmp %>% group_by_at(c("condition","batch")) %>% summarize(nna = sum(is.na(transformedIntensity)))
+tmp |> group_by_at(c("condition","batch")) |> summarize(nna = sum(is.na(transformedIntensity)))
 
 fit1 <- brm_multiple(transformedIntensity ~ condition * batch + (1|peptide_Id),
                      data = res, iter=4000  )

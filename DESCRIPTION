@@ -41,7 +41,6 @@ Imports:
     lme4,
     lmerTest,
     MASS,
-    magrittr,
     multcomp,
     pheatmap,
     plotly,

@@ -25,12 +25,12 @@ analysis <- bb$analysis(bb$data, bb$config_f())
 res <- removeLarge_Q_Values(analysis, config)
 res <- rankPrecursorsByNAs(res,config)
 colnames(res)
-x <- res \%>\%
-  dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") \%>\%
-  distinct() \%>\% dplyr::summarize(sum(srm_NrNotNAs)) \%>\% dplyr::pull()
+x <- res |>
+  dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
+  distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
 stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
-res \%>\% dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) \%>\%
- distinct() \%>\%
+res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
+ distinct() |>
  arrange(!!!syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
 }
 \keyword{internal}

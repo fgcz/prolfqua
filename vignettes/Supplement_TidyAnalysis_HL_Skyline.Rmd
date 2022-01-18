@@ -64,7 +64,7 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 ```{r plotHierarchies, fig.cap="transitions in one plot."}
 proteinIDsymbol <- rlang::sym(skylineconfig$table$hierarchyKeys()[1])
 
-xnested <- resData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
+xnested <- resData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
 plot_hierarchies_line(xnested$data[[2]],
                       xnested$protein_Id[[2]],
                       skylineconfig)
@@ -85,7 +85,7 @@ plot_hierarchies_line(xnested$data[[3]],
 ## Example how to report all proteins.
 
 ```{r  printAllproteins, eval=FALSE}
-figs <- xnested %>%
+figs <- xnested |>
   dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol),
                             plot_hierarchies_line, skylineconfig, separate = TRUE))
 
@@ -107,7 +107,7 @@ rmarkdown::render("tr_srm_summary_HL.Rmd",
 
 ```{r spearateHeavyAndLight}
 HLData <- spreadValueVarsIsotopeLabel(resData, skylineconfig)
-HLData <- HLData %>% dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Area))
+HLData <- HLData |> dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Area))
 HLData$Isotope.Label <- "L/H"
 
 skylineconfigHL <- skylineconfig
@@ -115,7 +115,7 @@ skylineconfigHL$table$workIntensity = "log2L_log2H"
 skylineconfigHL$table$is_intensity_transformed = TRUE
 skylineconfigHL$table$isotopeLabel
 
-xnested <- HLData %>% dplyr::group_by(UQ(proteinIDsymbol)) %>% tidyr::nest()
+xnested <- HLData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
 skylineconfigHL$table$getWorkIntensity()
 
 ```
@@ -124,7 +124,7 @@ skylineconfigHL$table$getWorkIntensity()
 
 ```{r PlotHierarchiesLight}
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
-HLfigs <- xnested %>% dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
+HLfigs <- xnested |> dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
 
 ```
 
@@ -145,7 +145,7 @@ HLfigs3 <- prolfqua::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpoli
 HLfigs3 <- HLfigs3("nested")
 HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hkeysDepth())
 
-p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) %>%
+p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) |>
   plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
 p
 
@@ -153,7 +153,7 @@ p
 
 ```{r writeSummaries ,eval=TRUE}
 
-HLfigs3 <- HLfigs3 %>%
+HLfigs3 <- HLfigs3 |>
   dplyr::mutate(figsMed = purrr::map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 #pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
@@ -164,7 +164,7 @@ invisible(lapply(HLfigs3$figsMed[2:5], print))
 # Get Protein intensities
 
 ```{r plotProteinIntensities, fig.cap="Plot protein intensities"}
-prots <- HLfigs3 %>% dplyr::select(as.character(proteinIDsymbol),  medpolishPly) %>% 
+prots <- HLfigs3 |> dplyr::select(as.character(proteinIDsymbol),  medpolishPly) |> 
   tidyr::unnest(cols = "medpolishPly")
 
 ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +

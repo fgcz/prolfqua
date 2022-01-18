@@ -26,8 +26,8 @@ analysis <- bb$analysis(bb$data, bb$config_f())
 res <- removeLarge_Q_Values(analysis, config)
 #debug(rankPrecursorsByIntensity)
 res <- rankPrecursorsByIntensity(res,config)
-X <-res \%>\% dplyr::select(c(config$table$hierarchyKeys(),
- srm_meanInt, srm_meanIntRank)) \%>\% distinct()
-X \%>\% arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
+X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
+ srm_meanInt, srm_meanIntRank)) |> distinct()
+X |> arrange(!!!syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
 }
 \keyword{internal}

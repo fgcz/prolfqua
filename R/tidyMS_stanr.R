@@ -14,7 +14,7 @@
 ms_mcmc_constrast <- function(model, linfct_A){
   colnames(linfct_A) <- paste0("b_",gsub("[()]","",colnames(linfct_A)))
   my_MCMC_contrast_1 <- function(x,linfct_A){
-    x <- as_tibble(x) %>% dplyr::select(starts_with("b_"))
+    x <- as_tibble(x) |> dplyr::select(starts_with("b_"))
     x <- select_at(x,colnames(linfct_A))
     output <-  coda::mcmc(as.matrix(x) %*% t(linfct_A))
   }
@@ -44,12 +44,12 @@ ms_mcmc_checkzero <- function(x = NULL){
 
 # do not even try to fit if levels are missing
 check_factors_level_coverage <- function(mdata26, fixeff){
-  complete <- mdata26 %>%
-    dplyr::select_at(fixeff) %>%
+  complete <- mdata26 |>
+    dplyr::select_at(fixeff) |>
     dplyr::distinct()
-  omitted <- mdata26 %>%
-    na.omit %>%
-    dplyr::select_at(fixeff) %>%
+  omitted <- mdata26 |>
+    na.omit() |>
+    dplyr::select_at(fixeff) |>
     dplyr::distinct()
   return(nrow(complete) == nrow(omitted))
 }
