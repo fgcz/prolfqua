@@ -39,7 +39,7 @@ tmp <- workflow_DIA_NA_preprocessing(data, config)
 hierarchy_counts(tmp$data, config)
 tmp <- workflow_DIA_NA_preprocessing(data, config, percent=70)
 hierarchy_counts(tmp$data, config)
-stopifnot(FALSE==(dplyr::is_grouped_df(tmp$data)))
+stopifnot(FALSE == (dplyr::is_grouped_df(tmp$data)))
 
 }
 \seealso{

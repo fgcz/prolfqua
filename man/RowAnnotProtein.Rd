@@ -38,6 +38,8 @@ Other LFQData:
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{row_annot}}{data.frame containing further information}
+
+\item{\code{pID}}{column with protein ids}
 }
 \if{html}{\out{</div>}}
 }

@@ -214,7 +214,7 @@ nah <- pl$NA_heatmap()
 phc
 ```
 
-In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on the spearman correlation. Side colors on top of the heatmaps indicate the grouping variables. Figure \@ref(fig:heatmapData) shows the heatmap of the dataset; columns correspond to samples, while rows to proteins. The rows are z-transformed, i.e. each row has the same mean and standard deviation. Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the the expression of a group of proteins and this can be potentially be spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
+In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on the spearman correlation. Side colors on top of the heatmaps indicate the grouping variables. Figure \@ref(fig:heatmapData) shows the heatmap of the dataset; columns correspond to samples, while rows to proteins. The rows are z-transformed, i.e. each row has the same mean and standard deviation. Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the expression of a group of proteins and this can be potentially be spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
 
 
 
@@ -239,7 +239,7 @@ We fit a linear model, which was specified using the following model formula:
 where `<response variable> ~ <explanatory variables>`.
 
 
-Using the linear model we compare the the following two conditions and test for differential expression.
+Using the linear model we compare the following two conditions and test for differential expression.
 
 `r names(grp2$Contrast)` = `r grp2$Contrast`.
 
@@ -248,34 +248,36 @@ The following analysis assumes that most of the proteins are not regulated (most
 Based on the model coefficients, we estimate the difference between the conditions and the variance for each protein, which allows us to compute the t-statistic. Furthermore, using the degrees of freedom, we determine the p-value, i.e., the probability of the type I error, i.e., the error of falsely rejecting the null hypothesis. The null hypothesis is that proteins are not differentially expressed. The right panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. However, when testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
 
 
-Figure \@ref(fig:volcanoplot) plots the $-\log_10(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Table \@ref(tab:nrsignificant) summarizes the number of significant calls while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR. The heatmap (Figure \@ref(fig:siproteins)) shows proteins with an FDR less than `r grp2$FDRthreshold`.
+Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Figure \@ref(fig:MAPlot) shows the difference among the experiments (y-axis) and the average intensity of the protein (x-axis), and e.g., can be used to identify abundant proteins with a large difference.
 
 
-```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "Top : Distribution of log2(FC). red dashed line - median fold change. Bottom left panel - Histogram of moderated p values. Bottom right panel - Histogram of FDR"}
 
+(ref:densityOFFoldChanges) Top : Distribution of differences among experiments. Bottom - histogram of p-values.
+```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
 p1 <- grp2$contrMerged$histogram_diff()
-p2 <- grp2$contrMerged$histogram()$FDR
+p2 <- grp2$contrMerged$histogram()$p.value
 gridExtra::grid.arrange(p1,p2)
 
 ```
 
 \newpage
 
+(ref:volcanoplot) Volcano plot where the x-axis shows the difference among the experiments and the y-axis the $-\log_10(FDR)$.
 
-
-```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="VolcanoPlot : x axis log2 fold change of normalized data, y axis : panel A  -log10(p-value), panel B -log10(q-value)", eval=TRUE}
-
+```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="(ref:volcanoplot)", eval=TRUE}
 grp2$contrMerged$volcano_plotly()$FDR
 
 ```
 
 
-```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="MA plot, x - axis: mean normalized protein intensity, y axis: log2 fold change of normalized data", eval=TRUE}
+(ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the conditions.
 
+```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="(ref:MAPlot)", eval=TRUE}
 grp2$contrMerged$ma_plotly(fc = GRP2$log2FCthreshold)
+
 ```
 
-\clearpage
+Table \@ref(tab:nrsignificant) summarizes the number of significant calls, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
 
 
 ```{r nrsignificant, results="markup", eval=TRUE}
@@ -292,6 +294,12 @@ knitr::kable(x, caption = mycap)
 ```
 
 
+
+```{r top20table, eval=TRUE}
+knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
+```
+
+
 ```{r prepareHeatmap}
 
 significant <- grp2$contrMerged$contrastDF |> dplyr::filter(FDR < grp2$FDRthreshold & abs(diff) > grp2$log2FCthreshold )
@@ -303,19 +311,31 @@ if (nrow(signif$data) > 0) {
 } else {
   showSignificant <- FALSE 
 }
-nrb <- 0
 ```
 
-```{r siproteins, fig.cap="Heatmap of Significant Proteins.", eval = showSignificant}
-sigheat
-```
 
-```{r, eval = showSignificant}
+```{r getBoxplots, eval = showSignificant}
+
 pl <-  signif$get_Plotter()
 bp <- pl$boxplots()$boxplot
 nrb <- min(length(bp), 6)
 bp <- bp[seq_len(nrb)]
 ```
+
+
+```{r makeText, eval = showSignificant, results = 'asis'}
+paste("Furthermore, figure \@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold)
+paste("Figure \@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins.")
+
+```
+
+
+(ref:siproteins) Heatmap showing proteins with FDR < `r grp$FDRthreshold` and diff > `r  grp2$log2FCthreshold`.
+
+```{r siproteins, fig.cap="(ref:siproteins)", eval = showSignificant}
+sigheat
+```
+
 
 (ref:boxplot) Boxplot of `r nrb` significant proteins.
 
@@ -324,13 +344,8 @@ gridExtra::grid.arrange(grobs = bp, ncol = 3)
 ```
 
 
-```{r top20table, eval=TRUE}
-knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
-```
 
-
-```{r CI, fig.cap="Confidence interfals for proteins with 20 smallest FDR.", fig.height=4, fig.width=7, eval=TRUE}
-grp2$top20confint
+```{r}
 existsNoPvalEstimate <- !is.null(grp2$noPvalEstimate)
 plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
   FALSE

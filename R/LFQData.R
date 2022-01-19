@@ -279,6 +279,7 @@ RowAnnotProtein <-
           public = list(
             #' @field row_annot data.frame containing further information
             row_annot = NULL,
+            #' @field pID column with protein ids
             pID = character(),
             #' @description initialize
             #' @param lfqdata data frame from \code{\link{setup_analysis}}
