@@ -329,8 +329,7 @@ paste("Figure \@ref(fig:boxplot) shows the boxplots of ", nrb, " significant pro
 
 ```
 
-
-(ref:siproteins) Heatmap showing proteins with FDR < `r grp$FDRthreshold` and diff > `r  grp2$log2FCthreshold`.
+(ref:siproteins) Heatmap showing proteins with FDR < `r grp2$FDRthreshold` and diff > `r  grp2$log2FCthreshold`.
 
 ```{r siproteins, fig.cap="(ref:siproteins)", eval = showSignificant}
 sigheat
