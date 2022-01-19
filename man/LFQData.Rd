@@ -393,7 +393,7 @@ LFQDataSummarizer
 \subsection{Method \code{get_Stats()}}{
 Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats(stats = c("interaction", "all", "pooled"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats(stats = c("everything", "interaction", "all"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

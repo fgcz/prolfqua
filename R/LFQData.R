@@ -201,7 +201,7 @@ LFQData <- R6::R6Class(
     #' Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
     #' @param stats default interaction, computes statistics within interaction.
     #' @return LFQDataStats
-    get_Stats = function(stats = c("interaction", "all", "pooled")){
+    get_Stats = function(stats = c("everything","interaction", "all")){
       stats <- match.arg(stats)
       return(LFQDataStats$new(self, stats = stats))
     },
@@ -524,6 +524,7 @@ LFQDataTransformer <- R6::R6Class(
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
+#' lfqstats$violin()
 #' runallfuncs(lfqstats)
 #' x<-lfqstats
 #'
@@ -548,7 +549,7 @@ LFQDataTransformer <- R6::R6Class(
 #' # estimates statistics for all samples
 #' lfqstats <- lfqdata$get_Stats(stats = "all")
 #' runallfuncs(lfqstats)
-#' lfqstats <- lfqdata$get_Stats(stats = "pooled")
+#' lfqstats <- lfqdata$get_Stats(stats = "everything")
 #' runallfuncs(lfqstats)
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",

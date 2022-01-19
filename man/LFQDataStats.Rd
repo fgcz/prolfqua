@@ -35,6 +35,7 @@ istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
+lfqstats$violin()
 runallfuncs(lfqstats)
 x<-lfqstats
 
@@ -59,7 +60,7 @@ lfqdata <- LFQData$new(analysis, config)
 # estimates statistics for all samples
 lfqstats <- lfqdata$get_Stats(stats = "all")
 runallfuncs(lfqstats)
-lfqstats <- lfqdata$get_Stats(stats = "pooled")
+lfqstats <- lfqdata$get_Stats(stats = "everything")
 runallfuncs(lfqstats)
 }
 \seealso{
