@@ -172,7 +172,7 @@ The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations
 
 The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations (sd) for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
 
-```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within condition and overall, Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and overall", eval=TRUE}
+```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within conditions and in entire experiment (all), Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and in entire experiment.", eval=TRUE}
 
 stR <- grp2$lfqData$get_Stats()
 p1 <- stR$violin()
@@ -214,11 +214,11 @@ nah <- pl$NA_heatmap()
 phc
 ```
 
-In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on their correlation as well as the protein expression profiles. Side colors on the left side of the heatmaps indicate the groupings.
+In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on the spearman correlation. Side colors on top of the heatmaps indicate the grouping variables. Figure \@ref(fig:heatmapData) shows the heatmap of the dataset; columns correspond to samples, while rows to proteins. The rows are z-transformed, i.e. each row has the same mean and standard deviation. Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the the expression of a group of proteins and this can be potentially be spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
 
 
 
-```{r heatmapData, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of normalized data.", eval=TRUE}
+```{r heatmapData, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of normalized data. Columns - samples, rows - proteins. The intensities of each protein are z-transformed.", eval=TRUE}
 ph
 ```
 
@@ -232,17 +232,23 @@ nah
 
 # Two Group Comparison
 
-The following linear model was fitted:
+We fit a linear model, which was specified using the following model formula:
 
-_`r grp2$formula`_.
+_ `r grp2$formula` _,
+
+where `<response variable> ~ <explanatory variables>`.
 
 
-In the following analysis, it is assumed that most of the proteins are not regulated (most log2 fold change should be around zero). We compare the the following 2 conditions:
+Using the linear model we compare the the following two conditions and test for differential expression.
 
 `r names(grp2$Contrast)` = `r grp2$Contrast`.
 
-P-values and Q-values are a measure of how likely it is to observe the data given the assumption that they are not differentially regulated. Small p-values tell us that $H_0$ (no regulation) is very unlikely. Figure \@ref(fig:densityOFFoldChanges), left panel, shows the distribution of fold changes. Most of the fold changes should be close to zero and also the median of all fold changes (red dashed line) should be close to zero (green line).
+The following analysis assumes that most of the proteins are not regulated (most differences between the two conditions should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), left panel, shows the distribution of fold changes. Again, most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
 
+Based on the model coefficients, we estimate the difference between the conditions and the variance for each protein, which allows us to compute the t-statistic. Furthermore, using the degrees of freedom, we determine the p-value, i.e., the probability of the type I error, i.e., the error of falsely rejecting the null hypothesis. The null hypothesis is that proteins are not differentially expressed. The right panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. However, when testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
+
+
+Figure \@ref(fig:volcanoplot) plots the $-\log_10(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Table \@ref(tab:nrsignificant) summarizes the number of significant calls while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR. The heatmap (Figure \@ref(fig:siproteins)) shows proteins with an FDR less than `r grp2$FDRthreshold`.
 
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "Top : Distribution of log2(FC). red dashed line - median fold change. Bottom left panel - Histogram of moderated p values. Bottom right panel - Histogram of FDR"}
@@ -255,7 +261,6 @@ gridExtra::grid.arrange(p1,p2)
 
 \newpage
 
-If samples in both groups differ on protein level we expect more small p-values than by chance (Figure \@ref(fig:densityOFFoldChanges) right panel blue horizontal line). If there are only as many or less small p-values as by chance than no significant false discovery rate controlled calls (q-values) will be made in Figure \@ref(fig:volcanoplot). Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Table \@ref(tab:nrsignificant) summarizes the number of significant calls while \@ref(tab:top20table) lists the 20 proteins with the smallest moderated q-values. The heatmap (Figure \@ref(fig:siproteins)) shows all significant proteins.
 
 
 ```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="VolcanoPlot : x axis log2 fold change of normalized data, y axis : panel A  -log10(p-value), panel B -log10(q-value)", eval=TRUE}
