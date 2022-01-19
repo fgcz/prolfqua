@@ -199,7 +199,6 @@ progress(0.1, "CVs")
 
 ```
 
-\pagebreak
 
 ## Clustering for Samples and Proteins
 
@@ -227,7 +226,6 @@ nah
 ```
 
 
-\pagebreak
 
 
 # Two Group Comparison
@@ -251,8 +249,9 @@ Based on the model coefficients, we estimate the difference between the conditio
 Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Figure \@ref(fig:MAPlot) shows the difference among the experiments (y-axis) and the average intensity of the protein (x-axis), and e.g., can be used to identify abundant proteins with a large difference.
 
 
-
 (ref:densityOFFoldChanges) Top : Distribution of differences among experiments. Bottom - histogram of p-values.
+
+
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
 p1 <- grp2$contrMerged$histogram_diff()
 p2 <- grp2$contrMerged$histogram()$p.value
@@ -302,15 +301,21 @@ knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
 
 ```{r prepareHeatmap}
 
-significant <- grp2$contrMerged$contrastDF |> dplyr::filter(FDR < grp2$FDRthreshold & abs(diff) > grp2$log2FCthreshold )
+significant <- grp2$contrMerged$contrastDF |>
+  dplyr::filter(.data$FDR < grp2$FDRthreshold & abs(.data$diff) > grp2$log2FCthreshold )
+
 signif <- grp2$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
 showSignificant <- TRUE
+
 if (nrow(signif$data) > 0) {
   sigheat <- signif$get_Plotter()$raster()
 } else {
   showSignificant <- FALSE 
 }
+
+nrb <- 0
+
 ```
 
 
@@ -354,10 +359,14 @@ plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
   
 ```
 
-`r if(plotMissing){"Figure \\@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions. The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset."}else{""}`
+```{r makeTextImputed, eval = plotMissing, results = 'asis' }
+paste("Figure \@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions.",
+"The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset.")
+
+```
 
 
-```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height=10, eval = plotMissing, eval = FALSE}
+```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height = 10, eval = plotMissing}
 grp2$imputedProteins$get_Plotter()$raster()
 ```
 
