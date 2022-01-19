@@ -26,7 +26,6 @@ fig.height = 10
 ```{r loadLibs}
 rm(list = ls())
 library(conflicted)
-#library(tidyverse)
 library(prolfqua)
 ```
 

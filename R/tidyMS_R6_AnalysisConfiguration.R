@@ -447,7 +447,7 @@ sample_subset <- function(size, pdata, config){
 #' xx <- table_factors(data,config )
 #' xx
 #' xx |> dplyr::group_by(!!!rlang::syms(config$table$factorKeys())) |>
-#'  dplyr::summarize(n = n())
+#'  dplyr::summarize(n = dplyr::n())
 #'
 table_factors <- function(pdata, configuration){
   factorsTab <- pdata |> dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factorKeys())) |>

@@ -22,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 # Model Fitting
 
 ```{r specifyModel}
-#library(tidyverse)
 conflicted::conflict_prefer("filter", "dplyr")
 
 data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
