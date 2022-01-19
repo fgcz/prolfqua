@@ -240,6 +240,9 @@ Using the linear model we compare the following two conditions and test for diff
 
 `r names(grp2$Contrast)` = `r grp2$Contrast`.
 
+For some of the proteins the linear model can not be fitted because there are no observations in one of the conditions. Assuming that the observation are missing in a condition because the protein abundance is below the limit of detection, we impute the unobserved condition average using the mean of $1\%$ smallest group averages in the sample. 
+The proteins for which a linear model can be fitted are labelled with `Linear_Model_Moderated`, while those proteins were we imputed the missing group mean are labelled with `Imputed_Condition_Mean`.
+
 The following analysis assumes that most of the proteins are not regulated (most differences between the two conditions should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), left panel, shows the distribution of fold changes. Again, most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
 
 Based on the model coefficients, we estimate the difference between the conditions and the variance for each protein, which allows us to compute the t-statistic. Furthermore, using the degrees of freedom, we determine the p-value, i.e., the probability of the type I error, i.e., the error of falsely rejecting the null hypothesis. The null hypothesis is that proteins are not differentially expressed. The right panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. However, when testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
@@ -327,8 +330,9 @@ bp <- bp[seq_len(nrb)]
 
 
 ```{r makeText, eval = showSignificant, results = 'asis'}
-paste("Furthermore, figure \@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold)
-paste("Figure \@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins.")
+
+cat(paste("Furthermore, figure \@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold, ".") ,
+paste("Figure \@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
 
 ```
 
@@ -358,8 +362,7 @@ plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
 ```
 
 ```{r makeTextImputed, eval = plotMissing, results = 'asis' }
-paste("Figure \\@ref(fig:imputedProt) shows Proteins for which we used missing value imputation because there are no observation in one of the conditions.",
-"The missing group average we substitute by the mean of 10% smallest protein group averages in the dataset.")
+cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which no t-statistic could be estimated, because there are to few observations."))
 
 ```
 

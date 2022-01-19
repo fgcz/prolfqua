@@ -10,8 +10,6 @@ plot contrasts
 }
 \examples{
 
-
-
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "Model"
@@ -38,7 +36,7 @@ mod <- build_model(
 contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
-#Contrasts_Plotter$debug("score_plot")
+Contrasts_Plotter$debug("histogram_estimate")
 
 
 cp <- Contrasts_Plotter$new(tmp ,
@@ -50,7 +48,8 @@ score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
 p <- cp$score_plot(legend=FALSE)
 cp$score_plotly()
 p <- cp$histogram()
-p <- cp$histogram_diff()
+p <- cp$histogram_estimate()
+
 res <- cp$volcano()
 length(res)
 res

@@ -949,8 +949,6 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
-#'
-#'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
@@ -977,7 +975,7 @@ ContrastsTable <- R6::R6Class(
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
-#' #Contrasts_Plotter$debug("score_plot")
+#' Contrasts_Plotter$debug("histogram_estimate")
 #'
 #'
 #' cp <- Contrasts_Plotter$new(tmp ,
@@ -989,7 +987,8 @@ ContrastsTable <- R6::R6Class(
 #' p <- cp$score_plot(legend=FALSE)
 #' cp$score_plotly()
 #' p <- cp$histogram()
-#' p <- cp$histogram_diff()
+#' p <- cp$histogram_estimate()
+#'
 #' res <- cp$volcano()
 #' length(res)
 #' res
@@ -1075,7 +1074,15 @@ Contrasts_Plotter <- R6::R6Class(
       re <- range(self$contrastDF[[self$estimate]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
-      fig <- private$.histogram(score = list(score =  self$estimate, xlim = c(re,binwidth)))
+
+      fig <- ggplot(self$contrastDF, aes(x = !!sym(self$estimate))) +
+        geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
+        geom_vline(aes(xintercept = median(!!sym( self$estimate ), na.rm = T)),   # Ignore NA values for mean
+                   color = "red", linetype = "dashed", size = 1) +
+        geom_vline(xintercept = 0, col = "green" , size = 1) +
+        facet_wrap(vars(!!sym(self$contrast))) +
+        theme_light()
+
       return(fig)
     },
     #' @description

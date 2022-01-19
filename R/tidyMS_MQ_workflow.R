@@ -194,7 +194,7 @@ make2grpReport <- function(startdata,
   contr <- prolfqua::Contrasts$new(mod, GRP2$Contrasts)
   conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
   mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = GRP2$Contrasts)
-  conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
+  conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Condition_Mean")
 
   res <- prolfqua::addContrastResults(conrM, conMI)
 
@@ -215,8 +215,6 @@ make2grpReport <- function(startdata,
     arrange(.data$FDR) |>
     head(20)
   GRP2$top20 <- top20
-  #knitr::kable(top20, caption = "Top 20 proteins sorted by smallest Q Value (adj.P.Val). The effectSize column is the log2 FC of condition vs reference.")
-
   GRP2$top20confint <- ggplot(top20, aes(x = !!sym(proteinID), y = .data$diff,
                                          ymin = .data$conf.low, ymax = .data$conf.high)) +
     geom_hline( yintercept = 0, color = 'red' ) +

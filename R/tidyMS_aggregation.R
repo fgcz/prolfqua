@@ -699,8 +699,8 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
   xcall <- as.list( match.call() )
   newcol <- make.names(paste0("srm_",.func(name = TRUE),"_",xcall$N))
 
-  topInt <- pdata |>
-    dplyr::filter_at( "srm_meanIntRank", any_vars(. <= N)) |>
+  topInt <-
+    dplyr::filter_at(pdata, "srm_meanIntRank", any_vars(pdata <= N)) |>
     dplyr::group_by_at(c( config$table$hkeysDepth(),
                           config$table$sampleName,
                           config$table$fileName,
