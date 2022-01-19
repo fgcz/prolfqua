@@ -234,7 +234,7 @@ nah
 
 We fit a linear model, which was specified using the following model formula:
 
-_ `r grp2$formula` _,
+`r grp2$formula`,
 
 where `<response variable> ~ <explanatory variables>`.
 

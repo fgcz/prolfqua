@@ -194,7 +194,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' hierarchy_counts(tmp$data, config)
 #' tmp <- workflow_DIA_NA_preprocessing(data, config, percent=70)
 #' hierarchy_counts(tmp$data, config)
-#' stopifnot(FALSE==(is.grouped_df(tmp$data)))
+#' stopifnot(FALSE==(dplyr::is_grouped_df(tmp$data)))
 #'
 workflow_DIA_NA_preprocessing <- function(pdata,
                                           config,
