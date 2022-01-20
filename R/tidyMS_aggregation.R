@@ -700,7 +700,9 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
   newcol <- make.names(paste0("srm_",.func(name = TRUE),"_",xcall$N))
 
   topInt <-
-    dplyr::filter_at(pdata, "srm_meanIntRank", any_vars(pdata <= N)) |>
+    pdata |> dplyr::filter( !!sym("srm_meanIntRank")  <= N )
+
+  topInt <- topInt |>
     dplyr::group_by_at(c( config$table$hkeysDepth(),
                           config$table$sampleName,
                           config$table$fileName,
