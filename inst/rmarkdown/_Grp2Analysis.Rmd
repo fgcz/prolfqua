@@ -234,20 +234,22 @@ We fit a linear model, which was specified using the following model formula:
 
 `r grp2$formula`,
 
-where `<response variable> ~ <explanatory variables>`.
+where `<response variable> ~ <explanatory variables>`, using the __R__ function `lm`.
 
-Using the linear model we compare the following two conditions and test for differential expression.
+Using the coefficients estimates of the linear model we compare the following two conditions and test for differential expression.
 
 `r names(grp2$Contrast)` = `r grp2$Contrast`.
 
-For some of the proteins the linear model can not be fitted because there are no observations in one of the conditions. Assuming that the observation are missing in a condition because the protein abundance is below the limit of detection, we impute the unobserved condition average using the mean of $1\%$ smallest group averages in the sample. 
-The proteins for which a linear model can be fitted are labelled with `Linear_Model_Moderated`, while those proteins were we imputed the missing group mean are labelled with `Imputed_Condition_Mean`.
+For some of the proteins the linear model can not be fitted, because there are no observations in one of the conditions. Assuming that the observation are missing  because the protein abundance is below the limit of detection, we substitute the unobserved condition mean with the mean of $1\%$ smallest group averages in the sample. 
+The proteins for which a linear model can be fitted are labelled with `Linear_Model_Moderated`, while those proteins were we imputed the unobserved group mean we label with `Imputed_Condition_Mean`.
 
-The following analysis assumes that most of the proteins are not regulated (most differences between the two conditions should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), left panel, shows the distribution of fold changes. Again, most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
+The following analysis assumes that most of the proteins are not regulated (most differences between the two conditions should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), Top, shows the distribution of fold changes. Most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
 
-Based on the model coefficients, we estimate the difference between the conditions and the variance for each protein, which allows us to compute the t-statistic. Furthermore, using the degrees of freedom, we determine the p-value, i.e., the probability of the type I error, i.e., the error of falsely rejecting the null hypothesis. The null hypothesis is that proteins are not differentially expressed. The right panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. However, when testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
+Based on the linear model model coefficients, we estimate the difference between the conditions (column _diff_) and the variance for each protein, which allows us to compute the t-statistic (column _statistic_). Furthermore, using the degrees of freedom (column _df_), we determine the p-value, i.e., the probability of the Type I error (Type I error - the error of falsely rejecting the null hypothesis). The null hypothesis is that proteins are not differentially expressed. The bottom panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. The distribution of most of the p-values should be uniform (not-regulation), with some higher bars on the left, that is some significant proteins (small p-values). 
 
-Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and $log_2$ fold change greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Figure \@ref(fig:MAPlot) shows the difference among the experiments (y-axis) and the average intensity of the protein (x-axis), and e.g., can be used to identify abundant proteins with a large difference.
+When testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
+
+Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and differences greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Figure \@ref(fig:MAPlot) shows the difference between the experiments (y-axis) and the average intensity of the protein (x-axis), and e.g., can be used to identify abundant proteins with a large difference.
 
 
 (ref:densityOFFoldChanges) Top : Distribution of differences among experiments. Bottom - histogram of p-values.

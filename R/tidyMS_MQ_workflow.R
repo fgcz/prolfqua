@@ -204,7 +204,7 @@ make2grpReport <- function(startdata,
   GRP2$contrMerged$fcthresh = GRP2$log2FCthreshold
   GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
 
-  GRP2$contrMore <- res$more$get_Plotter()
+  GRP2$contrMore <- res$more
 
   top20 <- GRP2$contrResult |>
     dplyr::select( !!sym(proteinID ),
@@ -238,6 +238,8 @@ make2grpReport <- function(startdata,
                              .data$diff),
           y = .data$diff)) +
       ggplot2::geom_bar(stat = "identity") + coord_flip()
+
+
     missing <- GRP2$transformedlfqData$get_copy()
     missing$complete_cases()
     missingID <- xx[[ proteinID ]]
