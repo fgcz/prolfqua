@@ -60,7 +60,6 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
-#'
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
 #' config <- dd$config_f()
 #' x <- transform_work_intensity(analysis, config, .func = asinh)
@@ -86,8 +85,9 @@ transform_work_intensity <- function(pdata,
     newcol <- intesityNewName
   }
 
-  pdata <- pdata |> dplyr::mutate_at(config$table$getWorkIntensity(),
-                                      .funs = funs(!!sym(newcol) := .func(.)))
+  #pdata <- pdata |> dplyr::mutate_at(config$table$getWorkIntensity(),
+  #                                    .funs = funs(!!sym(newcol) := .func(.)))
+  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$getWorkIntensity())))
 
   config$table$setWorkIntensity(newcol)
   message("Column added : ", newcol)
@@ -170,7 +170,7 @@ filter_byQValue <- function(pdata, config){
   data_NA <- removeLarge_Q_Values(pdata, config)
   data_NA <- summariseQValues(data_NA, config)
   data_NA_QVal <- data_NA |>
-    dplyr::filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold ))
+    dplyr::filter( !!sym("srm_QValueMin") < config$parameter$qVal_experiment_threshold )
 }
 
 

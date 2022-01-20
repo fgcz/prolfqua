@@ -521,7 +521,7 @@ plot_stat_density <- function(pdata,
 plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  pdata <- pdata |> dplyr::filter_at(stat, all_vars(!is.na(.)))
+  pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
   res <- pdata |> dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
     geom_line(stat = ggstat) + facet_wrap(config$table$factorKeys()[1])
@@ -577,7 +577,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
     names(out) <- c("ymin","y","ymax")
     return(out)
   }
-  pdata <- pdata |> dplyr::filter_at(stat, all_vars(!is.na(.)))
+  pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
 
   res <- pdata |>
     dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->

@@ -2,7 +2,8 @@
 % Please edit documentation in R/tidyMS_R6_workflowFunctions.R
 \name{add_annotation}
 \alias{add_annotation}
-\title{Add Annotation to a data.frame in long format}
+\title{Add Annotation to a data.frame in long format
+for an usage example see run_script lfq_mixed_model_inference}
 \usage{
 add_annotation(intensityData, inputAnnotation, fileName = "raw.file")
 }
@@ -15,7 +16,6 @@ add_annotation(intensityData, inputAnnotation, fileName = "raw.file")
 }
 \description{
 Add Annotation to a data.frame in long format
+for an usage example see run_script lfq_mixed_model_inference
 }
-\concept{setup
-
-for an usage example see run_script lfq_mixed_model_inference}
+\concept{setup}

@@ -17,9 +17,11 @@ For compatibility with Bioconductor
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
+\code{\link{LFQDataWriter}},
 \code{\link{LFQData}},
 \code{\link{RowAnnotProtein}}
 }

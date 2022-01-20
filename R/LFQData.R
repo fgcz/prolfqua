@@ -1028,9 +1028,10 @@ LFQDataPlotter <- R6::R6Class(
 
 # LFQDataWriter -----
 #' Write LFQData, or provide outputs for writing.
+#'
 #' @family LFQData
 #'
-#' returns long and wide format for writing
+#'
 #' @export
 #'
 LFQDataWriter <- R6::R6Class(
@@ -1108,13 +1109,11 @@ LFQDataWriter <- R6::R6Class(
 # LFQDataAggregator ----
 #'
 #' Decorates LFQData with methods to aggregate protein intensities
-#'
 #' aggregates intensities
 #'
 #' @export
 #' @family LFQData
 #'
-#' Aggregate LFQ data
 #' @examples
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))

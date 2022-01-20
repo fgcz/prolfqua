@@ -28,9 +28,11 @@ sum$plot_missingness_per_condition_cumsum()
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQDataWriter}},
 \code{\link{LFQData}},
 \code{\link{RowAnnotProtein}}
 }

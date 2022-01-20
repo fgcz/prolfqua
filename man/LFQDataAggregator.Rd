@@ -2,13 +2,13 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataAggregator}
 \alias{LFQDataAggregator}
-\title{Decorates LFQData with methods to aggregate protein intensities}
+\title{Decorates LFQData with methods to aggregate protein intensities
+aggregates intensities}
 \description{
 Decorates LFQData with methods to aggregate protein intensities
+aggregates intensities
 
 Decorates LFQData with methods to aggregate protein intensities
-}
-\details{
 aggregates intensities
 }
 \examples{
@@ -44,9 +44,17 @@ protPlotter$heatmap()
 
 
 }
-\concept{LFQData
-
-Aggregate LFQ data}
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataStats}},
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQDataWriter}},
+\code{\link{LFQData}},
+\code{\link{RowAnnotProtein}}
+}
+\concept{LFQData}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

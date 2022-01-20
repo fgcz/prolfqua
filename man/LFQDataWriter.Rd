@@ -8,9 +8,17 @@ Write LFQData, or provide outputs for writing.
 
 Write LFQData, or provide outputs for writing.
 }
-\concept{LFQData
-
-returns long and wide format for writing}
+\seealso{
+Other LFQData: 
+\code{\link{LFQDataAggregator}},
+\code{\link{LFQDataPlotter}},
+\code{\link{LFQDataStats}},
+\code{\link{LFQDataSummariser}},
+\code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQData}},
+\code{\link{RowAnnotProtein}}
+}
+\concept{LFQData}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
