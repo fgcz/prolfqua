@@ -65,9 +65,11 @@ runallfuncs(lfqstats)
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQDataWriter}},
 \code{\link{LFQData}},
 \code{\link{RowAnnotProtein}}
 }

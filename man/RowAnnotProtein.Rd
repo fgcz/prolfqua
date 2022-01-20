@@ -27,10 +27,12 @@ tmp$complete_cases()
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
+\code{\link{LFQDataWriter}},
 \code{\link{LFQData}}
 }
 \concept{LFQData}

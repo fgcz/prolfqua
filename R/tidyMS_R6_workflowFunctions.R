@@ -1,8 +1,8 @@
 
 #' Add Annotation to a data.frame in long format
+#' for an usage example see run_script lfq_mixed_model_inference
 #' @family setup
 #'
-#' for an usage example see run_script lfq_mixed_model_inference
 #' @param intensityData data imported using ``
 #' @param inputAnnotation annotation
 #' @param fileName column name to join on.

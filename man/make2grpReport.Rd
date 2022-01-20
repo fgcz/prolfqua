@@ -52,9 +52,12 @@ istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
 GRP2 <- list()
-GRP2$projectID <- "3765"
-GRP2$projectName <- "Order_26863"
-GRP2$workunitID <- "2057368.zip"
+GRP2$Bfabric <- list()
+GRP2$Bfabric$projectID <- "3765"
+GRP2$Bfabric$projectName <- "Order_26863"
+GRP2$Bfabric$workunitID <- "2057368.zip"
+GRP2$Bfabric$inputID <- "2057368.zip"
+GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 
 #at least 2 peptides per protein
 GRP2$nrPeptides <- 2

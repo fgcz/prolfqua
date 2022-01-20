@@ -975,7 +975,7 @@ ContrastsTable <- R6::R6Class(
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
-#' Contrasts_Plotter$debug("histogram_estimate")
+#' #Contrasts_Plotter$debug("histogram_estimate")
 #'
 #'
 #' cp <- Contrasts_Plotter$new(tmp ,
