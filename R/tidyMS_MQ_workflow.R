@@ -75,13 +75,15 @@ filter_difference <- function(x, y, config){
 #' @param protein_annot column with portein desciription e.g. (fasta header)
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
-#' @param remove do you want to remove contaminants.
+#' @param remove do you want to remove contaminants default (TRUE)
+#' @param transform which transformation to use to normalize the data, default robscale
 #' @export
 #' @family workflow
 #' @examples
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data$Description <-"AAAAA"
 #'
 #' GRP2 <- list()
 #' GRP2$Bfabric <- list()
@@ -93,14 +95,15 @@ filter_difference <- function(x, y, config){
 #'
 #' #at least 2 peptides per protein
 #' GRP2$nrPeptides <- 2
+#' GRP2$transform <- "robscale"
+#' GRP2$aggregate <- "medpolish"
 #'
 #' # Set FC to >= |2| and FRD to 0.1
 #' GRP2$log2FCthreshold <- 0.5
 #' GRP2$FDRthreshold <- 0.25
 #' GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
-#' data$Description <-"AAAAA"
-#' data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 #'
+#' data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 #'
 #'  atab <- AnalysisTableAnnotation$new()
 #'
@@ -114,8 +117,8 @@ filter_difference <- function(x, y, config){
 #' config <- prolfqua::AnalysisConfiguration$new(atab)
 #'
 #' protein_annot = "Description"
-#' #debug(make2grpReport)
-#' grp <- make2grpReport(data,atab, GRP2, NULL)
+#' undebug(make2grpReport)
+#' grp <- make2grpReport(data,atab, GRP2, NULL, transform = GRP2$transform, aggregate = GRP2$aggregate)
 #' #\dontrun{
 #'
 #' render_2GRP(grp, "." ,word = TRUE)
@@ -128,7 +131,12 @@ make2grpReport <- function(startdata,
                            protein_annot = "Description",
                            revpattern = "^REV_",
                            contpattern = "^zz|^CON__",
-                           remove = FALSE) {
+                           remove = FALSE,
+                           transform = c("robscale","vsn","none"),
+                           aggregate = c("medpolish", "topN", "lmrob")
+                           ) {
+  transform <- match.arg(transform)
+  aggregate <- match.arg(aggregate)
 
   # Preprocess Data
   config <- prolfqua::AnalysisConfiguration$new(atable)
@@ -143,18 +151,27 @@ make2grpReport <- function(startdata,
 
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
-  if(transform == "robscale"){
+  if (GRP2$transform == "robscale") {
     transformed <- lt$log2()$robscale()$lfq
-  } else if(transform == "vsn"){
-    transformed <- lt$log2()$robscale()$lfq
-  } else {
+  } else if (GRP2$transform == "vsn") {
+    transformed <- lt$intensity_matrix( .func = vsn::justvsn)$lfq
+  } else if (GRP2$transform == "none") {
     transformed <- lfqdata$get_copy()
+  } else {
   }
+
+  ### Aggregate peptides to proteins
   if ( length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth ) {
     message("AGGREGATING PEPTIDE DATA!")
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
-    aggregator$medpolish()
+    if (aggregate == "medpolish") {
+      aggregator$medpolish()
+    } else if (aggregate == "topN") {
+      aggregator$sum_topN()
+    } else if (aggregate == "lmrob") {
+      aggregator$lmrob()
+    }
     transformed <- aggregator$lfq_agg
   }
 

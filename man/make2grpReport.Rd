@@ -13,7 +13,9 @@ make2grpReport(
   protein_annot = "Description",
   revpattern = "^REV_",
   contpattern = "^zz|^CON__",
-  remove = FALSE
+  remove = FALSE,
+  transform = c("robscale", "vsn", "none"),
+  aggregate = c("medpolish", "topN", "lmrob")
 )
 
 write_2GRP(GRP2, outpath, xlsxname = "AnalysisResults")
@@ -33,7 +35,9 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 
 \item{contpattern}{default "^zz|^CON__"}
 
-\item{remove}{do you want to remove contaminants.}
+\item{remove}{do you want to remove contaminants default (TRUE)}
+
+\item{transform}{which transformation to use to normalize the data, default robscale}
 
 \item{outpath}{path to place output}
 
@@ -48,6 +52,7 @@ For use examples see run_scripts directory
 
 istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data$Description <-"AAAAA"
 
 GRP2 <- list()
 GRP2$Bfabric <- list()
@@ -59,14 +64,15 @@ GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 
 #at least 2 peptides per protein
 GRP2$nrPeptides <- 2
+GRP2$transform <- "robscale"
+GRP2$aggregate <- "medpolish"
 
 # Set FC to >= |2| and FRD to 0.1
 GRP2$log2FCthreshold <- 0.5
 GRP2$FDRthreshold <- 0.25
 GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
-data$Description <-"AAAAA"
-data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 
+data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 
  atab <- AnalysisTableAnnotation$new()
 
@@ -80,12 +86,13 @@ atab$isotopeLabel = "isotope"
 config <- prolfqua::AnalysisConfiguration$new(atab)
 
 protein_annot = "Description"
-#debug(make2grpReport)
-grp <- make2grpReport(data,atab, GRP2, NULL)
+undebug(make2grpReport)
+grp <- make2grpReport(data,atab, GRP2, NULL, transform = GRP2$transform, aggregate = GRP2$aggregate)
 #\dontrun{
 
 render_2GRP(grp, "." ,word = TRUE)
-write_2GRP(grp,tempdir())
+render_2GRP(grp, ".")
+write_2GRP(grp,".")
 #}
 }
 \concept{workflow}

@@ -153,10 +153,24 @@ progress(0.2, "Normalization")
 
 ## Normalization
 
-Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. To do this the z-score of the log2 transformed intensities is computed, which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have an equal mean and variance and a similar distribution.
+Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. 
+
+```{r normalization, results = 'asis'}
+if (grp2$transform == "robscale") {
+  cat("To do this the z-score of the log2 transformed intensities is computed,",
+  "which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have an equal mean and variance and a similar distribution.")
+} else if (grp2$transform == "vsn") {
+  cat("To do this the variance stabilizing normalization (vsn) was applied [@HuberVSN2002].")
+} else if (grp$transform == "none") {
+  cat("However, in some circumstances it is advisable not to normalize the data.")
+}
+
+```
 
 
-```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="Violin plots of normalized protein intensity values (z-score)", eval=TRUE}
+(ref:normalized) Violin plots of normalized protein intensity values (z-score)
+
+```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="(ref:normalized)", eval=TRUE}
 pl <- grp2$RES$transformedlfqData$get_Plotter()
 pl$intensity_distribution_violin() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
@@ -168,20 +182,17 @@ pl$intensity_distribution_violin() +
 The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations (CV) for all proteins in each condition and overall computed on not normalized data. To observe differences between conditions the variation within a condition should ideally be smaller than within all conditions.
 
 
-```{r CViolin, eval=FALSE}
-
-```
-
 The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations (sd) for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
 
-```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within conditions and in entire experiment (all), Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and in entire experiment.", eval=TRUE}
+(ref:SDViolin) Left panel - Distribution of protein CV within conditions and in entire experiment (all), Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and in entire experiment.
 
+```{r SDViolin, fig.height=3, fig.width=7, fig.cap="(ref:SDViolin)", eval=TRUE}
 stR <- grp2$RES$lfqData$get_Stats()
 p1 <- stR$violin()
 
 st <- grp2$RES$transformedlfqData$get_Stats()
 p2 <- st$violin()
-gridExtra::grid.arrange(p1,p2, nrow=1)
+gridExtra::grid.arrange(p1,p2, nrow = 1)
 
 ```
 
@@ -211,7 +222,7 @@ phc <- pl$heatmap_cor()
 nah <- pl$NA_heatmap()
 ```
 
-```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap of correlations (spearman) between samples.", eval=TRUE}
+```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap of spearman correlations between samples.", eval=TRUE}
 phc
 ```
 
