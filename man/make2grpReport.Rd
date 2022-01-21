@@ -18,7 +18,7 @@ make2grpReport(
 
 write_2GRP(GRP2, outpath, xlsxname = "AnalysisResults")
 
-render_2GRP(GRP2, outpath, htmlname = "Result2Grp")
+render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 }
 \arguments{
 \item{startdata}{table in long format}
@@ -46,8 +46,6 @@ For use examples see run_scripts directory
 }
 \examples{
 
-
-
 istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
@@ -63,11 +61,11 @@ GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 GRP2$nrPeptides <- 2
 
 # Set FC to >= |2| and FRD to 0.1
-GRP2$log2FCthreshold <- 1
-GRP2$FDRthreshold <- 0.1
+GRP2$log2FCthreshold <- 0.5
+GRP2$FDRthreshold <- 0.25
 GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
 data$Description <-"AAAAA"
-
+data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 
 
  atab <- AnalysisTableAnnotation$new()
@@ -84,10 +82,10 @@ config <- prolfqua::AnalysisConfiguration$new(atab)
 protein_annot = "Description"
 #debug(make2grpReport)
 grp <- make2grpReport(data,atab, GRP2, NULL)
+#\dontrun{
 
-\dontrun{
+render_2GRP(grp, "." ,word = TRUE)
 write_2GRP(grp,tempdir())
-render_2GRP(grp, tempdir())
-}
+#}
 }
 \concept{workflow}

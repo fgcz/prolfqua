@@ -80,25 +80,26 @@ filter_difference <- function(x, y, config){
 #' @family workflow
 #' @examples
 #'
-#'
-#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
 #' GRP2 <- list()
-#' GRP2$projectID <- "3765"
-#' GRP2$projectName <- "Order_26863"
-#' GRP2$workunitID <- "2057368.zip"
+#' GRP2$Bfabric <- list()
+#' GRP2$Bfabric$projectID <- "3765"
+#' GRP2$Bfabric$projectName <- "Order_26863"
+#' GRP2$Bfabric$workunitID <- "2057368.zip"
+#' GRP2$Bfabric$inputID <- "2057368.zip"
+#' GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 #'
 #' #at least 2 peptides per protein
 #' GRP2$nrPeptides <- 2
 #'
 #' # Set FC to >= |2| and FRD to 0.1
-#' GRP2$log2FCthreshold <- 1
-#' GRP2$FDRthreshold <- 0.1
+#' GRP2$log2FCthreshold <- 0.5
+#' GRP2$FDRthreshold <- 0.25
 #' GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
 #' data$Description <-"AAAAA"
-#'
+#' data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 #'
 #'
 #'  atab <- AnalysisTableAnnotation$new()
@@ -115,11 +116,12 @@ filter_difference <- function(x, y, config){
 #' protein_annot = "Description"
 #' #debug(make2grpReport)
 #' grp <- make2grpReport(data,atab, GRP2, NULL)
+#' #\dontrun{
 #'
-#' \dontrun{
-#' write_2GRP(grp,tempdir())
-#' render_2GRP(grp, tempdir())
-#' }
+#' render_2GRP(grp, "." ,word = TRUE)
+#' render_2GRP(grp, ".")
+#' write_2GRP(grp,".")
+#' #}
 make2grpReport <- function(startdata,
                            atable,
                            GRP2,
@@ -128,13 +130,12 @@ make2grpReport <- function(startdata,
                            contpattern = "^zz|^CON__",
                            remove = FALSE) {
 
-  proteinID <- atable$hkeysDepth()
+  # Preprocess Data
   config <- prolfqua::AnalysisConfiguration$new(atable)
-
-
   adata <- setup_analysis(startdata, config)
-  prot_annot <- select( startdata , c( atable$hierarchy[[atable$hkeysDepth()]], protein_annot)) |> distinct()
-  prot_annot <- rename(prot_annot, !!atable$hkeysDepth() := (!!atable$hierarchy[[atable$hkeysDepth()]]))
+  proteinID <- atable$hkeysDepth()
+  prot_annot <- select(startdata , c( atable$hierarchy[[proteinID]], protein_annot)) |> distinct()
+  prot_annot <- rename(prot_annot, !!proteinID := (!!atable$hierarchy[[proteinID]]))
 
   lfqdata <- LFQData$new(adata, config)
   lfqdata$remove_small_intensities()
@@ -142,12 +143,17 @@ make2grpReport <- function(startdata,
 
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
-  transformed <- lt$log2()$robscale()$lfq
+  if(transform == "robscale"){
+    transformed <- lt$log2()$robscale()$lfq
+  } else if(transform == "vsn"){
+    transformed <- lt$log2()$robscale()$lfq
+  } else {
+    transformed <- lfqdata$get_copy()
+  }
   if ( length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth ) {
     message("AGGREGATING PEPTIDE DATA!")
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
-
     aggregator$medpolish()
     transformed <- aggregator$lfq_agg
   }
@@ -158,11 +164,14 @@ make2grpReport <- function(startdata,
     row_annot = prot_annot)
 
   allProt <- nrow( protAnnot$row_annot )
-  GRP2$totalNrOfProteins <- allProt
-  GRP2$percentOfContaminants <- round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2)
-  GRP2$percentOfFalsePositives  <- round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2)
-  GRP2$NrOfProteinsNoDecoys <- protAnnot$nr_clean()
-  GRP2$rowAnnot <- protAnnot
+  GRP2$RES <- list()
+  GRP2$RES$Summary <- data.frame(
+    totalNrOfProteins = allProt,
+    percentOfContaminants = round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2),
+    percentOfFalsePositives  = round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2),
+    NrOfProteinsNoDecoys = protAnnot$nr_clean()
+  )
+  GRP2$RES$rowAnnot <- protAnnot
 
   if (remove) {
     message("REMOVING: contaminants and reverse sequences")
@@ -171,15 +180,15 @@ make2grpReport <- function(startdata,
   }
 
 
-  GRP2$lfqData <- lfqdata
-  GRP2$transformedlfqData <- transformed
+  GRP2$RES$lfqData <- lfqdata
+  GRP2$RES$transformedlfqData <- transformed
 
   ################## Run Modelling ###############
 
   formula <- paste0(transformed$config$table$getWorkIntensity(), " ~ ",
          paste(transformed$config$table$factorKeys(), collapse = " + "))
   message("FORMULA :",  formula)
-  GRP2$formula <- formula
+  GRP2$RES$formula <- formula
   formula_Condition <-  strategy_lm(formula)
   # specify model definition
   modelName  <- "Model"
@@ -189,7 +198,7 @@ make2grpReport <- function(startdata,
     formula_Condition,
     subject_Id = transformed$config$table$hierarchyKeys() )
 
-  GRP2$models <- mod
+  GRP2$RES$models <- mod
 
   contr <- prolfqua::Contrasts$new(mod, GRP2$Contrasts)
   conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
@@ -197,56 +206,8 @@ make2grpReport <- function(startdata,
   conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Condition_Mean")
 
   res <- prolfqua::addContrastResults(conrM, conMI)
-
-
-  GRP2$contrResult <- res$merged$get_contrasts()
-  GRP2$contrMerged <- res$merged$get_Plotter()
-  GRP2$contrMerged$fcthresh = GRP2$log2FCthreshold
-  GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
-
-  GRP2$contrMore <- res$more
-
-  top20 <- GRP2$contrResult |>
-    dplyr::select( !!sym(proteinID ),
-                   diff = .data$diff,
-                   .data$conf.low,
-                   .data$conf.high,
-                   .data$FDR ) |>
-    arrange(.data$FDR) |>
-    head(20)
-  GRP2$top20 <- top20
-  GRP2$top20confint <- ggplot(top20, aes(x = !!sym(proteinID), y = .data$diff,
-                                         ymin = .data$conf.low, ymax = .data$conf.high)) +
-    geom_hline( yintercept = 0, color = 'red' ) +
-    geom_linerange() + geom_point() + coord_flip() + theme_minimal()
-
-
-  protMore <- GRP2$transformedlfqData$get_copy()
-  protMore$complete_cases()
-  moreID <-  res$more$get_contrasts()[[proteinID]]
-  protMore$data <-  dplyr::filter(protMore$data ,!!sym(proteinID ) %in% moreID)
-  GRP2$imputedProteins <- protMore
-
-  # Plot proteins without p-values
-
-  xx <- res$more$contrast_result[rowSums(is.na(res$more$get_contrasts())) > 0,]
-  if (nrow(xx) > 1) {
-    xx <- xx |> arrange(.data$diff)
-    GRP2$noPvalEstimate <- ggplot2::ggplot(
-      xx ,
-      aes(x = stats::reorder(!!sym(proteinID),
-                             .data$diff),
-          y = .data$diff)) +
-      ggplot2::geom_bar(stat = "identity") + coord_flip()
-
-
-    missing <- GRP2$transformedlfqData$get_copy()
-    missing$complete_cases()
-    missingID <- xx[[ proteinID ]]
-    missing$data <- missing$data |> dplyr::filter(!!sym(proteinID ) %in% missingID)
-    missing$get_Plotter()$raster()
-  }
-
+  GRP2$RES$contrMerged <- res$merged
+  GRP2$RES$contrMore <- res$more
   return(GRP2)
 }
 
@@ -261,17 +222,20 @@ make2grpReport <- function(startdata,
 #'
 write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
   dir.create(outpath)
-  rd <- GRP2$lfqData
-  tr <- GRP2$transformedlfqData
-  ra <- GRP2$rowAnnot
+  rd <- GRP2$RES$lfqData
+  tr <- GRP2$RES$transformedlfqData
+  ra <- GRP2$RES$rowAnnot
+  formula <- data.frame(formula = GRP2$RES$formula, contrast = GRP2$Contrasts)
   wideraw <- inner_join(ra$row_annot, rd$to_wide()$data)
   widetr <- inner_join(ra$row_annot , tr$to_wide()$data )
-  ctr <- inner_join(ra$row_annot , GRP2$contrResult )
+  ctr <- inner_join(ra$row_annot , GRP2$RES$contrMerged$get_contrasts())
   resultList <- list()
   resultList$annotation = tr$to_wide()$annot
   resultList$raw_data = wideraw
   resultList$transformed_data = widetr
   resultList$contrasts = ctr
+  resultList$formula = formula
+  resultList$summary = GRP2$RES$Summary
   writexl::write_xlsx(resultList, path = file.path(outpath, paste0(xlsxname, ".xlsx")))
 }
 
@@ -282,11 +246,24 @@ write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
 #' @param htmlname name for html file
 #' @export
 #' @family workflow
-render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp"){
+render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp", word = FALSE){
   prolfqua::copy_2grp_markdown()
-  rmarkdown::render("_Grp2Analysis.Rmd",
-                    params = list(grp = GRP2) ,
-                    output_format = bookdown::html_document2(toc = TRUE,toc_float = TRUE))
   dir.create(outpath)
-  file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
+
+  if (word) {
+    rmarkdown::render(
+      "_Grp2Analysis.Rmd",
+      params = list(grp = GRP2) ,
+      output_format = bookdown::word_document2(toc = TRUE, toc_float = TRUE)
+      )
+    file.copy("_Grp2Analysis.docx", file.path(outpath, paste0(htmlname,".docx")), overwrite = TRUE)
+  } else {
+    rmarkdown::render(
+      "_Grp2Analysis.Rmd",
+      params = list(grp = GRP2) ,
+      output_format = bookdown::html_document2(toc = TRUE, toc_float = TRUE)
+      )
+    file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
+  }
+
 }
