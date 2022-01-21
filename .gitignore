@@ -14,3 +14,5 @@ doc
 /tests/testthat/*_files/
 .idea
 docs
+/doc/
+/Meta/
