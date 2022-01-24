@@ -128,6 +128,7 @@ filter_difference <- function(x, y, config){
 #' render_2GRP(grp, "." ,word = TRUE)
 #' write_2GRP(grp,".")
 #' #}
+#'
 make2grpReport <- function(startdata,
                            atable,
                            GRP2,

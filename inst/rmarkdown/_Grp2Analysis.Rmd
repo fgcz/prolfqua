@@ -413,26 +413,25 @@ gridExtra::grid.arrange(grobs = bp, ncol = 3)
 
 ```{r}
 plotMissing <- nrow(grp2$RES$contrMore$get_contrasts()) > 0
-
-  
 ```
 
 ```{r makeTextImputed, eval = plotMissing, results = 'asis' }
 cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which we use group mean imputation to estimate differences among groups, because there are too few observations."))
+imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
+heatmapImp <- imputed_Average$get_Plotter()$raster(rownames = TRUE)
 
 ```
 
-(ref:imputedProt) Proteins with missing value imputation.
+(ref:imputedProt) Proteins for which fold changes were inferred by imputing the group average.
 
 
-```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height = 10, eval = plotMissing}
-imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
-imputed_Average$get_Plotter()$raster(rownames = TRUE)
+```{r imputedProt, fig.cap = "(ref:imputedProt).", fig.height = 10, eval = plotMissing}
+heatmapImp
 ```
 
 # Data Interpretation
 
-For interpreting the results in the `.xlsx` file, the protein $IDs$ can be either sorted by `log2FC`, `t-statistic` or $sign(log2FC) \cdot$ p-value. Large positive or negative fold changes typically result in smaller p-values.
+For interpreting the results in the `.xlsx` file, the protein $IDs$ can be either sorted by `diff`, `t-statistic` or $sign(diff) \cdot$ FDR. Large positive or negative fold changes typically result in smaller p-values.
 
 The protein IDs sorted by fold change or t-statistic can then be subjected to gene set enrichment analysis (GSEA). Alternatively, a subset filtered by FDR, e.g. for a threshold of $0.1$ or $0.25$, can be analysed using over-representation analysis (ORA). The web application WebGestalt (WEB-based GEne SeT AnaLysis Toolkit) <http://www.webgestalt.org> implements both of these methods for the most popular organisms [@Wang2017]. The [DAVID Bioinformatics Resource](https://david.ncifcrf.gov/home.jsp) also enables you to run ORA analysis for a wide variety of organizms.
 
