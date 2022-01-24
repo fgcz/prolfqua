@@ -494,7 +494,7 @@ missigness_histogram <- function(x,
   message(formula)
   meanarea <- paste0("mean_", config$table$getWorkIntensity())
   missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
-  p <- ggplot(missingPrec, ggplot::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
+  p <- ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
     dplyr::geom_histogram(alpha = 0.2, position = "identity") +
     facet_grid(as.formula(formula)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
