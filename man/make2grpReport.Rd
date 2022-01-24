@@ -90,7 +90,9 @@ config <- prolfqua::AnalysisConfiguration$new(atab)
 
 protein_annot = "Description"
 undebug(make2grpReport)
-grp <- make2grpReport(data,atab, GRP2, NULL, transform = GRP2$transform, aggregate = GRP2$aggregate)
+grp <- make2grpReport(data,atab, GRP2, NULL,
+ transform = GRP2$transform,
+ aggregate = GRP2$aggregate)
 #\dontrun{
 
 render_2GRP(grp, ".")

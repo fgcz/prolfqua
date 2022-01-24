@@ -58,7 +58,7 @@ The following analysis compares protein intensities recorded in two groups of sa
 
 The protein identification and quantification were performed using: `r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter GRP2$Software>"}`. The outputs are available in b-fabric [`r GRP2$Bfabric$inputID`](`r GRP2$Bfabric$inputURL`).
 
-We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior of the variance estimated from all the proteins in the experiment.
+We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior estimated from all the proteins in the experiment.
 
 ## Experiment summary
 
@@ -244,7 +244,7 @@ ph
 ```
 
 
-Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the expression of a group of proteins and this can be potentially be spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
+Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the expression of a group of proteins and this can sometimes spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
 
 
 ```{r heatmapNA, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of proteins containing missing values, white - present, black - basent.", eval=TRUE}
@@ -264,10 +264,11 @@ The statistical analysis is performed by fitting a linear model, which was speci
 
 where `<response variable> ~ <explanatory variables>`. The response variable is the protein abudance estimated from precursor intensities using either the quantification software, or _prolfqua_.
 
-We can compute the differences among the goups and test for differential expression.
+We can compute the differences among the groups
+
 `r names(grp2$Contrast)` = `r grp2$Contrast`,
 
-using the coefficients of the linear model, estimated using linear regression.
+and test for differential expression using the coefficients of the linear model.
 
 
 Based on the linear model coefficients, we estimate the difference between the groups (column _diff_) and the variance for each protein, which allows us to compute the t-statistic (column _statistic_). Furthermore, using the degrees of freedom (column _df_), we determine the p-value, i.e., the probability of the Type I error (Type I error - the error of falsely rejecting the null hypothesis). The null hypothesis is that proteins are not differentially expressed. The bottom panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. The distribution of most of the p-values should be uniform (not-regulation), with some higher bars on the left, that is some significant proteins (small p-values). 
@@ -279,7 +280,7 @@ However, results for proteins with a large number of missing observations should
 When testing the differential expression of many proteins, the p-value does not control the type I-error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), i.e., the expected proportion of false discoveries in a list of proteins filtered by FDR, using the Benjamini-Hochberg procedure.
 
 
-(ref:densityOFFoldChanges) Top : distribution of differences among experiments. Bottom - histogram of p-values.
+(ref:densityOFFoldChanges) Top : distribution of differences among groups. Bottom - histogram of p-values.
 
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
