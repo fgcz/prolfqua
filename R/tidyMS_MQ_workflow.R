@@ -286,7 +286,9 @@ render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp", word = FALSE){
       params = list(grp = GRP2) ,
       output_format = bookdown::html_document2(toc = TRUE, toc_float = TRUE)
       )
-    file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)
+    if (file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)) {
+      file.remove("_Grp2Analysis.html")
+    }
   }
 
 }
