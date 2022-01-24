@@ -114,6 +114,8 @@ the histogram on the right panel shows the distribution of the mean protein inte
 ```
 
 (ref:missingValuesPerProtein) Left panel - number of proteins with $n$ missing values (nrNA), Right panel - distribution of average intensity within group, of proteins with 1 to N missing values.
+
+
 ```{r missingValuesPerProtein, eval=TRUE, fig.cap="", fig.height=5, fig.width=8}
 
 pl <- grp2$RES$lfqData$get_Plotter()
@@ -461,7 +463,7 @@ The obtained results should be validated orthogonal as well (e.g. with Western b
 For questions and improvement suggestions, with respect to this report, please do contact <protinf@fgcz.uzh.ch>.
 
 
-# Session Inforamtion
+# Session Information
 
 
 ```{r sessionInfo}
