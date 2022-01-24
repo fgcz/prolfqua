@@ -22,8 +22,8 @@ sum$plot_hierarchy_counts_sample()
 sum$interaction_missing_stats()
 sum$missingness_per_condition()
 sum$missingness_per_condition_cumsum()
-sum$plot_missingness_per_condition()
-sum$plot_missingness_per_condition_cumsum()
+sum$plot_missingness_per_group()
+sum$plot_missingness_per_group_cumsum()
 
 }
 \seealso{
@@ -54,8 +54,8 @@ Other LFQData:
 \item \href{#method-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
 \item \href{#method-missingness_per_condition}{\code{LFQDataSummariser$missingness_per_condition()}}
 \item \href{#method-missingness_per_condition_cumsum}{\code{LFQDataSummariser$missingness_per_condition_cumsum()}}
-\item \href{#method-plot_missingness_per_condition}{\code{LFQDataSummariser$plot_missingness_per_condition()}}
-\item \href{#method-plot_missingness_per_condition_cumsum}{\code{LFQDataSummariser$plot_missingness_per_condition_cumsum()}}
+\item \href{#method-plot_missingness_per_group}{\code{LFQDataSummariser$plot_missingness_per_group()}}
+\item \href{#method-plot_missingness_per_group_cumsum}{\code{LFQDataSummariser$plot_missingness_per_group_cumsum()}}
 \item \href{#method-clone}{\code{LFQDataSummariser$clone()}}
 }
 }
@@ -151,12 +151,12 @@ missing stats per condition as cumulative sum
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_missingness_per_condition"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_missingness_per_condition}{}}}
-\subsection{Method \code{plot_missingness_per_condition()}}{
+\if{html}{\out{<a id="method-plot_missingness_per_group"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_missingness_per_group}{}}}
+\subsection{Method \code{plot_missingness_per_group()}}{
 barplot with number of features with 1,2, etc missing in condition
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_condition()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_group()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -164,12 +164,12 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_missingness_per_condition_cumsum"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_missingness_per_condition_cumsum}{}}}
-\subsection{Method \code{plot_missingness_per_condition_cumsum()}}{
+\if{html}{\out{<a id="method-plot_missingness_per_group_cumsum"></a>}}
+\if{latex}{\out{\hypertarget{method-plot_missingness_per_group_cumsum}{}}}
+\subsection{Method \code{plot_missingness_per_group_cumsum()}}{
 barplot with cumulative sum of features with 1,2, etc missing in condition
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_condition_cumsum()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_group_cumsum()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

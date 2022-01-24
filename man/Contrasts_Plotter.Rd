@@ -32,11 +32,9 @@ mod <- build_model(
   ,"dil.e_vs_b" = "dilution.e - dilution.b",
   "dil.c_vs_b" = "dilution.c - dilution.b"
  )
-#Contrasts$debug("get_contrasts")
 contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
-Contrasts_Plotter$debug("histogram_estimate")
 
 
 cp <- Contrasts_Plotter$new(tmp ,

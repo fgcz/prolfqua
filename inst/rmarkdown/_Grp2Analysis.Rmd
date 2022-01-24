@@ -25,6 +25,7 @@ vignette: >
 bibliography: bibliography.bib
 editor_options: 
   chunk_output_type: console
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -41,44 +42,52 @@ if (!exists("progress")) {
   }
 }
 
+
 grp2 <- params$grp
 ```
 
+# Glossary
+
+- diff - it is the difference between the two groups which can be different treatements, genotypes, etc.
+- FDR - false discovery rate
+- p-value - probability of type one error.
+
 # Introduction
 
-The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)) by computing the $log_2$ fold change $\log_2(condition/reference)$, and tests if they are non-zero.
+The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)), and tests if they are non-zero.
 
-The protein identification and quantification were performed using `r grp2$Software`. The outputs are available in b-fabric [`r GRP2$inputID`](`r GRP2$inputURL`).
+The protein identification and quantification were performed using: `r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter GRP2$Software>"}`. The outputs are available in b-fabric [`r GRP2$Bfabric$inputID`](`r GRP2$Bfabric$inputURL`).
 
-We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified.
+We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior estimated from all the proteins in the experiment.
 
 ## Experiment summary
 
-This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project `r grp2$projectID`, order `r grp2$orderID`, `r if(!is.null(grp2$workunitID)){ "with the workunit name :" }`  `r grp2$workunitID`.
+This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project: `r grp2$Bfabric$projectID`, order: `r grp2$Bfabric$orderID`, `r if(!is.null(grp2$workunitID)){ "with the workunit name :" }`  `r grp2$Bfabric$workunitID`.
 
 
 The protein matrix is filtered using the following threshold:
+
 - Minimum number of peptides / protein: `r grp2$nrPeptides`.
 
 
-- The total number of proteins in this experiment is: `r grp2$totalNrOfProteins` 
-- Total number without decoys sequences is `r grp2$NrOfProteinsNoDecoys` 
-- Percentage of contaminants : `r grp2$percentOfContaminants` %
-- Percentage of false positives : `r grp2$percentOfFalsePositives` %
+- The overall number of proteins in this experiment is: `r grp2$RES$Summary$totalNrOfProteins` 
+- Total number without decoys sequences is `r grp2$RES$Summary$NrOfProteinsNoDecoys` 
+- Percentage of contaminants : `r grp2$RES$Summary$percentOfContaminants` %
+- Percentage of false positives (Decoy sequences) : `r grp2$RES$Summary$percentOfFalsePositives` %
 
 
 ```{r samples, eval=TRUE}
 
-tab <- data.frame(table(grp2$lfqData$factors()[[grp2$lfqData$config$table$fkeysDepth()]]))
-colnames(tab) <- c("Condition","# samples")
-knitr::kable(tab, caption = "Nr of samples in each condition.")
+tab <- data.frame(table(grp2$RES$lfqData$factors()[[grp2$RES$lfqData$config$table$fkeysDepth()]]))
+colnames(tab) <- c("Group","# samples")
+knitr::kable(tab, caption = "Nr of samples in each group.")
 
 ```
 
-Table \@ref(tab:samples) shows the number of samples in each condition while Table \@ref(tab:annotation) shows the raw files assigned to the conditions.
+Table \@ref(tab:samples) shows the number of samples in each group while Table \@ref(tab:annotation) shows the names of the files assigned to the group.
 
 ```{r annotation, eval=TRUE}
-knitr::kable(grp2$lfqData$factors(), caption = "Condition sample mapping.")
+knitr::kable(grp2$RES$lfqData$factors(), caption = "Group sample mapping.")
 
 ```
 
@@ -86,7 +95,7 @@ knitr::kable(grp2$lfqData$factors(), caption = "Condition sample mapping.")
 <!--
 The input matrix has the following structure (Figure \@ref(fig:overview)).
 
-```{r overview, fig.width=8,fig.height=7,dpi=300,fig.cap="Heatmap for quantifyable #proteins sorted by missigness and intensity (log2). Gray - missing values"}
+```{r overview, fig.width=8,fig.height=7,dpi=300,fig.cap="Heatmap for quantifyable proteins sorted by missigness and intensity (log2). Gray - missing values"}
 #imageWithLabels(t(log2(grp2$proteinIntensity)), col.labels = NULL, #col=quantable::getBlueScale(21))
 ```
 -->
@@ -98,39 +107,41 @@ The input matrix has the following structure (Figure \@ref(fig:overview)).
 
 ## Missing Data and Intensity Distribution
 
-Figure \@ref(fig:missingValuesPerProtein) A shows the number of proteins (y) axis with $0-N$ missing values (x - axis), while
-the histogram on the left (Panel B) shows the distribution of intensities of proteins with $0-N$ missing values.
+Figure \@ref(fig:missingValuesPerProtein) left panel, shows the number of proteins (y) axis with $0-N$ missing values (x - axis), while
+the histogram on the right panel shows the distribution of the mean protein intensities of the group of samples, for all proteins with $0-N$ missing values.
 
 ```{r histmissing, eval=FALSE }
 ```
 
+(ref:missingValuesPerProtein) Left panel - number of proteins with $n$ missing values (nrNA), Right panel - distribution of average intensity within group, of proteins with 1 to N missing values.
+```{r missingValuesPerProtein, eval=TRUE, fig.cap="", fig.height=5, fig.width=8}
 
-```{r missingValuesPerProtein, eval=TRUE, fig.cap="Panel A - # of proteins with n missing values, Panel B - intensity distribution of proteins with 1 to N missing values.", fig.height=5, fig.width=8}
-
-pl <- grp2$lfqData$get_Plotter()
+pl <- grp2$RES$lfqData$get_Plotter()
 p2 <- pl$missigness_histogram()
 
-sr <- grp2$lfqData$get_Summariser()
-p1 <- sr$plot_missingness_per_condition()
+sr <- grp2$RES$lfqData$get_Summariser()
+p1 <- sr$plot_missingness_per_group()
 
-gridExtra::grid.arrange(p1,p2, nrow=1)
+gridExtra::grid.arrange(p1 , p2, nrow = 1)
 
 progress(0.1, "Summary")
 ```
 
-Shown in Figure \@ref(fig:distributionRaw) are the distributions of raw log2 transformed protein intensity values for each sample. Ideally the violins should look very similar (have the same shape and span the same intensity range).
+Figure \@ref(fig:distributionRaw) shows the distributions of raw protein intensity values for each sample. Ideally the violins should look  similar, that is have the same shape and span the same intensity range.
 
-```{r distributionRaw, fig.width=8, fig.height=5, fig.cap="Violin plots for quantifyable proteins (log2 transformed)", eval= TRUE}
+(ref:distributionRaw) Violin plots for quantifiable protein intensities, The y-axis is $\log_{10}$ transformed.
+
+```{r distributionRaw, fig.width=8, fig.height=5, fig.cap="(ref:distributionRaw)", eval= TRUE}
 pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 ```
 
-In Figure \@ref(fig:scaling) the $\log_2$ fold change of the average sample intensity versus the mean average intensity of all samples is shown. It is critical if a samples average deviates more than 5 times from the average of all samples (linear scale).
+Figure \@ref(fig:scaling) shows the $\log_2$ fold change of the average sample intensity versus the mean average intensity of all samples. The samples average intensity value should not deviate more than 5 times from the average of all samples (linear scale).
 
 ```{r  scaling,dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
-xb <- grp2$lfqData$data |> 
-  group_by(!!sym(grp2$lfqData$config$table$sampleName)) |>
-  summarize(median = median(!!sym(grp2$lfqData$config$table$getWorkIntensity())))
+xb <- grp2$RES$lfqData$data |> 
+  dplyr::group_by(!!sym(grp2$RES$lfqData$config$table$sampleName)) |>
+  dplyr::summarize(median = median(!!sym(grp2$RES$lfqData$config$table$getWorkIntensity())))
 
 bb <- xb$median
 names(bb) <- xb$sampleName
@@ -151,35 +162,44 @@ progress(0.2, "Normalization")
 
 ## Normalization
 
-Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. To do this the z-score of the log2 transformed intensities is computed, which is updated by the average of the standard deviation of the log2 transformed intensities in all samples. After normalization all samples have an equal mean and variance and a similar distribution.
+Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. 
+
+```{r normalization, results = 'asis'}
+if (grp2$transform == "robscale") {
+  cat("To do this the z-score of the $\\log_2$ transformed intensities is computed.",
+      "Because we need to estimate the protein fold-changes on the original scale, we have to multiply the $z$-score by the average standard deviation of all the $N$ samples in the experiment.",
+  "After normalization all samples have an equal mean and variance and a similar distribution.")
+} else if (grp2$transform == "vsn") {
+  cat("To do this the variance stabilizing normalization (vsn) was applied [@HuberVSN2002].")
+} else if (grp$transform == "none") {
+  cat("However, in some circumstances it is advisable not to normalize the data, e.g. in case of affinity purification experiments or when the distribution of the not transformed data are sufficiently similar.")
+}
+
+```
 
 
-```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="Violin plots of normalized protein intensity values (z-score)", eval=TRUE}
-pl <- grp2$transformedlfqData$get_Plotter()
+(ref:normalized) Violin plots of normalized protein intensity values (z-score)
+
+```{r normalized,  fig.width=8, fig.height=5,dpi=300, fig.cap="(ref:normalized)", eval=TRUE}
+pl <- grp2$RES$transformedlfqData$get_Plotter()
 pl$intensity_distribution_violin() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-\pagebreak
 
 
-The left panel of Figure \@ref(fig:SDViolin), show the coefficient of variations (CV) for all proteins in each condition and overall computed on not normalized data. To observe differences between conditions the variation within a condition should ideally be smaller than within all conditions.
+The left panel of Figure \@ref(fig:SDViolin), show the coefficients of variations (CV) for all proteins computed on not normalized data. The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations (sd) for all proteins after transforming and scaling the data. The values for all samples and in each group is shown. To observe differences between groups the variation within a group should ideally be smaller than across all samples.
 
 
-```{r CViolin, eval=FALSE}
+(ref:SDViolin) Left panel - Distribution of coefficient of variation (CV) within groups and in entire experiment (all), Right panel - Distribution of protein standard deviation (sd), after intensity transformation and scaling within groups and in entire experiment.
 
-```
-
-The right panel of Figure \@ref(fig:SDViolin) shows the distributions of standard deviations (sd) for all proteins within the conditions and overall after transforming and scaling the data. To observe differences between conditions the standard deviation within a condition ideally should be smaller than within all conditions.  
-
-```{r SDViolin, fig.height=3, fig.width=7, fig.cap="Left panel - Distribution of protein CV within conditions and in entire experiment (all), Right panel - Distribution of protein standard deviation (after sample normalization and scaling) within conditions and in entire experiment.", eval=TRUE}
-
-stR <- grp2$lfqData$get_Stats()
+```{r SDViolin, fig.height=3, fig.width=7, fig.cap="(ref:SDViolin)", eval=TRUE}
+stR <- grp2$RES$lfqData$get_Stats()
 p1 <- stR$violin()
 
-st <- grp2$transformedlfqData$get_Stats()
+st <- grp2$RES$transformedlfqData$get_Stats()
 p2 <- st$violin()
-gridExtra::grid.arrange(p1,p2, nrow=1)
+gridExtra::grid.arrange(p1,p2, nrow = 1)
 
 ```
 
@@ -187,13 +207,13 @@ gridExtra::grid.arrange(p1,p2, nrow=1)
 resR <- stR$stats_quantiles()
 res <- st$stats_quantiles()
 
-C <- bind_rows(
-CV = resR$wide  |> filter(probs == 0.5),
-sd = res$wide |> filter(probs == 0.5))
-C <- C |> mutate( what = c("CV","sd"), .before = 1 )
+C <- dplyr::bind_rows(
+CV = resR$wide  |> dplyr::filter(probs == 0.5),
+sd = res$wide |> dplyr::filter(probs == 0.5))
+C <- C |> dplyr::mutate( what = c("CV","sd"), .before = 1 )
 
-
-knitr::kable(C, caption = 'median of cv and sd')
+C$probs <- NULL
+knitr::kable(C, caption = 'Median (prob 0.5) of coefficient of variation (CV) and standard deviation (sd)')
 
 progress(0.1, "CVs")
 
@@ -203,23 +223,29 @@ progress(0.1, "CVs")
 ## Clustering for Samples and Proteins
 
 ```{r generateHeatmaps, inlcude = FALSE}
-pl <- grp2$transformedlfqData$get_Plotter()
+pl <- grp2$RES$transformedlfqData$get_Plotter()
 ph <- pl$heatmap()
 phc <- pl$heatmap_cor()
 nah <- pl$NA_heatmap()
 ```
 
-```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap of correlations (spearman) between samples.", eval=TRUE}
+In Figure \@ref(fig:correlation) we show how samples are clustering depending on the spearman correlation. Side colors on top of the heatmaps indicate the grouping of the samples.
+
+```{r correlation, dpi=300, fig.height=5, fig.width=7, fig.cap="Heatmap showing the pairwise spearman correlations between samples.", eval=TRUE}
 phc
 ```
 
-In Figure \@ref(fig:correlation) and Figure \@ref(fig:heatmapData) we show how samples are clustering depending on the spearman correlation. Side colors on top of the heatmaps indicate the grouping variables. Figure \@ref(fig:heatmapData) shows the heatmap of the dataset; columns correspond to samples, while rows to proteins. The rows are z-transformed, i.e. each row has the same mean and standard deviation. Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the expression of a group of proteins and this can be potentially be spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
+Figure \@ref(fig:heatmapData) shows the protein intensities of the dataset; columns correspond to samples, while rows to proteins. The rows are z-transformed, i.e. each row has the same mean and standard deviation. 
 
 
 
 ```{r heatmapData, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of normalized data. Columns - samples, rows - proteins. The intensities of each protein are z-transformed.", eval=TRUE}
 ph
 ```
+
+
+Finally, in the heatmap figure \@ref(fig:heatmapNA), we show in black if a protein is missing in a sample. Some experiments switch off the expression of a group of proteins and this can sometimes spotted in this figure. The samples and proteins are clustered based on the missigness information using the Minkowski distance.
+
 
 ```{r heatmapNA, fig.width=7, fig.height=8, dpi=300, fig.cap="Heatmap of proteins containing missing values, white - present, black - basent.", eval=TRUE}
 nah
@@ -230,89 +256,122 @@ nah
 
 # Two Group Comparison
 
-We fit a linear model, which was specified using the following model formula:
+The following analysis assumed that most of the proteins are not regulated (most differences between the two groups should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), Top, shows the distribution of fold changes. Most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
 
-`r grp2$formula`,
+The statistical analysis is performed by fitting a linear model, which was specified using the __R__ function `lm`, and specified using the model formula:
 
-where `<response variable> ~ <explanatory variables>`, using the __R__ function `lm`.
+`r grp2$RES$formula`,
 
-Using the coefficients estimates of the linear model we compare the following two conditions and test for differential expression.
+where `<response variable> ~ <explanatory variables>`. The response variable is the protein abudance estimated from precursor intensities using either the quantification software, or _prolfqua_.
 
-`r names(grp2$Contrast)` = `r grp2$Contrast`.
+We can compute the differences among the groups
 
-For some of the proteins the linear model can not be fitted, because there are no observations in one of the conditions. Assuming that the observation are missing  because the protein abundance is below the limit of detection, we substitute the unobserved condition mean with the mean of $1\%$ smallest group averages in the sample. 
-The proteins for which a linear model can be fitted are labelled with `Linear_Model_Moderated`, while those proteins were we imputed the unobserved group mean we label with `Imputed_Condition_Mean`.
+`r names(grp2$Contrast)` = `r grp2$Contrast`,
 
-The following analysis assumes that most of the proteins are not regulated (most differences between the two conditions should be close to zero, and only a few proteins are differentially expressed. Figure \@ref(fig:densityOFFoldChanges), Top, shows the distribution of fold changes. Most of the fold changes should be close to zero, and also the median of all fold changes (red dashed line) should be close to zero (green line).
-
-Based on the linear model model coefficients, we estimate the difference between the conditions (column _diff_) and the variance for each protein, which allows us to compute the t-statistic (column _statistic_). Furthermore, using the degrees of freedom (column _df_), we determine the p-value, i.e., the probability of the Type I error (Type I error - the error of falsely rejecting the null hypothesis). The null hypothesis is that proteins are not differentially expressed. The bottom panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. The distribution of most of the p-values should be uniform (not-regulation), with some higher bars on the left, that is some significant proteins (small p-values). 
-
-When testing the differential expression of many proteins, the p-value does not control the type I error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), the expected proportion of false discoveries in a list of proteins filtered by FDR. 
-
-Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two conditions. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` and differences greater than `r grp2$log2FCthreshold` (see Figure \@ref(fig:volcanoplot)). Figure \@ref(fig:MAPlot) shows the difference between the experiments (y-axis) and the average intensity of the protein (x-axis), and e.g., can be used to identify abundant proteins with a large difference.
+and test for differential expression using the coefficients of the linear model.
 
 
-(ref:densityOFFoldChanges) Top : Distribution of differences among experiments. Bottom - histogram of p-values.
+Based on the linear model coefficients, we estimate the difference between the groups (column _diff_) and the variance for each protein, which allows us to compute the t-statistic (column _statistic_). Furthermore, using the degrees of freedom (column _df_), we determine the p-value, i.e., the probability of the Type I error (Type I error - the error of falsely rejecting the null hypothesis). The null hypothesis is that proteins are not differentially expressed. The bottom panel in Figure \@ref(fig:densityOFFoldChanges) shows the distribution of the p-values for all the proteins. The distribution of most of the p-values should be uniform (not-regulation), with some higher bars on the left, that is some significant proteins (small p-values). 
+
+If, for some of the proteins, there are no observations in one of the groups the group mean con not be estimated. Therefore, assuming that the observation are missing because the protein abundance is below the limit of detection, we substitute the unobserved group mean with the mean of $1\%$ smallest group averages of all the porteins. If the observations present in the other group allow us to estimate the variance of the measurement for that protein we compute the t-statistic, p-value and FDR.
+
+However, results for proteins with a large number of missing observations should be assesed sparately. Therefore, proteins for which we imputed the unobserved group mean we label with `Imputed_Mean`. Those with a sufficient number of observations are labelled with `Linear_Model_Moderated` (see Figure \@ref(fig:volcanoplot), and column _modelName_ in the Excel table containing the analysis results.).
+
+When testing the differential expression of many proteins, the p-value does not control the type I-error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), i.e., the expected proportion of false discoveries in a list of proteins filtered by FDR, using the Benjamini-Hochberg procedure.
+
+
+(ref:densityOFFoldChanges) Top : distribution of differences among groups. Bottom - histogram of p-values.
 
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
-p1 <- grp2$contrMerged$histogram_diff()
-p2 <- grp2$contrMerged$histogram()$p.value
+
+cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$log2FCthreshold, FDRthreshold = grp2$FDRthreshold)
+p1 <- cpl$histogram_diff()
+p2 <- cpl$histogram()$p.value
 gridExtra::grid.arrange(p1,p2)
 
 ```
 
-\newpage
 
-(ref:volcanoplot) Volcano plot where the x-axis shows the difference among the experiments and the y-axis the $-\log_10(FDR)$.
+Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two groups. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` (horizontal line) and differences greater than `r grp2$log2FCthreshold` (vertical lines). Figure \@ref(fig:MAPlot) shows the difference between the groups (y-axis) and the average intensity of the protein (x-axis), and, for instance can be used to identify abundant proteins with large differences.
+
+(ref:volcanoplot) Volcano plot where the x-axis shows the difference among the groups and the y-axis the $-\log_10(FDR)$.
 
 ```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="(ref:volcanoplot)", eval=TRUE}
-grp2$contrMerged$volcano_plotly()$FDR
+cpl$volcano_plotly()$FDR
 
 ```
 
 
-(ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the conditions.
+(ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the groups.
 
 ```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="(ref:MAPlot)", eval=TRUE}
-grp2$contrMerged$ma_plotly(fc = GRP2$log2FCthreshold)
+cpl$ma_plotly(fc = GRP2$log2FCthreshold)
 
 ```
 
-Table \@ref(tab:nrsignificant) summarizes the number of significant calls, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
+Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$FDRthreshold` and difference > `r grp2$log2FCthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
 
 
 ```{r nrsignificant, results="markup", eval=TRUE}
+ctdata <- grp2$RES$contrMerged$get_contrasts()
 
-x <- data.frame(table(abs(grp2$contrMerged$contrastDF$diff) >  grp2$log2FCthreshold  & grp2$contrMerged$contrastDF$FDR < grp2$FDRthreshold))
+x <- data.frame(table(abs(ctdata$diff) >  grp2$log2FCthreshold  & ctdata$FDR < grp2$FDRthreshold))
 
 if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant" , "Significant")
-  names(x)[names(x) == 'Var1'] <- ''
+} else {
+  x$Var1 <- c("Not Significant")
 }
-
+names(x)[names(x) == 'Var1'] <- ''
 mycap <- paste0("Number of not significant and significant proteins with abs(log2_FC) > ", grp2$log2FCthreshold, " and FDR < ", grp2$FDRthreshold, "."  )
 knitr::kable(x, caption = mycap)
+
 ```
 
 
 
 ```{r top20table, eval=TRUE}
-knitr::kable(grp2$top20, caption = "Top 20 proteins sorted by smallest FDR.")
+
+proteinID <- grp2$RES$contrMerged$subject_Id
+top20 <- ctdata |>
+  dplyr::select( !!sym(proteinID ),
+                 diff = .data$diff,
+                 .data$conf.low,
+                 .data$conf.high,
+                 .data$FDR ) |>
+  dplyr::arrange(.data$FDR) |>
+  head(20)
+
+top20confint <- ggplot2::ggplot(
+  top20, ggplot2::aes(x = !!sym(proteinID), y = .data$diff,
+                      ymin = .data$conf.low, ymax = .data$conf.high)) +
+  ggplot2::geom_hline( yintercept = 0, color = 'red' ) +
+  ggplot2::geom_linerange() + ggplot2::geom_point() +
+  ggplot2::coord_flip() + ggplot2::theme_minimal()
+
+tablecap <- paste("Top 20 proteins sorted by smallest FDR.", 
+                 "diff - difference among roups,",
+                 "conf.low - lower confidence interval,",
+                 "conf.high - higher confidence interval,",
+                 "FDR - false discovery rate.")
+
+
+knitr::kable(top20, caption = tablecap)
 ```
 
 
 ```{r prepareHeatmap}
 
-significant <- grp2$contrMerged$contrastDF |>
+significant <- ctdata |>
   dplyr::filter(.data$FDR < grp2$FDRthreshold & abs(.data$diff) > grp2$log2FCthreshold )
 
-signif <- grp2$transformedlfqData$get_copy()
+signif <- grp2$RES$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
 showSignificant <- TRUE
 
 if (nrow(signif$data) > 0) {
-  sigheat <- signif$get_Plotter()$raster()
+  sigheat <- signif$get_Plotter()$raster(rownames = TRUE)
 } else {
   showSignificant <- FALSE 
 }
@@ -333,8 +392,8 @@ bp <- bp[seq_len(nrb)]
 
 ```{r makeText, eval = showSignificant, results = 'asis'}
 
-cat(paste("Furthermore, figure \@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold, ".") ,
-paste("Figure \@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
+cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold, ".") ,
+paste("Figure \\@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
 
 ```
 
@@ -345,7 +404,7 @@ sigheat
 ```
 
 
-(ref:boxplot) Boxplot of `r nrb` significant proteins.
+(ref:boxplot) Boxplot of `r nrb` significant proteins. Each dot shows the intensity of a protein observed in a sample.
 
 ```{r boxplot, fig.cap="(ref:boxplot)", eval = showSignificant}
 gridExtra::grid.arrange(grobs = bp, ncol = 3) 
@@ -354,30 +413,28 @@ gridExtra::grid.arrange(grobs = bp, ncol = 3)
 
 
 ```{r}
-existsNoPvalEstimate <- !is.null(grp2$noPvalEstimate)
-plotMissing <- if (nrow(grp2$imputedProteins$data) == 0) {
-  FALSE
-} else { 
-  TRUE 
-}
-  
+plotMissing <- nrow(grp2$RES$contrMore$get_contrasts()) > 0
 ```
 
 ```{r makeTextImputed, eval = plotMissing, results = 'asis' }
-cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which no t-statistic could be estimated, because there are to few observations."))
+cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which we use group mean imputation to estimate differences among groups, because there are too few observations."))
+imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
+heatmapImp <- imputed_Average$get_Plotter()$raster(rownames = TRUE)
 
 ```
 
+(ref:imputedProt) Proteins for which fold changes were inferred by imputing the group average.
 
-```{r imputedProt, fig.cap = "Proteins with missing value imputation.", fig.height = 10, eval = plotMissing}
-grp2$imputedProteins$get_Plotter()$raster()
+
+```{r imputedProt, fig.cap = "(ref:imputedProt).", fig.height = 10, eval = plotMissing}
+heatmapImp
 ```
 
 # Data Interpretation
 
-For interpreting the results in the _`r paste0("MaxQuant_report", grp2$projectName, ".xlsx")`_ file, the protein $IDs$ can be either sorted by `log2FC`, `t-statistic` or $sign(log2FC) \cdot` p-value. Large positive or negative fold changes typically result in small p-values.
+For interpreting the results in the `.xlsx` file, the protein $IDs$ can be either sorted by `diff`, `t-statistic` or $sign(diff) \cdot$ FDR. Large positive or negative fold changes typically result in smaller p-values.
 
-The IDs sorted by fold change can then be subjected to gene set enrichment analysis (GSEA). Alternatively, a subset filtered by FDR, e.g. for a threshold of $0.1$ or $0.25$, can be analysed using over-representation analysis (ORA). The web application WebGestalt (WEB-based GEne SeT AnaLysis Toolkit) <http://www.webgestalt.org> implements both of these methods for the most popular organisms [@Wang2017]. The [DAVID Bioinformatics Resource](https://david.ncifcrf.gov/home.jsp) also enables you to run ORA analysis for a wide variety of organizms.
+The protein IDs sorted by fold change or t-statistic can then be subjected to gene set enrichment analysis (GSEA). Alternatively, a subset filtered by FDR, e.g. for a threshold of $0.1$ or $0.25$, can be analysed using over-representation analysis (ORA). The web application WebGestalt (WEB-based GEne SeT AnaLysis Toolkit) <http://www.webgestalt.org> implements both of these methods for the most popular organisms [@Wang2017]. The [DAVID Bioinformatics Resource](https://david.ncifcrf.gov/home.jsp) also enables you to run ORA analysis for a wide variety of organizms.
 
 Overrepresentation analysis is performed on biological functional categories (e.g., biological processes of gene ontology annotations) or on biological pathways (e.g., KEGG or Wikipathways). Using such methods allows identifying functions or pathways for proteins in the submitted list. For the correct usage and interpretation of the results from such an analysis, it is essential to specify the background proteome. The background proteome is the list of all proteins identified in your experiment.
 
