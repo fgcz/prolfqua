@@ -89,6 +89,8 @@ filter_difference <- function(x, y, config){
 #' GRP2$Bfabric <- list()
 #' GRP2$Bfabric$projectID <- "3765"
 #' GRP2$Bfabric$projectName <- "Order_26863"
+#' GRP2$Bfabric$orderID <- "3765"
+#'
 #' GRP2$Bfabric$workunitID <- "2057368.zip"
 #' GRP2$Bfabric$inputID <- "2057368.zip"
 #' GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
@@ -96,8 +98,9 @@ filter_difference <- function(x, y, config){
 #' #at least 2 peptides per protein
 #' GRP2$nrPeptides <- 2
 #' GRP2$transform <- "robscale"
+#' GRP2$transform <- "vsn"
 #' GRP2$aggregate <- "medpolish"
-#'
+#' GRP2$Software <- "MaxQuant"
 #' # Set FC to >= |2| and FRD to 0.1
 #' GRP2$log2FCthreshold <- 0.5
 #' GRP2$FDRthreshold <- 0.25
@@ -121,8 +124,8 @@ filter_difference <- function(x, y, config){
 #' grp <- make2grpReport(data,atab, GRP2, NULL, transform = GRP2$transform, aggregate = GRP2$aggregate)
 #' #\dontrun{
 #'
-#' render_2GRP(grp, "." ,word = TRUE)
 #' render_2GRP(grp, ".")
+#' render_2GRP(grp, "." ,word = TRUE)
 #' write_2GRP(grp,".")
 #' #}
 make2grpReport <- function(startdata,
@@ -156,7 +159,7 @@ make2grpReport <- function(startdata,
   } else if (GRP2$transform == "vsn") {
     transformed <- lt$intensity_matrix( .func = vsn::justvsn)$lfq
   } else if (GRP2$transform == "none") {
-    transformed <- lfqdata$get_copy()
+    transformed <- lt$log2()$lfq
   } else {
   }
 
@@ -220,7 +223,7 @@ make2grpReport <- function(startdata,
   contr <- prolfqua::Contrasts$new(mod, GRP2$Contrasts)
   conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
   mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = GRP2$Contrasts)
-  conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Condition_Mean")
+  conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Mean")
 
   res <- prolfqua::addContrastResults(conrM, conMI)
   GRP2$RES$contrMerged <- res$merged

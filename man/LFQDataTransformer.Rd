@@ -186,7 +186,7 @@ LFQDataTransformer (self)
 \subsection{Method \code{intensity_array()}}{
 Transforms intensities
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_array(.func = log2)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_array(.func = log2, force = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -204,9 +204,9 @@ LFQDataTransformer (self)
 \if{html}{\out{<a id="method-intensity_matrix"></a>}}
 \if{latex}{\out{\hypertarget{method-intensity_matrix}{}}}
 \subsection{Method \code{intensity_matrix()}}{
-pass a function which works with matrices see robust_scale for examples.
+pass a function which works with matrices, e.g., vsn::justvsn
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale, force = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

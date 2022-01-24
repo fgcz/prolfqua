@@ -126,11 +126,11 @@ nah
 
 
 ```{r fig.cap="# of proteins with 0,1,...N missing values"}
-lfqdata$get_Summariser()$plot_missingness_per_condition()
+lfqdata$get_Summariser()$plot_missingness_per_group()
 ```
 
 ```{r fig.cap="Cumulative sum of the # of proteins with 0,1,...N missing values"}
-lfqdata$get_Summariser()$plot_missingness_per_condition_cumsum()
+lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
 ```
 
 ```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}

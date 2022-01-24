@@ -465,29 +465,39 @@ LFQDataTransformer <- R6::R6Class(
     #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
     #' @return LFQDataTransformer (self)
     #'
-    intensity_array = function(.func = log2) {
-      .call <- as.list( match.call() )
-      r <- prolfqua::transform_work_intensity(
-        self$lfq$data,
-        self$lfq$config,
-        .func = .func,
-        .funcname = deparse(.call$.func))
-      self$lfq$data <- r
+    intensity_array = function(.func = log2, force = FALSE) {
+      if (self$lfq$is_transformed()) {
+        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+      } else {
+        .call <- as.list( match.call() )
+        r <- prolfqua::transform_work_intensity(
+          self$lfq$data,
+          self$lfq$config,
+          .func = .func,
+          .funcname = deparse(.call$.func))
+        self$lfq$data <- r
+        self$lfq$is_transformed(TRUE)
+      }
       invisible(self)
     },
     #' @description
-    #' pass a function which works with matrices see robust_scale for examples.
+    #' pass a function which works with matrices, e.g., vsn::justvsn
     #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
     #' @return LFQDataTransformer (self)
     #'
-    intensity_matrix = function(.func = robust_scale){
-      .call <- as.list( match.call() )
-      r <- prolfqua::applyToIntensityMatrix(
-        self$lfq$data,
-        self$lfq$config,
-        .func = .func,
-        .funcname = deparse(.call$.func))
-      self$lfq$data <- r
+    intensity_matrix = function(.func = robust_scale, force = FALSE){
+      if (self$lfq$is_transformed()) {
+        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+      } else {
+        .call <- as.list( match.call() )
+        r <- prolfqua::applyToIntensityMatrix(
+          self$lfq$data,
+          self$lfq$config,
+          .func = .func,
+          .funcname = deparse(.call$.func))
+        self$lfq$data <- r
+        self$lfq$is_transformed(TRUE)
+      }
       invisible(self)
     }
   )
@@ -707,8 +717,8 @@ LFQDataStats <- R6::R6Class(
 #' sum$interaction_missing_stats()
 #' sum$missingness_per_condition()
 #' sum$missingness_per_condition_cumsum()
-#' sum$plot_missingness_per_condition()
-#' sum$plot_missingness_per_condition_cumsum()
+#' sum$plot_missingness_per_group()
+#' sum$plot_missingness_per_group_cumsum()
 #'
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
@@ -759,13 +769,13 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' barplot with number of features with 1,2, etc missing in condition
     #' @return ggplot
-    plot_missingness_per_condition = function(){
+    plot_missingness_per_group = function(){
       prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
     },
     #' @description
     #' barplot with cumulative sum of features with 1,2, etc missing in condition
     #' @return ggplot
-    plot_missingness_per_condition_cumsum = function(){
+    plot_missingness_per_group_cumsum = function(){
       prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
     }
   )
@@ -1183,7 +1193,7 @@ LFQDataAggregator <- R6::R6Class(
         warning("You did not transform the intensities.",
                 "medpolish works best with already variance stabilized intensities.",
                 "Use LFQData$get_Transformer to transform the data.",
-                lfq$config$table$workIntensity,)
+                self$lfq$config$table$workIntensity,)
       }
       res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = medpolishPlydf_config)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
@@ -1198,7 +1208,7 @@ LFQDataAggregator <- R6::R6Class(
         warning("You did not transform the intensities.",
                 "Robust regression works best with already variance stabilized intensities.",
                 "Use LFQData$get_Transformer to transform the data.",
-                lfq$config$table$workIntensity,)
+                self$lfq$config$table$workIntensity,)
       }
 
       res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = summarizeRobust_config)
