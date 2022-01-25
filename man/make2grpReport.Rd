@@ -71,9 +71,9 @@ GRP2$transform <- "vsn"
 GRP2$aggregate <- "medpolish"
 GRP2$Software <- "MaxQuant"
 # Set FC to >= |2| and FRD to 0.1
-GRP2$log2FCthreshold <- 0.5
+GRP2$Diffthreshold <- 0.5
 GRP2$FDRthreshold <- 0.25
-GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
+GRP2$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
 
 data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 
