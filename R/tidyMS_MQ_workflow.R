@@ -71,7 +71,7 @@ filter_difference <- function(x, y, config){
 #' @rdname make2grpReport
 #' @param startdata table in long format
 #' @param atable AnalysisTableAnnotation annotate startdata table
-#' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, log2FCthreshold, FDRthreshold
+#' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, Diffthreshold, FDRthreshold
 #' @param protein_annot column with portein desciription e.g. (fasta header)
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
@@ -102,9 +102,9 @@ filter_difference <- function(x, y, config){
 #' GRP2$aggregate <- "medpolish"
 #' GRP2$Software <- "MaxQuant"
 #' # Set FC to >= |2| and FRD to 0.1
-#' GRP2$log2FCthreshold <- 0.5
+#' GRP2$Diffthreshold <- 0.5
 #' GRP2$FDRthreshold <- 0.25
-#' GRP2$Contrasts <- c(avsb = "dilution.b - dilution.a")
+#' GRP2$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
 #'
 #' data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
 #'
@@ -190,8 +190,8 @@ make2grpReport <- function(startdata,
   GRP2$RES <- list()
   GRP2$RES$Summary <- data.frame(
     totalNrOfProteins = allProt,
-    percentOfContaminants = round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2),
-    percentOfFalsePositives  = round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2),
+    percentOfContaminants = round(protAnnot$annotateCON(revpattern)/allProt * 100 , digits = 2),
+    percentOfFalsePositives  = round(protAnnot$annotateREV(contpattern)/allProt * 100 , digits = 2),
     NrOfProteinsNoDecoys = protAnnot$nr_clean()
   )
   GRP2$RES$rowAnnot <- protAnnot

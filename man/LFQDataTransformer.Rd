@@ -9,6 +9,7 @@ Decorate LFQData with Methods for transforming Intensities
 Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
+
 istar <- prolfqua_data('data_ionstar')$filtered()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -23,13 +24,17 @@ plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
 # transform by asinh root and scale
+
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
 mads1 <- mean(x$get_scales()$mads)
-x <- lfqTrans$intensity_matrix(robust_scale)
+x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
 mads2 <- mean(x$get_scales()$mads)
+
 stopifnot(abs(mads1 - mads2) < 1e-8)
+
+
 stopifnot(abs(mean(x$get_scales()$medians)) < 1e-8)
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()

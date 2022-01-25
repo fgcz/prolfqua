@@ -341,6 +341,7 @@ RowAnnotProtein <-
 #' @export
 #'
 #' @examples
+#'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
@@ -355,13 +356,17 @@ RowAnnotProtein <-
 #' plotter$intensity_distribution_density()
 #'
 #' # transform by asinh root and scale
+#'
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
 #' x <- lfqTrans$intensity_array(asinh)
 #' mads1 <- mean(x$get_scales()$mads)
-#' x <- lfqTrans$intensity_matrix(robust_scale)
+#' x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
 #' mads2 <- mean(x$get_scales()$mads)
+#'
 #' stopifnot(abs(mads1 - mads2) < 1e-8)
+#'
+#'
 #' stopifnot(abs(mean(x$get_scales()$medians)) < 1e-8)
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()
@@ -466,9 +471,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     intensity_array = function(.func = log2, force = FALSE) {
-      if (self$lfq$is_transformed()) {
-        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
-      } else {
+      if (!self$lfq$is_transformed() | force) {
         .call <- as.list( match.call() )
         r <- prolfqua::transform_work_intensity(
           self$lfq$data,
@@ -477,6 +480,10 @@ LFQDataTransformer <- R6::R6Class(
           .funcname = deparse(.call$.func))
         self$lfq$data <- r
         self$lfq$is_transformed(TRUE)
+
+      } else {
+        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+
       }
       invisible(self)
     },
@@ -486,9 +493,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     intensity_matrix = function(.func = robust_scale, force = FALSE){
-      if (self$lfq$is_transformed()) {
-        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
-      } else {
+      if (!self$lfq$is_transformed() | force) {
         .call <- as.list( match.call() )
         r <- prolfqua::applyToIntensityMatrix(
           self$lfq$data,
@@ -497,7 +502,10 @@ LFQDataTransformer <- R6::R6Class(
           .funcname = deparse(.call$.func))
         self$lfq$data <- r
         self$lfq$is_transformed(TRUE)
-      }
+        } else {
+          warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+
+        }
       invisible(self)
     }
   )

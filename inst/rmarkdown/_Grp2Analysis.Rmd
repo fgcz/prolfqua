@@ -92,17 +92,6 @@ knitr::kable(grp2$RES$lfqData$factors(), caption = "Group sample mapping.")
 ```
 
 
-<!--
-The input matrix has the following structure (Figure \@ref(fig:overview)).
-
-```{r overview, fig.width=8,fig.height=7,dpi=300,fig.cap="Heatmap for quantifyable proteins sorted by missigness and intensity (log2). Gray - missing values"}
-#imageWithLabels(t(log2(grp2$proteinIntensity)), col.labels = NULL, #col=quantable::getBlueScale(21))
-```
--->
-
-
-\newpage
-
 # Quality Control
 
 ## Missing Data and Intensity Distribution
@@ -140,7 +129,7 @@ pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 9
 
 Figure \@ref(fig:scaling) shows the $\log_2$ fold change of the average sample intensity versus the mean average intensity of all samples. The samples average intensity value should not deviate more than 5 times from the average of all samples (linear scale).
 
-```{r  scaling,dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
+```{r scaling, dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
 xb <- grp2$RES$lfqData$data |> 
   dplyr::group_by(!!sym(grp2$RES$lfqData$config$table$sampleName)) |>
   dplyr::summarize(median = median(!!sym(grp2$RES$lfqData$config$table$getWorkIntensity())))
@@ -277,7 +266,7 @@ Based on the linear model coefficients, we estimate the difference between the g
 
 If, for some of the proteins, there are no observations in one of the groups the group mean con not be estimated. Therefore, assuming that the observation are missing because the protein abundance is below the limit of detection, we substitute the unobserved group mean with the mean of $1\%$ smallest group averages of all the porteins. If the observations present in the other group allow us to estimate the variance of the measurement for that protein we compute the t-statistic, p-value and FDR.
 
-However, results for proteins with a large number of missing observations should be assesed sparately. Therefore, proteins for which we imputed the unobserved group mean we label with `Imputed_Mean`. Those with a sufficient number of observations are labelled with `Linear_Model_Moderated` (see Figure \@ref(fig:volcanoplot), and column _modelName_ in the Excel table containing the analysis results.).
+However, results for proteins with a large number of missing observations should be assessed separately. Therefore, proteins for which we imputed the unobserved group mean we label with `Imputed_Mean`. Those with a sufficient number of observations are labelled with `Linear_Model_Moderated` (see Figure \@ref(fig:volcanoplot), and column _modelName_ in the Excel table containing the analysis results.).
 
 When testing the differential expression of many proteins, the p-value does not control the type I-error. Therefore, based on the distribution of the p-values, we estimate the false discovery rates (FDR), i.e., the expected proportion of false discoveries in a list of proteins filtered by FDR, using the Benjamini-Hochberg procedure.
 
@@ -287,7 +276,7 @@ When testing the differential expression of many proteins, the p-value does not 
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
 
-cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$log2FCthreshold, FDRthreshold = grp2$FDRthreshold)
+cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$Diffthreshold, FDRthreshold = grp2$FDRthreshold)
 p1 <- cpl$histogram_diff()
 p2 <- cpl$histogram()$p.value
 gridExtra::grid.arrange(p1,p2)
@@ -295,7 +284,7 @@ gridExtra::grid.arrange(p1,p2)
 ```
 
 
-Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two groups. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` (horizontal line) and differences greater than `r grp2$log2FCthreshold` (vertical lines). Figure \@ref(fig:MAPlot) shows the difference between the groups (y-axis) and the average intensity of the protein (x-axis), and, for instance can be used to identify abundant proteins with large differences.
+Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two groups. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` (horizontal line) and differences greater than `r grp2$Diffthreshold` (vertical lines). Figure \@ref(fig:MAPlot) shows the difference between the groups (y-axis) and the average intensity of the protein (x-axis), and, for instance can be used to identify abundant proteins with large differences.
 
 (ref:volcanoplot) Volcano plot where the x-axis shows the difference among the groups and the y-axis the $-\log_10(FDR)$.
 
@@ -304,21 +293,20 @@ cpl$volcano_plotly()$FDR
 
 ```
 
-
 (ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the groups.
 
 ```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="(ref:MAPlot)", eval=TRUE}
-cpl$ma_plotly(fc = GRP2$log2FCthreshold)
+cpl$ma_plotly(fc = GRP2$Diffthreshold)
 
 ```
 
-Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$FDRthreshold` and difference > `r grp2$log2FCthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
+Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$FDRthreshold` and difference > `r grp2$Diffthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
 
 
 ```{r nrsignificant, results="markup", eval=TRUE}
 ctdata <- grp2$RES$contrMerged$get_contrasts()
 
-x <- data.frame(table(abs(ctdata$diff) >  grp2$log2FCthreshold  & ctdata$FDR < grp2$FDRthreshold))
+x <- data.frame(table(abs(ctdata$diff) >  grp2$Diffthreshold  & ctdata$FDR < grp2$FDRthreshold))
 
 if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant" , "Significant")
@@ -326,7 +314,7 @@ if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant")
 }
 names(x)[names(x) == 'Var1'] <- ''
-mycap <- paste0("Number of not significant and significant proteins with abs(log2_FC) > ", grp2$log2FCthreshold, " and FDR < ", grp2$FDRthreshold, "."  )
+mycap <- paste0("Number of not significant and significant proteins with difference > ", grp2$Diffthreshold, " and FDR < ", grp2$FDRthreshold, "."  )
 knitr::kable(x, caption = mycap)
 
 ```
@@ -366,7 +354,7 @@ knitr::kable(top20, caption = tablecap)
 ```{r prepareHeatmap}
 
 significant <- ctdata |>
-  dplyr::filter(.data$FDR < grp2$FDRthreshold & abs(.data$diff) > grp2$log2FCthreshold )
+  dplyr::filter(.data$FDR < grp2$FDRthreshold & abs(.data$diff) > grp2$Diffthreshold )
 
 signif <- grp2$RES$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
@@ -394,12 +382,12 @@ bp <- bp[seq_len(nrb)]
 
 ```{r makeText, eval = showSignificant, results = 'asis'}
 
-cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$log2FCthreshold, ".") ,
+cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$Diffthreshold, ".") ,
 paste("Figure \\@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
 
 ```
 
-(ref:siproteins) Heatmap showing proteins with FDR < `r grp2$FDRthreshold` and diff > `r  grp2$log2FCthreshold`.
+(ref:siproteins) Heatmap showing proteins with FDR < `r grp2$FDRthreshold` and diff > `r  grp2$Diffthreshold`.
 
 ```{r siproteins, fig.cap="(ref:siproteins)", eval = showSignificant}
 sigheat
@@ -415,13 +403,20 @@ gridExtra::grid.arrange(grobs = bp, ncol = 3)
 
 
 ```{r}
-plotMissing <- nrow(grp2$RES$contrMore$get_contrasts()) > 0
+plotMissing <- nrow(grp2$RES$contrMore$get_contrasts()) > 1
+
+
+```
+
+```{r makeimputedProt, eval = plotMissing}
+imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
+heatmapImp <- imputed_Average$get_Plotter()$raster(rownames = TRUE)
+
 ```
 
 ```{r makeTextImputed, eval = plotMissing, results = 'asis' }
+
 cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which we use group mean imputation to estimate differences among groups, because there are too few observations."))
-imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
-heatmapImp <- imputed_Average$get_Plotter()$raster(rownames = TRUE)
 
 ```
 
