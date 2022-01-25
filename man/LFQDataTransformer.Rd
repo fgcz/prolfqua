@@ -198,6 +198,8 @@ Transforms intensities
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{.func}}{transformation function working with arrays e.g. log2, log10, asinh etc.}
+
+\item{\code{force}}{transformation on already transformed data.}
 }
 \if{html}{\out{</div>}}
 }
@@ -218,6 +220,8 @@ pass a function which works with matrices, e.g., vsn::justvsn
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{.func}}{any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale}
+
+\item{\code{force}}{transformation on data already transformed}
 }
 \if{html}{\out{</div>}}
 }

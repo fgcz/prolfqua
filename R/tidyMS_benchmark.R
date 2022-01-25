@@ -208,7 +208,8 @@ do_confusion_c <- function(
     ftable = ftable)
 }
 
-# summarise_missing_contrasts
+#' summarise_missing_contrasts
+#' @keywords internal
 #' @examples
 #'
 #' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
