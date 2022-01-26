@@ -995,6 +995,9 @@ ContrastsTable <- R6::R6Class(
 #' cp$ma_plot()
 #' cp$ma_plotly()
 #' res  <- cp$barplot_threshold()
+#' names(res)
+#' cp$histogram_diff()
+#' cp$volcano()
 Contrasts_Plotter <- R6::R6Class(
   "Contrasts_Plotter",
   public = list(
@@ -1007,7 +1010,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @field prefix default Contrasts - used to generate file names
     prefix = "Contrasts",
     #' @field estimate column with fold change estimates
-    estimate = "estimate",
+    diff = "diff",
     #' @field contrast column with contrasts names, default "contrast"
     contrast = "contrast",
     #' @field volcano_spec volcano plot specification
@@ -1027,7 +1030,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param score score parameters
     #' @param fcthresh default 1 (log2 FC threshold)
     #' @param modelName name of model
-    #' @param estimate fold change (difference) estimate column
+    #' @param diff fold change (difference) diff column
     #' @param contrast contrast column
     initialize = function(contrastDF,
                           subject_Id,
@@ -1037,7 +1040,7 @@ Contrasts_Plotter <- R6::R6Class(
                           score = list(list(score = "statistic",  thresh = NULL)),
                           fcthresh = 1,
                           modelName = "Model",
-                          estimate = "diff",
+                          diff = "diff",
                           contrast = "contrast"
     ){
       self$contrastDF <- tidyr::unite(
@@ -1046,7 +1049,7 @@ Contrasts_Plotter <- R6::R6Class(
 
       self$modelName  = modelName
       self$subject_Id = subject_Id
-      self$estimate = estimate
+      self$diff = diff
       self$volcano_spec = volcano
       self$score_spec = score
       self$histogram_spec = histogram
@@ -1066,16 +1069,16 @@ Contrasts_Plotter <- R6::R6Class(
       }
     },
     #' @description
-    #' plot histogram of estimated fold change
+    #' plot histogram of effect size - difference between groups
     #' @param binwidth with of bin in histogram
     histogram_estimate = function(binwidth = 0.05){
-      re <- range(self$contrastDF[[self$estimate]], na.rm = TRUE)
+      re <- range(self$contrastDF[[self$diff]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
 
-      fig <- ggplot(self$contrastDF, aes(x = !!sym(self$estimate))) +
+      fig <- ggplot(self$contrastDF, aes(x = !!sym(self$diff))) +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
-        geom_vline(aes(xintercept = median(!!sym( self$estimate ), na.rm = T)),   # Ignore NA values for mean
+        geom_vline(aes(xintercept = median(!!sym( self$diff ), na.rm = T)),   # Ignore NA values for mean
                    color = "red", linetype = "dashed", size = 1) +
         geom_vline(xintercept = 0, col = "green" , size = 1) +
         facet_wrap(vars(!!sym(self$contrast))) +
@@ -1084,7 +1087,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(fig)
     },
     #' @description
-    #' plot histogram of differences (estimates) fold change
+    #' plot histogram of differences (diff) fold change
     #' @param binwidth with of bin in histogram
     histogram_diff = function(binwidth = 0.05){
       self$histogram_estimate(binwidth = binwidth)
@@ -1193,16 +1196,20 @@ Contrasts_Plotter <- R6::R6Class(
       return(res)
     },
     #' @description
-    #' shows the number of significant protens per contrasts
+    #' shows the number of significant proteins per contrasts
     #' @return list which contains ggplots and summary tables
     barplot_threshold = function(){
       resBar <- list()
       for (i in seq_along(self$volcano_spec) ) {
         scN <- self$volcano_spec[[i]]$score
         scT <- self$volcano_spec[[i]]$thresh
-        filt <- self$contrastDF  |> filter(!is.na(!!sym(scN)) & !!sym(scN)  < scT)
-        sumC <- filt |> group_by(contrast, modelName) |> dplyr::summarize(n = n())
-        p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) + geom_bar(position = "stack", stat = "identity")
+        filt <- dplyr::filter(
+          self$contrastDF ,
+          !is.na(!!sym(scN)) & !!sym(scN)  < scT & !!sym(self$diff) > self$fcthresh)
+
+        sumC <- group_by(filt, contrast, modelName) |> dplyr::summarize(n = n())
+        p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) +
+          geom_bar(position = "stack", stat = "identity")
         resBar[[scN]] <- list(plot = p, summary = sumC)
       }
       return(resBar)
@@ -1215,7 +1222,7 @@ Contrasts_Plotter <- R6::R6Class(
         column <- score$score
         p <- prolfqua:::.multigroupVolcano(
           contrasts,
-          effect = self$estimate,
+          effect = self$diff,
           p.value = column,
           condition = self$contrast,
           text = "subject_Id",
@@ -1241,7 +1248,7 @@ Contrasts_Plotter <- R6::R6Class(
     },
     .ma_plot = function(x, contrast, fc, colour = NULL, legend = TRUE){
       p <- ggplot(x , aes(x = (c1 + c2)/2,
-                          y = !!sym(self$estimate),
+                          y = !!sym(self$diff),
                           text = !!sym("subject_Id"),
                           colour = !!sym(colour))) +
         geom_point(alpha = 0.5) +
@@ -1268,7 +1275,7 @@ Contrasts_Plotter <- R6::R6Class(
         }
 
         ylims <- c( sign(min(scoreVal, na.rm = TRUE)) * ylim, sign( max(scoreVal, na.rm = TRUE)) * ylim)
-        p <- ggplot(x, aes(x = !!sym(self$estimate),
+        p <- ggplot(x, aes(x = !!sym(self$diff),
                            y = !!sym(score),
                            text = !!sym("subject_Id"),
                            colour = !!sym(colour))) +
