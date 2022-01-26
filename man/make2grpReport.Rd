@@ -29,7 +29,7 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 
 \item{GRP2}{return value of \code{\link{make2grpReport}}}
 
-\item{protein_annot}{column with portein desciription e.g. (fasta header)}
+\item{protein_annot}{column with protein description e.g. (fasta header)}
 
 \item{revpattern}{default "REV_"}
 
@@ -39,11 +39,15 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 
 \item{transform}{which transformation to use to normalize the data, default robscale}
 
+\item{aggregate}{method to use for peptide aggregation}
+
 \item{outpath}{path to place output}
 
 \item{xlsxname}{file name for xlsx}
 
 \item{htmlname}{name for html file}
+
+\item{word}{default FALSE, if true create word document.}
 }
 \description{
 For use examples see run_scripts directory

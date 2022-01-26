@@ -72,11 +72,12 @@ filter_difference <- function(x, y, config){
 #' @param startdata table in long format
 #' @param atable AnalysisTableAnnotation annotate startdata table
 #' @param GRP2 list with named arguments i.e. Contrasts, projectID, projectName, workunitID, nrPeptides, Diffthreshold, FDRthreshold
-#' @param protein_annot column with portein desciription e.g. (fasta header)
+#' @param protein_annot column with protein description e.g. (fasta header)
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
 #' @param remove do you want to remove contaminants default (TRUE)
 #' @param transform which transformation to use to normalize the data, default robscale
+#' @param aggregate method to use for peptide aggregation
 #' @export
 #' @family workflow
 #' @examples
@@ -267,6 +268,7 @@ write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
 #' @param GRP2 return value of \code{\link{make2grpReport}}
 #' @param outpath path to place output
 #' @param htmlname name for html file
+#' @param word default FALSE, if true create word document.
 #' @export
 #' @family workflow
 render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp", word = FALSE){

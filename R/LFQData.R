@@ -468,6 +468,8 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' Transforms intensities
     #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
+    #' @param force transformation on already transformed data.
+    #'
     #' @return LFQDataTransformer (self)
     #'
     intensity_array = function(.func = log2, force = FALSE) {
@@ -490,6 +492,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' pass a function which works with matrices, e.g., vsn::justvsn
     #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
+    #' @param force transformation on data already transformed
     #' @return LFQDataTransformer (self)
     #'
     intensity_matrix = function(.func = robust_scale, force = FALSE){
