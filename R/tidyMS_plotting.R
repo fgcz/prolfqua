@@ -340,9 +340,9 @@ plot_heatmap <- function(data,
   resdata <- t(scale(t(wide$data)))
   resdataf <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
-  if (nrow(resdataf) => 3) {
-    gg <- stats::hclust( stats::dist( resdata ))
-    res <- pheatmap::pheatmap(resdata[gg$order,],
+  if (nrow(resdataf) >= 3) {
+    gg <- stats::hclust( stats::dist( resdataf ))
+    res <- pheatmap::pheatmap(resdataf[gg$order,],
                               cluster_rows  = FALSE,
                               scale = "row",
                               annotation_col = factors,
