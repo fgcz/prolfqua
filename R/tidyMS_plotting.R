@@ -338,23 +338,35 @@ plot_heatmap <- function(data,
   factors <- as.data.frame(factors)
   rownames(factors) <- annot$sampleName
   resdata <- t(scale(t(wide$data)))
-  resdata <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+  resdataf <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
-  if (nrow(resdata) <= 3) {
+  if (nrow(resdataf) => 3) {
+    gg <- stats::hclust( stats::dist( resdata ))
+    res <- pheatmap::pheatmap(resdata[gg$order,],
+                              cluster_rows  = FALSE,
+                              scale = "row",
+                              annotation_col = factors,
+                              show_rownames = show_rownames,
+                              border_color = NA,
+                              silent = TRUE,
+                              ... = ...)
+
+
+  } else {
     warning("There are only :", nrow(resdata), "rows to cluster", "returning NULL")
     return(NULL)
+
+    res <- pheatmap::pheatmap(resdata,
+                              cluster_rows  = FALSE,
+                              scale = "row",
+                              annotation_col = factors,
+                              show_rownames = show_rownames,
+                              border_color = NA,
+                              silent = TRUE,
+                              ... = ...)
+
+
   }
-
-  gg <- stats::hclust( stats::dist( resdata ))
-  res <- pheatmap::pheatmap(resdata[gg$order,],
-                            cluster_rows  = FALSE,
-                            scale = "row",
-                            annotation_col = factors,
-                            show_rownames = show_rownames,
-                            border_color = NA,
-                            silent = TRUE,
-                            ... = ...)
-
   invisible(res)
 }
 
