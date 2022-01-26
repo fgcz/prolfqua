@@ -353,8 +353,6 @@ plot_heatmap <- function(data,
 
 
   } else {
-    warning("There are only :", nrow(resdata), "rows to cluster", "returning NULL")
-    return(NULL)
 
     res <- pheatmap::pheatmap(resdata,
                               cluster_rows  = FALSE,
