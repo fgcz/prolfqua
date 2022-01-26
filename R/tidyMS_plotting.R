@@ -340,9 +340,11 @@ plot_heatmap <- function(data,
   resdata <- t(scale(t(wide$data)))
   resdata <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
-  # not showing row dendrogram trick
-  # res <- pheatmap::pheatmap(resdata,
-  #                           silent = TRUE)
+  if (nrow(resdata) <= 3) {
+    warning("There are only :", nrow(resdata), "rows to cluster", "returning NULL")
+    return(NULL)
+  }
+
   gg <- stats::hclust( stats::dist( resdata ))
   res <- pheatmap::pheatmap(resdata[gg$order,],
                             cluster_rows  = FALSE,
