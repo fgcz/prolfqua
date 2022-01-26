@@ -1221,7 +1221,7 @@ Contrasts_Plotter <- R6::R6Class(
         scT <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
           self$contrastDF ,
-          !is.na(!!sym(scN)) & !!sym(scN)  < scT & !!sym(self$diff) > self$fcthresh)
+          !is.na(!!sym(scN)) & !!sym(scN)  < scT & abs(!!sym(self$diff)) > self$fcthresh)
 
         sumC <- group_by(filt, contrast, modelName) |> dplyr::summarize(n = n())
         p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) +
