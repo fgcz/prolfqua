@@ -32,7 +32,7 @@ imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
 head(imputed)
 
 imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
-plot(imputedProt$c1 - imputedProt$c2, imputedProt$estimate_median)
+plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 abline(c(0,1), col=2, pch = "*")
 dim(meanProt)
 sum(is.na(meanProt$estimate_median)) == 0

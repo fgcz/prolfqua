@@ -552,7 +552,7 @@ Benchmark <-
           score <- i$score
           ylim <- i$ylim
 
-          plots[[score]] <- ggplot(x, aes(x = (c1 + c2)/2, y = !!sym(score), color = !!sym(self$species) )) +
+          plots[[score]] <- ggplot(x, aes(x = (group_1 + group_2)/2, y = !!sym(score), color = !!sym(self$species) )) +
             geom_point(alpha = 0.2) +
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
             ylim(ylim)

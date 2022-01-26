@@ -284,6 +284,7 @@ missigness_impute_factors_interactions <-
 
 
 #' Compute fold changes given Contrasts
+#'
 #' @keywords internal
 #' @family imputation
 #' @export
@@ -305,7 +306,7 @@ missigness_impute_factors_interactions <-
 #' head(imputed)
 #'
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
-#' plot(imputedProt$c1 - imputedProt$c2, imputedProt$estimate_median)
+#' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 #' abline(c(0,1), col=2, pch = "*")
 #' dim(meanProt)
 #' sum(is.na(meanProt$estimate_median)) == 0
@@ -319,16 +320,16 @@ aggregate_contrast <- function(
                    mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
   contrast = "contrast")
 {
-  grouping_columns <- c(contrast, subject_Id, "c1_name","c2_name")
+  grouping_columns <- c(contrast, subject_Id, "group_1_name","group_2_name")
   dataG <- data |>
     group_by(!!!syms(grouping_columns))
 
-  resN <- dataG |> dplyr::summarise(n = n(), .groups="drop")
+  resN <- dataG |> dplyr::summarise(n = n(), .groups = "drop")
   resE <- dataG |> dplyr::summarise(across(.data$estimate,
                                      agg_func
                                     ), .groups = "drop")
   agg_func_c <- agg_func[1]
-  resC <- dataG |> dplyr::summarise(across(all_of(c("c1", "c2")),
+  resC <- dataG |> dplyr::summarise(across(all_of(c("group_1", "group_2")),
                                      agg_func_c,
                                      .names = "{col}"
                                      ),
@@ -348,8 +349,6 @@ aggregate_contrast <- function(
 #' @export
 #' @examples
 #'
-#'
-#' #library(prolfqua)
 #'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
@@ -388,16 +387,19 @@ get_contrast <- function(data,
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
     sides <- get_sides(contrasts[i], colnames(data))
-    df  <- select(data , c( hierarchyKeys, c1 = sides[1], c2 = sides[2], estimate = names(contrasts)[i]))
-    df$c1_name <- sides[1]
-    df$c2_name <- sides[2]
+
+    df  <- dplyr::select(data ,
+                  c( hierarchyKeys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
+
+    df$group_1_name <- sides[1]
+    df$group_2_name <- sides[2]
     df$contrast <-  names(contrasts)[i]
 
     res[[names(contrasts)[i]]] <- df
   }
   res <- dplyr::bind_rows(res)
 
-  return(ungroup(res))
+  return(dplyr::ungroup(res))
 }
 
 #' compute contrasts based on peptide fold changes

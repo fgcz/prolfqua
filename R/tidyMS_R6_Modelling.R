@@ -1279,14 +1279,14 @@ summary_ROPECA_median_p.scaled <- function(
       median.p.scaled = median(.data$scaled.p, na.rm = TRUE))
 
 
-  if (rlang::has_name(contrasts_data, "c1_name")) {
+  if (rlang::has_name(contrasts_data, "group_1_name")) {
     ccsummary <- contrasts_data |>
       group_by_at(c(subject_Id, contrast)) |>
       dplyr::summarize(
-        c1_name = unique(.data$c1_name),
-        c1 = median(.data$c1, na.rm = TRUE),
-        c2_name = unique(.data$c2_name),
-        c2 = median(.data$c2, na.rm = TRUE) )
+        group_1_name = unique(.data$group_1_name),
+        group_1 = median(.data$group_1, na.rm = TRUE),
+        group_2_name = unique(.data$group_2_name),
+        group_2 = median(.data$group_2, na.rm = TRUE) )
     summarized.protein <- inner_join(summarized.protein, ccsummary, by = c(subject_Id, contrast))
   }
 

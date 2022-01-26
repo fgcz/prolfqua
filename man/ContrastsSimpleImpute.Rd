@@ -103,7 +103,7 @@ Other modelling:
 
 \item{\code{global}}{Take global or local values for imputation}
 
-\item{\code{probs}}{qunatile to estimate missing values from.}
+\item{\code{probs}}{quantile to estimate missing values from.}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,6 +121,7 @@ Other modelling:
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
 }
 \out{</details>}
 }

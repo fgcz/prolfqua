@@ -6,22 +6,39 @@ ContrastsInterface <- R6::R6Class(
   public = list(
     #' @description
     #' get table with sides of the contrast
-    get_contrast_sides = function(){stop("get_contrast_sides not implmented")},
+    get_contrast_sides = function(){stop("get_contrast_sides not implemented.")},
     #' @description
     #' get table with contrast results (similar to limma topTable function)
-    get_contrasts = function(){stop("get_contrasts not implmented")},
+    get_contrasts = function(){stop("get_contrasts not implemented.")},
     #' @description
     #' initialize plotter
-    get_Plotter = function(){stop("get_Plotter not implmented.") },
+    get_Plotter = function(){stop("get_Plotter not implemented.") },
     #' @description
     #' create wide representation of data.
-    to_wide = function(){stop("to_wide not implemented.")}
+    to_wide = function(){stop("to_wide not implemented.")},
+    column_description = function() {
+      description <- data.frame("contrast" = "contrast name e.g. group1_vs_group2",
+                                "group_1_name" = "name of group 1",
+                                "group_2_name" = "name of group 2",
+                                "group_1_avg" = "mean of expression of group 1",
+                                "group_2_avg" = "mean of expression of group 2",
+                                "avgExpr" = "mean of expression value of protein.",
+                                "sigma" = "residual standard deviation of linear model",
+                                "df" = "degrees of freedom",
+                                "diff" = "difference among conditions",
+                                "p.value" = "p-value",
+                                "FDR" = "false discovery rate",
+                                "conf.low" = "lower value of 95 confidence interval",
+                                "conf.high" = "high value of 95 confidence interval",
+                                )
+      return(description)
+    }
   )
 )
 
-
-.requiredContrastColumns <- c("contrast" , "c1" , "c2" ,
-                              "c1_name" , "c2_name" , "sigma", "df",
+.requiredContrastColumns <- c("contrast", "group_1_mean" , "group_2_mean",
+                              "group_1_name", "group_2_name",
+                              "sigma", "df",
                               "diff", "statistic", "p.value",
                               "conf.low", "conf.high", "FDR")
 
@@ -82,7 +99,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     p.adjust = NULL,
     #' @field global Take global or local values for imputation
     global = logical(),
-    #' @field probs qunatile to estimate missing values from.
+    #' @field probs quantile to estimate missing values from.
     probs = 0.03,
     #' @description
     #' initialize
@@ -119,7 +136,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         self$get_contrasts()
       }
-      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
+      self$contrast_result |> dplyr::select(contrast, group_1 = group_1_name, group_2 = group_2_name) |> distinct()
     },
     #' @description
     #' table with results of contrast computation
@@ -173,7 +190,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "diff",
+        diff = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -281,7 +298,7 @@ Contrasts <- R6::R6Class(
       tt <- self$contrasts[grep("-",self$contrasts)]
       tt <- tibble(contrast = names(tt) , rhs = tt)
       tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
-        tidyr::separate(rhs, c("c1", "c2"), sep = "-")
+        tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
     #' @description
@@ -330,9 +347,9 @@ Contrasts <- R6::R6Class(
 
         get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
           data.frame(lhs = contrast_table[i, "contrast"],
-                     dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("c1","c2")]))),
-                     c1_name = contrast_table[i,"c1", drop = TRUE],
-                     c2_name = contrast_table[i,"c2", drop = TRUE], stringsAsFactors = FALSE)
+                     dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("group_1", "group_2")]))),
+                     c1_name = contrast_table[i,"group_1", drop = TRUE],
+                     c2_name = contrast_table[i,"group_2", drop = TRUE], stringsAsFactors = FALSE)
         }
 
         contrast_sides <- purrr::map_df(seq_len(nrow(contrast_sides)),
@@ -386,7 +403,7 @@ Contrasts <- R6::R6Class(
                          list(score = "FDR", xlim = c(0,1,0.05))),
         score = list(list(score = "statistic", thresh = 5)),
         modelName = self$modelName,
-        estimate = "diff",
+        diff = "diff",
         contrast = "contrast"
         )
       return(res)
@@ -439,7 +456,6 @@ Contrasts <- R6::R6Class(
 #'  plotter$ma_plot()
 #'  plotter$volcano()
 #'
-#' #bb |> dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
   inherit = ContrastsInterface,
@@ -535,7 +551,7 @@ ContrastsModerated <- R6::R6Class(
                          list(score = "FDR", xlim = c(0,1,0.05))),
         score = list(list(score = "statistic", thresh = 5)),
         modelName = self$modelName,
-        estimate = "diff",
+        diff = "diff",
         contrast = "contrast"
       )
       return(res)
@@ -639,7 +655,7 @@ ContrastsROPECA <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         self$get_contrasts()
       }
-      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
+      self$contrast_result |> dplyr::select(contrast, group_1 = group_1_name, group_2 = group_2_name) |> distinct()
     },
     #' @description
     #' get linear function used to determine contrasts
@@ -706,7 +722,7 @@ ContrastsROPECA <- R6::R6Class(
         histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
                          list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "diff",
+        diff = "diff",
         contrast = "contrast")
       return(res)
     },
@@ -759,18 +775,18 @@ ContrastsSaintExpress <- R6::R6Class(
 
       if ( "AvgIntensity" %in% colnames(contrastsdf)) {
         self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
-                                                       c1_name = "Control",
-                                                       c2_name = Bait,
-                                                       c1 = log2(AvgIntensity) - log2(FoldChange)/2,
-                                                       c2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
+                                                       group_1_name = "Control",
+                                                       group_2_name = Bait,
+                                                       group_1 = log2(AvgIntensity) - log2(FoldChange)/2,
+                                                       group_2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
                                                        modelName = modelName)
 
       }else{
         self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
-                                                       c1_name = "Control",
-                                                       c2_name = Bait,
-                                                       c1 = log2(AvgSpec) - log2(FoldChange)/2,
-                                                       c2 = log2(AvgSpec) + log2(FoldChange)/2 ,
+                                                      group_1_name = "Control",
+                                                      group_2_name = Bait,
+                                                      group_1 = log2(AvgSpec) - log2(FoldChange)/2,
+                                                      group_2 = log2(AvgSpec) + log2(FoldChange)/2 ,
                                                        modelName = modelName)
 
       }
@@ -780,7 +796,7 @@ ContrastsSaintExpress <- R6::R6Class(
     #' show contrasts
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast_result |> dplyr::select(Bait,c1 = c1_name,c2 = c2_name) |> distinct()
+      self$contrast_result |> dplyr::select(Bait,group_1 = group_1_name,group_2 = group_2_name) |> distinct()
     },
     #' @description
     #' no available for SaintExpress
@@ -799,10 +815,10 @@ ContrastsSaintExpress <- R6::R6Class(
         all_of(c(self$subject_Id,
                  "modelName",
                  "Bait",
-                 "c1_name",
-                 "c2_name",
-                 "c1",
-                 "c2",
+                 "group_1_name",
+                 "group_2_name",
+                 "group_1",
+                 "group_2",
                  "log2FC",
                  "SaintScore",
                  "BFDR"
@@ -891,7 +907,7 @@ ContrastsTable <- R6::R6Class(
     #' return sides of contrast
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast_result |> dplyr::select(contrast,c1 = c1_name,c2 = c2_name) |> distinct()
+      self$contrast_result |> dplyr::select(contrast, group_1 = group_1_name, group_2 = group_2_name) |> distinct()
     },
     #' @description not implemented
     get_linfct = function(){
@@ -1009,7 +1025,7 @@ Contrasts_Plotter <- R6::R6Class(
     subject_Id = character(),
     #' @field prefix default Contrasts - used to generate file names
     prefix = "Contrasts",
-    #' @field estimate column with fold change estimates
+    #' @field diff column with fold change differences
     diff = "diff",
     #' @field contrast column with contrasts names, default "contrast"
     contrast = "contrast",
@@ -1121,11 +1137,11 @@ Contrasts_Plotter <- R6::R6Class(
       if ( missing(fc))
         fc <- self$fcthresh
       contrastDF <- self$contrastDF
-      if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
+      if (!is.null(contrastDF$group_1) && !is.null(contrastDF$group_2)) {
         # pdf version
         fig <- private$.ma_plot(contrastDF ,self$contrast, fc, colour = colour, legend = legend)
       }else{
-        warning("no c1 c2 columns can't generate MA")
+        warning("no group_1 group_2 columns can't generate MA")
         fig <- NULL
       }
       return(fig)
@@ -1142,7 +1158,7 @@ Contrasts_Plotter <- R6::R6Class(
       if (missing(fc))
         fc <- self$fcthresh
       contrastDF  <- self$contrastDF
-      if (!is.null(contrastDF$c1) && !is.null(contrastDF$c2)) {
+      if (!is.null(contrastDF$group_1) && !is.null(contrastDF$group_2)) {
         contrastDF  <- contrastDF |>
           plotly::highlight_key(~subject_Id)
         fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour, legend = legend) |>
@@ -1247,7 +1263,7 @@ Contrasts_Plotter <- R6::R6Class(
       return(plot)
     },
     .ma_plot = function(x, contrast, fc, colour = NULL, legend = TRUE){
-      p <- ggplot(x , aes(x = (c1 + c2)/2,
+      p <- ggplot(x , aes(x = (group_1 + group_2)/2,
                           y = !!sym(self$diff),
                           text = !!sym("subject_Id"),
                           colour = !!sym(colour))) +

@@ -17,8 +17,6 @@ Compute fold changes given Contrasts
 \examples{
 
 
-#library(prolfqua)
-
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config

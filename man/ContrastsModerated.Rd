@@ -34,7 +34,6 @@ mod <- build_model(
  plotter$ma_plot()
  plotter$volcano()
 
-#bb |> dplyr::rename(log2FC = estimate, mean_c1 = c1, mean_c2 = c2)
 }
 \seealso{
 \code{\link{moderated_p_limma_long}}
@@ -111,6 +110,7 @@ Other modelling:
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
 }
 \out{</details>}
 }

@@ -133,7 +133,7 @@ Other plotting:
 
 \item{\code{prefix}}{default Contrasts - used to generate file names}
 
-\item{\code{estimate}}{column with fold change estimates}
+\item{\code{diff}}{column with fold change differences}
 
 \item{\code{contrast}}{column with contrasts names, default "contrast"}
 
@@ -144,13 +144,6 @@ Other plotting:
 \item{\code{histogram_spec}}{plot specification}
 
 \item{\code{fcthresh}}{fold change threshold}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{estimate}}{column with fold change estimates}
 }
 \if{html}{\out{</div>}}
 }

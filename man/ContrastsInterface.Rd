@@ -15,6 +15,7 @@ ContrastsInterface
 \item \href{#method-get_contrasts}{\code{ContrastsInterface$get_contrasts()}}
 \item \href{#method-get_Plotter}{\code{ContrastsInterface$get_Plotter()}}
 \item \href{#method-to_wide}{\code{ContrastsInterface$to_wide()}}
+\item \href{#method-column_description}{\code{ContrastsInterface$column_description()}}
 \item \href{#method-clone}{\code{ContrastsInterface$clone()}}
 }
 }
@@ -55,6 +56,15 @@ initialize plotter
 create wide representation of data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$to_wide()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-column_description"></a>}}
+\if{latex}{\out{\hypertarget{method-column_description}{}}}
+\subsection{Method \code{column_description()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$column_description()}\if{html}{\out{</div>}}
 }
 
 }
