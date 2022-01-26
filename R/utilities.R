@@ -4,7 +4,7 @@
 #' @family utilities
 #' @return data.frame
 #' @param obj data.frame
-#' @param idcol columns to extrac uniprot id's from
+#' @param idcol columns to extract uniprot id's from
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 {
   map <- df |> dplyr::select(idcolumn) |> distinct() |>
