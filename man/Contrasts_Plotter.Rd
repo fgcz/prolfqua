@@ -56,6 +56,9 @@ length(respltly)
 cp$ma_plot()
 cp$ma_plotly()
 res  <- cp$barplot_threshold()
+names(res)
+cp$histogram_diff()
+cp$volcano()
 }
 \seealso{
 Other modelling: 
@@ -144,6 +147,13 @@ Other plotting:
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{estimate}}{column with fold change estimates}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -176,7 +186,7 @@ create Crontrast_Plotter
   score = list(list(score = "statistic", thresh = NULL)),
   fcthresh = 1,
   modelName = "Model",
-  estimate = "diff",
+  diff = "diff",
   contrast = "contrast"
 )}\if{html}{\out{</div>}}
 }
@@ -198,7 +208,7 @@ create Crontrast_Plotter
 
 \item{\code{modelName}}{name of model}
 
-\item{\code{estimate}}{fold change (difference) estimate column}
+\item{\code{diff}}{fold change (difference) diff column}
 
 \item{\code{contrast}}{contrast column}
 }
@@ -219,7 +229,7 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 \if{html}{\out{<a id="method-histogram_estimate"></a>}}
 \if{latex}{\out{\hypertarget{method-histogram_estimate}{}}}
 \subsection{Method \code{histogram_estimate()}}{
-plot histogram of estimated fold change
+plot histogram of effect size - difference between groups
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_estimate(binwidth = 0.05)}\if{html}{\out{</div>}}
 }
@@ -236,7 +246,7 @@ plot histogram of estimated fold change
 \if{html}{\out{<a id="method-histogram_diff"></a>}}
 \if{latex}{\out{\hypertarget{method-histogram_diff}{}}}
 \subsection{Method \code{histogram_diff()}}{
-plot histogram of differences (estimates) fold change
+plot histogram of differences (diff) fold change
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$histogram_diff(binwidth = 0.05)}\if{html}{\out{</div>}}
 }
@@ -386,7 +396,7 @@ list of ggplots
 \if{html}{\out{<a id="method-barplot_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-barplot_threshold}{}}}
 \subsection{Method \code{barplot_threshold()}}{
-shows the number of significant protens per contrasts
+shows the number of significant proteins per contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$barplot_threshold()}\if{html}{\out{</div>}}
 }

@@ -9,7 +9,7 @@ get_UniprotID_from_fasta_header(df, idcolumn = "protein_Id")
 \arguments{
 \item{obj}{data.frame}
 
-\item{idcol}{columns to extrac uniprot id's from}
+\item{idcol}{columns to extract uniprot id's from}
 }
 \value{
 data.frame
