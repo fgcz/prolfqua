@@ -190,8 +190,8 @@ make2grpReport <- function(startdata,
   GRP2$RES <- list()
   GRP2$RES$Summary <- data.frame(
     totalNrOfProteins = allProt,
-    percentOfContaminants = round(protAnnot$annotateCON(revpattern)/allProt * 100 , digits = 2),
-    percentOfFalsePositives  = round(protAnnot$annotateREV(contpattern)/allProt * 100 , digits = 2),
+    percentOfContaminants = round(protAnnot$annotateCON(contpattern)/allProt * 100 , digits = 2),
+    percentOfFalsePositives  = round(protAnnot$annotateREV(revpattern)/allProt * 100 , digits = 2),
     NrOfProteinsNoDecoys = protAnnot$nr_clean()
   )
   GRP2$RES$rowAnnot <- protAnnot
