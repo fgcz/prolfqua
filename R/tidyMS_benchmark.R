@@ -209,7 +209,9 @@ do_confusion_c <- function(
 }
 
 #' summarise_missing_contrasts
+#'
 #' @keywords internal
+#' @export
 #' @examples
 #'
 #' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
