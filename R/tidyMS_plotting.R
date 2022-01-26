@@ -309,6 +309,13 @@ plot_heatmap_cor <- function(data,
                             ... = ...)
   invisible(res)
 }
+
+.ehandler = function(e){
+  warning("WARN :", e)
+  # return string here
+  as.character(e)
+}
+
 #' plot heatmap with annotations
 #'
 #' @export
@@ -331,6 +338,11 @@ plot_heatmap <- function(data,
                          config,
                          na_fraction = 0.4,
                          show_rownames = FALSE , ...){
+  if (nrow(data) == 0 ) {
+    warning("The dataset has :", nrow(data), "")
+    return(NULL)
+  }
+
   wide <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
@@ -354,14 +366,14 @@ plot_heatmap <- function(data,
 
   } else {
 
-    res <- pheatmap::pheatmap(resdata,
+    res <- tryCatch(pheatmap::pheatmap(resdata,
                               cluster_rows  = FALSE,
                               scale = "row",
                               annotation_col = factors,
                               show_rownames = show_rownames,
                               border_color = NA,
                               silent = TRUE,
-                              ... = ...)
+                              ... = ...), error = .ehandler)
 
 
   }
@@ -394,6 +406,10 @@ plot_raster <- function(data,
                         not_na = FALSE,
                         show_rownames = FALSE,
                         ...) {
+  if (nrow(data) == 0 ) {
+    warning("The dataset has :", nrow(data), "")
+    return(NULL)
+  }
   arrange <- match.arg(arrange)
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
@@ -412,7 +428,7 @@ plot_raster <- function(data,
   }
   if (not_na) {
     bNA <- apply(resdata, 1, function(x){sum(is.na(x))})
-    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)), , drop=FALSE]
+    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
   } else {
     resdata <- resdata[order(bb, decreasing =  TRUE), , drop = FALSE]
   }
