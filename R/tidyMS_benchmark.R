@@ -210,15 +210,14 @@ do_confusion_c <- function(
 
 #' summarise_missing_contrasts
 #'
-#' @keywords internal
 #' @export
+#' @keywords internal
 #' @examples
 #'
 #' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
 #' x <- .summarise_missing_contrasts(ttd$data)
-#' x2 <- as_tibble(x$summary)
+#' x2 <- tibble::as_tibble(x$summary)
 #'
-#debug(.summarise_missing_contrasts)
 .summarise_missing_contrasts <- function(data,
                                          hierarchy = c("protein_Id"),
                                          contrast = "contrast",

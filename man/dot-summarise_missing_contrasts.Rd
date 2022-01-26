@@ -18,7 +18,7 @@ summarise_missing_contrasts
 
 ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
 x <- .summarise_missing_contrasts(ttd$data)
-x2 <- as_tibble(x$summary)
+x2 <- tibble::as_tibble(x$summary)
 
 }
 \keyword{internal}
