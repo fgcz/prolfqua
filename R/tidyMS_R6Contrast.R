@@ -937,7 +937,7 @@ ContrastsTable <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = self$modelName,
-        estimate = "diff",
+        diff = "diff",
         contrast = "contrast")
       return(res)
     },
