@@ -25,8 +25,6 @@ filter QVAlues and NA's and factor information
 }
 \examples{
 
-
-
 rm(list=ls())
 bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)

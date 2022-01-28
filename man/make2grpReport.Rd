@@ -97,12 +97,12 @@ undebug(make2grpReport)
 grp <- make2grpReport(data,atab, GRP2, NULL,
  transform = GRP2$transform,
  aggregate = GRP2$aggregate)
-#\dontrun{
+\dontrun{
 
 render_2GRP(grp, ".")
 render_2GRP(grp, "." ,word = TRUE)
 write_2GRP(grp,".")
-#}
+}
 
 }
 \concept{workflow}

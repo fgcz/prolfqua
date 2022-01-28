@@ -180,8 +180,6 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' @family deprecated
 #' @examples
 #'
-#'
-#'
 #' rm(list=ls())
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
