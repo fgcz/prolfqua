@@ -97,58 +97,50 @@ filter_difference <- function(x, y, config){
 #' GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 #'
 #' #at least 2 peptides per protein
-#' GRP2$nrPeptides <- 2
-#' GRP2$transform <- "robscale"
-#' GRP2$transform <- "vsn"
-#' GRP2$aggregate <- "medpolish"
+#' GRP2$pop <- list()
+#' GRP2$pop$transform <- "vsn"
+#' GRP2$pop$aggregate <- "medpolish"
+#' GRP2$pop$Diffthreshold <- 0.5
+#' GRP2$pop$FDRthreshold <- 0.25
+#' GRP2$pop$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
+#'
 #' GRP2$Software <- "MaxQuant"
-#' # Set FC to >= |2| and FRD to 0.1
-#' GRP2$Diffthreshold <- 0.5
-#' GRP2$FDRthreshold <- 0.25
-#' GRP2$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
 #'
 #' data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
-#'
-#'  atab <- AnalysisTableAnnotation$new()
+#' atab <- AnalysisTableAnnotation$new()
 #'
 #' atab$fileName = "raw.file"
 #' atab$hierarchy["protein_Id"] = "protein_Id"
 #' atab$hierarchy["peptide_Id"] = "peptide_Id"
-#'
 #' atab$factors["dilution."] = "dilution."
 #' atab$setWorkIntensity("peptide.intensity")
 #' atab$isotopeLabel = "isotope"
 #' config <- prolfqua::AnalysisConfiguration$new(atab)
 #'
 #' protein_annot = "Description"
-#' undebug(make2grpReport)
-#' grp <- make2grpReport(data,atab, GRP2, NULL,
-#'  transform = GRP2$transform,
-#'  aggregate = GRP2$aggregate)
+#' grp <- make2grpReport(data, atab, GRP2)
+#'
 #' \dontrun{
 #'
 #' render_2GRP(grp, ".")
 #' render_2GRP(grp, "." ,word = TRUE)
 #' write_2GRP(grp,".")
 #' }
-#'
 make2grpReport <- function(startdata,
                            atable,
                            GRP2,
                            protein_annot = "Description",
                            revpattern = "^REV_",
                            contpattern = "^zz|^CON__",
-                           remove = FALSE,
-                           transform = c("robscale","vsn","none"),
-                           aggregate = c("medpolish", "topN", "lmrob")
+                           remove = FALSE
                            ) {
-  transform <- match.arg(transform)
-  aggregate <- match.arg(aggregate)
+  GRP2$pop$nrPeptides <- 2
 
   # Preprocess Data
   config <- prolfqua::AnalysisConfiguration$new(atable)
   adata <- setup_analysis(startdata, config)
   proteinID <- atable$hkeysDepth()
+
   prot_annot <- select(startdata , c( atable$hierarchy[[proteinID]], protein_annot)) |> distinct()
   prot_annot <- rename(prot_annot, !!proteinID := (!!atable$hierarchy[[proteinID]]))
 
@@ -158,31 +150,38 @@ make2grpReport <- function(startdata,
 
   ### Do some type of data normalization (or do not)
   lt <- lfqdata$get_Transformer()
-  if (GRP2$transform == "robscale") {
+  if (GRP2$pop$transform == "robscale") {
     transformed <- lt$log2()$robscale()$lfq
-  } else if (GRP2$transform == "vsn") {
+  } else if (GRP2$pop$transform == "vsn") {
     transformed <- lt$intensity_matrix( .func = vsn::justvsn)$lfq
-  } else if (GRP2$transform == "none") {
+  } else if (GRP2$pop$transform == "none") {
     transformed <- lt$log2()$lfq
   } else {
+    logger::log_warn("no such transformaton : {GRP2$pop$transform}")
   }
+  logger::log_info("data transformed : {GRP2$pop$transform}.")
+
 
   ### Aggregate peptides to proteins
   if ( length(transformed$config$table$hierarchyKeys()) > transformed$config$table$hierarchyDepth ) {
     message("AGGREGATING PEPTIDE DATA!")
     transformed$filter_proteins_by_peptide_count()
     aggregator <- transformed$get_Aggregator()
-    if (aggregate == "medpolish") {
+    if (GRP2$pop$aggregate == "medpolish") {
       aggregator$medpolish()
-    } else if (aggregate == "topN") {
+    } else if (GRP2$pop$aggregate == "topN") {
       aggregator$sum_topN()
-    } else if (aggregate == "lmrob") {
+    } else if (GRP2$pop$aggregate == "lmrob") {
       aggregator$lmrob()
+    } else {
+      logger::log_warn("no such aggregator {GRP2$pop$aggregate}.")
     }
+    logger::log_info("data aggregated: {GRP2$pop$aggregate}.")
+
     transformed <- aggregator$lfq_agg
   }
 
-
+  ## count contaminants.
   protAnnot <- RowAnnotProtein$new(
     transformed,
     row_annot = prot_annot)
@@ -198,11 +197,10 @@ make2grpReport <- function(startdata,
   GRP2$RES$rowAnnot <- protAnnot
 
   if (remove) {
-    message("REMOVING: contaminants and reverse sequences")
     lfqdata <- lfqdata$get_subset(protAnnot$clean())
     transformed <- transformed$get_subset(protAnnot$clean())
+    logger::log_info("removing contaminants and reverse sequences with patterns: {contpattern} {revpattern}")
   }
-
 
   GRP2$RES$lfqData <- lfqdata
   GRP2$RES$transformedlfqData <- transformed
@@ -222,11 +220,12 @@ make2grpReport <- function(startdata,
     formula_Condition,
     subject_Id = transformed$config$table$hierarchyKeys() )
 
+  logger::log_info("fitted model with formula : {formula}")
   GRP2$RES$models <- mod
 
-  contr <- prolfqua::Contrasts$new(mod, GRP2$Contrasts)
+  contr <- prolfqua::Contrasts$new(mod, GRP2$pop$Contrasts)
   conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
-  mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = GRP2$Contrasts)
+  mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = GRP2$pop$Contrasts)
   conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Mean")
 
   res <- prolfqua::addContrastResults(conrM, conMI)
@@ -249,7 +248,7 @@ write_2GRP <- function(GRP2, outpath, xlsxname = "AnalysisResults"){
   rd <- GRP2$RES$lfqData
   tr <- GRP2$RES$transformedlfqData
   ra <- GRP2$RES$rowAnnot
-  formula <- data.frame(formula = GRP2$RES$formula, contrast = GRP2$Contrasts)
+  formula <- data.frame(formula = GRP2$RES$formula, contrast_name = names(GRP2$pop$Contrasts), contrast = GRP2$pop$Contrasts)
   wideraw <- inner_join(ra$row_annot, rd$to_wide()$data)
   widetr <- inner_join(ra$row_annot , tr$to_wide()$data )
   ctr <- inner_join(ra$row_annot , GRP2$RES$contrMerged$get_contrasts())
@@ -275,22 +274,17 @@ render_2GRP <- function(GRP2, outpath, htmlname="Result2Grp", word = FALSE){
   prolfqua::copy_2grp_markdown()
   dir.create(outpath)
 
-  if (word) {
-    rmarkdown::render(
-      "_Grp2Analysis.Rmd",
-      params = list(grp = GRP2) ,
-      output_format = bookdown::word_document2(toc = TRUE, toc_float = TRUE)
-      )
-    file.copy("_Grp2Analysis.docx", file.path(outpath, paste0(htmlname,".docx")), overwrite = TRUE)
-  } else {
-    rmarkdown::render(
-      "_Grp2Analysis.Rmd",
-      params = list(grp = GRP2) ,
-      output_format = bookdown::html_document2(toc = TRUE, toc_float = TRUE)
-      )
-    if (file.copy("_Grp2Analysis.html", file.path(outpath, paste0(htmlname,".html")), overwrite = TRUE)) {
-      file.remove("_Grp2Analysis.html")
-    }
+  rmarkdown::render(
+    "_Grp2Analysis.Rmd",
+    params = list(grp = GRP2) ,
+    output_format = if(word){
+      bookdown::word_document2(toc = TRUE, toc_float = TRUE) } else {
+        bookdown::html_document2(toc = TRUE, toc_float = TRUE)
+      }
+  )
+  fname <- paste0("_Grp2Analysis", if(word) {".docx"} else {".html"})
+  if (file.copy(fname, file.path(outpath, paste0(htmlname,if(word) {".docx"} else {".html"})), overwrite = TRUE)) {
+    file.remove(fname)
   }
-
 }
+

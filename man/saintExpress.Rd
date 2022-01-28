@@ -65,7 +65,7 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 \donttest{
 
 xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
-exampleDat <- xx$data |> dplyr::mutate(CorT = case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
+exampleDat <- xx$data |> dplyr::mutate(CorT = dplyr::case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 # sample protein lengths
 
 tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))

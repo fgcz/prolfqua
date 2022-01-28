@@ -16,7 +16,6 @@ header-includes:
   \fancyfoot[CO,CE]{\textbf{FGCZ} - www.fgcz.ch - 2018}
   \fancyfoot[LE,RO]{\thepage} 
 params:
-  #grp: !r quote(SRMService::mqQuantMatrixGRP2)
   grp: NULL
 vignette: >
   %\VignetteIndexEntry{FGCZ Two-Group Analysis}
@@ -48,26 +47,30 @@ grp2 <- params$grp
 
 # Glossary
 
-- diff - it is the difference between the two groups which can be different treatements, genotypes, etc.
+- diff - it is the difference between the two groups which can be, e.g., different treatements, genotypes, etc.
 - FDR - false discovery rate
-- p-value - probability of type one error.
+- p-value - probability of type I error.
+
 
 # Introduction
 
 The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)), and tests if they are non-zero.
 
-The protein identification and quantification were performed using: `r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter GRP2$Software>"}`. The outputs are available in b-fabric [`r GRP2$Bfabric$inputID`](`r GRP2$Bfabric$inputURL`).
+The protein identification and quantification were performed using: 
+`r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter grp2$Software>"}`. 
 
-We run a set of functions implemented in the R package _prolfqua_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior estimated from all the proteins in the experiment.
+The outputs are available in b-fabric [`r grp2$Bfabric$inputID`](`r grp2$Bfabric$inputURL`).
+
+We run a set of functions implemented in the R package _[prolfqua](https://github.com/wolski/prolfqua)_ [@wolski2020prolfqua] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior estimated from all the proteins in the experiment.
 
 ## Experiment summary
 
-This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project: `r grp2$Bfabric$projectID`, order: `r grp2$Bfabric$orderID`, `r if(!is.null(grp2$workunitID)){ "with the workunit name :" }`  `r grp2$Bfabric$workunitID`.
+This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project: `r grp2$Bfabric$projectID`, order: `r grp2$Bfabric$orderID`, `r if(!is.null(grp2$Bfabric$workunitID)){ "with the workunit name :" }`  `r grp2$Bfabric$workunitID`.
 
 
 The protein matrix is filtered using the following threshold:
 
-- Minimum number of peptides / protein: `r grp2$nrPeptides`.
+- Minimum number of peptides / protein: `r grp2$pop$nrPeptides`.
 
 
 - The overall number of proteins in this experiment is: `r grp2$RES$Summary$totalNrOfProteins` 
@@ -156,13 +159,13 @@ progress(0.2, "Normalization")
 Figure \@ref(fig:normalized) shows the normalized values. Normalization is applied to remove systematic differences in protein abundance due to different sample concentrations, or different amount of sample loaded on column. Normalization is important, so that true differentially expressed proteins can be detected. 
 
 ```{r normalization, results = 'asis'}
-if (grp2$transform == "robscale") {
+if (grp2$pop$transform == "robscale") {
   cat("To do this the z-score of the $\\log_2$ transformed intensities is computed.",
       "Because we need to estimate the protein fold-changes on the original scale, we have to multiply the $z$-score by the average standard deviation of all the $N$ samples in the experiment.",
   "After normalization all samples have an equal mean and variance and a similar distribution.")
-} else if (grp2$transform == "vsn") {
+} else if (grp2$pop$transform == "vsn") {
   cat("To do this the variance stabilizing normalization (vsn) was applied [@HuberVSN2002].")
-} else if (grp$transform == "none") {
+} else if (grp2$pop$transform == "none") {
   cat("However, in some circumstances it is advisable not to normalize the data, e.g. in case of affinity purification experiments or when the distribution of the not transformed data are sufficiently similar.")
 }
 
@@ -253,11 +256,13 @@ The statistical analysis is performed by fitting a linear model, which was speci
 
 `r grp2$RES$formula`,
 
-where `<response variable> ~ <explanatory variables>`. The response variable is the protein abudance estimated from precursor intensities using either the quantification software, or _prolfqua_.
+where `<response variable> ~ <explanatory variables>`. 
+
+The response variable is the protein abundance estimate. 
 
 We can compute the differences among the groups
 
-`r names(grp2$Contrast)` = `r grp2$Contrast`,
+`r names(grp2$pop$Contrast)` = `r grp2$pop$Contrast`,
 
 and test for differential expression using the coefficients of the linear model.
 
@@ -276,7 +281,7 @@ When testing the differential expression of many proteins, the p-value does not 
 
 ```{r densityOFFoldChanges, fig.width=8, fig.height=4, dpi=300, fig.cap = "(ref:densityOFFoldChanges)"}
 
-cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$Diffthreshold, FDRthreshold = grp2$FDRthreshold)
+cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$pop$Diffthreshold, FDRthreshold = grp2$pop$FDRthreshold)
 p1 <- cpl$histogram_diff()
 p2 <- cpl$histogram()$p.value
 gridExtra::grid.arrange(p1,p2)
@@ -284,7 +289,7 @@ gridExtra::grid.arrange(p1,p2)
 ```
 
 
-Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two groups. Significant calls are made with FDR smaller than `r grp2$FDRthreshold` (horizontal line) and differences greater than `r grp2$Diffthreshold` (vertical lines). Figure \@ref(fig:MAPlot) shows the difference between the groups (y-axis) and the average intensity of the protein (x-axis), and, for instance can be used to identify abundant proteins with large differences.
+Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference in the two groups. Significant calls are made with FDR smaller than `r grp2$pop$FDRthreshold` (horizontal line) and differences greater than `r grp2$pop$Diffthreshold` (vertical lines). Figure \@ref(fig:MAPlot) shows the difference between the groups (y-axis) and the average intensity of the protein (x-axis), and, for instance can be used to identify abundant proteins with large differences.
 
 (ref:volcanoplot) Volcano plot where the x-axis shows the difference among the groups and the y-axis the $-\log_10(FDR)$.
 
@@ -296,17 +301,17 @@ cpl$volcano_plotly()$FDR
 (ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the groups.
 
 ```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="(ref:MAPlot)", eval=TRUE}
-cpl$ma_plotly(fc = GRP2$Diffthreshold)
+cpl$ma_plotly(fc = GRP2$pop$Diffthreshold)
 
 ```
 
-Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$FDRthreshold` and difference > `r grp2$Diffthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
+Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$pop$FDRthreshold` and difference > `r grp2$pop$Diffthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
 
 
 ```{r nrsignificant, results="markup", eval=TRUE}
 ctdata <- grp2$RES$contrMerged$get_contrasts()
 
-x <- data.frame(table(abs(ctdata$diff) >  grp2$Diffthreshold  & ctdata$FDR < grp2$FDRthreshold))
+x <- data.frame(table(abs(ctdata$diff) >  grp2$pop$Diffthreshold  & ctdata$FDR < grp2$pop$FDRthreshold))
 
 if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant" , "Significant")
@@ -314,7 +319,7 @@ if (length(x$Var1) == 2) {
   x$Var1 <- c("Not Significant")
 }
 names(x)[names(x) == 'Var1'] <- ''
-mycap <- paste0("Number of not significant and significant proteins with difference > ", grp2$Diffthreshold, " and FDR < ", grp2$FDRthreshold, "."  )
+mycap <- paste0("Number of not significant and significant proteins with difference > ", grp2$pop$Diffthreshold, " and FDR < ", grp2$pop$FDRthreshold, "."  )
 knitr::kable(x, caption = mycap)
 
 ```
@@ -354,7 +359,7 @@ knitr::kable(top20, caption = tablecap)
 ```{r prepareHeatmap}
 
 significant <- ctdata |>
-  dplyr::filter(.data$FDR < grp2$FDRthreshold & abs(.data$diff) > grp2$Diffthreshold )
+  dplyr::filter(.data$FDR < grp2$pop$FDRthreshold & abs(.data$diff) > grp2$pop$Diffthreshold )
 
 signif <- grp2$RES$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
@@ -382,12 +387,12 @@ bp <- bp[seq_len(nrb)]
 
 ```{r makeText, eval = showSignificant, results = 'asis'}
 
-cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$FDRthreshold ," and diff > ",  grp2$Diffthreshold, ".") ,
+cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$pop$FDRthreshold ," and diff > ",  grp2$pop$Diffthreshold, ".") ,
 paste("Figure \\@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
 
 ```
 
-(ref:siproteins) Heatmap showing proteins with FDR < `r grp2$FDRthreshold` and diff > `r  grp2$Diffthreshold`.
+(ref:siproteins) Heatmap showing proteins with FDR < `r grp2$pop$FDRthreshold` and diff > `r  grp2$pop$Diffthreshold`.
 
 ```{r siproteins, fig.cap="(ref:siproteins)", eval = showSignificant}
 sigheat
@@ -440,13 +445,6 @@ A further resource to analyze the results is the STRING database <https://string
 
 
 The FGCZ can support you, with the interpretation of your quantitative proteomics data or with a more customized analysis. Further visualization of the data, targeted to your audience, e.g., receiver operator curves (ROC) or MA-plots, can be generated. You can reach the proteome-bioinformatics team at <protinf@fgcz.uzh.ch>.
-
-
-\newpage
-
-```{r columnlist, eval=FALSE}
-knitr::kable(data.frame(columns=colnames(grp2$getResultTableWithPseudo())), caption="List of column names in result .csv table.")
-```
 
 
 # Disclaimer

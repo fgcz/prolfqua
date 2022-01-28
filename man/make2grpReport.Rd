@@ -13,9 +13,7 @@ make2grpReport(
   protein_annot = "Description",
   revpattern = "^REV_",
   contpattern = "^zz|^CON__",
-  remove = FALSE,
-  transform = c("robscale", "vsn", "none"),
-  aggregate = c("medpolish", "topN", "lmrob")
+  remove = FALSE
 )
 
 write_2GRP(GRP2, outpath, xlsxname = "AnalysisResults")
@@ -37,10 +35,6 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 
 \item{remove}{do you want to remove contaminants default (TRUE)}
 
-\item{transform}{which transformation to use to normalize the data, default robscale}
-
-\item{aggregate}{method to use for peptide aggregation}
-
 \item{outpath}{path to place output}
 
 \item{xlsxname}{file name for xlsx}
@@ -48,6 +42,10 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 \item{htmlname}{name for html file}
 
 \item{word}{default FALSE, if true create word document.}
+
+\item{transform}{which transformation to use to normalize the data, default robscale}
+
+\item{aggregate}{method to use for peptide aggregation}
 }
 \description{
 For use examples see run_scripts directory
@@ -69,40 +67,34 @@ GRP2$Bfabric$inputID <- "2057368.zip"
 GRP2$Bfabric$inputURL <- "https://www.fgcz.ch"
 
 #at least 2 peptides per protein
-GRP2$nrPeptides <- 2
-GRP2$transform <- "robscale"
-GRP2$transform <- "vsn"
-GRP2$aggregate <- "medpolish"
+GRP2$pop <- list()
+GRP2$pop$transform <- "vsn"
+GRP2$pop$aggregate <- "medpolish"
+GRP2$pop$Diffthreshold <- 0.5
+GRP2$pop$FDRthreshold <- 0.25
+GRP2$pop$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
+
 GRP2$Software <- "MaxQuant"
-# Set FC to >= |2| and FRD to 0.1
-GRP2$Diffthreshold <- 0.5
-GRP2$FDRthreshold <- 0.25
-GRP2$Contrasts <- c(b_vs_a = "dilution.b - dilution.a")
 
 data <- dplyr::filter(data, dilution. == "a" |  dilution. == "b")
-
- atab <- AnalysisTableAnnotation$new()
+atab <- AnalysisTableAnnotation$new()
 
 atab$fileName = "raw.file"
 atab$hierarchy["protein_Id"] = "protein_Id"
 atab$hierarchy["peptide_Id"] = "peptide_Id"
-
 atab$factors["dilution."] = "dilution."
 atab$setWorkIntensity("peptide.intensity")
 atab$isotopeLabel = "isotope"
 config <- prolfqua::AnalysisConfiguration$new(atab)
 
 protein_annot = "Description"
-undebug(make2grpReport)
-grp <- make2grpReport(data,atab, GRP2, NULL,
- transform = GRP2$transform,
- aggregate = GRP2$aggregate)
+grp <- make2grpReport(data, atab, GRP2)
+
 \dontrun{
 
 render_2GRP(grp, ".")
 render_2GRP(grp, "." ,word = TRUE)
 write_2GRP(grp,".")
 }
-
 }
 \concept{workflow}

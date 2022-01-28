@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
@@ -39,6 +39,7 @@ Imports:
     limma,
     lme4,
     lmerTest,
+    logger,
     MASS,
     multcomp,
     pheatmap,
