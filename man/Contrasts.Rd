@@ -13,7 +13,7 @@ Estimate contrasts using Wald Test
 
 
 istar <- prolfqua_data('data_ionstar')$normalized()
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 20))
 modelFunction <-
 strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 pepIntensity <- istar$data
@@ -25,15 +25,13 @@ mod <- build_model(
  modelFunction,
  subject_Id = config$table$hkeysDepth())
 
- Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
+ Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
     "dil.e_vs_b" = "dilution.e - dilution.b" )
- #prolfqua::Contrasts$debug("get_linfct")
+#prolfqua::Contrasts$debug("get_linfct")
 #prolfqua::Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod,
  Contr)
-
 contrastX$get_contrast_sides()
-
 contrastX$get_linfct()
 xx <- contrastX$get_contrasts()
 

@@ -11,43 +11,57 @@ Benchmark R6 class
 \examples{
 #library(ggpubr)
 
-ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic)))
+dd <- dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic))
+head(dd)
+dd <- dd |> dplyr::mutate(avgInt = (c1 + c2)/2)
+ttd <- ionstar_bench_preprocess(dd)
 medpol_benchmark <- make_benchmark(ttd$data,
-                                   model_description = "med. polish and lm. density",
-                                   model_name = "prot_med_lm"
+benchmark = list(
+list(score = "estimate", desc = TRUE),
+list(score = "statistic", desc = TRUE),
+list(score = "scaled.p.value", desc = TRUE)
+),
+    fcestimate = "estimate",
+    model_description = "med. polish and lm. density",
+    model_name = "prot_med_lm"
 )
-medpol_benchmark$plot_score_distribution()
-#Benchmark$debug("pAUC_summaries")
+medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
+ list(score = "statistic", xlim = c(-3,10) )))
+
+#Benchmark$debug("plot_score_distribution")
 benchmark <- make_benchmark(
   ttd$data,
   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
-  benchmark = list(list(sc = "estimate", desc = TRUE),
-                   list(sc = "statistic", desc = TRUE),
-                   list(sc = "scaled.moderated.p.value", desc = TRUE),
-                   list(sc = "scaled.moderated.p.value.adjusted", desc = TRUE)
+  fcestimate = "estimate",
+  benchmark = list(list(score = "estimate", desc = TRUE),
+                   list(score = "statistic", desc = TRUE),
+                   list(score = "scaled.moderated.p.value", desc = TRUE),
+                   list(score = "scaled.moderated.p.value.adjusted", desc = TRUE)
   ),
   FDRvsFDP =
-    list(list(sc = "moderated.p.value", desc = FALSE),
-         list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+    list(list(score = "moderated.p.value", desc = FALSE),
+         list(score = "moderated.p.value.adjusted", desc = FALSE)),
   model_description = "protein level measurments, lm model",
   model_name = "prot_lm"
 )
-
 bb <- benchmark$pAUC_summaries()
 benchmark$complete(FALSE)
 benchmark$smc$summary
+benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
 benchmark$plot_score_distribution()
+
 bb <- benchmark$get_confusion_FDRvsFDP()
 xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 bb <- benchmark$get_confusion_benchmark()
 benchmark$plot_ROC(xlim = 0.1)
 benchmark$plot_FDPvsTPR()
 benchmark$plot_FDRvsFDP()
-benchmark$plot_scatter()
+benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
 benchmark$complete(FALSE)
 benchmark$pAUC_summaries()$ftable$content
 benchmark$complete(TRUE)
 benchmark$pAUC_summaries()$ftable$content
+
 
 }
 \seealso{
@@ -67,6 +81,8 @@ Other benchmarking:
 \item{\code{contrast}}{column name}
 
 \item{\code{toscale}}{which columns to scale}
+
+\item{\code{avgInt}}{average Intensity}
 
 \item{\code{fcestimate}}{estimate column}
 
@@ -121,10 +137,11 @@ create Benchmark
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$new(
   data,
   toscale = c("p.value"),
-  fcestimate = "estimate",
-  benchmark = list(list(sc = "estimate", desc = TRUE), list(sc = "statistic", desc =
-    TRUE), list(sc = "scaled.p.value", desc = TRUE)),
-  FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
+  fcestimate = "diff",
+  avgInt = "avgInt",
+  benchmark = list(list(score = "diff", desc = TRUE), list(score = "statistic", desc =
+    TRUE), list(score = "scaled.p.value", desc = TRUE)),
+  FDRvsFDP = list(list(score = "FDR", desc = FALSE)),
   model_description = "protein level measurments, linear model",
   model_name = "medpolish_lm",
   contrast = "contrast",
@@ -142,6 +159,8 @@ create Benchmark
 \item{\code{toscale}}{columns ot scale}
 
 \item{\code{fcestimate}}{column with fold change estimates}
+
+\item{\code{avgInt}}{average protein/peptide/metabolite intensity}
 
 \item{\code{benchmark}}{columns to benchmark}
 
@@ -340,10 +359,7 @@ ggplot
 \subsection{Method \code{plot_score_distribution()}}{
 plot distributions of scores
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_score_distribution(
-  score = list(list(score = "estimate", xlim = c(-1, 2)), list(score = "statistic",
-    xlim = c(-3, 10)))
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_score_distribution(score)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -363,10 +379,7 @@ ggplot
 \subsection{Method \code{plot_scatter()}}{
 plot intensity vs scores
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_scatter(
-  score = list(list(score = "estimate", ylim = c(-1, 2)), list(score = "statistic",
-    ylim = c(-3, 10)))
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_scatter(score)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

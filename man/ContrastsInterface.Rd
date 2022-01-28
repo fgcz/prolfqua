@@ -63,6 +63,7 @@ create wide representation of data.
 \if{html}{\out{<a id="method-column_description"></a>}}
 \if{latex}{\out{\hypertarget{method-column_description}{}}}
 \subsection{Method \code{column_description()}}{
+column description
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$column_description()}\if{html}{\out{</div>}}
 }

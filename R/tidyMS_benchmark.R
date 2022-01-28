@@ -29,7 +29,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 #
 .ms_bench_add_FPRTPR <- function(data,
                                  TP_col = "TP",
-                                 arrangeby = "estimate",
+                                 arrangeby = "diff",
                                  desc = TRUE) {
   #data <- est
 
@@ -97,7 +97,7 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 # @param toscale columns to scale
 # @param estimate fold change column
 .scale_probabilities <-
-  function(est ,toscale , fcestimate = "estimate") {
+  function(est ,toscale , fcestimate = "diff") {
     addScaledP <- function(data , fcestimate , scale) {
       scaled.p = paste0("scaled.", scale)
       data <-
@@ -117,16 +117,16 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 # do_confusion
 do_confusion <-
   function(data,
-           arrangeby = list(list(sc = "estimate", desc = TRUE),
-                            list(sc = "statistic", desc = TRUE),
-                            list(sc = "scaled.p.value" , desc = TRUE))) {
+           arrangeby = list(list(score = "diff", desc = TRUE),
+                            list(score = "statistic", desc = TRUE),
+                            list(score = "scaled.p.value" , desc = TRUE))) {
     # TODO add to prolfqua
     est <- data |> ungroup() |>
       dplyr::select_at(c("TP",
-                         purrr::map_chr(arrangeby, "sc")))
+                         purrr::map_chr(arrangeby, "score")))
     res <- list()
     for (arrange in arrangeby) {
-      score <- arrange$sc
+      score <- arrange$score
       res[[score]] <-
         .ms_bench_add_FPRTPR(est,
                              TP_col = "TP",
@@ -141,7 +141,7 @@ do_confusion <-
 do_confusion_c <- function(
   data,
   contrast = "contrast",
-  arrangeby = list(list(sc = "scaled.p.value", desc = FALSE))) {
+  arrangeby = list(list(score = "scaled.p.value", desc = FALSE))) {
 
   txx <- data |> group_by_at(contrast) |> nest()
   txx <- txx |> mutate(out  = map(data,
@@ -217,7 +217,6 @@ do_confusion_c <- function(
 #' ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
 #' x <- .summarise_missing_contrasts(ttd$data)
 #' x2 <- tibble::as_tibble(x$summary)
-#'
 .summarise_missing_contrasts <- function(data,
                                          hierarchy = c("protein_Id"),
                                          contrast = "contrast",
@@ -239,7 +238,7 @@ do_confusion_c <- function(
 
 # plot score distributions by species
 .plot_score_distribution <- function(data,
-                                     score = list(list(score = "estimate",xlim = c(-1,2) ),
+                                     score = list(list(score = "diff",xlim = c(-1,2) ),
                                                  list(score = "statistic", xlim = c(-3,10) )),
                                      contrast = "contrast",
                                      species = "species" ,
@@ -251,7 +250,7 @@ do_confusion_c <- function(
     plots[[score]] <- ggplot(data, aes(x = !!sym(score),
                                        y = !!sym(contrast),
                                        color = !!sym(species))) +
-      ggridges::geom_density_ridges(alpha = 0.1) + xlim(xlim)
+      ggridges::geom_density_ridges(alpha = 0.1) + if(!is.null(xlim)) { ggplot2::xlim(xlim) }
   }
   fig <- ggpubr::ggarrange(plotlist = plots,
                            nrow = 1,
@@ -270,44 +269,59 @@ do_confusion_c <- function(
 #' @examples
 #' #library(ggpubr)
 #'
-#' ttd <- ionstar_bench_preprocess(dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic)))
+#' dd <- dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic))
+#' head(dd)
+#' dd <- dd |> dplyr::mutate(avgInt = (c1 + c2)/2)
+#' ttd <- ionstar_bench_preprocess(dd)
 #' medpol_benchmark <- make_benchmark(ttd$data,
-#'                                    model_description = "med. polish and lm. density",
-#'                                    model_name = "prot_med_lm"
+#' benchmark = list(
+#' list(score = "estimate", desc = TRUE),
+#' list(score = "statistic", desc = TRUE),
+#' list(score = "scaled.p.value", desc = TRUE)
+#' ),
+#'     fcestimate = "estimate",
+#'     model_description = "med. polish and lm. density",
+#'     model_name = "prot_med_lm"
 #' )
-#' medpol_benchmark$plot_score_distribution()
-#' #Benchmark$debug("pAUC_summaries")
+#' medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
+#'  list(score = "statistic", xlim = c(-3,10) )))
+#'
+#' #Benchmark$debug("plot_score_distribution")
 #' benchmark <- make_benchmark(
 #'   ttd$data,
 #'   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
-#'   benchmark = list(list(sc = "estimate", desc = TRUE),
-#'                    list(sc = "statistic", desc = TRUE),
-#'                    list(sc = "scaled.moderated.p.value", desc = TRUE),
-#'                    list(sc = "scaled.moderated.p.value.adjusted", desc = TRUE)
+#'   fcestimate = "estimate",
+#'   benchmark = list(list(score = "estimate", desc = TRUE),
+#'                    list(score = "statistic", desc = TRUE),
+#'                    list(score = "scaled.moderated.p.value", desc = TRUE),
+#'                    list(score = "scaled.moderated.p.value.adjusted", desc = TRUE)
 #'   ),
 #'   FDRvsFDP =
-#'     list(list(sc = "moderated.p.value", desc = FALSE),
-#'          list(sc = "moderated.p.value.adjusted", desc = FALSE)),
+#'     list(list(score = "moderated.p.value", desc = FALSE),
+#'          list(score = "moderated.p.value.adjusted", desc = FALSE)),
 #'   model_description = "protein level measurments, lm model",
 #'   model_name = "prot_lm"
 #' )
-#'
 #' bb <- benchmark$pAUC_summaries()
 #' benchmark$complete(FALSE)
 #' benchmark$smc$summary
+#' benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
 #' benchmark$plot_score_distribution()
+#'
 #' bb <- benchmark$get_confusion_FDRvsFDP()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 #' bb <- benchmark$get_confusion_benchmark()
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_FDPvsTPR()
 #' benchmark$plot_FDRvsFDP()
-#' benchmark$plot_scatter()
+#' benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
 #' benchmark$complete(FALSE)
 #' benchmark$pAUC_summaries()$ftable$content
 #' benchmark$complete(TRUE)
 #' benchmark$pAUC_summaries()$ftable$content
 #'
+#'
+
 Benchmark <-
   R6::R6Class(
     "Benchmark",
@@ -320,6 +334,8 @@ Benchmark <-
       contrast = "",
       #' @field toscale which columns to scale
       toscale = c(""),
+      #' @field avgInt average Intensity
+      avgInt = numeric(),
       #' @field fcestimate estimate column
       fcestimate = "",
       #' @field benchmark todo
@@ -345,6 +361,7 @@ Benchmark <-
       #' @param data data.frame
       #' @param toscale columns ot scale
       #' @param fcestimate column with fold change estimates
+      #' @param avgInt average protein/peptide/metabolite intensity
       #' @param benchmark columns to benchmark
       #' @param FDRvsFDP score for which to generate FDR vs FDP
       #' @param columns to create FPR vs FDP analysis for
@@ -356,13 +373,14 @@ Benchmark <-
       #' @param summarizeNA examine this column to determine the proportion of missing values default statistic
       initialize = function(data,
                             toscale = c("p.value"),
-                            fcestimate = "estimate",
+                            fcestimate = "diff",
+                            avgInt = "avgInt",
                             benchmark = list(
-                              list(sc = "estimate", desc = TRUE),
-                              list(sc = "statistic", desc = TRUE),
-                              list(sc = "scaled.p.value", desc = TRUE)
+                              list(score = "diff", desc = TRUE),
+                              list(score = "statistic", desc = TRUE),
+                              list(score = "scaled.p.value", desc = TRUE)
                             ),
-                            FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
+                            FDRvsFDP = list(list(score = "FDR", desc = FALSE)),
                             model_description = "protein level measurments, linear model",
                             model_name = "medpolish_lm",
                             contrast = "contrast",
@@ -371,6 +389,7 @@ Benchmark <-
                             summarizeNA = "statistic") {
         self$.data <- data
         self$contrast <- contrast
+        self$avgInt <- avgInt
         self$toscale <- toscale
         self$fcestimate <- fcestimate
         self$benchmark <- benchmark
@@ -529,8 +548,11 @@ Benchmark <-
       #' plot distributions of scores
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
-      plot_score_distribution = function(score =list(list(score = "estimate", xlim = c(-1,2) ),
-                                                     list(score = "statistic", xlim = c(-3,10) ))){
+      plot_score_distribution = function(score) {
+        if(missing(score)){
+          score = self$benchmark
+
+        }
         .plot_score_distribution(self$data(),
                                  score = score,
                                  contrast = self$contrast,
@@ -541,10 +563,11 @@ Benchmark <-
       #' plot intensity vs scores
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
-      plot_scatter = function(score = list(list(score = "estimate", ylim = c(-1,2) ),
-                                           list(score = "statistic", ylim = c(-3,10) ))){
+      plot_scatter = function(score) {
+        if(missing(score)){
+          score = self$benchmark
+        }
         x <- self$data()
-
         x <- x |> arrange(desc(!!sym(self$species)))
         plots <- list()
 
@@ -552,7 +575,7 @@ Benchmark <-
           score <- i$score
           ylim <- i$ylim
 
-          plots[[score]] <- ggplot(x, aes(x = (group_1 + group_2)/2, y = !!sym(score), color = !!sym(self$species) )) +
+          plots[[score]] <- ggplot(x, aes(x = !!sym(self$avgInt), y = !!sym(score), color = !!sym(self$species) )) +
             geom_point(alpha = 0.2) +
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
             ylim(ylim)
@@ -585,13 +608,14 @@ Benchmark <-
 make_benchmark <- function(prpr,
                            contrast = "contrast",
                            toscale = c("p.value"),
-                           fcestimate = "estimate",
+                           avgInt = "avgInt",
+                           fcestimate = "diff",
                            benchmark = list(
-                             list(sc = "estimate", desc = TRUE),
-                             list(sc = "statistic", desc = TRUE),
-                             list(sc = "scaled.p.value", desc = TRUE)
+                             list(score = "diff", desc = TRUE),
+                             list(score = "statistic", desc = TRUE),
+                             list(score = "scaled.p.value", desc = TRUE)
                            ),
-                           FDRvsFDP = list(list(sc = "FDR", desc = FALSE)),
+                           FDRvsFDP = list(list(score = "FDR", desc = FALSE)),
                            model_description = "protein level measurments, linear model",
                            model_name = "prot_med_lm",
                            hierarchy = c("protein_Id"),
@@ -600,6 +624,7 @@ make_benchmark <- function(prpr,
   res <- Benchmark$new(prpr,
                        contrast = contrast,
                        toscale = toscale,
+                       avgInt = "avgInt",
                        fcestimate = fcestimate,
                        benchmark = benchmark,
                        FDRvsFDP = FDRvsFDP,

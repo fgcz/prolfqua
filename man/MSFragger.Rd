@@ -14,7 +14,8 @@ tidy_MSFragger_combined_protein(
     "total.ion.count", "unique.ion.count", "razor.ion.count", "total.spectral.count",
     "unique.spectral.count", "razor.spectral.count"),
   protIDcol = "protein.group",
-  subgroup = "subgroup"
+  subgroup = "subgroup",
+  as_list = FALSE
 )
 
 tidy_MSFragger_combined_protein_V16(combprot, as_list = FALSE)

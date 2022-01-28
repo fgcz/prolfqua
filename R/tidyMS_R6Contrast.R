@@ -16,12 +16,14 @@ ContrastsInterface <- R6::R6Class(
     #' @description
     #' create wide representation of data.
     to_wide = function(){stop("to_wide not implemented.")},
+    #' @description
+    #' column description
     column_description = function() {
       description <- data.frame("contrast" = "contrast name e.g. group1_vs_group2",
                                 "group_1_name" = "name of group 1",
                                 "group_2_name" = "name of group 2",
-                                "group_1_avg" = "mean of expression of group 1",
-                                "group_2_avg" = "mean of expression of group 2",
+                                "group_1" = "mean of expression of group 1",
+                                "group_2" = "mean of expression of group 2",
                                 "avgExpr" = "mean of expression value of protein.",
                                 "sigma" = "residual standard deviation of linear model",
                                 "df" = "degrees of freedom",
@@ -36,7 +38,7 @@ ContrastsInterface <- R6::R6Class(
   )
 )
 
-.requiredContrastColumns <- c("contrast", "group_1_mean" , "group_2_mean",
+.requiredContrastColumns <- c("contrast", "group_1" , "group_2",
                               "group_1_name", "group_2_name",
                               "sigma", "df",
                               "diff", "statistic", "p.value",
@@ -221,7 +223,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
+#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 20))
 #' modelFunction <-
 #' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 #' pepIntensity <- istar$data
@@ -233,15 +235,13 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
-#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b",
+#'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
 #'     "dil.e_vs_b" = "dilution.e - dilution.b" )
-#'  #prolfqua::Contrasts$debug("get_linfct")
+#' #prolfqua::Contrasts$debug("get_linfct")
 #' #prolfqua::Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod,
 #'  Contr)
-#'
 #' contrastX$get_contrast_sides()
-#'
 #' contrastX$get_linfct()
 #' xx <- contrastX$get_contrasts()
 #'
@@ -348,8 +348,8 @@ Contrasts <- R6::R6Class(
         get_contrast_cols <- function(i, contrast_results , contrast_table , subject_ID ){
           data.frame(lhs = contrast_table[i, "contrast"],
                      dplyr::select_at(contrast_results, c( subject_ID, unlist(contrast_table[i,c("group_1", "group_2")]))),
-                     c1_name = contrast_table[i,"group_1", drop = TRUE],
-                     c2_name = contrast_table[i,"group_2", drop = TRUE], stringsAsFactors = FALSE)
+                     group_1_name = contrast_table[i,"group_1", drop = TRUE],
+                     group_2_name = contrast_table[i,"group_2", drop = TRUE], stringsAsFactors = FALSE)
         }
 
         contrast_sides <- purrr::map_df(seq_len(nrow(contrast_sides)),

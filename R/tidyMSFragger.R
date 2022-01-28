@@ -43,7 +43,9 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
                                                                    "total.spectral.count",
                                                                    "unique.spectral.count",
                                                                    "razor.spectral.count"),
-                                            protIDcol = "protein.group", subgroup = "subgroup") {
+                                            protIDcol = "protein.group",
+                                            subgroup = "subgroup",
+                                            as_list = FALSE) {
   if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))
@@ -57,7 +59,7 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
   ### start processing
   colnames(Cprotein) <- tolower(colnames(Cprotein))
   cnam <- tolower(colnames(Cprotein))
-  cnam <- cnam[1:which(cnam == "combined.total.spectral.count")]
+  cnam <- cnam[1:which(cnam == "summarized.razor.spectral.count")]
   message("annotation columns : ", paste(cnam, collapse = "\n"))
 
   annot <- Cprotein |> dplyr::select(all_of(cnam))
@@ -75,9 +77,14 @@ tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intens
   for (i in seq_along(intnames)) {
     res[[intnames[i]]] <- extractDataLong(Cprotein, what = intnames[i] )
   }
-  return(res)
+  if (as_list) {
+    return( res )
+  }
+
   merged <- Reduce(inner_join, res)
   merged <- inner_join(annot, merged)
+
+
   return(merged)
 }
 
