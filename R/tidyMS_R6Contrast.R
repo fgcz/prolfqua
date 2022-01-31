@@ -839,7 +839,7 @@ ContrastsSaintExpress <- R6::R6Class(
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05)), list(score = "SaintScore", xlim = c(0,1,0.05))),
         score = list(list(score = "SaintScore", thresh = SaintScore )),
         modelName = self$modelName,
-        estimate = "log2FC",
+        diff = "log2FC",
         contrast = "Bait")
       return(res)
     },
