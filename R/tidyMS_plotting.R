@@ -290,7 +290,7 @@ plot_heatmap_cor <- function(data,
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot$sampleName
+  rownames(factors) <- annot[[config$table$sampleName]]
 
   #res <- pheatmap::pheatmap(cres,
   #                          scale = "none",
@@ -348,7 +348,7 @@ plot_heatmap <- function(data,
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot$sampleName
+  rownames(factors) <- annot[[config$table$sampleName]]
   resdata <- t(scale(t(wide$data)))
   resdataf <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
 
@@ -418,7 +418,7 @@ plot_raster <- function(data,
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot$sampleName
+  rownames(factors) <- annot[[config$table$sampleName]]
 
 
   if (arrange == "mean") {
@@ -475,11 +475,11 @@ plot_NA_heatmap <- function(data,
   res <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
-  stopifnot(annot$sampleName == colnames(res))
+  stopifnot(annot[[config$table$sampleName]] == colnames(res))
 
   factors <- dplyr::select_at(annot, config$table$factorKeys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot$sampleName
+  rownames(factors) <- annot[[config$table$sampleName]]
 
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
@@ -547,7 +547,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   wide <- toWideConfig(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
-  xx <- as_tibble(prcomp(ff)$x, rownames = "sampleName")
+  xx <- as_tibble(prcomp(ff)$x, rownames = config$table$sampleName)
   xx <- inner_join(wide$annotation, xx)
 
 

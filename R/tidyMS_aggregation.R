@@ -225,21 +225,21 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #' gg
 #' mx <- medpolishPly(gg)
 #'
-medpolishPly <- function(x, name = FALSE){
+medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
   if (name) {
     return("medpolish")
   }
   X <- medpolish(x,na.rm = TRUE, trace.iter = FALSE, maxiter = 10);
-  res <- tibble("sampleName" = names(X$col) , medpolish = X$col + X$overall)
+  res <- tibble(!! sampleName := names(X$col) , medpolish = X$col + X$overall)
   res
 }
 
-.extractInt <- function(pdata, expression, feature, samples ){
+.extractInt <- function(pdata, expression, feature, sampleName ){
   pdata <- pdata |>
-    dplyr::select_at( c( samples,
+    dplyr::select_at( c( sampleName,
                          feature,
                          expression) ) |>
-    tidyr::spread(key = samples , value = expression) |> .ExtractMatrix()
+    tidyr::spread(key = sampleName , value = expression) |> .ExtractMatrix()
   return(pdata)
 }
 
@@ -312,15 +312,15 @@ extractIntensities <- function(pdata, config ){
 #' bb <- medpolishPlydf(x,
 #'  expression = conf$table$getWorkIntensity(),
 #'   feature = feature,
-#'    samples = conf$table$sampleName)
+#'    sampleName = conf$table$sampleName)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-medpolishPlydf <- function(pdata, expression, feature, samples  ){
+medpolishPlydf <- function(pdata, expression, feature, sampleName  ){
   bb <- .extractInt(pdata,
     expression = expression,
      feature = feature,
-      samples = samples)
-   medpolishPly(bb)
+      sampleName =  sampleName)
+   medpolishPly(bb, sampleName = sampleName)
 
 }
 #' medpolish Ply df config
@@ -353,7 +353,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
   res <- medpolishPlydf(pdata,
                  expression = config$table$getWorkIntensity(),
                  feature = feature,
-                 samples = config$table$sampleName)
+                 sampleName = config$table$sampleName)
   return(res)
 }
 

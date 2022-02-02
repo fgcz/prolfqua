@@ -594,15 +594,16 @@ Benchmark <-
 #' make Benchmark
 #'
 #' @export
-#' @param prpr todo
-#' @param contrast todo
-#' @param toscale todo
+#' @param prpr prepared data, e.g. function \code{\link{ionstar_bench_preprocess}}
+#' @param contrast column with names of the contrast
+#' @param toscale which scores to scale using fcestimate, typically p.value
+#' @param avgInt column with average intensity
 #' @param fcestimate column with FC estimate
-#' @param benchmark todo
-#' @param FDRvsFDP todo
-#' @param model_description todo
-#' @param model_name todo
-#' @param hierarchy todo
+#' @param benchmark which scores to benchmark e.g. diff, statistics
+#' @param FDRvsFDP which score to plot against the false discovery proportion
+#' @param model_description string describing the model
+#' @param model_name name of the model, compatible with \code{\link{make.names}} output.
+#' @param hierarchy name of column with protein ID.
 #' @param summarizeNA summarizeNA
 #' @return Benchmark
 make_benchmark <- function(prpr,

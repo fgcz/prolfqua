@@ -4,7 +4,7 @@
 \alias{medpolishPlydf}
 \title{medpolish dataframe}
 \usage{
-medpolishPlydf(pdata, expression, feature, samples)
+medpolishPlydf(pdata, expression, feature, sampleName)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -37,7 +37,7 @@ x <- xnested$data[[1]]
 bb <- medpolishPlydf(x,
  expression = conf$table$getWorkIntensity(),
   feature = feature,
-   samples = conf$table$sampleName)
+   sampleName = conf$table$sampleName)
 prolfqua:::.reestablish_condition(x,bb, conf)
 
 }

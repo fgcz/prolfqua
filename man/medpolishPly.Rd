@@ -4,7 +4,7 @@
 \alias{medpolishPly}
 \title{compute Tukeys median polish from peptide or precursor intensities}
 \usage{
-medpolishPly(x, name = FALSE)
+medpolishPly(x, name = FALSE, sampleName = "sampleName")
 }
 \arguments{
 \item{x}{a matrix}

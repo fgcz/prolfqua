@@ -330,7 +330,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
       dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
       dplyr::inner_join(data, by = table$fileName)
   } else {
-    warning(sampleName, " already exists")
+    message(sampleName, " already exists")
   }
 
   data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factorKeys())))
@@ -523,6 +523,7 @@ hierarchy_counts_sample <- function(pdata,
         return(long)
       }else if (value == "plot") {
         nudgeval <- mean(long$nr) * 0.05
+        # TODO(WEW) check potential problem with sampleName
         ggplot2::ggplot(long, aes(x = .data$sampleName, y = .data$nr)) +
           geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           facet_wrap( ~ key, scales = "free_y", ncol = 1) +
