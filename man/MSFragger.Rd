@@ -2,11 +2,14 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{tidy_MSFragger_MSstats_csv}
 \alias{tidy_MSFragger_MSstats_csv}
+\alias{tidy_MSFragger_combined_peptides_V16}
 \alias{tidy_MSFragger_combined_protein}
 \alias{tidy_MSFragger_combined_protein_V16}
 \title{read MSFragger generated MSstats formatted csv files.}
 \usage{
 tidy_MSFragger_MSstats_csv(file)
+
+tidy_MSFragger_combined_peptides_V16(combprot, as_list = FALSE)
 
 tidy_MSFragger_combined_protein(
   combprot,
@@ -21,19 +24,21 @@ tidy_MSFragger_combined_protein(
 tidy_MSFragger_combined_protein_V16(combprot, as_list = FALSE)
 }
 \arguments{
-\item{file}{MSstats formatted file}
+\item{file}{combinded_peptides.txt}
 
 \item{combprot}{path to combined_protein.tsv file}
 
-\item{intnames}{intensity column prefix}
-
 \item{as_list}{return as list}
+
+\item{intnames}{intensity column prefix}
 }
 \value{
 tidy dataframe or list with df (e.g. total.spectral.count or total.intensity etc).
 }
 \description{
 read MSFragger generated MSstats formatted csv files.
+
+read combined peptide for MSFragger V16
 
 read MSFragger combined protein file up to Version 15
 
@@ -66,6 +71,8 @@ Other MSFragger:
 
 Other MSFragger: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}}
+
+Other MSFragger: 
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}}
 }
 \concept{MSFragger}
-\keyword{internal}

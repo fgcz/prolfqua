@@ -20,23 +20,25 @@ make_benchmark(
 )
 }
 \arguments{
-\item{prpr}{todo}
+\item{prpr}{prepared data, e.g. function \code{\link{ionstar_bench_preprocess}}}
 
-\item{contrast}{todo}
+\item{contrast}{column with names of the contrast}
 
-\item{toscale}{todo}
+\item{toscale}{which scores to scale using fcestimate, typically p.value}
+
+\item{avgInt}{column with average intensity}
 
 \item{fcestimate}{column with FC estimate}
 
-\item{benchmark}{todo}
+\item{benchmark}{which scores to benchmark e.g. diff, statistics}
 
-\item{FDRvsFDP}{todo}
+\item{FDRvsFDP}{which score to plot against the false discovery proportion}
 
-\item{model_description}{todo}
+\item{model_description}{string describing the model}
 
-\item{model_name}{todo}
+\item{model_name}{name of the model, compatible with \code{\link{make.names}} output.}
 
-\item{hierarchy}{todo}
+\item{hierarchy}{name of column with protein ID.}
 
 \item{summarizeNA}{summarizeNA}
 }
