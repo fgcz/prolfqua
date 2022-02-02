@@ -16,7 +16,7 @@ tidy_MSFragger_MSstats_csv <- function(file){
 #' read combined peptide for MSFragger V16
 #' @export
 #' @rdname MSFragger
-#' @param file combinded_peptides.txt
+#' @param combprot combinded_peptide.txt data frame read with read.csv.
 #' @family MSFragger
 #'
 tidy_MSFragger_combined_peptides_V16 <- function(
@@ -92,6 +92,8 @@ tidy_MSFragger_combined_peptides_V16 <- function(
 #' @rdname MSFragger
 #' @param combprot path to combined_protein.tsv file
 #' @param intnames intensity column prefix
+#' @param protIDcol default protein.group
+#' @param subgroup default subgroup
 #' @family MSFragger
 #' @examples
 #'
@@ -102,20 +104,21 @@ tidy_MSFragger_combined_peptides_V16 <- function(
 #'   tidy_MSFragger_combined_protein(protein)
 #' }
 #'
-tidy_MSFragger_combined_protein <- function(combprot, intnames = c("total.intensity",
-                                                                   "unique.intensity",
-                                                                   "razor.intensity",
+tidy_MSFragger_combined_protein <- function(
+  combprot, intnames = c("total.intensity",
+                         "unique.intensity",
+                         "razor.intensity",
 
-                                                                   "total.ion.count",
-                                                                   "unique.ion.count",
-                                                                   "razor.ion.count",
+                         "total.ion.count",
+                         "unique.ion.count",
+                         "razor.ion.count",
 
-                                                                   "total.spectral.count",
-                                                                   "unique.spectral.count",
-                                                                   "razor.spectral.count"),
-                                            protIDcol = "protein.group",
-                                            subgroup = "subgroup",
-                                            as_list = FALSE) {
+                         "total.spectral.count",
+                         "unique.spectral.count",
+                         "razor.spectral.count"),
+  protIDcol = "protein.group",
+  subgroup = "subgroup",
+  as_list = FALSE) {
   if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))

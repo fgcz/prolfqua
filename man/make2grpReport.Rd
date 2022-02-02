@@ -42,10 +42,6 @@ render_2GRP(GRP2, outpath, htmlname = "Result2Grp", word = FALSE)
 \item{htmlname}{name for html file}
 
 \item{word}{default FALSE, if true create word document.}
-
-\item{transform}{which transformation to use to normalize the data, default robscale}
-
-\item{aggregate}{method to use for peptide aggregation}
 }
 \description{
 For use examples see run_scripts directory

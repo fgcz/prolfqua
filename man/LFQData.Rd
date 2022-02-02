@@ -73,6 +73,7 @@ Other LFQData:
 \item \href{#method-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-factors}{\code{LFQData$factors()}}
 \item \href{#method-response}{\code{LFQData$response()}}
+\item \href{#method-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
 \item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
@@ -318,6 +319,23 @@ name of response variable
 
 \subsection{Returns}{
 data.frame
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-rename_response"></a>}}
+\if{latex}{\out{\hypertarget{method-rename_response}{}}}
+\subsection{Method \code{rename_response()}}{
+new name of response variable
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$rename_response(newname = "Intensity")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{newname}}{default Intensity}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

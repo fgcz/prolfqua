@@ -24,13 +24,17 @@ tidy_MSFragger_combined_protein(
 tidy_MSFragger_combined_protein_V16(combprot, as_list = FALSE)
 }
 \arguments{
-\item{file}{combinded_peptides.txt}
+\item{file}{MSstats formatted file}
 
 \item{combprot}{path to combined_protein.tsv file}
 
 \item{as_list}{return as list}
 
 \item{intnames}{intensity column prefix}
+
+\item{protIDcol}{default protein.group}
+
+\item{subgroup}{default subgroup}
 }
 \value{
 tidy dataframe or list with df (e.g. total.spectral.count or total.intensity etc).

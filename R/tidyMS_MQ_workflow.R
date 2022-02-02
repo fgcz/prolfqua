@@ -76,8 +76,6 @@ filter_difference <- function(x, y, config){
 #' @param revpattern default "REV_"
 #' @param contpattern default "^zz|^CON__"
 #' @param remove do you want to remove contaminants default (TRUE)
-#' @param transform which transformation to use to normalize the data, default robscale
-#' @param aggregate method to use for peptide aggregation
 #' @export
 #' @family workflow
 #' @examples
