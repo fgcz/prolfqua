@@ -258,13 +258,21 @@ plot histogram of differences (diff) fold change
 \subsection{Method \code{volcano()}}{
 volcano plots (fold change vs FDR)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(
+  colour = "modelName",
+  legend = TRUE,
+  scales = c("fixed", "free", "free_x", "free_y")
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{colour}}{column name with color information default modelName}
+
+\item{\code{legend}}{default TRUE}
+
+\item{\code{scales}}{default fixed \code{\link{facet_wrap}}, scales argument}
 }
 \if{html}{\out{</div>}}
 }
@@ -275,13 +283,21 @@ volcano plots (fold change vs FDR)
 \subsection{Method \code{volcano_plotly()}}{
 plotly volcano plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(colour = "modelName")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(
+  colour = "modelName",
+  legend = TRUE,
+  scales = c("fixed", "free", "free_x", "free_y")
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{colour}}{column in contrast matrix with colour coding}
+
+\item{\code{legend}}{default TRUE}
+
+\item{\code{scales}}{default fixed \code{\link{facet_wrap}}, scales argument}
 }
 \if{html}{\out{</div>}}
 }

@@ -1111,17 +1111,23 @@ Contrasts_Plotter <- R6::R6Class(
     #' @description
     #' volcano plots (fold change vs FDR)
     #' @param colour column name with color information default modelName
-    volcano = function(colour = "modelName"){
-      fig <- private$.volcano(self$contrastDF, self$volcano_spec, colour = colour )
+    #' @param legend default TRUE
+    #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    volcano = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
+      scales <- match.arg(scales)
+      fig <- private$.volcano(self$contrastDF, self$volcano_spec, colour = colour, legend = legend, scales = scales )
       return(fig)
     },
     #' @description
     #' plotly volcano plots
     #' @param colour column in contrast matrix with colour coding
     #' @return list of ggplots
-    volcano_plotly = function(colour = "modelName"){
+    #' @param legend default TRUE
+    #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    volcano_plotly = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
+      scales <- match.arg(scales)
       contrastDF <- self$contrastDF |> plotly::highlight_key(~ subject_Id)
-      res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour )
+      res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour, legend = legend, scales = scales)
       for (i in seq_along(res)) {
         res[[i]] <- res[[i]] |> plotly::ggplotly(tooltip = "subject_Id")
       }
@@ -1232,7 +1238,7 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores,  colour = NULL, legend = TRUE){
+    .volcano = function(contrasts, scores,  colour = NULL, legend = TRUE, scales = "free_y"){
       fig <- list()
       for (score in scores) {
         column <- score$score
@@ -1245,7 +1251,7 @@ Contrasts_Plotter <- R6::R6Class(
           xintercept = c(-self$fcthresh, self$fcthresh),
           yintercept = score$thresh,
           colour = colour,
-          scales = "free_y")
+          scales = scales)
         if (!legend) {
           p <- p + guides(colour = "none")
         }

@@ -17,6 +17,10 @@
 #' lfqdata$summarize_hierarchy()
 #' lfqdata$omit_NA()
 #'
+#' lfqdata$response()
+#' lfqdata$rename_response()
+#' lfqdata$response()
+#' lfqdata$get_Plotter()$heatmap()
 #' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 #' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
 #' stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
@@ -171,15 +175,15 @@ LFQData <- R6::R6Class(
     #' new name of response variable
     #' @param newname default Intensity
     rename_response = function(newname = "Intensity"){
-      if(newname %in% self$config$workIntensity){
-        logger::log_messages(paste0(newname, " already used :",self$config$workIntensity, "."))
+      if((newname %in% colnames(self$data))){
+        logger::log_messages(paste(newname, " already in data :", colnames(self$data), ".", collapse = " "))
         logger::log_error("provide different name.")
         stop()
       }
+
       old <- self$config$table$popWorkIntensity()
       self$config$table$setWorkIntensity(newname)
-      lfqprot$data <- lfqprot$data |> dplyr::rename(!!newname := !!sym(old))
-
+      self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
     },
     #' @description
     #' number of elements at each level
