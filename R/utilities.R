@@ -147,20 +147,28 @@ multigroupVolcano <- function(.data,
                                scales = "fixed")
 {
   colname = paste("-log10(", p.value, ")", sep = "")
-  p <- ggplot(data, aes_string(x = effect, y = colname, color = colour, text = text)) +
+  p <- ggplot(
+    data,
+    aes_string(x = effect, y = colname, color = colour, text = text)) +
     geom_point(alpha = 0.5)
-  p <- p + scale_colour_manual(values = c("black", "green",
-                                          "blue", "red"))
-  p <- p + facet_wrap(as.formula(paste("~", condition)),
-                      scales = scales) + labs(y = colname)
+  p <- p + scale_colour_manual(
+    values = c("black", "green",
+               "blue", "red") )
+  p <- p + facet_wrap(
+    as.formula(paste("~", condition)),
+    scales = scales) + labs(y = colname)
   log2FC <- effect
-  p <- p + geom_vline(xintercept = xintercept,linetype = "dashed",
-                      colour = "red")
+  p <- p + geom_vline(
+    xintercept = xintercept,
+    linetype = "dashed",
+    colour = "red")
   p_value <- paste0("-log10(",yintercept,")")
-  p <- p + geom_hline(aes(yintercept = -log10(yintercept),
-                          linetype = p_value),linetype = "dashed",
-                      color = "blue",
-                      show.legend = FALSE)
+  p <- p + geom_hline(
+    aes(yintercept = -log10(yintercept),
+        linetype = p_value),
+    linetype = "dashed",
+    color = "blue",
+    show.legend = FALSE)
   p <- p + theme_light()
 
   return(p)

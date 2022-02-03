@@ -1115,7 +1115,11 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
     volcano = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
       scales <- match.arg(scales)
-      fig <- private$.volcano(self$contrastDF, self$volcano_spec, colour = colour, legend = legend, scales = scales )
+      fig <- private$.volcano(self$contrastDF,
+                              self$volcano_spec,
+                              colour = colour,
+                              legend = legend,
+                              scales = scales )
       return(fig)
     },
     #' @description
@@ -1126,11 +1130,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
     volcano_plotly = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
       scales <- match.arg(scales)
-      contrastDF <- self$contrastDF |> plotly::highlight_key(~ subject_Id)
-      res <- private$.volcano(contrastDF, self$volcano_spec, colour = colour, legend = legend, scales = scales)
-      for (i in seq_along(res)) {
-        res[[i]] <- res[[i]] |> plotly::ggplotly(tooltip = "subject_Id")
-      }
+      res <- private$.volcano(self$contrastDF,
+                              self$volcano_spec,
+                              colour = colour,
+                              legend = legend,
+                              scales = scales,
+                              plotly = TRUE)
       return(res)
     },
     #' @description
@@ -1238,10 +1243,21 @@ Contrasts_Plotter <- R6::R6Class(
     }
   ),
   private = list(
-    .volcano = function(contrasts, scores,  colour = NULL, legend = TRUE, scales = "free_y"){
+    .volcano = function(contrasts,
+                        scores,
+                        colour = NULL,
+                        legend = TRUE,
+                        scales = "free_y",
+                        plotly = FALSE){
       fig <- list()
       for (score in scores) {
         column <- score$score
+        contrasts <- contrasts |>
+          dplyr::filter(!is.na(!!sym(self$diff))) |>
+          dplyr::filter(!is.na(!!sym(column)))
+        if(plotly){
+          contrasts <- contrasts |> plotly::highlight_key(~ subject_Id)
+        }
         p <- prolfqua:::.multigroupVolcano(
           contrasts,
           effect = self$diff,
@@ -1254,6 +1270,9 @@ Contrasts_Plotter <- R6::R6Class(
           scales = scales)
         if (!legend) {
           p <- p + guides(colour = "none")
+        }
+        if(plotly){
+          p <-  plotly::ggplotly(p, tooltip = "subject_Id")
         }
         fig[[column]] <- p
       }
