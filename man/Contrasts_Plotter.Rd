@@ -41,7 +41,7 @@ cp <- Contrasts_Plotter$new(tmp ,
 volcano = list(list(score = "FDR", thresh = 0.1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
-score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
+score =list(list(score = "statistic",  thresh = 5)))
 cp$volcano_plotly()
 
 cp <- Contrasts_Plotter$new(tmp ,
@@ -50,7 +50,7 @@ volcano = list(list(score = "FDR", thresh = 0.1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
                  fcthresh = NULL,
-score =list(list(score = "statistic",  fcthresh = 1, thresh = 5)))
+score =list(list(score = "statistic", thresh = 5)))
 cp$fcthresh
 cp$volcano_plotly()
 p <- cp$score_plot(legend=FALSE)
