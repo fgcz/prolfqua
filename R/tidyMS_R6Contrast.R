@@ -1243,8 +1243,10 @@ Contrasts_Plotter <- R6::R6Class(
         scT <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
           self$contrastDF ,
-          !is.na(!!sym(scN)) & !!sym(scN)  < scT & abs(!!sym(self$diff)) > self$fcthresh)
-
+          !is.na(!!sym(scN)) & !!sym(scN)  < scT)
+        if (is.numeric(self$fcthresh)) {
+          filt <-  dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
+        }
         sumC <- group_by(filt, contrast, modelName) |> dplyr::summarize(n = n())
         p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) +
           geom_bar(position = "stack", stat = "identity")
@@ -1306,7 +1308,7 @@ Contrasts_Plotter <- R6::R6Class(
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
         facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red") +
+        if( is.numeric(fc) ) { geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red") } else {NULL} +
         ylab("log fold change (M)") + xlab("mean log intensities (A)") +
         theme_light()
       if (!legend) {
