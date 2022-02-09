@@ -1264,7 +1264,7 @@ Contrasts_Plotter <- R6::R6Class(
           p.value = column,
           condition = self$contrast,
           text = "subject_Id",
-          xintercept = c(-self$fcthresh, self$fcthresh),
+          xintercept = if( is.numeric(self$fctresh) ){ c(-self$fcthresh, self$fcthresh)} else {NULL},
           yintercept = score$thresh,
           colour = colour,
           scales = scales)
