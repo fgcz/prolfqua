@@ -158,17 +158,21 @@ multigroupVolcano <- function(.data,
     as.formula(paste("~", condition)),
     scales = scales) + labs(y = colname)
   log2FC <- effect
-  p <- p + geom_vline(
-    xintercept = xintercept,
-    linetype = "dashed",
-    colour = "red")
-  p_value <- paste0("-log10(",yintercept,")")
-  p <- p + geom_hline(
-    aes(yintercept = -log10(yintercept),
-        linetype = p_value),
-    linetype = "dashed",
-    color = "blue",
-    show.legend = FALSE)
+  if( !is.null(xintercept) ) {
+    p <- p + geom_vline(
+      xintercept = xintercept,
+      linetype = "dashed",
+      colour = "red")
+  }
+  if( !is.null(yintercept) ){
+    p_value <- paste0("-log10(",yintercept,")")
+    p <- p + geom_hline(
+      aes(yintercept = -log10(yintercept),
+          linetype = p_value),
+      linetype = "dashed",
+      color = "blue",
+      show.legend = FALSE)
+  }
   p <- p + theme_light()
 
   return(p)
