@@ -10,7 +10,6 @@ plot contrasts
 }
 \examples{
 
-library(prolfqua)
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "Model"
@@ -37,7 +36,6 @@ contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 tmp <- contrast$get_contrasts()
 
-Contrasts_Plotter$debug("volcano_plotly")
 cp <- Contrasts_Plotter$new(tmp ,
  contrast$subject_Id,
 volcano = list(list(score = "FDR", thresh = 0.1)),

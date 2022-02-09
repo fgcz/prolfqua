@@ -965,7 +965,6 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
-#' library(prolfqua)
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
@@ -992,7 +991,6 @@ ContrastsTable <- R6::R6Class(
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
 #'
-#' Contrasts_Plotter$debug("volcano_plotly")
 #' cp <- Contrasts_Plotter$new(tmp ,
 #'  contrast$subject_Id,
 #' volcano = list(list(score = "FDR", thresh = 0.1)),
@@ -1339,7 +1337,7 @@ Contrasts_Plotter <- R6::R6Class(
           geom_hline(yintercept = c(0), colour = 1) +
           geom_vline(xintercept = c(0), colour = 1 ) +
           geom_hline(yintercept = ylims, colour = 2, linetype = "dashed") +
-          geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) +
+          if (is.numeric(xlim)) { geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) } else {NULL} +
           theme_light()
         if (!legend) {
           p <- p + guides(colour = "none")
