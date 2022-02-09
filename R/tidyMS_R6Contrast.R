@@ -965,6 +965,7 @@ ContrastsTable <- R6::R6Class(
 #' @family plotting
 #' @examples
 #'
+#' library(prolfqua)
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
@@ -991,22 +992,34 @@ ContrastsTable <- R6::R6Class(
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
 #'
-#'
+#' Contrasts_Plotter$debug("volcano_plotly")
 #' cp <- Contrasts_Plotter$new(tmp ,
 #'  contrast$subject_Id,
 #' volcano = list(list(score = "FDR", thresh = 0.1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
 #'                  list(score = "FDR", xlim = c(0,1,0.05))),
 #' score =list(list(score = "statistic",  fcthresh = 2, thresh = 5)))
+#' cp$volcano_plotly()
+#'
+#' cp <- Contrasts_Plotter$new(tmp ,
+#'  contrast$subject_Id,
+#' volcano = list(list(score = "FDR", thresh = 0.1)),
+#' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+#'                  list(score = "FDR", xlim = c(0,1,0.05))),
+#'                  fcthresh = NULL,
+#' score =list(list(score = "statistic",  fcthresh = 1, thresh = 5)))
+#' cp$fcthresh
+#' cp$volcano_plotly()
 #' p <- cp$score_plot(legend=FALSE)
 #' cp$score_plotly()
 #' p <- cp$histogram()
 #' p <- cp$histogram_estimate()
 #'
 #' res <- cp$volcano()
-#' length(res)
-#' res
+#' names(res)
+#' res$FDR
 #' respltly <- cp$volcano_plotly()
+#'
 #' length(respltly)
 #' cp$ma_plot()
 #' cp$ma_plotly()
@@ -1255,8 +1268,8 @@ Contrasts_Plotter <- R6::R6Class(
         contrasts <- contrasts |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
           dplyr::filter(!is.na(!!sym(column)))
-        if(plotly){
-          contrasts <- contrasts |> plotly::highlight_key(~ subject_Id)
+        if (plotly) {
+          contrasts <- contrasts |> plotly::highlight_key(~subject_Id)
         }
         p <- prolfqua:::.multigroupVolcano(
           contrasts,
@@ -1264,14 +1277,14 @@ Contrasts_Plotter <- R6::R6Class(
           p.value = column,
           condition = self$contrast,
           text = "subject_Id",
-          xintercept = if( is.numeric(self$fctresh) ){ c(-self$fcthresh, self$fcthresh)} else {NULL},
+          xintercept = if (is.numeric(self$fcthresh)) { c(-self$fcthresh, self$fcthresh) } else {NULL},
           yintercept = score$thresh,
           colour = colour,
           scales = scales)
         if (!legend) {
           p <- p + guides(colour = "none")
         }
-        if(plotly){
+        if (plotly) {
           p <-  plotly::ggplotly(p, tooltip = "subject_Id")
         }
         fig[[column]] <- p
