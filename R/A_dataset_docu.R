@@ -66,7 +66,7 @@ NULL
 #' @family data
 #' @keywords internal
 #' @docType data
-#' @usage data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
+#' #@usage data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
 #' @format a linear model
 "data_basicModel_p1807"
 
@@ -78,7 +78,7 @@ NULL
 #' @format A data frame
 #' @family data
 #' @docType data
-#' @usage data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
+#' #@usage data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
 #' @keywords internal
 "data_benchmarkExample"
 
@@ -89,7 +89,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
+#' #@usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
 #' @keywords internal
 'data_checksummarizationrobust87'
 
@@ -100,7 +100,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
+#' #@usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
 #' @keywords internal
 'data_checksummarizerobust'
 
@@ -111,7 +111,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
+#' #@usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
 #' @keywords internal
 #'
 'data_checksummarizerobust69'
@@ -123,7 +123,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
+#' #@usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
 #' @keywords internal
 #'
 'data_correlatedPeptideList'
@@ -135,7 +135,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
+#' #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 #' @keywords internal
 #'
 'data_IonstarProtein_subsetNorm'
@@ -144,7 +144,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
+#' #@usage data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
 #' @keywords internal
 'data_exampleForRopeca'
 
@@ -155,7 +155,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
+#' #@usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
 #' @keywords internal
 'data_factor_levelContrasts'
 
@@ -166,7 +166,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
+#' #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 #' @keywords internal
 'data_interactionModel_p1807'
 
@@ -177,7 +177,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_ionstar <- prolfqua_data("data_ionstar")
+#' #@usage data_ionstar <- prolfqua_data("data_ionstar")
 #' @keywords internal
 'data_ionstar'
 
@@ -188,7 +188,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_lm_models_to_test <- prolfqua_data("data_lm_models_to_test")
+#' #@usage data_lm_models_to_test <- prolfqua_data("data_lm_models_to_test")
 #' @keywords internal
 'data_lm_models_to_test'
 
@@ -199,7 +199,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
+#' #@usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
 #' @keywords internal
 'data_modellingResult_A'
 
@@ -210,7 +210,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_models_interaction <- prolfqua_data("data_models_interaction")
+#' #@usage data_models_interaction <- prolfqua_data("data_models_interaction")
 #' @keywords internal
 'data_models_interaction'
 
@@ -221,7 +221,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
+#' #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 #' @keywords internal
 'data_multigroupFC'
 
@@ -233,7 +233,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
+#' #@usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
 #' @keywords internal
 'data_skylinePRMSample_A'
 
@@ -245,7 +245,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
+#' #@usage data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
 #' @keywords internal
 'data_skylineSRM_HL_A'
 
@@ -257,7 +257,7 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
+#' #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 #' @keywords internal
 'data_spectronautDIA250_A'
 
@@ -265,7 +265,7 @@ NULL
 #' example of 2 Factor data
 #' @family data
 #' @docType data
-#' @usage data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
+#' #@usage data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
 #' @keywords internal
 'data_Yeast2Factor'
 
