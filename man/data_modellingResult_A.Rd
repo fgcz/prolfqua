@@ -8,7 +8,7 @@
 An object of class \code{list} of length 2.
 }
 \usage{
-data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
+data_modellingResult_A
 }
 \description{
 example data for check

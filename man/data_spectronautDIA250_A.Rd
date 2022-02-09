@@ -8,7 +8,7 @@
 An object of class \code{list} of length 3.
 }
 \usage{
-data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
+data_spectronautDIA250_A
 }
 \description{
 example data for check

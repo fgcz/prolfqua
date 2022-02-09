@@ -66,9 +66,10 @@ NULL
 #' @family data
 #' @keywords internal
 #' @docType data
-#' @usage data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
 #' @format a linear model
 "data_basicModel_p1807"
+
+# #@usage data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
 
 # data_benchmarkExample <- prolfqua::benchmarkDataExample
 # usethis::use_data(data_benchmarkExample, compress = TRUE, overwrite = TRUE)
@@ -78,9 +79,10 @@ NULL
 #' @format A data frame
 #' @family data
 #' @docType data
-#' @usage data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
 #' @keywords internal
 "data_benchmarkExample"
+
+# #@usage data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
 
 # data_checksummarizationrobust87 <- prolfqua::checksummarizationrobust87
 # usethis::use_data(data_checksummarizationrobust87, compress = TRUE, overwrite = TRUE)
@@ -89,9 +91,10 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
 #' @keywords internal
 'data_checksummarizationrobust87'
+
+# #@usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
 
 # data_checksummarizerobust <- prolfqua::checksummarizerobust
 # usethis::use_data(data_checksummarizerobust, compress = TRUE, overwrite = TRUE)
@@ -100,9 +103,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
 #' @keywords internal
 'data_checksummarizerobust'
+
+# #@usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
+
 
 # data_checksummarizerobust69 <- prolfqua::checksummarizerobust69
 # usethis::use_data(data_checksummarizerobust69, compress = TRUE, overwrite = TRUE)
@@ -111,10 +116,12 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
 #' @keywords internal
 #'
 'data_checksummarizerobust69'
+
+# #@usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
+
 
 #data_correlatedPeptideList <- prolfqua::correlatedPeptideList
 #usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
@@ -123,10 +130,12 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
 #' @keywords internal
 #'
 'data_correlatedPeptideList'
+
+# #@usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
+
 
 # data_IonstarProtein_subsetNorm <- prolfqua::dataIonstarProtein_subsetNorm
 # usethis::use_data(data_IonstarProtein_subsetNorm, compress = TRUE, overwrite = TRUE)
@@ -135,18 +144,19 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 #' @keywords internal
 #'
 'data_IonstarProtein_subsetNorm'
 
+# #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
 #' @keywords internal
 'data_exampleForRopeca'
+
+# #@usage data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
 
 # data_factor_levelContrasts <- factor_levelContrasts
 # usethis::use_data(data_factor_levelContrasts, compress = TRUE, overwrite = TRUE)
@@ -155,9 +165,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
 #' @keywords internal
 'data_factor_levelContrasts'
+
+# #@usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
+
 
 # data_interactionModel_p1807 <- interactionModel_p1807
 # usethis::use_data(data_interactionModel_p1807, compress = TRUE, overwrite = TRUE)
@@ -166,9 +178,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 #' @keywords internal
 'data_interactionModel_p1807'
+
+# #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
+
 
 #data_ionstar <- ionstar
 #usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
@@ -177,9 +191,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_ionstar <- prolfqua_data("data_ionstar")
 #' @keywords internal
 'data_ionstar'
+
+# #@usage data_ionstar <- prolfqua_data("data_ionstar")
+
 
 #data_lm_models_to_test <- lm_models_to_test
 #usethis::use_data(data_lm_models_to_test, compress = TRUE, overwrite = TRUE)
@@ -188,9 +204,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_lm_models_to_test <- prolfqua_data("data_lm_models_to_test")
 #' @keywords internal
 'data_lm_models_to_test'
+
+# #@usage data_lm_models_to_test <- prolfqua_data("data_lm_models_to_test")
+
 
 # data_modellingResult_A <- modellingResult_A
 # usethis::use_data(data_modellingResult_A, compress = TRUE, overwrite = TRUE)
@@ -199,9 +217,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
 #' @keywords internal
 'data_modellingResult_A'
+
+# #@usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
+
 
 #data_models_interaction <- models_interaction
 #usethis::use_data(data_models_interaction,compress = TRUE, overwrite = TRUE)
@@ -210,9 +230,11 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_models_interaction <- prolfqua_data("data_models_interaction")
 #' @keywords internal
 'data_models_interaction'
+
+# #@usage data_models_interaction <- prolfqua_data("data_models_interaction")
+
 
 # data_multigroupFC <- multigroupFCDATA
 # usethis::use_data(data_multigroupFC,compress = TRUE, overwrite = TRUE)
@@ -221,9 +243,10 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 #' @keywords internal
 'data_multigroupFC'
+
+# #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 
 
 # data_skylinePRMSample_A <- skylinePRMSampleData_A
@@ -233,9 +256,10 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
 #' @keywords internal
 'data_skylinePRMSample_A'
+
+# #@usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
 
 
 # data_skylineSRM_HL_A <- skylineSRM_HL_A
@@ -245,9 +269,10 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
 #' @keywords internal
 'data_skylineSRM_HL_A'
+
+# #@usage data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
 
 
 #data_spectronautDIA250_A <- spectronautDIAData250_A
@@ -257,15 +282,17 @@ NULL
 #' example data for check
 #' @family data
 #' @docType data
-#' @usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 #' @keywords internal
 'data_spectronautDIA250_A'
+
+# #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 
 
 #' example of 2 Factor data
 #' @family data
 #' @docType data
-#' @usage data_Yeast2Factor <- prolfqua_data("data_Yeast2Factor")
 #' @keywords internal
 'data_Yeast2Factor'
+
+# #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 
