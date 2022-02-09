@@ -1308,9 +1308,12 @@ Contrasts_Plotter <- R6::R6Class(
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
         facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        if( is.numeric(fc) ) { geom_hline(yintercept = c(-fc, fc), linetype = "dashed",colour = "red") } else {NULL} +
         ylab("log fold change (M)") + xlab("mean log intensities (A)") +
         theme_light()
+      if ( is.numeric(fc) ) {
+        p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
+      }
+
       if (!legend) {
         p <- p + guides(colour = "none")
       }
@@ -1339,8 +1342,14 @@ Contrasts_Plotter <- R6::R6Class(
           geom_hline(yintercept = c(0), colour = 1) +
           geom_vline(xintercept = c(0), colour = 1 ) +
           geom_hline(yintercept = ylims, colour = 2, linetype = "dashed") +
-          if (is.numeric(xlim)) { geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" ) } else {NULL} +
+
           theme_light()
+
+        if (is.numeric(xlim)) {
+          p <- p + geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" )
+        }
+
+
         if (!legend) {
           p <- p + guides(colour = "none")
         }
