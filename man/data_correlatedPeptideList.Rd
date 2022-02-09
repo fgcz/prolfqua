@@ -8,7 +8,7 @@
 An object of class \code{by} of length 12.
 }
 \usage{
-data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
+data_correlatedPeptideList
 }
 \description{
 example data for check

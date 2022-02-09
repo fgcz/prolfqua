@@ -8,7 +8,7 @@
 An object of class \code{lmerModLmerTest} of length 1.
 }
 \usage{
-data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
+data_interactionModel_p1807
 }
 \description{
 example data for check

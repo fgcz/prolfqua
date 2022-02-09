@@ -8,7 +8,7 @@
 An object of class \code{data.frame} with 20 rows and 3 columns.
 }
 \usage{
-data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
+data_checksummarizationrobust87
 }
 \description{
 example data for check

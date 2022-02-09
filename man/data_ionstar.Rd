@@ -8,7 +8,7 @@
 An object of class \code{IonstarData} (inherits from \code{R6}) of length 11.
 }
 \usage{
-data_ionstar <- prolfqua_data("data_ionstar")
+data_ionstar
 }
 \description{
 example data for check

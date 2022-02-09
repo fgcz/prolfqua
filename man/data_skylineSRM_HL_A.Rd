@@ -8,7 +8,7 @@
 An object of class \code{list} of length 3.
 }
 \usage{
-data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
+data_skylineSRM_HL_A
 }
 \description{
 example data for check
