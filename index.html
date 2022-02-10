@@ -12,13 +12,25 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Proteomics Label Free Quantification">
-<meta property="og:description" content="Analysing complex label free quantification (LFQ) experiments using linear models.">
+<meta property="og:description" content='The prolfqua package integrates essential steps
+    of the mass spectrometry based label free quantification data
+    analysis workflow: quality control, data normalization, protein aggregation,
+    modeling, hypothesis testing and sample size estimation.
+    We use prolfqua to : develop highly customizable, visually appealing,
+    and interactive data analysis reports in pdf or HTML format;
+    to visualize and model simple experimental designs
+    with a single explanatory variable and complex experiments with multiple factors;
+    to benchmark data acquisition,
+    data preprocessing or data modeling methods.
+    We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +43,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -63,21 +69,6 @@
       <a href="articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
     </li>
     <li>
-      <a href="articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
-    </li>
-    <li>
-      <a href="articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
-    </li>
-    <li>
       <a href="articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -96,12 +87,6 @@
       <a href="articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
-      <a href="articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
-    </li>
-    <li>
-      <a href="articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
-    </li>
-    <li>
       <a href="articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
@@ -110,12 +95,18 @@
     <li>
       <a href="articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
+    <li>
+      <a href="articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
+    </li>
+    <li>
+      <a href="articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/wolski/prolfqua/">
+  <a href="https://github.com/wolski/prolfqua/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -135,135 +126,240 @@
 
 
 <p><img src="reference/figures/imgfile.png" width="200"></p>
-<div id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services" class="anchor"></a>prolfqua - an R package for Proteomics Label Free Quantification Services</h1></div>
-<p>The R package contains functions for analyzing mass spectrometry based LFQ experiments. This package is developed at the <a href="http://www.fgcz.ch/">FGCZ</a>.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="prolfqua---an-r-package-for-proteomics-label-free-quantification-services">prolfqua - an R package for Proteomics Label Free Quantification
+Services<a class="anchor" aria-label="anchor" href="#prolfqua---an-r-package-for-proteomics-label-free-quantification-services"></a>
+</h1></div>
+<p>The R package contains functions for analyzing mass spectrometry
+based LFQ experiments. This package is developed at the <a href="http://fgcz.ch/" class="external-link">FGCZ</a>.</p>
 </div>
-<div id="how-to-install-prolfqua" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-install-prolfqua" class="anchor"></a>How to install prolfqua?</h1>
-<p>Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher To install the package please execute in R</p>
-<pre><code>install.packages('remotes')
-remotes::install_github('wolski/prolfqua')</code></pre>
-<p>If you want to build the vignettes</p>
-<pre><code>install.packages('remotes')
-remotes::install_gitlab("wolski/prolfquaData", host="gitlab.bfabric.org")
-remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
-</code></pre>
-<p>Let us please know about any installation problems or errors when using the package <a href="https://github.com/wolski/prolfqua/issues" class="uri">https://github.com/wolski/prolfqua/issues</a></p>
+<div class="section level1">
+<h1 id="how-to-install-prolfqua">How to install prolfqua?<a class="anchor" aria-label="anchor" href="#how-to-install-prolfqua"></a>
+</h1>
+<p>Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or
+higher</p>
+<p>We recommend to install the package using the latest <a href="https://github.com/wolski/prolfqua/releases" class="external-link">release</a> Download
+the <code>prolfqua_X.Y.Z.tar.gz</code> from the <a href="https://github.com/wolski/prolfqua/releases" class="external-link">github release
+page</a>. and then execute:</p>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"prolfqua_X.Y.Z.tar.gz"</span>,repos <span class="op">=</span> <span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span><span class="op">)</span></code></pre>
+<p>To install the package without vignettes from github you can execute
+in R.</p>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'wolski/prolfqua'</span><span class="op">)</span></code></pre>
+<p>If you want to build the vignettes on you system:</p>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_gitlab.html" class="external-link">install_gitlab</a></span><span class="op">(</span><span class="st">"wolski/prolfquadata"</span>, host<span class="op">=</span><span class="st">"gitlab.bfabric.org"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'wolski/prolfqua'</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre>
+<p>Depending on the performance of you system building the package with
+all vignettes can take up to 1h.</p>
+<p>Let us please know about any installation problems or errors when
+using the package: <a href="https://github.com/wolski/prolfqua/issues" class="external-link uri">https://github.com/wolski/prolfqua/issues</a></p>
 </div>
-<div id="how-to-get-started" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-get-started" class="anchor"></a>How to get started</h1>
-<p>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html">Bioconductor 2021 Conference poster</a>. Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t">EuroBioc2020</a> on YouTube.</p>
-<p>Or read the pkgdown generate website <a href="https://wolski.github.io/prolfqua/index.html" class="uri">https://wolski.github.io/prolfqua/index.html</a></p>
+<div class="section level1">
+<h1 id="how-to-get-started">How to get started<a class="anchor" aria-label="anchor" href="#how-to-get-started"></a>
+</h1>
+<p>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html" class="external-link">Bioconductor
+2021 Conference poster</a>. Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t" class="external-link">EuroBioc2020</a>
+on YouTube.</p>
+<p>Or read the pkgdown generate website <a href="https://wolski.github.io/prolfqua/index.html" class="external-link uri">https://wolski.github.io/prolfqua/index.html</a></p>
 <p>Detailed documentation with R code:</p>
 <ul>
-<li><a href="https://wolski.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two Conditions</a></li>
-<li><a href="https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size estimation</a></li>
-<li><a href="https://wolski.github.io/prolfqua/articles/Modelling2Factors.html">Analysing factorial designs</a></li>
-<li><a href="https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html">Benchmarking LFQ pipeline with prolfqua</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/Comparing2Groups.html" class="external-link">Comparing
+two Conditions</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html" class="external-link">QC
+and sample size estimation</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/Modelling2Factors.html" class="external-link">Analysing
+factorial designs</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html" class="external-link">Benchmarking
+LFQ pipeline with prolfqua</a></li>
 </ul>
 <p>Example QC and sample size report</p>
 <ul>
-<li><a href="https://wolski.github.io/prolfqua/articles/QCandSampleSize.html">QC and sample size Report</a></li>
+<li><a href="https://wolski.github.io/prolfqua/articles/QCandSampleSize.html" class="external-link">QC
+and sample size Report</a></li>
 </ul>
 </div>
-<div id="how-to-cite" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-cite" class="anchor"></a>How to cite?</h1>
-<p>If you are using the package in your work please cite: <a href="https://f1000research.com/slides/9-1476" class="uri">https://f1000research.com/slides/9-1476</a></p>
-<div id="motivation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#motivation" class="anchor"></a>Motivation</h2>
-<p>The package for <strong>pro</strong>teomics <strong>l</strong>abel <strong>f</strong>ree <strong>qua</strong>ntification <code>prolfqua</code> (read : prolevka) evolved from a set of scripts and functions written in the R programming language to visualize and analyze mass spectrometric data, and some of them are still in R packages such as quantable, protViz or imsbInfer. For computing protein fold changes among treatment conditions, we first used t-test or linear models, then started to use functions implemented in the package limma to obtain moderated p-values. We did also try to use other packages such as MSStats, ROPECA or MSqRob all implemented in R, with the idea to integrate the various approaches to protein fold-change estimation. Although all these packages were written in R, model specification, input and output formats differ widely and wildly, which made our aim to use the original implementations challenging. Therefore, and also to understand the algorithms used, we attempted to reimplement those methods, if possible.</p>
-<p>When developing <em>prolfqua</em> we were inspired by packages such as <em>sf</em> or <em>stars</em> which use data in long table format and <em>dplyr</em> for data transformation and ggplot2 for visualization. In the long table format each column stores a different attribute, e.g. there is only a single column with the raw intensities. In the wide table format there might be several columns with the same attribute, e.g. for each recorded sample a raw intensity column. In <em>prolfqua</em> the data needed for analysis is represented using a single data-frame in long format and a configuration object. The configuration annotates the table, specifies what information is in which column. The results of the statistical modelling are stored in data frames. Relying on the long data table format enabled us to access a large variety of useful visualizations as well as data preprocessing methods implemented in the R packages <em>dplyr</em> and <em>ggplot2</em>.</p>
-<p>The use of an annotated table makes integrating new data if provided in long formatted tables simple. Hence for Spectronaut or Skyline text output, all is needed is a table annotation (see code snipped). Since MSStats formatted input is a table in long format <em>prolefqa</em> works with MSstats formatted files. For software, which writes the data in a wide table format, e.g. Maxquant, we implemented methods which first transform the data into a long format.</p>
-<p>A further design decision, which differentiates <code>prolfqua</code> is that it embraces and supports R’s linear model formula interface, or R lme4 formula interface. R’s formula interface for linear models is flexible, widely used and documented. The linear model and linear mixed model interfaces allow specifying a wide range of essential models, including parallel designs, factorial designs, repeated measurements and many more. Since <code>prolfqua</code> uses R modelling infrastructure directly, we can fit all these models to proteomics data. This is not easily possible with any other package dedicated to proteomics data analysis. For instance, MSStats, although using the same modelling infrastructure, supports only a small subset of possible models. Limma, on the other hand, supports R formula interface but not for linear mixed models. Since the ROPECA package relies on <em>limma</em> it is limited to the same subset of models. MSqRob is limited to random effects model’s, and it is unclear how to fit these models to factorial designs, and how interactions among factors can be computed and tested.</p>
-<p>The use of R’s formula interface does not limit <em>prolfqua</em> to the output provided by the R modelling infrastructure. <em>prolfqua</em> also implements p-value moderations, as in the limma publication or computing probabilities of differential regulation, as suggested in the ROPECA publication. Moreover, the design decision to use the R formula interface allowed us to integrate Bayesian regression models provided by the r-package <em>brms</em>. Because of that, we can benchmark all those methods: linear models, mixed effect models, p-value moderation, ROPECA as well as Bayesian regression models within the same framework, which enabled us to evaluate the practical relevance of these methods.</p>
-<p>Last but not least <em>prolfqua</em> supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc. It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish etc. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed.</p>
-<p>To use <code>prolfqua</code> knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface, we provide an MSstats emulator, where the model specification is generated based on the annotation file structure.</p>
+<div class="section level1">
+<h1 id="how-to-cite">How to cite?<a class="anchor" aria-label="anchor" href="#how-to-cite"></a>
+</h1>
+<p>If you are using the package in your work please cite: <a href="https://f1000research.com/slides/9-1476" class="external-link uri">https://f1000research.com/slides/9-1476</a></p>
+<div class="section level2">
+<h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
+</h2>
+<p>The package for <strong>pro</strong>teomics <strong>l</strong>abel
+<strong>f</strong>ree <strong>qua</strong>ntification
+<code>prolfqua</code> (read : prolevka) evolved from a set of scripts
+and functions written in the R programming language to visualize and
+analyze mass spectrometric data, and some of them are still in R
+packages such as quantable, protViz or imsbInfer. For computing protein
+fold changes among treatment conditions, we first used t-test or linear
+models, then started to use functions implemented in the package limma
+to obtain moderated p-values. We did also try to use other packages such
+as MSStats, ROPECA or MSqRob all implemented in R, with the idea to
+integrate the various approaches to protein fold-change estimation.
+Although all these packages were written in R, model specification,
+input and output formats differ widely and wildly, which made our aim to
+use the original implementations challenging. Therefore, and also to
+understand the algorithms used, we attempted to reimplement those
+methods, if possible.</p>
+<p>When developing <em>prolfqua</em> we were inspired by packages such
+as <em>sf</em> or <em>stars</em> which use data in long table format and
+<em>dplyr</em> for data transformation and ggplot2 for visualization. In
+the long table format each column stores a different attribute,
+e.g. there is only a single column with the raw intensities. In the wide
+table format there might be several columns with the same attribute,
+e.g. for each recorded sample a raw intensity column. In
+<em>prolfqua</em> the data needed for analysis is represented using a
+single data-frame in long format and a configuration object. The
+configuration annotates the table, specifies what information is in
+which column. The results of the statistical modelling are stored in
+data frames. Relying on the long data table format enabled us to access
+a large variety of useful visualizations as well as data preprocessing
+methods implemented in the R packages <em>dplyr</em> and
+<em>ggplot2</em>.</p>
+<p>The use of an annotated table makes integrating new data if provided
+in long formatted tables simple. Hence for Spectronaut or Skyline text
+output, all is needed is a table annotation (see code snipped). Since
+MSStats formatted input is a table in long format <em>prolefqa</em>
+works with MSstats formatted files. For software, which writes the data
+in a wide table format, e.g. Maxquant, we implemented methods which
+first transform the data into a long format.</p>
+<p>A further design decision, which differentiates <code>prolfqua</code>
+is that it embraces and supports R’s linear model formula interface, or
+R lme4 formula interface. R’s formula interface for linear models is
+flexible, widely used and documented. The linear model and linear mixed
+model interfaces allow specifying a wide range of essential models,
+including parallel designs, factorial designs, repeated measurements and
+many more. Since <code>prolfqua</code> uses R modelling infrastructure
+directly, we can fit all these models to proteomics data. This is not
+easily possible with any other package dedicated to proteomics data
+analysis. For instance, MSStats, although using the same modelling
+infrastructure, supports only a small subset of possible models. Limma,
+on the other hand, supports R formula interface but not for linear mixed
+models. Since the ROPECA package relies on <em>limma</em> it is limited
+to the same subset of models. MSqRob is limited to random effects
+model’s, and it is unclear how to fit these models to factorial designs,
+and how interactions among factors can be computed and tested.</p>
+<p>The use of R’s formula interface does not limit <em>prolfqua</em> to
+the output provided by the R modelling infrastructure. <em>prolfqua</em>
+also implements p-value moderations, as in the limma publication or
+computing probabilities of differential regulation, as suggested in the
+ROPECA publication. Moreover, the design decision to use the R formula
+interface allowed us to integrate Bayesian regression models provided by
+the r-package <em>brms</em>. Because of that, we can benchmark all those
+methods: linear models, mixed effect models, p-value moderation, ROPECA
+as well as Bayesian regression models within the same framework, which
+enabled us to evaluate the practical relevance of these methods.</p>
+<p>Last but not least <em>prolfqua</em> supports the LFQ data analysis
+workflow, e.g. computing coefficients of Variations (CV) for peptide and
+proteins, sample size estimation, visualization and summarization of
+missing data and intensity distributions, multivariate analysis of the
+data, etc. It also implements various protein intensity summarization
+and inference methods, e.g. top 3, or Tukeys median polish etc. Last but
+not least, ANOVA analysis or model selection using the likelihood ratio
+test for thousand of proteins can be performed.</p>
+<p>To use <code>prolfqua</code> knowledge of the R regression model
+infrastructure is of advantage. Acknowledging, the complexity of the
+formula interface, we provide an MSstats emulator, where the model
+specification is generated based on the annotation file structure.</p>
 </div>
-<div id="running-r-scripts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#running-r-scripts" class="anchor"></a>Running R-scripts</h2>
-<p>Generate QC report from bat file. First add <code>&lt;prolfqua_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
+<div class="section level2">
+<h2 id="running-r-scripts">Running R-scripts<a class="anchor" aria-label="anchor" href="#running-r-scripts"></a>
+</h2>
+<p>Generate QC report from bat file. First add
+<code>&lt;prolfqua_path&gt;/win</code> to your path variable. Then you
+can generate a QC report from a maxquant QC by running.</p>
 <pre><code>lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip</code></pre>
 <pre><code>Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
 Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
 </div>
 </div>
-<div id="related-resources" class="section level1">
-<h1 class="hasAnchor">
-<a href="#related-resources" class="anchor"></a>Related resources</h1>
+<div class="section level1">
+<h1 id="related-resources">Related resources<a class="anchor" aria-label="anchor" href="#related-resources"></a>
+</h1>
 <ul>
-<li><a href="https://www.bioconductor.org/packages/release/bioc/html/proDA.html">proDA</a></li>
-<li><a href="https://www.bioconductor.org/packages/release/bioc/html/MSstats.html">MSstats</a></li>
-<li><a href="https://github.com/statOmics/MSqRob">MSQRob</a></li>
-<li><a href="https://github.com/statisticalbiotechnology/triqler">Triqler</a></li>
-<li><a href="https://github.com/samWieczorek/DAPAR/">DAPAR</a></li>
-<li><a href="https://github.com/samWieczorek/DAPARdata/">DAPARData</a></li>
-<li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html">PECA/ROPECA</a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/proDA.html" class="external-link">proDA</a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/MSstats.html" class="external-link">MSstats</a></li>
+<li><a href="https://github.com/statOmics/MSqRob" class="external-link">MSQRob</a></li>
+<li><a href="https://github.com/statisticalbiotechnology/triqler" class="external-link">Triqler</a></li>
+<li><a href="https://github.com/samWieczorek/DAPAR/" class="external-link">DAPAR</a></li>
+<li><a href="https://github.com/samWieczorek/DAPARdata/" class="external-link">DAPARData</a></li>
+<li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html" class="external-link">PECA/ROPECA</a></li>
 </ul>
 </div>
-<div id="relevant-background-information" class="section level1">
-<h1 class="hasAnchor">
-<a href="#relevant-background-information" class="anchor"></a>Relevant background information</h1>
+<div class="section level1">
+<h1 id="relevant-background-information">Relevant background information<a class="anchor" aria-label="anchor" href="#relevant-background-information"></a>
+</h1>
 <ul>
-<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html">Contrasts in R by Rose Maier</a></li>
-<li><a href="https://rcompanion.org/rcompanion/h_01.html">R Companion</a></li>
-<li><a href="http://www.maths.bath.ac.uk/~jjf23/ELM/">Extending the Linear Model with R</a></li>
-<li><a href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis</a></li>
-<li><a href="https://cran.r-project.org/web/packages/bayess/index.html">Bayesian essentials with R - R package</a></li>
-<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html">Contrasts in R - an example vignette by Rose Maier</a></li>
+<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html" class="external-link">Contrasts
+in R by Rose Maier</a></li>
+<li><a href="https://rcompanion.org/rcompanion/h_01.html" class="external-link">R
+Companion</a></li>
+<li><a href="http://www.maths.bath.ac.uk/~jjf23/ELM/" class="external-link">Extending the
+Linear Model with R</a></li>
+<li><a href="http://www.stat.columbia.edu/~gelman/book/" class="external-link">Bayesian Data
+Analysis</a></li>
+<li><a href="https://CRAN.R-project.org/package=bayess" class="external-link">Bayesian
+essentials with R - R package</a></li>
+<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html" class="external-link">Contrasts
+in R - an example vignette by Rose Maier</a></li>
 </ul>
 </div>
-<div id="r-packages-to-compute-contrasts-from-linear-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#r-packages-to-compute-contrasts-from-linear-models" class="anchor"></a>R packages to compute contrasts from linear models</h1>
+<div class="section level1">
+<h1 id="r-packages-to-compute-contrasts-from-linear-models">R packages to compute contrasts from linear models<a class="anchor" aria-label="anchor" href="#r-packages-to-compute-contrasts-from-linear-models"></a>
+</h1>
 <ul>
 <li>
-<a href="https://CRAN.R-project.org/package=emmeans">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
+<a href="https://CRAN.R-project.org/package=emmeans" class="external-link">emmeans</a>
+Obtain estimated marginal means (EMMs) for many linear, generalized
+linear, and mixed models.</li>
 <li>
-<a href="https://CRAN.R-project.org/package=lmerTest">lmerTest</a> computes contrast for <a href="https://CRAN.R-project.org/package=lme4">lme4</a> models</li>
+<a href="https://CRAN.R-project.org/package=lmerTest" class="external-link">lmerTest</a>
+computes contrast for <a href="https://CRAN.R-project.org/package=lme4" class="external-link">lme4</a> models</li>
 <li>
-<a href="https://CRAN.R-project.org/package=multcomp">multcomp</a> computes contrast for linear models and adjusts p-values (multiple comparison)</li>
+<a href="https://CRAN.R-project.org/package=multcomp" class="external-link">multcomp</a>
+computes contrast for linear models and adjusts p-values (multiple
+comparison)</li>
 </ul>
 </div>
-<div id="future-interesting-topics-or-packages-to-look-at" class="section level1">
-<h1 class="hasAnchor">
-<a href="#future-interesting-topics-or-packages-to-look-at" class="anchor"></a>Future interesting topics or packages to look at</h1>
+<div class="section level1">
+<h1 id="future-interesting-topics-or-packages-to-look-at">Future interesting topics or packages to look at<a class="anchor" aria-label="anchor" href="#future-interesting-topics-or-packages-to-look-at"></a>
+</h1>
 <ul>
-<li><a href="https://vincentarelbundock.github.io/modelsummary/index.html">modelsummary</a></li>
-<li><a href="https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf">modelsummary tutorial</a></li>
-<li><a href="https://gist.github.com/jdblischak/11384914">edgeR tutorial</a></li>
-<li><a href="https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html">another edgeR tutorial</a></li>
+<li><a href="https://vincentarelbundock.github.io/modelsummary/index.html" class="external-link">modelsummary</a></li>
+<li><a href="https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf" class="external-link">modelsummary
+tutorial</a></li>
+<li><a href="https://gist.github.com/jdblischak/11384914" class="external-link">edgeR
+tutorial</a></li>
+<li><a href="https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html" class="external-link">another
+edgeR tutorial</a></li>
 </ul>
 </div>
-<div id="sample-size-estimation-based-on-fdr" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sample-size-estimation-based-on-fdr" class="anchor"></a>Sample size estimation based on FDR</h1>
+<div class="section level1">
+<h1 id="sample-size-estimation-based-on-fdr">Sample size estimation based on FDR<a class="anchor" aria-label="anchor" href="#sample-size-estimation-based-on-fdr"></a>
+</h1>
 <ul>
-<li><a href="https://www.bioconductor.org/packages/release/bioc/html/ssize.html">ssize</a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/ssize.html" class="external-link">ssize</a></li>
 <li>
-<a href="https://cran.r-project.org/web/packages/ssize.fdr/index.html">ssize.fdr</a>
+<a href="https://CRAN.R-project.org/package=ssize.fdr" class="external-link">ssize.fdr</a>
 <ul>
-<li>related article [<a href="https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf" class="uri">https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf</a>]</li>
+<li>related article [<a href="https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf" class="external-link uri">https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf</a>]</li>
 </ul>
 </li>
-<li><a href="https://bioconductor.org/packages/release/bioc/html/PROPER.html">proper</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/PROPER.html" class="external-link">proper</a></li>
 </ul>
 </div>
-<div id="what-package-name" class="section level1">
-<h1 class="hasAnchor">
-<a href="#what-package-name" class="anchor"></a>What package name?</h1>
+<div class="section level1">
+<h1 id="what-package-name">What package name?<a class="anchor" aria-label="anchor" href="#what-package-name"></a>
+</h1>
 <p>What name should we use?</p>
-<p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
+<p><a href="https://twitter.com/WitoldE/status/1338799648149041156" class="external-link uri">https://twitter.com/WitoldE/status/1338799648149041156</a></p>
 <ul>
-<li>prolfqua - PROteomics Label Free QUAntification package (read prolewka)</li>
+<li>prolfqua - PROteomics Label Free QUAntification package (read
+prolewka)</li>
 <li>LFQService - we do proteomics LFQ services at the FGCZ.</li>
-<li>nalfqua - Not Another Label Free QUAntification package (read nalewka)</li>
+<li>nalfqua - Not Another Label Free QUAntification package (read
+nalewka)</li>
 </ul>
 </div>
 
@@ -271,50 +367,56 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/wolski/prolfqua/">https://​github.com/​wolski/​prolfqua/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/wolski/prolfqua/issues">https://​github.com/​wolski/​prolfqua/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="citation">
-<h2>Citation</h2>
-<ul class="list-unstyled">
-<li><a href="authors.html">Citing prolfqua</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Witold Wolski <br><small class="roles"> Maintainer </small>  </li>
+<li><a href="https://github.com/wolski/prolfqua/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/wolski/prolfqua/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/wolski/prolfqua/actions/workflows/r.yaml"><img src="https://github.com/wolski/prolfqua/actions/workflows/r.yaml/badge.svg" alt="R-CMD-check-prolfqua"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing prolfqua</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Witold Wolski <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-6468-120X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/wolski/prolfqua/actions/workflows/r.yaml" class="external-link"><img src="https://github.com/wolski/prolfqua/actions/workflows/r.yaml/badge.svg" alt="R-CMD-check-prolfqua"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Witold Wolski.</p>
+  <p></p>
+<p>Developed by Witold Wolski.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
@@ -322,6 +424,8 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
   
 
+
+  
 
   </body>
 </html>

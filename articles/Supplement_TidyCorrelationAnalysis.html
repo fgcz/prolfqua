@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -63,21 +59,6 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
     </li>
     <li>
-      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -96,12 +77,6 @@
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
-      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
-    </li>
-    <li>
       <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
@@ -110,12 +85,18 @@
     <li>
       <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
+    <li>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/wolski/prolfqua/">
+  <a href="https://github.com/wolski/prolfqua/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -133,30 +114,34 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Supplement - Filter precursors or fragments based on correlation</h1>
-                        <h4 class="author">Functional Genomics Center Zurich</h4>
+      <h1 data-toc-skip>Supplement - Filter precursors or fragments
+based on correlation</h1>
+                        <h4 data-toc-skip class="author">Functional
+Genomics Center Zurich</h4>
             
-            <h4 class="date">04 November, 2021</h4>
+            <h4 data-toc-skip class="date">09 February, 2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/../vignettes/Supplement_TidyCorrelationAnalysis.Rmd"><code>../vignettes/Supplement_TidyCorrelationAnalysis.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/Supplement_TidyCorrelationAnalysis.Rmd" class="external-link"><code>../vignettes/Supplement_TidyCorrelationAnalysis.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_TidyCorrelationAnalysis.Rmd</code></div>
 
     </div>
 
     
     
-<p>This vignette describes how QValue filtering, missing value filtering and than <code>correlation filtering</code> can be implemented.</p>
+<p>This vignette describes how QValue filtering, missing value filtering
+and than <code>correlation filtering</code> can be implemented in
+prolfqua.</p>
 <p>First we load the required packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/conflicted">conflicted</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua">prolfqua</a></span><span class="op">)</span>
-<span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/conflicted/man/conflict_prefer.html">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
-<p>Next the configuration for Spectronaut is clreated and factor variables are defined.</p>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://conflicted.r-lib.org" class="external-link">conflicted</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span>
+<span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
+<p>Next the configuration for Spectronaut is clreated and factor
+variables are defined.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_config_Spectronaut_Peptide.html">create_config_Spectronaut_Peptide</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"coding"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"coding"</span>
@@ -165,28 +150,33 @@
 <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Sample_id"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Sample.Name"</span>
 
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/R6extractValues.html">R6extractValues</a></span><span class="op">(</span><span class="va">config</span><span class="op">)</span></code></pre></div>
-<p>Given a sample DIA dataset and the configuration the <code>setup_analysis</code> function assures that all required columns are present.</p>
+<p>Given a sample DIA dataset and the configuration the
+<code>setup_analysis</code> function assures that all required columns
+are present.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">longFormat</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/data_spectronautDIA250_A.html">data_spectronautDIA250_A</a></span><span class="op">$</span><span class="va">data</span>
-<span class="st">"PEP.StrippedSequence"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html">colnames</a></span><span class="op">(</span><span class="va">longFormat</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"data_spectronautDIA250_A"</span><span class="op">)</span>
+<span class="va">longFormat</span> <span class="op">&lt;-</span> <span class="va">data_spectronautDIA250_A</span><span class="op">$</span><span class="va">data</span>
+<span class="st">"PEP.StrippedSequence"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">longFormat</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">longFormat</span><span class="op">$</span><span class="va">Isotope.Label</span> <span class="op">&lt;-</span> <span class="st">"Light"</span>
 
 <span class="va">config_tmp</span> <span class="op">&lt;-</span> <span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">longNoDecoy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">longFormat</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
-<div id="qvalue-filtering" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qvalue-filtering" class="anchor"></a>QValue Filtering</h1>
-<p>QValue filtering thresholds are specified in the configuration. First we remove precursors with QValue larger than <code>qVal_individual_threshold</code>.</p>
+<div class="section level2">
+<h2 id="qvalue-filtering">QValue Filtering<a class="anchor" aria-label="anchor" href="#qvalue-filtering"></a>
+</h2>
+<p>QValue filtering thresholds are specified in the configuration. First
+we remove precursors with QValue larger than
+<code>qVal_individual_threshold</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span></code></pre></div>
-<pre><code>## [1] 0.05</code></pre>
+<pre><code><span class="co">## [1] 0.05</span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">longNoDecoy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/removeLarge_Q_Values.html">removeLarge_Q_Values</a></span><span class="op">(</span><span class="va">longNoDecoy</span>, <span class="va">config</span><span class="op">)</span>
 <span class="va">longQSummaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summariseQValues.html">summariseQValues</a></span><span class="op">(</span><span class="va">longNoDecoy</span>, <span class="va">config</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/interaction_missing_stats.html">interaction_missing_stats</a></span><span class="op">(</span><span class="va">longQSummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/interaction_missing_stats.html">interaction_missing_stats</a></span><span class="op">(</span><span class="va">longQSummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="4%">
@@ -302,7 +292,7 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">longQSummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">longQSummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Isotope.Label</th>
@@ -319,28 +309,32 @@
 <td align="right">823</td>
 </tr></tbody>
 </table>
-<p>Then we remove precrusors that do not pass the <code>qVal_experiment_threshold</code>, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.</p>
+<p>Then we remove precursors that do not pass the
+<code>qVal_experiment_threshold</code>, that is we require that in at
+least one sample a precursor was observed with a QValue lower than that
+threshold.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_experiment_threshold</span> </code></pre></div>
-<pre><code>## [1] 0.01</code></pre>
+<pre><code><span class="co">## [1] 0.01</span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qvalFilt</span> <span class="op">&lt;-</span> <span class="va">longQSummaries</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter_all.html">filter_at</a></span><span class="op">(</span> <span class="st">"srm_QValueMin"</span> , <span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_vars.html">all_vars</a></span><span class="op">(</span><span class="va">.</span> <span class="op">&lt;</span> <span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_experiment_threshold</span> <span class="op">)</span>   <span class="op">)</span>
+<code class="sourceCode R"><span class="va">qvalFilt</span> <span class="op">&lt;-</span> <span class="va">longQSummaries</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter_all.html" class="external-link">filter_at</a></span><span class="op">(</span> <span class="st">"srm_QValueMin"</span> , <span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_vars.html" class="external-link">all_vars</a></span><span class="op">(</span><span class="va">.</span> <span class="op">&lt;</span> <span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_experiment_threshold</span> <span class="op">)</span>   <span class="op">)</span>
 <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">qvalFilt</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 5
-##   Isotope.Label protein_Id peptide_Id modPeptide_Id precursor_Id
-##   &lt;chr&gt;              &lt;int&gt;      &lt;int&gt;         &lt;int&gt;        &lt;int&gt;
-## 1 Light                 50        409           612          770</code></pre>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span>
+<span class="co">##   Isotope.Label protein_Id peptide_Id modPeptide_Id precursor_Id</span>
+<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span> Light                 50        409           612          770</span></code></pre>
 </div>
-<div id="na-filtering" class="section level1">
-<h1 class="hasAnchor">
-<a href="#na-filtering" class="anchor"></a>NA filtering</h1>
-<p>The next code snipped computes the number of observed values for each precursor, than keeps only the precursors with more than <span class="math inline">\(20\)</span> observations.</p>
+<div class="section level2">
+<h2 id="na-filtering">NA filtering<a class="anchor" aria-label="anchor" href="#na-filtering"></a>
+</h2>
+<p>The next code snipped computes the number of observed values for each
+precursor, than keeps only the precursors with more than <span class="math inline">\(20\)</span> observations.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">longQNASummaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rankPrecursorsByNAs.html">rankPrecursorsByNAs</a></span><span class="op">(</span><span class="va">qvalFilt</span>, <span class="va">config</span><span class="op">)</span>
-<span class="va">longQNASummaries</span> <span class="op">&lt;-</span> <span class="va">longQNASummaries</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">srm_NrNotNAs</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">longQNASummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">longQNASummaries</span> <span class="op">&lt;-</span> <span class="va">longQNASummaries</span> |&gt;
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">srm_NrNotNAs</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">longQNASummaries</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Isotope.Label</th>
@@ -361,45 +355,46 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_heatmap_cor.html">plot_heatmap_cor</a></span><span class="op">(</span><span class="va">longQNASummaries</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="Supplement_TidyCorrelationAnalysis_files/figure-html/corrlationHeatmap-1.png" alt="correlation among samples." width="960"><p class="caption">
 correlation among samples.
 </p>
 </div>
 </div>
-<div id="remove-single-hit-wonders" class="section level1">
-<h1 class="hasAnchor">
-<a href="#remove-single-hit-wonders" class="anchor"></a>Remove single hit wonders</h1>
+<div class="section level2">
+<h2 id="remove-single-hit-wonders">Remove single hit wonders<a class="anchor" aria-label="anchor" href="#remove-single-hit-wonders"></a>
+</h2>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">qvalFiltV</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count</a></span><span class="op">(</span><span class="va">longQNASummaries</span>,<span class="va">config</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="correlation-filtering" class="section level1">
-<h1 class="hasAnchor">
-<a href="#correlation-filtering" class="anchor"></a>Correlation Filtering</h1>
-<p>First mark de-correlated transitions using <code>markDecorrelated</code>.</p>
+<div class="section level2">
+<h2 id="correlation-filtering">Correlation Filtering<a class="anchor" aria-label="anchor" href="#correlation-filtering"></a>
+</h2>
+<p>First mark de-correlated transitions using
+<code>markDecorrelated</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">qvalFiltV</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transform_work_intensity.html">transform_work_intensity</a></span><span class="op">(</span><span class="va">qvalFiltV</span><span class="op">$</span><span class="va">data</span>, <span class="va">config</span>, <span class="va">log2</span><span class="op">)</span>
 <span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/markDecorrelated.html">markDecorrelated</a></span><span class="op">(</span><span class="va">qvalFiltV</span>, <span class="va">config</span>, minCorrelation <span class="op">=</span> <span class="fl">0.5</span> <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">srm_decorelated</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.06054287</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">srm_decorelated</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.06054287</span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">nested</span> <span class="op">&lt;-</span> <span class="va">xx</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html" class="external-link">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> |&gt; <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">nested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">nested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">config</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> </code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html" class="external-link">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> </code></pre></div>
 <p><img src="Supplement_TidyCorrelationAnalysis_files/figure-html/shownotcorrelated-1.png" width="960"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">nested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">nested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">config</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html" class="external-link">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="Supplement_TidyCorrelationAnalysis_files/figure-html/shownotcorrelated-2.png" width="960"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">nested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">nested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">config</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html" class="external-link">aes_string</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"srm_decorelated"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="Supplement_TidyCorrelationAnalysis_files/figure-html/shownotcorrelated-3.png" width="960"></p>
 <p>Now remove the de-correlated transitions.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Isotope.Label</th>
@@ -417,8 +412,8 @@ correlation among samples.
 </tr></tbody>
 </table>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qvalFiltCorr</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">srm_decorelated</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">qvalFiltCorr</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">qvalFiltCorr</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">srm_decorelated</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span><span class="va">qvalFiltCorr</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Isotope.Label</th>
@@ -436,29 +431,29 @@ correlation among samples.
 </tr></tbody>
 </table>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/plot_heatmap_cor.html">plot_heatmap_cor</a></span><span class="op">(</span><span class="va">qvalFiltCorr</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/plot_heatmap_cor.html">plot_heatmap_cor</a></span><span class="op">(</span><span class="va">qvalFiltCorr</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="Supplement_TidyCorrelationAnalysis_files/figure-html/clusterOfCorrelatedData-1.png" alt="correlation heatmap based on filtered data" width="960"><p class="caption">
 correlation heatmap based on filtered data
 </p>
 </div>
-<div id="rank-precursors-by-intensity-and-aggregate-top-3-precursors" class="section level3">
-<h3 class="hasAnchor">
-<a href="#rank-precursors-by-intensity-and-aggregate-top-3-precursors" class="anchor"></a>Rank precursors by intensity and aggregate top 3 precursors</h3>
+<div class="section level4">
+<h4 id="rank-precursors-by-intensity-and-aggregate-top-3-precursors">Rank precursors by intensity and aggregate top 3 precursors<a class="anchor" aria-label="anchor" href="#rank-precursors-by-intensity-and-aggregate-top-3-precursors"></a>
+</h4>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">qvalFiltImputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/impute_correlationBased.html">impute_correlationBased</a></span><span class="op">(</span><span class="va">qvalFiltCorr</span>, <span class="va">config</span><span class="op">)</span>
 <span class="va">qvalFiltImputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rankPrecursorsByIntensity.html">rankPrecursorsByIntensity</a></span><span class="op">(</span><span class="va">qvalFiltImputed</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span>
-  <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="st">"mean_na"</span><span class="op">)</span><span class="op">}</span>;
-  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>,na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">}</span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"mean_na"</span><span class="op">)</span><span class="op">}</span>;
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>,na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">}</span>
 <span class="va">proteinIntensities</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregateTopNIntensities.html">aggregateTopNIntensities</a></span><span class="op">(</span><span class="va">qvalFiltImputed</span>,
                                                <span class="va">config</span>,
                                                .func <span class="op">=</span> <span class="va">mean_na</span>,
                                                N <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># nest transtions</span>
-<span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">qvalFiltImputed</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">xnested</span> <span class="op">&lt;-</span> <span class="va">qvalFiltImputed</span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html" class="external-link">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> |&gt; <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span><span class="op">)</span>
 
 
 <span class="fu"><a href="../reference/plot_hierarchies_line.html">plot_hierarchies_line</a></span><span class="op">(</span><span class="va">xnested</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">xnested</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="va">config</span><span class="op">)</span></code></pre></div>
@@ -469,29 +464,29 @@ correlation heatmap based on filtered data
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)</span>
 <span class="co"># nest protein quants.</span>
-<span class="va">figs3</span> <span class="op">&lt;-</span> <span class="va">xnested</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>plotlog <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tidyeval-compat.html">sym</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,<span class="va">plot_hierarchies_line</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span>
+<span class="va">figs3</span> <span class="op">&lt;-</span> <span class="va">xnested</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>plotlog <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">map2</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu">UQ</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tidyeval-compat.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,<span class="va">plot_hierarchies_line</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span>
 <span class="va">figs3</span></code></pre></div>
-<pre><code>## # A tibble: 37 x 3
-## # Groups:   protein_Id [37]
-##    protein_Id                 data                  plotlog
-##    &lt;chr&gt;                      &lt;list&gt;                &lt;list&gt; 
-##  1 A0A075B6P5;P01615          &lt;tibble [270 x 22]&gt;   &lt;gg&gt;   
-##  2 A0A087WSY6;P01624          &lt;tibble [270 x 22]&gt;   &lt;gg&gt;   
-##  3 A0A0B4J1V0                 &lt;tibble [450 x 22]&gt;   &lt;gg&gt;   
-##  4 A0A0C4DH25                 &lt;tibble [450 x 22]&gt;   &lt;gg&gt;   
-##  5 A0A0J9YXX1                 &lt;tibble [180 x 22]&gt;   &lt;gg&gt;   
-##  6 FGCZCont0141_P69906;P69905 &lt;tibble [945 x 22]&gt;   &lt;gg&gt;   
-##  7 FGCZCont0174_P68873;P68871 &lt;tibble [675 x 22]&gt;   &lt;gg&gt;   
-##  8 P00751                     &lt;tibble [1,215 x 22]&gt; &lt;gg&gt;   
-##  9 P01008                     &lt;tibble [1,485 x 22]&gt; &lt;gg&gt;   
-## 10 P01009                     &lt;tibble [3,465 x 22]&gt; &lt;gg&gt;   
-## # ... with 27 more rows</code></pre>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 37 × 3</span></span>
+<span class="co">## <span style="color: #949494;"># Groups:   protein_Id [37]</span></span>
+<span class="co">##    protein_Id                 data                  plotlog</span>
+<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span>
+<span class="co">## <span style="color: #BCBCBC;"> 1</span> A0A075B6P5;P01615          <span style="color: #949494;">&lt;tibble [270 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 2</span> A0A087WSY6;P01624          <span style="color: #949494;">&lt;tibble [270 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 3</span> A0A0B4J1V0                 <span style="color: #949494;">&lt;tibble [450 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 4</span> A0A0C4DH25                 <span style="color: #949494;">&lt;tibble [450 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 5</span> A0A0J9YXX1                 <span style="color: #949494;">&lt;tibble [180 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 6</span> FGCZCont0141_P69906;P69905 <span style="color: #949494;">&lt;tibble [945 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 7</span> FGCZCont0174_P68873;P68871 <span style="color: #949494;">&lt;tibble [675 × 22]&gt;</span>   <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 8</span> P00751                     <span style="color: #949494;">&lt;tibble [1,215 × 22]&gt;</span> <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;"> 9</span> P01008                     <span style="color: #949494;">&lt;tibble [1,485 × 22]&gt;</span> <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #BCBCBC;">10</span> P01009                     <span style="color: #949494;">&lt;tibble [3,465 × 22]&gt;</span> <span style="color: #949494;">&lt;gg&gt;</span>   </span>
+<span class="co">## <span style="color: #949494;"># … with 27 more rows</span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ff</span> <span class="op">&lt;-</span> <span class="va">proteinIntensities</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>.key <span class="op">=</span> <span class="st">"topNIntensity"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ff</span> <span class="op">&lt;-</span> <span class="va">proteinIntensities</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by_all.html" class="external-link">group_by_at</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> |&gt; 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span>.key <span class="op">=</span> <span class="st">"topNIntensity"</span><span class="op">)</span>
 
-<span class="va">figs4</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">figs3</span>,<span class="va">ff</span>, by <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+<span class="va">figs4</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">figs3</span>,<span class="va">ff</span>, by <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a></span><span class="op">(</span><span class="va">figs4</span><span class="op">$</span><span class="va">plotlog</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">figs4</span><span class="op">$</span><span class="va">topNIntensity</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"srm_mean_na_3"</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
 <p><img src="Supplement_TidyCorrelationAnalysis_files/figure-html/doplottingOFProtein-3.png" width="960"></p>
@@ -502,25 +497,25 @@ correlation heatmap based on filtered data
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a></span><span class="op">(</span><span class="va">figs4</span><span class="op">$</span><span class="va">plotlog</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">figs4</span><span class="op">$</span><span class="va">topNIntensity</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="st">"srm_mean_na_3"</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
 <p><img src="Supplement_TidyCorrelationAnalysis_files/figure-html/doplottingOFProtein-5.png" width="960"></p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nrPep</span> <span class="op">&lt;-</span> <span class="va">qvalFiltImputed</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select_all.html">select_at</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"nr_peptide_Id_IN_protein_Id"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">nrPep</span> <span class="op">&lt;-</span> <span class="va">qvalFiltImputed</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select_all.html" class="external-link">select_at</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"nr_peptide_Id_IN_protein_Id"</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">nrPep</span></code></pre></div>
-<pre><code>## # A tibble: 71 x 2
-##    protein_Id                 nr_peptide_Id_IN_protein_Id
-##    &lt;chr&gt;                                            &lt;int&gt;
-##  1 A0A075B6P5;P01615                                    3
-##  2 A0A087WSY6;P01624                                    3
-##  3 A0A0B4J1V0                                           6
-##  4 A0A0C4DH25                                           9
-##  5 A0A0J9YXX1                                           3
-##  6 A0A0J9YXX1                                          NA
-##  7 FGCZCont0141_P69906;P69905                           8
-##  8 FGCZCont0141_P69906;P69905                          NA
-##  9 FGCZCont0174_P68873;P68871                          10
-## 10 FGCZCont0174_P68873;P68871                          NA
-## # ... with 61 more rows</code></pre>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 71 × 2</span></span>
+<span class="co">##    protein_Id                 nr_peptide_Id_IN_protein_Id</span>
+<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;"> 1</span> A0A075B6P5;P01615                                    3</span>
+<span class="co">## <span style="color: #BCBCBC;"> 2</span> A0A087WSY6;P01624                                    3</span>
+<span class="co">## <span style="color: #BCBCBC;"> 3</span> A0A0B4J1V0                                           6</span>
+<span class="co">## <span style="color: #BCBCBC;"> 4</span> A0A0C4DH25                                           9</span>
+<span class="co">## <span style="color: #BCBCBC;"> 5</span> A0A0J9YXX1                                           3</span>
+<span class="co">## <span style="color: #BCBCBC;"> 6</span> A0A0J9YXX1                                          <span style="color: #BB0000;">NA</span></span>
+<span class="co">## <span style="color: #BCBCBC;"> 7</span> FGCZCont0141_P69906;P69905                           8</span>
+<span class="co">## <span style="color: #BCBCBC;"> 8</span> FGCZCont0141_P69906;P69905                          <span style="color: #BB0000;">NA</span></span>
+<span class="co">## <span style="color: #BCBCBC;"> 9</span> FGCZCont0174_P68873;P68871                          10</span>
+<span class="co">## <span style="color: #BCBCBC;">10</span> FGCZCont0174_P68873;P68871                          <span style="color: #BB0000;">NA</span></span>
+<span class="co">## <span style="color: #949494;"># … with 61 more rows</span></span></code></pre>
 </div>
 </div>
   </div>
@@ -536,11 +531,14 @@ correlation heatmap based on filtered data
 
 
       <footer><div class="copyright">
-  <p>Developed by Witold Wolski.</p>
+  <p></p>
+<p>Developed by Witold Wolski.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
@@ -548,6 +546,8 @@ correlation heatmap based on filtered data
 
   
 
+
+  
 
   </body>
 </html>

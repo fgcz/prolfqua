@@ -1,25 +1,20 @@
-pandoc: 2.7.2
-pkgdown: 1.6.1
+pandoc: 2.17.0.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   Auxiliary_ExDesignSurvey: Auxiliary_ExDesignSurvey.html
   Auxiliary_prolfquaAbstract_2: Auxiliary_prolfquaAbstract_2.html
   Auxiliary_prolfquaAbstract_BioC2021: Auxiliary_prolfquaAbstract_BioC2021.html
-  BenchmarkingIonstarData: BenchmarkingIonstarData.html
-  BenchmarkMSFraggerProteinIonStar: BenchmarkMSFraggerProteinIonStar.html
-  Benchmark_MSStats: Benchmark_MSStats.html
-  Benchmark_proDA_fromMQlfq: Benchmark_proDA_fromMQlfq.html
-  Benchmark_proDA_medpolish: Benchmark_proDA_medpolish.html
   Comparing2Groups: Comparing2Groups.html
   CreatingConfigurations: CreatingConfigurations.html
   Modelling2Factors: Modelling2Factors.html
   Preprocessing2Factors: Preprocessing2Factors.html
   QCandSampleSize: QCandSampleSize.html
   QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
-  Supplement_srm_summary: Supplement_srm_summary.html
-  Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
   Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
   Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
   Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
-last_built: 2021-11-04T18:06Z
+  Supplement_srm_summary: Supplement_srm_summary.html
+  Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
+last_built: 2022-02-09T16:20Z
 

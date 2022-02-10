@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -63,21 +59,6 @@
       <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
     </li>
     <li>
-      <a href="../articles/BenchmarkingIonstarData.html">Benchmarking normalization, aggregation and models using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/BenchmarkMSFraggerProteinIonStar.html">Benchmarking MSFragger output using Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_MSStats.html">Benchmarking MSstats using the Ionstar Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_proDA_fromMQlfq.html">Benchmarking the proDA package using the Ionstar Dataset MQ LFQ intensities</a>
-    </li>
-    <li>
-      <a href="../articles/Benchmark_proDA_medpolish.html">Benchmarking the proDA package using the Ionstar Dataset starting from peptides</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -96,12 +77,6 @@
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
-      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
-    </li>
-    <li>
       <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
@@ -110,12 +85,18 @@
     <li>
       <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
     </li>
+    <li>
+      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
+    </li>
+    <li>
+      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/wolski/prolfqua/">
+  <a href="https://github.com/wolski/prolfqua/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -133,33 +114,45 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Quality Control &amp; Sample Size Estimation</h1>
-                        <h4 class="author"><a href="mailto:WEW@FGCZ.ETHZ.CH" class="email">WEW@FGCZ.ETHZ.CH</a></h4>
+      <h1 data-toc-skip>Quality Control &amp; Sample Size
+Estimation</h1>
+                        <h4 data-toc-skip class="author"><a href="mailto:WEW@FGCZ.ETHZ.CH" class="email">WEW@FGCZ.ETHZ.CH</a></h4>
             
-            <h4 class="date">2021-11-04</h4>
+            <h4 data-toc-skip class="date">2022-02-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/master/../vignettes/QCandSampleSize.Rmd"><code>../vignettes/QCandSampleSize.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/QCandSampleSize.Rmd" class="external-link"><code>../vignettes/QCandSampleSize.Rmd</code></a></small>
       <div class="hidden name"><code>QCandSampleSize.Rmd</code></div>
 
     </div>
 
     
     
-
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <ul>
 <li>Workunit:</li>
 <li>Project:</li>
 <li>Order :</li>
 </ul>
-<!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.--><p>You were asked to hand in 4 QC samples, to asses the biological, biochemical, and technical variability of your experiments. We did run your samples through the same analysis pipeline, which will be applied in the main experiment. This document summarizes the peptide variability to asses the reproducibility of the biological samples and estimates the sample sizes needed for the main experiment.</p>
+<!--This document does not contain any specific conclusion since it was generated automatically. Hence, please discuss this document with your project bioinformatician/statistician which typically is not the project coach.--><p>You were asked to hand in 4 QC samples, to asses the biological,
+biochemical, and technical variability of your experiments. We did run
+your samples through the same analysis pipeline, which will be applied
+in the main experiment. This document summarizes the peptide variability
+to asses the reproducibility of the biological samples and estimates the
+sample sizes needed for the main experiment.</p>
 </div>
-<div id="quality-control-identifications" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quality-control-identifications" class="anchor"></a>Quality Control: Identifications</h1>
-<p>Here we summarize the number of peptides measured in the QC experiment. Depending on the type of your sample (e.g., pull-down, supernatant, whole cell lysate) we observe some dozens up to a few thousands of proteins , and between a few hundred to up to some few tens of thousands of peptides. While the overall number of proteins and peptides can highly vary depending of the type of experiment, it is crucial that the number of proteins and peptides between your biological replicates is similar (reproducibility).</p>
+<div class="section level2">
+<h2 id="quality-control-identifications">Quality Control: Identifications<a class="anchor" aria-label="anchor" href="#quality-control-identifications"></a>
+</h2>
+<p>Here we summarize the number of peptides measured in the QC
+experiment. Depending on the type of your sample (e.g., pull-down,
+supernatant, whole cell lysate) we observe some dozens up to a few
+thousands of proteins , and between a few hundred to up to some few tens
+of thousands of peptides. While the overall number of proteins and
+peptides can highly vary depending of the type of experiment, it is
+crucial that the number of proteins and peptides between your biological
+replicates is similar (reproducibility).</p>
 <table class="table">
 <caption>Nr ofproteins and peptides detected in all samples.</caption>
 <thead><tr class="header">
@@ -173,44 +166,60 @@
 <td align="right">1258</td>
 </tr></tbody>
 </table>
-<p>(ref:hierarchyCountsSampleBarplot) Number of quantified peptides per sample.</p>
+<p>(ref:hierarchyCountsSampleBarplot) Number of quantified peptides per
+sample.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/hierarchyCountsSampleBarplot-1.png" alt="(ref:hierarchyCountsSampleBarplot)" width="768"><p class="caption">
 (ref:hierarchyCountsSampleBarplot)
 </p>
 </div>
 </div>
-<div id="quality-control-quantification" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quality-control-quantification" class="anchor"></a>Quality Control: Quantification</h1>
-<div id="summary-of-missing-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary-of-missing-data" class="anchor"></a>Summary of missing data</h2>
-<p>Ideally, we identify each peptide in all of the samples. However, because of the limit of detection (LOD) low-intensity peptides might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data.</p>
-<p>(ref:missingFigIntensityHistorgram) Top - intensity distribution of peptides with 0, 1 etc. missing values. B - number of peptides with 0, 1, 2 etc. missing value.</p>
+<div class="section level2">
+<h2 id="quality-control-quantification">Quality Control: Quantification<a class="anchor" aria-label="anchor" href="#quality-control-quantification"></a>
+</h2>
+<div class="section level3">
+<h3 id="summary-of-missing-data">Summary of missing data<a class="anchor" aria-label="anchor" href="#summary-of-missing-data"></a>
+</h3>
+<p>Ideally, we identify each peptide in all of the samples. However,
+because of the limit of detection (LOD) low-intensity peptides might not
+be observed in all samples. Ideally, the LOD should be the only source
+of missingness in biological replicates. The following figures help us
+to verify the reproducibility of the measurement at the level of missing
+data.</p>
+<p>(ref:missingFigIntensityHistorgram) Top - intensity distribution of
+peptides with 0, 1 etc. missing values. B - number of peptides with 0,
+1, 2 etc. missing value.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/missingFigIntensityHistorgram-1.png" alt="(ref:missingFigIntensityHistorgram)" width="672"><p class="caption">
 (ref:missingFigIntensityHistorgram)
 </p>
 </div>
-<p>(ref:missingnessHeatmap) Heatmap of missing peptide quantifications clustered by sample.</p>
+<p>(ref:missingnessHeatmap) Heatmap of missing peptide quantifications
+clustered by sample.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/missingnessHeatmap-1.png" alt="(ref:missingnessHeatmap)" width="768"><p class="caption">
 (ref:missingnessHeatmap)
 </p>
 </div>
 </div>
-<div id="variablity-of-the-raw-intensities" class="section level2">
-<h2 class="hasAnchor">
-<a href="#variablity-of-the-raw-intensities" class="anchor"></a>Variablity of the raw intensities</h2>
-<p>Without applying any intensity scaling and data preprocessing, the peptide intensities in all samples should be similar. To asses this we plotted the distribution of the peptide intensities in the samples (Figure @ref(fig:plotDistributions)) as well as the distribution of the coefficient of variation CV for all peptides in the samples (Figure @ref(fig:intensityDistribution)). Table @ref(tab:printTable) summarises the CV.</p>
+<div class="section level3">
+<h3 id="variablity-of-the-raw-intensities">Variablity of the raw intensities<a class="anchor" aria-label="anchor" href="#variablity-of-the-raw-intensities"></a>
+</h3>
+<p>Without applying any intensity scaling and data preprocessing, the
+peptide intensities in all samples should be similar. To asses this we
+plotted the distribution of the peptide intensities in the samples
+(Figure @ref(fig:plotDistributions)) as well as the distribution of the
+coefficient of variation CV for all peptides in the samples (Figure
+@ref(fig:intensityDistribution)). Table @ref(tab:printTable) summarises
+the CV.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/plotDistributions-1.png" alt="Density plot of peptide level Coefficient of Variations (CV)." width="768"><p class="caption">
 Density plot of peptide level Coefficient of Variations (CV).
 </p>
 </div>
 <table class="table">
-<caption>Summary of the coefficient of variation (CV) at the 50th, 60th, 70th, 80th and 90th percentile.</caption>
+<caption>Summary of the coefficient of variation (CV) at the 50th, 60th,
+70th, 80th and 90th percentile.</caption>
 <thead><tr class="header">
 <th align="right">probs</th>
 <th align="right">a</th>
@@ -268,17 +277,29 @@ Distribution of unnormalized intensities.
 </p>
 </div>
 </div>
-<div id="variability-of-transformed-intensities" class="section level2">
-<h2 class="hasAnchor">
-<a href="#variability-of-transformed-intensities" class="anchor"></a>Variability of transformed intensities</h2>
-<p>We <span class="math inline">\(\log_2\)</span> transformed and applied the <code><a href="../reference/robust_scale.html">prolfqua::robust_scale()</a></code> transformation to the data. This transformation transforms and scales the data to reduce the variance (Figure @ref(fig:plotTransformedIntensityDistributions)). Because of this, we can’t report CV anymore but report standard deviations (sd). Figure @ref(fig:sdviolinplots) shows the distribution of the peptide standard deviations while Figure @ref(fig:sdecdf) shows the empirical cumulative distribution function (ecdf). Table @ref(tab:printSDTable) summarises the sd. The heatmap in Figure @ref(fig:correlationHeat) envisages the correlation between the QC samples.</p>
-<p>(ref:plotTransformedIntensityDistributions) Peptide intensity distribution after transformation.</p>
+<div class="section level3">
+<h3 id="variability-of-transformed-intensities">Variability of transformed intensities<a class="anchor" aria-label="anchor" href="#variability-of-transformed-intensities"></a>
+</h3>
+<p>We <span class="math inline">\(\log_2\)</span> transformed and
+applied the <code><a href="../reference/robust_scale.html">prolfqua::robust_scale()</a></code> transformation to the
+data. This transformation transforms and scales the data to reduce the
+variance (Figure @ref(fig:plotTransformedIntensityDistributions)).
+Because of this, we can’t report CV anymore but report standard
+deviations (sd). Figure @ref(fig:sdviolinplots) shows the distribution
+of the peptide standard deviations while Figure @ref(fig:sdecdf) shows
+the empirical cumulative distribution function (ecdf). Table
+@ref(tab:printSDTable) summarises the sd. The heatmap in Figure
+@ref(fig:correlationHeat) envisages the correlation between the QC
+samples.</p>
+<p>(ref:plotTransformedIntensityDistributions) Peptide intensity
+distribution after transformation.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/plotTransformedIntensityDistributions-1.png" alt="(ref:plotTransformedIntensityDistributions)" width="768"><p class="caption">
 (ref:plotTransformedIntensityDistributions)
 </p>
 </div>
-<p>(ref:correlationHeat) Heatmap of peptide intensity correlation between samples.</p>
+<p>(ref:correlationHeat) Heatmap of peptide intensity correlation
+between samples.</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/correlationHeat-1.png" alt="(ref:correlationHeat)" width="768"><p class="caption">
 (ref:correlationHeat)
@@ -289,20 +310,24 @@ Distribution of unnormalized intensities.
 Pairsplot - scatterplot of samples.
 </p>
 </div>
-<p>(ref:sdviolinplots) Visualization of peptide standard deviations. A) all. B) - for low (bottom 50) and high intensity (top 50).</p>
+<p>(ref:sdviolinplots) Visualization of peptide standard deviations. A)
+all. B) - for low (bottom 50) and high intensity (top 50).</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/sdviolinplots-1.png" alt="(ref:sdviolinplots)" width="768"><p class="caption">
 (ref:sdviolinplots)
 </p>
 </div>
-<p>(ref:sdecdf) Visualization of peptide standard deviations as empirical cumulative distribution function. A) all. B) - for low (bottom 50) and high intensity (top 50).</p>
+<p>(ref:sdecdf) Visualization of peptide standard deviations as
+empirical cumulative distribution function. A) all. B) - for low (bottom
+50) and high intensity (top 50).</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/sdecdf-1.png" alt="(ref:sdecdf)" width="768"><p class="caption">
 (ref:sdecdf)
 </p>
 </div>
 <table class="table">
-<caption>Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.</caption>
+<caption>Summary of the distribution of standard deviations at the 50th,
+60th, 70th, 80th and 90th percentile.</caption>
 <thead><tr class="header">
 <th align="right">probs</th>
 <th align="right">a</th>
@@ -362,20 +387,37 @@ Pairsplot - scatterplot of samples.
 </div>
 </div>
 </div>
-<div id="sample-size-calculation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sample-size-calculation" class="anchor"></a>Sample Size Calculation</h1>
-<p>In the previous section, we estimated the peptide variance using the QC samples. Figure @ref(fig:sdviolinplots) shows the distribution of the standard deviations. We are using this information, as well as some typical values for the size and the power of the test to estimate the required sample sizes for your main experiment.</p>
-<p>An important factor in estimating the sample sizes is the smallest effect size (peptide fold changes) you are interested in detecting between two conditions, e.g. a reference and a treatment. Smaller biologically significant effect sizes require more samples to obtain a statistically significant result. Typical <span class="math inline">\(log_2\)</span> fold change thresholds are <span class="math inline">\(0.59, 1, 2\)</span> which correspond to a fold change of <span class="math inline">\(1.5, 2, 4\)</span>.</p>
-<p>Table @ref(tab:sampleSize) and Figure @ref(fig:figSampleSize) summarizes how many samples are needed to detect a fold change of <span class="math inline">\(0.5, 1, 2\)</span> at a confidence level of <span class="math inline">\(95\%\)</span> and power of <span class="math inline">\(80\%\)</span>, for <span class="math inline">\(50, 60, 70, 80\)</span> and <span class="math inline">\(90\%\)</span> percent of the measured peptides.</p>
-<p>(ref:figSampleSize) Graphical representation of the sample size needed to detect a log fold change greater than delta with a significance level of <span class="math inline">\(0.05\)</span> and power 0.8 when using a t-test to compare means, in <span class="math inline">\(X\%\)</span> of peptides (x - axis).</p>
+<div class="section level2">
+<h2 id="sample-size-calculation">Sample Size Calculation<a class="anchor" aria-label="anchor" href="#sample-size-calculation"></a>
+</h2>
+<p>In the previous section, we estimated the peptide variance using the
+QC samples. Figure @ref(fig:sdviolinplots) shows the distribution of the
+standard deviations. We are using this information, as well as some
+typical values for the size and the power of the test to estimate the
+required sample sizes for your main experiment.</p>
+<p>An important factor in estimating the sample sizes is the smallest
+effect size (peptide fold changes) you are interested in detecting
+between two conditions, e.g. a reference and a treatment. Smaller
+biologically significant effect sizes require more samples to obtain a
+statistically significant result. Typical <span class="math inline">\(log_2\)</span> fold change thresholds are <span class="math inline">\(0.59, 1, 2\)</span> which correspond to a fold
+change of <span class="math inline">\(1.5, 2, 4\)</span>.</p>
+<p>Table @ref(tab:sampleSize) and Figure @ref(fig:figSampleSize)
+summarizes how many samples are needed to detect a fold change of <span class="math inline">\(0.5, 1, 2\)</span> at a confidence level of <span class="math inline">\(95\%\)</span> and power of <span class="math inline">\(80\%\)</span>, for <span class="math inline">\(50,
+60, 70, 80\)</span> and <span class="math inline">\(90\%\)</span>
+percent of the measured peptides.</p>
+<p>(ref:figSampleSize) Graphical representation of the sample size
+needed to detect a log fold change greater than delta with a
+significance level of <span class="math inline">\(0.05\)</span> and
+power 0.8 when using a t-test to compare means, in <span class="math inline">\(X\%\)</span> of peptides (x - axis).</p>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/figSampleSize-1.png" alt="(ref:figSampleSize)" width="768"><p class="caption">
 (ref:figSampleSize)
 </p>
 </div>
 <table class="table">
-<caption>Sample size needed to detect a log fold change greater than delta with a significance level of 0.05 and power 0.8 when using a t-test to compare means.</caption>
+<caption>Sample size needed to detect a log fold change greater than
+delta with a significance level of 0.05 and power 0.8 when using a
+t-test to compare means.</caption>
 <thead><tr class="header">
 <th align="left">quantile</th>
 <th align="right">sd</th>
@@ -421,15 +463,35 @@ Pairsplot - scatterplot of samples.
 </tr>
 </tbody>
 </table>
-<p>The <em>power</em> of a test is <span class="math inline">\(1-\beta\)</span>, where <span class="math inline">\(\beta\)</span> is the probability of a Type 2 error (failing to reject the null hypothesis when the alternative hypothesis is true). In other words, if you have a <span class="math inline">\(20\%\)</span> chance of failing to detect a real difference, then the power of your test is <span class="math inline">\(80\%\)</span>.</p>
-<p>The <em>confidence level</em> is equal to <span class="math inline">\(1 - \alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is the probability of making a Type 1 Error. That is, alpha represents the chance of a falsely rejecting <span class="math inline">\(H_0\)</span> and picking up a false-positive effect. Alpha is usually set at <span class="math inline">\(5\%\)</span> significance level, for a <span class="math inline">\(95\%\)</span> confidence level.</p>
-<p>Fold change: Suppose you are comparing a treatment group to a placebo group, and you will be measuring some continuous response variable which, you hypothesize, will be affected by the treatment. We can consider the mean response in the treatment group, <span class="math inline">\(\mu_1\)</span>, and the mean response in the placebo group, <span class="math inline">\(\mu_2\)</span>. We can then define <span class="math inline">\(\Delta = \mu_1 - \mu_2\)</span> as the mean difference. The smaller the difference you want to detect, the larger the required sample size.</p>
+<p>The <em>power</em> of a test is <span class="math inline">\(1-\beta\)</span>, where <span class="math inline">\(\beta\)</span> is the probability of a Type 2
+error (failing to reject the null hypothesis when the alternative
+hypothesis is true). In other words, if you have a <span class="math inline">\(20\%\)</span> chance of failing to detect a real
+difference, then the power of your test is <span class="math inline">\(80\%\)</span>.</p>
+<p>The <em>confidence level</em> is equal to <span class="math inline">\(1 - \alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is the probability of making a
+Type 1 Error. That is, alpha represents the chance of a falsely
+rejecting <span class="math inline">\(H_0\)</span> and picking up a
+false-positive effect. Alpha is usually set at <span class="math inline">\(5\%\)</span> significance level, for a <span class="math inline">\(95\%\)</span> confidence level.</p>
+<p>Fold change: Suppose you are comparing a treatment group to a placebo
+group, and you will be measuring some continuous response variable
+which, you hypothesize, will be affected by the treatment. We can
+consider the mean response in the treatment group, <span class="math inline">\(\mu_1\)</span>, and the mean response in the
+placebo group, <span class="math inline">\(\mu_2\)</span>. We can then
+define <span class="math inline">\(\Delta = \mu_1 - \mu_2\)</span> as
+the mean difference. The smaller the difference you want to detect, the
+larger the required sample size.</p>
 </div>
-<div id="appendix" class="section level1">
-<h1 class="hasAnchor">
-<a href="#appendix" class="anchor"></a>Appendix</h1>
+<div class="section level2">
+<h2 id="appendix">Appendix<a class="anchor" aria-label="anchor" href="#appendix"></a>
+</h2>
 <table class="table">
-<caption>Mapping of raw file names to sample names used throughout this report.</caption>
+<caption>Mapping of raw file names to sample names used throughout this
+report.</caption>
+<colgroup>
+<col width="69%">
+<col width="11%">
+<col width="10%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">raw.file</th>
 <th align="left">sampleName</th>
@@ -560,7 +622,8 @@ Pairsplot - scatterplot of samples.
 </tbody>
 </table>
 <table class="table">
-<caption>Number of quantified peptides and proteins per sample.</caption>
+<caption>Number of quantified peptides and proteins per
+sample.</caption>
 <thead><tr class="header">
 <th align="left">isotope</th>
 <th align="left">sampleName</th>
@@ -704,11 +767,14 @@ Pairsplot - scatterplot of samples.
 
 
       <footer><div class="copyright">
-  <p>Developed by Witold Wolski.</p>
+  <p></p>
+<p>Developed by Witold Wolski.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
@@ -716,6 +782,8 @@ Pairsplot - scatterplot of samples.
 
   
 
+
+  
 
   </body>
 </html>
