@@ -114,6 +114,7 @@ filter_difference <- function(x, y, config){
 #' atab$setWorkIntensity("peptide.intensity")
 #' atab$isotopeLabel = "isotope"
 #' config <- prolfqua::AnalysisConfiguration$new(atab)
+#' GRP2$pop$nrPeptides <- 2
 #'
 #' protein_annot = "Description"
 #' grp <- make2grpReport(data, atab, GRP2)
@@ -132,7 +133,6 @@ make2grpReport <- function(startdata,
                            contpattern = "^zz|^CON__",
                            remove = FALSE
                            ) {
-  GRP2$pop$nrPeptides <- 2
 
   # Preprocess Data
   config <- prolfqua::AnalysisConfiguration$new(atable)

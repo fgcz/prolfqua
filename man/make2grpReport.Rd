@@ -82,6 +82,7 @@ atab$factors["dilution."] = "dilution."
 atab$setWorkIntensity("peptide.intensity")
 atab$isotopeLabel = "isotope"
 config <- prolfqua::AnalysisConfiguration$new(atab)
+GRP2$pop$nrPeptides <- 2
 
 protein_annot = "Description"
 grp <- make2grpReport(data, atab, GRP2)

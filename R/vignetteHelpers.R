@@ -68,7 +68,7 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' @export
 #'
 copy_2grp_markdown <- function(workdir = getwd()){
-  runscripts <- c("rmarkdown/_Grp2Analysis.Rmd","run_scripts/bibliography.bib")
+  runscripts <- c("rmarkdown/_Grp2Analysis.Rmd","rmarkdown/bibliography.bib")
   .scriptCopyHelperVec(runscripts, workdir = workdir)
 }
 
