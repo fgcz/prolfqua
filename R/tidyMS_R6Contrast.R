@@ -12,7 +12,7 @@ ContrastsInterface <- R6::R6Class(
     get_contrasts = function(){stop("get_contrasts not implemented.")},
     #' @description
     #' initialize plotter
-    get_Plotter = function(){stop("get_Plotter not implemented.") },
+    get_Plotter = function(){stop("get_Plotter not implemented.")},
     #' @description
     #' create wide representation of data.
     to_wide = function(){stop("to_wide not implemented.")},
@@ -45,11 +45,16 @@ ContrastsInterface <- R6::R6Class(
                               "conf.low", "conf.high", "FDR")
 
 # ContrastsSimpleImpute----
-#' compute contrasts with data imputation (directly from data)
+#' Compute contrasts with group mean imputation (directly from data)
 #'
-#' if interaction average can not be computed infer it using the 10\%
-#'  smallest interaction averages in the dataset. Based on these compute fold changes.
-#'  Use median of peptide level fold changes as protein estimate.
+#' If there are no observations in one of the groups for some of the proteins,
+#' the group mean cannot be estimated. Therefore, assuming that the observation
+#' is missing because the protein abundance is below the detection limit,
+#' we substitute the unobserved group mean with the mean of X% smallest
+#' group averages of all the proteins.
+#' If the observations present in the other group allow us to estimate
+#' the variance of the measurement for that protein,
+#' we compute the t-statistic, p-value, and FDR.
 #'
 #' @family modelling
 #' @export
@@ -1151,6 +1156,15 @@ Contrasts_Plotter <- R6::R6Class(
     },
     #' @description
     #' ma plot
+    #'
+    #' MA plot displays the effect size estimate as a function
+    #' of the mean protein intensity across groups.
+    #' Each dot represents an observed protein.
+    #' Red horizontal lines represent the fold-change threshold.
+    #'
+    #' Sometimes measured effects sizes (differences between samples groups)
+    #' are biased by the signal intensity (here protein abundance).
+    #' Such systematic effects can be explored using MA-plots.
     #' @param fc fold change abline
     #' @param colour column in contrast matrix with colour coding
     #' @param legend enable legend default TRUE

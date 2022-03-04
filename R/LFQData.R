@@ -888,7 +888,17 @@ LFQDataPlotter <- R6::R6Class(
       return(fig)
     },
     #' @description
-    #' heatmap of intensities
+    #'
+    #' heatmap of intensities - columns are samples, rows are proteins or peptides.
+    #'
+    #' The abundances of each protein (row) are z-scored.
+    #' Afterward, the mean abundance for each protein is zero,
+    #' and the standard variation is one.
+    #' z-scoring allows to compare (cluster) the proteins according
+    #' to the difference in the expression in the samples.
+    #' Without the z-scoring, the proteins would group according
+    #' to their abundance, e.g., high abundant proteins would be one cluster.
+    #'
     #' @param na_fraction max fraction of NA's per row
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @return pheatmap
@@ -900,14 +910,26 @@ LFQDataPlotter <- R6::R6Class(
       return(fig)
     },
     #' @description
-    #' heatmap of sample correlations
+    #' heatmap of sample correlations.
+    #'
+    #' The Spearman correlation among all samples
+    #' is computed. Then the euclidean distance is used to compute the distances.
+    #'
+    #' @seealso \code{\link{plot_heatmap_cor}}
+    #'
     #' @return pheatmap
+    #'
     heatmap_cor = function(){
       fig <- prolfqua::plot_heatmap_cor(self$lfq$data, self$lfq$config)
       return(fig)
     },
     #' @description
     #' PCA plot
+    #'
+    #' A PCA is applied and the first and second principal component are shown.
+    #'
+    #' @seealso \code{\link{plot_pca}}
+    #'
     #' @param add_txt show sample names
     #' @return ggplot
     pca = function(add_txt = TRUE){

@@ -321,6 +321,15 @@ list of ggplots
 \if{latex}{\out{\hypertarget{method-ma_plot}{}}}
 \subsection{Method \code{ma_plot()}}{
 ma plot
+
+MA plot displays the effect size estimate as a function
+of the mean protein intensity across groups.
+Each dot represents an observed protein.
+Red horizontal lines represent the fold-change threshold.
+
+Sometimes measured effects sizes (differences between samples groups)
+are biased by the signal intensity (here protein abundance).
+Such systematic effects can be explored using MA-plots.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
 }

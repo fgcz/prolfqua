@@ -43,6 +43,10 @@ prolfqua::plot_sample_correlation(istar$data, istar$config)
 
 }
 \seealso{
+\code{\link{plot_heatmap_cor}}
+
+\code{\link{plot_pca}}
+
 Other LFQData: 
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataStats}},
@@ -141,7 +145,15 @@ ggplot
 \if{html}{\out{<a id="method-heatmap"></a>}}
 \if{latex}{\out{\hypertarget{method-heatmap}{}}}
 \subsection{Method \code{heatmap()}}{
-heatmap of intensities
+heatmap of intensities - columns are samples, rows are proteins or peptides.
+
+The abundances of each protein (row) are z-scored.
+Afterward, the mean abundance for each protein is zero,
+and the standard variation is one.
+z-scoring allows to compare (cluster) the proteins according
+to the difference in the expression in the samples.
+Without the z-scoring, the proteins would group according
+to their abundance, e.g., high abundant proteins would be one cluster.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3, rownames = FALSE)}\if{html}{\out{</div>}}
 }
@@ -163,7 +175,10 @@ pheatmap
 \if{html}{\out{<a id="method-heatmap_cor"></a>}}
 \if{latex}{\out{\hypertarget{method-heatmap_cor}{}}}
 \subsection{Method \code{heatmap_cor()}}{
-heatmap of sample correlations
+heatmap of sample correlations.
+
+The Spearman correlation among all samples
+is computed. Then the euclidean distance is used to compute the distances.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor()}\if{html}{\out{</div>}}
 }
@@ -177,6 +192,8 @@ pheatmap
 \if{latex}{\out{\hypertarget{method-pca}{}}}
 \subsection{Method \code{pca()}}{
 PCA plot
+
+A PCA is applied and the first and second principal component are shown.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(add_txt = TRUE)}\if{html}{\out{</div>}}
 }

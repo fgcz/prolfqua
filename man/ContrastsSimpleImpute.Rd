@@ -2,16 +2,21 @@
 % Please edit documentation in R/tidyMS_R6Contrast.R
 \name{ContrastsSimpleImpute}
 \alias{ContrastsSimpleImpute}
-\title{compute contrasts with data imputation (directly from data)}
+\title{Compute contrasts with group mean imputation (directly from data)}
 \description{
-compute contrasts with data imputation (directly from data)
+Compute contrasts with group mean imputation (directly from data)
 
-compute contrasts with data imputation (directly from data)
+Compute contrasts with group mean imputation (directly from data)
 }
 \details{
-if interaction average can not be computed infer it using the 10\%
- smallest interaction averages in the dataset. Based on these compute fold changes.
- Use median of peptide level fold changes as protein estimate.
+If there are no observations in one of the groups for some of the proteins,
+the group mean cannot be estimated. Therefore, assuming that the observation
+is missing because the protein abundance is below the detection limit,
+we substitute the unobserved group mean with the mean of X% smallest
+group averages of all the proteins.
+If the observations present in the other group allow us to estimate
+the variance of the measurement for that protein,
+we compute the t-statistic, p-value, and FDR.
 }
 \examples{
 
