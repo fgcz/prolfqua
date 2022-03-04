@@ -1165,6 +1165,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' Sometimes measured effects sizes (differences between samples groups)
     #' are biased by the signal intensity (here protein abundance).
     #' Such systematic effects can be explored using MA-plots.
+    #'
     #' @param fc fold change abline
     #' @param colour column in contrast matrix with colour coding
     #' @param legend enable legend default TRUE
