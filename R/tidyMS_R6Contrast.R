@@ -1276,13 +1276,15 @@ Contrasts_Plotter <- R6::R6Class(
                         colour = NULL,
                         legend = TRUE,
                         scales = "free_y",
-                        plotly = FALSE){
+                        plotly = FALSE,
+                        min_score = 0.0001 ){
       fig <- list()
       for (score in scores) {
         column <- score$score
         contrasts <- contrasts |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
-          dplyr::filter(!is.na(!!sym(column)))
+          dplyr::filter(!is.na(!!sym(column))) |>
+          dplyr::mutate(!! column := case_when(!!sym(column) < min_score ~ min_score, TRUE ~ !!sym(column)))
         if (plotly) {
           contrasts <- contrasts |> plotly::highlight_key(~subject_Id)
         }

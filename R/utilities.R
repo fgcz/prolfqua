@@ -144,10 +144,8 @@ multigroupVolcano <- function(.data,
                                pvalue = 0.05,
                                text = NULL,
                                yintercept = c(0.1),
-                               scales = "fixed",
-                               minValue = 0.001)
+                               scales = "fixed")
 {
-  data <- data |> dplyr::mutate(!!p.value := case_when(!!sym(p.value) < minValue ~ minValue , TRUE ~ !!sym(p.value)))
   colname = paste("-log10(", p.value, ")", sep = "")
   p <- ggplot(
     data,
