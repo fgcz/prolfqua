@@ -779,7 +779,7 @@ ContrastsSaintExpress <- R6::R6Class(
       self$modelName = modelName
 
       if ( "AvgIntensity" %in% colnames(contrastsdf)) {
-        self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
+        self$contrast_result <- contrastsdf |> mutate(log2EFCs = log2(FoldChange),
                                                        group_1_name = "Control",
                                                        group_2_name = Bait,
                                                        group_1 = log2(AvgIntensity) - log2(FoldChange)/2,
@@ -787,7 +787,7 @@ ContrastsSaintExpress <- R6::R6Class(
                                                        modelName = modelName)
 
       }else{
-        self$contrast_result <- contrastsdf |> mutate(log2FC = log2(FoldChange),
+        self$contrast_result <- contrastsdf |> mutate(log2EFCs = log2(FoldChange),
                                                       group_1_name = "Control",
                                                       group_2_name = Bait,
                                                       group_1 = log2(AvgSpec) - log2(FoldChange)/2,
@@ -824,7 +824,7 @@ ContrastsSaintExpress <- R6::R6Class(
                  "group_2_name",
                  "group_1",
                  "group_2",
-                 "log2FC",
+                 "log2EFCs",
                  "SaintScore",
                  "BFDR"
         )))
@@ -844,7 +844,7 @@ ContrastsSaintExpress <- R6::R6Class(
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05)), list(score = "SaintScore", xlim = c(0,1,0.05))),
         score = list(list(score = "SaintScore", thresh = SaintScore )),
         modelName = self$modelName,
-        diff = "log2FC",
+        diff = "log2EFCs",
         contrast = "Bait")
       return(res)
     },
@@ -855,7 +855,7 @@ ContrastsSaintExpress <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,
-                                                     columns = c("log2FC", columns),
+                                                     columns = c("log2EFCs", columns),
                                                      contrast = 'Bait')
       return(contrasts_wide)
     }
