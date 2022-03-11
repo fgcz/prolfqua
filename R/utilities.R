@@ -491,9 +491,9 @@ volcano_Plotly <- function(.data,
     group_by(!!sym(contrast)) |> nest()
 
   makeshared <- function(x, proteinID = "Prey") {
-    SharedData$new(x, as.formula( paste0("~", proteinID) ) , group = "Choose protein")
+    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) , group = "Choose protein")
   }
-  xx <- mutate( xx, shared_data = purrr::map( data,  makeshared, proteinID = proteinID  ))
+  xx <- dplyr::mutate( xx, shared_data = purrr::map( data,  makeshared, proteinID = proteinID  ))
 
 
   vline <- function(x = 0, color = "green") {
@@ -504,7 +504,7 @@ volcano_Plotly <- function(.data,
       yref = "paper",
       x0 = x,
       x1 = x,
-      line = list(color = color, dash="dot")
+      line = list(color = color, dash = "dot")
     )
   }
 
@@ -516,7 +516,7 @@ volcano_Plotly <- function(.data,
       xref = "paper",
       y0 = y,
       y1 = y,
-      line = list(color = color, dash="dot")
+      line = list(color = color, dash = "dot")
     )
 
 
@@ -528,7 +528,7 @@ volcano_Plotly <- function(.data,
                       proteinID = "Prey",
                       xintercept = c(-1,1),
                       yintercept = 0.1  ){
-    p <- plot_ly(data,
+    p <- plotly::plot_ly(data,
                  x = as.formula(paste0("~",effect)),
                  y = as.formula(paste0("~ I(-log10(", significance, "))")),
                  type = "scatter",
@@ -536,7 +536,7 @@ volcano_Plotly <- function(.data,
                  color = I("black"),
                  text = as.formula(paste0("~", proteinID)) , showlegend = FALSE)
     sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
-    p2 <- p |> layout(shapes = sh2)
+    p2 <- p |> plotly::layout(shapes = sh2)
     return(p2)
   }
   xd <- purrr::map( xx$shared_data,
