@@ -180,8 +180,8 @@ Model <- R6::R6Class(
         dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroupVolcano(
           effect = "Estimate",
-          p.value = "Pr...t..",
-          condition = "factor",
+          significance = "Pr...t..",
+          contrast = "factor",
           label = "subject_Id" ,
           xintercept = c(-1, 1) ,
           colour = "isSingular" )

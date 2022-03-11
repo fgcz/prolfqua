@@ -65,14 +65,14 @@ split2table <- function(names,split="\\||\\_")
 
 
 
-#' plot volcano given multiple conditions
+#' plot volcano given multiple contrasts
 #' @param misspX data in long format
 #' @param effect column containing effect sizes
 #' @param p.value column containing p-values, q.values etc
-#' @param condition column with condition
+#' @param contrast column with contrast
 #' @param colour colouring of points
 #' @param xintercept fc thresholds
-#' @param pvalue pvalue threshold
+#' @param sigthreshold sigthreshold threshold
 #' @param label column containing labels
 #' @param size controls size of text
 #' @param segment.size controls size of lines
@@ -83,46 +83,48 @@ split2table <- function(names,split="\\||\\_")
 #' @keywords internal
 #' @family utilities
 #' @examples
-#' #library(ggplot2)
 #'
-#' #library(ggrepel)
 #'
 #' show <- prolfqua_data('data_multigroupFC') |>
 #'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
-#' prolfqua::multigroupVolcano(show,
+#' prolfqua::multigroupVolcano( show,
 #' effect="logFC",
-#' p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
+#' significance = "adj.P.Val",
+#' contrast="Condition",
+#' colour=NULL,
+#' label="Name",
 #' maxNrOfSignificantText = 300)
-#' #.multigroupVolcano(show,condition="Condition",
-#' #effect="logFC",
-#' #p.value="adj.P.Val",
-#' # colour="colour")
 multigroupVolcano <- function(.data,
                               effect = "fc",
-                              p.value = "p.adjust",
-                              condition = "condition",
+                              significance = "p.adjust",
+                              contrast = "condition",
                               colour = "colour",
                               xintercept = c(-2,2),
-                              pvalue = 0.05,
+                              yintercept = 0.05,
                               label = NULL,
                               size = 1,
                               segment.size = 0.3,
                               segment.alpha = 0.3,
-                              yintercept = 0.1,
                               scales = "fixed",
                               maxNrOfSignificantText = 20)
 {
   misspX <- tidyr::unite(.data, "label", label)
 
-  p <- .multigroupVolcano(misspX, effect = effect, p.value = p.value, condition = condition,
-                          colour = colour, xintercept = xintercept, pvalue = pvalue,
-                          text = "label", yintercept = yintercept, scales = scales)
-  colname = paste("-log10(", p.value , ")" , sep = "")
+  p <- .multigroupVolcano(misspX,
+                          effect = effect,
+                          significance = significance,
+                          contrast = contrast,
+                          colour = colour,
+                          xintercept = xintercept,
+                          yintercept = yintercept,
+                          text = "label",
+                          scales = scales)
+  colname = paste("-log10(", significance , ")" , sep = "")
 
   if (!is.null(label)) {
     effectX <- misspX[,effect]
-    typeX <- misspX[,p.value]
-    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < pvalue ) |>
+    typeX <- misspX[,significance]
+    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < yintercept ) |>
       head(n = maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
       p <- p + ggrepel::geom_text_repel(data = subsetData,
@@ -137,16 +139,16 @@ multigroupVolcano <- function(.data,
 
 .multigroupVolcano <- function(data,
                                effect = "fc",
-                               p.value = "p.adjust",
-                               condition = "condition",
+                               significance = "p.adjust",
+                               contrast = "contrast",
                                colour = "colour",
                                xintercept = c(-2,2),
-                               pvalue = 0.05,
+                               yintercept = 0.05,
                                text = NULL,
-                               yintercept = c(0.1),
+
                                scales = "fixed")
 {
-  colname = paste("-log10(", p.value, ")", sep = "")
+  colname = paste("-log10(", significance, ")", sep = "")
   p <- ggplot(
     data,
     aes_string(x = effect, y = colname, color = colour, text = text)) +
@@ -155,7 +157,7 @@ multigroupVolcano <- function(.data,
     values = c("black", "green",
                "blue", "red") )
   p <- p + facet_wrap(
-    as.formula(paste("~", condition)),
+    as.formula(paste("~", contrast)),
     scales = scales) + labs(y = colname)
   log2FC <- effect
   if ( !is.null(xintercept) ) {
@@ -167,8 +169,7 @@ multigroupVolcano <- function(.data,
   if ( !is.null(yintercept) ) {
     p_value <- paste0("-log10(",yintercept,")")
     p <- p + geom_hline(
-      aes(yintercept = -log10(yintercept),
-          linetype = p_value),
+      yintercept = -log10(yintercept),
       linetype = "dashed",
       color = "blue",
       show.legend = FALSE)
@@ -466,5 +467,83 @@ table_facade.list <- function(parlist, kable=TRUE){
   cols = colorRampPalette(colors)(num)
   cols = 	cols[findInterval(value, vec = seq(from = min(value), to = max(value), length.out = num))]
   cols
+}
+
+#' volcano plotly
+#' @param .data data frame
+#' @param effect effect size x-axis
+#' @param significance significance
+#' @param proteinID column with protein ids
+#' @param xintercept
+#' @param yintercept
+volcano_Plotly <- function(.data,
+                           effect = "fc",
+                           significance = "BFDR",
+                           contrast = "condition",
+                           proteinID = "Prey",
+                           xintercept = c(-2,2),
+                           yintercept = 0.1
+)
+{
+  xx <- .data |>
+    group_by(!!sym(contrast)) |> nest()
+
+  makeshared <- function(x, proteinID = "Prey") {
+    SharedData$new(x, as.formula( paste0("~", proteinID) ) , group = "Choose protein")
+  }
+  xx <- mutate( xx, shared_data = purrr::map( data,  makeshared, proteinID = proteinID  ))
+
+
+  vline <- function(x = 0, color = "green") {
+    list(
+      type = "line",
+      y0 = 0,
+      y1 = 1,
+      yref = "paper",
+      x0 = x,
+      x1 = x,
+      line = list(color = color, dash="dot")
+    )
+  }
+
+  hline <- function(y = 0, color = "red") {
+    list(
+      type = "line",
+      x0 = 0,
+      x1 = 1,
+      xref = "paper",
+      y0 = y,
+      y1 = y,
+      line = list(color = color, dash="dot")
+    )
+
+
+  }
+
+  volcano <- function(data,
+                      effect = "log2_EFCs",
+                      significance = "BFDR",
+                      proteinID = "Prey",
+                      xintercept = c(-1,1),
+                      yintercept = 0.1  ){
+    p <- plot_ly(data,
+                 x = as.formula(paste0("~",effect)),
+                 y = as.formula(paste0("~ I(-log10(", significance, "))")),
+                 type = "scatter",
+                 mode = "markers" ,
+                 color = I("black"),
+                 text = as.formula(paste0("~", proteinID)) , showlegend = FALSE)
+    sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
+    p2 <- p |> layout(shapes = sh2)
+    return(p2)
+  }
+  xd <- purrr::map( xx$shared_data,
+                    volcano, effect = effect,
+                    significance = significance,
+                    proteinID = proteinID,
+                    xintercept = xintercept,
+                    yintercept = yintercept
+  )
+  return(xd)
 }
 

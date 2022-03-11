@@ -1291,8 +1291,8 @@ Contrasts_Plotter <- R6::R6Class(
         p <- prolfqua:::.multigroupVolcano(
           contrasts,
           effect = self$diff,
-          p.value = column,
-          condition = self$contrast,
+          significance = column,
+          contrast = self$contrast,
           text = "subject_Id",
           xintercept = if (is.numeric(self$fcthresh)) { c(-self$fcthresh, self$fcthresh) } else {NULL},
           yintercept = score$thresh,
