@@ -2,21 +2,20 @@
 % Please edit documentation in R/utilities.R
 \name{multigroupVolcano}
 \alias{multigroupVolcano}
-\title{plot volcano given multiple conditions}
+\title{plot volcano given multiple contrasts}
 \usage{
 multigroupVolcano(
   .data,
   effect = "fc",
-  p.value = "p.adjust",
-  condition = "condition",
+  significance = "p.adjust",
+  contrast = "condition",
   colour = "colour",
   xintercept = c(-2, 2),
-  pvalue = 0.05,
+  yintercept = 0.05,
   label = NULL,
   size = 1,
   segment.size = 0.3,
   segment.alpha = 0.3,
-  yintercept = 0.1,
   scales = "fixed",
   maxNrOfSignificantText = 20
 )
@@ -24,15 +23,11 @@ multigroupVolcano(
 \arguments{
 \item{effect}{column containing effect sizes}
 
-\item{p.value}{column containing p-values, q.values etc}
-
-\item{condition}{column with condition}
+\item{contrast}{column with contrast}
 
 \item{colour}{colouring of points}
 
 \item{xintercept}{fc thresholds}
-
-\item{pvalue}{pvalue threshold}
 
 \item{label}{column containing labels}
 
@@ -46,26 +41,27 @@ multigroupVolcano(
 
 \item{misspX}{data in long format}
 
+\item{p.value}{column containing p-values, q.values etc}
+
+\item{sigthreshold}{sigthreshold threshold}
+
 \item{ablines}{adds ablines horizontal and vertical}
 }
 \description{
-plot volcano given multiple conditions
+plot volcano given multiple contrasts
 }
 \examples{
-#library(ggplot2)
 
-#library(ggrepel)
 
 show <- prolfqua_data('data_multigroupFC') |>
    dplyr::filter(Condition  \%in\% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
-prolfqua::multigroupVolcano(show,
+prolfqua::multigroupVolcano( show,
 effect="logFC",
-p.value="adj.P.Val",condition="Condition",colour=NULL,label="Name",
+significance = "adj.P.Val",
+contrast="Condition",
+colour=NULL,
+label="Name",
 maxNrOfSignificantText = 300)
-#.multigroupVolcano(show,condition="Condition",
-#effect="logFC",
-#p.value="adj.P.Val",
-# colour="colour")
 }
 \seealso{
 Other utilities: 
