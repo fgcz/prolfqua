@@ -476,6 +476,8 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' @param proteinID column with protein ids
 #' @param xintercept
 #' @param yintercept
+#' @export
+#'
 volcano_Plotly <- function(.data,
                            effect = "fc",
                            significance = "BFDR",
