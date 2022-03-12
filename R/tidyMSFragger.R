@@ -242,6 +242,22 @@ tidy_MSFragger_combined_protein_V16_deprec <- function(
 }
 
 
+#' read MSFragger combined protein file
+#' @export
+#' @rdname MSFragger
+#' @param combprot path to combined_protein.tsv file
+#' @param as_list return as list
+#' @return tidy dataframe or list with df (e.g. total.spectral.count or total.intensity etc).
+#' @family MSFragger
+#' @examples
+#'
+#' if(FALSE){
+#'   unzip(inputMQfile, list = TRUE)$Name
+#'   protein <- as_tibble(read.csv(unz(inputMQfile,"IonstarWithMSFragger/combined_protein.tsv"),
+#'                                 header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+#'   tidy_MSFragger_combined_protein(protein)
+#' }
+#'
 tidy_MSFragger_combined_protein_V16 <- function(
   combprot,
   as_list = FALSE
