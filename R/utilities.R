@@ -477,16 +477,23 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' @param xintercept
 #' @param yintercept
 #' @export
-#'
+#' @examples
+#' data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("A",5), Prey = LETTERS[1:5])
+#' volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
 volcano_Plotly <- function(.data,
                            effect = "fc",
                            significance = "BFDR",
                            contrast = "condition",
                            proteinID = "Prey",
                            xintercept = c(-2,2),
-                           yintercept = 0.1
+                           yintercept = 0.1,
+                           minsignificance = 1e-4
+
 )
 {
+  .data[[significance]] <- pmax(.data[[significance]], minsignificance)
+
   xx <- .data |>
     group_by(!!sym(contrast)) |> nest()
 
