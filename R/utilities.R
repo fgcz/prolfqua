@@ -469,43 +469,16 @@ table_facade.list <- function(parlist, kable=TRUE){
   cols
 }
 
-#' volcano plotly
-#' @param .data data frame
-#' @param effect effect size x-axis
-#' @param significance significance
-#' @param proteinID column with protein ids
-#' @param xintercept
-#' @param yintercept
-#' @export
-#' @examples
-#' data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("A",5), Prey = LETTERS[1:5])
-#' volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
-volcano_Plotly <- function(.data,
-                           effect = "fc",
-                           significance = "BFDR",
-                           contrast = "condition",
-                           proteinID = "Prey",
-                           xintercept = c(-2,2),
-                           yintercept = 0.1,
-                           minsignificance = 1e-4
 
-)
-{
-  .data[[significance]] <- pmax(.data[[significance]], minsignificance)
-
-  xx <- .data |>
-    group_by(!!sym(contrast)) |> nest()
-
-  makeshared <- function(x, proteinID = "Prey") {
-    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
-                              group = "Choose protein")
-  }
-  xx <- dplyr::mutate( xx,
-                       shared_data = purrr::map( data,
-                                                 makeshared, proteinID = proteinID  ))
-
-
+.volcano <- function(data,
+                    contrast = NULL,
+                    effect = "log2_EFCs",
+                    significance = "BFDR",
+                    proteinID = "Prey",
+                    xintercept = c(-1,1),
+                    yintercept = 0.1,
+                    title_size = 25
+){
   vline <- function(x = 0, color = "green") {
     list(
       type = "line",
@@ -528,35 +501,83 @@ volcano_Plotly <- function(.data,
       y1 = y,
       line = list(color = color, dash = "dot")
     )
-
-
   }
 
-  volcano <- function(data,
-                      effect = "log2_EFCs",
-                      significance = "BFDR",
-                      proteinID = "Prey",
-                      xintercept = c(-1,1),
-                      yintercept = 0.1  ){
-    p <- plotly::plot_ly(data,
-                         x = as.formula(paste0("~",effect)),
-                         y = as.formula(paste0("~ I(-log10(", significance, "))")),
-                         type = "scatter",
-                         mode = "markers" ,
-                         color = I("black"),
-                         text = as.formula(paste0("~", proteinID)) ,
-                         showlegend = FALSE)
-    sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
-    p2 <- p |> plotly::layout(shapes = sh2)
-    return(p2)
+  p <- plotly::plot_ly(data,
+                       x = as.formula(paste0("~",effect)),
+                       y = as.formula(paste0("~ I(-log10(", significance, "))")),
+                       type = "scatter",
+                       mode = "markers" ,
+                       color = I("black"),
+                       text = as.formula(paste0("~", proteinID)) ,
+                       showlegend = FALSE)
+  sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
+  p2 <- p |> plotly::layout(shapes = sh2) |>
+    plotly::add_annotations(contrast, x = xintercept[length(xintercept)],
+                            y = -log10(min(data$data()[[significance]])) + 0.3,
+                            showarrow = FALSE,
+                            xanchor = "left",
+                            font = list(size = title_size))
+  return(p2)
+}
+
+#' volcano plotly
+#' @param .data data frame
+#' @param effect effect size x-axis
+#' @param significance significance
+#' @param proteinID column with protein ids
+#' @param xintercept
+#' @param yintercept
+#' @export
+#' @examples
+#'
+#' data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("A",5), Prey = LETTERS[1:5])
+#'
+#' dataB <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("B",5), Prey = LETTERS[1:5])
+#' data <- dplyr::bind_rows(data, dataB)
+#' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
+#' bc |> subplot()
+#'
+volcano_Plotly <- function(.data,
+                           effect = "fc",
+                           significance = "BFDR",
+                           contrast = "condition",
+                           proteinID = "Prey",
+                           xintercept = c(-2,2),
+                           yintercept = 0.1,
+                           minsignificance = 1e-4,
+                           title_size = 25
+
+)
+{
+  .data[[significance]] <- pmax(.data[[significance]], minsignificance)
+
+  xx <- .data |>
+    dplyr::group_by(!!dplyr::sym(contrast)) |> tidyr::nest()
+
+  makeshared <- function(x, proteinID = "Prey") {
+    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
+                              group = "Choose protein")
   }
-  xd <- purrr::map( xx$shared_data,
-                    volcano, effect = effect,
+  xx <- dplyr::mutate( xx,
+                       shared_data = purrr::map( data,
+                                                 makeshared, proteinID = proteinID  ))
+
+
+
+
+  xd <- purrr::map2( xx$shared_data,
+                     xx[[contrast]],
+                    .volcano, effect = effect,
                     significance = significance,
                     proteinID = proteinID,
                     xintercept = xintercept,
-                    yintercept = yintercept
+                    yintercept = yintercept,
+                    title_size = title_size
   )
+#  splo <- plotly::subplot(xd, shareX = TRUE, shareY = TRUE)
   return(xd)
 }
 
