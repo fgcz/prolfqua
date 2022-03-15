@@ -72,7 +72,15 @@ copy_2grp_markdown <- function(workdir = getwd()){
   .scriptCopyHelperVec(runscripts, workdir = workdir)
 }
 
-
+#' copy SAINTexpress doc file
+#' @param workdir directory where to copy file - default is current working directory.
+#' @keywords internal
+#' @export
+#'
+copy_SAINTe_doc <- function(workdir = getwd()){
+  runscripts <- c("SaintExpress/SAINTexpress-manual.docx")
+  .scriptCopyHelperVec(runscripts, workdir = workdir)
+}
 
 .run_markdown_with_params <-
   function(params,
