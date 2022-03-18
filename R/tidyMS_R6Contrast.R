@@ -30,7 +30,7 @@ ContrastsInterface <- R6::R6Class(
                                 "FDR" = "false discovery rate",
                                 "conf.low" = "lower value of 95 confidence interval",
                                 "conf.high" = "high value of 95 confidence interval",
-                                )
+      )
       return(description)
     }
   )
@@ -194,7 +194,7 @@ ContrastsSimpleImpute <- R6::R6Class(
         volcano = list(list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
-        modelName = self$modelName,
+        modelName = "modelName",
         diff = "diff",
         contrast = "contrast")
       return(res)
@@ -393,8 +393,8 @@ Contrasts <- R6::R6Class(
     #' @param FDRthreshold FDR threshold to show in plots
     #' @return \code{\link{Contrasts_Plotter}}
     get_Plotter = function(
-      FCthreshold = 1,
-      FDRthreshold = 0.1
+    FCthreshold = 1,
+    FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -408,7 +408,7 @@ Contrasts <- R6::R6Class(
         modelName = self$modelName,
         diff = "diff",
         contrast = "contrast"
-        )
+      )
       return(res)
     },
     #' @description
@@ -453,10 +453,11 @@ Contrasts <- R6::R6Class(
 #'  #ContrastsModerated$debug("get_Plotter")
 #'  contrast <- ContrastsModerated$new(contrast)
 #'  bb <- contrast$get_contrasts()
-#'
+#'  #Contrasts_Plotter$debug("ma_plot")
 #'  plotter <- contrast$get_Plotter()
 #'  plotter$histogram()
 #'  plotter$ma_plot()
+#'
 #'  plotter$volcano()
 #'
 ContrastsModerated <- R6::R6Class(
@@ -509,9 +510,9 @@ ContrastsModerated <- R6::R6Class(
         estimate = "diff")
       if (!all) {
         contrast_result <- contrast_result |> select(-c( "sigma","df",
-                                                          "statistic", "p.value","conf.low","conf.high",
-                                                          "FDR",  "moderated.df.prior" ,
-                                                          "moderated.var.prior"))
+                                                         "statistic", "p.value","conf.low","conf.high",
+                                                         "FDR",  "moderated.df.prior" ,
+                                                         "moderated.var.prior"))
         contrast_result <- contrast_result |> mutate(sigma = sqrt(moderated.var.post),.keep = "unused")
         contrast_result <- contrast_result |> rename(
           conf.low = "moderated.conf.low",
@@ -541,8 +542,8 @@ ContrastsModerated <- R6::R6Class(
     #' @param FDRthreshold FDR threshold to show in plots
     #'
     get_Plotter = function(
-      FCthreshold = 1,
-      FDRthreshold = 0.1
+    FCthreshold = 1,
+    FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
       res <- Contrasts_Plotter$new(
@@ -553,7 +554,7 @@ ContrastsModerated <- R6::R6Class(
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         score = list(list(score = "statistic", thresh = 5)),
-        modelName = self$modelName,
+        modelName = "modelName",
         diff = "diff",
         contrast = "contrast"
       )
@@ -724,7 +725,7 @@ ContrastsROPECA <- R6::R6Class(
         volcano = list(list(score = "FDR.beta.based.significance", thresh = FDRthreshold)),
         histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
                          list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
-        modelName = self$modelName,
+        modelName = "modelName",
         diff = "diff",
         contrast = "contrast")
       return(res)
@@ -778,11 +779,11 @@ ContrastsSaintExpress <- R6::R6Class(
 
       if ( "AvgIntensity" %in% colnames(contrastsdf)) {
         self$contrast_result <- contrastsdf |> mutate(log2_EFCs = log2(FoldChange),
-                                                       group_1_name = "Control",
-                                                       group_2_name = Bait,
-                                                       group_1 = log2(AvgIntensity) - log2(FoldChange)/2,
-                                                       group_2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
-                                                       modelName = modelName)
+                                                      group_1_name = "Control",
+                                                      group_2_name = Bait,
+                                                      group_1 = log2(AvgIntensity) - log2(FoldChange)/2,
+                                                      group_2 = log2(AvgIntensity) + log2(FoldChange)/2 ,
+                                                      modelName = modelName)
 
       }else{
         self$contrast_result <- contrastsdf |> mutate(log2_EFCs = log2(FoldChange),
@@ -790,7 +791,7 @@ ContrastsSaintExpress <- R6::R6Class(
                                                       group_2_name = Bait,
                                                       group_1 = log2(AvgSpec) - log2(FoldChange)/2,
                                                       group_2 = log2(AvgSpec) + log2(FoldChange)/2 ,
-                                                       modelName = modelName)
+                                                      modelName = modelName)
 
       }
 
@@ -841,7 +842,7 @@ ContrastsSaintExpress <- R6::R6Class(
         volcano = list(list(score = "BFDR", thresh = BFDRthreshold)),
         histogram = list(list(score = "BFDR", xlim = c(0,1,0.05)), list(score = "SaintScore", xlim = c(0,1,0.05))),
         score = list(list(score = "SaintScore", thresh = SaintScore )),
-        modelName = self$modelName,
+        modelName = "modelName",
         diff = "log2_EFCs",
         contrast = "Bait")
       return(res)
@@ -939,7 +940,7 @@ ContrastsTable <- R6::R6Class(
         volcano = list(list(score = "FDR", thresh = FDRthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
-        modelName = self$modelName,
+        modelName = "modelName",
         diff = "diff",
         contrast = "contrast")
       return(res)
@@ -1033,7 +1034,7 @@ Contrasts_Plotter <- R6::R6Class(
   public = list(
     #' @field contrastDF data frame with contrasts
     contrastDF = NULL,
-    #' @field modelName name of model
+    #' @field name of column with model name
     modelName =  character(),
     #' @field subject_Id hierarchy key columns
     subject_Id = character(),
@@ -1059,7 +1060,7 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param histogram which scores to plot and which range (x) should be shown.
     #' @param score score parameters
     #' @param fcthresh default 1 (log2 FC threshold)
-    #' @param modelName name of model
+    #' @param modelName name of column with model names
     #' @param diff fold change (difference) diff column
     #' @param contrast contrast column
     initialize = function(contrastDF,
@@ -1069,7 +1070,7 @@ Contrasts_Plotter <- R6::R6Class(
                                            list(score = "FDR", xlim = c(0,1,0.05))),
                           score = list(list(score = "statistic",  thresh = NULL)),
                           fcthresh = 1,
-                          modelName = "Model",
+                          modelName = "modelName",
                           diff = "diff",
                           contrast = "contrast"
     ){
@@ -1127,7 +1128,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column name with color information default modelName
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
-    volcano = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
+    volcano = function(colour,
+                       legend = TRUE,
+                       scales = c("fixed","free","free_x","free_y")){
+      if(missing(colour)){
+        colour <- self$modelName
+      }
       scales <- match.arg(scales)
       fig <- private$.volcano(self$contrastDF,
                               self$volcano_spec,
@@ -1142,7 +1148,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @return list of ggplots
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
-    volcano_plotly = function(colour = "modelName", legend = TRUE, scales = c("fixed","free","free_x","free_y")){
+    volcano_plotly = function(colour,
+                              legend = TRUE,
+                              scales = c("fixed","free","free_x","free_y")){
+      if(missing(colour)){
+        colour <- self$modelName
+      }
       scales <- match.arg(scales)
       res <- private$.volcano(self$contrastDF,
                               self$volcano_spec,
@@ -1168,9 +1179,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column in contrast matrix with colour coding
     #' @param legend enable legend default TRUE
     #' @return ggplot
-    ma_plot = function(fc, colour = "modelName", legend = TRUE){
+    ma_plot = function(fc, colour, legend = TRUE){
       if ( missing(fc))
         fc <- self$fcthresh
+      if(missing(colour)){
+        colour <- self$modelName
+      }
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF$group_1) && !is.null(contrastDF$group_2)) {
         # pdf version
@@ -1188,10 +1202,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column in contrast matrix with colour coding.
     #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    ma_plotly = function(fc, colour = "modelName", legend = TRUE){
+    ma_plotly = function(fc, colour, legend = TRUE){
       # html version
       if (missing(fc))
         fc <- self$fcthresh
+      if(missing(colour))
+        colour <- self$modelName
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF$group_1) && !is.null(contrastDF$group_2)) {
         contrastDF  <- contrastDF |>
@@ -1210,10 +1226,12 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column with colour coding
     #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    score_plot = function(scorespec,  colour = "modelName", legend = TRUE ){
+    score_plot = function(scorespec,  colour, legend = TRUE ){
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
+      if(missing(colour))
+        colour <- self$modelName
       res <- list()
       if (length(self$score_spec) > 0) {
         res <- private$.score_plot(
@@ -1230,11 +1248,15 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param colour column with colour coding
     #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    score_plotly = function(scorespec,  colour = "modelName", legend = TRUE ){
+    score_plotly = function(scorespec,
+                            colour,
+                            legend = TRUE ){
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
-      contrastDF <- self$contrastDF |> plotly::highlight_key(~ subject_Id)
+      if(missing(colour))
+        colour <- self$modelName
+      contrastDF <- self$contrastDF |> plotly::highlight_key( ~subject_Id )
       res <- private$.score_plot(
         contrastDF,
         self$score_spec,
@@ -1260,8 +1282,10 @@ Contrasts_Plotter <- R6::R6Class(
         if (is.numeric(self$fcthresh)) {
           filt <-  dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
         }
-        sumC <- group_by(filt, contrast, modelName) |> dplyr::summarize(n = n())
-        p <- ggplot(sumC, aes(x = contrast, y = n, fill = modelName)) +
+        sumC <- group_by(filt, !!sym(self$contrast), !!sym(self$modelName)) |>
+          dplyr::summarize(n = n())
+        p <- ggplot(sumC,
+                    aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$modelName))) +
           geom_bar(position = "stack", stat = "identity")
         resBar[[scN]] <- list(plot = p, summary = sumC)
       }

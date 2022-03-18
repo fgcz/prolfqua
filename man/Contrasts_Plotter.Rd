@@ -139,7 +139,7 @@ Other plotting:
 \describe{
 \item{\code{contrastDF}}{data frame with contrasts}
 
-\item{\code{modelName}}{name of model}
+\item{\code{name}}{of column with model name}
 
 \item{\code{subject_Id}}{hierarchy key columns}
 
@@ -156,6 +156,13 @@ Other plotting:
 \item{\code{histogram_spec}}{plot specification}
 
 \item{\code{fcthresh}}{fold change threshold}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{name}}{of column with model name}
 }
 \if{html}{\out{</div>}}
 }
@@ -190,7 +197,7 @@ create Crontrast_Plotter
     xlim = c(0, 1, 0.05))),
   score = list(list(score = "statistic", thresh = NULL)),
   fcthresh = 1,
-  modelName = "Model",
+  modelName = "modelName",
   diff = "diff",
   contrast = "contrast"
 )}\if{html}{\out{</div>}}
@@ -211,7 +218,7 @@ create Crontrast_Plotter
 
 \item{\code{fcthresh}}{default 1 (log2 FC threshold)}
 
-\item{\code{modelName}}{name of model}
+\item{\code{modelName}}{name of column with model names}
 
 \item{\code{diff}}{fold change (difference) diff column}
 
@@ -271,7 +278,7 @@ plot histogram of differences (diff) fold change
 volcano plots (fold change vs FDR)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano(
-  colour = "modelName",
+  colour,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y")
 )}\if{html}{\out{</div>}}
@@ -296,7 +303,7 @@ volcano plots (fold change vs FDR)
 plotly volcano plots
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$volcano_plotly(
-  colour = "modelName",
+  colour,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y")
 )}\if{html}{\out{</div>}}
@@ -332,7 +339,7 @@ Sometimes measured effects sizes (differences between samples groups)
 are biased by the signal intensity (here protein abundance).
 Such systematic effects can be explored using MA-plots.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour, legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -356,7 +363,7 @@ ggplot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour, legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -380,7 +387,7 @@ list of ggplots
 \subsection{Method \code{score_plot()}}{
 plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plot(scorespec, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plot(scorespec, colour, legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -404,7 +411,7 @@ list of ggplots
 \subsection{Method \code{score_plotly()}}{
 plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plotly(scorespec, colour = "modelName", legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$score_plotly(scorespec, colour, legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

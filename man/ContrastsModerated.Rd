@@ -28,10 +28,11 @@ mod <- build_model(
  #ContrastsModerated$debug("get_Plotter")
  contrast <- ContrastsModerated$new(contrast)
  bb <- contrast$get_contrasts()
-
+ #Contrasts_Plotter$debug("ma_plot")
  plotter <- contrast$get_Plotter()
  plotter$histogram()
  plotter$ma_plot()
+
  plotter$volcano()
 
 }
