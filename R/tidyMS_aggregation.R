@@ -187,7 +187,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
                 aes_string(x = table$sampleName , y = aes_y, group = 1),
                 size = 1.3,
                 color = "black",
-                linetype = "dashed") +
+                linetype = "solid") +
     geom_point(data = data,
                aes_string(x = table$sampleName , y = aes_y, group = 1), color = "black", shape = 10)
 }

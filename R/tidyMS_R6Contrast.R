@@ -20,13 +20,11 @@ ContrastsInterface <- R6::R6Class(
     #' column description
     column_description = function() {
       description <- data.frame("contrast" = "contrast name e.g. group1_vs_group2",
-                                "group_1_name" = "name of group 1",
-                                "group_2_name" = "name of group 2",
-                                "group_1" = "mean of expression of group 1",
-                                "group_2" = "mean of expression of group 2",
-                                "avgExpr" = "mean of expression value of protein.",
-                                "sigma" = "residual standard deviation of linear model",
+                                "avg_abundance" = "mean of expression value of protein.",
+                                "sigma" = "residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).",
+                                "se" = "standard error",
                                 "df" = "degrees of freedom",
+                                "statistic",
                                 "diff" = "difference among conditions",
                                 "p.value" = "p-value",
                                 "FDR" = "false discovery rate",

@@ -74,6 +74,7 @@ Other modelling:
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
+\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},
 \code{\link{Model}},

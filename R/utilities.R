@@ -526,8 +526,8 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' @param effect effect size x-axis
 #' @param significance significance
 #' @param proteinID column with protein ids
-#' @param xintercept
-#' @param yintercept
+#' @param xintercept vertical abline at x
+#' @param yintercept horizontal abline at y
 #' @export
 #' @examples
 #'
@@ -538,7 +538,7 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' condition = rep("B",5), Prey = LETTERS[1:5])
 #' data <- dplyr::bind_rows(data, dataB)
 #' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
-#' bc |> subplot()
+#' bc |> plotly::subplot()
 #'
 volcano_Plotly <- function(.data,
                            effect = "fc",

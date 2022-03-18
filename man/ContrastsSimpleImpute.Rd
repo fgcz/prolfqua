@@ -51,6 +51,7 @@ Other modelling:
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
+\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},

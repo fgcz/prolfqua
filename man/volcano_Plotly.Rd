@@ -24,6 +24,10 @@ volcano_Plotly(
 \item{significance}{significance}
 
 \item{proteinID}{column with protein ids}
+
+\item{xintercept}{vertical abline at x}
+
+\item{yintercept}{horizontal abline at y}
 }
 \description{
 volcano plotly
@@ -37,6 +41,6 @@ dataB <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
 condition = rep("B",5), Prey = LETTERS[1:5])
 data <- dplyr::bind_rows(data, dataB)
 bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
-bc |> subplot()
+bc |> plotly::subplot()
 
 }

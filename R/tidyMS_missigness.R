@@ -340,6 +340,16 @@ aggregate_contrast <- function(
   return(res)
 
 }
+
+.get_sides <- function(contrast) {
+  getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
+
+  ast_list <- getAST(rlang::parse_expr(contrast))
+  ast_array <- array(as.character(unlist(ast_list)))
+  ast_array <- gsub("`","",ast_array)
+  return(ast_array)
+}
+
 #' Compute fold changes given Contrasts
 #' @keywords internal
 #' @family imputation
@@ -370,13 +380,6 @@ get_contrast <- function(data,
                          hierarchyKeys,
                          contrasts)
 {
-  getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
-  get_sides <- function(contrast, all_variables) {
-    ast_list <- getAST(rlang::parse_expr(contrast))
-    ast_array <- array(as.character(unlist(ast_list)))
-    bb <- intersect(gsub("`","",ast_array),all_variables)
-    return(bb)
-  }
 
 
   for (i in seq_along(contrasts)) {
@@ -386,7 +389,8 @@ get_contrast <- function(data,
   res <- vector(mode = "list", length(contrasts))
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
-    sides <- get_sides(contrasts[i], colnames(data))
+    sides <- .get_sides(contrasts[i] )
+    sides <- intersect(sides,colnames(data))
 
     df  <- dplyr::select(data ,
                   c( hierarchyKeys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
