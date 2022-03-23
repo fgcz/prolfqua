@@ -73,17 +73,14 @@ cp$volcano()
 }
 \seealso{
 Other modelling: 
-\code{\link{ContrastsModerated}},
+\code{\link{ContrastsInterface}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_proDA}},
-\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -139,7 +136,7 @@ Other plotting:
 \describe{
 \item{\code{contrastDF}}{data frame with contrasts}
 
-\item{\code{name}}{of column with model name}
+\item{\code{modelName}}{of column with model name}
 
 \item{\code{subject_Id}}{hierarchy key columns}
 
@@ -156,13 +153,8 @@ Other plotting:
 \item{\code{histogram_spec}}{plot specification}
 
 \item{\code{fcthresh}}{fold change threshold}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{name}}{of column with model name}
+
+\item{\code{avg.abundance}}{name of column containing avg abundance values.}
 }
 \if{html}{\out{</div>}}
 }
@@ -199,7 +191,8 @@ create Crontrast_Plotter
   fcthresh = 1,
   modelName = "modelName",
   diff = "diff",
-  contrast = "contrast"
+  contrast = "contrast",
+  avg.abundance = "avgAbd"
 )}\if{html}{\out{</div>}}
 }
 
@@ -223,6 +216,8 @@ create Crontrast_Plotter
 \item{\code{diff}}{fold change (difference) diff column}
 
 \item{\code{contrast}}{contrast column}
+
+\item{\code{avg.abundance}}{name of column with average abundance}
 }
 \if{html}{\out{</div>}}
 }

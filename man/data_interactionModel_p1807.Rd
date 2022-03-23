@@ -24,7 +24,6 @@ Other data:
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_checksummarizerobust}},
 \code{\link{data_correlatedPeptideList}},
-\code{\link{data_exampleForRopeca}},
 \code{\link{data_factor_levelContrasts}},
 \code{\link{data_ionstar}},
 \code{\link{data_lm_models_to_test}},

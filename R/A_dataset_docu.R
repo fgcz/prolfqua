@@ -150,13 +150,6 @@ NULL
 
 # #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_exampleForRopeca'
-
-# #@usage data_exampleForRopeca <- prolfqua_data("data_exampleForRopeca")
 
 # data_factor_levelContrasts <- factor_levelContrasts
 # usethis::use_data(data_factor_levelContrasts, compress = TRUE, overwrite = TRUE)

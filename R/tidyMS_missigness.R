@@ -334,7 +334,6 @@ aggregate_contrast <- function(
                                      .names = "{col}"
                                      ),
                               .groups = "drop")
-  #res <- dplyr::full_join(ungroup(resC),ungroup(resE), by = grouping_columns)
   res <- Reduce(function(x,y){ dplyr::full_join(x , y , by = grouping_columns)},
                 list(resN,resE,resC) )
   return(res)
@@ -434,8 +433,8 @@ get_contrast <- function(data,
 #' res <- get_imputed_contrasts(data, configur, Contrasts)
 #' head(res)
 #'
-#' if(FALSE){
-#' debug(get_imputed_contrasts)
+#' #if(FALSE){
+#' undebug(get_imputed_contrasts)
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
@@ -444,11 +443,17 @@ get_contrast <- function(data,
 #' head(imputed)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
 #' head(imputedProt)
-#' }
+#' #}
 get_imputed_contrasts <- function(data, config, contrasts, probs = 0.03, global = TRUE){
   imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
   imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
   imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
+  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
+  imputedProt$group_1_name <- NULL
+  imputedProt$group_2_name <- NULL
+  imputedProt$group_1 <- NULL
+  imputedProt$group_2 <- NULL
+
   return(imputedProt)
 }
 #' Histogram summarizing missigness

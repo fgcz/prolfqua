@@ -27,27 +27,30 @@ takes p-value of the scaled p-value
 }
 \examples{
 
-
-
 nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)
 estimate <- runif(nrPep)
+avgAbd <- runif(nrPep)
 protein_Id <- sample(1:800, size = nrPep,
   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 
 plot(table(table(protein_Id)))
 
-testdata <- data.frame(contrast = "contrast1", protein_Id = protein_Id,
-  estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
-  head(testdata)
+testdata <- data.frame(contrast = "contrast1",
+   protein_Id = protein_Id,
+  estimate = estimate,
+  pseudo_estimate = estimate,
+  p.value = p.value,
+  avgAbd = avgAbd )
+
 xx30 <- summary_ROPECA_median_p.scaled(testdata,
                                     subject_Id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 30)
-xx2 <- summary_ROPECA_median_p.scaled(testdata,
 
+xx2 <- summary_ROPECA_median_p.scaled(testdata,
                                     subject_Id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
@@ -63,24 +66,18 @@ hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
 hist(xx2$mad.estimate)
 
-summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast", estimate = "estimate")
-
-
 }
 \seealso{
 Other modelling: 
-\code{\link{ContrastsModerated}},
+\code{\link{ContrastsInterface}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
-\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},

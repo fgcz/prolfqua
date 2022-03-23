@@ -23,7 +23,6 @@ Other data:
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_checksummarizerobust}},
-\code{\link{data_exampleForRopeca}},
 \code{\link{data_factor_levelContrasts}},
 \code{\link{data_interactionModel_p1807}},
 \code{\link{data_ionstar}},

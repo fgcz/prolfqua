@@ -218,7 +218,8 @@ model_analyse <- function(pepIntensity,
   modelProtein <- nestProtein |>
     dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
 
-  modelProtein <- modelProtein |> dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
+  modelProtein <- modelProtein |>
+    dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
 
   modelProteinF <- modelProtein |>
     dplyr::filter( !!sym("exists_lmer") == TRUE)
@@ -576,13 +577,12 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
       if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
-
     res <- data |> dplyr::select(-one_of(cnams))
     return(res)
   }
 
   res <- make_contrasts(df, contrasts )
-  res <- column_to_rownames(res,"interaction")
+  res <- tibble::column_to_rownames(res,"interaction")
   res <- t(res)
   return(res)
 }
@@ -1089,19 +1089,18 @@ moderated_p_limma_long <- function(mm ,
 #' stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))
 #'
 #'
-adjust_p_values <- function(mm,
-                            column = "p.value",
-                            group_by_col = "contrast",
-                            newname = NULL
+adjust_p_values <- function(
+    mm,
+    column = "p.value",
+    group_by_col = "contrast",
+    newname = NULL
 ){
   if (is.null(newname)) {
     newname <- paste0(column, ".adjusted")
   }
   dfg <- mm |>
     dplyr::group_by_at(group_by_col)
-
   xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column),method = "BH"))
-
   return(xx)
 
 }
@@ -1214,27 +1213,30 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' @examples
 #'
-#'
-#'
 #' nrPep <- 10000
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)
 #' estimate <- runif(nrPep)
+#' avgAbd <- runif(nrPep)
 #' protein_Id <- sample(1:800, size = nrPep,
 #'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
 #'
 #' plot(table(table(protein_Id)))
 #'
-#' testdata <- data.frame(contrast = "contrast1", protein_Id = protein_Id,
-#'   estimate = estimate, pseudo_estimate = estimate, p.value = p.value )
-#'   head(testdata)
+#' testdata <- data.frame(contrast = "contrast1",
+#'    protein_Id = protein_Id,
+#'   estimate = estimate,
+#'   pseudo_estimate = estimate,
+#'   p.value = p.value,
+#'   avgAbd = avgAbd )
+#'
 #' xx30 <- summary_ROPECA_median_p.scaled(testdata,
 #'                                     subject_Id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 30)
-#' xx2 <- summary_ROPECA_median_p.scaled(testdata,
 #'
+#' xx2 <- summary_ROPECA_median_p.scaled(testdata,
 #'                                     subject_Id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
@@ -1249,9 +1251,6 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$median.p.value, breaks = 20)
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(xx2$mad.estimate)
-#'
-#' summary_ROPECA_median_p.scaled(prolfqua_data('data_exampleForRopeca'), contrast = "contrast", estimate = "estimate")
-#'
 #'
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
@@ -1276,19 +1275,8 @@ summary_ROPECA_median_p.scaled <- function(
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
       estimate = median(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),
-      median.p.scaled = median(.data$scaled.p, na.rm = TRUE))
-
-
-  if (rlang::has_name(contrasts_data, "group_1_name")) {
-    ccsummary <- contrasts_data |>
-      group_by_at(c(subject_Id, contrast)) |>
-      dplyr::summarize(
-        group_1_name = unique(.data$group_1_name),
-        group_1 = median(.data$group_1, na.rm = TRUE),
-        group_2_name = unique(.data$group_2_name),
-        group_2 = median(.data$group_2, na.rm = TRUE) )
-    summarized.protein <- inner_join(summarized.protein, ccsummary, by = c(subject_Id, contrast))
-  }
+      median.p.scaled = median(.data$scaled.p, na.rm = TRUE),
+      avgAbd = median(.data$avgAbd, na.rm = TRUE))
 
   summarized.protein <- summarized.protein |>
     dplyr::mutate(median.p.value = 1 - abs(.data$median.p.scaled))

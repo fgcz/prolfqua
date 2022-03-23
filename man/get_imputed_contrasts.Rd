@@ -32,8 +32,8 @@ Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dil
 res <- get_imputed_contrasts(data, configur, Contrasts)
 head(res)
 
-if(FALSE){
-debug(get_imputed_contrasts)
+#if(FALSE){
+undebug(get_imputed_contrasts)
 config <- configur
 contrasts <- Contrasts
 imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
@@ -42,22 +42,19 @@ imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrast
 head(imputed)
 imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
 head(imputedProt)
-}
+#}
 }
 \seealso{
 Other modelling: 
-\code{\link{ContrastsModerated}},
+\code{\link{ContrastsInterface}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
-\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_model_coefficients}()},
