@@ -278,7 +278,7 @@ missigness_impute_factors_interactions <-
                              dplyr::inner_join,
                              by = c(config$table$hierarchyKeys(),
                                     config$table$isotopeLabel, "value"))
-    return(intfact)
+    return(dplyr::ungroup(intfact))
   }
 
 
@@ -434,15 +434,11 @@ get_contrast <- function(data,
 #' head(res)
 #'
 #' #if(FALSE){
-#' undebug(get_imputed_contrasts)
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
-#' head(imputed)
-#' imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-#' head(imputed)
+#' imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
-#' head(imputedProt)
 #' #}
 get_imputed_contrasts <- function(data, config, contrasts, probs = 0.03, global = TRUE){
   imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
