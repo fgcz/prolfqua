@@ -55,7 +55,6 @@ ContrastsInterface <- R6::R6Class(
 #'
 #' @rdname ContrastsInterface
 #' @family modelling
-#' @rdname ContrastsInterface
 #' @export
 #' @examples
 #'
