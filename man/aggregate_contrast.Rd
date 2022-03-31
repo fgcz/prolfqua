@@ -42,6 +42,7 @@ plot(meanProt$estimate_median - imputedProt$estimate_median )
 }
 \seealso{
 Other imputation: 
+\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missigness_impute_factors_interactions}()},

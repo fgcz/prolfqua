@@ -42,6 +42,7 @@ plot_raster(analysis, config, show_rownames = TRUE)
 Other plotting: 
 \code{\link{Contrasts_Plotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},

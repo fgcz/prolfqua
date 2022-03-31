@@ -8,7 +8,8 @@ missigness_histogram(
   x,
   config,
   showempty = FALSE,
-  factors = config$table$fkeysDepth()
+  factors = config$table$fkeysDepth(),
+  alpha = 0.1
 )
 }
 \description{
@@ -37,6 +38,7 @@ missigness_histogram(data, configur, showempty=TRUE)
 Other plotting: 
 \code{\link{Contrasts_Plotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
@@ -54,6 +56,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other imputation: 
+\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{aggregate_contrast}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_impute_factors_interactions}()},
