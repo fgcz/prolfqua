@@ -478,7 +478,8 @@ get_imputed_contrasts <- function(data, config, contrasts, probs = 0.03, global 
 missigness_histogram <- function(x,
                                  config,
                                  showempty = FALSE,
-                                 factors = config$table$fkeysDepth()){
+                                 factors = config$table$fkeysDepth(),
+                                 alpha = 0.1){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
   missingPrec <- missingPrec |>
@@ -501,11 +502,18 @@ missigness_histogram <- function(x,
   message(formula)
   meanarea <- paste0("mean_", config$table$getWorkIntensity())
   missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
+
   p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
-    ggplot2::geom_histogram(alpha = 0.2, position = "identity") +
+    ggplot2::geom_density(alpha = alpha, position = "identity") +
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
+  if(FALSE){
+    p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
+      ggplot2::geom_histogram(alpha = 0.2, position = "identity") +
+      ggplot2::facet_grid(as.formula(formula)) +
+      ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  }
   if (!config$table$is_intensity_transformed) {
     p <- p + ggplot2::scale_x_log10()
   }
@@ -595,5 +603,27 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 }
 
 
+#' UpSetR plot from interaction_missing_stats
+#' @export
+#' @keywords internal
+#' @family plotting
+#' @family imputation
+#' @examples
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' configur <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' #debug(UpSet_interaction_missing_stats)
+#' tmp <- UpSet_interaction_missing_stats(data, configur)
+UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
+  tmp <- prolfqua::interaction_missing_stats(data, cf)
+  nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchyKeys(),
+                                            names_from = cf$table$fkeysDepth(),
+                                            values_from = !!rlang::sym("nrMeasured"))
 
+  hl <- length(cf$table$hierarchyKeys())
+  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
+  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] >= tr] <- 1
+  return(as.data.frame(nrMiss))
+}
 

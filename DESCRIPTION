@@ -68,7 +68,6 @@ Suggests:
     proDA,
     vsn
 Remotes:
-    bioc::3.14/limma,
     bioc::3.14/vsn,
     bioc::3.14/proDA,
     bioc::3.14/S4Vectors,

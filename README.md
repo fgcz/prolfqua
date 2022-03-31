@@ -144,12 +144,15 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 - [edgeR tutorial](https://gist.github.com/jdblischak/11384914)
 - [another edgeR tutorial](https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html)
 
+- https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/
+
 # Sample size estimation based on FDR
 
 - [ssize](https://www.bioconductor.org/packages/release/bioc/html/ssize.html)
 - [ssize.fdr](https://CRAN.R-project.org/package=ssize.fdr)
   - related article [https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf]
 - [proper](https://bioconductor.org/packages/release/bioc/html/PROPER.html)
+
 
 # What package name?
 
@@ -160,4 +163,5 @@ https://twitter.com/WitoldE/status/1338799648149041156
 - prolfqua - PROteomics Label Free QUAntification package (read prolewka)
 - LFQService - we do proteomics LFQ services at the FGCZ.
 - nalfqua - Not Another Label Free QUAntification package (read nalewka)
+- prodea - proteomics differential expression analysis ?
 

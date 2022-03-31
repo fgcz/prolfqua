@@ -112,6 +112,7 @@ Other modelling:
 
 Other plotting: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
@@ -334,7 +335,7 @@ Sometimes measured effects sizes (differences between samples groups)
 are biased by the signal intensity (here protein abundance).
 Such systematic effects can be explored using MA-plots.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour, legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plot(fc, colour, legend = TRUE, rank = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -345,6 +346,8 @@ Such systematic effects can be explored using MA-plots.
 \item{\code{colour}}{column in contrast matrix with colour coding}
 
 \item{\code{legend}}{enable legend default TRUE}
+
+\item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
 }
 \if{html}{\out{</div>}}
 }
@@ -358,7 +361,7 @@ ggplot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour, legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts_Plotter$ma_plotly(fc, colour, legend = TRUE, rank = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -369,6 +372,8 @@ ma plotly
 \item{\code{colour}}{column in contrast matrix with colour coding.}
 
 \item{\code{legend}}{enable legend default TRUE}
+
+\item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
 }
 \if{html}{\out{</div>}}
 }

@@ -227,6 +227,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
 #'     "dil.e_vs_b" = "dilution.e - dilution.b" )
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
+#' contrastX$get_contrasts()
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -429,6 +430,10 @@ Contrasts <- R6::R6Class(
 #'  bb <- contrast$get_contrasts()
 #'
 #' csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
+#'
+#' csi$get_contrasts()
+#' contrast$get_contrasts()
+#'
 #' merged <- addContrastResults(contrast, csi)
 #' merged$more$get_contrasts() |> dim()
 #' merged$merged$get_contrasts() |> dim()
@@ -442,6 +447,8 @@ Contrasts <- R6::R6Class(
 #' cp$histogram()
 #' cp$volcano()
 #' cp$ma_plot()
+#'
+#'
 #'
 ContrastsModerated <- R6::R6Class(
   classname = "ContrastsModerated",
@@ -1159,8 +1166,9 @@ Contrasts_Plotter <- R6::R6Class(
     #' @param fc fold change abline
     #' @param colour column in contrast matrix with colour coding
     #' @param legend enable legend default TRUE
+    #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return ggplot
-    ma_plot = function(fc, colour, legend = TRUE){
+    ma_plot = function(fc, colour, legend = TRUE, rank = TRUE){
       if ( missing(fc))
         fc <- self$fcthresh
       if(missing(colour)){
@@ -1169,21 +1177,41 @@ Contrasts_Plotter <- R6::R6Class(
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF[[self$avg.abundance]])) {
         # pdf version
-        fig <- private$.ma_plot(contrastDF ,self$contrast, fc, colour = colour, legend = legend)
+        if(rank){
+          rankcol <- paste0("rank_", self$avg.abundance)
+          contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
+          fig <- private$.ma_plot(
+            contrastDF,
+            rankcol,
+            self$diff,
+            self$contrast,
+            fc,
+            colour = colour,
+            legend = legend )
+        }else{
+          fig <- private$.ma_plot(
+            contrastDF,
+            self$avg.abundance,
+            self$diff,
+            self$contrast,
+            fc,
+            colour = colour,
+            legend = legend)
+        }
       }else{
         warning("no group_1 group_2 columns can't generate MA")
         fig <- NULL
       }
       return(fig)
     },
-
     #' @description
     #' ma plotly
     #' @param fc horizontal lines
     #' @param colour column in contrast matrix with colour coding.
     #' @param legend enable legend default TRUE
+    #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return list of ggplots
-    ma_plotly = function(fc, colour, legend = TRUE){
+    ma_plotly = function(fc, colour, legend = TRUE, rank = FALSE){
       # html version
       if (missing(fc))
         fc <- self$fcthresh
@@ -1191,9 +1219,33 @@ Contrasts_Plotter <- R6::R6Class(
         colour <- self$modelName
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF[[self$avg.abundance]])) {
-        contrastDF  <- contrastDF |>
-          plotly::highlight_key(~subject_Id)
-        fig_plotly <- private$.ma_plot(contrastDF, self$contrast, fc, colour = colour, legend = legend) |>
+        if(rank){
+          rankcol <- paste0("rank_", self$avg.abundance)
+          contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
+          fig <- private$.ma_plot(
+            contrastDF,
+            rankcol,
+            self$diff,
+            self$contrast,
+            fc,
+            colour = colour,
+            legend = legend
+          )
+        } else {
+          contrastDF  <- contrastDF |>
+            plotly::highlight_key(~subject_Id)
+          fig <- private$.ma_plot(
+            contrastDF,
+            self$avg.abundance,
+            self$diff,
+            self$contrast,
+            fc,
+            colour = colour,
+            legend = legend
+          )
+        }
+
+        fig_plotly <- fig |>
           plotly::ggplotly(tooltip = "subject_Id")
 
         return(fig_plotly)
@@ -1320,15 +1372,15 @@ Contrasts_Plotter <- R6::R6Class(
         theme_light()
       return(plot)
     },
-    .ma_plot = function(x, contrast, fc, colour = NULL, legend = TRUE){
-      p <- ggplot(x , aes(x = !!sym(self$avg.abundance),
-                          y = !!sym(self$diff),
+    .ma_plot = function(x, avg.abundance, diff, contrast, fc, colour = NULL, legend = TRUE){
+      p <- ggplot(x , aes(x = !!sym(avg.abundance),
+                          y = !!sym(diff),
                           text = !!sym("subject_Id"),
                           colour = !!sym(colour))) +
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
         facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        ylab("log fold change (M)") + xlab("mean log intensities (A)") +
+        if(FALSE){ ylab("log fold change (M)") + xlab("mean log intensities (A)") } else { NULL } +
         theme_light()
       if ( is.numeric(fc) ) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")

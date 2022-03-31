@@ -1000,7 +1000,13 @@ contrasts_linfct <- function(models,
 #' @keywords internal
 #'
 moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95){
-  sv <- limma::squeezeVar(mm$sigma^2, df = mm[[df]],robust = robust)
+  sv <- prolfqua::squeezeVarRob(mm$sigma^2, df = mm[[df]],robust = robust)
+
+  # pior degrees of freedom are Inf
+  if(all(is.infinite(sv$df.prior))) {
+    sv$df.prior <- mean(mm[[df]]) * nrow(mm)/10
+  }
+
   sv <- tibble::as_tibble(sv)
   sv <- setNames(sv, paste0('moderated.', names(sv)))
   mm <- dplyr::bind_cols(mm, sv)

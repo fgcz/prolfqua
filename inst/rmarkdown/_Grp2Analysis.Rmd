@@ -1,5 +1,5 @@
 ---
-title: "FGCZ Two-Group Analysis \n Statistics for a Quantitative Protein Matrix"
+title: "Differential Expression Analysis of Two Groups."
 author: "Functional Genomics Center Zurich"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -40,38 +40,34 @@ knitr::opts_chunk$set(
 grp2 <- params$grp
 ```
 
-# Glossary
 
-- groups - different treatments, genotypes etc.
-- diff - it is the difference between the two groups. This difference in some cases can be interpreted as log2 FC, e.g. in case of label free quantification, and when the data is log2 transformed and the scaling preserve the variance. In other cases, e.g. TMT where ratio compression can be observed or when using other data transformations, the interpretation is not possible.
-- FDR - false discovery rate
-- p-value - probability of type I error.
-
-
-# Introduction
-
-The following analysis compares protein intensities recorded in two groups of samples (Tables \@ref(tab:samples) and \@ref(tab:annotation)), and tests if they are non-zero.
-
-The protein identification and quantification were performed using: 
-`r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter grp2$Software>"}`. 
-
-The outputs are available in b-fabric [`r grp2$Bfabric$inputID`](`r grp2$Bfabric$inputURL`).
-
-We run a set of functions implemented in the R package _[prolfqua](https://github.com/wolski/prolfqua)_ [@prolfquaGithubIO] to generate visualizations, normalize the data and to compute _moderated t-statistics_[@Smyth2004], p-values and false discovery rates (FDR) for all proteins quantified. The moderation is based on empirical Bayes variance shrinkage, where the individual protein variance is updated using a prior estimated from all the proteins in the experiment.
-
-## Experiment summary
+## B-fabric related information
 
 This report is stored in the LIMS system _bfabric_ <https://fgcz-bfabric.uzh.ch> [@Trker2010] in the project: `r grp2$Bfabric$projectID`, order: `r grp2$Bfabric$orderID`, `r if(!is.null(grp2$Bfabric$workunitID)){ "with the workunit name :" }`  `r grp2$Bfabric$workunitID`.
 
+The inputs of this anlysis are available in b-fabric [`r grp2$Bfabric$inputID`](`r grp2$Bfabric$inputURL`).
 
-The protein matrix is filtered using the following threshold:
+[TODO] specify output location of this report.
 
-- Minimum number of peptides / protein: `r grp2$pop$nrPeptides`.
-- The overall number of proteins in this experiment is: `r grp2$RES$Summary$totalNrOfProteins` 
-- Total number without decoys sequences is `r grp2$RES$Summary$NrOfProteinsNoDecoys` 
-- Percentage of contaminants : `r grp2$RES$Summary$percentOfContaminants` %
-- Percentage of false positives (Decoy sequences) : `r grp2$RES$Summary$percentOfFalsePositives` %
+# Introduction
 
+This analysis tests if the __difference__ among the protein abundances measured in two groups is significantly non-zero. To perform the test the difference estimate is related to the within group variances.
+
+To make the test as sensitive and specific as possible, to increase the power of the test, the methods used to measure protein abundances, and preprocess the data are optimized to minimize the biochemical and technical variance, and to remove biases. However, the downside is that the reported abundances and their differences can only be compared with their variances but often have no biological interpretation. 
+
+The information which this report provides is if a protein is differential expressed between two groups given a  False Discovery Rate (FDR) threshold.
+
+
+# Methods
+
+The protein identification and quantification were performed using: 
+`r if(!is.null(grp2$Software)){grp2$Software} else {"<Specify parameter grp2$Software>"}`. More details can be found in b-fabric.
+
+
+We run a set of functions implemented in the R package _[prolfqua](https://github.com/wolski/prolfqua)_ [@prolfquaGithubIO] to filter and normalize the data, generate visualizations, and to compute differential expression analysis results which are e.g.: difference between groups, t-statistics, degrees of freedom, and  False Discovery Rates (FDR) for all proteins quantified. The improve the power of the tests the protein variances are moderated [@Smyth2004], i.e. the individual protein variances are updated using a variance prior estimated from all the proteins in the experiment.
+
+
+# Results
 
 ```{r samples, eval=TRUE}
 
@@ -84,20 +80,49 @@ knitr::kable(tab, caption = "Nr of samples in each group.")
 Table \@ref(tab:samples) shows the number of samples in each group while Table \@ref(tab:annotation) shows the names of the files assigned to the group.
 
 ```{r annotation, eval=TRUE}
-knitr::kable(grp2$RES$lfqData$factors(), caption = "Group sample mapping.")
+knitr::kable(grp2$RES$lfqData$factors(), caption = "LC-MS raw file annotation table. The content of the sampleName column is used as a short form to plot labels. The group to which a sample is assigned to is shown in the column group.")
 
 ```
 
 
-# Quality Control
+## Protein identification
 
-## Missing Data and Intensity Distribution
+The protein matrix is filtered using the following threshold:
+
+- Minimum number of peptides / protein: `r grp2$pop$nrPeptides`.
+- The overall number of proteins in this experiment is: `r grp2$RES$Summary$totalNrOfProteins` 
+- Total number without decoys sequences is `r grp2$RES$Summary$NrOfProteinsNoDecoys` 
+- Percentage of contaminants : `r grp2$RES$Summary$percentOfContaminants` %
+- Percentage of false positives (Decoy sequences) : `r grp2$RES$Summary$percentOfFalsePositives` %
+
+
+```{r nrPerSample, fig.cap="Number of identified proteins across raw files.", fig.with=10, fig.height=7}
+sum <- SEP$lfqdata_transformed$get_Summariser()
+sum$plot_hierarchy_counts_sample()
+```
+
+### Protein abundance analysis
+
+
+
+The density plot (Figure \@ref(fig:violinPlot)) displays the protein abundance distribution for all raw files of the data set. Mayor differences between raw files could be a hint that the individual protein abundance values are affected by technical biases. These biases might need to be corrected, in order to separate them from biological effects.
+
+(ref:violinPlot) Protein abundance distribution. The dots represent the median log2-transformed abundance value per raw file. The overall density distribution is shown as a rotated kernel density plot.
+
+```{r violinPlot, fig.cap="(ref:violinPlot)", fig.with=10, fig.height=7}
+pl <- grp2$RES$lfqData$get_Plotter()
+pl$intensity_distribution_density()
+hm <- SEP$lfqdata_transformed$get_Plotter()$heatmap()
+
+```
+
+
+### Missing value analysis
+
 
 Figure \@ref(fig:missingProtein) left panel, shows the number of proteins (y) axis with $0-N$ missing values (x - axis), while
 the histogram on the right panel shows the distribution of the mean protein intensities of the group of samples, for all proteins with $0-N$ missing values.
 
-```{r histmissing, eval=FALSE }
-```
 
 (ref:missingProtein) Left panel - number of proteins with $n$ missing values (nrNA), Right panel - distribution of average intensity within group, of proteins with 1 to N missing values.
 
@@ -451,4 +476,12 @@ pander::pander(sessionInfo())
 
 # References
 
+
+
+# Glossary
+
+- groups - different treatments, genotypes etc.
+- diff - it is the difference between the two groups. This difference in some cases can be interpreted as log2 FC, e.g. in case of label free quantification, and when the data is log2 transformed and the scaling preserve the variance. In other cases, e.g. TMT where ratio compression can be observed or when using other data transformations, the interpretation is not possible.
+- FDR - false discovery rate
+- p-value - probability of type I error.
 

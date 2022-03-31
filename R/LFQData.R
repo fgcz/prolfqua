@@ -304,9 +304,9 @@ RowAnnotProtein <-
             #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
             initialize = function(lfqdata, row_annot){
               stopifnot(lfqdata$config$table$hierarchyDepth == 1)
-
               self$pID = lfqdata$config$table$hkeysDepth()
               if (!missing(row_annot)) {
+                row_annot <- dplyr::filter(row_annot, !!sym(self$pID) %in% lfqdata$data[[self$pID]] )
                 stopifnot(self$pID %in% colnames(row_annot))
                 self$row_annot <- row_annot
               } else {
@@ -318,7 +318,7 @@ RowAnnotProtein <-
             #' @param pattern default "REV_"
             annotateREV = function(pattern = "REV_") {
               self$row_annot <- self$row_annot |> mutate(
-                REV = case_when(grepl(pattern, !!sym(self$pID)) ~ TRUE,
+                REV = case_when(grepl(pattern, !!sym(self$pID), ignore.case = TRUE) ~ TRUE,
                                          TRUE ~ FALSE))
 
               return(sum(self$row_annot$REV))
@@ -328,7 +328,7 @@ RowAnnotProtein <-
             #' @param pattern default "^zz|^CON"
             annotateCON = function(pattern = "^zz|^CON") {
               self$row_annot <- self$row_annot |> mutate(
-                CON = case_when(grepl(pattern, !!sym(self$pID)) ~ TRUE,
+                CON = case_when(grepl(pattern, !!sym(self$pID), ignore.case = TRUE) ~ TRUE,
                                 TRUE ~ FALSE))
               return(sum(self$row_annot$CON))
             },

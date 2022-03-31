@@ -69,6 +69,7 @@ mod <- build_model(
  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
     "dil.e_vs_b" = "dilution.e - dilution.b" )
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
+contrastX$get_contrasts()
 
 
 istar <- prolfqua_data('data_ionstar')$normalized()
@@ -92,6 +93,10 @@ mod <- build_model(
  bb <- contrast$get_contrasts()
 
 csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
+
+csi$get_contrasts()
+contrast$get_contrasts()
+
 merged <- addContrastResults(contrast, csi)
 merged$more$get_contrasts() |> dim()
 merged$merged$get_contrasts() |> dim()
@@ -105,6 +110,8 @@ cp <- contrast$get_Plotter()
 cp$histogram()
 cp$volcano()
 cp$ma_plot()
+
+
 
 }
 \seealso{

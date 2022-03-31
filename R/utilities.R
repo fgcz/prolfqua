@@ -475,6 +475,8 @@ table_facade.list <- function(parlist, kable=TRUE){
                     effect = "log2_EFCs",
                     significance = "BFDR",
                     proteinID = "Prey",
+                    color = "modelName",
+                    palette = NULL,
                     xintercept = c(-1,1),
                     yintercept = 0.1,
                     title_size = 25
@@ -508,9 +510,11 @@ table_facade.list <- function(parlist, kable=TRUE){
                        y = as.formula(paste0("~ I(-log10(", significance, "))")),
                        type = "scatter",
                        mode = "markers" ,
-                       color = I("black"),
+                       color = as.formula(paste0("~", color)),
+                       colors=palette ,
                        text = as.formula(paste0("~", proteinID)) ,
                        showlegend = FALSE)
+
   sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
   p2 <- p |> plotly::layout(shapes = sh2) |>
     plotly::add_annotations(contrast, x = xintercept[length(xintercept)],
@@ -532,12 +536,12 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' @examples
 #'
 #' data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("A",5), Prey = LETTERS[1:5])
+#' condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
 #'
 #' dataB <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("B",5), Prey = LETTERS[1:5])
+#' condition = rep("B",5), Prey = LETTERS[1:5],modelName = c("A","A","B","B","B"))
 #' data <- dplyr::bind_rows(data, dataB)
-#' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01)
+#' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 #' bc |> plotly::subplot()
 #'
 volcano_Plotly <- function(.data,
@@ -545,6 +549,8 @@ volcano_Plotly <- function(.data,
                            significance = "BFDR",
                            contrast = "condition",
                            proteinID = "Prey",
+                           color = "modelName",
+                           palette = NULL,
                            xintercept = c(-2,2),
                            yintercept = 0.1,
                            minsignificance = 1e-4,
@@ -573,6 +579,8 @@ volcano_Plotly <- function(.data,
                     .volcano, effect = effect,
                     significance = significance,
                     proteinID = proteinID,
+                    color = color,
+                    palette = palette,
                     xintercept = xintercept,
                     yintercept = yintercept,
                     title_size = title_size
