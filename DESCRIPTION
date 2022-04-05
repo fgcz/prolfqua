@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.3.4
+Version: 0.3.5
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
