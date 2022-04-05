@@ -330,7 +330,8 @@ Contrasts <- R6::R6Class(
         differences <- contrast_result |>
           dplyr::filter(contrast %in% names(self$contrasts))
 
-        avgAbd <- contrast_result |> dplyr::select(!!sym(self$subject_Id), contrast, diff) |>
+        avgAbd <- contrast_result |>
+          dplyr::select(dplyr::all_of(c(self$subject_Id, "contrast", "diff"))) |>
           dplyr::filter(startsWith(contrast , "avg_"))
 
         avgAbd$contrast <- gsub("^avg_","", avgAbd$contrast)
