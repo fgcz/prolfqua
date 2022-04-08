@@ -469,17 +469,26 @@ table_facade.list <- function(parlist, kable=TRUE){
   cols
 }
 
-
+#' @examples
+#'
+#' dataA <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
+#'
+#' bc <- .volcano(dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
+#'
+#' bc |> plotly::subplot()
 .volcano <- function(data,
-                    contrast = NULL,
-                    effect = "log2_EFCs",
-                    significance = "BFDR",
-                    proteinID = "Prey",
-                    color = "modelName",
-                    palette = NULL,
-                    xintercept = c(-1,1),
-                    yintercept = 0.1,
-                    title_size = 25
+                     contrast = NULL,
+                     effect = "log2_EFCs",
+                     significance = "BFDR",
+                     x_annot = min(data[[effect]], na.rm = TRUE),
+                     y_annot = min(data[[significance]], na.rm = TRUE),
+                     proteinID = "Prey",
+                     color = "modelName",
+                     palette = NULL,
+                     xintercept = c(-1,1),
+                     yintercept = 0.1,
+                     title_size = 25
 ){
   vline <- function(x = 0, color = "green") {
     list(
@@ -511,14 +520,15 @@ table_facade.list <- function(parlist, kable=TRUE){
                        type = "scatter",
                        mode = "markers" ,
                        color = as.formula(paste0("~", color)),
-                       colors=palette ,
+                       colors = palette ,
                        text = as.formula(paste0("~", proteinID)) ,
                        showlegend = FALSE)
 
   sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
   p2 <- p |> plotly::layout(shapes = sh2) |>
-    plotly::add_annotations(contrast, x = xintercept[length(xintercept)],
-                            y = -log10(min(data$data()[[significance]])) + 0.3,
+    plotly::add_annotations(contrast,
+                            x = x_annot,
+                            y = -log10(y_annot),
                             showarrow = FALSE,
                             xanchor = "left",
                             font = list(size = title_size))
@@ -543,7 +553,7 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' data <- dplyr::bind_rows(data, dataB)
 #' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 #' bc |> plotly::subplot()
-#'
+#' debug(volcano_Plotly)
 volcano_Plotly <- function(.data,
                            effect = "fc",
                            significance = "BFDR",
@@ -572,20 +582,22 @@ volcano_Plotly <- function(.data,
                                                  makeshared, proteinID = proteinID  ))
 
 
-
+  x_annot = min(.data[[effect]], na.rm = TRUE)
+  y_annot = max(minsignificance, min(.data[[significance]], na.rm = TRUE))
 
   xd <- purrr::map2( xx$shared_data,
                      xx[[contrast]],
-                    .volcano, effect = effect,
-                    significance = significance,
-                    proteinID = proteinID,
-                    color = color,
-                    palette = palette,
-                    xintercept = xintercept,
-                    yintercept = yintercept,
-                    title_size = title_size
+                     .volcano, effect = effect,
+                     significance = significance,
+                     x_annot = x_annot,
+                     y_annot = y_annot,
+                     proteinID = proteinID,
+                     color = color,
+                     palette = palette,
+                     xintercept = xintercept,
+                     yintercept = yintercept,
+                     title_size = title_size
   )
-#  splo <- plotly::subplot(xd, shareX = TRUE, shareY = TRUE)
   return(xd)
 }
 

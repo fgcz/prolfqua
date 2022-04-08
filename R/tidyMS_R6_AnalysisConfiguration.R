@@ -475,12 +475,16 @@ table_factors <- function(pdata, configuration){
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
-#' hierarchy_counts(data, config)
+#' x <- hierarchy_counts(data, config)
+#' x$protein_Id
+#' data <- data |> dplyr::filter( protein_Id == "XYZ")
+#' tmp <- hierarchy_counts(data, config)
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$table$hierarchyKeys()
   res <- pdata |>
     dplyr::group_by_at(config$table$isotopeLabel) |>
     dplyr::summarise_at( hierarchy, n_distinct )
+
   return(res)
 }
 
