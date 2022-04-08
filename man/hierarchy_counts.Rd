@@ -22,7 +22,10 @@ stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 
-hierarchy_counts(data, config)
+x <- hierarchy_counts(data, config)
+x$protein_Id
+data <- data |> dplyr::filter( protein_Id == "XYZ")
+tmp <- hierarchy_counts(data, config)
 }
 \seealso{
 Other summary: 

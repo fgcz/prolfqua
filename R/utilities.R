@@ -553,7 +553,7 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' data <- dplyr::bind_rows(data, dataB)
 #' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 #' bc |> plotly::subplot()
-#' debug(volcano_Plotly)
+#'
 volcano_Plotly <- function(.data,
                            effect = "fc",
                            significance = "BFDR",
