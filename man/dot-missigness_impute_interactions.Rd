@@ -46,10 +46,12 @@ xx <- prolfqua::removeLarge_Q_Values(data, configur)
 xx <- complete_cases(xx, configur)
 
 tmp <- interaction_missing_stats(xx, configur)
+#debug(.missigness_impute_interactions)
 fun <- .missigness_impute_interactions(xx, configur)
 
 long <- fun("long")
 head(long)
+
 debugData <- fun(DEBUG=TRUE)
 names(debugData)
 head(debugData$long)
@@ -65,6 +67,7 @@ missing <- fun("nrMeasured")
  print(sum(is.na(meanArea$mean.dilution.a)))
  #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
-
+tmp <- fun("allWide")
+tmp
 }
 \keyword{internal}

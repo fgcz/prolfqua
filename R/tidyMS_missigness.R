@@ -91,10 +91,12 @@ interaction_missing_stats <- function(pdata,
 #' xx <- complete_cases(xx, configur)
 #'
 #' tmp <- interaction_missing_stats(xx, configur)
+#' #debug(.missigness_impute_interactions)
 #' fun <- .missigness_impute_interactions(xx, configur)
 #'
 #' long <- fun("long")
 #' head(long)
+#'
 #' debugData <- fun(DEBUG=TRUE)
 #' names(debugData)
 #' head(debugData$long)
@@ -110,7 +112,8 @@ interaction_missing_stats <- function(pdata,
 #'  print(sum(is.na(meanArea$mean.dilution.a)))
 #'  #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
 #'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
-#'
+#' tmp <- fun("allWide")
+#' tmp
 .missigness_impute_interactions <- function(pdata,
                                             config,
                                             factors = config$table$fkeysDepth(),
@@ -405,6 +408,20 @@ get_contrast <- function(data,
   return(dplyr::ungroup(res))
 }
 
+
+get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, global = TRUE){
+  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
+  imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
+  imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
+  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
+  imputedProt$group_1_name <- NULL
+  imputedProt$group_2_name <- NULL
+  imputedProt$group_1 <- NULL
+  imputedProt$group_2 <- NULL
+
+  return(imputedProt)
+}
+
 #' compute contrasts based on peptide fold changes
 #'
 #' Computes median of fold peptide fold change to obtain protein fold change.
@@ -440,18 +457,41 @@ get_contrast <- function(data,
 #' imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
 #' #}
-get_imputed_contrasts <- function(data, config, contrasts, probs = 0.03, global = TRUE){
-  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
-  imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-  imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
+get_imputed_contrasts <- function(pepIntensity,
+                                     config,
+                                     Contr,
+                                     present = 0,
+                                     global = TRUE){
+
+  fun <- .missigness_impute_interactions(pepIntensity, config)
+  long <- fun("long")
+  x3 <- long |> filter(nrNAs == (max(long$nrNAs) - (present + 1))) |> pull(meanArea) |> mean(na.rm=TRUE)
+
+  long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
+
+  lt <- long
+  imp <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = imputed_b)
+  lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == max(nrNAs) , nrNAs , 0) )
+  nr <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = nrNAs_b)
+
+  imputed <- get_contrast(ungroup(imp), config$table$hierarchyKeys(), Contr)
+  nrs <- get_contrast(ungroup(nr),  config$table$hierarchyKeys(), Contr)
+
+  nrs <- nrs |> select(all_of(c(config$table$hierarchyKeys(),"contrast", "estimate" )))
+  nrs <- nrs |> rename(indic = estimate)
+  imputed <- inner_join(imputed, nrs)
+  imputed2 <- imputed |> mutate(estimate = ifelse(indic < 0 & estimate < 0, 0, estimate))
+  imputed2 <- imputed2 |> mutate(estimate = ifelse(indic > 0 & estimate > 0, 0, estimate))
+
+  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hkeysDepth())
   imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
   imputedProt$group_1_name <- NULL
   imputedProt$group_2_name <- NULL
   imputedProt$group_1 <- NULL
   imputedProt$group_2 <- NULL
-
   return(imputedProt)
 }
+
 #' Histogram summarizing missigness
 #' @export
 #' @keywords internal

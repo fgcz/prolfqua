@@ -20,26 +20,35 @@ ContrastsInterface <- R6::R6Class(
     #' @description
     #' column description
     column_description = function() {
-      description <- data.frame("contrast" = "contrast name e.g. group1_vs_group2",
-                                "avg.abundance" = "mean abundance value of protein in all samples",
-                                "sigma" = "residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).",
-                                "se" = "standard error",
-                                "df" = "degrees of freedom",
-                                "statistic" = "t-statistics",
-                                "diff" = "difference among conditions",
-                                "p.value" = "p-value",
-                                "FDR" = "false discovery rate",
-                                "conf.low" = "lower value of 95 confidence interval",
-                                "conf.high" = "high value of 95 confidence interval"
+      description <- c(
+        "modelName" = "type of model",
+        "contrast" = "name of difference e.g. group1_vs_group2",
+        "avgAbd" = "mean abundance value of protein in all samples",
+        "diff" = "difference among conditions",
+        "FDR" = "false discovery rate",
+        "statistic" = "t-statistics",
+        "std.error" = "standard error",
+        "df" = "degrees of freedom",
+        "p.value" = "p-value",
+        "conf.low" = "lower value of 95 confidence interval",
+        "conf.high" = "high value of 95 confidence interval",
+        "sigma" = "residual standard deviation of linear model (needed for empirical Bayes variance shrinkage)."
       )
+      description <- data.frame(column_name = names(description), description = description)
       return(description)
     }
   )
 )
 
-.requiredContrastColumns <- c("contrast", "sigma", "df",
-                              "diff", "statistic", "p.value",
-                              "conf.low", "conf.high", "FDR")
+.requiredContrastColumns <- c("contrast",
+                              "diff",
+                              "FDR",
+                              "df",
+                              "sigma",
+                              "statistic",
+                              "p.value",
+                              "conf.low",
+                              "conf.high")
 
 # ContrastsSimpleImpute----
 #' Compute contrasts with group mean imputation (directly from data)
@@ -101,7 +110,7 @@ ContrastsSimpleImpute <- R6::R6Class(
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
                           method = "V1",
-                          probs = 0.03,
+                          probs = 0.1,
                           global = TRUE){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
@@ -129,24 +138,37 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @param all FALSE, do not show all columns (default)
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result)) {
-        result = get_imputed_contrasts(self$lfqdata$data,
-                                       self$lfqdata$config,
-                                       self$contrasts,
-                                       probs = self$probs,
-                                       global = self$global)
-
         if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchyKeys())) {
           stop("hierarchy depth < hierarchyKeys(). Please aggregate first.")
         } else {
+
+          result = get_imputed_contrasts(
+            self$lfqdata$data,
+            self$lfqdata$config,
+            self$contrasts,
+            present = 0,
+            global = self$global)
+
           # compute statistics using pooled variance
           result$isSingular <- TRUE
           result <- select(result , -all_of(c("n","estimate_mad")))
 
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config)
+
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
 
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
+
+          resultNA <- result[result$n == 0, ]
+          resultnotNa <- result[result$n != 0,]
+          meandf <- resultnotNa |> summarize(n = 1, df = 1, sd = mean(sd),sdT = mean(sdT))
+          resultNA$n <- 0
+          resultNA$df <- 1
+          resultNA$sd <- meandf$sd
+          resultNA$sdT <- meandf$sdT
+          result <- bind_rows(resultNA, resultnotNa)
+
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sdT,
                                   p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
 
@@ -228,6 +250,7 @@ ContrastsSimpleImpute <- R6::R6Class(
 #'     "dil.e_vs_b" = "dilution.e - dilution.b" )
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' contrastX$get_contrasts()
+#' contrastX$column_description()
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -314,15 +337,15 @@ Contrasts <- R6::R6Class(
     get_contrasts = function(all = FALSE){
 
       if (is.null(self$contrast_result) ) {
-
         message("determine linear functions:")
         linfct <- self$get_linfct(global = self$global)
         contrast_sides <- self$get_contrast_sides()
         message("compute contrasts:")
-        contrast_result <- contrasts_linfct(self$models,
-                                            linfct,
-                                            subject_Id = self$subject_Id,
-                                            contrastfun = self$contrastfun ) |>
+        contrast_result <- contrasts_linfct(
+          self$models,
+          linfct,
+          subject_Id = self$subject_Id,
+          contrastfun = self$contrastfun ) |>
           ungroup()
 
         contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
@@ -415,6 +438,7 @@ Contrasts <- R6::R6Class(
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
 #'
+#'
 #' ld <- LFQData$new(pepIntensity, config)
 #' lProt <- ld$get_Aggregator()$medpolish()
 #' lProt$rename_response("transformedIntensity")
@@ -424,11 +448,11 @@ Contrasts <- R6::R6Class(
 #'  lProt,
 #'  modelFunction)
 #'
-#'  Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-#'  contrast <- prolfqua::Contrasts$new(mod,
+#' Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#' contrast <- prolfqua::Contrasts$new(mod,
 #'  Contr)
-#'  contrast <- ContrastsModerated$new(contrast)
-#'  bb <- contrast$get_contrasts()
+#' contrast <- ContrastsModerated$new(contrast)
+#' bb <- contrast$get_contrasts()
 #'
 #' csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
 #'

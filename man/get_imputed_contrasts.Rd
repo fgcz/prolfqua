@@ -4,12 +4,12 @@
 \alias{get_imputed_contrasts}
 \title{compute contrasts based on peptide fold changes}
 \usage{
-get_imputed_contrasts(data, config, contrasts, probs = 0.03, global = TRUE)
+get_imputed_contrasts(pepIntensity, config, Contr, present = 0, global = TRUE)
 }
 \arguments{
-\item{data}{data.frame}
-
 \item{config}{AnalysisConfiguration}
+
+\item{data}{data.frame}
 
 \item{contrast}{list of contrasts}
 }

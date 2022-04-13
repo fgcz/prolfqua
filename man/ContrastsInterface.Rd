@@ -70,12 +70,14 @@ mod <- build_model(
     "dil.e_vs_b" = "dilution.e - dilution.b" )
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 contrastX$get_contrasts()
+contrastX$column_description()
 
 
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
+
 
 ld <- LFQData$new(pepIntensity, config)
 lProt <- ld$get_Aggregator()$medpolish()
@@ -86,11 +88,11 @@ mod <- build_model(
  lProt,
  modelFunction)
 
- Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
- contrast <- prolfqua::Contrasts$new(mod,
+Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+contrast <- prolfqua::Contrasts$new(mod,
  Contr)
- contrast <- ContrastsModerated$new(contrast)
- bb <- contrast$get_contrasts()
+contrast <- ContrastsModerated$new(contrast)
+bb <- contrast$get_contrasts()
 
 csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
 
@@ -406,7 +408,7 @@ initialize
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
   method = "V1",
-  probs = 0.03,
+  probs = 0.1,
   global = TRUE
 )}\if{html}{\out{</div>}}
 }
