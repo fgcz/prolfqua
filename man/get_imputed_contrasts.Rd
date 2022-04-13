@@ -4,10 +4,12 @@
 \alias{get_imputed_contrasts}
 \title{compute contrasts based on peptide fold changes}
 \usage{
-get_imputed_contrasts(pepIntensity, config, Contr, present = 0, global = TRUE)
+get_imputed_contrasts(pepIntensity, config, Contr, present = 1, global = TRUE)
 }
 \arguments{
 \item{config}{AnalysisConfiguration}
+
+\item{present}{estimate lod from group with default 1 present values.}
 
 \item{data}{data.frame}
 

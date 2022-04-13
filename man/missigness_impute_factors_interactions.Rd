@@ -9,7 +9,7 @@ missigness_impute_factors_interactions(
   pdata,
   config,
   probs = 0.03,
-  value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
+  value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed"),
   add.prefix = FALSE,
   global = TRUE
 )
@@ -41,8 +41,10 @@ res <- missigness_impute_factors_interactions(xx, configur)
 head(res)
 res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
 head(res)
-fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-fun
+res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
+long <- missigness_impute_factors_interactions(xx, configur, value = "long")
+long
+
 }
 \seealso{
 Other imputation: 

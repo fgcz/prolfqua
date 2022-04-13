@@ -243,13 +243,15 @@ interaction_missing_stats <- function(pdata,
 #' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
 #' head(res)
-#' fun <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-#' fun
+#' res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
+#' long <- missigness_impute_factors_interactions(xx, configur, value = "long")
+#' long
+#'
 missigness_impute_factors_interactions <-
   function(pdata,
            config,
            probs = 0.03,
-           value = c("nrReplicates", "nrMeasured", "meanArea", "imputed"),
+           value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed"),
            add.prefix = FALSE,
            global = TRUE)
   {
@@ -276,11 +278,15 @@ missigness_impute_factors_interactions <-
     for (fun_name in names(fac_fun)) {
       fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
     }
+    if(value == "long"){
+      intfact <- dplyr::bind_rows(fac_res)
+    } else {
+      intfact <- purrr::reduce(fac_res,
+                               dplyr::inner_join,
+                               by = c(config$table$hierarchyKeys(),
+                                      config$table$isotopeLabel, "value"))
 
-    intfact <- purrr::reduce(fac_res,
-                             dplyr::inner_join,
-                             by = c(config$table$hierarchyKeys(),
-                                    config$table$isotopeLabel, "value"))
+    }
     return(dplyr::ungroup(intfact))
   }
 
@@ -431,6 +437,7 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #' @param data data.frame
 #' @param config AnalysisConfiguration
 #' @param contrast list of contrasts
+#' @param present estimate lod from group with default 1 present values.
 #' @keywords internal
 #' @family missingness
 #' @family modelling
@@ -460,12 +467,11 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 get_imputed_contrasts <- function(pepIntensity,
                                      config,
                                      Contr,
-                                     present = 0,
+                                     present = 1,
                                      global = TRUE){
 
-  fun <- .missigness_impute_interactions(pepIntensity, config)
-  long <- fun("long")
-  x3 <- long |> filter(nrNAs == (max(long$nrNAs) - (present + 1))) |> pull(meanArea) |> mean(na.rm=TRUE)
+  long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
+  x3 <- long |> filter(nrNAs == (max(long$nrNAs) - present)) |> pull(meanArea) |> mean(na.rm=TRUE)
 
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
 
