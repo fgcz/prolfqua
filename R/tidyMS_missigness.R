@@ -469,7 +469,7 @@ get_imputed_contrasts <- function(pepIntensity,
                                      Contr,
                                      present = 1,
                                      global = TRUE){
-
+  pepIntensity <- complete_cases(pepIntensity, config)
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
   x3 <- long |> filter(nrNAs == (max(long$nrNAs) - present)) |> pull(meanArea) |> mean(na.rm=TRUE)
 
