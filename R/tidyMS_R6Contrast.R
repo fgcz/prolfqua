@@ -88,21 +88,20 @@ ContrastsSimpleImpute <- R6::R6Class(
     lfqdata = NULL,
     #' @field confint confidence interval
     confint = 0.95,
-    #' @field p.adjust funciton to adjust p-values
+    #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @field global Take global or local values for imputation
     global = logical(),
-    #' @field probs quantile to estimate missing values from.
-    probs = 0.03,
+    #' @field present default 1, presence in interaction to infer limit of detection.
+    present = 1,
     #' @description
     #' initialize
     #' @param lfqdata LFQData
     #' @param contrasts array of contrasts (see example)
     #' @param confint confidence interval
-    #' @param p.adjust method for p-value adjustement - default benjamini hochberg
+    #' @param p.adjust method for p-value adjustment - default Benjamini Hochberg
     #' @param modelName default "groupAverage"
     #' @param method internal default V1
-    #' @param probs which quantile to use for imputation default 0.3
     #' @param global default TRUE use all or per condition data to impute from
     initialize = function(lfqdata,
                           contrasts,
@@ -110,8 +109,8 @@ ContrastsSimpleImpute <- R6::R6Class(
                           p.adjust = prolfqua::adjust_p_values,
                           modelName = "groupAverage",
                           method = "V1",
-                          probs = 0.1,
-                          global = TRUE){
+                          global = TRUE,
+                          present = 1){
       self$subject_Id = lfqdata$config$table$hkeysDepth()
       self$contrasts = contrasts
       self$modelName = modelName
@@ -120,7 +119,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       self$p.adjust = p.adjust
       private$method = method
       self$global  = global
-      self$probs = probs
+      self$present = present
     },
     #' @description
     #' get contrasts sides
@@ -146,7 +145,7 @@ ContrastsSimpleImpute <- R6::R6Class(
             self$lfqdata$data,
             self$lfqdata$config,
             self$contrasts,
-            present = 0,
+            present = self$present,
             global = self$global)
 
           # compute statistics using pooled variance

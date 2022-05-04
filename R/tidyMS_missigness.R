@@ -445,7 +445,7 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #' @examples
 #'
 #'
-#'
+#' library(prolfqua)
 #' bb <- prolfqua_data('data_ionstar')$normalized()
 #' configur <- bb$config
 #' data <- bb$data
@@ -454,6 +454,7 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
+#' #debug(get_imputed_contrasts)
 #' res <- get_imputed_contrasts(data, configur, Contrasts)
 #' head(res)
 #'
@@ -469,10 +470,13 @@ get_imputed_contrasts <- function(pepIntensity,
                                      Contr,
                                      present = 1,
                                      global = TRUE){
-  pepIntensity <- complete_cases(pepIntensity, config)
+  if(! present > 0) {
+    stop("At least 1 observation in interaction to infer LOD.")
+  }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
   x3 <- long |> filter(nrNAs == (max(long$nrNAs) - present)) |> pull(meanArea) |> mean(na.rm=TRUE)
 
+  long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchyKeys())), interaction)
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
 
   lt <- long

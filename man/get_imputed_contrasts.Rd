@@ -22,7 +22,7 @@ peptide fold change is computed based on the average of intensities in the condi
 \examples{
 
 
-
+library(prolfqua)
 bb <- prolfqua_data('data_ionstar')$normalized()
 configur <- bb$config
 data <- bb$data
@@ -31,6 +31,7 @@ data <- prolfqua::removeLarge_Q_Values(data, configur)
 data <- complete_cases(data, configur)
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
+#debug(get_imputed_contrasts)
 res <- get_imputed_contrasts(data, configur, Contrasts)
 head(res)
 

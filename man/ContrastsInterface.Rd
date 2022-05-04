@@ -369,11 +369,11 @@ The objects of this class are cloneable with this method.
 
 \item{\code{confint}}{confidence interval}
 
-\item{\code{p.adjust}}{funciton to adjust p-values}
+\item{\code{p.adjust}}{function to adjust p-values}
 
 \item{\code{global}}{Take global or local values for imputation}
 
-\item{\code{probs}}{quantile to estimate missing values from.}
+\item{\code{present}}{default 1, presence in interaction to infer limit of detection.}
 }
 \if{html}{\out{</div>}}
 }
@@ -408,8 +408,8 @@ initialize
   p.adjust = prolfqua::adjust_p_values,
   modelName = "groupAverage",
   method = "V1",
-  probs = 0.1,
-  global = TRUE
+  global = TRUE,
+  present = 1
 )}\if{html}{\out{</div>}}
 }
 
@@ -422,13 +422,11 @@ initialize
 
 \item{\code{confint}}{confidence interval}
 
-\item{\code{p.adjust}}{method for p-value adjustement - default benjamini hochberg}
+\item{\code{p.adjust}}{method for p-value adjustment - default Benjamini Hochberg}
 
 \item{\code{modelName}}{default "groupAverage"}
 
 \item{\code{method}}{internal default V1}
-
-\item{\code{probs}}{which quantile to use for imputation default 0.3}
 
 \item{\code{global}}{default TRUE use all or per condition data to impute from}
 }
