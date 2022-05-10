@@ -1025,13 +1025,11 @@ ContrastsTable <- R6::R6Class(
 #' p <- cp$histogram_estimate()
 #'
 #' res <- cp$volcano()
-#' names(res)
-#' res$FDR
 #' respltly <- cp$volcano_plotly()
 #'
 #' length(respltly)
 #' cp$ma_plot()
-#' cp$ma_plotly()
+#' cp$ma_plotly(rank=TRUE)
 #' res  <- cp$barplot_threshold()
 #' names(res)
 #' cp$histogram_diff()
@@ -1203,7 +1201,12 @@ Contrasts_Plotter <- R6::R6Class(
         # pdf version
         if(rank){
           rankcol <- paste0("rank_", self$avg.abundance)
-          contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
+
+          contrastDF <- contrastDF |>
+            dplyr::group_by(!!sym(self$contrast)) |>
+            mutate(!!rankcol := rank(!!sym(self$avg.abundance)))
+
+          #contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
           fig <- private$.ma_plot(
             contrastDF,
             rankcol,
@@ -1245,7 +1248,10 @@ Contrasts_Plotter <- R6::R6Class(
       if (!is.null(contrastDF[[self$avg.abundance]])) {
         if(rank){
           rankcol <- paste0("rank_", self$avg.abundance)
-          contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
+          contrastDF <- contrastDF |>
+            dplyr::group_by(!!sym(self$contrast)) |>
+            mutate(!!rankcol := rank(!!sym(self$avg.abundance)))
+
           fig <- private$.ma_plot(
             contrastDF,
             rankcol,
