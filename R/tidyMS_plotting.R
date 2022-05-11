@@ -398,6 +398,7 @@ plot_heatmap <- function(data,
 #' dev.off()
 #' rs <- plot_raster(analysis, config, show_rownames=FALSE)
 #' print(rs)
+#' plot_raster(analysis[1,], config)
 #' plot_raster(analysis, config, "var")
 #' plot_raster(analysis, config, show_rownames = TRUE)
 plot_raster <- function(data,
