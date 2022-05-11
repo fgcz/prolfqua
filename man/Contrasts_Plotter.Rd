@@ -59,13 +59,11 @@ p <- cp$histogram()
 p <- cp$histogram_estimate()
 
 res <- cp$volcano()
-names(res)
-res$FDR
 respltly <- cp$volcano_plotly()
 
 length(respltly)
 cp$ma_plot()
-cp$ma_plotly()
+cp$ma_plotly(rank=TRUE)
 res  <- cp$barplot_threshold()
 names(res)
 cp$histogram_diff()

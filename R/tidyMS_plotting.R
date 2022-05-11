@@ -406,7 +406,7 @@ plot_raster <- function(data,
                         not_na = FALSE,
                         show_rownames = FALSE,
                         ...) {
-  if (nrow(data) == 0 ) {
+  if (nrow(data) <= 1 ) {
     warning("The dataset has :", nrow(data), "")
     return(NULL)
   }
