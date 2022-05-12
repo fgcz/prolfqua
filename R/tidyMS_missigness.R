@@ -474,14 +474,14 @@ get_imputed_contrasts <- function(pepIntensity,
     stop("At least 1 observation in interaction to infer LOD.")
   }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
-  x3 <- long |> filter(nrNAs == (max(long$nrNAs) - present)) |> pull(meanArea) |> mean(na.rm=TRUE)
+  x3 <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> mean(na.rm=TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchyKeys())), interaction)
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
 
   lt <- long
   imp <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = imputed_b)
-  lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == max(nrNAs) , nrNAs , 0) )
+  lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == nrReplicates , 1 , 0) )
   nr <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = nrNAs_b)
 
   imputed <- get_contrast(ungroup(imp), config$table$hierarchyKeys(), Contr)
