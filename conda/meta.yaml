@@ -1,5 +1,6 @@
 {% set name = "prolfqua" %}
 {% set version = "1.0.0" %}
+
 package:
     name: "r-{{ name|lower }}"
     version: "{{ version }}"
@@ -16,9 +17,9 @@ source:
 
 requirements:
     host:
-        - r-base >= 4.1
+        - r-base >=4.1
     run:
-        - r-base >= 4.1
+        - r-base >=4.1
         - r-bookdown
         - r-broom
         - r-conflicted
@@ -56,7 +57,7 @@ requirements:
         - r-rmarkdown
         - r-remotes
         - r-testthat
-        - bioconductor-limma
+        - bioconductor-limma >=3.50.0
         - bioconductor-summarizedexperiment
         - bioconductor-msstats
         - bioconductor-proda
@@ -71,8 +72,6 @@ about:
     license: MIT
     summary: Proteomics Label Free Quantification
 extra:
-    maintainers:
+    recipe-maintainers:
         - wolski
-	- cpanse
-
-        
+        - cpanse

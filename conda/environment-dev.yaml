@@ -4,7 +4,7 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - r-base >= 4.1
+    - r-base >=4.1
     - r-bookdown
     - r-broom
     - r-conflicted
@@ -48,3 +48,4 @@ dependencies:
     - bioconductor-proda
     - bioconductor-s4vectors
     - bioconductor-vsn
+
