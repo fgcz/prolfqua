@@ -30,6 +30,7 @@ Imports:
     dplyr,
     DT,
     forcats,
+    gridExtra,
     ggplot2,
     ggbeeswarm,
     ggrepel,
