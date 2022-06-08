@@ -14,7 +14,7 @@ Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all leve
 }
 \examples{
 
-txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
+txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
 allData <- tidyMQ_merged(txt_directory)
 
 }
