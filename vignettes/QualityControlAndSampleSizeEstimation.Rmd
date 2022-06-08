@@ -218,7 +218,7 @@ stdm_trans
 ## Estimate sample size
 
 
-```{r fig.cap="Empirical cumulative density function of the standard deviation."}
+```{r fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
 stats$density(ggstat = "ecdf")
   
 ```
@@ -229,6 +229,7 @@ stats$density(ggstat = "ecdf")
 sampleSize <- stats$power_t_test_quantiles() |> 
   dplyr::filter(dilution. != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
+
 ```
 
 ```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
@@ -239,21 +240,20 @@ sampleSize |>
 
 ```
 
-Getting statistics for each protein.
+Getting statistics for each protein in each group. The information includes group size, number of observations, standard deviation, variance, mean.
 
 ```{r stats, eval = TRUE}
 head(stats$stats())
-
 ```
 
+You can also estimate the sample size needed to perform differential expression analysis for each protein, given the `power`, `delta`, and `sig.level`.
 
-Getting the sample size for each protein.
 
 ```{r statsWithN, eval = TRUE}
 
-x <- stats$power_t_test()
+x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
 x <- x |> dplyr::filter(dilution. == "a") |> dplyr::arrange(desc(N),protein_Id)
-prolfqua::table_facade(x[1000:1007,], caption = "Sample size for each protein")
+prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 
 ```
 
