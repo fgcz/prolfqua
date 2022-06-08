@@ -49,7 +49,6 @@ Other configuration:
 \code{\link{table_factors}()}
 
 Other deprecated: 
-\code{\link{compute_roc}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_protein_quants}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},

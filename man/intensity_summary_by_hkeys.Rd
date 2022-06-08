@@ -62,7 +62,6 @@ Other aggregation:
 
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{compute_roc}()},
 \code{\link{medpolish_protein_quants}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
