@@ -65,11 +65,6 @@ Suggests:
     SummarizedExperiment,
     proDA,
     vsn
-Remotes:
-    bioc::3.14/vsn,
-    bioc::3.14/proDA,
-    bioc::3.14/S4Vectors,
-    bioc::3.14/SummarizedExperiment
 RoxygenNote: 7.1.2
 Roxygen: list(r6 = TRUE)
 Depends: 
