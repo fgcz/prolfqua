@@ -35,4 +35,5 @@ sum(unique(tmp2$Proteins) %in% proteins)
 tinyevi <- c(tmp[1],tmp[2:length(tmp)][tmp2$Proteins %in% proteins])
 writeLines(tinyevi, "evidence.txt")
 
-zip("maxquant_txt/tiny2.zip", c("maxquant_txt/evidence.txt","maxquant_txt/peptides.txt","maxquant_txt/proteinGroups.txt"))
+zip("tiny2.zip", c("evidence.txt","peptides.txt","proteinGroups.txt"))
+file.remove(c("evidence.txt","peptides.txt","proteinGroups.txt"))

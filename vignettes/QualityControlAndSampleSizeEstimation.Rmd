@@ -1,0 +1,268 @@
+---
+title: "QC and Sample Size Estimation"
+author: "Witold Wolski"
+date: "14/12/2020"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{QC and Sample Size Estimation} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+# Loading data
+
+
+Load the data from MaxQuant proteinGroups.txt file.
+
+```{r LoadDataAndConfigure}
+datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
+inputMQfile <-  file.path(datadir, "tiny2.zip")
+inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
+startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
+```
+
+Read the annotation with the explanatory variables.
+
+```{r}
+annotation <- readxl::read_xlsx(inputAnnotation)
+
+```
+
+
+```{r}
+startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
+head(startdata)
+```
+
+For the sample size estimation we will use bio-reps from the _a_ dilution. 
+We also remove all proteins identified only by a single peptide.
+
+
+```{r}
+startdata <- startdata |> dplyr::filter(sample  == "a")
+startdata <- startdata |> dplyr::filter(nr.peptides > 1)
+
+```
+
+
+We need to _tell_ `prolfqua` which columns in the table contain what information. This is done using the `AnalysisTableAnnotation` class.
+
+The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements.
+In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables.
+You also need to specify the column containing the protein identifiers and the protein intensities.
+
+```{r}
+
+atable <- prolfqua::AnalysisTableAnnotation$new()
+atable$fileName = "raw.file"
+atable$hierarchy[["protein_Id"]] <- c("proteinID")
+atable$hierarchyDepth <- 1
+atable$setWorkIntensity("mq.protein.intensity")
+atable$factors[["dilution."]] = "sample"
+atable$factors[["Run_ID"]] = "run_ID"
+atable$factorDepth <- 1
+
+
+config <- prolfqua::AnalysisConfiguration$new(atable)
+
+
+adata <- prolfqua::setup_analysis(startdata, config)
+
+```
+
+
+Create the LFQData class instance, remove zeros from data.
+
+```{r filterdata}
+lfqdata <- prolfqua::LFQData$new(adata, config)
+lfqdata$remove_small_intensities()
+```
+
+You can convert the data into a data frame in wide format, where the intensities of each sample occupy their own columns.
+
+```{r}
+lfqdata$to_wide()$data[1:3,]
+```
+
+
+## Visualization of not normalized data
+
+```{r makeMissingHeatmap}
+lfqplotter <- lfqdata$get_Plotter()
+lfqplotter$intensity_distribution_density()
+```
+
+
+### Visualization of missing data
+
+```{r}
+nah <- lfqplotter$NA_heatmap()
+```
+
+```{r printMissingHeatmap, fig.cap="Heatmap, black - missing protein intensities, white - present"}
+nah
+```
+
+
+
+```{r fig.cap="# of proteins with 0,1,...N missing values"}
+lfqdata$get_Summariser()$plot_missingness_per_group()
+```
+
+```{r fig.cap="Cumulative sum of the # of proteins with 0,1,...N missing values"}
+lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
+```
+
+```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}
+lfqplotter$missigness_histogram()
+```
+
+# Computing standard deviations, mean and CV.
+
+
+```{r PlotCVDistributions}
+stats <- lfqdata$get_Stats()
+prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
+```
+
+
+```{r fig.cap="Distribution of CV's"}
+stats$density_median()
+
+```
+
+
+```{r fig.cap="Scatter plot of standard deviation vs mean"}
+stdm_raw <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
+stdm_raw
+```
+
+
+## Normalize protein intensities
+
+We normalize the data by first $\log_2$ transforming it and then z-scaling.
+The $log_2$ stabilizes the variance, while the z-scaling removes systematic differences from the samples.
+
+```{r normalizedata}
+lt <- lfqdata$get_Transformer()
+transformed <- lt$log2()$robscale()$lfq
+transformed$config$table$is_intensity_transformed
+
+```
+
+```{r plotDensities, fig.cap="Normalized intensities."}
+pl <- transformed$get_Plotter()
+pl$intensity_distribution_density()
+```
+
+```{r plotScatterMatrix, fig.cap = "Scatterplot matrix"}
+pl$pairs_smooth()
+```
+
+```{r createHeatmap}
+p <- pl$heatmap()
+```
+
+```{r plotheatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
+p
+```
+
+We can also look at the correlation among the samples.
+
+```{r heatmapCor, fig.cap="Heatmap based on sample correlations, Rows - samples, Columns - samples", fig.align=5, fig.height=5}
+hc <- pl$heatmap_cor()
+```
+
+```{r plotHeatmapCor}
+hc
+```
+
+
+```{r showStandardDeviations}
+stats <- transformed$get_Stats()
+prolfqua::table_facade(stats$stats_quantiles()$wide, "Standard deviations")
+
+```
+
+
+```{r sddensity, fig.cap="Density of the standard deviation"}
+stats$density_median()
+```
+
+```{r experiment, include = FALSE}
+chsq <- na.omit(stats$statsdf$sd^2)
+plot(density(chsq[chsq < 10]))
+x <- seq(0,50, length = 1000)
+lines(x*median(chsq) , dchisq(x, df = 4 ), col = 2)
+
+```
+
+Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
+
+```{r checkForHeteroskedasticity, fig.cap="Scatter plot of sd vs mean of protein intensity"}
+stdm_trans <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
+stdm_trans
+#gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
+```
+
+
+
+## Estimate sample size
+
+
+```{r fig.cap="Empirical cumulative density function of the standard deviation."}
+stats$density(ggstat = "ecdf")
+  
+```
+
+
+
+```{r estimateSampleSizes}
+sampleSize <- stats$power_t_test_quantiles() |> 
+  dplyr::filter(dilution. != "All")
+prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
+```
+
+```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
+sampleSize |>
+  ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
+  ggplot2::facet_wrap(~delta) +
+  ggplot2::geom_bar(stat = "identity")
+
+```
+
+Getting statistics for each protein.
+
+```{r stats, eval = TRUE}
+head(stats$stats())
+
+```
+
+
+Getting the sample size for each protein.
+
+```{r statsWithN, eval = TRUE}
+
+x <- stats$power_t_test()
+x <- x |> dplyr::filter(dilution. == "a") |> dplyr::arrange(desc(N),protein_Id)
+prolfqua::table_facade(x[1000:1007,], caption = "Sample size for each protein")
+
+```
+
+
+```{r fig.cap="Distribution of the required sample sizes for three fold change thresholds for all the proteins."}
+x |> ggplot2::ggplot(ggplot2::aes(x = N)) + ggplot2::geom_histogram() + ggplot2::facet_wrap(~delta) + ggplot2::xlim(0,100)
+
+```
+
+
+
+
