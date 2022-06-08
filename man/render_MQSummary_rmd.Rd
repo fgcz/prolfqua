@@ -12,7 +12,8 @@ render_MQSummary_rmd(
   dest_path = ".",
   dest_file_name = "QCandSampleSize.Rmd",
   workdir = tempdir(),
-  format = c("pdf", "html")
+  format = c("pdf", "html"),
+  markdown_path = c("doc/QCandSampleSize.Rmd", "doc/_CVReport.RmdT")
 )
 }
 \arguments{

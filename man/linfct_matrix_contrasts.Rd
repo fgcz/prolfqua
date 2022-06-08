@@ -21,8 +21,8 @@ m <- prolfqua_data('data_basicModel_p1807')
 linfct <- linfct_from_model(m,as_list = FALSE)
 linfct
 
-Contrasts <- c("CMP/MEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
-"someWeird" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
+Contrasts <- c("CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
+"NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
 linfct_matrix_contrasts(linfct, Contrasts )
 
 }
