@@ -18,7 +18,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -27,21 +27,12 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -49,9 +40,6 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -138,32 +126,32 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>LFQData$new()</code></a></p></li>
-<li><p><a href="#method-get_copy"><code>LFQData$get_copy()</code></a></p></li>
-<li><p><a href="#method-get_sample"><code>LFQData$get_sample()</code></a></p></li>
-<li><p><a href="#method-get_subset"><code>LFQData$get_subset()</code></a></p></li>
-<li><p><a href="#method-subjectId"><code>LFQData$subjectId()</code></a></p></li>
-<li><p><a href="#method-is_transformed"><code>LFQData$is_transformed()</code></a></p></li>
-<li><p><a href="#method-intensity_column"><code>LFQData$intensity_column()</code></a></p></li>
-<li><p><a href="#method-remove_small_intensities"><code>LFQData$remove_small_intensities()</code></a></p></li>
-<li><p><a href="#method-filter_proteins_by_peptide_count"><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
-<li><p><a href="#method-omit_NA"><code>LFQData$omit_NA()</code></a></p></li>
-<li><p><a href="#method-complete_cases"><code>LFQData$complete_cases()</code></a></p></li>
-<li><p><a href="#method-to_wide"><code>LFQData$to_wide()</code></a></p></li>
-<li><p><a href="#method-factors"><code>LFQData$factors()</code></a></p></li>
-<li><p><a href="#method-response"><code>LFQData$response()</code></a></p></li>
-<li><p><a href="#method-rename_response"><code>LFQData$rename_response()</code></a></p></li>
-<li><p><a href="#method-hierarchy_counts"><code>LFQData$hierarchy_counts()</code></a></p></li>
-<li><p><a href="#method-summarize_hierarchy"><code>LFQData$summarize_hierarchy()</code></a></p></li>
-<li><p><a href="#method-get_Plotter"><code>LFQData$get_Plotter()</code></a></p></li>
-<li><p><a href="#method-get_Writer"><code>LFQData$get_Writer()</code></a></p></li>
-<li><p><a href="#method-get_Summariser"><code>LFQData$get_Summariser()</code></a></p></li>
-<li><p><a href="#method-get_Stats"><code>LFQData$get_Stats()</code></a></p></li>
-<li><p><a href="#method-get_Transformer"><code>LFQData$get_Transformer()</code></a></p></li>
-<li><p><a href="#method-get_Aggregator"><code>LFQData$get_Aggregator()</code></a></p></li>
-<li><p><a href="#method-filter_difference"><code>LFQData$filter_difference()</code></a></p></li>
-<li><p><a href="#method-clone"><code>LFQData$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-LFQData-new"><code>LFQData$new()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_copy"><code>LFQData$get_copy()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_sample"><code>LFQData$get_sample()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_subset"><code>LFQData$get_subset()</code></a></p></li>
+<li><p><a href="#method-LFQData-subjectId"><code>LFQData$subjectId()</code></a></p></li>
+<li><p><a href="#method-LFQData-is_transformed"><code>LFQData$is_transformed()</code></a></p></li>
+<li><p><a href="#method-LFQData-intensity_column"><code>LFQData$intensity_column()</code></a></p></li>
+<li><p><a href="#method-LFQData-remove_small_intensities"><code>LFQData$remove_small_intensities()</code></a></p></li>
+<li><p><a href="#method-LFQData-filter_proteins_by_peptide_count"><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
+<li><p><a href="#method-LFQData-omit_NA"><code>LFQData$omit_NA()</code></a></p></li>
+<li><p><a href="#method-LFQData-complete_cases"><code>LFQData$complete_cases()</code></a></p></li>
+<li><p><a href="#method-LFQData-to_wide"><code>LFQData$to_wide()</code></a></p></li>
+<li><p><a href="#method-LFQData-factors"><code>LFQData$factors()</code></a></p></li>
+<li><p><a href="#method-LFQData-response"><code>LFQData$response()</code></a></p></li>
+<li><p><a href="#method-LFQData-rename_response"><code>LFQData$rename_response()</code></a></p></li>
+<li><p><a href="#method-LFQData-hierarchy_counts"><code>LFQData$hierarchy_counts()</code></a></p></li>
+<li><p><a href="#method-LFQData-summarize_hierarchy"><code>LFQData$summarize_hierarchy()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Plotter"><code>LFQData$get_Plotter()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Writer"><code>LFQData$get_Writer()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Summariser"><code>LFQData$get_Summariser()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Stats"><code>LFQData$get_Stats()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Transformer"><code>LFQData$get_Transformer()</code></a></p></li>
+<li><p><a href="#method-LFQData-get_Aggregator"><code>LFQData$get_Aggregator()</code></a></p></li>
+<li><p><a href="#method-LFQData-filter_difference"><code>LFQData$filter_difference()</code></a></p></li>
+<li><p><a href="#method-LFQData-clone"><code>LFQData$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-LFQData-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -191,7 +179,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-get_copy"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_copy"></a><div class="section">
 <h3 id="method-get-copy-">Method <code>get_copy()</code><a class="anchor" aria-label="anchor" href="#method-get-copy-"></a></h3>
 <p>get deep copy</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -199,7 +187,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </div>
 
 
-</div><p></p><hr><a id="method-get_sample"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_sample"></a><div class="section">
 <h3 id="method-get-sample-">Method <code>get_sample()</code><a class="anchor" aria-label="anchor" href="#method-get-sample-"></a></h3>
 <p>samples subset of data</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -219,7 +207,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-get_subset"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_subset"></a><div class="section">
 <h3 id="method-get-subset-">Method <code>get_subset()</code><a class="anchor" aria-label="anchor" href="#method-get-subset-"></a></h3>
 <p>get subset of data</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
@@ -235,7 +223,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-subjectId"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-subjectId"></a><div class="section">
 <h3 id="method-subjectid-">Method <code>subjectId()</code><a class="anchor" aria-label="anchor" href="#method-subjectid-"></a></h3>
 <p>get subject ID columns</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -243,7 +231,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </div>
 
 
-</div><p></p><hr><a id="method-is_transformed"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-is_transformed"></a><div class="section">
 <h3 id="method-is-transformed-">Method <code>is_transformed()</code><a class="anchor" aria-label="anchor" href="#method-is-transformed-"></a></h3>
 <p>is data trasfromed</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -263,7 +251,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>logical</p>
 </div>
 
-</div><p></p><hr><a id="method-intensity_column"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-intensity_column"></a><div class="section">
 <h3 id="method-intensity-column-">Method <code>intensity_column()</code><a class="anchor" aria-label="anchor" href="#method-intensity-column-"></a></h3>
 <p>return name of intensity column</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -275,7 +263,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>name of intensity column</p>
 </div>
 
-</div><p></p><hr><a id="method-remove_small_intensities"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-remove_small_intensities"></a><div class="section">
 <h3 id="method-remove-small-intensities-">Method <code><a href="remove_small_intensities.html">remove_small_intensities()</a></code><a class="anchor" aria-label="anchor" href="#method-remove-small-intensities-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -295,7 +283,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>self</p>
 </div>
 
-</div><p></p><hr><a id="method-filter_proteins_by_peptide_count"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-filter_proteins_by_peptide_count"></a><div class="section">
 <h3 id="method-filter-proteins-by-peptide-count-">Method <code><a href="filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-proteins-by-peptide-count-"></a></h3>
 <p>remove proteins with less than X peptides</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
@@ -307,7 +295,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>self</p>
 </div>
 
-</div><p></p><hr><a id="method-omit_NA"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-omit_NA"></a><div class="section">
 <h3 id="method-omit-na-">Method <code>omit_NA()</code><a class="anchor" aria-label="anchor" href="#method-omit-na-"></a></h3>
 <p>Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
@@ -333,7 +321,7 @@ it will be removed</p><div class="section">
 <p>LFQData with NA omitted.</p>
 </div>
 
-</div><p></p><hr><a id="method-complete_cases"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-complete_cases"></a><div class="section">
 <h3 id="method-complete-cases-">Method <code><a href="complete_cases.html">complete_cases()</a></code><a class="anchor" aria-label="anchor" href="#method-complete-cases-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
@@ -353,7 +341,7 @@ it will be removed</p><div class="section">
 <p>self</p>
 </div>
 
-</div><p></p><hr><a id="method-to_wide"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>converts the data to wide</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
@@ -373,7 +361,7 @@ it will be removed</p><div class="section">
 <p>list with data, annotation, and configuration</p>
 </div>
 
-</div><p></p><hr><a id="method-factors"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-factors"></a><div class="section">
 <h3 id="method-factors-">Method <code>factors()</code><a class="anchor" aria-label="anchor" href="#method-factors-"></a></h3>
 <p>Annotation table.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
@@ -385,7 +373,7 @@ it will be removed</p><div class="section">
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-response"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-response"></a><div class="section">
 <h3 id="method-response-">Method <code>response()</code><a class="anchor" aria-label="anchor" href="#method-response-"></a></h3>
 <p>name of response variable</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
@@ -397,7 +385,7 @@ it will be removed</p><div class="section">
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-rename_response"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-rename_response"></a><div class="section">
 <h3 id="method-rename-response-">Method <code>rename_response()</code><a class="anchor" aria-label="anchor" href="#method-rename-response-"></a></h3>
 <p>new name of response variable</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
@@ -413,7 +401,7 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-hierarchy_counts"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-hierarchy_counts"></a><div class="section">
 <h3 id="method-hierarchy-counts-">Method <code><a href="hierarchy_counts.html">hierarchy_counts()</a></code><a class="anchor" aria-label="anchor" href="#method-hierarchy-counts-"></a></h3>
 <p>number of elements at each level</p><div class="section">
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
@@ -421,7 +409,7 @@ it will be removed</p><div class="section">
 </div>
 
 
-</div><p></p><hr><a id="method-summarize_hierarchy"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-summarize_hierarchy"></a><div class="section">
 <h3 id="method-summarize-hierarchy-">Method <code><a href="summarize_hierarchy.html">summarize_hierarchy()</a></code><a class="anchor" aria-label="anchor" href="#method-summarize-hierarchy-"></a></h3>
 <p>e.g. number of peptides per protein etc</p><div class="section">
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
@@ -433,7 +421,7 @@ it will be removed</p><div class="section">
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Plotter"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get Plotter</p><div class="section">
 <h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
@@ -445,7 +433,7 @@ it will be removed</p><div class="section">
 <p>LFQDataPlotter</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Writer"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Writer"></a><div class="section">
 <h3 id="method-get-writer-">Method <code>get_Writer()</code><a class="anchor" aria-label="anchor" href="#method-get-writer-"></a></h3>
 <p>get Writer</p><div class="section">
 <h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
@@ -465,7 +453,7 @@ it will be removed</p><div class="section">
 <p>LFQDataPlotter</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Summariser"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Summariser"></a><div class="section">
 <h3 id="method-get-summariser-">Method <code>get_Summariser()</code><a class="anchor" aria-label="anchor" href="#method-get-summariser-"></a></h3>
 <p>get Summariser</p><div class="section">
 <h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
@@ -477,7 +465,7 @@ it will be removed</p><div class="section">
 <p>LFQDataSummarizer</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Stats"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Stats"></a><div class="section">
 <h3 id="method-get-stats-">Method <code>get_Stats()</code><a class="anchor" aria-label="anchor" href="#method-get-stats-"></a></h3>
 <p>Get <code><a href="LFQDataStats.html">LFQDataStats</a></code>. For more details see <code><a href="LFQDataStats.html">LFQDataStats</a></code>.</p><div class="section">
 <h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
@@ -497,7 +485,7 @@ it will be removed</p><div class="section">
 <p>LFQDataStats</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Transformer"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Transformer"></a><div class="section">
 <h3 id="method-get-transformer-">Method <code>get_Transformer()</code><a class="anchor" aria-label="anchor" href="#method-get-transformer-"></a></h3>
 <p>get Stats</p><div class="section">
 <h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
@@ -509,7 +497,7 @@ it will be removed</p><div class="section">
 <p>LFQDataTransformer</p>
 </div>
 
-</div><p></p><hr><a id="method-get_Aggregator"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-get_Aggregator"></a><div class="section">
 <h3 id="method-get-aggregator-">Method <code>get_Aggregator()</code><a class="anchor" aria-label="anchor" href="#method-get-aggregator-"></a></h3>
 <p>get Aggregator</p><div class="section">
 <h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
@@ -521,7 +509,7 @@ it will be removed</p><div class="section">
 <p>LFQDataAggregator</p>
 </div>
 
-</div><p></p><hr><a id="method-filter_difference"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-filter_difference"></a><div class="section">
 <h3 id="method-filter-difference-">Method <code><a href="filter_difference.html">filter_difference()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-difference-"></a></h3>
 <p>get difference of self with other if other is subset of self</p><div class="section">
 <h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
@@ -546,7 +534,7 @@ it will be removed</p><div class="section">
 <p>LFQData</p>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-LFQData-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
@@ -603,20 +591,20 @@ it will be removed</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc… e~16       e         16    </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">lfqdata</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 62 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 61 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       isotope_n peptide_Id_n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P01030~9~NA                         1            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA                        1           34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__Q3SZR3~50~NA                        1            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O00148|DX39A_HUMAN~156~O00148         1           11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O75436|VP26A_HUMAN~482~O75436         1            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|O75937|DNJC8_HUMAN~527~O75937         1            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|O95361|TRI16_HUMAN~598~O95361         1            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P00505|AATM_HUMAN~667~P00505          1           12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P01889|HLAB_HUMAN~692~P01889          1            8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P02924|ARAF_ECOLI~705~P02924          1            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 52 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P34955~32~NA                        1           13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__Q28107~41~NA                        1            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O15511|ARPC5_HUMAN~313~O15511         1            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|O43660|PLRG1_HUMAN~356~O43660         1            7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|O95373|IPO7_HUMAN~600~O95373          1           26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P01889|HLAB_HUMAN~692~P01889          1            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P02924|ARAF_ECOLI~705~P02924          1            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P07951|TPM2_HUMAN~829~P07951          1           21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 51 more rows</span></span>
 <span class="r-in"><span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id")</span>
@@ -684,8 +672,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

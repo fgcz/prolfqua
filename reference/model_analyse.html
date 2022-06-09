@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -26,21 +26,12 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -48,9 +39,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -110,17 +98,15 @@
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other modelling: 
-<code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
+<code><a href="ContrastsInterface.html">ContrastsInterface</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
-<code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
-<code><a href="Contrasts.html">Contrasts</a></code>,
+<code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
-<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
@@ -187,20 +173,19 @@
 <span class="r-in"> subject_Id <span class="op">=</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
 <span class="r-in"><span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">mr</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id     data     linear_model exists_lmer isSingular df.residual sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P01889|HLA… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              134 0.238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|Q58FF8|H90… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              193 0.211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P19367|HXK… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              265 0.389</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|Q8IWA0|WDR… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               77 0.381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P31943|HNR… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              208 0.319</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P08238|HS9… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              797 0.261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P46087|NOP… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              253 0.249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|O15145|ARP… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               35 0.372</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P60709|ACT… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              535 0.860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|Q9Y570|PPM… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              124 0.748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [9]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id      data     linear_model exists_lmer isSingular df.residual sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|P0A908|MIPA… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               26 0.312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|P46100|ATRX… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               36 0.450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|Q99613|EIF3… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              289 0.392</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|Q8NBS9|TXND… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              234 0.354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|Q14764|MVP_… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              491 0.331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|P46087|NOP2… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              253 0.249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> sp|P28062|PSB8… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               70 0.544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> sp|P28370|SMCA… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              371 0.450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> sp|P30533|AMRP… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              108 0.386</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: nrcoef &lt;int&gt;, nrcoeff_not_NA &lt;int&gt;</span></span>
 </code></pre></div>
     </div>
@@ -216,8 +201,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

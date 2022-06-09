@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -26,21 +26,12 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -48,9 +39,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -103,7 +91,8 @@
   <span class="va">x</span>,
   <span class="va">config</span>,
   showempty <span class="op">=</span> <span class="cn">FALSE</span>,
-  factors <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span>
+  factors <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span>,
+  alpha <span class="op">=</span> <span class="fl">0.1</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -112,6 +101,7 @@
     <div class="dont-index"><p>Other plotting: 
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats</a>()</code>,
 <code><a href="medpolishPlydf.html">medpolishPlydf</a>()</code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a>()</code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition</a>()</code>,
@@ -128,6 +118,7 @@
 <code><a href="plot_raster.html">plot_raster</a>()</code>,
 <code><a href="plot_sample_correlation.html">plot_sample_correlation</a>()</code></p>
 <p>Other imputation: 
+<code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats</a>()</code>,
 <code><a href="aggregate_contrast.html">aggregate_contrast</a>()</code>,
 <code><a href="get_contrast.html">get_contrast</a>()</code>,
 <code><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a>()</code>,
@@ -146,8 +137,7 @@
 <span class="r-in"><span class="fu">missigness_histogram</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 393 rows containing non-finite values (stat_bin).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 393 rows containing non-finite values (stat_density).</span>
 <span class="r-plt img"><img src="missigness_histogram-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">missingPrec</span> <span class="op">&lt;-</span> <span class="fu"><a href="interaction_missing_stats.html">interaction_missing_stats</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span></span>
@@ -164,13 +154,11 @@
 <span class="r-in"><span class="fu">missigness_histogram</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, showempty<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite values (stat_bin).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite values (stat_density).</span>
 <span class="r-plt img"><img src="missigness_histogram-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span class="fu">missigness_histogram</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, showempty<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span>
 <span class="r-plt img"><img src="missigness_histogram-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -186,8 +174,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -26,21 +26,12 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -48,9 +39,6 @@
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -123,6 +111,7 @@
     <div class="dont-index"><p>Other plotting: 
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
+<code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats</a>()</code>,
 <code><a href="medpolishPlydf.html">medpolishPlydf</a>()</code>,
 <code><a href="missigness_histogram.html">missigness_histogram</a>()</code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a>()</code>,
@@ -148,24 +137,25 @@
 <span class="r-in"> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> |&gt;</span>
 <span class="r-in">   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sp|Q9H0C8|ILKAP_HUMAN~4193~Q9H0C8" "sp|P15144|AMPN_HUMAN~1409~P15144" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sp|Q96T58|MINT_HUMAN~3916~Q96T58"  "sp|Q7KZI7|MARK2_HUMAN~3274~Q7KZI7"</span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span class="r-in"> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span class="r-in"> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span>,</span>
 <span class="r-in">                                    <span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span class="r-in">                                    facet_grid_on <span class="op">=</span> <span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span class="r-in"> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">iostar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_IonstarProtein_subsetNorm'</span><span class="op">)</span></span>
@@ -173,46 +163,46 @@
 <span class="r-in">   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "sp|P21589|5NTD_HUMAN~1527~P21589"  "sp|Q9NZM3|ITSN2_HUMAN~4539~Q9NZM3"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "sp|O43660|PLRG1_HUMAN~356~O43660"  "sp|Q6UX04|CWC27_HUMAN~3241~Q6UX04"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "sp|Q13217|DNJC3_HUMAN~2710~Q13217" "sp|P0AC84|GLO2_ECOLI~1143~P0AC84" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "sp|P01889|HLAB_HUMAN~692~P01889"   "sp|Q9Y2W2|WBP11_HUMAN~4806~Q9Y2W2"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "sp|O00148|DX39A_HUMAN~156~O00148"  "sp|P07602|SAP_HUMAN~814~P07602"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "sp|P04150|GCR_HUMAN~721~P04150"    "sp|Q07866|KLC1_HUMAN~2617~Q07866" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "sp|P41252|SYIC_HUMAN~1922~P41252"  "sp|P20042|IF2B_HUMAN~1495~P20042" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "sp|P02924|ARAF_ECOLI~705~P02924"   "sp|Q03001|DYST_HUMAN~2575~Q03001" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "sp|Q6P1J9|CDC73_HUMAN~3199~Q6P1J9" "sp|P19367|HXK1_HUMAN~1483~P19367" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "sp|Q99613|EIF3C_HUMAN~3943~Q99613" "sp|P0ACB7|HEMY_ECOLI~1145~P0ACB7" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "sp|Q07020|RL18_HUMAN~2610~Q07020"  "sp|Q6P587|FAHD1_HUMAN~3211~Q6P587"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "sp|Q7KZI7|MARK2_HUMAN~3274~Q7KZI7" "sp|Q8NBS9|TXND5_HUMAN~3509~Q8NBS9"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "sp|Q969X6|UTP4_HUMAN~3720~Q969X6"  "sp|P10619|PPGB_HUMAN~1325~P10619" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "sp|Q15813|TBCE_HUMAN~2967~Q15813"  "sp|Q9NXH9|TRM1_HUMAN~4499~Q9NXH9" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "sp|P46782|RS5_HUMAN~1984~P46782"   "sp|Q9BY44|EIF2A_HUMAN~4119~Q9BY44"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "sp|Q15392|DHC24_HUMAN~2927~Q15392" "sp|Q03252|LMNB2_HUMAN~2579~Q03252"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "sp|O95361|TRI16_HUMAN~598~O95361"  "sp|P0C054|IBPA_ECOLI~1297~P0C054" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35] "sp|P31943|HNRH1_HUMAN~1750~P31943" "sp|Q9Y666|S12A7_HUMAN~4923~Q9Y666"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "sp|P0ADS6|YGGE_ECOLI~1188~P0ADS6"  "sp|Q12904|AIMP1_HUMAN~2664~Q12904"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39] "sp|Q9UGV2|NDRG3_HUMAN~4627~Q9UGV2" "sp|P08238|HS90B_HUMAN~837~P08238" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [41] "CON__Q28107~41~NA"                 "sp|Q7Z2Z2|EFL1_HUMAN~3299~Q7Z2Z2" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] "sp|Q6PL18|ATAD2_HUMAN~3230~Q6PL18" "sp|P80723|BASP1_HUMAN~2497~P80723"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [45] "sp|Q14764|MVP_HUMAN~2856~Q14764"   "sp|P48449|ERG7_HUMAN~2006~P48449" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [47] "sp|P29745|PEPT_ECOLI~1689~P29745"  "sp|P23141|EST1_HUMAN~1558~P23141" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [49] "sp|Q06481|APLP2_HUMAN~2605~Q06481" "sp|Q9Y619|ORNT1_HUMAN~4920~Q9Y619"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [51] "sp|P27797|CALR_HUMAN~1653~P27797"  "sp|Q15257|PTPA_HUMAN~2912~Q15257" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [53] "sp|P07951|TPM2_HUMAN~829~P07951"   "sp|Q9UN86|G3BP2_HUMAN~4731~Q9UN86"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [55] "sp|P0AGJ9|SYY_ECOLI~1293~P0AGJ9"   "sp|P24534|EF1B_HUMAN~1590~P24534" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [57] "sp|P18754|RCC1_HUMAN~1475~P18754"  "sp|P0AFL3|PPIA_ECOLI~1254~P0AFL3" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [59] "sp|P23229|ITA6_HUMAN~1560~P23229"  "sp|P25516|ACNA_ECOLI~1604~P25516" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [61] "sp|Q9H0C8|ILKAP_HUMAN~4193~Q9H0C8" "sp|Q08752|PPID_HUMAN~2629~Q08752" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [63] "sp|O75436|VP26A_HUMAN~482~O75436"  "sp|Q8WX92|NELFB_HUMAN~3628~Q8WX92"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [65] "sp|P0A6P1|EFTS_ECOLI~918~P0A6P1"   "sp|O15145|ARPC3_HUMAN~283~O15145" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [67] "CON__P34955~32~NA"                 "sp|Q13162|PRDX4_HUMAN~2704~Q13162"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [69] "sp|Q13131|AAPK1_HUMAN~2695~Q13131" "sp|P0A7R9|RS11_ECOLI~974~P0A7R9"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [71] "sp|Q07021|C1QBP_HUMAN~2611~Q07021" "sp|Q9Y2T7|YBOX2_HUMAN~4802~Q9Y2T7"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [73] "sp|Q96C90|PP14B_HUMAN~3749~Q96C90" "sp|Q92620|PRP16_HUMAN~3664~Q92620"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [75] "sp|P30533|AMRP_HUMAN~1714~P30533"  "sp|Q9Y5P4|CERT_HUMAN~4900~Q9Y5P4" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [77] "sp|P37744|RMLA1_ECOLI~1860~P37744" "sp|Q9Y570|PPME1_HUMAN~4883~Q9Y570"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [79] "sp|Q96H79|ZCCHL_HUMAN~3813~Q96H79" "sp|P49821|NDUV1_HUMAN~2067~P49821"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [81] "sp|Q96CV9|OPTN_HUMAN~3755~Q96CV9"  "sp|Q9H267|VP33B_HUMAN~4216~Q9H267"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "sp|O43660|PLRG1_HUMAN~356~O43660"  "sp|P0A908|MIPA_ECOLI~1035~P0A908" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "sp|P46100|ATRX_HUMAN~1971~P46100"  "sp|P01889|HLAB_HUMAN~692~P01889"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "sp|P07602|SAP_HUMAN~814~P07602"    "sp|Q99985|SEM3C_HUMAN~3972~Q99985"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "sp|P25789|PSA4_HUMAN~1615~P25789"  "sp|Q07866|KLC1_HUMAN~2617~Q07866" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "sp|P41252|SYIC_HUMAN~1922~P41252"  "sp|P20042|IF2B_HUMAN~1495~P20042" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "sp|Q86UY8|NT5D3_HUMAN~3351~Q86UY8" "sp|P35251|RFC1_HUMAN~1803~P35251" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "sp|Q15036|SNX17_HUMAN~2886~Q15036" "sp|P02924|ARAF_ECOLI~705~P02924"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "sp|Q58FF8|H90B2_HUMAN~3080~Q58FF8" "sp|Q96KG9|SCYL1_HUMAN~3853~Q96KG9"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "sp|Q9UBI1|COMD3_HUMAN~4592~Q9UBI1" "sp|O75937|DNJC8_HUMAN~527~O75937" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "sp|Q6P3X3|TTC27_HUMAN~3209~Q6P3X3" "sp|P00505|AATM_HUMAN~667~P00505"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "sp|Q9H1Y0|ATG5_HUMAN~4213~Q9H1Y0"  "sp|Q8IWA0|WDR75_HUMAN~3400~Q8IWA0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "CON__P02769~18~NA"                 "sp|Q96T58|MINT_HUMAN~3916~Q96T58" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "sp|Q6P587|FAHD1_HUMAN~3211~Q6P587" "sp|Q8N556|AFAP1_HUMAN~3472~Q8N556"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "sp|P0AGJ5|YFIF_ECOLI~1292~P0AGJ5"  "sp|Q969X6|UTP4_HUMAN~3720~Q969X6" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "sp|P22564|RIHC_ECOLI~1551~P22564"  "sp|Q99873|ANM1_HUMAN~3969~Q99873" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "sp|Q9Y3C8|UFC1_HUMAN~4838~Q9Y3C8"  "sp|Q9NXH9|TRM1_HUMAN~4499~Q9NXH9" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [35] "sp|Q9BY44|EIF2A_HUMAN~4119~Q9BY44" "sp|O60645|EXOC3_HUMAN~416~O60645" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "sp|Q03252|LMNB2_HUMAN~2579~Q03252" "sp|O95361|TRI16_HUMAN~598~O95361" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [39] "sp|Q96FQ6|S10AG_HUMAN~3789~Q96FQ6" "sp|P31943|HNRH1_HUMAN~1750~P31943"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [41] "sp|Q9H2G2|SLK_HUMAN~4222~Q9H2G2"   "sp|O15511|ARPC5_HUMAN~313~O15511" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] "sp|P35613|BASI_HUMAN~1814~P35613"  "sp|P0ADS6|YGGE_ECOLI~1188~P0ADS6" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [45] "sp|Q12904|AIMP1_HUMAN~2664~Q12904" "sp|P08238|HS90B_HUMAN~837~P08238" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [47] "sp|Q7Z2Z2|EFL1_HUMAN~3299~Q7Z2Z2"  "sp|Q14764|MVP_HUMAN~2856~Q14764"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [49] "sp|P0AG80|UGPB_ECOLI~1279~P0AG80"  "sp|P48449|ERG7_HUMAN~2006~P48449" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [51] "sp|P23141|EST1_HUMAN~1558~P23141"  "sp|Q06481|APLP2_HUMAN~2605~Q06481"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [53] "sp|P27797|CALR_HUMAN~1653~P27797"  "sp|Q92615|LAR4B_HUMAN~3662~Q92615"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [55] "sp|P07951|TPM2_HUMAN~829~P07951"   "sp|P46087|NOP2_HUMAN~1970~P46087" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [57] "sp|P0AGJ9|SYY_ECOLI~1293~P0AGJ9"   "sp|P28062|PSB8_HUMAN~1657~P28062" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [59] "sp|O95373|IPO7_HUMAN~600~O95373"   "sp|P18754|RCC1_HUMAN~1475~P18754" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [61] "sp|Q8WVV9|HNRLL_HUMAN~3618~Q8WVV9" "sp|Q14146|URB2_HUMAN~2808~Q14146" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [63] "sp|P25516|ACNA_ECOLI~1604~P25516"  "sp|Q9H0C8|ILKAP_HUMAN~4193~Q9H0C8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [65] "sp|P28370|SMCA1_HUMAN~1669~P28370" "sp|Q8WX92|NELFB_HUMAN~3628~Q8WX92"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [67] "sp|P0A6P1|EFTS_ECOLI~918~P0A6P1"   "sp|P49327|FAS_HUMAN~2032~P49327"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [69] "sp|Q13131|AAPK1_HUMAN~2695~Q13131" "sp|Q9UJW0|DCTN4_HUMAN~4671~Q9UJW0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [71] "sp|O60220|TIM8A_HUMAN~391~O60220"  "sp|Q9Y2T7|YBOX2_HUMAN~4802~Q9Y2T7"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [73] "sp|P30533|AMRP_HUMAN~1714~P30533"  "sp|P37744|RMLA1_ECOLI~1860~P37744"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [75] "sp|P09551|ARGT_ECOLI~884~P09551"   "sp|Q96H79|ZCCHL_HUMAN~3813~Q96H79"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [77] "sp|Q8N6R0|EFNMT_HUMAN~3486~Q8N6R0" "sp|Q5VYK3|ECM29_HUMAN~3147~Q5VYK3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [79] "sp|P49821|NDUV1_HUMAN~2067~P49821" "sp|Q96CV9|OPTN_HUMAN~3755~Q96CV9" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [81] "sp|P0A8P3|FETP_ECOLI~1024~P0A8P3"  "sp|Q9H267|VP33B_HUMAN~4216~Q9H267"</span>
 <span class="r-in"></span>
 <span class="r-in"> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span class="r-in"> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -240,8 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

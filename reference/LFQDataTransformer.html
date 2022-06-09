@@ -18,7 +18,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -27,21 +27,12 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -49,9 +40,6 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -115,15 +103,15 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>LFQDataTransformer$new()</code></a></p></li>
-<li><p><a href="#method-log2"><code>LFQDataTransformer$log2()</code></a></p></li>
-<li><p><a href="#method-get_scales"><code>LFQDataTransformer$get_scales()</code></a></p></li>
-<li><p><a href="#method-robscale"><code>LFQDataTransformer$robscale()</code></a></p></li>
-<li><p><a href="#method-robscale_subset"><code>LFQDataTransformer$robscale_subset()</code></a></p></li>
-<li><p><a href="#method-intensity_array"><code>LFQDataTransformer$intensity_array()</code></a></p></li>
-<li><p><a href="#method-intensity_matrix"><code>LFQDataTransformer$intensity_matrix()</code></a></p></li>
-<li><p><a href="#method-clone"><code>LFQDataTransformer$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-LFQDataTransformer-new"><code>LFQDataTransformer$new()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-log2"><code>LFQDataTransformer$log2()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-get_scales"><code>LFQDataTransformer$get_scales()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-robscale"><code>LFQDataTransformer$robscale()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-robscale_subset"><code>LFQDataTransformer$robscale_subset()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-intensity_array"><code>LFQDataTransformer$intensity_array()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-intensity_matrix"><code>LFQDataTransformer$intensity_matrix()</code></a></p></li>
+<li><p><a href="#method-LFQDataTransformer-clone"><code>LFQDataTransformer$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-LFQDataTransformer-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -139,7 +127,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-log2"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-log2"></a><div class="section">
 <h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
 <p>log2 transform data</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -159,7 +147,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>LFQDataTransformer</p>
 </div>
 
-</div><p></p><hr><a id="method-get_scales"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-get_scales"></a><div class="section">
 <h3 id="method-get-scales-">Method <code>get_scales()</code><a class="anchor" aria-label="anchor" href="#method-get-scales-"></a></h3>
 <p>get mean and variance and standard deviation in each sample</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -171,7 +159,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>list with means and mads</p>
 </div>
 
-</div><p></p><hr><a id="method-robscale"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-robscale"></a><div class="section">
 <h3 id="method-robscale-">Method <code>robscale()</code><a class="anchor" aria-label="anchor" href="#method-robscale-"></a></h3>
 <p>robust scale data</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
@@ -198,7 +186,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>LFQDataTransformer (self)</p>
 </div>
 
-</div><p></p><hr><a id="method-robscale_subset"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-robscale_subset"></a><div class="section">
 <h3 id="method-robscale-subset-">Method <code>robscale_subset()</code><a class="anchor" aria-label="anchor" href="#method-robscale-subset-"></a></h3>
 <p>log2 transform and robust scale data based on subset</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -230,7 +218,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>LFQDataTransformer (self)</p>
 </div>
 
-</div><p></p><hr><a id="method-intensity_array"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-intensity_array"></a><div class="section">
 <h3 id="method-intensity-array-">Method <code>intensity_array()</code><a class="anchor" aria-label="anchor" href="#method-intensity-array-"></a></h3>
 <p>Transforms intensities</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -254,7 +242,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>LFQDataTransformer (self)</p>
 </div>
 
-</div><p></p><hr><a id="method-intensity_matrix"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-intensity_matrix"></a><div class="section">
 <h3 id="method-intensity-matrix-">Method <code>intensity_matrix()</code><a class="anchor" aria-label="anchor" href="#method-intensity-matrix-"></a></h3>
 <p>pass a function which works with matrices, e.g., vsn::justvsn</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -278,7 +266,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <p>LFQDataTransformer (self)</p>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataTransformer-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -356,19 +344,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.91287 25.40720 25.30713 25.34860 24.99317 24.87117 25.32237 25.32536 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.65349 25.02644 25.02104 25.03846 24.76802 24.64080 24.96763 25.07769 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.03271 24.86773 25.00241 25.31334 24.95735 24.86429 25.24402 25.29197 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.74165 24.61770 24.69127 25.02987 24.69455 24.64012 24.94624 25.00198 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.87192 24.81118 25.22755 25.26817 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.67260 24.49503 25.01265 24.98107 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.240941 2.291028 2.207029 2.177368 2.269045 2.291155 2.226452 2.250316 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.115743 2.090707 2.013960 2.032232 2.210286 2.087217 1.999036 2.075636 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.242019 2.257162 2.193539 2.274139 2.251088 2.194637 2.236651 2.299057 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.073448 2.150211 2.040353 2.096466 2.036126 2.021415 2.037890 2.138609 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.200094 2.203840 2.144850 2.245310 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.118326 2.044212 2.030867 2.061539 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="va">lfqTransCheck</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="LFQDataTransformer-2.png" alt="" width="700" height="433"></span>
@@ -402,19 +390,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.06487 25.18006 25.10640 25.17070 25.01920 25.05982 25.09219 25.16274 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.80736 24.80014 24.82929 24.86946 24.78877 24.83317 24.74859 24.90619 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.08631 25.12946 25.16708 25.12507 25.09948 25.10926 25.09393 25.15274 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.80146 24.86485 24.86342 24.83803 24.82896 24.88186 24.80251 24.84985 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.10340 25.04866 25.11597 25.15316 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.90333 24.73846 24.89542 24.86720 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.240941 2.291028 2.207029 2.177368 2.269045 2.291155 2.226452 2.250316 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.115743 2.090707 2.013960 2.032232 2.210286 2.087217 1.999036 2.075636 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.242019 2.257162 2.193539 2.274139 2.251088 2.194637 2.236651 2.299057 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.073448 2.150211 2.040353 2.096466 2.036126 2.021415 2.037890 2.138609 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.200094 2.203840 2.144850 2.245310 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.118326 2.044212 2.030867 2.061539 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"></span>
@@ -432,8 +420,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

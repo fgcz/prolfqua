@@ -18,7 +18,7 @@ peptide fold change is computed based on the average of intensities in the condi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -27,21 +27,12 @@ peptide fold change is computed based on the average of intensities in the condi
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -49,9 +40,6 @@ peptide fold change is computed based on the average of intensities in the condi
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -101,32 +89,32 @@ peptide fold change is computed based on the average of intensities in the condi
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, <span class="va">contrasts</span>, probs <span class="op">=</span> <span class="fl">0.03</span>, global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">pepIntensity</span>, <span class="va">config</span>, <span class="va">Contr</span>, present <span class="op">=</span> <span class="fl">1</span>, global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
-<dd><p>data.frame</p></dd>
-<dt>config</dt>
+    <dl><dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+<dt>present</dt>
+<dd><p>estimate lod from group with default 1 present values.</p></dd>
+<dt>data</dt>
+<dd><p>data.frame</p></dd>
 <dt>contrast</dt>
 <dd><p>list of contrasts</p></dd>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other modelling: 
-<code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
+<code><a href="ContrastsInterface.html">ContrastsInterface</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
-<code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
-<code><a href="Contrasts.html">Contrasts</a></code>,
+<code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
-<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_model_coefficients.html">get_model_coefficients</a>()</code>,
@@ -160,7 +148,7 @@ peptide fold change is computed based on the average of intensities in the condi
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span></span>
 <span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span>
@@ -170,33 +158,35 @@ peptide fold change is computed based on the average of intensities in the condi
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"dilution.b - dilution.a"</span>, <span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"dilution.c - dilution.e"</span><span class="op">)</span></span>
+<span class="r-in"><span class="co">#debug(get_imputed_contrasts)</span></span>
 <span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, <span class="va">Contrasts</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id", "contrast")</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast     protein_Id        group_1_name group_2_name     n estimate_median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dilution.b-a CON__P01030~9~NA  dilution.b   dilution.a       1       -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">7</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dilution.b-a CON__P02769~18~NA dilution.b   dilution.a      33        0.000<span style="text-decoration: underline;">881</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> dilution.b-a CON__P34955~32~NA dilution.b   dilution.a      13       -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">6</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> dilution.b-a CON__Q28107~41~NA dilution.b   dilution.a       4       -<span style="color: #BB0000;">0.210</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> dilution.b-a CON__Q3SZR3~50~NA dilution.b   dilution.a       6       -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">5</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> dilution.b-a sp|L0R819|ASURF_… dilution.b   dilution.a       1        0.740   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: estimate_mad &lt;dbl&gt;, group_1 &lt;dbl&gt;, group_2 &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast     protein_Id                  n estimate_median estimate_mad avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dilution.b-a CON__P01030~9~NA            1       -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">7</span>         0      -<span style="color: #BB0000;">1.00</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dilution.b-a CON__P02769~18~NA          33        0.000<span style="text-decoration: underline;">881</span>       0.098<span style="text-decoration: underline;">4</span>  3.46 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> dilution.b-a CON__P34955~32~NA          13       -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">6</span>         0.066<span style="text-decoration: underline;">7</span>  2.85 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> dilution.b-a CON__Q28107~41~NA           4       -<span style="color: #BB0000;">0.210</span>          0.079<span style="text-decoration: underline;">5</span> -<span style="color: #BB0000;">1.43</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> dilution.b-a CON__Q3SZR3~50~NA           6       -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">5</span>         0.083<span style="text-decoration: underline;">5</span>  0.901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> dilution.b-a sp|L0R819|ASURF_HUMAN~…     1        0.740          0      -<span style="color: #BB0000;">0.701</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/debug.html" class="external-link">debug</a></span><span class="op">(</span><span class="va">get_imputed_contrasts</span><span class="op">)</span></span>
+<span class="r-in"><span class="co">#if(FALSE){</span></span>
 <span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">configur</span></span>
 <span class="r-in"><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="va">Contrasts</span></span>
 <span class="r-in"><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"imputed"</span> <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_contrast.html">get_contrast</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">)</span>, <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>, <span class="va">contrasts</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_contrast.html">get_contrast</a></span><span class="op">(</span><span class="va">imputed</span>, <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>, <span class="va">contrasts</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
 <span class="r-in"><span class="va">imputedProt</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_contrast.html">aggregate_contrast</a></span><span class="op">(</span><span class="va">imputed</span>,  subject_Id <span class="op">=</span>  <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">imputedProt</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span class="co">#}</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -211,8 +201,7 @@ peptide fold change is computed based on the average of intensities in the condi
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

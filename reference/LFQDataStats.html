@@ -18,7 +18,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -27,21 +27,12 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Auxiliary_ExDesignSurvey.html">Auxiliary - Bioinformatics Project Meeting Agenda</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_2.html">Auxiliary - Euro Bioconductor 2020</a>
-    </li>
-    <li>
-      <a href="../articles/Auxiliary_prolfquaAbstract_BioC2021.html">Auxiliary - Prolfqua - R package for visualization and modelling of proteomics label-free quantification data</a>
-    </li>
-    <li>
       <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
     </li>
     <li>
@@ -49,9 +40,6 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
     </li>
     <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
-    </li>
-    <li>
-      <a href="../articles/Preprocessing2Factors.html">Preprocessing Dataset with two Factors.</a>
     </li>
     <li>
       <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
@@ -138,18 +126,18 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>LFQDataStats$new()</code></a></p></li>
-<li><p><a href="#method-stats"><code>LFQDataStats$stats()</code></a></p></li>
-<li><p><a href="#method-stats_quantiles"><code>LFQDataStats$stats_quantiles()</code></a></p></li>
-<li><p><a href="#method-density"><code>LFQDataStats$density()</code></a></p></li>
-<li><p><a href="#method-density_median"><code>LFQDataStats$density_median()</code></a></p></li>
-<li><p><a href="#method-violin"><code>LFQDataStats$violin()</code></a></p></li>
-<li><p><a href="#method-violin_median"><code>LFQDataStats$violin_median()</code></a></p></li>
-<li><p><a href="#method-stdv_vs_mean"><code>LFQDataStats$stdv_vs_mean()</code></a></p></li>
-<li><p><a href="#method-power_t_test_quantiles"><code>LFQDataStats$power_t_test_quantiles()</code></a></p></li>
-<li><p><a href="#method-power_t_test"><code>LFQDataStats$power_t_test()</code></a></p></li>
-<li><p><a href="#method-clone"><code>LFQDataStats$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-LFQDataStats-new"><code>LFQDataStats$new()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-stats"><code>LFQDataStats$stats()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-stats_quantiles"><code>LFQDataStats$stats_quantiles()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-density"><code>LFQDataStats$density()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-density_median"><code>LFQDataStats$density_median()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-violin"><code>LFQDataStats$violin()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-violin_median"><code>LFQDataStats$violin_median()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-stdv_vs_mean"><code>LFQDataStats$stdv_vs_mean()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-power_t_test_quantiles"><code>LFQDataStats$power_t_test_quantiles()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-power_t_test"><code>LFQDataStats$power_t_test()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-clone"><code>LFQDataStats$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-LFQDataStats-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>create analyse variances and CV</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -169,7 +157,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-stats"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-stats"></a><div class="section">
 <h3 id="method-stats-">Method <code><a href="https://rdrr.io/r/stats/stats-package.html" class="external-link">stats()</a></code><a class="anchor" aria-label="anchor" href="#method-stats-"></a></h3>
 <p>access data.frame with statistics</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -181,7 +169,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>data.frame with computed statistics</p>
 </div>
 
-</div><p></p><hr><a id="method-stats_quantiles"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-stats_quantiles"></a><div class="section">
 <h3 id="method-stats-quantiles-">Method <code>stats_quantiles()</code><a class="anchor" aria-label="anchor" href="#method-stats-quantiles-"></a></h3>
 <p>Determine CV or sd for the quantiles</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -197,7 +185,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-density"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-density"></a><div class="section">
 <h3 id="method-density-">Method <code><a href="https://rdrr.io/r/stats/density.html" class="external-link">density()</a></code><a class="anchor" aria-label="anchor" href="#method-density-"></a></h3>
 <p>plots density or ecdf</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
@@ -217,7 +205,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>ggplot</p>
 </div>
 
-</div><p></p><hr><a id="method-density_median"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-density_median"></a><div class="section">
 <h3 id="method-density-median-">Method <code>density_median()</code><a class="anchor" aria-label="anchor" href="#method-density-median-"></a></h3>
 <p>plot density or ecdf of CV or sd for the 50<!-- % of low intensity data and 50% of high intensity data --></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -237,7 +225,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>ggplot</p>
 </div>
 
-</div><p></p><hr><a id="method-violin"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-violin"></a><div class="section">
 <h3 id="method-violin-">Method <code>violin()</code><a class="anchor" aria-label="anchor" href="#method-violin-"></a></h3>
 <p>plot violinplot of CV or sd</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -257,7 +245,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>ggplot</p>
 </div>
 
-</div><p></p><hr><a id="method-violin_median"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-violin_median"></a><div class="section">
 <h3 id="method-violin-median-">Method <code>violin_median()</code><a class="anchor" aria-label="anchor" href="#method-violin-median-"></a></h3>
 <p>plot violinplot of CV or sd for the 50<!-- % of low intensity data and 50% of high intensity data --></p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -269,7 +257,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>ggplot</p>
 </div>
 
-</div><p></p><hr><a id="method-stdv_vs_mean"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-stdv_vs_mean"></a><div class="section">
 <h3 id="method-stdv-vs-mean-">Method <code>stdv_vs_mean()</code><a class="anchor" aria-label="anchor" href="#method-stdv-vs-mean-"></a></h3>
 <p>plot sd vs mean</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -289,7 +277,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <p>ggplot</p>
 </div>
 
-</div><p></p><hr><a id="method-power_t_test_quantiles"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-power_t_test_quantiles"></a><div class="section">
 <h3 id="method-power-t-test-quantiles-">Method <code>power_t_test_quantiles()</code><a class="anchor" aria-label="anchor" href="#method-power-t-test-quantiles-"></a></h3>
 <p>compute sample size for entire dataset</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
@@ -322,7 +310,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-power_t_test"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-power_t_test"></a><div class="section">
 <h3 id="method-power-t-test-">Method <code>power_t_test()</code><a class="anchor" aria-label="anchor" href="#method-power-t-test-"></a></h3>
 <p>compute sample for each protein</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
@@ -346,7 +334,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-LFQDataStats-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
@@ -396,8 +384,8 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span class="va">lfqstats</span><span class="op">$</span><span class="fu">violin</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`fun.y` is deprecated. Use `fun` instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 399 rows containing non-finite values (stat_ydensity).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 399 rows containing non-finite values (stat_summary).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 467 rows containing non-finite values (stat_ydensity).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 467 rows containing non-finite values (stat_summary).</span>
 <span class="r-plt img"><img src="LFQDataStats-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span class="fu">runallfuncs</span><span class="op">(</span><span class="va">lfqstats</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`fun.y` is deprecated. Use `fun` instead.</span>
@@ -456,8 +444,7 @@ Decorates LFQData with methods to compute statistics of interactions"><!-- mathj
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

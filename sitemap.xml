@@ -10,15 +10,6 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/Auxiliary_ExDesignSurvey.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Auxiliary_prolfquaAbstract_2.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Auxiliary_prolfquaAbstract_BioC2021.html</loc>
-  </url>
-  <url>
     <loc>/articles/Comparing2Groups.html</loc>
   </url>
   <url>
@@ -26,9 +17,6 @@
   </url>
   <url>
     <loc>/articles/Modelling2Factors.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Preprocessing2Factors.html</loc>
   </url>
   <url>
     <loc>/articles/QCandSampleSize.html</loc>
@@ -73,13 +61,7 @@
     <loc>/reference/Benchmark.html</loc>
   </url>
   <url>
-    <loc>/reference/Contrasts.html</loc>
-  </url>
-  <url>
     <loc>/reference/ContrastsInterface.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ContrastsModerated.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsROPECA.html</loc>
@@ -88,13 +70,13 @@
     <loc>/reference/ContrastsSaintExpress.html</loc>
   </url>
   <url>
-    <loc>/reference/ContrastsSimpleImpute.html</loc>
-  </url>
-  <url>
     <loc>/reference/ContrastsTable.html</loc>
   </url>
   <url>
     <loc>/reference/Contrasts_Plotter.html</loc>
+  </url>
+  <url>
+    <loc>/reference/Contrasts_proDA.html</loc>
   </url>
   <url>
     <loc>/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc>
@@ -148,7 +130,7 @@
     <loc>/reference/RowAnnotProtein.html</loc>
   </url>
   <url>
-    <loc>/reference/addContrastResults.html</loc>
+    <loc>/reference/UpSet_interaction_missing_stats.html</loc>
   </url>
   <url>
     <loc>/reference/add_annotation.html</loc>
@@ -175,9 +157,6 @@
     <loc>/reference/complete_cases.html</loc>
   </url>
   <url>
-    <loc>/reference/compute_roc.html</loc>
-  </url>
-  <url>
     <loc>/reference/contrasts_linfct.html</loc>
   </url>
   <url>
@@ -187,7 +166,7 @@
     <loc>/reference/contrasts_linfct_write.html</loc>
   </url>
   <url>
-    <loc>/reference/copy_2grp_markdown.html</loc>
+    <loc>/reference/copy_SAINTe_doc.html</loc>
   </url>
   <url>
     <loc>/reference/copy_mixed_model_analysis_script.html</loc>
@@ -227,9 +206,6 @@
   </url>
   <url>
     <loc>/reference/data_correlatedPeptideList.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_exampleForRopeca.html</loc>
   </url>
   <url>
     <loc>/reference/data_factor_levelContrasts.html</loc>
@@ -359,9 +335,6 @@
   </url>
   <url>
     <loc>/reference/linfct_matrix_contrasts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make2grpReport.html</loc>
   </url>
   <url>
     <loc>/reference/make_benchmark.html</loc>
@@ -595,6 +568,9 @@
     <loc>/reference/spreadValueVarsIsotopeLabel.html</loc>
   </url>
   <url>
+    <loc>/reference/squeezeVarRob.html</loc>
+  </url>
+  <url>
     <loc>/reference/strategy.html</loc>
   </url>
   <url>
@@ -665,6 +641,9 @@
   </url>
   <url>
     <loc>/reference/transitionCorrelationsJack.html</loc>
+  </url>
+  <url>
+    <loc>/reference/volcano_Plotly.html</loc>
   </url>
   <url>
     <loc>/reference/workflow_DIA_NA_preprocessing.html</loc>
