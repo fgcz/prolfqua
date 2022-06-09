@@ -21,17 +21,19 @@ sticker(imgurl, package="hexSticker", p_size=20, s_x=1, s_y=.75, s_width=.6,
 
 
 library(hexSticker)
-imgurl = "canOpener.svg"
+imgurl = "Army_Knife_2.svg"
+#imgurl = "canOpener.svg"
 sticker(imgurl,
         package = "prolfqua",
         p_color = "black",
         p_size = 7,
+        #p_family = "symbol",
         p_y = 1.6,
-        s_x = 1,
-        s_y = 0.8,
-        s_width = 0.8,
-        h_fill = "green",
-        h_color = "darkgreen",
+        s_x = 1.1,
+        s_y = 0.85,
+        s_width = 0.6,
+        h_fill = "lightblue",
+        h_color = "darkblue",
         filename = "imgfile.png",
         url	= "github.com/fgcz/prolfqua",
         u_size = 2,
