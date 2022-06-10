@@ -45,12 +45,11 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
-See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
-Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
-
-
-Or read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
-
+- See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
+- Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
+- See our article at [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
+which describes our package.
+- Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
 
 
 Detailed documentation with R code:
@@ -63,13 +62,23 @@ Example QC and sample size report
 
 - [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html)
 
-
-
 # How to cite?
 
-If you are using the package in your work please cite:
-https://f1000research.com/slides/9-1476
+Please do reference the [prolfqua article at biorxiv.org](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
 
+```
+@article {Wolski2022.06.07.494524,
+	author = {Wolski, Witold Eryk and Nanni, Paolo and Grossmann, Jonas and d{\textquoteright}Errico, Maria and Schlapbach, Ralph and Panse, Christian},
+	title = {prolfqua: A Comprehensive R-package for Proteomics Differential Expression Analysis},
+	elocation-id = {2022.06.07.494524},
+	year = {2022},
+	doi = {10.1101/2022.06.07.494524},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524},
+	eprint = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524.full.pdf},
+	journal = {bioRxiv}
+}
+```
 
 ## Motivation
 
