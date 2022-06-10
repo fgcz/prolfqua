@@ -1,0 +1,16 @@
+pandoc: 2.17.0.1
+pkgdown: 2.0.3
+pkgdown_sha: ~
+articles:
+  Comparing2Groups: Comparing2Groups.html
+  CreatingConfigurations: CreatingConfigurations.html
+  Modelling2Factors: Modelling2Factors.html
+  QCandSampleSize: QCandSampleSize.html
+  QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
+  Supplement_TidyAnalysis_HL_Skyline: Supplement_TidyAnalysis_HL_Skyline.html
+  Supplement_TidyAnalysis_Skyline_PRM: Supplement_TidyAnalysis_Skyline_PRM.html
+  Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
+  Supplement_srm_summary: Supplement_srm_summary.html
+  Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
+last_built: 2022-06-09T15:58Z
+
