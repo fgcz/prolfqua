@@ -174,7 +174,6 @@ multigroupVolcano <- function(.data,
       color = "blue",
       show.legend = FALSE)
   }
-  p <- p + theme_light()
 
   return(p)
 }
