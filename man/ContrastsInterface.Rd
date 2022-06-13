@@ -34,7 +34,7 @@ Limma moderated contrasts
 
 Limma moderated contrasts
 
-add contrast results from two different functions. Tipically used with Contrast and Cotnrast simple imputed.
+add contrast results from two different functions. Typically used with Contrast and Cotnrast simple imputed.
 }
 \details{
 If there are no observations in one of the groups for some of the proteins,
