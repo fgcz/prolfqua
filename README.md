@@ -9,7 +9,7 @@ This package is developed at the [FGCZ](http://fgcz.ch/).
 
 # How to install prolfqua?
 
-Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher
+Requirements : A Windows|Linux|MacOSX platform with R (>= 4.1) installed.
 
 
 We recommend to install the package using the latest [release](https://github.com/fgcz/prolfqua/releases)
