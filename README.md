@@ -2,7 +2,7 @@
 
 <img src="man/figures/imgfile.png" width="200">
 
-# prolfqua - an R package for Proteomics Label Free Quantification Services
+# prolfqua - a R package for Proteomics Differential Expression Analysis
 
 The R package contains functions for analyzing mass spectrometry based LFQ experiments.
 This package is developed at the [FGCZ](http://fgcz.ch/).
