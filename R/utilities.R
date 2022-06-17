@@ -468,14 +468,14 @@ table_facade.list <- function(parlist, kable=TRUE){
   cols
 }
 
-#' @examples
-#'
-#' dataA <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
-#'
-#' bc <- .volcano(dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
-#'
-#' bc |> plotly::subplot()
+# @examples
+#
+# dataA <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
+# condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
+#
+# bc <- .volcano(dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
+#
+# bc |> plotly::subplot()
 .volcano <- function(data,
                      contrast = NULL,
                      effect = "log2_EFCs",

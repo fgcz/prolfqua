@@ -21,6 +21,7 @@ mq_evidence <- tidyMQ_Evidence(evidence_txt)
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_PeptideProtein}()},
 \code{\link{tidyMQ_Peptides}()},

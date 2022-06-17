@@ -18,10 +18,12 @@ parse MQ peptides.txt
 peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
 peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 mq_peptides <- tidyMQ_Peptides(peptides_txt)
+
 }
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_PeptideProtein}()},

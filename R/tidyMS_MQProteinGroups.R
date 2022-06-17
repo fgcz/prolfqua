@@ -1,8 +1,17 @@
+#' methods for reading  MaxQuant outputs
+#'
+#' Convert outputs into tidy tables
+#'
+#' @family MaxQuant
+#' @name MaxQuant
+NULL
+
 #' extract intensities and annotations from MQ proteinGroups.txt
 #' @export
 #' @keywords internal
 #' @param MQProteinGroups data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @family MaxQuant
+#'
 #' @examples
 #' library(prolfqua)
 #' protein_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
@@ -293,6 +302,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
+#'
 tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
   if (is.character(MQPeptides)) {
     if (grepl("\\.zip$",tolower(MQPeptides))) {

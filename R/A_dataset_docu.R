@@ -41,7 +41,7 @@ NULL
 #' @family deprecated
 #' @family MaxQuant
 #' @family modelling
-#' @family MSFragger
+#' @family FragPipe
 #' @family plotting
 #' @family preprocessing
 #' @family stats

@@ -2,11 +2,11 @@
 % Please edit documentation in R/tidyMS_R6Contrast.R
 \name{ContrastsTable}
 \alias{ContrastsTable}
-\title{ContrastTable (place holder future baseclass?)}
+\title{holds results when contrasts are added.}
 \description{
-ContrastTable (place holder future baseclass?)
+holds results when contrasts are added.
 
-ContrastTable (place holder future baseclass?)
+holds results when contrasts are added.
 }
 \examples{
 
@@ -27,14 +27,17 @@ xcx$get_Plotter()$volcano()
 \code{\link{summary_ROPECA_median_p.scaled}}
 
 Other modelling: 
-\code{\link{ContrastsInterface}},
+\code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSimpleImpute}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
+\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
+\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},

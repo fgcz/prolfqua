@@ -1,7 +1,6 @@
 # ContrastsInterface ----
-#' ContrastsInterface
+#' Base class for all Contrasts classes
 #' @export
-#' @rdname ContrastsInterface
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
@@ -51,18 +50,16 @@ ContrastsInterface <- R6::R6Class(
                               "conf.high")
 
 # ContrastsSimpleImpute----
-#' Compute contrasts with group mean imputation (directly from data)
+#' Compute contrasts with group mean imputation
 #'
 #' If there are no observations in one of the groups for some of the proteins,
 #' the group mean cannot be estimated. Therefore, assuming that the observation
 #' is missing because the protein abundance is below the detection limit,
-#' we substitute the unobserved group mean with the mean of X% smallest
-#' group averages of all the proteins.
-#' If the observations present in the other group allow us to estimate
-#' the variance of the measurement for that protein,
-#' we compute the t-statistic, p-value, and FDR.
+#' we substitute the unobserved group with the median of protein abundances
+#'  observed only in one sample of the group.
+#' The variance of a protein is estimated using the pooled variance
+#' of all observations of all groups.
 #'
-#' @rdname ContrastsInterface
 #' @family modelling
 #' @export
 #' @examples
@@ -103,6 +100,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @param modelName default "groupAverage"
     #' @param method internal default V1
     #' @param global default TRUE use all or per condition data to impute from
+    #' @param present in at most how many samples the protein should be observed
     initialize = function(lfqdata,
                           contrasts,
                           confint = 0.95,
@@ -227,7 +225,6 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' Estimate contrasts using Wald Test
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #' @examples
 #'
 #' # Fitting mixed effects model to peptide data
@@ -429,7 +426,6 @@ Contrasts <- R6::R6Class(
 #' Limma moderated contrasts
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #' @examples
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
@@ -872,8 +868,7 @@ ContrastsSaintExpress <- R6::R6Class(
 # ContrastsTable -----
 
 #'
-#' ContrastTable (place holder future baseclass?)
-#'
+#' holds results when contrasts are added.
 #'
 #' @export
 #' @family modelling
@@ -1466,7 +1461,6 @@ Contrasts_Plotter <- R6::R6Class(
 #' @param modelName name of the merged model default "mergedModel"
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #'
 addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
@@ -1499,9 +1493,9 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
 
   merged <- ContrastsTable$new(merged,
                                subject_Id = prefer$subject_Id,
-                               modelName = paste0(prefermodelName,"_",addmodelName))
-  more <- ContrastsTable$new(more , subject_Id = prefer$subject_Id, modelName = addmodelName)
-  same <-  ContrastsTable$new(same , subject_Id = prefer$subject_Id, modelName = addmodelName)
+                               modelName = paste0(prefermodelName, "_", addmodelName))
+  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = addmodelName)
+  same <-  ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more, same = same))
 }
 

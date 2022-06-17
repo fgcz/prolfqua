@@ -69,8 +69,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 }
 
 
-#' computes auc and pauc given output from ms_bench_add_FPRTPR
-#' using trapez rule
+#' computes auc and pauc using trapez rule
 #' @keywords internal
 #' @family benchmarking
 #' @export
