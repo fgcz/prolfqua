@@ -744,8 +744,8 @@ LFQDataStats <- R6::R6Class(
 #' sum$hierarchy_counts_sample("long")
 #' sum$plot_hierarchy_counts_sample()
 #' sum$interaction_missing_stats()
-#' sum$missingness_per_condition()
-#' sum$missingness_per_condition_cumsum()
+#' sum$missingness_per_group()
+#' sum$missingness_per_group_cumsum()
 #' sum$plot_missingness_per_group()
 #' sum$plot_missingness_per_group_cumsum()
 #'
@@ -787,12 +787,12 @@ LFQDataSummariser <- R6::R6Class(
     },
     #' @description
     #' missing stats per condition
-    missingness_per_condition = function(){
+    missingness_per_group = function(){
       prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$data
     },
     #' @description
     #' missing stats per condition as cumulative sum
-    missingness_per_condition_cumsum = function(){
+    missingness_per_group_cumsum = function(){
       prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
     },
     #' @description
