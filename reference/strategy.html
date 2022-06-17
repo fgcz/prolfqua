@@ -125,15 +125,18 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other modelling: 
-<code><a href="ContrastsInterface.html">ContrastsInterface</a></code>,
+<code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
 <code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
+<code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
+<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
@@ -162,15 +165,18 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a>()</code></p>
 <p>Other modelling: 
-<code><a href="ContrastsInterface.html">ContrastsInterface</a></code>,
+<code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
 <code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
+<code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
+<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
@@ -199,15 +205,18 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a>()</code></p>
 <p>Other modelling: 
-<code><a href="ContrastsInterface.html">ContrastsInterface</a></code>,
+<code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
 <code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
+<code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
+<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
@@ -243,7 +252,7 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x16e38bca8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x299520588&gt;</span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, tol = 1e-04) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -251,13 +260,13 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-out co"><span class="r-pr">#&gt;</span>     theta &lt;- getME(x, "theta")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     any(theta[lwr == 0] &lt; tol)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x13a8f9670&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x16031c630&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:lme4&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x16e433cb0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x299605a18&gt;</span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -272,12 +281,12 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x13afd1218&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x12aa82c40&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 <span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x16e67af40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2996e5318&gt;</span>
 <span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -292,7 +301,7 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x13afd1218&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x12aa82c40&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 </code></pre></div>
     </div>

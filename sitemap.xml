@@ -61,13 +61,22 @@
     <loc>/reference/Benchmark.html</loc>
   </url>
   <url>
+    <loc>/reference/Contrasts.html</loc>
+  </url>
+  <url>
     <loc>/reference/ContrastsInterface.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ContrastsModerated.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsROPECA.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsSaintExpress.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ContrastsSimpleImpute.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsTable.html</loc>
@@ -77,6 +86,9 @@
   </url>
   <url>
     <loc>/reference/Contrasts_proDA.html</loc>
+  </url>
+  <url>
+    <loc>/reference/FragPipe.html</loc>
   </url>
   <url>
     <loc>/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc>
@@ -109,7 +121,7 @@
     <loc>/reference/LR_test.html</loc>
   </url>
   <url>
-    <loc>/reference/MSFragger.html</loc>
+    <loc>/reference/MaxQuant.html</loc>
   </url>
   <url>
     <loc>/reference/Model.html</loc>
@@ -131,6 +143,9 @@
   </url>
   <url>
     <loc>/reference/UpSet_interaction_missing_stats.html</loc>
+  </url>
+  <url>
+    <loc>/reference/addContrastResults.html</loc>
   </url>
   <url>
     <loc>/reference/add_annotation.html</loc>
@@ -157,6 +172,9 @@
     <loc>/reference/complete_cases.html</loc>
   </url>
   <url>
+    <loc>/reference/concrete_AnalysisTableAnnotation.html</loc>
+  </url>
+  <url>
     <loc>/reference/contrasts_linfct.html</loc>
   </url>
   <url>
@@ -170,18 +188,6 @@
   </url>
   <url>
     <loc>/reference/copy_mixed_model_analysis_script.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_config_MQ_peptide.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_config_MSFragger_MSstats.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_config_Skyline.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_config_Spectronaut_Peptide.html</loc>
   </url>
   <url>
     <loc>/reference/data_IonstarProtein_subsetNorm.html</loc>
@@ -626,6 +632,18 @@
   </url>
   <url>
     <loc>/reference/tidyMQ_modificationSpecificPeptides.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidy_FragPipe_MSstats_csv.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidy_FragPipe_combined_peptides.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidy_FragPipe_combined_protein.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidy_FragPipe_combined_protein_deprec.html</loc>
   </url>
   <url>
     <loc>/reference/toWide.html</loc>
