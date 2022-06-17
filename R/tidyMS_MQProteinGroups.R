@@ -120,7 +120,11 @@ tidyMQ_Evidence <- function(Evidence){
   res <- res |> separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
-#' Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
+#' Generating tidy table from proteinGroups.txt, peptide.txt and evidence.txt
+#'
+#' collect relevant information from all 3 types of files and merge them using
+#' protein group id and peptide id.
+#'
 #' @param txt_directory or zip
 #' @family MaxQuant
 #' @export
@@ -407,6 +411,8 @@ tidyMQ_allPeptides <- function(MQPeptides){
 }
 
 #' convert modification specific to peptide level
+#'
+#'
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 #' use if you want to disable MQ default precursor filter
 #' (which is not to use modified peptide sequences for peptide quantification)

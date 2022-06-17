@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_merged}
 \alias{tidyMQ_merged}
-\title{Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence}
+\title{Generating tidy table from proteinGroups.txt, peptide.txt and evidence.txt}
 \usage{
 tidyMQ_merged(txt_directory)
 }
@@ -10,7 +10,8 @@ tidyMQ_merged(txt_directory)
 \item{txt_directory}{or zip}
 }
 \description{
-Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
+collect relevant information from all 3 types of files and merge them using
+protein group id and peptide id.
 }
 \examples{
 
