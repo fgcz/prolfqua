@@ -654,7 +654,11 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")){
-      prolfqua::plot_stat_density_median(self$stats(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_density_median(
+        self$stats(),
+        self$lfq$config,
+        stat = self$stat,
+        ggstat = ggstat)
     },
     #' @description
     #' plot violinplot of CV or sd
