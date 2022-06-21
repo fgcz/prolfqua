@@ -367,12 +367,12 @@ sampleSize2 <- sampleSize2 |> dplyr::mutate(delta = paste0("delta = ", delta))
 #xx <- summarize_stats_quantiles(stats_res, local_config,probs = c(0.5,0.75))
 #lfq_power_t_test_quantiles_V2(xx$long,delta = c(0.59,1,2))
 
-ggplot2::ggplot(sampleSize2, ggplot2::aes(x = probs, y = N))+
+ggplot2::ggplot(sampleSize2, ggplot2::aes(x = probs, y = N)) +
   ggplot2::geom_bar(stat = "identity", color = "black", fill = "white") +
   ggplot2::geom_text(ggplot2::aes(label = N), nudge_y = nudgeval) + 
-  ggplot2::facet_wrap(~delta + group)
+  ggplot2::facet_wrap(as.formula(paste0("~ ", "delta + " , paste0( lfqdata$config$table$fkeysDepth(), collapse = " + " ))))
    
-tmp <- sampleSize2 |> tidyr::pivot_wider(id_cols = c("probs","sdtrimmed", "group"), names_from =  delta, values_from = N  )
+tmp <- sampleSize2 |> tidyr::pivot_wider(id_cols = c("probs","sdtrimmed", lfqdata$config$table$fkeysDepth()), names_from =  delta, values_from = N  )
 tmp
 
 ```
