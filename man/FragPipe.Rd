@@ -2,9 +2,9 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{FragPipe}
 \alias{FragPipe}
-\title{methods for reading Fragpipe outputs}
+\title{Methods for reading Fragpipe outputs}
 \description{
-Convert outputs into tidy tables
+Convert FragPipe outputs into tidy tables. For more details see functions listed in the see also section.
 }
 \seealso{
 Other FragPipe: 

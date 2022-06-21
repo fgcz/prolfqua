@@ -1,6 +1,6 @@
-#' methods for reading  MaxQuant outputs
+#' Methods for reading  MaxQuant outputs
 #'
-#' Convert outputs into tidy tables
+#' Convert MaxQuant outputs into tidy tables. For more details see functions listed in the see also section.
 #'
 #' @family MaxQuant
 #' @name MaxQuant

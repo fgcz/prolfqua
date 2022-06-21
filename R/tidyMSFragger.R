@@ -1,6 +1,6 @@
-#' methods for reading Fragpipe outputs
+#' Methods for reading Fragpipe outputs
 #'
-#' Convert outputs into tidy tables
+#' Convert FragPipe outputs into tidy tables. For more details see functions listed in the see also section.
 #'
 #' @family FragPipe
 #' @name FragPipe

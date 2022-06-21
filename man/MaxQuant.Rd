@@ -2,9 +2,9 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{MaxQuant}
 \alias{MaxQuant}
-\title{methods for reading  MaxQuant outputs}
+\title{Methods for reading  MaxQuant outputs}
 \description{
-Convert outputs into tidy tables
+Convert MaxQuant outputs into tidy tables. For more details see functions listed in the see also section.
 }
 \seealso{
 Other MaxQuant: 
