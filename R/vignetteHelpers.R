@@ -141,7 +141,7 @@ render_MQSummary_rmd <-
            dest_file_name = "QCandSampleSize.Rmd",
            workdir = tempdir(),
            format = c("pdf", "html"),
-           markdown_path = c("doc/QCandSampleSize.Rmd", "doc/_CVReport.RmdT"))
+           markdown_path = c("doc/QCandSampleSize.Rmd"))
   {
     dist_file_path <- .run_markdown_with_params(
       list(
