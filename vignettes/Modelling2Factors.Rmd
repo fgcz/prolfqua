@@ -48,8 +48,6 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
                "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"
 )
 
-
-
 ```
 
 
