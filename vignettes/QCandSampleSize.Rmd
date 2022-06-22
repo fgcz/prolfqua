@@ -373,7 +373,6 @@ ggplot2::ggplot(sampleSize2, ggplot2::aes(x = probs, y = N)) +
   ggplot2::facet_wrap(as.formula(paste0("~ ", "delta + " , paste0( lfqdata$config$table$fkeysDepth(), collapse = " + " ))))
    
 tmp <- sampleSize2 |> tidyr::pivot_wider(id_cols = c("probs","sdtrimmed", lfqdata$config$table$fkeysDepth()), names_from =  delta, values_from = N  )
-tmp
 
 ```
 
