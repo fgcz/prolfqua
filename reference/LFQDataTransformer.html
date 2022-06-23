@@ -39,6 +39,9 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
+      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions.</a>
+    </li>
+    <li>
       <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
     </li>
     <li>
@@ -344,19 +347,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.86575 25.29126 25.25335 25.30407 25.01797 24.85904 25.23109 25.25839 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.89421 25.38959 25.35229 25.41043 25.12353 24.97264 25.33882 25.33794 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.01892 24.86688 24.96574 25.32413 24.90989 24.86907 25.17188 25.25643 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.13504 24.97395 25.03873 25.45413 24.97867 24.92752 25.34460 25.37612 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.89733 24.84173 25.24296 25.30987 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.92216 24.91075 25.31268 25.42005 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.230847 2.235754 2.156370 2.139240 2.237793 2.270524 2.156441 2.168801 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292006 2.294645 2.298700 2.267305 2.288288 2.359567 2.269758 2.268956 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.207396 2.264002 2.201907 2.228329 2.236883 2.146265 2.179743 2.247951 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.332495 2.280640 2.246833 2.316439 2.264015 2.238364 2.294456 2.327701 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.258833 2.182778 2.161995 2.197454 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.279468 2.241506 2.259667 2.270514 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="va">lfqTransCheck</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="LFQDataTransformer-2.png" alt="" width="700" height="433"></span>
@@ -390,19 +393,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.03330 25.05863 25.04881 25.13258 25.04798 25.06038 25.00782 25.08447 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.05595 25.16230 25.15327 25.24472 25.14696 25.17358 25.10820 25.17743 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.09694 25.11849 25.14865 25.12822 25.04051 25.12169 25.01834 25.10070 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.19617 25.23812 25.20738 25.25658 25.11188 25.16392 25.19752 25.22536 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.12789 25.08638 25.11612 25.17785 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.15229 25.15023 25.19750 25.29443 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.230847 2.235754 2.156370 2.139240 2.237793 2.270524 2.156441 2.168801 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292006 2.294645 2.298700 2.267305 2.288288 2.359567 2.269758 2.268956 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.207396 2.264002 2.201907 2.228329 2.236883 2.146265 2.179743 2.247951 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.332495 2.280640 2.246833 2.316439 2.264015 2.238364 2.294456 2.327701 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.258833 2.182778 2.161995 2.197454 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.279468 2.241506 2.259667 2.270514 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"></span>
