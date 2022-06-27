@@ -1,4 +1,4 @@
-[![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml)
+[![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
 
 <img src="man/figures/imgfile.png" width="200">
 
