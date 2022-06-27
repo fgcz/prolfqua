@@ -24,7 +24,7 @@ tidy_FragPipe_MSstats_csv <- function(file){
 }
 
 
-#' read combined peptide for FragPipe 1.6 or newer
+#' read combined peptide for FragPipe 16 or newer
 #' @export
 #' @param combprot combinded_peptide.txt data frame read with read.csv.
 #' @keywords internal
@@ -96,7 +96,7 @@ tidy_FragPipe_combined_peptides <- function(
 
 
 
-#' FragPipe read FragPipe combined protein files up to Version 1.5
+#' FragPipe read FragPipe combined protein files up to Version 15
 #'
 #' @export
 #' @param combprot path to combined_protein.tsv file
@@ -165,7 +165,7 @@ tidy_FragPipe_combined_protein_deprec <- function(
 }
 
 
-#' read combined_protein.tsv file for FragPipe Version 1.6 or newer
+#' read combined_protein.tsv file for FragPipe Version 16 or newer
 #' @export
 #' @param combprot path to combined_protein.tsv file
 #' @param as_list return as list
