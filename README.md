@@ -28,7 +28,7 @@ remotes::install_github('fgcz/prolfqua')
 ```
 
 
-If you want to build the vignettes on you system:
+If you want to build the vignettes on your system:
 
 ```
 install.packages('remotes')
@@ -36,7 +36,6 @@ remotes::install_github('fgcz/prolfqua', build_vignettes = TRUE)
 
 ```
 
-Depending on the performance of you system building the package with all vignettes can take up to 1h.
 
 Let us please know about any installation problems or errors when using the package:
 https://github.com/fgcz/prolfqua/issues
