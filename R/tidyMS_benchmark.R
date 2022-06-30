@@ -592,7 +592,6 @@ Benchmark <-
 
 #' make Benchmark
 #'
-#' @export
 #' @param prpr prepared data, e.g. function \code{\link{ionstar_bench_preprocess}}
 #' @param contrast column with names of the contrast
 #' @param toscale which scores to scale using fcestimate, typically p.value
@@ -605,6 +604,8 @@ Benchmark <-
 #' @param hierarchy name of column with protein ID.
 #' @param summarizeNA summarizeNA
 #' @return Benchmark
+#' @export
+#' @family benchmarking
 make_benchmark <- function(prpr,
                            contrast = "contrast",
                            toscale = c("p.value"),

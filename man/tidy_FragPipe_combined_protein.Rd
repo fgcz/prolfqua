@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{tidy_FragPipe_combined_protein}
 \alias{tidy_FragPipe_combined_protein}
-\title{read combined_protein.tsv file for FragPipe Version 1.6 or newer}
+\title{read combined_protein.tsv file for FragPipe Version 16 or newer}
 \usage{
 tidy_FragPipe_combined_protein(combprot, as_list = FALSE)
 }
@@ -15,7 +15,7 @@ tidy_FragPipe_combined_protein(combprot, as_list = FALSE)
 tidy dataframe or list with df (e.g. total.spectral.count or total.intensity etc).
 }
 \description{
-read combined_protein.tsv file for FragPipe Version 1.6 or newer
+read combined_protein.tsv file for FragPipe Version 16 or newer
 }
 \seealso{
 Other FragPipe: 

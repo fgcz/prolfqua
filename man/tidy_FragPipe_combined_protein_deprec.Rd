@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{tidy_FragPipe_combined_protein_deprec}
 \alias{tidy_FragPipe_combined_protein_deprec}
-\title{FragPipe read FragPipe combined protein files up to Version 1.5}
+\title{FragPipe read FragPipe combined protein files up to Version 15}
 \usage{
 tidy_FragPipe_combined_protein_deprec(
   combprot,
@@ -24,7 +24,7 @@ tidy_FragPipe_combined_protein_deprec(
 \item{subgroup}{default subgroup}
 }
 \description{
-FragPipe read FragPipe combined protein files up to Version 1.5
+FragPipe read FragPipe combined protein files up to Version 15
 }
 \seealso{
 Other FragPipe: 

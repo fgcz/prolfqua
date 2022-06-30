@@ -68,6 +68,7 @@ benchmark$pAUC_summaries()$ftable$content
 Other benchmarking: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{ionstar_bench_preprocess}()},
+\code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}

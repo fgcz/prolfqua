@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMSFragger.R
 \name{tidy_FragPipe_combined_peptides}
 \alias{tidy_FragPipe_combined_peptides}
-\title{read combined peptide for FragPipe 1.6 or newer}
+\title{read combined peptide for FragPipe 16 or newer}
 \usage{
 tidy_FragPipe_combined_peptides(combprot, as_list = FALSE)
 }
@@ -10,7 +10,7 @@ tidy_FragPipe_combined_peptides(combprot, as_list = FALSE)
 \item{combprot}{combinded_peptide.txt data frame read with read.csv.}
 }
 \description{
-read combined peptide for FragPipe 1.6 or newer
+read combined peptide for FragPipe 16 or newer
 }
 \seealso{
 Other FragPipe: 

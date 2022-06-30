@@ -25,6 +25,7 @@ Other aggregation:
 Other benchmarking: 
 \code{\link{Benchmark}},
 \code{\link{ionstar_bench_preprocess}()},
+\code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 
 Other concrete_configuration: 

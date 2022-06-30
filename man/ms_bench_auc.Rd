@@ -20,7 +20,8 @@ computes auc and pauc using trapez rule
 Other benchmarking: 
 \code{\link{Benchmark}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{ionstar_bench_preprocess}()}
+\code{\link{ionstar_bench_preprocess}()},
+\code{\link{make_benchmark}()}
 }
 \concept{benchmarking}
 \keyword{internal}
