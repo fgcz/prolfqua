@@ -41,17 +41,9 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   data <- data |> select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
 
-  if (TRUE) { # drop missing so that TPR goes up to 1.
-    data <- na.omit(data)
-    data$F_ <- sum(!data$TP)
-    data$T_ <- sum(data$TP)
-  }else{
-    data$F_ <- sum(!data$TP)
-    data$T_ <- sum(data$TP)
-    data <- na.omit(data)
-  }
-
-
+  data <- na.omit(data)
+  data$F_ <- sum(!data$TP)
+  data$T_ <- sum(data$TP)
 
   data <- mutate(data,
     R = seq_len(dplyr::n())
@@ -138,14 +130,14 @@ do_confusion <-
 
 # do_confusion for each contrast
 do_confusion_c <- function(
-  data,
-  contrast = "contrast",
-  arrangeby = list(list(score = "scaled.p.value", desc = FALSE))) {
+    data,
+    contrast = "contrast",
+    arrangeby = list(list(score = "scaled.p.value", desc = FALSE))) {
 
   txx <- data |> group_by_at(contrast) |> nest()
-  txx <- txx |> mutate(out  = map(data,
-                                   do_confusion,
-                                   arrangeby = arrangeby))
+  txx <- txx |> mutate(out = map(data,
+                                 do_confusion,
+                                 arrangeby = arrangeby))
   xx <- txx  |> select_at(c(contrast, "out")) |>
     unnest("out") |>
     ungroup()
@@ -430,7 +422,8 @@ Benchmark <-
         return(self$smc)
       },
       #' @description
-      #' set or get complete
+      #' set or get complete.
+      #' If true only proteins for which all contrasts are determinable are examined.
       #' @param value TRUE if data should be complete (no missing contrasts)
       #'
       complete = function(value){
@@ -473,7 +466,7 @@ Benchmark <-
         confusion <- self$get_confusion_benchmark()
 
         p <- .plot_FDPvsTPR(confusion,
-                            xlim = 0.5,
+                            xlim = xlim,
                             contrast = self$contrast)
         return(p)
       },
@@ -577,7 +570,7 @@ Benchmark <-
           plots[[score]] <- ggplot(x, aes(x = !!sym(self$avgInt), y = !!sym(score), color = !!sym(self$species) )) +
             geom_point(alpha = 0.2) +
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
-            ylim(ylim)
+            if (!is.null(ylim)) {ggplot2::ylim(ylim)} else {NULL}
         }
         fig <- ggpubr::ggarrange(plotlist = plots,
                          nrow = 1,
