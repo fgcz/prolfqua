@@ -30,7 +30,8 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 .ms_bench_add_FPRTPR <- function(data,
                                  TP_col = "TP",
                                  arrangeby = "diff",
-                                 desc = TRUE) {
+                                 desc = TRUE,
+                                 subject_Id = "protein_Id") {
   #data <- est
 
   data <- if (!desc) {
@@ -38,7 +39,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   } else{
     data |> arrange(desc(!!sym(arrangeby)))
   }
-  data <- data |> select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
+  data <- data |> select(!!sym(subject_Id) ,scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
 
   data <- na.omit(data)
@@ -110,10 +111,11 @@ do_confusion <-
   function(data,
            arrangeby = list(list(score = "diff", desc = TRUE),
                             list(score = "statistic", desc = TRUE),
-                            list(score = "scaled.p.value" , desc = TRUE))) {
+                            list(score = "scaled.p.value" , desc = TRUE)),
+           subject_Id = "protein_Id") {
     # TODO add to prolfqua
     est <- data |> ungroup() |>
-      dplyr::select_at(c("TP",
+      dplyr::select_at(c(subject_Id, "TP",
                          purrr::map_chr(arrangeby, "score")))
     res <- list()
     for (arrange in arrangeby) {
@@ -122,7 +124,8 @@ do_confusion <-
         .ms_bench_add_FPRTPR(est,
                              TP_col = "TP",
                              arrangeby = score,
-                             desc = arrange$desc)
+                             desc = arrange$desc,
+                             subject_Id = subject_Id)
     }
     all <- bind_rows(res)
     return(all)
@@ -132,18 +135,27 @@ do_confusion <-
 do_confusion_c <- function(
     data,
     contrast = "contrast",
-    arrangeby = list(list(score = "scaled.p.value", desc = FALSE))) {
+    arrangeby = list(list(score = "scaled.p.value", desc = FALSE)),
+    subject_Id = "protein_Id") {
 
   txx <- data |> group_by_at(contrast) |> nest()
-  txx <- txx |> mutate(out = map(data,
-                                 do_confusion,
-                                 arrangeby = arrangeby))
+  out <- vector(mode="list", length = length(txx$data))
+  for(i in 1:length(txx$data)) {
+    out[[i]] <- do_confusion(
+      txx$data[[i]],
+      arrangeby = arrangeby,
+      subject_Id = subject_Id)
+  }
+  txx$out <- out
+  #txx <- txx |> mutate(out = map(data,
+  #                               do_confusion,
+  #                               arrangeby = arrangeby, subject_Id = subject_Id))
   xx <- txx  |> select_at(c(contrast, "out")) |>
     unnest("out") |>
     ungroup()
 
   # computes FDR FDP for all contrasts
-  xy <- do_confusion(data, arrangeby = arrangeby)
+  xy <- do_confusion(data, arrangeby = arrangeby, subject_Id = subject_Id)
   xy <- xy |> dplyr::mutate(!!contrast := "all")
   #xy <- tibble::add_column(data, contrast = "all", .before = 1)
   xx <- dplyr::bind_rows(xy, xx)
@@ -439,7 +451,8 @@ Benchmark <-
       .get_confusion = function(arrange){
         confusion <- prolfqua:::do_confusion_c(self$data(),
                                                contrast = self$contrast,
-                                               arrangeby = arrange)
+                                               arrangeby = arrange,
+                                               subject_Id = self$hierarchy)
         confusion <- tibble::add_column(
           confusion ,
           model_name = self$model_name,
