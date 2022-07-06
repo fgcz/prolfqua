@@ -279,8 +279,6 @@ plotter$pairs_smooth(max = 10)
 ```{r sdviolinplots,fig.cap="(ref:sdviolinplots)", fig.height=6, fig.width=8}
 
 st <- dataTransformed$get_Stats()
-st$power_t_test_quantiles()
-
 
 if (params$plot_density) {
   p1 <- st$density()

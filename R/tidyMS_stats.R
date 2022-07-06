@@ -274,6 +274,8 @@ summarize_stats_quantiles <- function(stats_res,
   }
   q_column <- paste0(stats,"_quantiles")
 
+
+  stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
   xx2 <- stats_res |>
     dplyr::group_by(!!!syms(config$table$fkeysDepth())) |>
     tidyr::nest()
