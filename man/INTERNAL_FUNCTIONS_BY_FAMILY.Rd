@@ -25,13 +25,11 @@ Other aggregation:
 Other benchmarking: 
 \code{\link{Benchmark}},
 \code{\link{ionstar_bench_preprocess}()},
+\code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 
 Other concrete_configuration: 
-\code{\link{create_config_MQ_peptide}()},
-\code{\link{create_config_MSFragger_MSstats}()},
-\code{\link{create_config_Skyline}()},
-\code{\link{create_config_Spectronaut_Peptide}()}
+\code{\link{concrete_AnalysisTableAnnotation}}
 
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
@@ -49,13 +47,13 @@ Other configuration:
 \code{\link{table_factors}()}
 
 Other deprecated: 
-\code{\link{compute_roc}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_protein_quants}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 
 Other MaxQuant: 
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_PeptideProtein}()},
@@ -68,14 +66,17 @@ Other MaxQuant:
 \code{\link{tidyMQ_modificationSpecificPeptides}()}
 
 Other modelling: 
-\code{\link{ContrastsInterface}},
+\code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
+\code{\link{Contrasts}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
+\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -105,8 +106,12 @@ Other modelling:
 \code{\link{strategy_lmer}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
-Other MSFragger: 
-\code{\link{tidy_MSFragger_MSstats_csv}()}
+Other FragPipe: 
+\code{\link{FragPipe}},
+\code{\link{tidy_FragPipe_MSstats_csv}()},
+\code{\link{tidy_FragPipe_combined_peptides}()},
+\code{\link{tidy_FragPipe_combined_protein_deprec}()},
+\code{\link{tidy_FragPipe_combined_protein}()}
 
 Other plotting: 
 \code{\link{Contrasts_Plotter}},
@@ -179,7 +184,7 @@ Other workflows:
 \code{\link{workflow_corr_filter_impute}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
-\concept{MSFragger}
+\concept{FragPipe}
 \concept{MaxQuant}
 \concept{aggregation}
 \concept{benchmarking}

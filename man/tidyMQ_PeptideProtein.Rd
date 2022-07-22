@@ -14,13 +14,14 @@ Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence
 }
 \examples{
 
-#txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
+#txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
 #allData <- tidyMQ_PeptideProtein(txt_directory)
 
 }
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_Peptides}()},

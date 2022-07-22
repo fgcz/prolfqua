@@ -7,6 +7,7 @@
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' #LFQData$debug("rename_response")
 #' lfqdata <- LFQData$new(data, istar$config)
 #' tmp <- lfqdata$to_wide()
 #' stopifnot("data.frame" %in% class(tmp$data))
@@ -18,7 +19,7 @@
 #' lfqdata$omit_NA()
 #'
 #' lfqdata$response()
-#' lfqdata$rename_response()
+#' lfqdata$rename_response("peptide.intensity")
 #' lfqdata$response()
 #' lfqdata$get_Plotter()$heatmap()
 #' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
@@ -176,14 +177,14 @@ LFQData <- R6::R6Class(
     #' @param newname default Intensity
     rename_response = function(newname = "Intensity"){
       if((newname %in% colnames(self$data))){
-        logger::log_messages(paste(newname, " already in data :", colnames(self$data), ".", collapse = " "))
+        msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
+        logger::log_info(msg)
         logger::log_error("provide different name.")
-        stop()
+      } else {
+        old <- self$config$table$popWorkIntensity()
+        self$config$table$setWorkIntensity(newname)
+        self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }
-
-      old <- self$config$table$popWorkIntensity()
-      self$config$table$setWorkIntensity(newname)
-      self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
     },
     #' @description
     #' number of elements at each level
@@ -654,7 +655,11 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")){
-      prolfqua::plot_stat_density_median(self$stats(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_density_median(
+        self$stats(),
+        self$lfq$config,
+        stat = self$stat,
+        ggstat = ggstat)
     },
     #' @description
     #' plot violinplot of CV or sd
@@ -744,8 +749,8 @@ LFQDataStats <- R6::R6Class(
 #' sum$hierarchy_counts_sample("long")
 #' sum$plot_hierarchy_counts_sample()
 #' sum$interaction_missing_stats()
-#' sum$missingness_per_condition()
-#' sum$missingness_per_condition_cumsum()
+#' sum$missingness_per_group()
+#' sum$missingness_per_group_cumsum()
 #' sum$plot_missingness_per_group()
 #' sum$plot_missingness_per_group_cumsum()
 #'
@@ -787,12 +792,12 @@ LFQDataSummariser <- R6::R6Class(
     },
     #' @description
     #' missing stats per condition
-    missingness_per_condition = function(){
+    missingness_per_group = function(){
       prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$data
     },
     #' @description
     #' missing stats per condition as cumulative sum
-    missingness_per_condition_cumsum = function(){
+    missingness_per_group_cumsum = function(){
       prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
     },
     #' @description

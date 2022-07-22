@@ -1,7 +1,6 @@
 # ContrastsInterface ----
-#' ContrastsInterface
+#' Base class for all Contrasts classes
 #' @export
-#' @rdname ContrastsInterface
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
@@ -51,18 +50,16 @@ ContrastsInterface <- R6::R6Class(
                               "conf.high")
 
 # ContrastsSimpleImpute----
-#' Compute contrasts with group mean imputation (directly from data)
+#' Compute contrasts with group mean imputation
 #'
 #' If there are no observations in one of the groups for some of the proteins,
 #' the group mean cannot be estimated. Therefore, assuming that the observation
 #' is missing because the protein abundance is below the detection limit,
-#' we substitute the unobserved group mean with the mean of X% smallest
-#' group averages of all the proteins.
-#' If the observations present in the other group allow us to estimate
-#' the variance of the measurement for that protein,
-#' we compute the t-statistic, p-value, and FDR.
+#' we substitute the unobserved group with the median of protein abundances
+#'  observed only in one sample of the group.
+#' The variance of a protein is estimated using the pooled variance
+#' of all observations of all groups.
 #'
-#' @rdname ContrastsInterface
 #' @family modelling
 #' @export
 #' @examples
@@ -103,6 +100,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @param modelName default "groupAverage"
     #' @param method internal default V1
     #' @param global default TRUE use all or per condition data to impute from
+    #' @param present in at most how many samples the protein should be observed
     initialize = function(lfqdata,
                           contrasts,
                           confint = 0.95,
@@ -227,7 +225,6 @@ ContrastsSimpleImpute <- R6::R6Class(
 #' Estimate contrasts using Wald Test
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #' @examples
 #'
 #' # Fitting mixed effects model to peptide data
@@ -429,7 +426,6 @@ Contrasts <- R6::R6Class(
 #' Limma moderated contrasts
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #' @examples
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
@@ -872,8 +868,7 @@ ContrastsSaintExpress <- R6::R6Class(
 # ContrastsTable -----
 
 #'
-#' ContrastTable (place holder future baseclass?)
-#'
+#' holds results when contrasts are added.
 #'
 #' @export
 #' @family modelling
@@ -1122,8 +1117,7 @@ Contrasts_Plotter <- R6::R6Class(
         geom_vline(aes(xintercept = median(!!sym( self$diff ), na.rm = T)),   # Ignore NA values for mean
                    color = "red", linetype = "dashed", size = 1) +
         geom_vline(xintercept = 0, col = "green" , size = 1) +
-        facet_wrap(vars(!!sym(self$contrast))) +
-        theme_light()
+        facet_wrap(vars(!!sym(self$contrast)))
 
       return(fig)
     },
@@ -1398,8 +1392,7 @@ Contrasts_Plotter <- R6::R6Class(
       score = score$score
       plot <- self$contrastDF |> ggplot(aes(x = !!sym(score))) +
         geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
-        facet_wrap(vars(!!sym(self$contrast))) +
-        theme_light()
+        facet_wrap(vars(!!sym(self$contrast)))
       return(plot)
     },
     .ma_plot = function(x, avg.abundance, diff, contrast, fc, colour = NULL, legend = TRUE){
@@ -1409,9 +1402,8 @@ Contrasts_Plotter <- R6::R6Class(
                           colour = !!sym(colour))) +
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
-        facet_wrap(vars(!!sym(contrast))) + theme_light() +
-        if(FALSE){ ylab("log fold change (M)") + xlab("mean log intensities (A)") } else { NULL } +
-        theme_light()
+        facet_wrap(vars(!!sym(contrast)))
+        if(FALSE){ ylab("log fold change (M)") + xlab("mean log intensities (A)") } else { NULL }
       if ( is.numeric(fc) ) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
       }
@@ -1443,14 +1435,11 @@ Contrasts_Plotter <- R6::R6Class(
           facet_wrap(vars(!!sym(self$contrast))) +
           geom_hline(yintercept = c(0), colour = 1) +
           geom_vline(xintercept = c(0), colour = 1 ) +
-          geom_hline(yintercept = ylims, colour = 2, linetype = "dashed") +
-
-          theme_light()
+          geom_hline(yintercept = ylims, colour = 2, linetype = "dashed")
 
         if (is.numeric(xlim)) {
           p <- p + geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed" )
         }
-
 
         if (!legend) {
           p <- p + guides(colour = "none")
@@ -1465,14 +1454,13 @@ Contrasts_Plotter <- R6::R6Class(
 
 
 # Merge contrasts ----
-#' add contrast results from two different functions. Tipically used with Contrast and Cotnrast simple imputed.
+#' add contrast results from two different functions. Typically used with Contrast and Cotnrast simple imputed.
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
 #' @param modelName name of the merged model default "mergedModel"
 #' @export
 #' @family modelling
-#' @rdname ContrastsInterface
 #'
 addContrastResults <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
@@ -1505,9 +1493,9 @@ addContrastResults <- function(prefer, add, modelName = "mergedModel"){
 
   merged <- ContrastsTable$new(merged,
                                subject_Id = prefer$subject_Id,
-                               modelName = paste0(prefermodelName,"_",addmodelName))
-  more <- ContrastsTable$new(more , subject_Id = prefer$subject_Id, modelName = addmodelName)
-  same <-  ContrastsTable$new(same , subject_Id = prefer$subject_Id, modelName = addmodelName)
+                               modelName = paste0(prefermodelName, "_", addmodelName))
+  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = addmodelName)
+  same <-  ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more, same = same))
 }
 

@@ -110,7 +110,7 @@ GRP2$contrMerged$volcano_spec[[1]]$thresh = GRP2$FDRthreshold
 
 GRP2$contrMore <- res$more$get_Plotter()
 
-top20 <- GRP2$contrResult |> dplyr::select( protein_Id,log2FC= estimate,conf.low,conf.high, FDR ) |>
+top20 <- GRP2$contrResult |> dplyr::select( protein_Id,log2FC= diff,conf.low,conf.high, FDR ) |>
   arrange(FDR) |>
   head(20)
 GRP2$top20 <- top20

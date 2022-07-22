@@ -178,7 +178,7 @@ plot_hierarchies_boxplot <- function(pdata,
   p <- ggplot(pdata, aes_string(x = "interaction",
                                 y = config$table$getWorkIntensity(),
                                 color = color
-  )) + theme_classic() +
+  )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
 

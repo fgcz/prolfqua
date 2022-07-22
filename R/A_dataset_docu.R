@@ -4,6 +4,7 @@
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr one_of rename select select_at starts_with summarize_at summarize ungroup vars
 #'
+#' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 aes aes_string element_text facet_grid ggplot ggtitle geom_boxplot
 #' @importFrom ggplot2 geom_line geom_violin guides
 #' @importFrom ggplot2 stat_summary scale_x_continuous scale_y_continuous theme
@@ -40,7 +41,7 @@ NULL
 #' @family deprecated
 #' @family MaxQuant
 #' @family modelling
-#' @family MSFragger
+#' @family FragPipe
 #' @family plotting
 #' @family preprocessing
 #' @family stats

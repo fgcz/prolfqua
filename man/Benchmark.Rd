@@ -68,6 +68,7 @@ benchmark$pAUC_summaries()$ftable$content
 Other benchmarking: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{ionstar_bench_preprocess}()},
+\code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}
@@ -213,7 +214,8 @@ data.frame
 \if{html}{\out{<a id="method-complete"></a>}}
 \if{latex}{\out{\hypertarget{method-complete}{}}}
 \subsection{Method \code{complete()}}{
-set or get complete
+set or get complete.
+If true only proteins for which all contrasts are determinable are examined.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Benchmark$complete(value)}\if{html}{\out{</div>}}
 }

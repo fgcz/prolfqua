@@ -14,7 +14,7 @@ extract intensities and annotations from MQ proteinGroups.txt
 }
 \examples{
 library(prolfqua)
-protein_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
+protein_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 head(mq_proteins)
@@ -26,6 +26,7 @@ abline(0,1, col=2)
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_PeptideProtein}()},

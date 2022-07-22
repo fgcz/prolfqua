@@ -40,7 +40,7 @@ plot_hierarchies_line_default <- function(data,
 
   #p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color= peptide, linetype = isotopeLabel))
   p <- p + facet_grid(as.formula(formula), scales = "free_x"   )
-  p <- p + ggtitle(proteinName) + theme_classic()
+  p <- p + ggtitle(proteinName)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
   if (log_y) {
     p <- p + scale_y_continuous(trans = 'log10')

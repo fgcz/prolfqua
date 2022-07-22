@@ -1,19 +1,19 @@
-[![R-CMD-check-prolfqua](https://github.com/wolski/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/wolski/prolfqua/actions/workflows/r.yaml)
+[![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
 
 <img src="man/figures/imgfile.png" width="200">
 
-# prolfqua - an R package for Proteomics Label Free Quantification Services
+# prolfqua - a R package for Proteomics Differential Expression Analysis
 
-The R package contains functions for analyzing mass spectrometry based LFQ experiments.
+The R package contains functions for analyzing mass spectrometry based experiments.
 This package is developed at the [FGCZ](http://fgcz.ch/).
 
 # How to install prolfqua?
 
-Requirements : A Windows/Linux/MacOSX x64 platform with R 4 or higher
+Requirements : A Windows|Linux|MacOSX platform with R (>= 4.1) installed.
 
 
-We recommend to install the package using the latest [release](https://github.com/wolski/prolfqua/releases)
-Download the `prolfqua_X.Y.Z.tar.gz` from the [github release page](https://github.com/wolski/prolfqua/releases). and then execute:
+We recommend to install the package using the latest [release](https://github.com/fgcz/prolfqua/releases)
+Download the `prolfqua_X.Y.Z.tar.gz` from the [github release page](https://github.com/fgcz/prolfqua/releases). and then execute:
 
 ```
 install.packages("prolfqua_X.Y.Z.tar.gz",repos = NULL, type="source")
@@ -24,54 +24,60 @@ To install the package without vignettes from github you can execute in R.
 
 ```
 install.packages('remotes')
-remotes::install_github('wolski/prolfqua')
+remotes::install_github('fgcz/prolfqua')
 ```
 
 
-If you want to build the vignettes on you system:
+If you want to build the vignettes on your system:
 
 ```
 install.packages('remotes')
-remotes::install_gitlab("wolski/prolfquadata", host="gitlab.bfabric.org")
-remotes::install_github('wolski/prolfqua', build_vignettes = TRUE)
+remotes::install_github('fgcz/prolfqua', build_vignettes = TRUE)
 
 ```
 
-Depending on the performance of you system building the package with all vignettes can take up to 1h.
 
 Let us please know about any installation problems or errors when using the package:
-https://github.com/wolski/prolfqua/issues
+https://github.com/fgcz/prolfqua/issues
 
 
 
 # How to get started
 
-See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
-Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
-
-
-Or read the pkgdown generate website https://wolski.github.io/prolfqua/index.html
-
+- See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
+- Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube.
+- See our article at [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
+which describes our package.
+- Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
 
 
 Detailed documentation with R code:
 
-- [Comparing two Conditions](https://wolski.github.io/prolfqua/articles/Comparing2Groups.html)
-- [QC and sample size estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
-- [Analysing factorial designs](https://wolski.github.io/prolfqua/articles/Modelling2Factors.html)
-- [Benchmarking LFQ pipeline with prolfqua](https://wolski.github.io/prolfqua/articles/BenchmarkingIonstarData.html)
+- [Comparing two Conditions](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
+- [QC and protein wise sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
+- [Analysing factorial designs](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
 
 Example QC and sample size report
 
-- [QC and sample size Report](https://wolski.github.io/prolfqua/articles/QCandSampleSize.html)
-
-
+- [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html)
 
 # How to cite?
 
-If you are using the package in your work please cite:
-https://f1000research.com/slides/9-1476
+Please do reference the [prolfqua article at biorxiv.org](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
 
+```
+@article {Wolski2022.06.07.494524,
+	author = {Wolski, Witold Eryk and Nanni, Paolo and Grossmann, Jonas and d{\textquoteright}Errico, Maria and Schlapbach, Ralph and Panse, Christian},
+	title = {prolfqua: A Comprehensive R-package for Proteomics Differential Expression Analysis},
+	elocation-id = {2022.06.07.494524},
+	year = {2022},
+	doi = {10.1101/2022.06.07.494524},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524},
+	eprint = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524.full.pdf},
+	journal = {bioRxiv}
+}
+```
 
 ## Motivation
 
@@ -152,7 +158,6 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 - [ssize.fdr](https://CRAN.R-project.org/package=ssize.fdr)
   - related article [https://journal.r-project.org/archive/2009/RJ-2009-019/RJ-2009-019.pdf]
 - [proper](https://bioconductor.org/packages/release/bioc/html/PROPER.html)
-
 
 # What package name?
 

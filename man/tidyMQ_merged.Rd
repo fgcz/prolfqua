@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_merged}
 \alias{tidyMQ_merged}
-\title{Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence}
+\title{Generating tidy table from proteinGroups.txt, peptide.txt and evidence.txt}
 \usage{
 tidyMQ_merged(txt_directory)
 }
@@ -10,17 +10,19 @@ tidyMQ_merged(txt_directory)
 \item{txt_directory}{or zip}
 }
 \description{
-Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
+collect relevant information from all 3 types of files and merge them using
+protein group id and peptide id.
 }
 \examples{
 
-txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
+txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
 allData <- tidyMQ_merged(txt_directory)
 
 }
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_PeptideProtein}()},

@@ -14,13 +14,14 @@ read evidence file
 }
 \examples{
 
-evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
+evidence_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)
 }
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_PeptideProtein}()},
 \code{\link{tidyMQ_Peptides}()},

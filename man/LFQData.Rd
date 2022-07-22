@@ -12,6 +12,7 @@ LFQData R6 class
 istar <- prolfqua_data('data_ionstar')$filtered()
 
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+#LFQData$debug("rename_response")
 lfqdata <- LFQData$new(data, istar$config)
 tmp <- lfqdata$to_wide()
 stopifnot("data.frame" \%in\% class(tmp$data))
@@ -23,7 +24,7 @@ lfqdata$summarize_hierarchy()
 lfqdata$omit_NA()
 
 lfqdata$response()
-lfqdata$rename_response()
+lfqdata$rename_response("peptide.intensity")
 lfqdata$response()
 lfqdata$get_Plotter()$heatmap()
 stopifnot("LFQData" \%in\% class(lfqdata$get_copy()))
