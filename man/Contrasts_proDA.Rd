@@ -66,27 +66,27 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Contrasts_proDA$new()}}
-\item \href{#method-get_contrast_sides}{\code{Contrasts_proDA$get_contrast_sides()}}
-\item \href{#method-get_linfct}{\code{Contrasts_proDA$get_linfct()}}
-\item \href{#method-add}{\code{Contrasts_proDA$add()}}
-\item \href{#method-get_contrasts}{\code{Contrasts_proDA$get_contrasts()}}
-\item \href{#method-get_Plotter}{\code{Contrasts_proDA$get_Plotter()}}
-\item \href{#method-to_wide}{\code{Contrasts_proDA$to_wide()}}
-\item \href{#method-write}{\code{Contrasts_proDA$write()}}
-\item \href{#method-clone}{\code{Contrasts_proDA$clone()}}
+\item \href{#method-Contrasts_proDA-new}{\code{Contrasts_proDA$new()}}
+\item \href{#method-Contrasts_proDA-get_contrast_sides}{\code{Contrasts_proDA$get_contrast_sides()}}
+\item \href{#method-Contrasts_proDA-get_linfct}{\code{Contrasts_proDA$get_linfct()}}
+\item \href{#method-Contrasts_proDA-add}{\code{Contrasts_proDA$add()}}
+\item \href{#method-Contrasts_proDA-get_contrasts}{\code{Contrasts_proDA$get_contrasts()}}
+\item \href{#method-Contrasts_proDA-get_Plotter}{\code{Contrasts_proDA$get_Plotter()}}
+\item \href{#method-Contrasts_proDA-to_wide}{\code{Contrasts_proDA$to_wide()}}
+\item \href{#method-Contrasts_proDA-write}{\code{Contrasts_proDA$write()}}
+\item \href{#method-Contrasts_proDA-clone}{\code{Contrasts_proDA$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_proDA$new(
@@ -99,8 +99,8 @@ Other modelling:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_proDA$get_contrast_sides()}\if{html}{\out{</div>}}
@@ -108,8 +108,8 @@ Other modelling:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_linfct"></a>}}
-\if{latex}{\out{\hypertarget{method-get_linfct}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_proDA$get_linfct()}\if{html}{\out{</div>}}
@@ -117,8 +117,8 @@ Other modelling:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add"></a>}}
-\if{latex}{\out{\hypertarget{method-add}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-add"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-add}{}}}
 \subsection{Method \code{add()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts_proDA$add(...)}\if{html}{\out{</div>}}
@@ -126,8 +126,8 @@ Other modelling:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 get contrasts
 \subsection{Usage}{
@@ -145,8 +145,8 @@ get contrasts
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrast_Plotter}}
 \subsection{Usage}{
@@ -164,8 +164,8 @@ get \code{\link{Contrast_Plotter}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
@@ -181,8 +181,8 @@ convert to wide format
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-write"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-write}{}}}
 \subsection{Method \code{write()}}{
 write results
 \subsection{Usage}{
@@ -200,8 +200,8 @@ write results
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Contrasts_proDA-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Contrasts_proDA-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

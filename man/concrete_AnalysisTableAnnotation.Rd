@@ -38,18 +38,18 @@ configurations examples of or various signal processing software outputs
 }
 \section{Functions}{
 \itemize{
-\item \code{create_config_Skyline}: create a Skyline configuration
+\item \code{create_config_Skyline()}: create a Skyline configuration
 
-\item \code{create_config_Spectronaut_Peptide}: Create Spectronaut configuration
+\item \code{create_config_Spectronaut_Peptide()}: Create Spectronaut configuration
 
-\item \code{create_config_MQ_peptide}: MaxQuant peptide file configuration
+\item \code{create_config_MQ_peptide()}: MaxQuant peptide file configuration
 
 file must be read with tidyMQ_Peptides, you will still need to add the
 factors (explanatory variables).
 
-\item \code{create_config_MSFragger_MSstats}: Create configuration for MSFragger output
-}}
+\item \code{create_config_MSFragger_MSstats()}: Create configuration for MSFragger output
 
+}}
 \examples{
 skylineconfig <- create_config_Skyline()
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"

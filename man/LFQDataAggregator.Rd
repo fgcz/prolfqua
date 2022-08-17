@@ -69,19 +69,19 @@ Other LFQData:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LFQDataAggregator$new()}}
-\item \href{#method-medpolish}{\code{LFQDataAggregator$medpolish()}}
-\item \href{#method-lmrob}{\code{LFQDataAggregator$lmrob()}}
-\item \href{#method-mean_topN}{\code{LFQDataAggregator$mean_topN()}}
-\item \href{#method-sum_topN}{\code{LFQDataAggregator$sum_topN()}}
-\item \href{#method-plot}{\code{LFQDataAggregator$plot()}}
-\item \href{#method-write_plots}{\code{LFQDataAggregator$write_plots()}}
-\item \href{#method-clone}{\code{LFQDataAggregator$clone()}}
+\item \href{#method-LFQDataAggregator-new}{\code{LFQDataAggregator$new()}}
+\item \href{#method-LFQDataAggregator-medpolish}{\code{LFQDataAggregator$medpolish()}}
+\item \href{#method-LFQDataAggregator-lmrob}{\code{LFQDataAggregator$lmrob()}}
+\item \href{#method-LFQDataAggregator-mean_topN}{\code{LFQDataAggregator$mean_topN()}}
+\item \href{#method-LFQDataAggregator-sum_topN}{\code{LFQDataAggregator$sum_topN()}}
+\item \href{#method-LFQDataAggregator-plot}{\code{LFQDataAggregator$plot()}}
+\item \href{#method-LFQDataAggregator-write_plots}{\code{LFQDataAggregator$write_plots()}}
+\item \href{#method-LFQDataAggregator-clone}{\code{LFQDataAggregator$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -99,8 +99,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-medpolish"></a>}}
-\if{latex}{\out{\hypertarget{method-medpolish}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-medpolish"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-medpolish}{}}}
 \subsection{Method \code{medpolish()}}{
 aggregate using median polish
 \subsection{Usage}{
@@ -119,8 +119,8 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-lmrob"></a>}}
-\if{latex}{\out{\hypertarget{method-lmrob}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-lmrob"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-lmrob}{}}}
 \subsection{Method \code{lmrob()}}{
 aggregate using robust regression
 \subsection{Usage}{
@@ -139,8 +139,8 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-mean_topN"></a>}}
-\if{latex}{\out{\hypertarget{method-mean_topN}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-mean_topN"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-mean_topN}{}}}
 \subsection{Method \code{mean_topN()}}{
 aggregate topN using mean
 \subsection{Usage}{
@@ -159,8 +159,8 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sum_topN"></a>}}
-\if{latex}{\out{\hypertarget{method-sum_topN}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-sum_topN"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-sum_topN}{}}}
 \subsection{Method \code{sum_topN()}}{
 aggregate topN using sum
 \subsection{Usage}{
@@ -179,8 +179,8 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-plot}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-plot}{}}}
 \subsection{Method \code{plot()}}{
 creates aggreation plots
 \subsection{Usage}{
@@ -199,8 +199,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_plots"></a>}}
-\if{latex}{\out{\hypertarget{method-write_plots}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-write_plots"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-write_plots}{}}}
 \subsection{Method \code{write_plots()}}{
 writes plots to folder
 \subsection{Usage}{
@@ -230,8 +230,8 @@ file path
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LFQDataAggregator-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataAggregator-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

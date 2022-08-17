@@ -117,25 +117,25 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ContrastsModerated$new()}}
-\item \href{#method-get_contrast_sides}{\code{ContrastsModerated$get_contrast_sides()}}
-\item \href{#method-get_linfct}{\code{ContrastsModerated$get_linfct()}}
-\item \href{#method-get_contrasts}{\code{ContrastsModerated$get_contrasts()}}
-\item \href{#method-get_Plotter}{\code{ContrastsModerated$get_Plotter()}}
-\item \href{#method-to_wide}{\code{ContrastsModerated$to_wide()}}
-\item \href{#method-clone}{\code{ContrastsModerated$clone()}}
+\item \href{#method-ContrastsModerated-new}{\code{ContrastsModerated$new()}}
+\item \href{#method-ContrastsModerated-get_contrast_sides}{\code{ContrastsModerated$get_contrast_sides()}}
+\item \href{#method-ContrastsModerated-get_linfct}{\code{ContrastsModerated$get_linfct()}}
+\item \href{#method-ContrastsModerated-get_contrasts}{\code{ContrastsModerated$get_contrasts()}}
+\item \href{#method-ContrastsModerated-get_Plotter}{\code{ContrastsModerated$get_Plotter()}}
+\item \href{#method-ContrastsModerated-to_wide}{\code{ContrastsModerated$to_wide()}}
+\item \href{#method-ContrastsModerated-clone}{\code{ContrastsModerated$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -159,8 +159,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 get both sides of contrasts
 \subsection{Usage}{
@@ -169,8 +169,8 @@ get both sides of contrasts
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_linfct"></a>}}
-\if{latex}{\out{\hypertarget{method-get_linfct}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
 get linear functions from contrasts
 \subsection{Usage}{
@@ -186,8 +186,8 @@ get linear functions from contrasts
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 applies limma moderation
 \subsection{Usage}{
@@ -205,8 +205,8 @@ applies limma moderation
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
@@ -224,8 +224,8 @@ get \code{\link{Contrasts_Plotter}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
@@ -244,8 +244,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ContrastsModerated-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsModerated-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

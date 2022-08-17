@@ -110,28 +110,28 @@ Other benchmarking:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Benchmark$new()}}
-\item \href{#method-data}{\code{Benchmark$data()}}
-\item \href{#method-missing_contrasts}{\code{Benchmark$missing_contrasts()}}
-\item \href{#method-complete}{\code{Benchmark$complete()}}
-\item \href{#method-.get_confusion}{\code{Benchmark$.get_confusion()}}
-\item \href{#method-get_confusion_benchmark}{\code{Benchmark$get_confusion_benchmark()}}
-\item \href{#method-n_confusion_benchmark}{\code{Benchmark$n_confusion_benchmark()}}
-\item \href{#method-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
-\item \href{#method-plot_ROC}{\code{Benchmark$plot_ROC()}}
-\item \href{#method-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
-\item \href{#method-pAUC}{\code{Benchmark$pAUC()}}
-\item \href{#method-get_confusion_FDRvsFDP}{\code{Benchmark$get_confusion_FDRvsFDP()}}
-\item \href{#method-n_confusion_FDRvsFDP}{\code{Benchmark$n_confusion_FDRvsFDP()}}
-\item \href{#method-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
-\item \href{#method-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
-\item \href{#method-plot_scatter}{\code{Benchmark$plot_scatter()}}
-\item \href{#method-clone}{\code{Benchmark$clone()}}
+\item \href{#method-Benchmark-new}{\code{Benchmark$new()}}
+\item \href{#method-Benchmark-data}{\code{Benchmark$data()}}
+\item \href{#method-Benchmark-missing_contrasts}{\code{Benchmark$missing_contrasts()}}
+\item \href{#method-Benchmark-complete}{\code{Benchmark$complete()}}
+\item \href{#method-Benchmark-.get_confusion}{\code{Benchmark$.get_confusion()}}
+\item \href{#method-Benchmark-get_confusion_benchmark}{\code{Benchmark$get_confusion_benchmark()}}
+\item \href{#method-Benchmark-n_confusion_benchmark}{\code{Benchmark$n_confusion_benchmark()}}
+\item \href{#method-Benchmark-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
+\item \href{#method-Benchmark-plot_ROC}{\code{Benchmark$plot_ROC()}}
+\item \href{#method-Benchmark-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
+\item \href{#method-Benchmark-pAUC}{\code{Benchmark$pAUC()}}
+\item \href{#method-Benchmark-get_confusion_FDRvsFDP}{\code{Benchmark$get_confusion_FDRvsFDP()}}
+\item \href{#method-Benchmark-n_confusion_FDRvsFDP}{\code{Benchmark$n_confusion_FDRvsFDP()}}
+\item \href{#method-Benchmark-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
+\item \href{#method-Benchmark-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
+\item \href{#method-Benchmark-plot_scatter}{\code{Benchmark$plot_scatter()}}
+\item \href{#method-Benchmark-clone}{\code{Benchmark$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Benchmark-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-new}{}}}
 \subsection{Method \code{new()}}{
 create Benchmark
 \subsection{Usage}{
@@ -185,8 +185,8 @@ create Benchmark
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-data"></a>}}
-\if{latex}{\out{\hypertarget{method-data}{}}}
+\if{html}{\out{<a id="method-Benchmark-data"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-data}{}}}
 \subsection{Method \code{data()}}{
 get data
 \subsection{Usage}{
@@ -198,8 +198,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-missing_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-missing_contrasts}{}}}
+\if{html}{\out{<a id="method-Benchmark-missing_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-missing_contrasts}{}}}
 \subsection{Method \code{missing_contrasts()}}{
 summarize missing contrasts
 \subsection{Usage}{
@@ -211,8 +211,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-complete"></a>}}
-\if{latex}{\out{\hypertarget{method-complete}{}}}
+\if{html}{\out{<a id="method-Benchmark-complete"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-complete}{}}}
 \subsection{Method \code{complete()}}{
 set or get complete.
 If true only proteins for which all contrasts are determinable are examined.
@@ -229,8 +229,8 @@ If true only proteins for which all contrasts are determinable are examined.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-.get_confusion"></a>}}
-\if{latex}{\out{\hypertarget{method-.get_confusion}{}}}
+\if{html}{\out{<a id="method-Benchmark-.get_confusion"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-.get_confusion}{}}}
 \subsection{Method \code{.get_confusion()}}{
 get confusion data
 \subsection{Usage}{
@@ -246,8 +246,8 @@ get confusion data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_confusion_benchmark"></a>}}
-\if{latex}{\out{\hypertarget{method-get_confusion_benchmark}{}}}
+\if{html}{\out{<a id="method-Benchmark-get_confusion_benchmark"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-get_confusion_benchmark}{}}}
 \subsection{Method \code{get_confusion_benchmark()}}{
 get FDR summaries
 \subsection{Usage}{
@@ -256,8 +256,8 @@ get FDR summaries
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-n_confusion_benchmark"></a>}}
-\if{latex}{\out{\hypertarget{method-n_confusion_benchmark}{}}}
+\if{html}{\out{<a id="method-Benchmark-n_confusion_benchmark"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-n_confusion_benchmark}{}}}
 \subsection{Method \code{n_confusion_benchmark()}}{
 nr of elements used to determine ROC curve
 \subsection{Usage}{
@@ -266,8 +266,8 @@ nr of elements used to determine ROC curve
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_FDPvsTPR"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_FDPvsTPR}{}}}
+\if{html}{\out{<a id="method-Benchmark-plot_FDPvsTPR"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_FDPvsTPR}{}}}
 \subsection{Method \code{plot_FDPvsTPR()}}{
 plot FDP vs TPR
 \subsection{Usage}{
@@ -283,8 +283,8 @@ plot FDP vs TPR
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_ROC"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_ROC}{}}}
+\if{html}{\out{<a id="method-Benchmark-plot_ROC"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_ROC}{}}}
 \subsection{Method \code{plot_ROC()}}{
 plot FDR summaries
 \subsection{Usage}{
@@ -303,8 +303,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pAUC_summaries"></a>}}
-\if{latex}{\out{\hypertarget{method-pAUC_summaries}{}}}
+\if{html}{\out{<a id="method-Benchmark-pAUC_summaries"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-pAUC_summaries}{}}}
 \subsection{Method \code{pAUC_summaries()}}{
 AUC summaries
 \subsection{Usage}{
@@ -313,8 +313,8 @@ AUC summaries
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pAUC"></a>}}
-\if{latex}{\out{\hypertarget{method-pAUC}{}}}
+\if{html}{\out{<a id="method-Benchmark-pAUC"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-pAUC}{}}}
 \subsection{Method \code{pAUC()}}{
 AUC summaries as table
 \subsection{Usage}{
@@ -323,8 +323,8 @@ AUC summaries as table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_confusion_FDRvsFDP"></a>}}
-\if{latex}{\out{\hypertarget{method-get_confusion_FDRvsFDP}{}}}
+\if{html}{\out{<a id="method-Benchmark-get_confusion_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-get_confusion_FDRvsFDP}{}}}
 \subsection{Method \code{get_confusion_FDRvsFDP()}}{
 FDR vs FDP data
 \subsection{Usage}{
@@ -333,8 +333,8 @@ FDR vs FDP data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-n_confusion_FDRvsFDP"></a>}}
-\if{latex}{\out{\hypertarget{method-n_confusion_FDRvsFDP}{}}}
+\if{html}{\out{<a id="method-Benchmark-n_confusion_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-n_confusion_FDRvsFDP}{}}}
 \subsection{Method \code{n_confusion_FDRvsFDP()}}{
 nr of elements used to determine ROC curve
 \subsection{Usage}{
@@ -343,8 +343,8 @@ nr of elements used to determine ROC curve
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_FDRvsFDP"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_FDRvsFDP}{}}}
+\if{html}{\out{<a id="method-Benchmark-plot_FDRvsFDP"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_FDRvsFDP}{}}}
 \subsection{Method \code{plot_FDRvsFDP()}}{
 plot FDR vs FDP data
 \subsection{Usage}{
@@ -356,8 +356,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_score_distribution"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_score_distribution}{}}}
+\if{html}{\out{<a id="method-Benchmark-plot_score_distribution"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_score_distribution}{}}}
 \subsection{Method \code{plot_score_distribution()}}{
 plot distributions of scores
 \subsection{Usage}{
@@ -376,8 +376,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plot_scatter"></a>}}
-\if{latex}{\out{\hypertarget{method-plot_scatter}{}}}
+\if{html}{\out{<a id="method-Benchmark-plot_scatter"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_scatter}{}}}
 \subsection{Method \code{plot_scatter()}}{
 plot intensity vs scores
 \subsection{Usage}{
@@ -396,8 +396,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Benchmark-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

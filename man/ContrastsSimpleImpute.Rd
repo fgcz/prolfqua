@@ -17,11 +17,6 @@ we substitute the unobserved group with the median of protein abundances
 The variance of a protein is estimated using the pooled variance
 of all observations of all groups.
 }
-\examples{
-
-
-
-}
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
@@ -94,24 +89,24 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ContrastsSimpleImpute$new()}}
-\item \href{#method-get_contrast_sides}{\code{ContrastsSimpleImpute$get_contrast_sides()}}
-\item \href{#method-get_contrasts}{\code{ContrastsSimpleImpute$get_contrasts()}}
-\item \href{#method-get_Plotter}{\code{ContrastsSimpleImpute$get_Plotter()}}
-\item \href{#method-to_wide}{\code{ContrastsSimpleImpute$to_wide()}}
-\item \href{#method-clone}{\code{ContrastsSimpleImpute$clone()}}
+\item \href{#method-ContrastsSimpleImpute-new}{\code{ContrastsSimpleImpute$new()}}
+\item \href{#method-ContrastsSimpleImpute-get_contrast_sides}{\code{ContrastsSimpleImpute$get_contrast_sides()}}
+\item \href{#method-ContrastsSimpleImpute-get_contrasts}{\code{ContrastsSimpleImpute$get_contrasts()}}
+\item \href{#method-ContrastsSimpleImpute-get_Plotter}{\code{ContrastsSimpleImpute$get_Plotter()}}
+\item \href{#method-ContrastsSimpleImpute-to_wide}{\code{ContrastsSimpleImpute$to_wide()}}
+\item \href{#method-ContrastsSimpleImpute-clone}{\code{ContrastsSimpleImpute$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -150,8 +145,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 get contrasts sides
 \subsection{Usage}{
@@ -160,8 +155,8 @@ get contrasts sides
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 table with results of contrast computation
 \subsection{Usage}{
@@ -177,8 +172,8 @@ table with results of contrast computation
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 get Contrasts_Plotter
 \subsection{Usage}{
@@ -190,8 +185,8 @@ Contrast_Plotter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 convert contrast results to wide format
 \subsection{Usage}{
@@ -210,8 +205,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ContrastsSimpleImpute-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

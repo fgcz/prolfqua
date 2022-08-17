@@ -74,29 +74,29 @@ Other LFQData:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LFQDataPlotter$new()}}
-\item \href{#method-raster}{\code{LFQDataPlotter$raster()}}
-\item \href{#method-heatmap}{\code{LFQDataPlotter$heatmap()}}
-\item \href{#method-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
-\item \href{#method-pca}{\code{LFQDataPlotter$pca()}}
-\item \href{#method-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
-\item \href{#method-boxplots}{\code{LFQDataPlotter$boxplots()}}
-\item \href{#method-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
-\item \href{#method-NA_heatmap}{\code{LFQDataPlotter$NA_heatmap()}}
-\item \href{#method-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
-\item \href{#method-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
-\item \href{#method-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
-\item \href{#method-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
-\item \href{#method-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
-\item \href{#method-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
-\item \href{#method-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
-\item \href{#method-write}{\code{LFQDataPlotter$write()}}
-\item \href{#method-clone}{\code{LFQDataPlotter$clone()}}
+\item \href{#method-LFQDataPlotter-new}{\code{LFQDataPlotter$new()}}
+\item \href{#method-LFQDataPlotter-raster}{\code{LFQDataPlotter$raster()}}
+\item \href{#method-LFQDataPlotter-heatmap}{\code{LFQDataPlotter$heatmap()}}
+\item \href{#method-LFQDataPlotter-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
+\item \href{#method-LFQDataPlotter-pca}{\code{LFQDataPlotter$pca()}}
+\item \href{#method-LFQDataPlotter-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
+\item \href{#method-LFQDataPlotter-boxplots}{\code{LFQDataPlotter$boxplots()}}
+\item \href{#method-LFQDataPlotter-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
+\item \href{#method-LFQDataPlotter-NA_heatmap}{\code{LFQDataPlotter$NA_heatmap()}}
+\item \href{#method-LFQDataPlotter-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
+\item \href{#method-LFQDataPlotter-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
+\item \href{#method-LFQDataPlotter-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
+\item \href{#method-LFQDataPlotter-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
+\item \href{#method-LFQDataPlotter-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
+\item \href{#method-LFQDataPlotter-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
+\item \href{#method-LFQDataPlotter-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
+\item \href{#method-LFQDataPlotter-write}{\code{LFQDataPlotter$write()}}
+\item \href{#method-LFQDataPlotter-clone}{\code{LFQDataPlotter$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-new}{}}}
 \subsection{Method \code{new()}}{
 create LFQDataPlotter
 \subsection{Usage}{
@@ -114,8 +114,8 @@ create LFQDataPlotter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-raster"></a>}}
-\if{latex}{\out{\hypertarget{method-raster}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-raster"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-raster}{}}}
 \subsection{Method \code{raster()}}{
 plot intensities in raster
 \subsection{Usage}{
@@ -142,8 +142,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-heatmap"></a>}}
-\if{latex}{\out{\hypertarget{method-heatmap}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-heatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-heatmap}{}}}
 \subsection{Method \code{heatmap()}}{
 heatmap of intensities - columns are samples, rows are proteins or peptides.
 
@@ -172,8 +172,8 @@ pheatmap
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-heatmap_cor"></a>}}
-\if{latex}{\out{\hypertarget{method-heatmap_cor}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-heatmap_cor"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-heatmap_cor}{}}}
 \subsection{Method \code{heatmap_cor()}}{
 heatmap of sample correlations.
 
@@ -188,8 +188,8 @@ pheatmap
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pca"></a>}}
-\if{latex}{\out{\hypertarget{method-pca}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-pca"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-pca}{}}}
 \subsection{Method \code{pca()}}{
 PCA plot
 
@@ -210,8 +210,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pca_plotly"></a>}}
-\if{latex}{\out{\hypertarget{method-pca_plotly}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-pca_plotly"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-pca_plotly}{}}}
 \subsection{Method \code{pca_plotly()}}{
 pca plot
 \subsection{Usage}{
@@ -230,8 +230,8 @@ plotly
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-boxplots"></a>}}
-\if{latex}{\out{\hypertarget{method-boxplots}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-boxplots}{}}}
 \subsection{Method \code{boxplots()}}{
 boxplots for all proteins
 \subsection{Usage}{
@@ -243,8 +243,8 @@ tibble with column boxplots containing ggplot objects
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-missigness_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-missigness_histogram}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-missigness_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-missigness_histogram}{}}}
 \subsection{Method \code{missigness_histogram()}}{
 histogram of intensities given number of missing in conditions
 \subsection{Usage}{
@@ -256,8 +256,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA_heatmap"></a>}}
-\if{latex}{\out{\hypertarget{method-NA_heatmap}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-NA_heatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-NA_heatmap}{}}}
 \subsection{Method \code{NA_heatmap()}}{
 heatmap of features with missing values
 \subsection{Usage}{
@@ -269,8 +269,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-intensity_distribution_density"></a>}}
-\if{latex}{\out{\hypertarget{method-intensity_distribution_density}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-intensity_distribution_density"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-intensity_distribution_density}{}}}
 \subsection{Method \code{intensity_distribution_density()}}{
 density distribution of intensities
 \subsection{Usage}{
@@ -289,8 +289,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-intensity_distribution_violin"></a>}}
-\if{latex}{\out{\hypertarget{method-intensity_distribution_violin}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-intensity_distribution_violin"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-intensity_distribution_violin}{}}}
 \subsection{Method \code{intensity_distribution_violin()}}{
 Violinplot showing distribution of intensities in all samples
 \subsection{Usage}{
@@ -302,8 +302,8 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pairs_smooth"></a>}}
-\if{latex}{\out{\hypertarget{method-pairs_smooth}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-pairs_smooth"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-pairs_smooth}{}}}
 \subsection{Method \code{pairs_smooth()}}{
 pairsplot of intensities
 \subsection{Usage}{
@@ -322,8 +322,8 @@ NULL
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sample_correlation"></a>}}
-\if{latex}{\out{\hypertarget{method-sample_correlation}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-sample_correlation"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-sample_correlation}{}}}
 \subsection{Method \code{sample_correlation()}}{
 plot of sample correlations
 \subsection{Usage}{
@@ -335,8 +335,8 @@ NULL
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_boxplots"></a>}}
-\if{latex}{\out{\hypertarget{method-write_boxplots}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-write_boxplots"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_boxplots}{}}}
 \subsection{Method \code{write_boxplots()}}{
 write boxplots to file
 \subsection{Usage}{
@@ -356,8 +356,8 @@ write boxplots to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_pltly"></a>}}
-\if{latex}{\out{\hypertarget{method-write_pltly}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-write_pltly"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_pltly}{}}}
 \subsection{Method \code{write_pltly()}}{
 write pltly figures to path_qc
 \subsection{Usage}{
@@ -380,8 +380,8 @@ path the file was written to.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_pdf"></a>}}
-\if{latex}{\out{\hypertarget{method-write_pdf}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-write_pdf"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_pdf}{}}}
 \subsection{Method \code{write_pdf()}}{
 write figure to pdf
 \subsection{Usage}{
@@ -408,8 +408,8 @@ path the file was written to
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write"></a>}}
-\if{latex}{\out{\hypertarget{method-write}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-write"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write}{}}}
 \subsection{Method \code{write()}}{
 write heatmaps and pca plots to files
 \subsection{Usage}{
@@ -425,8 +425,8 @@ write heatmaps and pca plots to files
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LFQDataPlotter-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -44,12 +44,12 @@ Other configuration:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-clone}{\code{AnalysisParameters$clone()}}
+\item \href{#method-AnalysisParameters-clone}{\code{AnalysisParameters$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AnalysisParameters-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisParameters-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -72,19 +72,19 @@ if(require("vsn")){
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LFQDataTransformer$new()}}
-\item \href{#method-log2}{\code{LFQDataTransformer$log2()}}
-\item \href{#method-get_scales}{\code{LFQDataTransformer$get_scales()}}
-\item \href{#method-robscale}{\code{LFQDataTransformer$robscale()}}
-\item \href{#method-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
-\item \href{#method-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
-\item \href{#method-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
-\item \href{#method-clone}{\code{LFQDataTransformer$clone()}}
+\item \href{#method-LFQDataTransformer-new}{\code{LFQDataTransformer$new()}}
+\item \href{#method-LFQDataTransformer-log2}{\code{LFQDataTransformer$log2()}}
+\item \href{#method-LFQDataTransformer-get_scales}{\code{LFQDataTransformer$get_scales()}}
+\item \href{#method-LFQDataTransformer-robscale}{\code{LFQDataTransformer$robscale()}}
+\item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
+\item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
+\item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
+\item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -100,8 +100,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log2"></a>}}
-\if{latex}{\out{\hypertarget{method-log2}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-log2"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-log2}{}}}
 \subsection{Method \code{log2()}}{
 log2 transform data
 \subsection{Usage}{
@@ -120,8 +120,8 @@ LFQDataTransformer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_scales"></a>}}
-\if{latex}{\out{\hypertarget{method-get_scales}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-get_scales"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-get_scales}{}}}
 \subsection{Method \code{get_scales()}}{
 get mean and variance and standard deviation in each sample
 \subsection{Usage}{
@@ -133,8 +133,8 @@ list with means and mads
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-robscale"></a>}}
-\if{latex}{\out{\hypertarget{method-robscale}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-robscale"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-robscale}{}}}
 \subsection{Method \code{robscale()}}{
 robust scale data
 \subsection{Usage}{
@@ -158,8 +158,8 @@ LFQDataTransformer (self)
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-robscale_subset"></a>}}
-\if{latex}{\out{\hypertarget{method-robscale_subset}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-robscale_subset"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-robscale_subset}{}}}
 \subsection{Method \code{robscale_subset()}}{
 log2 transform and robust scale data based on subset
 \subsection{Usage}{
@@ -186,8 +186,8 @@ LFQDataTransformer (self)
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-intensity_array"></a>}}
-\if{latex}{\out{\hypertarget{method-intensity_array}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-intensity_array"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-intensity_array}{}}}
 \subsection{Method \code{intensity_array()}}{
 Transforms intensities
 \subsection{Usage}{
@@ -208,8 +208,8 @@ LFQDataTransformer (self)
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-intensity_matrix"></a>}}
-\if{latex}{\out{\hypertarget{method-intensity_matrix}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-intensity_matrix"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-intensity_matrix}{}}}
 \subsection{Method \code{intensity_matrix()}}{
 pass a function which works with matrices, e.g., vsn::justvsn
 \subsection{Usage}{
@@ -230,8 +230,8 @@ LFQDataTransformer (self)
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LFQDataTransformer-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

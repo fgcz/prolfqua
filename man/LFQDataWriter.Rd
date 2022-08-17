@@ -35,17 +35,17 @@ Other LFQData:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LFQDataWriter$new()}}
-\item \href{#method-get_long}{\code{LFQDataWriter$get_long()}}
-\item \href{#method-get_wide}{\code{LFQDataWriter$get_wide()}}
-\item \href{#method-write_long}{\code{LFQDataWriter$write_long()}}
-\item \href{#method-write_wide}{\code{LFQDataWriter$write_wide()}}
-\item \href{#method-clone}{\code{LFQDataWriter$clone()}}
+\item \href{#method-LFQDataWriter-new}{\code{LFQDataWriter$new()}}
+\item \href{#method-LFQDataWriter-get_long}{\code{LFQDataWriter$get_long()}}
+\item \href{#method-LFQDataWriter-get_wide}{\code{LFQDataWriter$get_wide()}}
+\item \href{#method-LFQDataWriter-write_long}{\code{LFQDataWriter$write_long()}}
+\item \href{#method-LFQDataWriter-write_wide}{\code{LFQDataWriter$write_wide()}}
+\item \href{#method-LFQDataWriter-clone}{\code{LFQDataWriter$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-new}{}}}
 \subsection{Method \code{new()}}{
 initialize class
 \subsection{Usage}{
@@ -65,8 +65,8 @@ initialize class
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_long"></a>}}
-\if{latex}{\out{\hypertarget{method-get_long}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-get_long"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-get_long}{}}}
 \subsection{Method \code{get_long()}}{
 get Data in long format for writing
 \subsection{Usage}{
@@ -79,8 +79,8 @@ gets data formatted for writing
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-get_wide}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-get_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-get_wide}{}}}
 \subsection{Method \code{get_wide()}}{
 get Data in Wide format for writing
 \subsection{Usage}{
@@ -93,8 +93,8 @@ gets data formatted for writing
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_long"></a>}}
-\if{latex}{\out{\hypertarget{method-write_long}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-write_long"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-write_long}{}}}
 \subsection{Method \code{write_long()}}{
 write data to file
 \subsection{Usage}{
@@ -110,8 +110,8 @@ write data to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-write_wide}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-write_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-write_wide}{}}}
 \subsection{Method \code{write_wide()}}{
 write data to file
 \subsection{Usage}{
@@ -127,8 +127,8 @@ write data to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LFQDataWriter-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataWriter-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

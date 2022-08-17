@@ -102,28 +102,22 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Model$new()}}
-\item \href{#method-get_coefficients}{\code{Model$get_coefficients()}}
-\item \href{#method-get_anova}{\code{Model$get_anova()}}
-\item \href{#method-write_coefficients}{\code{Model$write_coefficients()}}
-\item \href{#method-coef_histogram}{\code{Model$coef_histogram()}}
-\item \href{#method-coef_volcano}{\code{Model$coef_volcano()}}
-\item \href{#method-coef_pairs}{\code{Model$coef_pairs()}}
-\item \href{#method-anova_histogram}{\code{Model$anova_histogram()}}
-\item \href{#method-write_anova_figures}{\code{Model$write_anova_figures()}}
-\item \href{#method-write_coef_figures}{\code{Model$write_coef_figures()}}
-\item \href{#method-clone}{\code{Model$clone()}}
+\item \href{#method-Model-new}{\code{Model$new()}}
+\item \href{#method-Model-get_coefficients}{\code{Model$get_coefficients()}}
+\item \href{#method-Model-get_anova}{\code{Model$get_anova()}}
+\item \href{#method-Model-write_coefficients}{\code{Model$write_coefficients()}}
+\item \href{#method-Model-coef_histogram}{\code{Model$coef_histogram()}}
+\item \href{#method-Model-coef_volcano}{\code{Model$coef_volcano()}}
+\item \href{#method-Model-coef_pairs}{\code{Model$coef_pairs()}}
+\item \href{#method-Model-anova_histogram}{\code{Model$anova_histogram()}}
+\item \href{#method-Model-write_anova_figures}{\code{Model$write_anova_figures()}}
+\item \href{#method-Model-write_coef_figures}{\code{Model$write_coef_figures()}}
+\item \href{#method-Model-clone}{\code{Model$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Model-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -153,8 +147,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-get_coefficients}{}}}
+\if{html}{\out{<a id="method-Model-get_coefficients"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-get_coefficients}{}}}
 \subsection{Method \code{get_coefficients()}}{
 return model coefficient table
 \subsection{Usage}{
@@ -163,8 +157,8 @@ return model coefficient table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_anova"></a>}}
-\if{latex}{\out{\hypertarget{method-get_anova}{}}}
+\if{html}{\out{<a id="method-Model-get_anova"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-get_anova}{}}}
 \subsection{Method \code{get_anova()}}{
 return anova table
 \subsection{Usage}{
@@ -173,8 +167,8 @@ return anova table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-write_coefficients}{}}}
+\if{html}{\out{<a id="method-Model-write_coefficients"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-write_coefficients}{}}}
 \subsection{Method \code{write_coefficients()}}{
 writes model coefficients to file
 \subsection{Usage}{
@@ -192,8 +186,8 @@ writes model coefficients to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-coef_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-coef_histogram}{}}}
+\if{html}{\out{<a id="method-Model-coef_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-coef_histogram}{}}}
 \subsection{Method \code{coef_histogram()}}{
 histogram of model coefficient
 \subsection{Usage}{
@@ -202,8 +196,8 @@ histogram of model coefficient
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-coef_volcano"></a>}}
-\if{latex}{\out{\hypertarget{method-coef_volcano}{}}}
+\if{html}{\out{<a id="method-Model-coef_volcano"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-coef_volcano}{}}}
 \subsection{Method \code{coef_volcano()}}{
 volcano plot of non intercept coefficients
 \subsection{Usage}{
@@ -212,8 +206,8 @@ volcano plot of non intercept coefficients
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-coef_pairs"></a>}}
-\if{latex}{\out{\hypertarget{method-coef_pairs}{}}}
+\if{html}{\out{<a id="method-Model-coef_pairs"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
 pairs-plot of coefficients
 \subsection{Usage}{
@@ -222,8 +216,8 @@ pairs-plot of coefficients
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-anova_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-anova_histogram}{}}}
+\if{html}{\out{<a id="method-Model-anova_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
 histogram of ANOVA results
 \subsection{Usage}{
@@ -239,8 +233,8 @@ histogram of ANOVA results
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_anova_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-write_anova_figures}{}}}
+\if{html}{\out{<a id="method-Model-write_anova_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-write_anova_figures}{}}}
 \subsection{Method \code{write_anova_figures()}}{
 write figures related to ANOVA into pdf file
 \subsection{Usage}{
@@ -260,8 +254,8 @@ write figures related to ANOVA into pdf file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_coef_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-write_coef_figures}{}}}
+\if{html}{\out{<a id="method-Model-write_coef_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-write_coef_figures}{}}}
 \subsection{Method \code{write_coef_figures()}}{
 write figures related to Coefficients into pdf file
 \subsection{Usage}{
@@ -281,8 +275,8 @@ write figures related to Coefficients into pdf file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Model-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

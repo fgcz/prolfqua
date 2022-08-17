@@ -114,25 +114,25 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ContrastsROPECA$new()}}
-\item \href{#method-get_contrast_sides}{\code{ContrastsROPECA$get_contrast_sides()}}
-\item \href{#method-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
-\item \href{#method-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
-\item \href{#method-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
-\item \href{#method-to_wide}{\code{ContrastsROPECA$to_wide()}}
-\item \href{#method-clone}{\code{ContrastsROPECA$clone()}}
+\item \href{#method-ContrastsROPECA-new}{\code{ContrastsROPECA$new()}}
+\item \href{#method-ContrastsROPECA-get_contrast_sides}{\code{ContrastsROPECA$get_contrast_sides()}}
+\item \href{#method-ContrastsROPECA-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
+\item \href{#method-ContrastsROPECA-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
+\item \href{#method-ContrastsROPECA-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
+\item \href{#method-ContrastsROPECA-to_wide}{\code{ContrastsROPECA$to_wide()}}
+\item \href{#method-ContrastsROPECA-clone}{\code{ContrastsROPECA$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description">}\href{../../prolfqua/html/ContrastsInterface.html#method-column_description}{\code{prolfqua::ContrastsInterface$column_description()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -156,8 +156,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 show names of contrasts
 \subsection{Usage}{
@@ -169,8 +169,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_linfct"></a>}}
-\if{latex}{\out{\hypertarget{method-get_linfct}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
 get linear function used to determine contrasts
 \subsection{Usage}{
@@ -182,8 +182,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 get contrasts
 \subsection{Usage}{
@@ -204,8 +204,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrasts_Plotter}}
 \subsection{Usage}{
@@ -226,8 +226,8 @@ get \code{\link{Contrasts_Plotter}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
@@ -248,8 +248,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ContrastsROPECA-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -11,17 +11,17 @@ Base class for all Contrasts classes
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-get_contrast_sides}{\code{ContrastsInterface$get_contrast_sides()}}
-\item \href{#method-get_contrasts}{\code{ContrastsInterface$get_contrasts()}}
-\item \href{#method-get_Plotter}{\code{ContrastsInterface$get_Plotter()}}
-\item \href{#method-to_wide}{\code{ContrastsInterface$to_wide()}}
-\item \href{#method-column_description}{\code{ContrastsInterface$column_description()}}
-\item \href{#method-clone}{\code{ContrastsInterface$clone()}}
+\item \href{#method-ContrastsInterface-get_contrast_sides}{\code{ContrastsInterface$get_contrast_sides()}}
+\item \href{#method-ContrastsInterface-get_contrasts}{\code{ContrastsInterface$get_contrasts()}}
+\item \href{#method-ContrastsInterface-get_Plotter}{\code{ContrastsInterface$get_Plotter()}}
+\item \href{#method-ContrastsInterface-to_wide}{\code{ContrastsInterface$to_wide()}}
+\item \href{#method-ContrastsInterface-column_description}{\code{ContrastsInterface$column_description()}}
+\item \href{#method-ContrastsInterface-clone}{\code{ContrastsInterface$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 get table with sides of the contrast
 \subsection{Usage}{
@@ -30,8 +30,8 @@ get table with sides of the contrast
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-get_contrasts}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 get table with contrast results (similar to limma topTable function)
 \subsection{Usage}{
@@ -40,8 +40,8 @@ get table with contrast results (similar to limma topTable function)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 initialize plotter
 \subsection{Usage}{
@@ -50,8 +50,8 @@ initialize plotter
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 create wide representation of data.
 \subsection{Usage}{
@@ -60,8 +60,8 @@ create wide representation of data.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-column_description"></a>}}
-\if{latex}{\out{\hypertarget{method-column_description}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-column_description"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-column_description}{}}}
 \subsection{Method \code{column_description()}}{
 column description
 \subsection{Usage}{
@@ -70,8 +70,8 @@ column description
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ContrastsInterface-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

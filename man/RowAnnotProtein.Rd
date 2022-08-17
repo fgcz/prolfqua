@@ -48,17 +48,17 @@ Other LFQData:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{RowAnnotProtein$new()}}
-\item \href{#method-annotateREV}{\code{RowAnnotProtein$annotateREV()}}
-\item \href{#method-annotateCON}{\code{RowAnnotProtein$annotateCON()}}
-\item \href{#method-nr_clean}{\code{RowAnnotProtein$nr_clean()}}
-\item \href{#method-clean}{\code{RowAnnotProtein$clean()}}
-\item \href{#method-clone}{\code{RowAnnotProtein$clone()}}
+\item \href{#method-RowAnnotProtein-new}{\code{RowAnnotProtein$new()}}
+\item \href{#method-RowAnnotProtein-annotateREV}{\code{RowAnnotProtein$annotateREV()}}
+\item \href{#method-RowAnnotProtein-annotateCON}{\code{RowAnnotProtein$annotateCON()}}
+\item \href{#method-RowAnnotProtein-nr_clean}{\code{RowAnnotProtein$nr_clean()}}
+\item \href{#method-RowAnnotProtein-clean}{\code{RowAnnotProtein$clean()}}
+\item \href{#method-RowAnnotProtein-clone}{\code{RowAnnotProtein$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-new"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -76,8 +76,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-annotateREV"></a>}}
-\if{latex}{\out{\hypertarget{method-annotateREV}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-annotateREV"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-annotateREV}{}}}
 \subsection{Method \code{annotateREV()}}{
 annotate rev sequences
 \subsection{Usage}{
@@ -93,8 +93,8 @@ annotate rev sequences
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-annotateCON"></a>}}
-\if{latex}{\out{\hypertarget{method-annotateCON}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-annotateCON"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-annotateCON}{}}}
 \subsection{Method \code{annotateCON()}}{
 annotate contaminants
 \subsection{Usage}{
@@ -110,8 +110,8 @@ annotate contaminants
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-nr_clean"></a>}}
-\if{latex}{\out{\hypertarget{method-nr_clean}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-nr_clean"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-nr_clean}{}}}
 \subsection{Method \code{nr_clean()}}{
 return number of cleans
 \subsection{Usage}{
@@ -120,8 +120,8 @@ return number of cleans
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clean"></a>}}
-\if{latex}{\out{\hypertarget{method-clean}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-clean"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-clean}{}}}
 \subsection{Method \code{clean()}}{
 remove REV and CON sequences
 \subsection{Usage}{
@@ -130,8 +130,8 @@ remove REV and CON sequences
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-RowAnnotProtein-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-RowAnnotProtein-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
