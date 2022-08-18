@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,36 +90,51 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">squeezeVarRob</span><span class="op">(</span>
-  <span class="va">var</span>,
-  <span class="va">df</span>,
-  covariate <span class="op">=</span> <span class="cn">NULL</span>,
-  robust <span class="op">=</span> <span class="cn">FALSE</span>,
-  winsor.tail.p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  min_df <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">squeezeVarRob</span><span class="op">(</span></span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">df</span>,</span>
+<span>  covariate <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  robust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  winsor.tail.p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  min_df <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>var</dt>
 <dd><p>A numeric vector of independent sample variances.</p></dd>
+
+
 <dt>df</dt>
 <dd><p>A numeric vector of degrees of freedom for the sample variances.</p></dd>
+
+
 <dt>covariate</dt>
 <dd><p>If <code>non-NULL</code>, <code>var.prior</code> will depend on this numeric covariate. Otherwise, <code>var.prior</code> is constant.</p></dd>
+
+
 <dt>robust</dt>
 <dd><p>A logical indicating wheter the estimation of <code>df.prior</code> and <code>var.prior</code> should be robustified against outlier sample variances. Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>winsor.tail.p</dt>
 <dd><p>A numeric vector of length 1 or 2, giving left and right tail proportions of <code>x</code> to Winsorize. Used only when <code>robust=TRUE</code>.</p></dd>
+
+
 <dt>min_df</dt>
 <dd><p>A numeric value indicating the minimal degrees of freedom that will be taken into account for calculating the prior degrees of freedom and prior variance.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>A numeric value indicating that the calculation of the robust squeezed variances should Winsorize at <code>k</code> standard deviations.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with components:
+    
+
+<p>A list with components:
 <code>var.post</code> A numeric vector of posterior variances.
 <code>var.prior</code> The location of prior distribution. A vector if <code>covariate</code> is non-<code>NULL</code>, otherwise a scalar.
 <code>df.prior</code> The degrees of freedom of prior distribution. A vector if <code>robust=TRUE</code>, otherwise a scalar.</p>
@@ -137,7 +152,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

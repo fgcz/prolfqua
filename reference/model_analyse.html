@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,12 +90,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">model_analyse</span><span class="op">(</span>
-  <span class="va">pepIntensity</span>,
-  <span class="va">modelFunction</span>,
-  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,
-  modelName <span class="op">=</span> <span class="st">"Model"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">model_analyse</span><span class="op">(</span></span>
+<span>  <span class="va">pepIntensity</span>,</span>
+<span>  <span class="va">modelFunction</span>,</span>
+<span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
+<span>  modelName <span class="op">=</span> <span class="st">"Model"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="see-also">
@@ -144,56 +144,56 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ionstar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ionstar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">data</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="table_factors.html">table_factors</a></span><span class="op">(</span><span class="va">ionstar</span><span class="op">$</span><span class="va">data</span>, <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ionstar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ionstar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="table_factors.html">table_factors</a></span><span class="op">(</span><span class="va">ionstar</span><span class="op">$</span><span class="va">data</span>, <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    raw.file                                          sampleName dilution. run_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hc… a~10       a         10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hc… a~11       a         11    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hc… a~20       a         20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hc… a~21       a         21    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hc… b~02       b         02    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hc… b~09       b         09    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hc… b~12       b         12    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hc… b~19       b         19    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hc… c~03       c         03    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hc… c~08       c         08    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hc… c~13       c         13    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hc… c~18       c         18    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hc… d~04       d         04    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hc… d~07       d         07    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hc… d~14       d         14    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hc… d~17       d         17    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hc… e~05       e         05    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hc… e~06       e         06    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hc… e~15       e         15    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hc… e~16       e         16    </span>
-<span class="r-in"><span class="va">formula_randomPeptide</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu"><a href="strategy.html">strategy_lmer</a></span><span class="op">(</span><span class="st">"transformedIntensity  ~ dilution. + (1 | peptide_Id)"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mr</span> <span class="op">&lt;-</span> <span class="fu">model_analyse</span><span class="op">(</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">data</span>,</span>
-<span class="r-in"> <span class="va">formula_randomPeptide</span>,</span>
-<span class="r-in"> subject_Id <span class="op">=</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    raw.file                                               sampl…¹ dilut…² run_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~10    a       10    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~11    a       11    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~20    a       20    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~21    a       21    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~02    b       02    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~09    b       09    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~12    b       12    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~19    b       19    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~03    c       03    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~08    c       08    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~13    c       13    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~18    c       18    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~04    d       04    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~07    d       07    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~14    d       14    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~17    d       17    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~05    e       05    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~06    e       06    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~15    e       15    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~16    e       16    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​sampleName, ²​dilution.</span></span>
+<span class="r-in"><span><span class="va">formula_randomPeptide</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="strategy.html">strategy_lmer</a></span><span class="op">(</span><span class="st">"transformedIntensity  ~ dilution. + (1 | peptide_Id)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mr</span> <span class="op">&lt;-</span> <span class="fu">model_analyse</span><span class="op">(</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
+<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
-<span class="r-in"><span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">mr</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id     data     linear_model exists_lmer isSingular df.residual sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|Q9NZM3|ITS… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               18 0.250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P55145|MAN… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               62 0.212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P31943|HNR… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              208 0.319</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|Q9Y666|S12… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              159 0.395</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P0C0V0|DEG… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              200 0.308</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|Q9H223|EHD… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              263 0.434</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P27797|CAL… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              208 0.476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|Q567U6|CCD… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               26 0.327</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P23229|ITA… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              218 0.549</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P49327|FAS… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE             <span style="text-decoration: underline;">1</span>476 0.302</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: nrcoef &lt;int&gt;, nrcoeff_not_NA &lt;int&gt;</span></span>
+<span class="r-in"><span><span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">mr</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [8]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id    data     linear_m…¹ exist…² isSin…³ df.re…⁴ sigma nrcoef nrcoe…⁵</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|Q03001|DY… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE       538 0.297      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|P46782|RS… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE        83 0.594      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|P31943|HN… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE       208 0.319      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|Q15257|PT… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE        94 0.527      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|P07951|TP… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE       362 0.468      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|Q14146|UR… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE        22 0.317      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> sp|P0A7R9|RS… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE        46 0.773      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> sp|Q9Y2T7|YB… &lt;tibble&gt; <span style="color: #949494;">&lt;lmrMdLmT&gt;</span> TRUE    FALSE        93 0.214      5       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​linear_model, ²​exists_lmer, ³​isSingular,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​df.residual, ⁵​nrcoeff_not_NA</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -208,7 +208,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

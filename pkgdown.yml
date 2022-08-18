@@ -1,5 +1,5 @@
 pandoc: 2.17.0.1
-pkgdown: 2.0.3
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   Comparing2Groups: Comparing2Groups.html
@@ -13,5 +13,5 @@ articles:
   Supplement_TidyCorrelationAnalysis: Supplement_TidyCorrelationAnalysis.html
   Supplement_srm_summary: Supplement_srm_summary.html
   Supplement_srm_summary_HL: Supplement_srm_summary_HL.html
-last_built: 2022-07-06T12:15Z
+last_built: 2022-08-18T08:35Z
 

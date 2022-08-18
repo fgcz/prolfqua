@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,13 +90,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>m</dt>
 <dd><p>linear model</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -144,10 +145,10 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#if(FALSE){</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#if(FALSE){</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by REML ['lmerModLmerTest']</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula: formula</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Data: x</span>
@@ -160,16 +161,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fixed Effects:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       (Intercept)  class_therapyc.NO  class_therapyp.NO        CelltypeHSC  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          -0.70171            0.09960            0.01728            0.13356  </span>
-<span class="r-in"><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeCMP/MEP             1         0.3333333         0.3333333         0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeHSC                 1         0.3333333         0.3333333         1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO           1         1.0000000         0.0000000         0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU           1         0.0000000         0.0000000         0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO           1         0.0000000         1.0000000         0.5</span>
-<span class="r-in"><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span>
+<span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
@@ -184,13 +185,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_interactionModel_p1807'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">[</span><span class="st">"CelltypeCMP/MEP"</span>,<span class="op">]</span> ,</span>
-<span class="r-in"> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"CelltypeCMP/MEP"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>,<span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_interactionModel_p1807'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">[</span><span class="st">"CelltypeCMP/MEP"</span>,<span class="op">]</span> ,</span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"CelltypeCMP/MEP"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>,<span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span>
+<span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
@@ -205,10 +206,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
-<span class="r-in"><span class="co">#}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $linfct_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   (Intercept) Speciesversicolor Speciesvirginica</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Speciessetosa               1                 0                0</span>
@@ -221,9 +222,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Speciesversicolor           1                 1                0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Speciesvirginica            1                 0                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"b"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"b"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $linfct_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            (Intercept) Conditionb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona           1          0</span>
@@ -234,9 +235,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona           1          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditionb           1          1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"b.b"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"b.b"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $linfct_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              (Intercept) Conditionb.b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona             1            0</span>
@@ -247,9 +248,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona             1            0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditionb.b           1            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ab"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span> Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> , Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"ab"</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">Condition</span>, data <span class="op">=</span> <span class="va">xx</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $linfct_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             (Intercept) Conditionab</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona            1           0</span>
@@ -260,7 +261,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditiona            1           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Conditionab           1           1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -275,7 +276,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

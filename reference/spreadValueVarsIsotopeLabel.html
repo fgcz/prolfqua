@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">resData</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">resData</span>, <span class="va">config</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="see-also">
@@ -113,50 +113,52 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span><span class="op">&lt;-</span><span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">data</span>,<span class="va">configur</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span><span class="op">&lt;-</span><span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">data</span>,<span class="va">configur</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   raw.file           dilution. run_Id protein_Id peptide_Id sampleName light_pep</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> b03_02_150304_hum… b         02     sp|P21589… AKGPLASQI… b~02       <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> b03_02_150304_hum… b         02     sp|P21589… FPILSANIK  b~02        8.93<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> b03_02_150304_hum… b         02     sp|P21589… GAEVAHFMN… b~02        9.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> b03_02_150304_hum… b         02     sp|P21589… GPLASQISG… b~02        4.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-39</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> b03_02_150304_hum… b         02     sp|P21589… GVDVVVGGH… b~02        4.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-28</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> b03_02_150304_hum… b         02     sp|P21589… HDSGDQDIN… b~02        5.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-59</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1 more variable: light_peptide.intensity &lt;dbl&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylineSRM_HL_A'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   raw.file              dilut…¹ run_Id prote…² pepti…³ sampl…⁴ light_pep light…⁵</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> b03_02_150304_human_… b       02     sp|P21… AKGPLA… b~02    <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> b03_02_150304_human_… b       02     sp|P21… FPILSA… b~02     8.93<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span>  1.07<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> b03_02_150304_human_… b       02     sp|P21… GAEVAH… b~02     9.55<span style="color: #949494;">e</span><span style="color: #BB0000;">- 5</span>  9.80<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> b03_02_150304_human_… b       02     sp|P21… GPLASQ… b~02     4.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-39</span>  1.24<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> b03_02_150304_human_… b       02     sp|P21… GVDVVV… b~02     4.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-28</span>  2.85<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> b03_02_150304_human_… b       02     sp|P21… HDSGDQ… b~02     5.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-59</span>  9.22<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​dilution., ²​protein_Id, ³​peptide_Id,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​sampleName, ⁵​light_peptide.intensity</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylineSRM_HL_A'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylineSRM_HL_A'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">conf</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylineSRM_HL_A'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">conf</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">conf</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">spreadValueVarsIsotopeLabel</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">conf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   peptide_Id     precursor_Id fragment_Id sampleName heavy_Area heavy_annotatio…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> EGAFVELFHEIDDR EGAFVELFHEI… EGAFVELFHE… lowG~p06      1<span style="text-decoration: underline;">617</span>574           0.029<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> EGAFVELFHEIDDR EGAFVELFHEI… EGAFVELFHE… lowG~p06       <span style="text-decoration: underline;">404</span>924           0.029<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> EGAFVELFHEIDDR EGAFVELFHEI… EGAFVELFHE… lowG~p06       <span style="text-decoration: underline;">830</span>326           0.029<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> EGAFVELFHEIDDR EGAFVELFHEI… EGAFVELFHE… lowG~p06       <span style="text-decoration: underline;">773</span>545           0.029<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> EGAFVELFHEIDDR EGAFVELFHEI… EGAFVELFHE… lowG~p06       <span style="text-decoration: underline;">476</span>888           0.029<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> FVSPLSWDLVGR   FVSPLSWDLVG… FVSPLSWDLV… lowG~p06      1<span style="text-decoration: underline;">575</span>740           0.038<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: light_Area &lt;dbl&gt;, light_annotation_QValue &lt;dbl&gt;</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   peptide_Id     precursor_Id    fragm…¹ sampl…² heavy…³ heavy…⁴ light…⁵ light…⁶</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> EGAFVELFHEIDDR EGAFVELFHEIDDR… EGAFVE… lowG~p… 1<span style="text-decoration: underline;">617</span>574  0.029<span style="text-decoration: underline;">3</span>      <span style="color: #BB0000;">NA</span>  0.029<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> EGAFVELFHEIDDR EGAFVELFHEIDDR… EGAFVE… lowG~p…  <span style="text-decoration: underline;">404</span>924  0.029<span style="text-decoration: underline;">3</span>      <span style="color: #BB0000;">NA</span>  0.029<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> EGAFVELFHEIDDR EGAFVELFHEIDDR… EGAFVE… lowG~p…  <span style="text-decoration: underline;">830</span>326  0.029<span style="text-decoration: underline;">3</span>      <span style="color: #BB0000;">NA</span>  0.029<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> EGAFVELFHEIDDR EGAFVELFHEIDDR… EGAFVE… lowG~p…  <span style="text-decoration: underline;">773</span>545  0.029<span style="text-decoration: underline;">3</span>      <span style="color: #BB0000;">NA</span>  0.029<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> EGAFVELFHEIDDR EGAFVELFHEIDDR… EGAFVE… lowG~p…  <span style="text-decoration: underline;">476</span>888  0.029<span style="text-decoration: underline;">3</span>   <span style="text-decoration: underline;">10</span>185  0.029<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> FVSPLSWDLVGR   FVSPLSWDLVGR~2  FVSPLS… lowG~p… 1<span style="text-decoration: underline;">575</span>740  0.038<span style="text-decoration: underline;">3</span>    <span style="text-decoration: underline;">3</span>604  0.038<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​fragment_Id, ²​sampleName, ³​heavy_Area,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​heavy_annotation_QValue, ⁵​light_Area, ⁶​light_annotation_QValue</span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -171,7 +173,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,52 +90,59 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rankPrecursorsByIntensity</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rankPrecursorsByIntensity</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">config</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pdata</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame</p>
+    
+
+<p>data.frame</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_spectronautDIA250_A'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_spectronautDIA250_A'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="removeLarge_Q_Values.html">removeLarge_Q_Values</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">#debug(rankPrecursorsByIntensity)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">rankPrecursorsByIntensity</span><span class="op">(</span><span class="va">res</span>,<span class="va">config</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="removeLarge_Q_Values.html">removeLarge_Q_Values</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#debug(rankPrecursorsByIntensity)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">rankPrecursorsByIntensity</span><span class="op">(</span><span class="va">res</span>,<span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id", "modPeptide_Id", "precursor_Id")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span><span class="va">res</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in"> <span class="va">srm_meanInt</span>, <span class="va">srm_meanIntRank</span><span class="op">)</span><span class="op">)</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">syms</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"srm_meanIntRank"</span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span><span class="va">res</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> <span class="va">srm_meanInt</span>, <span class="va">srm_meanIntRank</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">syms</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"srm_meanIntRank"</span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 823 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  peptide_Id modPeptide_Id precursor_Id srm_meanInt srm_meanIntRank</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A0A075B6I0  FSGSILGNK  _FSGSILGNK_   _FSGSILGNK_…       <span style="text-decoration: underline;">3</span>835.               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A0A075B6P5… SSQSLLHSN… _SSQSLLHSNGY… _SSQSLLHSNG…      <span style="text-decoration: underline;">27</span>107.               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A0A075B6P5… SSQSLLHSN… _SSQSLLHSNGY… _SSQSLLHSNG…       <span style="text-decoration: underline;">9</span>982.               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A0A075B6P5… PGQSPQLLI… _PGQSPQLLIYL… _PGQSPQLLIY…       <span style="text-decoration: underline;">6</span>767.               3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> A0A075B6P5… DIVMTQSPL… _DIVM[+16]TQ… _DIVM[+16]T…       <span style="text-decoration: underline;">5</span>748.               4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> A0A075B6P5… PGQSPQLLI… _PGQSPQLLIYL… _PGQSPQLLIY…       <span style="text-decoration: underline;">5</span>381.               5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> A0A075B6P5… PGQSPQLLI… _PGQSPQLLIYL… _PGQSPQLLIY…       <span style="text-decoration: underline;">4</span>850.               6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> A0A075B6P5… DIVMTQSPL… _DIVMTQSPLSL… _DIVMTQSPLS…       <span style="text-decoration: underline;">3</span>002.               7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A0A075B6R2  GLEWIGEIY… _GLEWIGEIYHS… _GLEWIGEIYH…       <span style="text-decoration: underline;">8</span>646.               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A0A075B6R2  GLEWIGEIY… _GLEWIGEIYHS… _GLEWIGEIYH…       <span style="text-decoration: underline;">4</span>417.               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 813 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id        peptide_Id               modPepti…¹ precu…² srm_m…³ srm_m…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A0A075B6I0        FSGSILGNK                _FSGSILGN… _FSGSI…   <span style="text-decoration: underline;">3</span>835.       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A0A075B6P5;P01615 SSQSLLHSNGYNYLDWYLQK     _SSQSLLHS… _SSQSL…  <span style="text-decoration: underline;">27</span>107.       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A0A075B6P5;P01615 SSQSLLHSNGYNYLDWYLQK     _SSQSLLHS… _SSQSL…   <span style="text-decoration: underline;">9</span>982.       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A0A075B6P5;P01615 PGQSPQLLIYLGSNR          _PGQSPQLL… _PGQSP…   <span style="text-decoration: underline;">6</span>767.       3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> A0A075B6P5;P01615 DIVMTQSPLSLPVTPGEPASISCR _DIVM[+16… _DIVM[…   <span style="text-decoration: underline;">5</span>748.       4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> A0A075B6P5;P01615 PGQSPQLLIYLGSNR          _PGQSPQLL… _PGQSP…   <span style="text-decoration: underline;">5</span>381.       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> A0A075B6P5;P01615 PGQSPQLLIYLGSNR          _PGQSPQLL… _PGQSP…   <span style="text-decoration: underline;">4</span>850.       6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> A0A075B6P5;P01615 DIVMTQSPLSLPVTPGEPASISCR _DIVMTQSP… _DIVMT…   <span style="text-decoration: underline;">3</span>002.       7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A0A075B6R2        GLEWIGEIYHSGSTNYNPSLK    _GLEWIGEI… _GLEWI…   <span style="text-decoration: underline;">8</span>646.       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A0A075B6R2        GLEWIGEIYHSGSTNYNPSLK    _GLEWIGEI… _GLEWI…   <span style="text-decoration: underline;">4</span>417.       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 813 more rows, and abbreviated variable names ¹​modPeptide_Id,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​precursor_Id, ³​srm_meanInt, ⁴​srm_meanIntRank</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -150,7 +157,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

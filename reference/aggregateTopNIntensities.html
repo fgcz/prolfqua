@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,23 +90,32 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">aggregateTopNIntensities</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">config</span>, <span class="va">.func</span>, N <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aggregateTopNIntensities</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">config</span>, <span class="va">.func</span>, N <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pdata</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+
+
 <dt>N</dt>
 <dd><p>default 3 top intensities.</p></dd>
+
+
 <dt>func</dt>
 <dd><p>function to use for aggregation</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list with data and new reduced configuration (config)</p>
+    
+
+<p>list with data and new reduced configuration (config)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -128,43 +137,43 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
-<span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">data</span></span>
-<span class="r-in"><span class="va">ranked</span> <span class="op">&lt;-</span> <span class="fu"><a href="rankPrecursorsByIntensity.html">rankPrecursorsByIntensity</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">config</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span><span class="va">ranked</span> <span class="op">&lt;-</span> <span class="fu"><a href="rankPrecursorsByIntensity.html">rankPrecursorsByIntensity</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mean_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"> <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"> <span class="op">}</span></span>
-<span class="r-in"><span class="va">sum_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"> <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"sum"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"> <span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">resTOPN</span> <span class="op">&lt;-</span> <span class="fu">aggregateTopNIntensities</span><span class="op">(</span><span class="va">ranked</span>,</span>
-<span class="r-in"> <span class="va">config</span>,</span>
-<span class="r-in"> .func <span class="op">=</span> <span class="va">mean_f</span>,</span>
-<span class="r-in">  N<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">resTOPN</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mean_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">sum_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="kw">if</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"sum"</span><span class="op">)</span><span class="op">}</span>;<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">resTOPN</span> <span class="op">&lt;-</span> <span class="fu">aggregateTopNIntensities</span><span class="op">(</span><span class="va">ranked</span>,</span></span>
+<span class="r-in"><span> <span class="va">config</span>,</span></span>
+<span class="r-in"><span> .func <span class="op">=</span> <span class="va">mean_f</span>,</span></span>
+<span class="r-in"><span>  N<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">resTOPN</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3260    8</span>
-<span class="r-in"><span class="co"># stopifnot(dim(resTOPN$data) == c(3260, 8))</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">resTOPN</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"config"</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># stopifnot(dim(resTOPN$data) == c(3260, 8))</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">resTOPN</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"config"</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "peptide.intensity"</span>
-<span class="r-in"><span class="co">#debug(plot_aggregation)</span></span>
-<span class="r-in"><span class="va">tmpRob</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot_aggregation.html">plot_aggregation</a></span><span class="op">(</span><span class="va">ranked</span>,</span>
-<span class="r-in"> <span class="va">config</span>,</span>
-<span class="r-in"> <span class="va">resTOPN</span><span class="op">$</span><span class="va">data</span>,</span>
-<span class="r-in"> <span class="va">resTOPN</span><span class="op">$</span><span class="va">config</span>,</span>
-<span class="r-in"> show.legen<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span> <span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmpRob</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co">#debug(plot_aggregation)</span></span></span>
+<span class="r-in"><span><span class="va">tmpRob</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot_aggregation.html">plot_aggregation</a></span><span class="op">(</span><span class="va">ranked</span>,</span></span>
+<span class="r-in"><span> <span class="va">config</span>,</span></span>
+<span class="r-in"><span> <span class="va">resTOPN</span><span class="op">$</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span> <span class="va">resTOPN</span><span class="op">$</span><span class="va">config</span>,</span></span>
+<span class="r-in"><span> show.legen<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span> <span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmpRob</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -179,7 +188,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -126,19 +126,19 @@ in long format), we create a Configuration that enables the use of
 prolfqua. The configuration object describes the columns in the long
 table so that prolfqua functions know which columns to use.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"rename"</span>, <span class="st">"dplyr"</span><span class="op">)</span>
-<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">.find.package.file</span><span class="op">(</span><span class="st">"prolfqua"</span>,<span class="st">"samples/spectronaut_PEPTIDE.xls"</span><span class="op">)</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
-<span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">xx</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>EG.TotalQuantity <span class="op">=</span> <span class="st">"EG.TotalQuantity (Settings)"</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">Isotope.Label</span> <span class="op">&lt;-</span> <span class="st">"light"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"rename"</span>, <span class="st">"dplyr"</span><span class="op">)</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">.find.package.file</span><span class="op">(</span><span class="st">"prolfqua"</span>,<span class="st">"samples/spectronaut_PEPTIDE.xls"</span><span class="op">)</span></span>
+<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>EG.TotalQuantity <span class="op">=</span> <span class="st">"EG.TotalQuantity (Settings)"</span><span class="op">)</span></span>
+<span><span class="va">xx</span><span class="op">$</span><span class="va">Isotope.Label</span> <span class="op">&lt;-</span> <span class="st">"light"</span></span></code></pre></div>
 <p>We create a Table annotation object and start annotating the data we
 read.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">atable</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"R.FileName"</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">ident_qValue</span> <span class="op">=</span> <span class="st">"EG.Qvalue"</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">workIntensity</span> <span class="op">=</span> <span class="st">"EG.TotalQuantity"</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">isotopeLabel</span> <span class="op">=</span> <span class="st">"Isotope.Label"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">atable</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"R.FileName"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">ident_qValue</span> <span class="op">=</span> <span class="st">"EG.Qvalue"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">workIntensity</span> <span class="op">=</span> <span class="st">"EG.TotalQuantity"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">isotopeLabel</span> <span class="op">=</span> <span class="st">"Isotope.Label"</span></span></code></pre></div>
 <p>The columns identifying the measured features, which are proteins,
 peptides or precursors, are the described using the named list
 hierarchy. The values of the list are the column names, while the names
@@ -148,23 +148,23 @@ function <code>make.names</code>).</p>
 the factors of you analysis. Here we rename the column “R.Condition” to
 “Marker”. The data.frame can contain more than one factor.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"PG.ProteinAccessions"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"PG.ProteinAccessions"</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"EG.PrecursorId"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"EG.PrecursorId"</span>
-<span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Marker"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"R.Condition"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"PG.ProteinAccessions"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"PG.ProteinAccessions"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"EG.PrecursorId"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"EG.PrecursorId"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Marker"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"R.Condition"</span></span></code></pre></div>
 <p>Lastly, we create an Analysis parameter object, and the Analysis
 Configuration. The function <code>setup_analysis</code>, creates from
 data frame in long format a data.frame compatible with your
 configuration. We can now run most of the function in the package using
 the data and configuration.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span>
-<span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span>
-
-<span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/summarize_hierarchy.html">summarize_hierarchy</a></span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="co">##   PG.ProteinAccessions Isotope.Label_n EG.PrecursorId_n</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> H0YD97;O00330                      1                4</span></code></pre>
+<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span></span>
+<span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/summarize_hierarchy.html">summarize_hierarchy</a></span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">##   PG.ProteinAccessions Isotope.Label_n EG.PrecursorId_n</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> H0YD97;O00330                      1                4</span></span></code></pre>
 </div>
   </div>
 
@@ -185,7 +185,7 @@ the data and configuration.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

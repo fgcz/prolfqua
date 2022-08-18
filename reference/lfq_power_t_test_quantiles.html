@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,28 +90,37 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span>
-  <span class="va">pdata</span>,
-  <span class="va">config</span>,
-  delta <span class="op">=</span> <span class="fl">1</span>,
-  power <span class="op">=</span> <span class="fl">0.8</span>,
-  sig.level <span class="op">=</span> <span class="fl">0.05</span>,
-  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span></span>
+<span>  <span class="va">pdata</span>,</span>
+<span>  <span class="va">config</span>,</span>
+<span>  delta <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pdata</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+
+
 <dt>delta</dt>
 <dd><p>effect size you are interested in</p></dd>
+
+
 <dt>power</dt>
 <dd><p>of test</p></dd>
+
+
 <dt>sigma.level</dt>
 <dd><p>P-Value</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -130,30 +139,30 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span> deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span> deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">summary</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">summary</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   quantile probs        sd FC=2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      50%   0.5 0.1964909    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2      60%   0.6 0.2398376    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      70%   0.7 0.2951539    3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4      80%   0.8 0.3731692    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5      90%   0.9 0.5566183    6</span>
-<span class="r-in"><span class="va">stats_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">stats_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">stats_res</span><span class="op">$</span><span class="va">dilution.</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">stats_res</span><span class="op">$</span><span class="va">dilution.</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a" "b" "c" "d" "e"</span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -168,7 +177,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

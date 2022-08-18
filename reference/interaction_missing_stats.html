@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,100 +90,113 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">interaction_missing_stats</span><span class="op">(</span>
-  <span class="va">pdata</span>,
-  <span class="va">config</span>,
-  factors <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span>,
-  hierarchy <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>,
-  workIntensity <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">interaction_missing_stats</span><span class="op">(</span></span>
+<span>  <span class="va">pdata</span>,</span>
+<span>  <span class="va">config</span>,</span>
+<span>  factors <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  hierarchy <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  workIntensity <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">getWorkIntensity</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pdata</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+
+
 <dt>factors</dt>
 <dd><p>factor to include (default up to factor depth)</p></dd>
+
+
 <dt>hierarchy</dt>
 <dd><p>hierarchy to include (default up to hierarchy depth)</p></dd>
+
+
 <dt>workIntensity</dt>
 <dd><p>work intensity column</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">configur</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span>
-<span class="r-in"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="removeLarge_Q_Values.html">removeLarge_Q_Values</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">   <span class="va">configur</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="removeLarge_Q_Values.html">removeLarge_Q_Values</a></span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>   <span class="va">configur</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span><span class="op">$</span><span class="va">data</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">nrNAs</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">)</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">nrNAs</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fl">5540</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">meanArea</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">206</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">162</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>,</span>
-<span class="r-in"> factors<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fl">5540</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">meanArea</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">206</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">162</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>,</span></span>
+<span class="r-in"><span> factors<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">==</span> <span class="fl">162</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>,</span>
-<span class="r-in">  hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">==</span> <span class="fl">162</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>,</span></span>
+<span class="r-in"><span>  hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">nrMeasured</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmp</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">nrMeasured</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 810 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. protein_Id           isotope nrReplicates nrNAs meanArea medianArea</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a         CON__P01030~9~NA     light              4     0   1.32<span style="color: #949494;">e</span>7   13<span style="text-decoration: underline;">208</span>600</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a         CON__P02769~18~NA    light            132     6   5.62<span style="color: #949494;">e</span>8  291<span style="text-decoration: underline;">950</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a         CON__P34955~32~NA    light             52     3   2.28<span style="color: #949494;">e</span>8  178<span style="text-decoration: underline;">770</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a         CON__Q28107~41~NA    light             16     3   4.69<span style="color: #949494;">e</span>7   11<span style="text-decoration: underline;">440</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> a         CON__Q3SZR3~50~NA    light             24     3   8.20<span style="color: #949494;">e</span>7   76<span style="text-decoration: underline;">371</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> a         sp|L0R819|ASURF_HUM… light              4     0   1.26<span style="color: #949494;">e</span>7   11<span style="text-decoration: underline;">955</span>100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> a         sp|O00148|DX39A_HUM… light             44     6   1.68<span style="color: #949494;">e</span>8   77<span style="text-decoration: underline;">951</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> a         sp|O14548|COX7R_HUM… light              8     1   1.59<span style="color: #949494;">e</span>7   12<span style="text-decoration: underline;">380</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         sp|O14745|NHRF1_HUM… light             32     7   2.88<span style="color: #949494;">e</span>7   31<span style="text-decoration: underline;">171</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         sp|O15145|ARPC3_HUM… light             12     4   1.55<span style="color: #949494;">e</span>8  140<span style="text-decoration: underline;">965</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 800 more rows, and 1 more variable: nrMeasured &lt;int&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>, factors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. protein_Id            isotope nrRep…¹ nrNAs meanA…² media…³ nrMea…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a         CON__P01030~9~NA      light         4     0  1.32<span style="color: #949494;">e</span>7  1.32<span style="color: #949494;">e</span>7       4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a         CON__P02769~18~NA     light       132     6  5.62<span style="color: #949494;">e</span>8  2.92<span style="color: #949494;">e</span>8     126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a         CON__P34955~32~NA     light        52     3  2.28<span style="color: #949494;">e</span>8  1.79<span style="color: #949494;">e</span>8      49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a         CON__Q28107~41~NA     light        16     3  4.69<span style="color: #949494;">e</span>7  1.14<span style="color: #949494;">e</span>7      13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> a         CON__Q3SZR3~50~NA     light        24     3  8.20<span style="color: #949494;">e</span>7  7.64<span style="color: #949494;">e</span>7      21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> a         sp|L0R819|ASURF_HUMA… light         4     0  1.26<span style="color: #949494;">e</span>7  1.20<span style="color: #949494;">e</span>7       4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> a         sp|O00148|DX39A_HUMA… light        44     6  1.68<span style="color: #949494;">e</span>8  7.80<span style="color: #949494;">e</span>7      38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> a         sp|O14548|COX7R_HUMA… light         8     1  1.59<span style="color: #949494;">e</span>7  1.24<span style="color: #949494;">e</span>7       7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         sp|O14745|NHRF1_HUMA… light        32     7  2.88<span style="color: #949494;">e</span>7  3.12<span style="color: #949494;">e</span>7      25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         sp|O15145|ARPC3_HUMA… light        12     4  1.55<span style="color: #949494;">e</span>8  1.41<span style="color: #949494;">e</span>8       8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 800 more rows, and abbreviated variable names ¹​nrReplicates,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​meanArea, ³​medianArea, ⁴​nrMeasured</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span>, factors <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,108 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id        peptide_Id   isotope nrReplicates nrNAs meanArea medianArea</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P01030~9~NA  ILSLAQDQVGG… light             20     0   1.08<span style="color: #949494;">e</span>7    8<span style="text-decoration: underline;">964</span>750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA AEFVEVTK     light             20     0   4.78<span style="color: #949494;">e</span>8  471<span style="text-decoration: underline;">185</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~18~NA DDPHACYSTVF… light             20     0   1.99<span style="color: #949494;">e</span>8  196<span style="text-decoration: underline;">000</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~18~NA DDPHACYSTVF… light             20     0   3.99<span style="color: #949494;">e</span>7   41<span style="text-decoration: underline;">345</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~18~NA ECCHGDLLECA… light             20     0   1.17<span style="color: #949494;">e</span>7   11<span style="text-decoration: underline;">629</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~18~NA ETYGDMADCCEK light             20     0   1.90<span style="color: #949494;">e</span>7   19<span style="text-decoration: underline;">185</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~18~NA EYEATLEECCAK light             20     0   2.18<span style="color: #949494;">e</span>7   22<span style="text-decoration: underline;">858</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~18~NA FKDLGEEHFK   light             20     0   1.12<span style="color: #949494;">e</span>9 <span style="text-decoration: underline;">1</span>075<span style="text-decoration: underline;">575</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA HLVDEPQNLIK  light             20     0   2.05<span style="color: #949494;">e</span>9 <span style="text-decoration: underline;">2</span>079<span style="text-decoration: underline;">250</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA HPEYAVSVLLR  light             20     0   5.64<span style="color: #949494;">e</span>7   56<span style="text-decoration: underline;">165</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,098 more rows, and 1 more variable: nrMeasured &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id        peptide_Id    isotope nrRep…¹ nrNAs meanA…² media…³ nrMea…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P01030~9~NA  ILSLAQDQVGGS… light        20     0  1.08<span style="color: #949494;">e</span>7  8.96<span style="color: #949494;">e</span>6      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA AEFVEVTK      light        20     0  4.78<span style="color: #949494;">e</span>8  4.71<span style="color: #949494;">e</span>8      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~18~NA DDPHACYSTVFDK light        20     0  1.99<span style="color: #949494;">e</span>8  1.96<span style="color: #949494;">e</span>8      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~18~NA DDPHACYSTVFD… light        20     0  3.99<span style="color: #949494;">e</span>7  4.13<span style="color: #949494;">e</span>7      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~18~NA ECCHGDLLECAD… light        20     0  1.17<span style="color: #949494;">e</span>7  1.16<span style="color: #949494;">e</span>7      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~18~NA ETYGDMADCCEK  light        20     0  1.90<span style="color: #949494;">e</span>7  1.92<span style="color: #949494;">e</span>7      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~18~NA EYEATLEECCAK  light        20     0  2.18<span style="color: #949494;">e</span>7  2.29<span style="color: #949494;">e</span>7      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~18~NA FKDLGEEHFK    light        20     0  1.12<span style="color: #949494;">e</span>9  1.08<span style="color: #949494;">e</span>9      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA HLVDEPQNLIK   light        20     0  2.05<span style="color: #949494;">e</span>9  2.08<span style="color: #949494;">e</span>9      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA HPEYAVSVLLR   light        20     0  5.64<span style="color: #949494;">e</span>7  5.62<span style="color: #949494;">e</span>7      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,098 more rows, and abbreviated variable names ¹​nrReplicates,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​meanArea, ³​medianArea, ⁴​nrMeasured</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summaries</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nrReplicates" "nrNAs"        "nrMeasured"   "meanArea"     "medianArea"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -198,7 +211,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

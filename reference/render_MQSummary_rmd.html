@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,37 +90,52 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">render_MQSummary_rmd</span><span class="op">(</span>
-  <span class="va">pdata</span>,
-  <span class="va">config</span>,
-  <span class="va">project_conf</span>,
-  pep <span class="op">=</span> <span class="cn">TRUE</span>,
-  dest_path <span class="op">=</span> <span class="st">"."</span>,
-  dest_file_name <span class="op">=</span> <span class="st">"QCandSampleSize.Rmd"</span>,
-  workdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pdf"</span>, <span class="st">"html"</span><span class="op">)</span>,
-  markdown_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc/QCandSampleSize.Rmd"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">render_MQSummary_rmd</span><span class="op">(</span></span>
+<span>  <span class="va">pdata</span>,</span>
+<span>  <span class="va">config</span>,</span>
+<span>  <span class="va">project_conf</span>,</span>
+<span>  pep <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  dest_path <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dest_file_name <span class="op">=</span> <span class="st">"QCandSampleSize.Rmd"</span>,</span>
+<span>  workdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pdf"</span>, <span class="st">"html"</span><span class="op">)</span>,</span>
+<span>  markdown_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc/QCandSampleSize.Rmd"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pdata</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnalysisConfiguration</p></dd>
+
+
 <dt>pep</dt>
 <dd><p>are these peptide or protein data</p></dd>
+
+
 <dt>dest_path</dt>
 <dd><p>destination path</p></dd>
+
+
 <dt>dest_file_name</dt>
 <dd><p>name of pdf file</p></dd>
+
+
 <dt>workdir</dt>
 <dd><p>working directory</p></dd>
+
+
 <dt>format</dt>
 <dd><p>either pdf or html</p></dd>
+
+
 <dt>project_config</dt>
 <dd><p>list with workunit_Id project_Id order_Id</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -131,18 +146,18 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylinePRMSample_A'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylinePRMSample_A'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span class="va">projectConfig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>workunit_Id <span class="op">=</span> <span class="st">"xx"</span>, project_Id <span class="op">=</span> <span class="st">"xy"</span>, order_Id <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in"><span class="fu">render_MQSummary_rmd</span><span class="op">(</span><span class="va">analysis</span>,</span>
-<span class="r-in">  <span class="va">config</span> ,</span>
-<span class="r-in">  <span class="va">projectConfig</span>,</span>
-<span class="r-in">  workdir<span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="co"># tempdir(check = FALSE))</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span><span class="va">projectConfig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>workunit_Id <span class="op">=</span> <span class="st">"xx"</span>, project_Id <span class="op">=</span> <span class="st">"xy"</span>, order_Id <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">render_MQSummary_rmd</span><span class="op">(</span><span class="va">analysis</span>,</span></span>
+<span class="r-in"><span>  <span class="va">config</span> ,</span></span>
+<span class="r-in"><span>  <span class="va">projectConfig</span>,</span></span>
+<span class="r-in"><span>  workdir<span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="co"># tempdir(check = FALSE))</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -157,7 +172,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

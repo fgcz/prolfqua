@@ -19,7 +19,7 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -94,36 +94,41 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">strategy_lmer</span><span class="op">(</span>
-  <span class="va">modelstr</span>,
-  model_name <span class="op">=</span> <span class="st">"Model"</span>,
-  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,
-    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">strategy_lm</span><span class="op">(</span>
-  <span class="va">modelstr</span>,
-  model_name <span class="op">=</span> <span class="st">"Model"</span>,
-  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,
-    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">strategy_glm</span><span class="op">(</span>
-  <span class="va">modelstr</span>,
-  model_name <span class="op">=</span> <span class="st">"Model"</span>,
-  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,
-    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strategy_lmer</span><span class="op">(</span></span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
+<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">strategy_lm</span><span class="op">(</span></span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
+<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">strategy_glm</span><span class="op">(</span></span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
+<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>modelstr</dt>
 <dd><p>model formula</p></dd>
+
+
 <dt>model_name</dt>
 <dd><p>name of model</p></dd>
+
+
 <dt>report_columns</dt>
 <dd><p>columns to report</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -251,26 +256,26 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x295c6f698&gt;</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x116c95a38&gt;</span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, tol = 1e-04) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lwr &lt;- getME(x, "lower")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     theta &lt;- getME(x, "theta")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     any(theta[lwr == 0] &lt; tol)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x132a8e2f0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x1344583f0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:lme4&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x295d50f98&gt;</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x1169a3468&gt;</span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     anyNA &lt;- any(is.na(coefficients(m)))</span>
@@ -284,13 +289,13 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x121704510&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x10fc44c10&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
-<span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x295e33e78&gt;</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x1342c3908&gt;</span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     anyNA &lt;- any(is.na(coefficients(m)))</span>
@@ -304,7 +309,7 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x121704510&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x10fc44c10&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 </code></pre></div>
     </div>
@@ -320,7 +325,7 @@ Create custom quasibinomial glm model"><!-- mathjax --><script src="https://cdnj
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

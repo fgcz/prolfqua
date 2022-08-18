@@ -18,7 +18,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -145,16 +145,16 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>create ProjectStructure</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/ProjectStructure.html">ProjectStructure</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  <span class="va">outpath</span>,
-  <span class="va">project_Id</span>,
-  <span class="va">order_Id</span>,
-  <span class="va">workunit_Id</span>,
-  <span class="va">inputAnnotation</span>,
-  <span class="va">inputData</span>,
-  qc_dir <span class="op">=</span> <span class="st">"qc_results"</span>,
-  modelling_dir <span class="op">=</span> <span class="st">"modelling_results"</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ProjectStructure.html">ProjectStructure</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">outpath</span>,</span>
+<span>  <span class="va">project_Id</span>,</span>
+<span>  <span class="va">order_Id</span>,</span>
+<span>  <span class="va">workunit_Id</span>,</span>
+<span>  <span class="va">inputAnnotation</span>,</span>
+<span>  <span class="va">inputData</span>,</span>
+<span>  qc_dir <span class="op">=</span> <span class="st">"qc_results"</span>,</span>
+<span>  modelling_dir <span class="op">=</span> <span class="st">"modelling_results"</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -198,7 +198,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-create-outpath-">Method <code>create_outpath()</code><a class="anchor" aria-label="anchor" href="#method-create-outpath-"></a></h3>
 <p>create outpath</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">create_outpath</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">create_outpath</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -206,7 +206,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-qc-path-">Method <code>qc_path()</code><a class="anchor" aria-label="anchor" href="#method-qc-path-"></a></h3>
 <p>create qc dir</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">qc_path</span><span class="op">(</span><span class="va">qc_dir</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">qc_path</span><span class="op">(</span><span class="va">qc_dir</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -222,7 +222,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-modelling-path-">Method <code>modelling_path()</code><a class="anchor" aria-label="anchor" href="#method-modelling-path-"></a></h3>
 <p>create modelling path</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="va">modelling_dir</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="va">modelling_dir</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -238,7 +238,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-create-">Method <code>create()</code><a class="anchor" aria-label="anchor" href="#method-create-"></a></h3>
 <p>create all directories</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">create</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">create</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -246,7 +246,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>empty modelling_path and qc_path folder.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -254,7 +254,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -272,29 +272,29 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"./test_project"</span>,</span>
-<span class="r-in">project_Id  <span class="op">=</span> <span class="fl">3000</span>,</span>
-<span class="r-in">order_Id <span class="op">=</span> <span class="fl">6200</span>,</span>
-<span class="r-in">workunit_Id <span class="op">=</span> <span class="fl">23000</span>,</span>
-<span class="r-in">inputAnnotation <span class="op">=</span> <span class="st">"."</span>,</span>
-<span class="r-in">inputData <span class="op">=</span> <span class="st">"."</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">qc_path</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">ProjectStructure</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"./test_project"</span>,</span></span>
+<span class="r-in"><span>project_Id  <span class="op">=</span> <span class="fl">3000</span>,</span></span>
+<span class="r-in"><span>order_Id <span class="op">=</span> <span class="fl">6200</span>,</span></span>
+<span class="r-in"><span>workunit_Id <span class="op">=</span> <span class="fl">23000</span>,</span></span>
+<span class="r-in"><span>inputAnnotation <span class="op">=</span> <span class="st">"."</span>,</span></span>
+<span class="r-in"><span>inputData <span class="op">=</span> <span class="st">"."</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">qc_path</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "./test_project/qc_results"</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "./test_project/modelling_results"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "./test_project/modelling_results"</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="va">modelling_dir</span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">modelling_dir</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "modelling_results"</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="st">"second_model"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">modelling_path</span><span class="op">(</span><span class="st">"second_model"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "./test_project/modelling_results" "./test_project/second_model"     </span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">create</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">create</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="va">tmp</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -309,7 +309,7 @@ keep track of folder paths and create them if needed"><!-- mathjax --><script sr
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

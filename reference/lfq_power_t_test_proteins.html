@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,27 +90,36 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lfq_power_t_test_proteins</span><span class="op">(</span>
-  <span class="va">stats_res</span>,
-  delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.59</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
-  power <span class="op">=</span> <span class="fl">0.8</span>,
-  sig.level <span class="op">=</span> <span class="fl">0.05</span>,
-  min.n <span class="op">=</span> <span class="fl">1.5</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lfq_power_t_test_proteins</span><span class="op">(</span></span>
+<span>  <span class="va">stats_res</span>,</span>
+<span>  delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.59</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  min.n <span class="op">=</span> <span class="fl">1.5</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>stats_res</dt>
 <dd><p>data.frame `summarize_stats` output</p></dd>
+
+
 <dt>delta</dt>
 <dd><p>effect size you are interested in</p></dd>
+
+
 <dt>power</dt>
 <dd><p>of test</p></dd>
+
+
 <dt>min.n</dt>
 <dd><p>smallest n to determine</p></dd>
+
+
 <dt>sigma.level</dt>
 <dd><p>P-Value</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -129,20 +138,20 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_IonstarProtein_subsetNorm'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span> deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span>
-<span class="r-in"><span class="va">ldata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ldata</span> <span class="op">&lt;-</span> <span class="va">ldata</span><span class="op">$</span><span class="fu">get_sample</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_IonstarProtein_subsetNorm'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span> deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span><span class="va">ldata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ldata</span> <span class="op">&lt;-</span> <span class="va">ldata</span><span class="op">$</span><span class="fu">get_sample</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling 20protein_Id</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
-<span class="r-in"><span class="va">stats_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">ldata</span><span class="op">$</span><span class="va">data</span>, <span class="va">ldata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">stats_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">ldata</span><span class="op">$</span><span class="va">data</span>, <span class="va">ldata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_proteins</span><span class="op">(</span><span class="va">stats_res</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_proteins</span><span class="op">(</span><span class="va">stats_res</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -157,7 +166,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

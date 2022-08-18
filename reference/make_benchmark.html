@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,50 +90,73 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_benchmark</span><span class="op">(</span>
-  <span class="va">prpr</span>,
-  contrast <span class="op">=</span> <span class="st">"contrast"</span>,
-  toscale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span><span class="op">)</span>,
-  avgInt <span class="op">=</span> <span class="st">"avgInt"</span>,
-  fcestimate <span class="op">=</span> <span class="st">"diff"</span>,
-  benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"diff"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"statistic"</span>, desc <span class="op">=</span>
-    <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"scaled.p.value"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-  FDRvsFDP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,
-  model_description <span class="op">=</span> <span class="st">"protein level measurments, linear model"</span>,
-  model_name <span class="op">=</span> <span class="st">"prot_med_lm"</span>,
-  hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span><span class="op">)</span>,
-  summarizeNA <span class="op">=</span> <span class="st">"statistic"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_benchmark</span><span class="op">(</span></span>
+<span>  <span class="va">prpr</span>,</span>
+<span>  contrast <span class="op">=</span> <span class="st">"contrast"</span>,</span>
+<span>  toscale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span><span class="op">)</span>,</span>
+<span>  avgInt <span class="op">=</span> <span class="st">"avgInt"</span>,</span>
+<span>  fcestimate <span class="op">=</span> <span class="st">"diff"</span>,</span>
+<span>  benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"diff"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"statistic"</span>, desc <span class="op">=</span></span>
+<span>    <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"scaled.p.value"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  FDRvsFDP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>, desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  model_description <span class="op">=</span> <span class="st">"protein level measurments, linear model"</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"prot_med_lm"</span>,</span>
+<span>  hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span><span class="op">)</span>,</span>
+<span>  summarizeNA <span class="op">=</span> <span class="st">"statistic"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>prpr</dt>
 <dd><p>prepared data, e.g. function <code><a href="ionstar_bench_preprocess.html">ionstar_bench_preprocess</a></code></p></dd>
+
+
 <dt>contrast</dt>
 <dd><p>column with names of the contrast</p></dd>
+
+
 <dt>toscale</dt>
 <dd><p>which scores to scale using fcestimate, typically p.value</p></dd>
+
+
 <dt>avgInt</dt>
 <dd><p>column with average intensity</p></dd>
+
+
 <dt>fcestimate</dt>
 <dd><p>column with FC estimate</p></dd>
+
+
 <dt>benchmark</dt>
 <dd><p>which scores to benchmark e.g. diff, statistics</p></dd>
+
+
 <dt>FDRvsFDP</dt>
 <dd><p>which score to plot against the false discovery proportion</p></dd>
+
+
 <dt>model_description</dt>
 <dd><p>string describing the model</p></dd>
+
+
 <dt>model_name</dt>
 <dd><p>name of the model, compatible with <code><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></code> output.</p></dd>
+
+
 <dt>hierarchy</dt>
 <dd><p>name of column with protein ID.</p></dd>
+
+
 <dt>summarizeNA</dt>
 <dd><p>summarizeNA</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Benchmark</p>
+    
+
+<p>Benchmark</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -156,7 +179,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 Measurements</h1>
                         <h4 data-toc-skip class="author"><a href="mailto:WEW@FGCZ.ETHZ.CH" class="email">WEW@FGCZ.ETHZ.CH</a></h4>
             
-            <h4 data-toc-skip class="date">2022-07-06</h4>
+            <h4 data-toc-skip class="date">2022-08-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/Supplement_srm_summary.Rmd" class="external-link"><code>../vignettes/Supplement_srm_summary.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_srm_summary.Rmd</code></div>
@@ -122,8 +122,8 @@ Measurements</h1>
 <h2 id="summarize-levels">Summarize levels<a class="anchor" aria-label="anchor" href="#summarize-levels"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span> <span class="va">data</span> , <span class="va">configuration</span> <span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>NR <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hierarchy_counts.html">hierarchy_counts</a></span><span class="op">(</span> <span class="va">data</span> , <span class="va">configuration</span> <span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>NR <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>summary</caption>
 <colgroup>
@@ -149,26 +149,26 @@ Measurements</h1>
 </tr></tbody>
 </table>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#interaction_missing_stats(data, configuration)</span>
-<span class="co">#interaction_missing_stats(data, configuration)</span>
-
-<span class="fu"><a href="../reference/missigness_histogram.html">missigness_histogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#interaction_missing_stats(data, configuration)</span></span>
+<span><span class="co">#interaction_missing_stats(data, configuration)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/missigness_histogram.html">missigness_histogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Supplement_srm_summary_files/figure-html/missingFigIntensityHistorgram-1.png" alt="histogram of mean condition intensities per transition" width="960"><p class="caption">
 histogram of mean condition intensities per transition
 </p>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition.html">missingness_per_condition</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition.html">missingness_per_condition</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></span>
+<span><span class="va">xx</span><span class="op">$</span><span class="va">figure</span></span></code></pre></div>
 <div class="figure">
 <img src="Supplement_srm_summary_files/figure-html/missingFigBarplot-1.png" alt="nr of missing" width="960"><p class="caption">
 nr of missing
 </p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span>
-<span class="va">xx</span><span class="op">$</span><span class="va">figure</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span><span class="op">)</span></span>
+<span><span class="va">xx</span><span class="op">$</span><span class="va">figure</span></span></code></pre></div>
 <div class="figure">
 <img src="Supplement_srm_summary_files/figure-html/missingFigBarplotCumsum-1.png" alt="cumulative sum of missing" width="960"><p class="caption">
 cumulative sum of missing
@@ -194,7 +194,7 @@ cumulative sum of missing
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

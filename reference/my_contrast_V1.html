@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,17 +90,22 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">incomplete</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">incomplete</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>linfct</dt>
 <dd><p>linear function</p></dd>
+
+
 <dt>confint</dt>
 <dd><p>confidence interval default 0.95</p></dd>
+
+
 <dt>m</dt>
 <dd><p>linear model generated using lm</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -148,9 +153,9 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">linfct_factors</span></span>
-<span class="r-in"><span class="va">m</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">linfct_factors</span></span></span>
+<span class="r-in"><span><span class="va">m</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = formula, data = x)</span>
@@ -161,7 +166,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>        NRSNRS_5  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         0.04707  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
@@ -178,7 +183,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3         3.276337e-41 3.083889  3.725305</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4         1.021351e-39 2.915581  3.547957</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_5         2.363770e-42 3.135685  3.767647</span>
-<span class="r-in"><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">my_contrast_V1</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
@@ -209,7 +214,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

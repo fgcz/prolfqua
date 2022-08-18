@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,17 +90,22 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">contrasts</span>, p.message <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">contrasts</span>, p.message <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>linfct</dt>
 <dd><p>linear functions as created by linfct_from_model</p></dd>
+
+
 <dt>p.message</dt>
 <dd><p>print messages default FALSE</p></dd>
+
+
 <dt>contrast</dt>
 <dd><p>contrasts to determine linear functions for</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -148,9 +153,9 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>,as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">linfct</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>,as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeCMP/MEP                             1         0.3333333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeHSC                                 1         0.3333333</span>
@@ -175,14 +180,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC             0.0000000         1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP         1.0000000         0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC             1.0000000         1.0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CMPvsMEP - HSC"</span> <span class="op">=</span> <span class="st">"`CelltypeCMP/MEP` - `CelltypeHSC`"</span>,</span>
-<span class="r-in"><span class="st">"NOvsHU"</span> <span class="op">=</span> <span class="st">"`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contrasts</span> <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CMPvsMEP - HSC"</span> <span class="op">=</span> <span class="st">"`CelltypeCMP/MEP` - `CelltypeHSC`"</span>,</span></span>
+<span class="r-in"><span><span class="st">"NOvsHU"</span> <span class="op">=</span> <span class="st">"`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contrasts</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CMPvsMEP - HSC           0                 0                 0          -1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NOvsHU                   0                 1                 0           0</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -197,7 +202,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

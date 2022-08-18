@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,23 +90,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">contrasts_linfct_deprec</span><span class="op">(</span>
-  <span class="va">models</span>,
-  <span class="va">linfct</span>,
-  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,
-  contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="my_contest.html">my_contest</a></span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">contrasts_linfct_deprec</span><span class="op">(</span></span>
+<span>  <span class="va">models</span>,</span>
+<span>  <span class="va">linfct</span>,</span>
+<span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
+<span>  contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="my_contest.html">my_contest</a></span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">factor_contrasts</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">factor_contrasts</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    (Intercept) MortalityM1 InterventionINT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0 - MortalityM1                    0          -1               0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL - InterventionINT           0           0              -1</span>
@@ -119,19 +119,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_4                      -1        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_5                       0       -1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4 - NRSNRS_5                       1       -1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="contrasts_linfct.html">contrasts_linfct</a></span><span class="op">(</span> <span class="va">m</span>,</span>
-<span class="r-in">        <span class="va">factor_contrasts</span>,</span>
-<span class="r-in">        subject_Id <span class="op">=</span> <span class="st">"Compound"</span>,</span>
-<span class="r-in">        contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="my_contrast_V2.html">my_contrast_V2</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="contrasts_linfct.html">contrasts_linfct</a></span><span class="op">(</span> <span class="va">m</span>,</span></span>
+<span class="r-in"><span>        <span class="va">factor_contrasts</span>,</span></span>
+<span class="r-in"><span>        subject_Id <span class="op">=</span> <span class="st">"Compound"</span>,</span></span>
+<span class="r-in"><span>        contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="my_contrast_V2.html">my_contrast_V2</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#usethis::use_data(factor_levelContrasts, overwrite = TRUE)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">data_models_interaction</span> <span class="op">&lt;-</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_models_interaction'</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">data_models_interaction</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#usethis::use_data(factor_levelContrasts, overwrite = TRUE)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data_models_interaction</span> <span class="op">&lt;-</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_models_interaction'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">data_models_interaction</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by REML ['lmerModLmerTest']</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula: formula</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Data: x</span>
@@ -147,23 +147,25 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   -1.9704                    -0.6870  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ConditionIL_1_beta     Conditiontraumatic_IVD  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   -0.1675                    -0.5371  </span>
-<span class="r-in"><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct_deprec</span><span class="op">(</span> <span class="va">m</span>,</span>
-<span class="r-in">                           <span class="va">factor_contrasts</span>,</span>
-<span class="r-in">                       subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct_deprec</span><span class="op">(</span> <span class="va">m</span>,</span></span>
+<span class="r-in"><span>                           <span class="va">factor_contrasts</span>,</span></span>
+<span class="r-in"><span>                       subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id lhs   estimate std.error    df statistic conf.low conf.high p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|O43707… Cond…   -<span style="color: #BB0000;">0.168</span>     0.184  185.    -<span style="color: #BB0000;">0.911</span>  -<span style="color: #BB0000;">0.530</span>      0.195 3.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|O43707… Cond…    0.519     0.172  183.     3.01    0.179      0.859 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|O43707… Cond…    0.370     0.174  181.     2.13    0.026<span style="text-decoration: underline;">7</span>     0.712 3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|O43707… Cond…    0.687     0.188  185.     3.66    0.317      1.06  3.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|O43707… Cond…    0.537     0.189  186.     2.84    0.164      0.911 5.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|O43707… Cond…   -<span style="color: #BB0000;">0.150</span>     0.179  185.    -<span style="color: #BB0000;">0.836</span>  -<span style="color: #BB0000;">0.503</span>      0.204 4.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 5 more variables: sigma &lt;dbl&gt;, isSingular &lt;lgl&gt;, sigma.model &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.residual.model &lt;dbl&gt;, p.value.adjusted &lt;dbl&gt;</span></span>
-<span class="r-in"><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id   lhs   estim…¹ std.e…²    df stati…³ conf.…⁴ conf.…⁵ p.value sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|O43707|A… Cond…  -<span style="color: #BB0000;">0.168</span>   0.184  185.  -<span style="color: #BB0000;">0.911</span> -<span style="color: #BB0000;">0.530</span>    0.195 3.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|O43707|A… Cond…   0.519   0.172  183.   3.01   0.179    0.859 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|O43707|A… Cond…   0.370   0.174  181.   2.13   0.026<span style="text-decoration: underline;">7</span>   0.712 3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|O43707|A… Cond…   0.687   0.188  185.   3.66   0.317    1.06  3.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|O43707|A… Cond…   0.537   0.189  186.   2.84   0.164    0.911 5.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|O43707|A… Cond…  -<span style="color: #BB0000;">0.150</span>   0.179  185.  -<span style="color: #BB0000;">0.836</span> -<span style="color: #BB0000;">0.503</span>    0.204 4.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 4 more variables: isSingular &lt;lgl&gt;, sigma.model &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.residual.model &lt;dbl&gt;, p.value.adjusted &lt;dbl&gt;, and abbreviated variable</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   names ¹​estimate, ²​std.error, ³​statistic, ⁴​conf.low, ⁵​conf.high</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `colnames()` to see all variable names</span></span>
+<span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by REML ['lmerModLmerTest']</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula: formula</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Data: x</span>
@@ -179,23 +181,25 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   -1.9704                    -0.6870  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        ConditionIL_1_beta     Conditiontraumatic_IVD  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   -0.1675                    -0.5371  </span>
-<span class="r-in"><span class="fu"><a href="my_contest.html">my_contest</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">factor_contrasts</span> <span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="my_contest.html">my_contest</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">factor_contrasts</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   lhs        estimate std.error    df statistic conf.low conf.high p.value sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Condition…   -<span style="color: #BB0000;">0.168</span>     0.184  185.    -<span style="color: #BB0000;">0.911</span>  -<span style="color: #BB0000;">0.530</span>      0.195 3.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Condition…    0.519     0.172  183.     3.01    0.179      0.859 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Condition…    0.370     0.174  181.     2.13    0.026<span style="text-decoration: underline;">7</span>     0.712 3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Condition…    0.687     0.188  185.     3.66    0.317      1.06  3.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Condition…    0.537     0.189  186.     2.84    0.164      0.911 5.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Condition…   -<span style="color: #BB0000;">0.150</span>     0.179  185.    -<span style="color: #BB0000;">0.836</span>  -<span style="color: #BB0000;">0.503</span>      0.204 4.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df</span>, <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lhs                estim…¹ std.e…²    df stati…³ conf.…⁴ conf.…⁵ p.value sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ConditionIL_1_bet…  -<span style="color: #BB0000;">0.168</span>   0.184  185.  -<span style="color: #BB0000;">0.911</span> -<span style="color: #BB0000;">0.530</span>    0.195 3.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ConditionIL_1_bet…   0.519   0.172  183.   3.01   0.179    0.859 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ConditionIL_1_bet…   0.370   0.174  181.   2.13   0.026<span style="text-decoration: underline;">7</span>   0.712 3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Conditionbaseline…   0.687   0.188  185.   3.66   0.317    1.06  3.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Conditionbaseline…   0.537   0.189  186.   2.84   0.164    0.911 5.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Conditiondegenera…  -<span style="color: #BB0000;">0.150</span>   0.179  185.  -<span style="color: #BB0000;">0.836</span> -<span style="color: #BB0000;">0.503</span>    0.204 4.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​conf.low, ⁵​conf.high</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df</span>, <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="contrasts_linfct_deprec-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> , <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df</span> <span class="op">-</span> <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> <span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> , <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df</span> <span class="op">-</span> <span class="va">factor_levelContrasts</span><span class="op">$</span><span class="va">df.residual.model</span> <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="contrasts_linfct_deprec-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -210,7 +214,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ takes p-value of the scaled p-value"><!-- mathjax --><script src="https://cdnjs.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -95,25 +95,28 @@ takes p-value of the scaled p-value</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span>
-  <span class="va">contrasts_data</span>,
-  contrast <span class="op">=</span> <span class="st">"contrast"</span>,
-  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,
-  estimate <span class="op">=</span> <span class="st">"diff"</span>,
-  statistic <span class="op">=</span> <span class="st">"statistic"</span>,
-  p.value <span class="op">=</span> <span class="st">"moderated.p.value"</span>,
-  max.n <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span></span>
+<span>  <span class="va">contrasts_data</span>,</span>
+<span>  contrast <span class="op">=</span> <span class="st">"contrast"</span>,</span>
+<span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
+<span>  estimate <span class="op">=</span> <span class="st">"diff"</span>,</span>
+<span>  statistic <span class="op">=</span> <span class="st">"statistic"</span>,</span>
+<span>  p.value <span class="op">=</span> <span class="st">"moderated.p.value"</span>,</span>
+<span>  max.n <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>max.n</dt>
 <dd><p>used to limit the number of peptides in probablity computation.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with columns</p>
+    
+
+<p>data.frame with columns</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -161,56 +164,56 @@ takes p-value of the scaled p-value</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">nrPep</span> <span class="op">&lt;-</span> <span class="fl">10000</span></span>
-<span class="r-in"><span class="va">nrProtein</span> <span class="op">&lt;-</span> <span class="fl">800</span></span>
-<span class="r-in"><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">avgAbd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">protein_Id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">800</span>, size <span class="op">=</span> <span class="va">nrPep</span>,</span>
-<span class="r-in">  replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">dexp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span>,length <span class="op">=</span> <span class="fl">800</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nrPep</span> <span class="op">&lt;-</span> <span class="fl">10000</span></span></span>
+<span class="r-in"><span><span class="va">nrProtein</span> <span class="op">&lt;-</span> <span class="fl">800</span></span></span>
+<span class="r-in"><span><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">avgAbd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">protein_Id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">800</span>, size <span class="op">=</span> <span class="va">nrPep</span>,</span></span>
+<span class="r-in"><span>  replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">dexp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span>,length <span class="op">=</span> <span class="fl">800</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>contrast <span class="op">=</span> <span class="st">"contrast1"</span>,</span>
-<span class="r-in">   protein_Id <span class="op">=</span> <span class="va">protein_Id</span>,</span>
-<span class="r-in">  estimate <span class="op">=</span> <span class="va">estimate</span>,</span>
-<span class="r-in">  pseudo_estimate <span class="op">=</span> <span class="va">estimate</span>,</span>
-<span class="r-in">  p.value <span class="op">=</span> <span class="va">p.value</span>,</span>
-<span class="r-in">  avgAbd <span class="op">=</span> <span class="va">avgAbd</span> <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">xx30</span> <span class="op">&lt;-</span> <span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span><span class="va">testdata</span>,</span>
-<span class="r-in">                                    subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span class="r-in">                                    estimate <span class="op">=</span> <span class="st">"estimate"</span>,</span>
-<span class="r-in">                                    p.value <span class="op">=</span> <span class="st">"p.value"</span>,</span>
-<span class="r-in">                                    max.n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">xx2</span> <span class="op">&lt;-</span> <span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span><span class="va">testdata</span>,</span>
-<span class="r-in">                                    subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span class="r-in">                                    estimate <span class="op">=</span> <span class="st">"estimate"</span>,</span>
-<span class="r-in">                                    p.value <span class="op">=</span> <span class="st">"p.value"</span>,</span>
-<span class="r-in">                                    max.n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/mad.html" class="external-link">mad</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">estimate</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1550163</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">testdata</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>contrast <span class="op">=</span> <span class="st">"contrast1"</span>,</span></span>
+<span class="r-in"><span>   protein_Id <span class="op">=</span> <span class="va">protein_Id</span>,</span></span>
+<span class="r-in"><span>  estimate <span class="op">=</span> <span class="va">estimate</span>,</span></span>
+<span class="r-in"><span>  pseudo_estimate <span class="op">=</span> <span class="va">estimate</span>,</span></span>
+<span class="r-in"><span>  p.value <span class="op">=</span> <span class="va">p.value</span>,</span></span>
+<span class="r-in"><span>  avgAbd <span class="op">=</span> <span class="va">avgAbd</span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">xx30</span> <span class="op">&lt;-</span> <span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span><span class="va">testdata</span>,</span></span>
+<span class="r-in"><span>                                    subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
+<span class="r-in"><span>                                    estimate <span class="op">=</span> <span class="st">"estimate"</span>,</span></span>
+<span class="r-in"><span>                                    p.value <span class="op">=</span> <span class="st">"p.value"</span>,</span></span>
+<span class="r-in"><span>                                    max.n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">xx2</span> <span class="op">&lt;-</span> <span class="fu">summary_ROPECA_median_p.scaled</span><span class="op">(</span><span class="va">testdata</span>,</span></span>
+<span class="r-in"><span>                                    subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
+<span class="r-in"><span>                                    estimate <span class="op">=</span> <span class="st">"estimate"</span>,</span></span>
+<span class="r-in"><span>                                    p.value <span class="op">=</span> <span class="st">"p.value"</span>,</span></span>
+<span class="r-in"><span>                                    max.n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/mad.html" class="external-link">mad</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">estimate</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1632072</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">testdata</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.value</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.value</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-8.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">mad.estimate</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">mad.estimate</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-9.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -225,7 +228,7 @@ takes p-value of the scaled p-value</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ and create new columns i sampleName column etc."><!-- mathjax --><script src="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -95,17 +95,22 @@ and create new columns i sampleName column etc.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">setup_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span>, cc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">setup_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span>, cc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>cc</dt>
 <dd><p>complete cases default TRUE</p></dd>
+
+
 <dt>config</dt>
 <dd><p>AnlalysisConfiguration</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -127,15 +132,15 @@ and create new columns i sampleName column etc.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">skylineconfig</span> <span class="op">&lt;-</span> <span class="fu"><a href="concrete_AnalysisTableAnnotation.html">create_config_Skyline</a></span><span class="op">(</span>isotopeLabel <span class="op">=</span> <span class="st">"Isotope.Label.Type"</span>,</span>
-<span class="r-in"> ident_qValue <span class="op">=</span> <span class="st">"Detection.Q.Value"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Time"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Sampling.Time.Point"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">sample_analysis</span> <span class="op">&lt;-</span> <span class="fu">setup_analysis</span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylinePRMSample_A'</span><span class="op">)</span><span class="op">$</span><span class="va">data</span>, <span class="va">skylineconfig</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">skylineconfig</span> <span class="op">&lt;-</span> <span class="fu"><a href="concrete_AnalysisTableAnnotation.html">create_config_Skyline</a></span><span class="op">(</span>isotopeLabel <span class="op">=</span> <span class="st">"Isotope.Label.Type"</span>,</span></span>
+<span class="r-in"><span> ident_qValue <span class="op">=</span> <span class="st">"Detection.Q.Value"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">skylineconfig</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Time"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"Sampling.Time.Point"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sample_analysis</span> <span class="op">&lt;-</span> <span class="fu">setup_analysis</span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_skylinePRMSample_A'</span><span class="op">)</span><span class="op">$</span><span class="va">data</span>, <span class="va">skylineconfig</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -150,7 +155,7 @@ and create new columns i sampleName column etc.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

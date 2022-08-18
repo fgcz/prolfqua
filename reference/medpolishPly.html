@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -90,19 +90,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">medpolishPly</span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="cn">FALSE</span>, sampleName <span class="op">=</span> <span class="st">"sampleName"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">medpolishPly</span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="cn">FALSE</span>, sampleName <span class="op">=</span> <span class="st">"sampleName"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a matrix</p></dd>
+
+
 <dt>name</dt>
 <dd><p>if TRUE returns the name of the summary column</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with number of rows equal to number of columns of input matrix.</p>
+    
+
+<p>data.frame with number of rows equal to number of columns of input matrix.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -124,20 +129,20 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu">medpolishPly</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">medpolishPly</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "medpolish"</span>
-<span class="r-in"><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gg</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           X1         X2        X3         X4        X5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A1 0.5105834 0.40593743 0.3344556 0.54040826 0.7538624</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A2 0.7884125 0.52412550 0.4072790 0.62189942 0.8954133</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A3 0.7208285 0.73510901 0.3004909 0.42635465 0.5992844</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A4 0.3435450 0.05347205 0.2921314 0.01372921 0.8939327</span>
-<span class="r-in"><span class="va">mx</span> <span class="op">&lt;-</span> <span class="fu">medpolishPly</span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gg</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           X1        X2         X3          X4        X5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A1 0.9122249 0.2782208 0.25274558 0.398651536 0.9298922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A2 0.2399973 0.7571675 0.25881450 0.503898330 0.1657969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A3 0.6874078 0.4959956 0.04875395 0.005703789 0.3063395</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A4 0.5612079 0.1184658 0.35801038 0.005013240 0.8270546</span>
+<span class="r-in"><span><span class="va">mx</span> <span class="op">&lt;-</span> <span class="fu">medpolishPly</span><span class="op">(</span><span class="va">gg</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -152,7 +157,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
