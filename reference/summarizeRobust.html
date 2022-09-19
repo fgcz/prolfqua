@@ -137,18 +137,18 @@
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">summarizeRobust</span><span class="op">(</span><span class="va">xx</span> , <span class="st">"expression"</span>, <span class="st">"feature"</span>, <span class="st">"samples"</span>, maxIt <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bb</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   samples mean.expression    weights      lmrob</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       a      -6.9440693 0.05008403 -6.9440693</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       b      -3.1514760 0.02699015 -3.1514760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       c      -3.4548629 0.01255720 -2.6519375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       d      -0.3274186 0.03322256 -0.3274186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       a       0.6938591 0.03038218  0.6938591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       b       3.0890801 0.03267426  3.0890801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       c       6.0930084 0.05250968  6.0930084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       d      -4.3572670 0.01550268 -4.0558631</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xx2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>log2Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>, peptide_Id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">4</span><span class="op">)</span>, sampleName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarizeRobust</span><span class="op">(</span><span class="va">xx2</span>, <span class="st">"log2Area"</span>, <span class="st">"peptide_Id"</span>, <span class="st">"sampleName"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sampleName mean.log2Area    weights      lmrob</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          a     0.5034783 0.02814986  0.5034783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          b     5.7156310 0.01706929  5.7156310</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          c    -1.2368134 0.02032111 -1.2368134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          d     7.8531520 0.01146969  7.7496204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sampleName mean.log2Area     weights      lmrob</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          a     3.0331823 0.018308814  3.0331823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          b    -6.8148636 0.008304470 -6.9980315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          c     0.3227676 0.009047033  0.3227676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          d     2.9074307 0.020353198  2.9074307</span>
 <span class="r-in"><span><span class="fu">summarizeRobust</span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_checksummarizationrobust87'</span><span class="op">)</span>,<span class="st">"log2Area"</span>, <span class="st">"peptide_Id"</span>, <span class="st">"sampleName"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sampleName mean.log2Area weights      lmrob</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          a    -7.1898238       1 -7.1898238</span>
@@ -182,15 +182,15 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'rlm' failed to converge in 20 steps</span>
 <span class="r-in"><span><span class="fu">summarizeRobust</span><span class="op">(</span><span class="va">xx2</span><span class="op">[</span><span class="va">xx2</span><span class="op">$</span><span class="va">peptide_Id</span> <span class="op">==</span> <span class="st">'A'</span>,<span class="op">]</span>,<span class="st">"log2Area"</span>, <span class="st">"peptide_Id"</span>, <span class="st">"sampleName"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName mean.log2Area      lmrob weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           a    -0.1321019 -0.1321019       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6           b     7.0368862  7.0368862       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11          c    -0.8435961 -0.8435961       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          d     9.5050559  9.5050559       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           a      3.333558   3.333558       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           b    -15.664589 -15.664589       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          c     -5.129048  -5.129048       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          d     12.264219  12.264219       1</span>
 <span class="r-in"><span><span class="fu">summarizeRobust</span><span class="op">(</span><span class="va">xx2</span><span class="op">[</span><span class="va">xx2</span><span class="op">$</span><span class="va">sampleName</span> <span class="op">==</span> <span class="st">'a'</span>,<span class="op">]</span>,<span class="st">"log2Area"</span>, <span class="st">"peptide_Id"</span>, <span class="st">"sampleName"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sampleName lmrob mean.log2Area weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> a          0.503         0.503       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> a           3.03          3.03       1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
