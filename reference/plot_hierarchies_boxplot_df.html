@@ -147,74 +147,74 @@
 <span class="r-in"><span> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sp|Q8NBS9|TXND5_HUMAN~3509~Q8NBS9" "sp|O75436|VP26A_HUMAN~482~O75436" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sp|Q03252|LMNB2_HUMAN~2579~Q03252" "sp|P49327|FAS_HUMAN~2032~P49327"  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 74 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 74 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 74 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 74 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span>,</span></span>
 <span class="r-in"><span>                                    <span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                                    facet_grid_on <span class="op">=</span> <span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 19 rows containing non-finite values (stat_boxplot).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 11 rows containing missing values (position_quasirandom).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 6 rows containing missing values (position_quasirandom).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (position_quasirandom).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 74 rows containing non-finite values (stat_boxplot).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 10 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 18 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The default behavior of beeswarm has changed in version 0.6.0. In versions &lt;0.6.0, this plot would have been dodged on the y-axis.  In versions &gt;=0.6.0, grouponX=FALSE must be explicitly set to group on y-axis. Please set grouponX=TRUE/FALSE to avoid this warning and ensure proper axis choice.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 5 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 9 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 16 rows containing missing values (position_quasirandom).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 7 rows containing missing values (position_quasirandom).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">iostar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_IonstarProtein_subsetNorm'</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">iostar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "sp|P21589|5NTD_HUMAN~1527~P21589"  "sp|O43660|PLRG1_HUMAN~356~O43660" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "sp|P0AG78|SUBI_ECOLI~1278~P0AG78"  "sp|P62857|RS28_HUMAN~2351~P62857" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "sp|Q13217|DNJC3_HUMAN~2710~Q13217" "sp|P0AC84|GLO2_ECOLI~1143~P0AC84" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "sp|Q9NZM5|NOP53_HUMAN~4540~Q9NZM5" "sp|P01889|HLAB_HUMAN~692~P01889"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "sp|Q99985|SEM3C_HUMAN~3972~Q99985" "sp|P41252|SYIC_HUMAN~1922~P41252" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "sp|O14548|COX7R_HUMAN~221~O14548"  "sp|P35251|RFC1_HUMAN~1803~P35251" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "sp|Q15036|SNX17_HUMAN~2886~Q15036" "sp|P02924|ARAF_ECOLI~705~P02924"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "sp|Q58FF8|H90B2_HUMAN~3080~Q58FF8" "sp|Q96KG9|SCYL1_HUMAN~3853~Q96KG9"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "sp|Q9UBI1|COMD3_HUMAN~4592~Q9UBI1" "sp|O75937|DNJC8_HUMAN~527~O75937" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "sp|P19367|HXK1_HUMAN~1483~P19367"  "sp|Q6P3X3|TTC27_HUMAN~3209~Q6P3X3"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "sp|Q9H1Y0|ATG5_HUMAN~4213~Q9H1Y0"  "sp|Q8IWA0|WDR75_HUMAN~3400~Q8IWA0"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "sp|Q07020|RL18_HUMAN~2610~Q07020"  "sp|P77213|GCS2_ECOLI~2467~P77213" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "sp|Q6P587|FAHD1_HUMAN~3211~Q6P587" "sp|Q7KZI7|MARK2_HUMAN~3274~Q7KZI7"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "sp|P46934|NEDD4_HUMAN~1988~P46934" "sp|P10619|PPGB_HUMAN~1325~P10619" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "sp|Q9Y3C8|UFC1_HUMAN~4838~Q9Y3C8"  "CON__Q3SZR3~50~NA"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "sp|Q9NXH9|TRM1_HUMAN~4499~Q9NXH9"  "sp|Q00169|PIPNA_HUMAN~2530~Q00169"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "sp|Q9BY44|EIF2A_HUMAN~4119~Q9BY44" "sp|Q96T51|RUFY1_HUMAN~3915~Q96T51"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35] "sp|P0C054|IBPA_ECOLI~1297~P0C054"  "sp|Q96FQ6|S10AG_HUMAN~3789~Q96FQ6"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "sp|P31943|HNRH1_HUMAN~1750~P31943" "sp|Q9UNE7|CHIP_HUMAN~4732~Q9UNE7" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39] "sp|P0ADS6|YGGE_ECOLI~1188~P0ADS6"  "sp|P0C0V0|DEGP_ECOLI~1303~P0C0V0" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [41] "sp|Q7Z2Z2|EFL1_HUMAN~3299~Q7Z2Z2"  "sp|P80723|BASP1_HUMAN~2497~P80723"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] "sp|Q9HD33|RM47_HUMAN~4340~Q9HD33"  "sp|P76145|TAM_ECOLI~2453~P76145"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [45] "sp|P29745|PEPT_ECOLI~1689~P29745"  "sp|Q9H223|EHD4_HUMAN~4215~Q9H223" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [47] "sp|Q9Y619|ORNT1_HUMAN~4920~Q9Y619" "sp|P27797|CALR_HUMAN~1653~P27797" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [49] "sp|Q92615|LAR4B_HUMAN~3662~Q92615" "sp|P46087|NOP2_HUMAN~1970~P46087" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [51] "sp|P0AGJ9|SYY_ECOLI~1293~P0AGJ9"   "sp|P28062|PSB8_HUMAN~1657~P28062" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [53] "sp|P18754|RCC1_HUMAN~1475~P18754"  "sp|Q14146|URB2_HUMAN~2808~Q14146" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [55] "sp|P0AFL3|PPIA_ECOLI~1254~P0AFL3"  "sp|P23229|ITA6_HUMAN~1560~P23229" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [57] "sp|P25516|ACNA_ECOLI~1604~P25516"  "sp|Q9H0C8|ILKAP_HUMAN~4193~Q9H0C8"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [59] "sp|Q08752|PPID_HUMAN~2629~Q08752"  "sp|O75436|VP26A_HUMAN~482~O75436" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [61] "sp|P68133|ACTS_HUMAN~2407~P68133"  "sp|P20810|ICAL_HUMAN~1506~P20810" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [63] "sp|P0A6P1|EFTS_ECOLI~918~P0A6P1"   "sp|O15145|ARPC3_HUMAN~283~O15145" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [65] "CON__P34955~32~NA"                 "sp|Q13162|PRDX4_HUMAN~2704~Q13162"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [67] "sp|Q9BPX5|ARP5L_HUMAN~3977~Q9BPX5" "sp|L0R819|ASURF_HUMAN~152~L0R819" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [69] "sp|Q13131|AAPK1_HUMAN~2695~Q13131" "sp|P05042|FUMC_ECOLI~749~P05042"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [71] "sp|Q9UJW0|DCTN4_HUMAN~4671~Q9UJW0" "sp|Q9Y2T7|YBOX2_HUMAN~4802~Q9Y2T7"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [73] "sp|Q96C90|PP14B_HUMAN~3749~Q96C90" "sp|P30533|AMRP_HUMAN~1714~P30533" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [75] "sp|P37744|RMLA1_ECOLI~1860~P37744" "sp|P09551|ARGT_ECOLI~884~P09551"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [77] "sp|Q9Y570|PPME1_HUMAN~4883~Q9Y570" "sp|Q8N6R0|EFNMT_HUMAN~3486~Q8N6R0"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [79] "sp|P0AGE0|SSB_ECOLI~1287~P0AGE0"   "sp|Q5VYK3|ECM29_HUMAN~3147~Q5VYK3"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [81] "sp|P0A8P3|FETP_ECOLI~1024~P0A8P3" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "sp|P21589|5NTD_HUMAN~1527~P21589"  "sp|Q9NZM3|ITSN2_HUMAN~4539~Q9NZM3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "sp|O43660|PLRG1_HUMAN~356~O43660"  "sp|P0AG78|SUBI_ECOLI~1278~P0AG78" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "sp|P0A908|MIPA_ECOLI~1035~P0A908"  "sp|Q6UX04|CWC27_HUMAN~3241~Q6UX04"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "sp|P62857|RS28_HUMAN~2351~P62857"  "sp|Q13217|DNJC3_HUMAN~2710~Q13217"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "sp|Q13838|DX39B_HUMAN~2788~Q13838" "sp|Q9Y2W2|WBP11_HUMAN~4806~Q9Y2W2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "sp|P07602|SAP_HUMAN~814~P07602"    "sp|P20042|IF2B_HUMAN~1495~P20042" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "sp|O14548|COX7R_HUMAN~221~O14548"  "sp|P02924|ARAF_ECOLI~705~P02924"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "sp|P50570|DYN2_HUMAN~2086~P50570"  "sp|Q03001|DYST_HUMAN~2575~Q03001" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "sp|Q96JB2|COG3_HUMAN~3837~Q96JB2"  "sp|P10909|CLUS_HUMAN~1329~P10909" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "sp|O75937|DNJC8_HUMAN~527~O75937"  "sp|Q6P1J9|CDC73_HUMAN~3199~Q6P1J9"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "sp|Q07020|RL18_HUMAN~2610~Q07020"  "sp|Q6P587|FAHD1_HUMAN~3211~Q6P587"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "sp|P46934|NEDD4_HUMAN~1988~P46934" "sp|Q8NBS9|TXND5_HUMAN~3509~Q8NBS9"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "sp|P69411|RCSF_ECOLI~2424~P69411"  "sp|P0AGJ5|YFIF_ECOLI~1292~P0AGJ5" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "sp|Q969X6|UTP4_HUMAN~3720~Q969X6"  "sp|Q99873|ANM1_HUMAN~3969~Q99873" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "sp|P0AED0|USPA_ECOLI~1208~P0AED0"  "sp|Q15813|TBCE_HUMAN~2967~Q15813" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "CON__Q3SZR3~50~NA"                 "sp|Q9NXH9|TRM1_HUMAN~4499~Q9NXH9" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "sp|Q15392|DHC24_HUMAN~2927~Q15392" "sp|O60645|EXOC3_HUMAN~416~O60645" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [35] "CON__P01030~9~NA"                  "sp|Q96T51|RUFY1_HUMAN~3915~Q96T51"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "sp|P0C054|IBPA_ECOLI~1297~P0C054"  "sp|Q96FQ6|S10AG_HUMAN~3789~Q96FQ6"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [39] "sp|Q9UNE7|CHIP_HUMAN~4732~Q9UNE7"  "sp|Q9Y666|S12A7_HUMAN~4923~Q9Y666"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [41] "sp|P0C0V0|DEGP_ECOLI~1303~P0C0V0"  "sp|Q9UGV2|NDRG3_HUMAN~4627~Q9UGV2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] "sp|Q6PL18|ATAD2_HUMAN~3230~Q6PL18" "sp|P48449|ERG7_HUMAN~2006~P48449" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [45] "sp|P29745|PEPT_ECOLI~1689~P29745"  "sp|P27797|CALR_HUMAN~1653~P27797" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [47] "sp|Q92615|LAR4B_HUMAN~3662~Q92615" "sp|O14745|NHRF1_HUMAN~240~O14745" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [49] "sp|P18754|RCC1_HUMAN~1475~P18754"  "sp|P23229|ITA6_HUMAN~1560~P23229" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [51] "sp|Q08752|PPID_HUMAN~2629~Q08752"  "sp|O75436|VP26A_HUMAN~482~O75436" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [53] "sp|P28370|SMCA1_HUMAN~1669~P28370" "sp|Q8WX92|NELFB_HUMAN~3628~Q8WX92"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [55] "sp|P20810|ICAL_HUMAN~1506~P20810"  "sp|P0A6P1|EFTS_ECOLI~918~P0A6P1"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [57] "sp|O15145|ARPC3_HUMAN~283~O15145"  "CON__P34955~32~NA"                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [59] "sp|Q13131|AAPK1_HUMAN~2695~Q13131" "sp|P05042|FUMC_ECOLI~749~P05042"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [61] "sp|Q9UJW0|DCTN4_HUMAN~4671~Q9UJW0" "sp|P60709|ACTB_HUMAN~2242~P60709" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [63] "sp|Q9Y2T7|YBOX2_HUMAN~4802~Q9Y2T7" "sp|Q92620|PRP16_HUMAN~3664~Q92620"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [65] "sp|P30533|AMRP_HUMAN~1714~P30533"  "sp|P37744|RMLA1_ECOLI~1860~P37744"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [67] "sp|P09551|ARGT_ECOLI~884~P09551"   "sp|Q9Y570|PPME1_HUMAN~4883~Q9Y570"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [69] "sp|Q8N6R0|EFNMT_HUMAN~3486~Q8N6R0" "sp|P49821|NDUV1_HUMAN~2067~P49821"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [71] "sp|Q96CV9|OPTN_HUMAN~3755~Q96CV9"  "sp|P0A8P3|FETP_ECOLI~1024~P0A8P3" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>

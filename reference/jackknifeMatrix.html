@@ -139,22 +139,22 @@
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="my_jackknife.html">my_jackknife</a></span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span>, use<span class="op">=</span><span class="st">"pairwise.complete.obs"</span>, method<span class="op">=</span><span class="st">"pearson"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">jackknifeMatrix</span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           C1        C2        C3        C4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0000000 0.7904737 0.9556134 0.8408454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.7904737 1.0000000 0.8845643 0.8025129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C3 0.9556134 0.8845643 1.0000000 0.9932535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.8408454 0.8025129 0.9932535 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           C1         C2         C3        C4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0000000  0.7464282  0.9596892 0.6805891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.7464282  1.0000000 -0.4942680 0.7173897</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C3 0.9596892 -0.4942680  1.0000000 0.4752161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.6805891  0.7173897  0.4752161 1.0000000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 4</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">jackknifeMatrix</span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span>, method<span class="op">=</span><span class="st">"spearman"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 4</span>
 <span class="r-in"><span><span class="va">res</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     C1  C2  C3  C4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0 0.6 1.0 0.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.6 1.0 0.8 0.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C3 1.0 0.8 1.0 1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.8 0.8 1.0 1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     C1   C2   C3  C4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0  0.8  0.8 0.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.8  1.0 -0.6 0.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C3 0.8 -0.6  1.0 0.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.8  0.8  0.4 1.0</span>
 </code></pre></div>
     </div>
   </div>
