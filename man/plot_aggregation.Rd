@@ -20,7 +20,7 @@ Plot feature data and result of aggretation
 }
 \examples{
 
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- old2new(prolfqua_data('data_ionstar')$filtered())
 config <- dd$config
 data <- dd$data
 

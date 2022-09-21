@@ -15,7 +15,7 @@ xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 analysis <- bb$data

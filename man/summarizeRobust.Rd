@@ -39,7 +39,7 @@ summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleNam
 summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data

@@ -22,7 +22,7 @@ Compute fold changes given Contrasts
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 configur <- bb$config
 data <- bb$data
 

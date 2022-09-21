@@ -104,7 +104,7 @@ atable$factors[["dilution."]] = "sample"
 We also need to specify the column containing the protein abundances.
 
 ```{r specifyIntensity}
-atable$setWorkIntensity("mq.protein.intensity")
+atable$set_work_intensity("mq.protein.intensity")
 ```
 
 Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 

@@ -7,7 +7,7 @@
 #' @family modelling
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
 #' data <- bb$data

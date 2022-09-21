@@ -11,7 +11,7 @@ plot heatmap with annotations
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data

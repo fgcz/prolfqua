@@ -27,7 +27,7 @@ extracts the relevant information from the configuration to make the plot.
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data

@@ -4,7 +4,7 @@
 #' @export
 #' @family LFQData
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' #LFQData$debug("rename_response")
@@ -182,7 +182,7 @@ LFQData <- R6::R6Class(
         logger::log_error("provide different name.")
       } else {
         old <- self$config$table$popWorkIntensity()
-        self$config$table$setWorkIntensity(newname)
+        self$config$table$set_work_intensity(newname)
         self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }
     },

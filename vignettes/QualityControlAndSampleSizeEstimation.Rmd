@@ -65,7 +65,7 @@ atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
 atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
+atable$set_work_intensity("mq.protein.intensity")
 atable$factors[["dilution."]] = "sample"
 atable$factors[["Run_ID"]] = "run_ID"
 atable$factorDepth <- 1

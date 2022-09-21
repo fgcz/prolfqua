@@ -45,9 +45,9 @@ Other configuration:
 
 \item{\code{is_intensity_transformed}}{are the intensities transformed for constant variance}
 
-\item{\code{factors}}{names of columns containing factors (annotions)}
+\item{\code{factors}}{Names of columns containing factors (annotions)}
 
-\item{\code{factorDepth}}{facet plot according to the first or the first two factors (factorDepth can be 1 or 2)}
+\item{\code{factorDepth}}{number of relevant factors (used by plotting functions etc)}
 
 \item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
 
@@ -59,7 +59,7 @@ Other configuration:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-AnalysisTableAnnotation-new}{\code{AnalysisTableAnnotation$new()}}
-\item \href{#method-AnalysisTableAnnotation-setWorkIntensity}{\code{AnalysisTableAnnotation$setWorkIntensity()}}
+\item \href{#method-AnalysisTableAnnotation-set_work_intensity}{\code{AnalysisTableAnnotation$set_work_intensity()}}
 \item \href{#method-AnalysisTableAnnotation-getWorkIntensity}{\code{AnalysisTableAnnotation$getWorkIntensity()}}
 \item \href{#method-AnalysisTableAnnotation-popWorkIntensity}{\code{AnalysisTableAnnotation$popWorkIntensity()}}
 \item \href{#method-AnalysisTableAnnotation-factorKeys}{\code{AnalysisTableAnnotation$factorKeys()}}
@@ -84,12 +84,12 @@ create a new  AnalysisTableAnnotationG
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-setWorkIntensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-setWorkIntensity}{}}}
-\subsection{Method \code{setWorkIntensity()}}{
-add name of intensity column
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-set_work_intensity"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-set_work_intensity}{}}}
+\subsection{Method \code{set_work_intensity()}}{
+Add name of intensity column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$setWorkIntensity(colName)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$set_work_intensity(colName)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -104,7 +104,7 @@ add name of intensity column
 \if{html}{\out{<a id="method-AnalysisTableAnnotation-getWorkIntensity"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-getWorkIntensity}{}}}
 \subsection{Method \code{getWorkIntensity()}}{
-get name of working intensity column
+Get name of working intensity column
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getWorkIntensity()}\if{html}{\out{</div>}}
 }
@@ -114,7 +114,7 @@ get name of working intensity column
 \if{html}{\out{<a id="method-AnalysisTableAnnotation-popWorkIntensity"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-popWorkIntensity}{}}}
 \subsection{Method \code{popWorkIntensity()}}{
-remove last name in array of working intensity column names
+Remove last name in array of working intensity column names
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$popWorkIntensity()}\if{html}{\out{</div>}}
 }
@@ -124,7 +124,7 @@ remove last name in array of working intensity column names
 \if{html}{\out{<a id="method-AnalysisTableAnnotation-factorKeys"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-factorKeys}{}}}
 \subsection{Method \code{factorKeys()}}{
-get factor keys
+Get factor keys
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factorKeys()}\if{html}{\out{</div>}}
 }
@@ -137,7 +137,7 @@ array with keys
 \if{html}{\out{<a id="method-AnalysisTableAnnotation-fkeysDepth"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-fkeysDepth}{}}}
 \subsection{Method \code{fkeysDepth()}}{
-get factor keys till factorDepth
+Get factor keys till factorDepth
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysDepth()}\if{html}{\out{</div>}}
 }

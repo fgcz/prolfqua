@@ -11,7 +11,7 @@
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
@@ -79,7 +79,7 @@ interaction_missing_stats <- function(pdata,
 #' @examples
 #'
 #' #library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -231,7 +231,7 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -299,7 +299,7 @@ missigness_impute_factors_interactions <-
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -366,7 +366,7 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -444,7 +444,7 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #'
 #'
 #' library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -515,7 +515,7 @@ get_imputed_contrasts <- function(pepIntensity,
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' bx <- prolfqua_data('data_ionstar')$normalized()
+#' bx <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bx$config
 #' data <- bx$data
 #' data <- complete_cases(data, configur)
@@ -576,7 +576,7 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -617,7 +617,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -657,7 +657,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

@@ -16,7 +16,7 @@ Compute nr of B per A
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))

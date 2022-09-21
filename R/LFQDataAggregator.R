@@ -7,7 +7,7 @@
 #' @family LFQData
 #'
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -166,7 +166,6 @@ LFQDataAggregator <- R6::R6Class(
                 "top N works with raw data.",
                 self$lfq$config$table$workIntensity)
       }
-
       ranked <- rankPrecursorsByIntensity(self$lfq$data , self$lfq$config)
       resTOPN <- aggregateTopNIntensities(ranked, self$lfq$config, .func = .func, N = N)
       self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)

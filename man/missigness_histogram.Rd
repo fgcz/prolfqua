@@ -25,7 +25,7 @@ missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
-bx <- prolfqua_data('data_ionstar')$normalized()
+bx <- old2new(prolfqua_data('data_ionstar')$normalized())
 configur <- bx$config
 data <- bx$data
 data <- complete_cases(data, configur)

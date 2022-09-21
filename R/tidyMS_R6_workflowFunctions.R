@@ -49,7 +49,7 @@ add_annotation <- function(intensityData,
 #'
 #'
 #' rm(list=ls())
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -123,7 +123,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' rm(list=ls())
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -181,7 +181,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' @examples
 #'
 #' rm(list=ls())
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

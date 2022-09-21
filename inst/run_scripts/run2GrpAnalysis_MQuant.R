@@ -53,7 +53,7 @@ atable <- AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majProtID")
 atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
+atable$set_work_intensity("mq.protein.intensity")
 config <- AnalysisConfiguration$new(atable)
 
 

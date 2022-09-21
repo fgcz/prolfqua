@@ -37,7 +37,7 @@ AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -63,7 +63,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -216,7 +216,7 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -264,7 +264,7 @@ sample_subset <- function(size, pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -295,7 +295,7 @@ table_factors <- function(pdata, configuration){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -324,7 +324,7 @@ hierarchy_counts <- function(pdata, config){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -379,7 +379,7 @@ hierarchy_counts_sample <- function(pdata,
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -424,7 +424,7 @@ summarize_hierarchy <- function(pdata,
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

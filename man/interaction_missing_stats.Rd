@@ -29,7 +29,7 @@ compute missingness statistics per hierarchy and factor level
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config

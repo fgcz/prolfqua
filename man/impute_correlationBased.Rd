@@ -13,7 +13,7 @@ imputation based on correlation assumption
 
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))

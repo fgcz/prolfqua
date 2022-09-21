@@ -17,7 +17,7 @@ used in project p2901
 \examples{
 
 
-ionstar <- prolfqua_data('data_ionstar')$normalized()
+ionstar <- old2new(prolfqua_data('data_ionstar')$normalized())
 ionstar$data <- ionstar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
 prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-

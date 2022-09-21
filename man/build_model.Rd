@@ -33,7 +33,7 @@ build from data and modelFunction Model
 }
 \examples{
 # library(tidyverse)
-D <- prolfqua_data('data_ionstar')$normalized()
+D <- old2new(prolfqua_data('data_ionstar')$normalized())
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"

@@ -121,7 +121,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
@@ -155,7 +155,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
@@ -201,7 +201,7 @@ summarize_stats <- function(pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
@@ -244,14 +244,14 @@ summarize_stats_all <- function(pdata, config){
 #' @family stats
 #' @examples
 #' library(ggplot2)
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' stats_res <- summarize_stats(data, config)
 #' summarize_stats_quantiles(stats_res, config)
 #' summarize_stats_quantiles(stats_res, config, stats = "CV")
 #'stats_res
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' config$table$getWorkIntensity()
@@ -331,7 +331,7 @@ summarize_stats_quantiles <- function(stats_res,
 #'
 #' #library(ggplot2)
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' stats_res <- summarize_stats(data2, config)
@@ -376,7 +376,7 @@ lfq_power_t_test_quantiles_V2 <-
 #' @family stats
 #' @examples
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #'
@@ -485,7 +485,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -515,7 +515,7 @@ plot_stat_density <- function(pdata,
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' res <- summarize_stats(data2, config)
@@ -543,7 +543,7 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -570,7 +570,7 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -607,7 +607,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)

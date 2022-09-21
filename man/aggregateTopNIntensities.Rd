@@ -23,9 +23,7 @@ run \link{rankPrecursorsByIntensity} first
 }
 \examples{
 
-
-
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- old2new(prolfqua_data('data_ionstar')$filtered())
 config <- dd$config
 res <- dd$data
 ranked <- rankPrecursorsByIntensity(res,config)
@@ -37,7 +35,8 @@ sum_f <- function(x, name =FALSE){
  if(name){return("sum")};sum(x, na.rm = TRUE)
  }
 
-resTOPN <- aggregateTopNIntensities(ranked,
+resTOPN <- aggregateTopNIntensities(
+ ranked,
  config,
  .func = mean_f,
   N=3)
@@ -51,7 +50,7 @@ tmpRob <- plot_aggregation(ranked,
  config,
  resTOPN$data,
  resTOPN$config,
- show.legen=TRUE)
+ show.legend=TRUE)
 stopifnot( "ggplot" \%in\% class(tmpRob$plots[[4]]) )
 
 }

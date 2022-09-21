@@ -39,18 +39,18 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @field is_intensity_transformed are the intensities transformed for constant variance
     is_intensity_transformed = FALSE,
     #' @description
-    #' add name of intensity column
+    #' Add name of intensity column
     #' @param colName name of intensity column
-    setWorkIntensity = function(colName){
+    set_work_intensity = function(colName){
       self$workIntensity <- c(self$workIntensity, colName)
     },
     #' @description
-    #' get name of working intensity column
+    #' Get name of working intensity column
     getWorkIntensity = function(){
       return(tail(self$workIntensity, n = 1))
     },
     #' @description
-    #' remove last name in array of working intensity column names
+    #' Remove last name in array of working intensity column names
     popWorkIntensity = function(){
       res <- self$workIntensity[length(self$workIntensity)]
       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
@@ -58,18 +58,18 @@ AnalysisTableAnnotation <- R6::R6Class(
     },
 
 
-    #' @field factors names of columns containing factors (annotions)
+    #' @field factors Names of columns containing factors (annotions)
     factors = list(), # ordering is important - first is considered the main
-    #' @field factorDepth facet plot according to the first or the first two factors (factorDepth can be 1 or 2)
+    #' @field factorDepth number of relevant factors (used by plotting functions etc)
     factorDepth = 1,
     #' @description
-    #' get factor keys
+    #' Get factor keys
     #' @return array with keys
     factorKeys = function(){
       return(names(self$factors))
     },
     #' @description
-    #' get factor keys till factorDepth
+    #' Get factor keys till factorDepth
     fkeysDepth = function(){
       res <- head(self$factors, n = self$factorDepth)
       return(names(res))

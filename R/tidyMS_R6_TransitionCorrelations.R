@@ -89,7 +89,7 @@ transform_work_intensity <- function(pdata,
   #                                    .funs = funs(!!sym(newcol) := .func(.)))
   pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$getWorkIntensity())))
 
-  config$table$setWorkIntensity(newcol)
+  config$table$set_work_intensity(newcol)
   message("Column added : ", newcol)
   config$table$is_intensity_transformed = TRUE
 
@@ -271,7 +271,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchyKeys(), sep = sep)
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
-    config$table$setWorkIntensity(value)
+    config$table$set_work_intensity(value)
   }
   return(pdata)
 }
@@ -295,7 +295,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -344,7 +344,7 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -379,7 +379,7 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -426,7 +426,7 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -466,7 +466,7 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
   resb <- dl
   resb$data <- res
   resb <- dplyr::ungroup( unnest(resb, cols = (names(resb))) )
-  config$table$setWorkIntensity(cf$table$getWorkIntensity())
+  config$table$set_work_intensity(cf$table$getWorkIntensity())
   return(list(data = resb, config = config, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
 }
 
@@ -480,7 +480,7 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' xx <- normalize_log2_robscale(istar_data, istar$config)
 #' names(xx)
@@ -498,7 +498,7 @@ normalize_log2_robscale <- function(pdata, config){
   pepIntensityNormalized <- pepIntensityNormalized |>
     dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
   pepConfig$table$popWorkIntensity()
-  pepConfig$table$setWorkIntensity("transformedIntensity")
+  pepConfig$table$set_work_intensity("transformedIntensity")
 
   return(list(data = pepIntensityNormalized, config = pepConfig))
 }
@@ -528,7 +528,7 @@ normalize_log2_robscale <- function(pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -574,7 +574,7 @@ simpleImpute <- function(data){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' mean(is.na(data$peptide.intensity))
@@ -604,7 +604,7 @@ impute_correlationBased <- function(x , config){
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
                           by = c(config$table$hierarchyKeys(), config$table$sampleName) )
-  config$table$setWorkIntensity("srm_ImputedIntensity")
+  config$table$set_work_intensity("srm_ImputedIntensity")
   return(qvalFiltX)
 }
 
@@ -642,7 +642,7 @@ impute_correlationBased <- function(x , config){
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -687,7 +687,7 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

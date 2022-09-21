@@ -31,7 +31,7 @@ estimate sample sizes
 
 #library(ggplot2)
 
-bb1 <- prolfqua_data('data_ionstar')$normalized()
+bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb1$config$clone( deep = TRUE)
 data2 <- bb1$data
 stats_res <- summarize_stats(data2, config)

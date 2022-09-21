@@ -25,7 +25,7 @@ generates peptide level plots for all Proteins
 }
 \examples{
 
- iostar <- prolfqua_data('data_ionstar')$filtered()
+ iostar <- old2new(prolfqua_data('data_ionstar')$filtered())
  iostar$data <- iostar$data |>
    dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
  unique(iostar$data$protein_Id)
