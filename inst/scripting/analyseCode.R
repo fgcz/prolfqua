@@ -21,23 +21,18 @@ by_coverage <- percents[order(percents,
 coveragestats <- data.frame(funcname = names(by_coverage) , coverage = by_coverage)
 coveragestats <- coveragestats |> tidyr::separate("funcname",c("file", "functions"), sep="~")
 coveragestats |> group_by(functions) |> summarize(n = n()) -> nrfn
-head(coveragestats)
 
 
-### get function names
 
 ### get documentation
 library(prolfqua)
 
-tmp <- ls("package:prolfqua")
-
-class(get("Contrasts"))
-class(get("table_facade"))
+exportedProlfqua <- ls("package:prolfqua")
 
 res <- list()
-for(i in tmp){
+for(i in exportedProlfqua){
   if(class(get(i)) == "R6ClassGenerator"){
-      public_methods <- names(get("Contrasts")$public_methods)
+      public_methods <- names(get(i)$public_methods)
       df  <- data.frame(class = i, method = public_methods)
       res[[i]] <- df
   }
@@ -47,6 +42,7 @@ R6Classes <- dplyr::bind_rows(res)
 R6Classes$ItIs <- "R6"
 
 coveragestats <- tibble(coveragestats) |> mutate(file = tools::file_path_sans_ext( basename(file)))
+
 tmp <- full_join(R6Classes, coveragestats, by = c(class = "file", method = "functions"), keep = TRUE)
 View(tmp)
 db <- tools::Rd_db("prolfqua", dir=".")
