@@ -40,22 +40,19 @@ for(i in exportedProlfqua){
 
 R6Classes <- dplyr::bind_rows(res)
 R6Classes$ItIs <- "R6"
-
 coveragestats <- tibble(coveragestats) |> mutate(file = tools::file_path_sans_ext( basename(file)))
+functionsAndTestCoverage <- full_join(R6Classes, coveragestats, by = c(class = "file", method = "functions"), keep = TRUE) |> tibble()
 
-tmp <- full_join(R6Classes, coveragestats, by = c(class = "file", method = "functions"), keep = TRUE)
-View(tmp)
+functionsAndTestCoverage <- full_join(tibble(exported = exportedProlfqua), functionsAndTestCoverage, by=c(exported = "functions"), keep=TRUE )
+
+writexl::write_xlsx(functionsAndTestCoverage, path = "inst/scripting/prolfqua_CoverageOverview.xlsx")
+
+
 db <- tools::Rd_db("prolfqua", dir=".")
 docs <- data.frame(rdfile = names(db),
                   title = unlist(lapply(db, tools:::.Rd_get_metadata, "title")),
                   functionname = unlist(lapply(db, tools:::.Rd_get_metadata, "name")),
                   description = unlist(lapply(db, tools:::.Rd_get_metadata, "description")))
 allFun <- data.frame(functionsls = ls("package:prolfqua"))
-
-
 funcdocs  <- full_join(allFun, docs, by = c(functionsls= "functionname"))
-res <- full_join(coveragestats, res, by = c(functions = "functionsls"))
-
-View(res)
-
-writexl::write_xlsx(res, path = "inst/scripting/FunctionOverview.xlsx")
+writexl::write_xlsx(funcdocs, path = "inst/scripting/prolfqua_DocumentationOverview.xlsx")
