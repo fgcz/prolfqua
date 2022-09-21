@@ -97,7 +97,7 @@ LFQData <- R6::R6Class(
     #' return name of intensity column
     #' @return name of intensity column
     intensity_column = function(){
-      return(self$config$table$getWorkIntensity())
+      return(self$config$table$get_work_intensity())
     },
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
@@ -170,7 +170,7 @@ LFQData <- R6::R6Class(
     #' name of response variable
     #' @return data.frame
     response = function(){
-      self$config$table$getWorkIntensity()
+      self$config$table$get_work_intensity()
     },
     #' @description
     #' new name of response variable
@@ -181,7 +181,7 @@ LFQData <- R6::R6Class(
         logger::log_info(msg)
         logger::log_error("provide different name.")
       } else {
-        old <- self$config$table$popWorkIntensity()
+        old <- self$config$table$pop_work_intensity()
         self$config$table$set_work_intensity(newname)
         self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }

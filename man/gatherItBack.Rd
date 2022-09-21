@@ -29,7 +29,7 @@ res <- toWideConfig(analysis, conf, as.matrix = TRUE)
 res <- scale(res$data)
 xx <- gatherItBack(res,"srm_intensityScaled", conf)
 xx <- gatherItBack(res,"srm_intensityScaled", conf,analysis)
-conf$table$getWorkIntensity() == "srm_intensityScaled"
+conf$table$get_work_intensity() == "srm_intensityScaled"
 
 }
 \keyword{internal}

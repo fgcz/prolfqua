@@ -19,7 +19,7 @@
 #' plot_intensity_distribution_violin(analysis, config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
+  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$get_work_intensity() )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun.y = median, geom = "point", size = 1, color = "black")
@@ -47,7 +47,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' plot_intensity_distribution_density(analysis, config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(),
+  p <- ggplot(pdata, aes_string(x = config$table$get_work_intensity(),
                                 colour = config$table$sampleName )) +
     geom_line(stat = "density")
   if (!config$table$is_intensity_transformed) {
@@ -173,10 +173,10 @@ plot_hierarchies_boxplot <- function(pdata,
   isotopeLabel <- config$table$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
 
-  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$fkeysDepth()))
+  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$factor_keys_depth()))
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
-                                y = config$table$getWorkIntensity(),
+                                y = config$table$get_work_intensity(),
                                 color = color
   )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
@@ -221,7 +221,10 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#'  iostar <- LFQData$new(new$data, new$config)
+#'
 #'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
@@ -288,7 +291,7 @@ plot_heatmap_cor <- function(data,
     cres <- cres^2
   }
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -346,7 +349,7 @@ plot_heatmap <- function(data,
   wide <-  toWideConfig(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
   resdata <- t(scale(t(wide$data)))
@@ -391,8 +394,9 @@ plot_heatmap <- function(data,
 #' @family plotting
 #' @export
 #' @examples
-#' istar <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'
+#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#' istar <- LFQData$new(new$data, new$config)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #' dev.off()
@@ -417,7 +421,7 @@ plot_raster <- function(data,
   resdata <- res$data
 
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -478,7 +482,7 @@ plot_NA_heatmap <- function(data,
   res <- res$data
   stopifnot(annot[[config$table$sampleName]] == colnames(res))
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -552,7 +556,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   xx <- inner_join(wide$annotation, xx)
 
 
-  sh <- config$table$factorKeys()[2]
+  sh <- config$table$factor_keys()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   }else{
@@ -564,7 +568,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_y = 0.25 )
 
   x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
-                      color = !!sym(config$table$factorKeys()[1]),
+                      color = !!sym(config$table$factor_keys()[1]),
                       text = !!sym(config$table$sampleName))) +
     point +
     if (add_txt) {text}

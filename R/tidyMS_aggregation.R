@@ -103,10 +103,10 @@ plot_hierarchies_line <- function(res,
     res,
     proteinName = proteinName,
     sample = config$table$sampleName,
-    intensity = config$table$getWorkIntensity(),
+    intensity = config$table$get_work_intensity(),
     peptide = peptide,
     fragment = fragment,
-    factor = config$table$fkeysDepth(),
+    factor = config$table$factor_keys_depth(),
     isotopeLabel = config$table$isotopeLabel,
     separate = separate,
     log_y = !config$table$is_intensity_transformed,
@@ -199,7 +199,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 ){
   table <- config$table
   xx <- data |>  dplyr::select(c(table$sampleName,
-                                  table$factorKeys(),
+                                  table$factor_keys(),
                                   table$fileName,
                                   table$isotopeLabel)) |> dplyr::distinct()
   res <- dplyr::inner_join(xx,medpolishRes, by = table$sampleName)
@@ -282,7 +282,7 @@ medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
 #'
 extractIntensities <- function(pdata, config ){
   table <- config$table
-  .extractInt(pdata, table$getWorkIntensity(),
+  .extractInt(pdata, table$get_work_intensity(),
               setdiff(table$hierarchyKeys(), table$hkeysDepth()),
               table$sampleName)
 }
@@ -310,7 +310,7 @@ extractIntensities <- function(pdata, config ){
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolishPlydf(x,
-#'  expression = conf$table$getWorkIntensity(),
+#'  expression = conf$table$get_work_intensity(),
 #'   feature = feature,
 #'    sampleName = conf$table$sampleName)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
@@ -351,7 +351,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
   res <- medpolishPlydf(pdata,
-                 expression = config$table$getWorkIntensity(),
+                 expression = config$table$get_work_intensity(),
                  feature = feature,
                  sampleName = config$table$sampleName)
   return(res)
@@ -475,7 +475,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
 #' bb <- summarizeRobust(x,
-#'  expression = conf$table$getWorkIntensity(),
+#'  expression = conf$table$get_work_intensity(),
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
 #'
@@ -512,7 +512,7 @@ summarizeRobust_config <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
-  summarizeRobust(pdata, expression = config$table$getWorkIntensity(),
+  summarizeRobust(pdata, expression = config$table$get_work_intensity(),
                   feature = feature,
                   samples = config$table$sampleName
                   , maxIt = 20)
@@ -550,8 +550,6 @@ old2new <- function(dd_old) {
 #'
 #'
 #' dd <- old2new(prolfqua_data('data_ionstar')$filtered())
-#'
-#'
 #'
 #' config <- dd$config
 #' data <- dd$data
@@ -646,7 +644,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
                                 config = config, show.legend = show.legend)
     p2 <- plot_hierarchies_add_quantline(p1,
                                          xnested_all$other[[i]],
-                                         config_reduced$table$getWorkIntensity(),
+                                         config_reduced$table$get_work_intensity(),
                                          config)
     plots[[i]] <- p2
     pb$tick()
@@ -664,7 +662,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
     xnested_all <- xnested_all |>
       dplyr::mutate(plots = map2(plots, other,
                                 plot_hierarchies_add_quantline,
-                                config_reduced$table$getWorkIntensity(), config ))
+                                config_reduced$table$get_work_intensity(), config ))
   }
   return(xnested_all)
 }
@@ -704,7 +702,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' print(dim(resTOPN$data))
 #' # stopifnot(dim(resTOPN$data) == c(3260, 8))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
-#' config$table$getWorkIntensity()
+#' config$table$get_work_intensity()
 #' #debug(plot_aggregation)
 #' tmpRob <- plot_aggregation(ranked,
 #'  config,
@@ -726,9 +724,9 @@ aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
                           config$table$sampleName,
                           config$table$fileName,
                           config$table$isotopeLabel,
-                          config$table$factorKeys()))
+                          config$table$factor_keys() ))
   sumTopInt <- topInt |>
-    dplyr::summarize( !!newcol := .func(!!sym(config$table$getWorkIntensity())),
+    dplyr::summarize( !!newcol := .func(!!sym(config$table$get_work_intensity())),
                       ident_qValue = min(!!sym(config$table$ident_qValue)), .groups = "drop")
 
   newconfig <- make_reduced_hierarchy_config(

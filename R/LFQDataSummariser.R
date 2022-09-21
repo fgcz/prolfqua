@@ -6,7 +6,7 @@
 #' @family LFQData
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')
+#' istar <- old2new(prolfqua_data('data_ionstar'))
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()

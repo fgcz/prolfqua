@@ -53,7 +53,7 @@ factors (explanatory variables).
 \examples{
 skylineconfig <- create_config_Skyline()
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-skylineconfig$table$factorKeys()
+skylineconfig$table$factor_keys()
 skylineconfig$table$hierarchyKeys()
 spectronautconfig <- create_config_Spectronaut_Peptide()
 config <- create_config_Spectronaut_Peptide()

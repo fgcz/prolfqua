@@ -71,7 +71,7 @@ We run a set of functions implemented in the R package _[prolfqua](https://githu
 
 ```{r samples, eval=TRUE}
 
-tab <- data.frame(table(grp2$RES$lfqData$factors()[[grp2$RES$lfqData$config$table$fkeysDepth()]]))
+tab <- data.frame(table(grp2$RES$lfqData$factors()[[grp2$RES$lfqData$config$table$factor_keys_depth()]]))
 colnames(tab) <- c("Group","# samples")
 knitr::kable(tab, caption = "Nr of samples in each group.")
 
@@ -153,7 +153,7 @@ Figure \@ref(fig:scaling) shows the $\log_2$ fold change of the average sample i
 ```{r scaling, dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
 xb <- grp2$RES$lfqData$data |> 
   dplyr::group_by(!!sym(grp2$RES$lfqData$config$table$sampleName)) |>
-  dplyr::summarize(median = median(!!sym(grp2$RES$lfqData$config$table$getWorkIntensity())))
+  dplyr::summarize(median = median(!!sym(grp2$RES$lfqData$config$table$get_work_intensity())))
 
 bb <- xb$median
 names(bb) <- xb$sampleName

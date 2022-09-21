@@ -128,14 +128,14 @@ ContrastsROPECA <- R6::R6Class(
       return(res)
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
-    #' @return \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
+    #' @return \code{\link{ContrastsPlotter}}
     #' @param FDRthreshold FDR threshold
     #' @param FCthreshold FC threshold
     get_Plotter = function(FDRthreshold = 0.1,
                            FCthreshold = 2){
       contrast_result <- self$get_contrasts()
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
         fcthresh = FCthreshold,

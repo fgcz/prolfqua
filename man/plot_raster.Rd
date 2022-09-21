@@ -28,8 +28,9 @@ plot_raster(
 plot heatmap without any clustering (use to show NA's)
 }
 \examples{
-istar <- prolfqua_data('data_IonstarProtein_subsetNorm')
-
+ bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+ new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+istar <- LFQData$new(new$data, new$config)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 dev.off()

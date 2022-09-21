@@ -46,12 +46,12 @@ AnalysisTableAnnotation <- R6::R6Class(
     },
     #' @description
     #' Get name of working intensity column
-    getWorkIntensity = function(){
+    get_work_intensity = function(){
       return(tail(self$workIntensity, n = 1))
     },
     #' @description
     #' Remove last name in array of working intensity column names
-    popWorkIntensity = function(){
+    pop_work_intensity = function(){
       res <- self$workIntensity[length(self$workIntensity)]
       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
       return(res)
@@ -65,16 +65,15 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @description
     #' Get factor keys
     #' @return array with keys
-    factorKeys = function(){
+    factor_keys = function(){
       return(names(self$factors))
     },
     #' @description
     #' Get factor keys till factorDepth
-    fkeysDepth = function(){
+    factor_keys_depth = function(){
       res <- head(self$factors, n = self$factorDepth)
       return(names(res))
     },
-
 
     #' @field hierarchy list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)
     hierarchy = list(),
@@ -132,16 +131,16 @@ AnalysisTableAnnotation <- R6::R6Class(
     },
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
-    valueVars = function(){
+    value_vars = function(){
       "Columns containing values"
-      valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+      valueVars <- c( self$get_work_intensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
       return(valueVars)
     },
     #' @description
     #' get names of columns with sample annotations
     #'
-    annotationVars = function(){
-      annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
+    annotation_vars = function(){
+      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys() )
       return(annotationVars)
     }
   )

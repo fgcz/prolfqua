@@ -44,7 +44,7 @@ resTOPN <- aggregateTopNIntensities(
 print(dim(resTOPN$data))
 # stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
-config$table$getWorkIntensity()
+config$table$get_work_intensity()
 #debug(plot_aggregation)
 tmpRob <- plot_aggregation(ranked,
  config,

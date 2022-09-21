@@ -7,9 +7,9 @@
 interaction_missing_stats(
   pdata,
   config,
-  factors = config$table$fkeysDepth(),
+  factors = config$table$factor_keys_depth(),
   hierarchy = config$table$hierarchyKeys(),
-  workIntensity = config$table$getWorkIntensity()
+  workIntensity = config$table$get_work_intensity()
 )
 }
 \arguments{

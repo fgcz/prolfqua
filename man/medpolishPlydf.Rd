@@ -35,7 +35,7 @@ xnested <- data |>
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
 bb <- medpolishPlydf(x,
- expression = conf$table$getWorkIntensity(),
+ expression = conf$table$get_work_intensity(),
   feature = feature,
    sampleName = conf$table$sampleName)
 prolfqua:::.reestablish_condition(x,bb, conf)

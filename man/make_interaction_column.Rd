@@ -20,10 +20,10 @@ stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 analysis <- bb$data
 
-config$table$factorKeys()
+config$table$factor_keys()
 config$table$factorDepth <- 1
 make_interaction_column(analysis,
-   config$table$fkeysDepth())
+   config$table$factor_keys_depth())
 
 }
 \seealso{

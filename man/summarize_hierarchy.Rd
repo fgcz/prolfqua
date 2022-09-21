@@ -38,10 +38,10 @@ summarize_hierarchy(data, configur, factors = character())
 summarize_hierarchy(data, configur,
  hierarchy = configur$table$hkeysDepth() )
 summarize_hierarchy(data, configur,
- hierarchy = NULL, factors = configur$table$fkeysDepth() )
+ hierarchy = NULL, factors = configur$table$factor_keys_depth() )
 configur$table$hierarchyDepth = 1
 summarize_hierarchy(data, configur,
- factors = configur$table$fkeysDepth())
+ factors = configur$table$factor_keys_depth())
 configur$table$hierarchyDepth = 2
 summarize_hierarchy(data, configur)
 configur$table$hierarchyDepth = 3

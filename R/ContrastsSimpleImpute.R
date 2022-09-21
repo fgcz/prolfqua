@@ -102,7 +102,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           var = summarize_stats(self$lfqdata$data, self$lfqdata$config)
 
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
-          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$fkeysDepth()[1],"var")))
+          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$factor_keys_depth()[1],"var")))
 
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
 
@@ -138,10 +138,10 @@ ContrastsSimpleImpute <- R6::R6Class(
       invisible(res)
     },
     #' @description
-    #' get Contrasts_Plotter
+    #' get ContrastsPlotter
     #' @return Contrast_Plotter
     get_Plotter = function(){
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         self$get_contrasts(),
         subject_Id = self$subject_Id,
         volcano = list(list(score = "FDR", thresh = 0.1)),

@@ -62,13 +62,13 @@ ContrastsTable <- R6::R6Class(
       self$contrast_result
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
     #' @param FCthreshold fold change threshold
     #' @param FDRthreshold fdr threshold
-    #' @return \code{\link{Contrasts_Plotter}}
+    #' @return \code{\link{ContrastsPlotter}}
     #'
     get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1){
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,

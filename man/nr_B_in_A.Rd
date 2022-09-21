@@ -39,7 +39,8 @@ config$table$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
 bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-nr_B_in_A(bb$data, bb$config)
+new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+nr_B_in_A(new$data, new$config)
 #undebug(nr_B_in_A)
 }
 \keyword{internal}

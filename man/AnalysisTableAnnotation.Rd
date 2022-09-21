@@ -60,16 +60,16 @@ Other configuration:
 \itemize{
 \item \href{#method-AnalysisTableAnnotation-new}{\code{AnalysisTableAnnotation$new()}}
 \item \href{#method-AnalysisTableAnnotation-set_work_intensity}{\code{AnalysisTableAnnotation$set_work_intensity()}}
-\item \href{#method-AnalysisTableAnnotation-getWorkIntensity}{\code{AnalysisTableAnnotation$getWorkIntensity()}}
-\item \href{#method-AnalysisTableAnnotation-popWorkIntensity}{\code{AnalysisTableAnnotation$popWorkIntensity()}}
-\item \href{#method-AnalysisTableAnnotation-factorKeys}{\code{AnalysisTableAnnotation$factorKeys()}}
-\item \href{#method-AnalysisTableAnnotation-fkeysDepth}{\code{AnalysisTableAnnotation$fkeysDepth()}}
+\item \href{#method-AnalysisTableAnnotation-get_work_intensity}{\code{AnalysisTableAnnotation$get_work_intensity()}}
+\item \href{#method-AnalysisTableAnnotation-pop_work_intensity}{\code{AnalysisTableAnnotation$pop_work_intensity()}}
+\item \href{#method-AnalysisTableAnnotation-factor_keys}{\code{AnalysisTableAnnotation$factor_keys()}}
+\item \href{#method-AnalysisTableAnnotation-factor_keys_depth}{\code{AnalysisTableAnnotation$factor_keys_depth()}}
 \item \href{#method-AnalysisTableAnnotation-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
 \item \href{#method-AnalysisTableAnnotation-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
 \item \href{#method-AnalysisTableAnnotation-idRequired}{\code{AnalysisTableAnnotation$idRequired()}}
 \item \href{#method-AnalysisTableAnnotation-idVars}{\code{AnalysisTableAnnotation$idVars()}}
-\item \href{#method-AnalysisTableAnnotation-valueVars}{\code{AnalysisTableAnnotation$valueVars()}}
-\item \href{#method-AnalysisTableAnnotation-annotationVars}{\code{AnalysisTableAnnotation$annotationVars()}}
+\item \href{#method-AnalysisTableAnnotation-value_vars}{\code{AnalysisTableAnnotation$value_vars()}}
+\item \href{#method-AnalysisTableAnnotation-annotation_vars}{\code{AnalysisTableAnnotation$annotation_vars()}}
 \item \href{#method-AnalysisTableAnnotation-clone}{\code{AnalysisTableAnnotation$clone()}}
 }
 }
@@ -101,32 +101,32 @@ Add name of intensity column
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-getWorkIntensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-getWorkIntensity}{}}}
-\subsection{Method \code{getWorkIntensity()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-get_work_intensity"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-get_work_intensity}{}}}
+\subsection{Method \code{get_work_intensity()}}{
 Get name of working intensity column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$getWorkIntensity()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$get_work_intensity()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-popWorkIntensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-popWorkIntensity}{}}}
-\subsection{Method \code{popWorkIntensity()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-pop_work_intensity"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-pop_work_intensity}{}}}
+\subsection{Method \code{pop_work_intensity()}}{
 Remove last name in array of working intensity column names
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$popWorkIntensity()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$pop_work_intensity()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-factorKeys"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-factorKeys}{}}}
-\subsection{Method \code{factorKeys()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-factor_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-factor_keys}{}}}
+\subsection{Method \code{factor_keys()}}{
 Get factor keys
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factorKeys()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factor_keys()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -134,12 +134,12 @@ array with keys
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-fkeysDepth"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-fkeysDepth}{}}}
-\subsection{Method \code{fkeysDepth()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-factor_keys_depth"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-factor_keys_depth}{}}}
+\subsection{Method \code{factor_keys_depth()}}{
 Get factor keys till factorDepth
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$fkeysDepth()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$factor_keys_depth()}\if{html}{\out{</div>}}
 }
 
 }
@@ -210,22 +210,22 @@ character array
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-valueVars"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-valueVars}{}}}
-\subsection{Method \code{valueVars()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-value_vars"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-value_vars}{}}}
+\subsection{Method \code{value_vars()}}{
 get names of columns containing observations e.g. (intensity, qValue, mz or rt)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$valueVars()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$value_vars()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-annotationVars"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-annotationVars}{}}}
-\subsection{Method \code{annotationVars()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-annotation_vars"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-annotation_vars}{}}}
+\subsection{Method \code{annotation_vars()}}{
 get names of columns with sample annotations
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$annotationVars()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$annotation_vars()}\if{html}{\out{</div>}}
 }
 
 }

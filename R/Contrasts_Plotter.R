@@ -1,4 +1,4 @@
-# Contrasts_Plotter ----
+# ContrastsPlotter ----
 #' plot contrasts
 #' @export
 #' @family modelling
@@ -31,7 +31,7 @@
 #'   Contr)
 #' tmp <- contrast$get_contrasts()
 #'
-#' cp <- Contrasts_Plotter$new(tmp ,
+#' cp <- ContrastsPlotter$new(tmp ,
 #'  contrast$subject_Id,
 #' volcano = list(list(score = "FDR", thresh = 0.1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
@@ -39,7 +39,7 @@
 #' score =list(list(score = "statistic",  thresh = 5)))
 #' cp$volcano_plotly()
 #'
-#' cp <- Contrasts_Plotter$new(tmp ,
+#' cp <- ContrastsPlotter$new(tmp ,
 #'  contrast$subject_Id,
 #' volcano = list(list(score = "FDR", thresh = 0.1)),
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
@@ -63,8 +63,8 @@
 #' names(res)
 #' cp$histogram_diff()
 #' cp$volcano()
-Contrasts_Plotter <- R6::R6Class(
-  "Contrasts_Plotter",
+ContrastsPlotter <- R6::R6Class(
+  "ContrastsPlotter",
   public = list(
     #' @field contrastDF data frame with contrasts
     contrastDF = NULL,

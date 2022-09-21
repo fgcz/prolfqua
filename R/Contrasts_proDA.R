@@ -72,7 +72,7 @@ Contrasts_proDA <- R6::R6Class(
     #' @param fcthreshold fold change threshold to show
     #' @param scthreshold BFDR threshold to show in the heatmap.
     get_Plotter = function(fcthreshold = 1, bfdrthreshold = 0.1){
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = fcthreshold,

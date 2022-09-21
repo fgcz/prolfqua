@@ -81,8 +81,8 @@ GRP2$transformedlfqData <- transformed
 ################## Run Modelling ###############
 
 
-formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ",
-                                         transformed$config$table$fkeysDepth()))
+formula_Condition <-  strategy_lm(paste0(transformed$config$table$get_work_intensity(), " ~ ",
+                                         transformed$config$table$factor_keys_depth()))
 # specify model definition
 modelName  <- "Model"
 

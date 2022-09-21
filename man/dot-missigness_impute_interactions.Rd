@@ -8,7 +8,7 @@ impute data using mean of lowest 0.1 (default)}
 .missigness_impute_interactions(
   pdata,
   config,
-  factors = config$table$fkeysDepth(),
+  factors = config$table$factor_keys_depth(),
   probs = 0.1,
   global = TRUE
 )

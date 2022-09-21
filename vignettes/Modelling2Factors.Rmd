@@ -30,7 +30,7 @@ data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
 
 pMerged <- data_Yeast2Factor
 pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
-pMerged$config$table$getWorkIntensity()
+pMerged$config$table$get_work_intensity()
 pMerged$factors()
 
 
@@ -105,7 +105,7 @@ plotter$ma_plot()
 ## Annalyse contrasts with missing data imputation
 
 ```{r}
-pMerged$config$table$fkeysDepth()
+pMerged$config$table$factor_keys_depth()
 #ContrastsSimpleImpute$debug("get_contrasts")
 contrSimple <- prolfqua::ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()

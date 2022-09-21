@@ -11,7 +11,7 @@
 #'
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$Pep()
+#' istar <- old2new(prolfqua_data('data_ionstar')$Pep())
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #'  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
@@ -48,7 +48,7 @@ filter_proteins_by_peptide_count <-
 #'
 #'
 #'
-#' istar <-prolfqua_data('data_ionstar')$Pep()
+#' istar <- old2new(prolfqua_data('data_ionstar')$Pep())
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #' tmp <- filter_difference(istar_data, filterPep$data, istar$config)

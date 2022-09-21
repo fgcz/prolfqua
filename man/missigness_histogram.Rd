@@ -8,7 +8,7 @@ missigness_histogram(
   x,
   config,
   showempty = FALSE,
-  factors = config$table$fkeysDepth(),
+  factors = config$table$factor_keys_depth(),
   alpha = 0.1
 )
 }
@@ -17,7 +17,7 @@ Histogram summarizing missigness
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')
+bb <- old2new(prolfqua_data('data_ionstar'))
 configur <- bb$config
 data <- bb$data
 xx <- complete_cases(data, configur)
@@ -33,6 +33,7 @@ missingPrecNorm <- interaction_missing_stats(data, configur)
 
 missigness_histogram(data, configur, showempty=FALSE)
 missigness_histogram(data, configur, showempty=TRUE)
+
 }
 \seealso{
 Other plotting: 

@@ -23,7 +23,7 @@ dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 
-config$table$getWorkIntensity()
+config$table$get_work_intensity()
 
 res1 <- remove_small_intensities(analysis, config, threshold=1 )
 res1000 <- remove_small_intensities(analysis, config, threshold=1000 )

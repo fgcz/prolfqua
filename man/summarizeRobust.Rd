@@ -50,7 +50,7 @@ xnested <- data |>
 feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 x <- xnested$data[[1]]
 bb <- summarizeRobust(x,
- expression = conf$table$getWorkIntensity(),
+ expression = conf$table$get_work_intensity(),
   feature = feature,
    samples = conf$table$sampleName)
 

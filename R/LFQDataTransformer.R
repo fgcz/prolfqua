@@ -122,8 +122,8 @@ LFQDataTransformer <- R6::R6Class(
       self$lfq$data  <- scales$data
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data |>
-          dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
-        self$lfq$config$table$popWorkIntensity()
+          dplyr::rename(!!colname := self$lfq$config$table$get_work_intensity())
+        self$lfq$config$table$pop_work_intensity()
         self$lfq$config$table$set_work_intensity(colname)
       }
       invisible(self)

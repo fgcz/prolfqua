@@ -81,7 +81,7 @@ stats_res
 bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
-config$table$getWorkIntensity()
+config$table$get_work_intensity()
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "sd")

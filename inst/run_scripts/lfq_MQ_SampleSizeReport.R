@@ -63,7 +63,7 @@ summarize_stats_raw_transformed <- function(resDataStart, config){
                                   wide$data,
                                   by = config_tmp$table$hierarchyKeys())
   peptideStats <- inner_join(stats_raw, stats_transformed,
-                             by = c( config_tmp$table$factorKeys(),config_tmp$table$hierarchyKeys() ),
+                             by = c( config_tmp$table$factor_keys(),config_tmp$table$hierarchyKeys() ),
                              suffix = c(".raw",".transformed") )
   return(peptideStats)
 }

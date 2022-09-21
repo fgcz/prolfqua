@@ -125,7 +125,7 @@ ContrastsModerated <- R6::R6Class(
       return(contrast_result)
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
     #' @param FCthreshold fold change threshold to show in plots
     #' @param FDRthreshold FDR threshold to show in plots
     #'
@@ -134,7 +134,7 @@ ContrastsModerated <- R6::R6Class(
     FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,

@@ -17,7 +17,7 @@ NULL
 #' @examples
 #' skylineconfig <- create_config_Skyline()
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylineconfig$table$factorKeys()
+#' skylineconfig$table$factor_keys()
 #' skylineconfig$table$hierarchyKeys()
 create_config_Skyline <- function(isotopeLabel="Isotope.Label",
                                   ident_qValue="annotation_QValue"){

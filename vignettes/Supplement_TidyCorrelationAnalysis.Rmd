@@ -73,7 +73,7 @@ config <- specnautconfig()
 
 config$table$factors
 config$table$hierarchy
-config$table$valueVars()
+config$table$value_vars()
 config$table$idVars()
 
 #'

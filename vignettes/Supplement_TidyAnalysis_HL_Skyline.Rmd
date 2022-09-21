@@ -115,7 +115,7 @@ skylineconfigHL$table$is_intensity_transformed = TRUE
 skylineconfigHL$table$isotopeLabel
 
 xnested <- HLData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
-skylineconfigHL$table$getWorkIntensity()
+skylineconfigHL$table$get_work_intensity()
 
 ```
 

@@ -27,7 +27,7 @@ conf <- bb$config$clone(deep=TRUE)
 data <- bb$data
 res <- applyToIntensityMatrix(data, conf, .func = base::scale)
 stopifnot("peptide.intensity_base..scale" \%in\% colnames(res))
-stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
+stopifnot("peptide.intensity_base..scale" == conf$table$get_work_intensity())
 conf <- bb$config$clone(deep=TRUE)
 conf$table$workIntensity <- "peptide.intensity"
 res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
