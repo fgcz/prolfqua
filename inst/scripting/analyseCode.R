@@ -1,6 +1,7 @@
 # code snippets to run coverage
 
 library(tidyverse)
+library(covr)
 
 # compute test coverage
 coverage <- package_coverage(type = "all")
@@ -14,26 +15,51 @@ df <- tidyr::unite(df, "filefunc", filename, functions, remove = FALSE, sep= "~"
 group = "filefunc"
 percents <- tapply(df$value, df[[group]], FUN = function(x) (sum(x > 0) / length(x)) * 100)
 
+
 by_coverage <- percents[order(percents,
                               names(percents))]
 coveragestats <- data.frame(funcname = names(by_coverage) , coverage = by_coverage)
 coveragestats <- coveragestats |> tidyr::separate("funcname",c("file", "functions"), sep="~")
 coveragestats |> group_by(functions) |> summarize(n = n()) -> nrfn
-nrfn[nrfn$n >= 7,]
-coveragestats |> filter(functions == "initialize")
+head(coveragestats)
+
 
 ### get function names
-functionNames <- data.frame(functionName = ls("package:prolfqua"))
 
 ### get documentation
-db <- Rd_db("prolfqua")
-res <- data.frame(rdfile = names(db),
+library(prolfqua)
+
+tmp <- ls("package:prolfqua")
+
+class(get("Contrasts"))
+class(get("table_facade"))
+
+res <- list()
+for(i in tmp){
+  if(class(get(i)) == "R6ClassGenerator"){
+      public_methods <- names(get("Contrasts")$public_methods)
+      df  <- data.frame(class = i, method = public_methods)
+      res[[i]] <- df
+  }
+}
+
+R6Classes <- dplyr::bind_rows(res)
+R6Classes$ItIs <- "R6"
+
+coveragestats <- tibble(coveragestats) |> mutate(file = tools::file_path_sans_ext( basename(file)))
+tmp <- full_join(R6Classes, coveragestats, by = c(class = "file", method = "functions"), keep = TRUE)
+View(tmp)
+db <- tools::Rd_db("prolfqua", dir=".")
+docs <- data.frame(rdfile = names(db),
                   title = unlist(lapply(db, tools:::.Rd_get_metadata, "title")),
                   functionname = unlist(lapply(db, tools:::.Rd_get_metadata, "name")),
                   description = unlist(lapply(db, tools:::.Rd_get_metadata, "description")))
 allFun <- data.frame(functionsls = ls("package:prolfqua"))
 
-res  <- full_join(allFun, res, by = c(functionsls= "functionname"))
-res <- full_join(coveragestats, res, by = c(funcname = "functionsls"))
+
+funcdocs  <- full_join(allFun, docs, by = c(functionsls= "functionname"))
+res <- full_join(coveragestats, res, by = c(functions = "functionsls"))
+
 View(res)
+
 writexl::write_xlsx(res, path = "inst/scripting/FunctionOverview.xlsx")
