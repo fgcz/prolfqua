@@ -7,8 +7,12 @@
 build_model(
   data,
   modelFunction,
-  subject_Id = if ("LFQData" \%in\% class(data)) {     data$subjectId() } else {    
-    "protein_Id" },
+  subject_Id = if ("LFQData" \%in\% class(data)) {
+     data$subjectId()
+ } else {
+    
+    "protein_Id"
+ },
   modelName = modelFunction$model_name
 )
 }

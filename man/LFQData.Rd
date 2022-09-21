@@ -64,36 +64,36 @@ Other LFQData:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{LFQData$new()}}
-\item \href{#method-get_copy}{\code{LFQData$get_copy()}}
-\item \href{#method-get_sample}{\code{LFQData$get_sample()}}
-\item \href{#method-get_subset}{\code{LFQData$get_subset()}}
-\item \href{#method-subjectId}{\code{LFQData$subjectId()}}
-\item \href{#method-is_transformed}{\code{LFQData$is_transformed()}}
-\item \href{#method-intensity_column}{\code{LFQData$intensity_column()}}
-\item \href{#method-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
-\item \href{#method-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
-\item \href{#method-omit_NA}{\code{LFQData$omit_NA()}}
-\item \href{#method-complete_cases}{\code{LFQData$complete_cases()}}
-\item \href{#method-to_wide}{\code{LFQData$to_wide()}}
-\item \href{#method-factors}{\code{LFQData$factors()}}
-\item \href{#method-response}{\code{LFQData$response()}}
-\item \href{#method-rename_response}{\code{LFQData$rename_response()}}
-\item \href{#method-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
-\item \href{#method-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
-\item \href{#method-get_Plotter}{\code{LFQData$get_Plotter()}}
-\item \href{#method-get_Writer}{\code{LFQData$get_Writer()}}
-\item \href{#method-get_Summariser}{\code{LFQData$get_Summariser()}}
-\item \href{#method-get_Stats}{\code{LFQData$get_Stats()}}
-\item \href{#method-get_Transformer}{\code{LFQData$get_Transformer()}}
-\item \href{#method-get_Aggregator}{\code{LFQData$get_Aggregator()}}
-\item \href{#method-filter_difference}{\code{LFQData$filter_difference()}}
-\item \href{#method-clone}{\code{LFQData$clone()}}
+\item \href{#method-LFQData-new}{\code{LFQData$new()}}
+\item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
+\item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
+\item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
+\item \href{#method-LFQData-subjectId}{\code{LFQData$subjectId()}}
+\item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
+\item \href{#method-LFQData-intensity_column}{\code{LFQData$intensity_column()}}
+\item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
+\item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
+\item \href{#method-LFQData-omit_NA}{\code{LFQData$omit_NA()}}
+\item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
+\item \href{#method-LFQData-to_wide}{\code{LFQData$to_wide()}}
+\item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
+\item \href{#method-LFQData-response}{\code{LFQData$response()}}
+\item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
+\item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
+\item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
+\item \href{#method-LFQData-get_Plotter}{\code{LFQData$get_Plotter()}}
+\item \href{#method-LFQData-get_Writer}{\code{LFQData$get_Writer()}}
+\item \href{#method-LFQData-get_Summariser}{\code{LFQData$get_Summariser()}}
+\item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
+\item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
+\item \href{#method-LFQData-get_Aggregator}{\code{LFQData$get_Aggregator()}}
+\item \href{#method-LFQData-filter_difference}{\code{LFQData$filter_difference()}}
+\item \href{#method-LFQData-clone}{\code{LFQData$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-LFQData-new"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -115,8 +115,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_copy"></a>}}
-\if{latex}{\out{\hypertarget{method-get_copy}{}}}
+\if{html}{\out{<a id="method-LFQData-get_copy"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_copy}{}}}
 \subsection{Method \code{get_copy()}}{
 get deep copy
 \subsection{Usage}{
@@ -125,8 +125,8 @@ get deep copy
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_sample"></a>}}
-\if{latex}{\out{\hypertarget{method-get_sample}{}}}
+\if{html}{\out{<a id="method-LFQData-get_sample"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_sample}{}}}
 \subsection{Method \code{get_sample()}}{
 samples subset of data
 \subsection{Usage}{
@@ -144,8 +144,8 @@ samples subset of data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_subset"></a>}}
-\if{latex}{\out{\hypertarget{method-get_subset}{}}}
+\if{html}{\out{<a id="method-LFQData-get_subset"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_subset}{}}}
 \subsection{Method \code{get_subset()}}{
 get subset of data
 \subsection{Usage}{
@@ -161,8 +161,8 @@ get subset of data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-subjectId"></a>}}
-\if{latex}{\out{\hypertarget{method-subjectId}{}}}
+\if{html}{\out{<a id="method-LFQData-subjectId"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-subjectId}{}}}
 \subsection{Method \code{subjectId()}}{
 get subject ID columns
 \subsection{Usage}{
@@ -171,8 +171,8 @@ get subject ID columns
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-is_transformed"></a>}}
-\if{latex}{\out{\hypertarget{method-is_transformed}{}}}
+\if{html}{\out{<a id="method-LFQData-is_transformed"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-is_transformed}{}}}
 \subsection{Method \code{is_transformed()}}{
 is data trasfromed
 \subsection{Usage}{
@@ -191,8 +191,8 @@ logical
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-intensity_column"></a>}}
-\if{latex}{\out{\hypertarget{method-intensity_column}{}}}
+\if{html}{\out{<a id="method-LFQData-intensity_column"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-intensity_column}{}}}
 \subsection{Method \code{intensity_column()}}{
 return name of intensity column
 \subsection{Usage}{
@@ -204,8 +204,8 @@ name of intensity column
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_small_intensities"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_small_intensities}{}}}
+\if{html}{\out{<a id="method-LFQData-remove_small_intensities"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-remove_small_intensities}{}}}
 \subsection{Method \code{remove_small_intensities()}}{
 some software is reporting NA's as 0, you must remove it from your data
 \subsection{Usage}{
@@ -224,8 +224,8 @@ self
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-filter_proteins_by_peptide_count"></a>}}
-\if{latex}{\out{\hypertarget{method-filter_proteins_by_peptide_count}{}}}
+\if{html}{\out{<a id="method-LFQData-filter_proteins_by_peptide_count"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-filter_proteins_by_peptide_count}{}}}
 \subsection{Method \code{filter_proteins_by_peptide_count()}}{
 remove proteins with less than X peptides
 \subsection{Usage}{
@@ -237,8 +237,8 @@ self
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-omit_NA"></a>}}
-\if{latex}{\out{\hypertarget{method-omit_NA}{}}}
+\if{html}{\out{<a id="method-LFQData-omit_NA"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-omit_NA}{}}}
 \subsection{Method \code{omit_NA()}}{
 Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
@@ -261,8 +261,8 @@ LFQData with NA omitted.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-complete_cases"></a>}}
-\if{latex}{\out{\hypertarget{method-complete_cases}{}}}
+\if{html}{\out{<a id="method-LFQData-complete_cases"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-complete_cases}{}}}
 \subsection{Method \code{complete_cases()}}{
 some software is reporting NA's as 0, you must remove it from your data
 \subsection{Usage}{
@@ -281,8 +281,8 @@ self
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-to_wide}{}}}
+\if{html}{\out{<a id="method-LFQData-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 converts the data to wide
 \subsection{Usage}{
@@ -301,8 +301,8 @@ list with data, annotation, and configuration
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-factors"></a>}}
-\if{latex}{\out{\hypertarget{method-factors}{}}}
+\if{html}{\out{<a id="method-LFQData-factors"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-factors}{}}}
 \subsection{Method \code{factors()}}{
 Annotation table.
 \subsection{Usage}{
@@ -314,8 +314,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-response"></a>}}
-\if{latex}{\out{\hypertarget{method-response}{}}}
+\if{html}{\out{<a id="method-LFQData-response"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-response}{}}}
 \subsection{Method \code{response()}}{
 name of response variable
 \subsection{Usage}{
@@ -327,8 +327,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-rename_response"></a>}}
-\if{latex}{\out{\hypertarget{method-rename_response}{}}}
+\if{html}{\out{<a id="method-LFQData-rename_response"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-rename_response}{}}}
 \subsection{Method \code{rename_response()}}{
 new name of response variable
 \subsection{Usage}{
@@ -344,8 +344,8 @@ new name of response variable
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-hierarchy_counts"></a>}}
-\if{latex}{\out{\hypertarget{method-hierarchy_counts}{}}}
+\if{html}{\out{<a id="method-LFQData-hierarchy_counts"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-hierarchy_counts}{}}}
 \subsection{Method \code{hierarchy_counts()}}{
 number of elements at each level
 \subsection{Usage}{
@@ -354,8 +354,8 @@ number of elements at each level
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-summarize_hierarchy"></a>}}
-\if{latex}{\out{\hypertarget{method-summarize_hierarchy}{}}}
+\if{html}{\out{<a id="method-LFQData-summarize_hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-summarize_hierarchy}{}}}
 \subsection{Method \code{summarize_hierarchy()}}{
 e.g. number of peptides per protein etc
 \subsection{Usage}{
@@ -367,8 +367,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Plotter}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 get Plotter
 \subsection{Usage}{
@@ -380,8 +380,8 @@ LFQDataPlotter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Writer"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Writer}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Writer"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Writer}{}}}
 \subsection{Method \code{get_Writer()}}{
 get Writer
 \subsection{Usage}{
@@ -400,8 +400,8 @@ LFQDataPlotter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Summariser"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Summariser}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Summariser"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Summariser}{}}}
 \subsection{Method \code{get_Summariser()}}{
 get Summariser
 \subsection{Usage}{
@@ -413,8 +413,8 @@ LFQDataSummarizer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Stats"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Stats}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Stats"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Stats}{}}}
 \subsection{Method \code{get_Stats()}}{
 Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
 \subsection{Usage}{
@@ -433,8 +433,8 @@ LFQDataStats
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Transformer"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Transformer}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Transformer"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Transformer}{}}}
 \subsection{Method \code{get_Transformer()}}{
 get Stats
 \subsection{Usage}{
@@ -446,8 +446,8 @@ LFQDataTransformer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_Aggregator"></a>}}
-\if{latex}{\out{\hypertarget{method-get_Aggregator}{}}}
+\if{html}{\out{<a id="method-LFQData-get_Aggregator"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_Aggregator}{}}}
 \subsection{Method \code{get_Aggregator()}}{
 get Aggregator
 \subsection{Usage}{
@@ -459,8 +459,8 @@ LFQDataAggregator
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-filter_difference"></a>}}
-\if{latex}{\out{\hypertarget{method-filter_difference}{}}}
+\if{html}{\out{<a id="method-LFQData-filter_difference"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-filter_difference}{}}}
 \subsection{Method \code{filter_difference()}}{
 get difference of self with other if other is subset of self
 \subsection{Usage}{
@@ -483,8 +483,8 @@ LFQData
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-LFQData-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

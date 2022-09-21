@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.4.3
+Version: 0.4.4
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
@@ -65,7 +65,7 @@ Suggests:
     SummarizedExperiment,
     proDA,
     vsn
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(r6 = TRUE)
 Depends: 
     R (>= 4.1)

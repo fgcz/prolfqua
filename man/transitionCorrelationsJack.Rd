@@ -6,8 +6,10 @@
 \usage{
 transitionCorrelationsJack(
   dataX,
-  distmethod = function(x) {     cor(x, use = "pairwise.complete.obs", method =
-    "pearson") }
+  distmethod = function(x) {
+     cor(x, use = "pairwise.complete.obs", method =
+    "pearson")
+ }
 )
 }
 \arguments{

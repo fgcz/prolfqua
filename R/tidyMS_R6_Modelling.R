@@ -499,10 +499,8 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' @export
 #' @keywords internal
 #' @examples
-#' #if(FALSE){
 #'
 #' m <- prolfqua_data('data_basicModel_p1807')
-#' m
 #' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
@@ -513,7 +511,6 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
 #'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 #' linfct$linfct_interactions
-#' #}
 #'
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_from_model(m)
@@ -527,7 +524,6 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
 #'
-
 linfct_from_model <- function(m, as_list = TRUE){
 
   cm <- .lmer4_coeff_matrix(m)

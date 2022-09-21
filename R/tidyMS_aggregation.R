@@ -771,8 +771,15 @@ intensity_summary_by_hkeys <- function(data, config, func)
 
   xnested <- xnested |>
     dplyr::mutate(spreadMatrix = map(data, function(x,config){pb$tick(); extractIntensities(x, config)}, config))
-  xnested <- xnested |>
-    dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
+
+  #xnested <- xnested |>
+  #  dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
+  res <- vector(mode="list", length(nrow(xnested)))
+  tmp <- function(x){pb$tick(); func(x)}
+  for(i in seq_len(nrow(xnested))){
+    res[[i]] <- tmp(xnested$spreadMatrix[[i]])
+  }
+  xnested[[makeName]] = res
   xnested <- xnested |>
     dplyr::mutate(!!makeName := map2(data, !!sym(makeName), function(x, y, config){pb$tick(); .reestablish_condition(x,y, config) }, config ))
 
