@@ -1,5 +1,7 @@
 [![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
-[![Codecov test coverage](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg)](https://app.codecov.io/gh/fgcz/prolfqua?branch=Modelling2R6)
+[![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://codecov.io/gh/fgcz/prolfqua)
+
+
 
 <img src="man/figures/imgfile.png" width="200">
 
