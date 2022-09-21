@@ -1,5 +1,6 @@
 [![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
-
+[![Codecov test
+coverage](https://codecov.io/gh/fgcz/prolfqua/branch/master/graph/badge.svg)](https://app.codecov.io/gh/fgcz/prolfqua?branch=Modelling2R6)
 <img src="man/figures/imgfile.png" width="200">
 
 # prolfqua - a R package for Proteomics Differential Expression Analysis
