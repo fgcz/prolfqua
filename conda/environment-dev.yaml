@@ -1,0 +1,51 @@
+name: prolfqua-dev
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - r-base >=4.1
+    - r-bookdown
+    - r-broom
+    - r-conflicted
+    - r-devtools
+    - r-dplyr
+    - r-DT
+    - r-forcats
+    - r-ggplot2
+    - r-ggbeeswarm
+    - r-ggrepel
+    - r-ggridges
+    - r-ggpubr
+    - r-htmlwidgets
+    - r-lme4
+    - r-lmerTest
+    - r-logger
+    - r-MASS
+    - r-multcomp
+    - r-pheatmap
+    - r-plotly
+    - r-progress
+    - r-purrr
+    - r-readr
+    - r-readxl
+    - r-rlang
+    - r-stringr
+    - r-tidyr
+    - r-tibble
+    - r-yaml
+    - r-writexl
+    - r-corrplot
+    - r-docopt
+    - r-knitr
+    - r-pROC
+    - r-rmarkdown
+    - r-remotes
+    - r-testthat
+    - bioconductor-limma
+    - bioconductor-summarizedexperiment
+    - bioconductor-msstats
+    - bioconductor-proda
+    - bioconductor-s4vectors
+    - bioconductor-vsn
+
