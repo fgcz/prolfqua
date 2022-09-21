@@ -35,11 +35,11 @@ likelihood ratio test
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

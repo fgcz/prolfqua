@@ -29,7 +29,7 @@ stopifnot("pheatmap" \%in\% class(pheat_map))
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{medpolishPlydf}()},

@@ -35,11 +35,11 @@ contrastX$column_description()
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -201,7 +201,7 @@ data.frame with contrasts
 \if{html}{\out{<a id="method-Contrast-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-Contrast-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-return \code{\link{Contrasts_Plotter}}
+return \code{\link{ContrastsPlotter}}
 creates Contrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
@@ -217,7 +217,7 @@ creates Contrast_Plotter
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}

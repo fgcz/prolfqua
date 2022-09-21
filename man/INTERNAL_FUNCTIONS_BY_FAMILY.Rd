@@ -67,11 +67,11 @@ Other MaxQuant:
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},
@@ -114,7 +114,7 @@ Other FragPipe:
 \code{\link{tidy_FragPipe_combined_protein}()}
 
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},

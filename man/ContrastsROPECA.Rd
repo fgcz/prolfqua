@@ -53,10 +53,10 @@ mod <- build_model(
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -207,7 +207,7 @@ data.frame
 \if{html}{\out{<a id="method-ContrastsROPECA-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrasts_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)}\if{html}{\out{</div>}}
 }
@@ -222,7 +222,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}

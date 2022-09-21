@@ -13,10 +13,10 @@ ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -157,7 +157,7 @@ get contrasts
 \if{html}{\out{<a id="method-ContrastsSaint-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsSaint-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrasts_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSaintExpress$get_Plotter(
   FCthreshold = 1,
@@ -178,7 +178,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}

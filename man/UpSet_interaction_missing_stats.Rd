@@ -19,7 +19,7 @@ tmp <- UpSet_interaction_missing_stats(data, configur)
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{medpolishPlydf}()},
 \code{\link{missigness_histogram}()},

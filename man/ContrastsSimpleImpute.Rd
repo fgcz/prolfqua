@@ -20,10 +20,10 @@ of all observations of all groups.
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -175,7 +175,7 @@ table with results of contrast computation
 \if{html}{\out{<a id="method-ContrastsSimpleImpute-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsSimpleImpute-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get Contrasts_Plotter
+get ContrastsPlotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsSimpleImpute$get_Plotter()}\if{html}{\out{</div>}}
 }

@@ -28,10 +28,10 @@ xcx$get_Plotter()$volcano()
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
 \code{\link{ContrastsSimpleImpute}},
-\code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -172,7 +172,7 @@ get contrasts
 \if{html}{\out{<a id="method-ContrastsTable-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsTable-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrasts_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
 }
@@ -187,7 +187,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}
