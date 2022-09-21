@@ -532,7 +532,7 @@ old2new <- function(dd_old) {
   ata$isotopeLabel <- dd_old$config$table$isotopeLabel
   ata$is_intensity_transformed <- dd_old$config$table$is_intensity_transformed
   ata$ident_qValue <- dd_old$config$table$ident_qValue
-  ata$ident_qValue <- dd_old$config$table$sampleName
+  ata$sampleName <- dd_old$config$table$sampleName
   ata$isotopeLabel <- dd_old$config$table$isotopeLabel
   dd$config <- AnalysisConfiguration$new(ata)
   dd$data <- dd_old$data
