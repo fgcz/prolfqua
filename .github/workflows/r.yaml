@@ -41,7 +41,7 @@ jobs:
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest','logger', 'multcomp', 'pROC'));
           pkgs <- c(pkgs, c('pheatmap', 'prozor', 'plotly', 'progress', 'purrr', 'readr'));
           pkgs <- c(pkgs, c('readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr'));
-          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl')) ;
+          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl', 'proDA')) ;
           lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}});
         shell: Rscript {0}
       - name: Cache R packages
