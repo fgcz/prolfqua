@@ -35,7 +35,7 @@ jobs:
         run: |
           install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org');
           pkgs <- c('DT', 'MASS');
-          pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'docopt'));
+          pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'covr', 'docopt'));
           pkgs <- c(pkgs, c('dplyr', 'forcats', 'ggbeeswarm',  'ggplot2'));
           pkgs <- c(pkgs, c('ggpubr', 'ggrepel', 'ggridges', 'htmlwidgets', 'knitr'));
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest','logger', 'multcomp', 'pROC'));
@@ -58,7 +58,9 @@ jobs:
       - name: rcmdcheck::rcmdcheck
         run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
-
+      - name: codecov
+        run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
+        shell: Rscript {0}
       - name: List files in home directory
         run: find $R_LIBS_SITE -type f > files.txt
       - uses: actions/upload-artifact@v2
