@@ -14,7 +14,6 @@
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
-#' #saveRDS(bb, file="c:/users/wolski/__debugR/aaaaa.rds")
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -24,7 +23,6 @@
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 #'
-#' #readr::write_tsv(x, file="c:/users/wolski/__debugR/aaaaaa.tsv")
 #' stopifnot(nrow(x) == 5540)
 #' stopifnot(sum(is.na(x$meanArea)) == 206)
 #' stopifnot(length(unique(x$protein_Id)) == 162)
@@ -474,7 +472,7 @@ get_imputed_contrasts <- function(pepIntensity,
     stop("At least 1 observation in interaction to infer LOD.")
   }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
-  x3 <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> mean(na.rm=TRUE)
+  x3 <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchyKeys())), interaction)
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))

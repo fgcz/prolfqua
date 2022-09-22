@@ -30,7 +30,8 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 .ms_bench_add_FPRTPR <- function(data,
                                  TP_col = "TP",
                                  arrangeby = "diff",
-                                 desc = TRUE) {
+                                 desc = TRUE,
+                                 subject_Id = "protein_Id") {
   #data <- est
 
   data <- if (!desc) {
@@ -38,20 +39,12 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   } else{
     data |> arrange(desc(!!sym(arrangeby)))
   }
-  data <- data |> select(scorecol = !!sym(arrangeby) , !!sym(TP_col))
+  data <- data |> select(!!sym(subject_Id) ,scorecol = !!sym(arrangeby) , !!sym(TP_col))
   data$what <- arrangeby
 
-  if (TRUE) { # drop missing so that TPR goes up to 1.
-    data <- na.omit(data)
-    data$F_ <- sum(!data$TP)
-    data$T_ <- sum(data$TP)
-  }else{
-    data$F_ <- sum(!data$TP)
-    data$T_ <- sum(data$TP)
-    data <- na.omit(data)
-  }
-
-
+  data <- na.omit(data)
+  data$F_ <- sum(!data$TP)
+  data$T_ <- sum(data$TP)
 
   data <- mutate(data,
     R = seq_len(dplyr::n())
@@ -69,8 +62,7 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 }
 
 
-#' computes auc and pauc given output from ms_bench_add_FPRTPR
-#' using trapez rule
+#' computes auc and pauc using trapez rule
 #' @keywords internal
 #' @family benchmarking
 #' @export
@@ -119,10 +111,11 @@ do_confusion <-
   function(data,
            arrangeby = list(list(score = "diff", desc = TRUE),
                             list(score = "statistic", desc = TRUE),
-                            list(score = "scaled.p.value" , desc = TRUE))) {
+                            list(score = "scaled.p.value" , desc = TRUE)),
+           subject_Id = "protein_Id") {
     # TODO add to prolfqua
     est <- data |> ungroup() |>
-      dplyr::select_at(c("TP",
+      dplyr::select_at(c(subject_Id, "TP",
                          purrr::map_chr(arrangeby, "score")))
     res <- list()
     for (arrange in arrangeby) {
@@ -131,7 +124,8 @@ do_confusion <-
         .ms_bench_add_FPRTPR(est,
                              TP_col = "TP",
                              arrangeby = score,
-                             desc = arrange$desc)
+                             desc = arrange$desc,
+                             subject_Id = subject_Id)
     }
     all <- bind_rows(res)
     return(all)
@@ -139,20 +133,29 @@ do_confusion <-
 
 # do_confusion for each contrast
 do_confusion_c <- function(
-  data,
-  contrast = "contrast",
-  arrangeby = list(list(score = "scaled.p.value", desc = FALSE))) {
+    data,
+    contrast = "contrast",
+    arrangeby = list(list(score = "scaled.p.value", desc = FALSE)),
+    subject_Id = "protein_Id") {
 
   txx <- data |> group_by_at(contrast) |> nest()
-  txx <- txx |> mutate(out  = map(data,
-                                   do_confusion,
-                                   arrangeby = arrangeby))
+  out <- vector(mode="list", length = length(txx$data))
+  for(i in 1:length(txx$data)) {
+    out[[i]] <- do_confusion(
+      txx$data[[i]],
+      arrangeby = arrangeby,
+      subject_Id = subject_Id)
+  }
+  txx$out <- out
+  #txx <- txx |> mutate(out = map(data,
+  #                               do_confusion,
+  #                               arrangeby = arrangeby, subject_Id = subject_Id))
   xx <- txx  |> select_at(c(contrast, "out")) |>
     unnest("out") |>
     ungroup()
 
   # computes FDR FDP for all contrasts
-  xy <- do_confusion(data, arrangeby = arrangeby)
+  xy <- do_confusion(data, arrangeby = arrangeby, subject_Id = subject_Id)
   xy <- xy |> dplyr::mutate(!!contrast := "all")
   #xy <- tibble::add_column(data, contrast = "all", .before = 1)
   xx <- dplyr::bind_rows(xy, xx)
@@ -431,7 +434,8 @@ Benchmark <-
         return(self$smc)
       },
       #' @description
-      #' set or get complete
+      #' set or get complete.
+      #' If true only proteins for which all contrasts are determinable are examined.
       #' @param value TRUE if data should be complete (no missing contrasts)
       #'
       complete = function(value){
@@ -447,7 +451,8 @@ Benchmark <-
       .get_confusion = function(arrange){
         confusion <- prolfqua:::do_confusion_c(self$data(),
                                                contrast = self$contrast,
-                                               arrangeby = arrange)
+                                               arrangeby = arrange,
+                                               subject_Id = self$hierarchy)
         confusion <- tibble::add_column(
           confusion ,
           model_name = self$model_name,
@@ -474,7 +479,7 @@ Benchmark <-
         confusion <- self$get_confusion_benchmark()
 
         p <- .plot_FDPvsTPR(confusion,
-                            xlim = 0.5,
+                            xlim = xlim,
                             contrast = self$contrast)
         return(p)
       },
@@ -578,7 +583,7 @@ Benchmark <-
           plots[[score]] <- ggplot(x, aes(x = !!sym(self$avgInt), y = !!sym(score), color = !!sym(self$species) )) +
             geom_point(alpha = 0.2) +
             ggplot2::facet_wrap(as.formula(paste("~", self$contrast))) +
-            ylim(ylim)
+            if (!is.null(ylim)) {ggplot2::ylim(ylim)} else {NULL}
         }
         fig <- ggpubr::ggarrange(plotlist = plots,
                          nrow = 1,
@@ -593,7 +598,6 @@ Benchmark <-
 
 #' make Benchmark
 #'
-#' @export
 #' @param prpr prepared data, e.g. function \code{\link{ionstar_bench_preprocess}}
 #' @param contrast column with names of the contrast
 #' @param toscale which scores to scale using fcestimate, typically p.value
@@ -606,6 +610,8 @@ Benchmark <-
 #' @param hierarchy name of column with protein ID.
 #' @param summarizeNA summarizeNA
 #' @return Benchmark
+#' @export
+#' @family benchmarking
 make_benchmark <- function(prpr,
                            contrast = "contrast",
                            toscale = c("p.value"),

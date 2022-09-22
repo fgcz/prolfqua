@@ -13,10 +13,8 @@ linfct_from_model(m, as_list = TRUE)
 get linfct from model
 }
 \examples{
-#if(FALSE){
 
 m <- prolfqua_data('data_basicModel_p1807')
-m
 linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
@@ -27,7 +25,6 @@ linfct <- linfct_from_model(m)
 all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 linfct$linfct_interactions
-#}
 
 m <- lm(Petal.Width ~ Species, data = iris)
 linfct_from_model(m)
@@ -44,15 +41,18 @@ linfct_from_model(m)
 }
 \seealso{
 Other modelling: 
-\code{\link{ContrastsInterface}},
+\code{\link{ContrastsModerated}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts_Plotter}},
 \code{\link{Contrasts_proDA}},
+\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
+\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},

@@ -85,6 +85,4 @@ stopifnot(names(res) == c( "inter", "prey",  "bait"))
 undebug(runSaint)
 res <- runSaint(res)
 }
-
-
 }

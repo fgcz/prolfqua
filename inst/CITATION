@@ -1,24 +1,26 @@
-citHeader("To cite the R package 'prolfqua' in publications use:")
-
-PKG <- "prolfqua"
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
-vers <- paste("R package version", meta$Version)
-url <- paste0("https://github.com/wolski/", PKG)
-
-citEntry(entry	= "Manual",
-         title	= "prolfqua - an R package for Proteomics Label Free Quantification Services",
-         author = c(
-           person("Witold", "Wolski", email="wew@fgcz.ethz.ch",
-                  role = c("aut", "cre")),
-           person("Christian", "Panse", email="cp@fgcz.ethz.ch", role="aut"),
-           person("Paolo", "Nanni", email="paolo.nanni@fgcz.uzh.ch", role="aut"),
-           person("Jonas", "Grossmann", email="jg@fgcz.ethz.ch", role="aut")),
-         year = year,
-         url = url,
-         note = paste(vers,"---"),
-         ## FIXME:  rather give the URL to the manual on CRAN ???
-         ##	   url = "http://stat.ethz.ch/CRAN/src/contrib/........",
-         textVersion = paste0(
-           "Wolski, W., Panse, C., Nanni, P., Grossmann, J.(",
-           year, ").  prolfqua - an R package for Proteomics Label Free Quantification Services. ", vers, ".")
+bibentry(bibtype = "Article",
+  title        = "{prolfqua} : A Comprehensive R-package for Proteomics Differential Expression Analysis",
+  author       = c(person(given = c("Witold","Eryk"),
+                          family = "Wolski",
+                          email = "wew@fgcz.ethz.ch"),
+                   person(given = c("Paolo"),
+                          family = "Nanni",
+			             email = "paolo.nanni@fgcz.uzh.ch"),
+                   person(given = c("Jonas"),
+                          family = "Grossmann",
+                          email = "jg@fgcz.ethz.ch"),
+                   person(given = "Maria",
+                   family = "d'Errico",
+                   email = "maria.derrico@fgcz.ethz.ch"),
+                   person(given = "Ralph",
+                   family = "Schlapbach",
+                   email = "ralph.schlapbach@fgcz.uzh.ch"),
+                   person(given = "Christian", family = "Panse",
+                   email = "cp@fgcz.ethz.ch")
+                          ),
+  journal      = "bioRxiv",
+  year         = "2022",
+  "elocation-id" = "2022.06.07.494524",
+  doi          = "10.1101/2022.06.07.494524",
+  header       = "To cite prolfqua in publications use:"
 )

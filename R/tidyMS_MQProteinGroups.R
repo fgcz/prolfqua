@@ -1,11 +1,20 @@
+#' Methods for reading  MaxQuant outputs
+#'
+#' Convert MaxQuant outputs into tidy tables. For more details see functions listed in the see also section.
+#'
+#' @family MaxQuant
+#' @name MaxQuant
+NULL
+
 #' extract intensities and annotations from MQ proteinGroups.txt
 #' @export
 #' @keywords internal
 #' @param MQProteinGroups data.frame generated with read.csv("peptide.txt",sep="\\t", stringsAsFactors=FALSE)
 #' @family MaxQuant
+#'
 #' @examples
 #' library(prolfqua)
-#' protein_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
+#' protein_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 #' protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #' head(mq_proteins)
@@ -68,7 +77,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
 #' @family MaxQuant
 #' @examples
 #'
-#' evidence_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
+#' evidence_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 #' evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
 tidyMQ_Evidence <- function(Evidence){
@@ -111,14 +120,18 @@ tidyMQ_Evidence <- function(Evidence){
   res <- res |> separate_rows(.data$protein.group.id, sep = ";",convert  = TRUE)
   return(res)
 }
-#' Generating mq file from proteinGroups.txt, peptide.txt and evidence.txt all level file incuding evidence
+#' Generating tidy table from proteinGroups.txt, peptide.txt and evidence.txt
+#'
+#' collect relevant information from all 3 types of files and merge them using
+#' protein group id and peptide id.
+#'
 #' @param txt_directory or zip
 #' @family MaxQuant
 #' @export
 #' @keywords internal
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
+#' txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
 #' allData <- tidyMQ_merged(txt_directory)
 #'
 tidyMQ_merged <- function(txt_directory){
@@ -151,7 +164,7 @@ tidyMQ_merged <- function(txt_directory){
 #' @keywords internal
 #' @examples
 #'
-#' #txt_directory <- system.file("samples/maxquant_txt/MSQC1.ZIP", package = "prolfqua")
+#' #txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
 #' #allData <- tidyMQ_PeptideProtein(txt_directory)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
@@ -290,17 +303,10 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @examples
 #'
 #'
-#' peptide_txt <- system.file("samples/maxquant_txt/MSQC1.ZIP",package = "prolfqua")
+#' peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
-#' peptides_txt <- system.file("samples/maxquant_txt/tiny.zip",package = "prolfqua")
-#' peptides_txt <- read.csv(unz(peptide_txt,"peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
-#' tmp <-paste(peptides_txt$Evidence.IDs, collapse = ";")
-#' tmp <- strsplit(tmp, ";")
-#' length(unique(tmp[[1]]))
 #'
-#' mq_peptides <-tidyMQ_Peptides(peptides_txt)
-#' head(mq_peptides)
 tidyMQ_Peptides <- function(MQPeptides, proteotypic_only = TRUE){
   if (is.character(MQPeptides)) {
     if (grepl("\\.zip$",tolower(MQPeptides))) {
@@ -405,6 +411,8 @@ tidyMQ_allPeptides <- function(MQPeptides){
 }
 
 #' convert modification specific to peptide level
+#'
+#'
 #' aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 #' use if you want to disable MQ default precursor filter
 #' (which is not to use modified peptide sequences for peptide quantification)

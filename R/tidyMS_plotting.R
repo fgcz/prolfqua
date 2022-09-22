@@ -178,7 +178,7 @@ plot_hierarchies_boxplot <- function(pdata,
   p <- ggplot(pdata, aes_string(x = "interaction",
                                 y = config$table$getWorkIntensity(),
                                 color = color
-  )) + theme_classic() +
+  )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
 
@@ -552,7 +552,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   xx <- inner_join(wide$annotation, xx)
 
 
-  sh <- config$table$fkeysDepth()[2]
+  sh <- config$table$factorKeys()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   }else{
@@ -564,7 +564,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_y = 0.25 )
 
   x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
-                      color = !!sym(config$table$fkeysDepth()[1]),
+                      color = !!sym(config$table$factorKeys()[1]),
                       text = !!sym(config$table$sampleName))) +
     point +
     if (add_txt) {text}

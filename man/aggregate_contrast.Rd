@@ -7,8 +7,12 @@
 aggregate_contrast(
   data,
   subject_Id,
-  agg_func = list(median = function(x) {     stats::median(x, na.rm = TRUE) }, mad =
-    function(x) {     stats::mad(x, na.rm = TRUE) }),
+  agg_func = list(median = function(x) {
+     stats::median(x, na.rm = TRUE)
+ }, mad =
+    function(x) {
+     stats::mad(x, na.rm = TRUE)
+ }),
   contrast = "contrast"
 )
 }

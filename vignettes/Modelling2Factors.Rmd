@@ -21,6 +21,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # Model Fitting
 
+For more details how the dataset `data_Yeast2Factor` was created we refer you to the prolfquabenchmark vignettes.
+
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
 
@@ -45,8 +47,6 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
                "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
                "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"
 )
-
-
 
 ```
 

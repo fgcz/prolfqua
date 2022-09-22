@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 0.3.7
+Version: 0.4.4
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
@@ -30,6 +30,7 @@ Imports:
     dplyr,
     DT,
     forcats,
+    gridExtra,
     ggplot2,
     ggbeeswarm,
     ggrepel,
@@ -58,21 +59,13 @@ Suggests:
     corrplot,
     docopt,
     knitr,
-    MSstats,
-    pROC,
     rmarkdown,
     S4Vectors,
     testthat,
-    prolfquadata,
     SummarizedExperiment,
     proDA,
     vsn
-Remotes:
-    bioc::3.14/vsn,
-    bioc::3.14/proDA,
-    bioc::3.14/S4Vectors,
-    bioc::3.14/SummarizedExperiment
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(r6 = TRUE)
 Depends: 
     R (>= 4.1)

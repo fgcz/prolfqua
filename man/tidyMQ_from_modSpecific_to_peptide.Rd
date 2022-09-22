@@ -2,10 +2,7 @@
 % Please edit documentation in R/tidyMS_MQProteinGroups.R
 \name{tidyMQ_from_modSpecific_to_peptide}
 \alias{tidyMQ_from_modSpecific_to_peptide}
-\title{convert modification specific to peptide level
-aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
-use if you want to disable MQ default precursor filter
-(which is not to use modified peptide sequences for peptide quantification)}
+\title{convert modification specific to peptide level}
 \usage{
 tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
 }
@@ -15,7 +12,6 @@ tidyMQ_from_modSpecific_to_peptide(mq_modSpecPeptides, mq_peptides)
 \item{mq_peptides}{output of tidyMQ_Peptides}
 }
 \description{
-convert modification specific to peptide level
 aggregates mod.peptide.intensity, takes min of pep and max of peptide.score
 use if you want to disable MQ default precursor filter
 (which is not to use modified peptide sequences for peptide quantification)
@@ -23,6 +19,7 @@ use if you want to disable MQ default precursor filter
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{MaxQuant}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_PeptideProtein}()},
