@@ -9,7 +9,7 @@ hierarchy_counts_sample(pdata, configuration)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{config}{\code{\link{AnalysisConfiguration}}}
 }
 \description{
 Count distinct elements for each level of hierarchy per sample

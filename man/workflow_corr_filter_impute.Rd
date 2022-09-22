@@ -17,7 +17,6 @@ workflow_corr_filter_impute(pdata, config, minCorrelation = 0.6)
 Apply correlation filtering and impute missing values
 }
 \examples{
-rm(list=ls())
 
 
 bb <- old2new(prolfqua_data('data_ionstar')$filtered())

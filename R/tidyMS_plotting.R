@@ -353,7 +353,7 @@ plot_heatmap <- function(data,
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
   resdata <- t(scale(t(wide$data)))
-  resdataf <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+  resdataf <- prolfqua::remove_NA_rows(resdata,floor(ncol(resdata)*na_fraction))
 
   if (nrow(resdataf) >= 3) {
     gg <- stats::hclust( stats::dist( resdataf ))

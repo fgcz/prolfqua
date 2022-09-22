@@ -2,7 +2,7 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{separate_hierarchy}
 \alias{separate_hierarchy}
-\title{separates hierarchy columns into starting columns}
+\title{Separates hierarchy columns into starting columns}
 \usage{
 separate_hierarchy(data, config)
 }
@@ -12,22 +12,31 @@ separate_hierarchy(data, config)
 \item{config}{AnlalysisConfiguration}
 }
 \description{
-separates hierarchy columns into starting columns
+Separates hierarchy columns into starting columns
+}
+\examples{
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+dt <- separate_hierarchy(bb$data, bb$config)
+setdiff(colnames(dt) ,colnames(bb$data))
+stopifnot(ncol(dt) >= ncol(bb$data))
+
 }
 \seealso{
+\code{\link{lfq_write_table}}
+
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

@@ -35,7 +35,7 @@ Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
@@ -43,7 +43,7 @@ Other configuration:
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 
 Other deprecated: 
@@ -162,16 +162,14 @@ Other summary:
 
 Other utilities: 
 \code{\link{get_UniprotID_from_fasta_header}()},
-\code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
+\code{\link{multigroup_volcano}()},
+\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
+\code{\link{panel_cor}()},
+\code{\link{panel_hist}()},
+\code{\link{remove_NA_rows}()},
 \code{\link{table_facade.list}()},
 \code{\link{table_facade}()}
 

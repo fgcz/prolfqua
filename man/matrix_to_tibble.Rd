@@ -27,15 +27,13 @@ matrix_to_tibble(x)
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{get_UniprotID_from_fasta_header}()},
-\code{\link{jackknifeMatrix}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
+\code{\link{multigroup_volcano}()},
+\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
+\code{\link{panel_cor}()},
+\code{\link{panel_hist}()},
+\code{\link{remove_NA_rows}()},
 \code{\link{table_facade.list}()},
 \code{\link{table_facade}()}
 }

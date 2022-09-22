@@ -2,7 +2,7 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{hierarchy_counts}
 \alias{hierarchy_counts}
-\title{Count distinct elements for each level of hierarchy}
+\title{Count distinct elements for each level of hierarchy and istope}
 \usage{
 hierarchy_counts(pdata, config)
 }
@@ -12,10 +12,9 @@ hierarchy_counts(pdata, config)
 \item{config}{AnalysisConfiguration}
 }
 \description{
-Count distinct elements for each level of hierarchy
+E.g. number of proteins, peptides, precursors in the dataset
 }
 \examples{
-
 
 bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
@@ -24,8 +23,11 @@ data <- bb$data
 
 x <- hierarchy_counts(data, config)
 x$protein_Id
+stopifnot(ncol(x) == length(config$table$hierarchyKeys()) + 1)
+# select non existing protein
 data <- data |> dplyr::filter( protein_Id == "XYZ")
 tmp <- hierarchy_counts(data, config)
+stopifnot(nrow(tmp) == 0)
 }
 \seealso{
 Other summary: 

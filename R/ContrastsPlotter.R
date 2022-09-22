@@ -401,7 +401,7 @@ ContrastsPlotter <- R6::R6Class(
         if (plotly) {
           contrasts <- contrasts |> plotly::highlight_key(~subject_Id)
         }
-        p <- prolfqua:::.multigroupVolcano(
+        p <- prolfqua:::.multigroup_volcano(
           contrasts,
           effect = self$diff,
           significance = column,

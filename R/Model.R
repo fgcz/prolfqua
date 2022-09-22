@@ -146,7 +146,7 @@ Model <- R6::R6Class(
       fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
       VolcanoPlot <- Model_Coeff |>
         dplyr::filter(factor != "(Intercept)") |>
-        prolfqua::multigroupVolcano(
+        prolfqua::multigroup_volcano(
           effect = "Estimate",
           significance = "Pr...t..",
           contrast = "factor",

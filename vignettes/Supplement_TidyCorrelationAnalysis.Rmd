@@ -52,7 +52,7 @@ config$table$factors[["sex"]] = "sex"
 config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
 
-x <- R6extractValues(config)
+x <- R6_extract_values(config)
 
 ```
 
@@ -149,7 +149,7 @@ prolfqua::hierarchy_counts(qvalFilt, config)
 The next code snipped computes the number of observed values for each precursor, than keeps only the precursors with more than $20$ observations.
 
 ```{r}
-longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
+longQNASummaries <- rank_by_NA(qvalFilt, config)
 longQNASummaries <- longQNASummaries |>
   dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(prolfqua::hierarchy_counts(longQNASummaries, config))
@@ -180,12 +180,12 @@ qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries,config)
 
 # Correlation Filtering
 
-First mark de-correlated transitions using `markDecorrelated`.
+First mark de-correlated transitions using `mark_decorelated`.
 
 
 ```{r markdecorellated}
 qvalFiltV <- transform_work_intensity(qvalFiltV$data, config, log2)
-xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
+xx <- mark_decorelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
 
 ```

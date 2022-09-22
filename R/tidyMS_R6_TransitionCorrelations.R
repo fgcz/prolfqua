@@ -531,15 +531,21 @@ normalize_log2_robscale <- function(pdata, config){
 }
 
 .decorelatedPly <- function(pdata, corThreshold = 0.7){
-  res <- prolfqua::transitionCorrelationsJack(pdata)
+  res <- prolfqua::cor_jackknife_matrix(pdata)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
   tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
-#' marks uncorrelated peptides
+#' Marks peptides which do not correlate with other peptides of a protein
+#'
+#' It computes the pairwise correlation among all peptides and marks those
+#' with with a corralation less then minCorrelation to all other peptides
 #'
 #' @export
 #' @keywords internal
+#' @param data data
+#' @param config configuration
+#' @param minCorrelation smallest allowed correlation
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
@@ -550,10 +556,10 @@ normalize_log2_robscale <- function(pdata, config){
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
-#' dataI <- markDecorrelated(data, conf)
+#' dataI <- mark_decorelated(data, conf)
 #' head(dataI)
 #'
-markDecorrelated <- function(data , config, minCorrelation = 0.7){
+mark_decorelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()
   qvalFiltX <- qvalFiltX |>
     dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
@@ -584,8 +590,14 @@ simpleImpute <- function(data){
   res[is.na(res)] <- imp[is.na(res)]
   return(res)
 }
-#' imputation based on correlation assumption
+
+#' Imputate missing peptide intensities to maximize peptide correlationion
+#'
+#' Assumes the peptide intensities are correlation assumption
+#'
 #' @export
+#' @param x data
+#' @param config configuration
 #' @keywords internal
 #' @examples
 #'
@@ -802,7 +814,8 @@ rank_peptide_by_intensity <- function(pdata, config){
 
 # Summarise NAs on lowest hierarchy ----
 
-#' Ranks precursors by NAs (adds new column .NARank)
+#' Ranks peptides/precursors of a protein by NAs (adds new column .NARank)
+#'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #'
@@ -815,7 +828,7 @@ rank_peptide_by_intensity <- function(pdata, config){
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- remove_large_QValues(analysis, config)
-#' res <- rankPrecursorsByNAs(res,config)
+#' res <- rank_by_NA(res,config)
 #' colnames(res)
 #' x <- res |>
 #'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
@@ -824,7 +837,7 @@ rank_peptide_by_intensity <- function(pdata, config){
 #' res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
 #'  dplyr::distinct() |>
 #'  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
-rankPrecursorsByNAs <- function(pdata, config){
+rank_by_NA <- function(pdata, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
   pdata <- .rankProteinPrecursors(pdata, config,
@@ -838,16 +851,14 @@ rankPrecursorsByNAs <- function(pdata, config){
   return(pdata)
 }
 
-#' removes measurments with less than percent=60 missing values in factor_level = 1
+#' Removes measurments with more than some percentage of not smissing values
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
+#' @param percent percent of missing values
 #' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
-#'
-#' rm(list=ls())
 #'
 #'
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
@@ -856,10 +867,14 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- analysis
 #' data <- remove_large_QValues(data, config)
-#' hierarchy_counts(data, config)
+#' hc <- hierarchy_counts(data, config)
+#' res <- filter_factor_levels_by_missing(data, config,percent = 80)
+#' hc80 <-  hierarchy_counts(res, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
-#' data1 <- complete_cases(data, config)
 #' hierarchy_counts(res, config)
+#' hc60 <-  hierarchy_counts(res, config)
+#' stopifnot(all(hc60 >= hc80)) # since 80% missing is more stringent than 60%
+#' stopifnot(all(hc >= hc60))
 #' summarize_hierarchy(res,config) |>
 #'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'

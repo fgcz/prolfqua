@@ -94,13 +94,13 @@ make_interaction_column <- function(data, columns, sep="."){
 #' @keywords internal
 #' @family configuration
 #' @export
-R6extractValues <- function(r6class){
+R6_extract_values <- function(r6class){
   tmp <- sapply(r6class, class)
   slots <- tmp[ !tmp %in% c("environment", "function")]
   res <- list()
   for (i in names(slots)) {
     if ("R6" %in% class(r6class[[i]])) {
-      res[[i]]  <- R6extractValues(r6class[[i]])
+      res[[i]]  <- R6_extract_values(r6class[[i]])
     }else{
       res[[i]] <- r6class[[i]]
     }
@@ -110,8 +110,10 @@ R6extractValues <- function(r6class){
 
 
 
+#' Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}
+#'
 #' Extracts columns relevant for a configuration from a data frame
-#' and create new columns i sampleName column etc.
+#' and create new columns e.g. sampleName column etc.
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
 #' @param cc complete cases default TRUE
@@ -175,17 +177,25 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   return( data )
 }
 
-#' separates hierarchy columns into starting columns
+#' Separates hierarchy columns into starting columns
+#'
 #'
 #' @export
+#' @seealso \code{\link{lfq_write_table}}
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
 #' @family configuration
 #' @keywords internal
+#' @examples
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' dt <- separate_hierarchy(bb$data, bb$config)
+#' setdiff(colnames(dt) ,colnames(bb$data))
+#' stopifnot(ncol(dt) >= ncol(bb$data))
+#'
 separate_hierarchy <- function(data, config){
   for (hkey in config$table$hkeysDepth()) {
-    if (length(config$table$hierarchy[[hkey]]) == 1 & hkey == config$table$hierarchy[[hkey]]) {
-      data <- data
+    if (length(config$table$hierarchy[[hkey]]) == 1 && hkey == config$table$hierarchy[[hkey]]) {
+
     }else {
       data <- data |> tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
     }
@@ -193,13 +203,21 @@ separate_hierarchy <- function(data, config){
   return(data)
 }
 
-#' separates factor columns into starting columns
+#'
+#' Separates factor columns into starting columns
+#'
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
 #' @export
 #'
 #' @keywords internal
 #' @family configuration
+#' @examples
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' dt <- separate_factors(bb$data, bb$config)
+#' setdiff(colnames(dt), colnames(bb$data))
+#' stopifnot(ncol(bb$data) < ncol(dt))
+#'
 separate_factors <- function(data, config) {
   for (fkey in config$table$factor_keys()) {
     data <- data |> tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
@@ -209,6 +227,10 @@ separate_factors <- function(data, config) {
 
 
 #' Complete cases
+#'
+#' The tidy table does not need to contain missing data.
+#' This function re-establishes the missing observations in a sample.
+#'
 #' @export
 #' @param pdata data.frame
 #' @param config AnlalysisConfiguration
@@ -237,7 +259,10 @@ complete_cases <- function(pdata, config) {
 }
 
 
-#' sample subset of data
+#' Sample subset of proteins/peptides/precursors
+#' @param n size of sample
+#' @param pdata tidy table
+#' @param config \code{\link{AnalysisConfiguration}}
 #' @export
 #' @keywords internal
 #' @family configuration
@@ -254,7 +279,7 @@ sample_subset <- function(size, pdata, config){
 
 # Functions - summarize factors ----
 
-#' table of distinct factors (sample annotation)
+#' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #'
@@ -271,8 +296,9 @@ sample_subset <- function(size, pdata, config){
 #'
 #' xx <- table_factors(data,config )
 #' xx
-#' xx |> dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
+#' xt <- xx |> dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
 #'  dplyr::summarize(n = dplyr::n())
+#' stopifnot(all(xt$n == 1))
 #'
 table_factors <- function(pdata, configuration){
   factorsTab <- pdata |> dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
@@ -284,16 +310,16 @@ table_factors <- function(pdata, configuration){
 
 # Functions - summarize hierarchies
 
-#' Count distinct elements for each level of hierarchy
+#' Count distinct elements for each level of hierarchy and istope
+#'
+#' E.g. number of proteins, peptides, precursors in the dataset
+#'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
-#'
 #' @export
 #' @keywords internal
 #' @family summary
 #' @examples
-#'
 #'
 #' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
@@ -302,8 +328,11 @@ table_factors <- function(pdata, configuration){
 #'
 #' x <- hierarchy_counts(data, config)
 #' x$protein_Id
+#' stopifnot(ncol(x) == length(config$table$hierarchyKeys()) + 1)
+#' # select non existing protein
 #' data <- data |> dplyr::filter( protein_Id == "XYZ")
 #' tmp <- hierarchy_counts(data, config)
+#' stopifnot(nrow(tmp) == 0)
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$table$hierarchyKeys()
   res <- pdata |>
@@ -314,9 +343,10 @@ hierarchy_counts <- function(pdata, config){
 }
 
 #' Count distinct elements for each level of hierarchy per sample
+#'
 #' @export
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param config \code{\link{AnalysisConfiguration}}
 #'
 #' @keywords internal
 #' @family summary
@@ -367,6 +397,9 @@ hierarchy_counts_sample <- function(pdata,
 
 
 #' Summarize hierarchy counts
+#'
+#' E.g compute number of peptides for each protein
+#'
 #' @export
 #' @keywords internal
 #' @family summary
@@ -418,7 +451,8 @@ summarize_hierarchy <- function(pdata,
 
 # Functions - Handling isotopes ----
 
-#' spreads isotope label heavy light into two columns
+#' Spreads isotope label heavy and light into two columns
+#'
 #' @export
 #' @keywords internal
 #' @family configuration
@@ -429,7 +463,7 @@ summarize_hierarchy <- function(pdata,
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
-#' x<-spreadValueVarsIsotopeLabel(data,configur)
+#' x<-spread_response_by_IsotopeLabel(data,configur)
 #' head(x)
 #'
 #' bb <- prolfqua_data('data_skylineSRM_HL_A')
@@ -439,10 +473,10 @@ summarize_hierarchy <- function(pdata,
 #' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
-#' x <- spreadValueVarsIsotopeLabel(analysis, conf)
+#' x <- spread_response_by_IsotopeLabel(analysis, conf)
 #' head(x[,5:ncol(x)])
 #'
-spreadValueVarsIsotopeLabel <- function(resData, config){
+spread_response_by_IsotopeLabel <- function(resData, config){
   table <- config$table
   idVars <- table$idVars()
   resData2 <- resData |> dplyr::select(c(idVars, table$value_vars()) )

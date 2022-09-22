@@ -24,7 +24,6 @@ correlation preprocessing
 
 
 
-rm(list=ls())
 bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)

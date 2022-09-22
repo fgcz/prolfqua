@@ -21,7 +21,7 @@ summarize_hierarchy(
 \item{factors}{which factors to include}
 }
 \description{
-Summarize hierarchy counts
+E.g compute number of peptides for each protein
 }
 \examples{
 

@@ -20,8 +20,10 @@
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
+#' prolfqua::model_summary(mod)
 #'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
 #'     "dil.e_vs_b" = "dilution.e - dilution.b" )
+#' #Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' contrastX$get_contrasts()
 #' contrastX$column_description()

@@ -52,7 +52,7 @@ resData <- setup_analysis(allDataM, skylineconfig)
 
 resData$Area[resData$Area == 0] <- NA
 
-tt <- R6extractValues(skylineconfig)
+tt <- R6_extract_values(skylineconfig)
 ```
 
 ```{r writeYaml, eval=FALSE}
@@ -105,7 +105,7 @@ rmarkdown::render("tr_srm_summary_HL.Rmd",
 # Computing L to Heavy fold changes
 
 ```{r spearateHeavyAndLight}
-HLData <- spreadValueVarsIsotopeLabel(resData, skylineconfig)
+HLData <- spread_response_by_IsotopeLabel(resData, skylineconfig)
 HLData <- HLData |> dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Area))
 HLData$Isotope.Label <- "L/H"
 

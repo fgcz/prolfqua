@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{filter_factor_levels_by_missing}
 \alias{filter_factor_levels_by_missing}
-\title{removes measurments with less than percent=60 missing values in factor_level = 1}
+\title{Removes measurments with more than some percentage of not smissing values}
 \usage{
 filter_factor_levels_by_missing(pdata, config, percent = 60)
 }
@@ -10,16 +10,16 @@ filter_factor_levels_by_missing(pdata, config, percent = 60)
 \item{pdata}{data.frame}
 
 \item{config}{AnalysisConfiguration}
+
+\item{percent}{percent of missing values}
 }
 \value{
 data.frame
 }
 \description{
-removes measurments with less than percent=60 missing values in factor_level = 1
+Removes measurments with more than some percentage of not smissing values
 }
 \examples{
-
-rm(list=ls())
 
 
 bb <- prolfqua_data('data_spectronautDIA250_A')
@@ -28,10 +28,14 @@ analysis <- bb$analysis(bb$data, bb$config_f())
 config$parameter$min_nr_of_notNA  <- 20
 data <- analysis
 data <- remove_large_QValues(data, config)
-hierarchy_counts(data, config)
+hc <- hierarchy_counts(data, config)
+res <- filter_factor_levels_by_missing(data, config,percent = 80)
+hc80 <-  hierarchy_counts(res, config)
 res <- filter_factor_levels_by_missing(data, config,percent = 60)
-data1 <- complete_cases(data, config)
 hierarchy_counts(res, config)
+hc60 <-  hierarchy_counts(res, config)
+stopifnot(all(hc60 >= hc80)) # since 80\% missing is more stringent than 60\%
+stopifnot(all(hc >= hc60))
 summarize_hierarchy(res,config) |>
  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 

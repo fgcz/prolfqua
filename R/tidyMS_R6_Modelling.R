@@ -475,7 +475,7 @@ plot_lmer_model_and_data_TWO <- function(m,
 
 
 .get_match_idx <- function(mm, factor_level){
-  ddd <- split2table(rownames(mm), split = ":")
+  ddd <- names_to_matrix(rownames(mm), split = ":")
   xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
   idx <- which(apply(xd,1, sum) > 0)
   return(idx)
@@ -501,13 +501,17 @@ plot_lmer_model_and_data_TWO <- function(m,
 #' @examples
 #'
 #' m <- prolfqua_data('data_basicModel_p1807')
+#' # debug(linfct_from_model)
 #' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #'
 #' m <- prolfqua_data('data_interactionModel_p1807')
+#' # debug(.coeff_weights_factor_levels)
+#' undebug(linfct_from_model)
 #' linfct <- linfct_from_model(m)
+#'
 #' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
 #'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 #' linfct$linfct_interactions
