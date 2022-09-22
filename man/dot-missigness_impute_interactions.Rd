@@ -42,7 +42,7 @@ configur <- bb$config
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 
-xx <- prolfqua::removeLarge_Q_Values(data, configur)
+xx <- prolfqua::remove_large_QValues(data, configur)
 xx <- complete_cases(xx, configur)
 
 tmp <- interaction_missing_stats(xx, configur)

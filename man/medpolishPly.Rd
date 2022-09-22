@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{medpolishPly}
 \alias{medpolishPly}
-\title{compute Tukeys median polish from peptide or precursor intensities}
+\title{Compute Tukey's median polish from peptide or precursor intensities}
 \usage{
 medpolishPly(x, name = FALSE, sampleName = "sampleName")
 }
@@ -15,7 +15,7 @@ medpolishPly(x, name = FALSE, sampleName = "sampleName")
 data.frame with number of rows equal to number of columns of input matrix.
 }
 \description{
-compute Tukeys median polish from peptide or precursor intensities
+Compute Tukey's median polish from peptide or precursor intensities
 }
 \examples{
 
@@ -30,7 +30,7 @@ mx <- medpolishPly(gg)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

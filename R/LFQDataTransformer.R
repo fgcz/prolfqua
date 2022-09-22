@@ -162,7 +162,7 @@ LFQDataTransformer <- R6::R6Class(
     intensity_matrix = function(.func = robust_scale, force = FALSE){
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list( match.call() )
-        r <- prolfqua::applyToIntensityMatrix(
+        r <- prolfqua::apply_to_response_matrix(
           self$lfq$data,
           self$lfq$config,
           .func = .func,

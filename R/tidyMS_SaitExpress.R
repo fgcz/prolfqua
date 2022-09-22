@@ -1,10 +1,10 @@
-#' add protein lengths from fasta file to data frame (id_col - protein id column.)
+#' Add protein lengths from fasta file to data frame (id_col - protein id column.)
 #' @rdname saintExpress
 #' @param intdata data.frame
 #' @param fasta list of sequences created with \code{\link[seqinr]{read.fasta}}
 #' @param id_col column with protein ids/accessions.
 #' @export
-addProteinLengths <- function(
+add_protein_lengths <- function(
   intdata,
   fasta,
   id_col = "protein_Id" ){
@@ -94,6 +94,7 @@ protein_2localSaint <- function(xx,
 #' Network visualization.
 #' look at https://www.jessesadler.com/post/network-analysis-with-r/
 #' https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
+#'
 #' @export
 #' @rdname saintExpress
 #' @param si output of protein_2localSaint function

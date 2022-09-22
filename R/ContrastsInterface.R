@@ -56,7 +56,9 @@ ContrastsInterface <- R6::R6Class(
 
 
 # Merge contrasts ----
-#' add contrast results from two different functions. Typically used with Contrast and Cotnrast simple imputed.
+#' Merge contrast results coming from two different model.
+#'
+#' Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsSimpleImputed}}
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
@@ -64,7 +66,7 @@ ContrastsInterface <- R6::R6Class(
 #' @export
 #' @family modelling
 #'
-addContrastResults <- function(prefer, add, modelName = "mergedModel"){
+merge_contrasts_results <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
   cB <- add$get_contrasts()
 

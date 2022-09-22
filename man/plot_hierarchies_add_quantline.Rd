@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_hierarchies_add_quantline}
 \alias{plot_hierarchies_add_quantline}
-\title{add quantline to plot}
+\title{Add protein estimate to plot of peptide intensities}
 \usage{
 plot_hierarchies_add_quantline(p, data, aes_y, configuration)
 }
 \description{
-add quantline to plot
+Add protein estimate to plot of peptide intensities
 }
 \examples{
 #todo
@@ -15,7 +15,7 @@ add quantline to plot
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

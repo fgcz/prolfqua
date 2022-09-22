@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{filter_byQValue}
 \alias{filter_byQValue}
-\title{filter data by max and min Q Value threshold}
+\title{Filter data by individual and experiment wide thresholds}
 \usage{
 filter_byQValue(pdata, config)
 }

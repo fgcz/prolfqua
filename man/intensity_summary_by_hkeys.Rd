@@ -47,7 +47,7 @@ tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},

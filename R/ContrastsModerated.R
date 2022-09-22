@@ -32,7 +32,7 @@
 #' csi$get_contrasts()
 #' contrast$get_contrasts()
 #'
-#' merged <- addContrastResults(contrast, csi)
+#' merged <- merge_contrasts_results(contrast, csi)
 #' merged$more$get_contrasts() |> dim()
 #' merged$merged$get_contrasts() |> dim()
 #' merged$same$get_contrasts() |> dim()

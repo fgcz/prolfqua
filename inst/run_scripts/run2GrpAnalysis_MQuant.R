@@ -101,7 +101,7 @@ conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
-res <- prolfqua::addContrastResults(conrM, conMI)
+res <- prolfqua::merge_contrasts_results(conrM, conMI)
 
 GRP2$contrResult <- res$merged$get_contrasts()
 GRP2$contrMerged <- res$merged$get_Plotter()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{summarizeRobust_config}
 \alias{summarizeRobust_config}
-\title{same as summarize robust but with config}
+\title{Same as summarize robust but with config}
 \usage{
 summarizeRobust_config(pdata, config, name = FALSE)
 }
@@ -12,7 +12,7 @@ summarizeRobust_config(pdata, config, name = FALSE)
 \item{config}{AnalysisConfiguraton}
 }
 \description{
-same as summarize robust but with config
+Same as summarize robust but with config
 }
 \examples{
 
@@ -28,11 +28,14 @@ x <- xnested$data[[1]]
 bb <- summarizeRobust_config(x, conf)
 
 prolfqua:::.reestablish_condition(x,bb, conf)
+
 }
 \seealso{
+\code{\link{summarizeRobust}}
+
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

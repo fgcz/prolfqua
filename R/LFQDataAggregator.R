@@ -166,8 +166,8 @@ LFQDataAggregator <- R6::R6Class(
                 "top N works with raw data.",
                 self$lfq$config$table$workIntensity)
       }
-      ranked <- rankPrecursorsByIntensity(self$lfq$data , self$lfq$config)
-      resTOPN <- aggregateTopNIntensities(ranked, self$lfq$config, .func = .func, N = N)
+      ranked <- rank_peptide_by_intensity(self$lfq$data , self$lfq$config)
+      resTOPN <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = N)
       self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     }

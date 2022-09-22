@@ -27,7 +27,7 @@ config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 config$parameter$min_nr_of_notNA  <- 20
 data <- analysis
-data <- removeLarge_Q_Values(data, config)
+data <- remove_large_QValues(data, config)
 hierarchy_counts(data, config)
 res <- filter_factor_levels_by_missing(data, config,percent = 60)
 data1 <- complete_cases(data, config)

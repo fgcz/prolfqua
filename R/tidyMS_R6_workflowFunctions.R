@@ -93,10 +93,10 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 
   # TODO check if you are not aggregating log transformed intensities
   # rank precursors by intensity
-  keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
+  keepCorrelated <- rank_peptide_by_intensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
   mean_na <- function(x, name=FALSE){if(name){return("mean_na")};mean(x, na.rm = TRUE)}
-  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, .func = mean_na, N = 3)
+  proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed, config, .func = mean_na, N = 3)
 
   # collect stats
   stats <- list(stat_input = stat_input,
@@ -154,7 +154,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
   keepCorrelated <- dplyr::filter(data_NA_QVal, .data$srm_decorelated == FALSE)
 
   stat_correlated  <- hierarchy_counts(keepCorrelated, config)
-  keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
+  keepCorrelated <- rank_peptide_by_intensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
 
 

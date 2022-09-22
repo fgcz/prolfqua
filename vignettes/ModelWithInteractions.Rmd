@@ -250,7 +250,7 @@ pl$volcano()
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
 
-mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)$merged
+mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
 cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
 plot$FDR

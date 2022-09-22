@@ -18,7 +18,7 @@
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- prolfqua::removeLarge_Q_Values(data,
+#' xx <- prolfqua::remove_large_QValues(data,
 #'    configur)
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
@@ -85,7 +85,7 @@ interaction_missing_stats <- function(pdata,
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #'
-#' xx <- prolfqua::removeLarge_Q_Values(data, configur)
+#' xx <- prolfqua::remove_large_QValues(data, configur)
 #' xx <- complete_cases(xx, configur)
 #'
 #' tmp <- interaction_missing_stats(xx, configur)
@@ -448,7 +448,7 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- prolfqua::removeLarge_Q_Values(data, configur)
+#' data <- prolfqua::remove_large_QValues(data, configur)
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")

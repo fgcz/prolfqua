@@ -68,7 +68,7 @@ Other LFQData:
 \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
-\item \href{#method-LFQData-subjectId}{\code{LFQData$subjectId()}}
+\item \href{#method-LFQData-subject_Id}{\code{LFQData$subject_Id()}}
 \item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-LFQData-intensity_column}{\code{LFQData$intensity_column()}}
 \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
@@ -155,18 +155,18 @@ get subset of data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{data frame with columns containing subjectId}
+\item{\code{x}}{data frame with columns containing subject_Id}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-subjectId"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-subjectId}{}}}
-\subsection{Method \code{subjectId()}}{
+\if{html}{\out{<a id="method-LFQData-subject_Id"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-subject_Id}{}}}
+\subsection{Method \code{subject_Id()}}{
 get subject ID columns
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$subjectId()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_Id()}\if{html}{\out{</div>}}
 }
 
 }

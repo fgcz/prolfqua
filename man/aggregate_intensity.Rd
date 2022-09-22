@@ -41,7 +41,7 @@ abline(0,1)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
 \code{\link{medpolishPlydf}()},

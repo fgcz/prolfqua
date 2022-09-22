@@ -158,7 +158,7 @@ if (!local_config$table$is_intensity_transformed) {
                                                   local_config,
                                                   log2)
   dataTransformed <-
-    prolfqua::applyToIntensityMatrix(data_tf, local_config, robust_scale)
+    prolfqua::apply_to_response_matrix(data_tf, local_config, robust_scale)
   local_config$table$is_intensity_transformed = TRUE
 } else{
   dataTransformed <- data_cc
@@ -196,9 +196,9 @@ samples <- dplyr::select(dataTransformed, local_config$table$sampleName) |> dist
 if (length(samples) > 10) {
   limit <- dplyr::select(dataTransformed, local_config$table$sampleName) |> distinct() |>  pull() |> sample(10)
   ldata <- dataTransformed |> dplyr::filter(!!sym(local_config$table$sampleName) %in% limit)
-  prolfqua::pairs_smooth( toWideConfig(ldata, local_config, as.matrix = TRUE)$data )
+  prolfqua::pairs_smooth( tidy_to_wide_config(ldata, local_config, as.matrix = TRUE)$data )
 }else{
-  prolfqua::pairs_smooth( toWideConfig(dataTransformed, local_config, as.matrix = TRUE)$data )
+  prolfqua::pairs_smooth( tidy_to_wide_config(dataTransformed, local_config, as.matrix = TRUE)$data )
 }
 ```
 

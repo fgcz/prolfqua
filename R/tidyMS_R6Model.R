@@ -1,4 +1,4 @@
-#' likelihood ratio test
+#' Likelihood ratio test
 #' @family modelling
 #' @export
 #' @param modelProteinF table with models (see build model)
@@ -49,7 +49,7 @@ LR_test <- function(modelProteinF,
 }
 
 
-#' build from data and modelFunction Model
+#' Build protein models from data
 #'
 #'
 #'
@@ -89,10 +89,11 @@ LR_test <- function(modelProteinF,
 #'  LFQData$new(pepIntensity, config),
 #'  formula_randomPeptide,
 #'  modelName = modelName)
+#' model_summary(mod)
 #'
 build_model <- function(data,
                         modelFunction,
-                        subject_Id = if ("LFQData" %in% class(data)) {data$subjectId()} else {"protein_Id"},
+                        subject_Id = if ("LFQData" %in% class(data)) {data$subject_Id()} else {"protein_Id"},
                         modelName = modelFunction$model_name){
 
   dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
@@ -106,12 +107,12 @@ build_model <- function(data,
                     subject_Id = subject_Id))
 }
 
-#' summarize modelling and error reporting
+#' Summarize modelling and error reporting
 #' @param mod model table see \code{\link{build_model}}
 #' @keywords internal
 #' @family modelling
 #' @export
-modelSummary <- function(mod){
+model_summary <- function(mod){
   res <- list()
   res$exists <- table(mod$modelDF$exists_lmer)
   res$isSingular <- table(mod$modelDF$isSingular)

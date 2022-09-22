@@ -8,7 +8,7 @@ Internal Functions by category
 }
 \seealso{
 Other aggregation: 
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
@@ -76,7 +76,6 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -87,8 +86,9 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -134,7 +134,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other preprocessing: 
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},

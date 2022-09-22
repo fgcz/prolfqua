@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_aggregation}
 \alias{plot_aggregation}
-\title{Plot feature data and result of aggretation}
+\title{Plot feature data and result of aggregation}
 \usage{
 plot_aggregation(data, config, data_aggr, config_reduced, show.legend = FALSE)
 }
@@ -16,7 +16,7 @@ plot_aggregation(data, config, data_aggr, config_reduced, show.legend = FALSE)
 \item{config_aggr}{AnalysisConfiguration of aggregated data}
 }
 \description{
-Plot feature data and result of aggretation
+Plot feature data and result of aggregation
 }
 \examples{
 
@@ -62,7 +62,7 @@ Other plotting:
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

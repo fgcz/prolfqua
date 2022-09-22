@@ -123,8 +123,8 @@ First we remove precursors with QValue larger than `qVal_individual_threshold`.
 
 ```{r}
 config$parameter$qVal_individual_threshold
-longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
-longQSummaries <- summariseQValues(longNoDecoy, config)
+longNoDecoy <- remove_large_QValues(longNoDecoy, config)
+longQSummaries <- summarise_QValues(longNoDecoy, config)
 
 knitr::kable(head(prolfqua::interaction_missing_stats(longQSummaries, config)$data))
 
@@ -217,7 +217,7 @@ print(plot_heatmap_cor(qvalFiltCorr, config))
 
 ```{r rankprec}
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorr, config)
-qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
+qvalFiltImputed <- rank_peptide_by_intensity(qvalFiltImputed, config)
 
 ```
 
@@ -227,7 +227,7 @@ qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 mean_na <- function(x, name = FALSE){
   if(name){return("mean_na")};
   mean(x,na.rm = TRUE)}
-proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
+proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed,
                                                config,
                                                .func = mean_na,
                                                N = 3)$data

@@ -23,7 +23,7 @@ analysis <- istar$data
 
 analysis <- remove_small_intensities(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
-mm <- toWideConfig(analysis, config, as.matrix = TRUE)
+mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 class(plot_sample_correlation(analysis, config))
 }
 \seealso{

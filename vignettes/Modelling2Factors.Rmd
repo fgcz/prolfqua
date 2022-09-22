@@ -26,7 +26,8 @@ For more details how the dataset `data_Yeast2Factor` was created we refer you to
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
 
-data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
+data_Yeast2Factor <- old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
+data_Yeast2Factor <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
 
 pMerged <- data_Yeast2Factor
 pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
@@ -124,7 +125,7 @@ pl$volcano()
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
 
-mergedContrasts <- prolfqua::addContrastResults(prefer = contr, add = contrSimple)$merged
+mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
 cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
 plot$FDR

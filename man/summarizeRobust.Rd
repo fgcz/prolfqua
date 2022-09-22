@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{summarizeRobust}
 \alias{summarizeRobust}
-\title{summarize proteins using MASS:rlm}
+\title{Summarize proteins using MASS:rlm}
 \usage{
 summarizeRobust(pdata, expression, feature, samples, maxIt = 20)
 }
@@ -16,7 +16,7 @@ summarizeRobust(pdata, expression, feature, samples, maxIt = 20)
 \item{sample}{e.g. sampleName}
 }
 \description{
-summarize proteins using MASS:rlm
+Summarize proteins using MASS:rlm
 }
 \examples{
 
@@ -60,7 +60,7 @@ prolfqua:::.reestablish_condition(x,bb, conf)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

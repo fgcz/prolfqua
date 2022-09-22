@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{remove_small_intensities}
 \alias{remove_small_intensities}
-\title{remove rows where intensity lower then threshold}
+\title{Remove rows when intensity lower then threshold}
 \usage{
 remove_small_intensities(pdata, config, threshold = 1)
 }
@@ -15,7 +15,7 @@ remove_small_intensities(pdata, config, threshold = 1)
 data.frame
 }
 \description{
-remove rows where intensity lower then threshold
+Remove rows when intensity lower then threshold
 }
 \examples{
 
@@ -32,7 +32,7 @@ stopifnot(nrow(res1) >  nrow(res1000))
 }
 \seealso{
 Other filtering: 
-\code{\link{removeLarge_Q_Values}()}
+\code{\link{remove_large_QValues}()}
 }
 \concept{filtering}
 \keyword{internal}

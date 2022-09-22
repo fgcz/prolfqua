@@ -76,10 +76,10 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #'
 #' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
-#' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
+#' mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 #' class(plot_sample_correlation(analysis, config))
 plot_sample_correlation <- function(pdata, config){
-  matrix <- toWideConfig(pdata, config, as.matrix = TRUE)$data
+  matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
     corrplot::corrplot.mixed(M,upper = "ellipse",
@@ -281,7 +281,7 @@ plot_heatmap_cor <- function(data,
                              color = colorRampPalette(c("white", "red"))(1024),
                              ...){
 
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
 
@@ -346,7 +346,7 @@ plot_heatmap <- function(data,
     return(NULL)
   }
 
-  wide <-  toWideConfig(data, config , as.matrix = TRUE)
+  wide <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
   factors <- dplyr::select_at(annot, config$table$factor_keys())
@@ -416,7 +416,7 @@ plot_raster <- function(data,
     return(NULL)
   }
   arrange <- match.arg(arrange)
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   resdata <- res$data
 
@@ -477,7 +477,7 @@ plot_NA_heatmap <- function(data,
                             config,
                             limitrows = 10000,
                             distance = "binary"){
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
   stopifnot(annot[[config$table$sampleName]] == colnames(res))
@@ -549,7 +549,7 @@ plot_NA_heatmap <- function(data,
 #' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 #'
 plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
-  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
   xx <- as_tibble(prcomp(ff)$x, rownames = config$table$sampleName)

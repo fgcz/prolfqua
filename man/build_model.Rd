@@ -2,13 +2,13 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{build_model}
 \alias{build_model}
-\title{build from data and modelFunction Model}
+\title{Build protein models from data}
 \usage{
 build_model(
   data,
   modelFunction,
   subject_Id = if ("LFQData" \%in\% class(data)) {
-     data$subjectId()
+     data$subject_Id()
  } else {
     
     "protein_Id"
@@ -29,7 +29,7 @@ build_model(
 a object of class \code{\link{Model}}
 }
 \description{
-build from data and modelFunction Model
+Build protein models from data
 }
 \examples{
 # library(tidyverse)
@@ -57,6 +57,7 @@ mod <- prolfqua:::build_model(
  LFQData$new(pepIntensity, config),
  formula_randomPeptide,
  modelName = modelName)
+model_summary(mod)
 
 }
 \seealso{
@@ -74,7 +75,6 @@ Other modelling:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_model_coefficients}()},
@@ -84,8 +84,9 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},

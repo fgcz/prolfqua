@@ -71,15 +71,15 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' get subset of data
-    #' @param x data frame with columns containing subjectId
+    #' @param x data frame with columns containing subject_Id
     get_subset = function(x){
-      x <- select(x, all_of(self$subjectId())) |> distinct()
+      x <- select(x, all_of(self$subject_Id())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
-    subjectId = function(){
+    subject_Id = function(){
       return(self$config$table$hkeysDepth())
     },
     #' @description
@@ -156,7 +156,7 @@ LFQData <- R6::R6Class(
     #' @param as.matrix return as data.frame or matrix
     #' @return list with data, annotation, and configuration
     to_wide = function(as.matrix = FALSE){
-      wide <- prolfqua::toWideConfig(self$data, self$config, as.matrix = as.matrix)
+      wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
       wide$config <- self$config$clone(deep = TRUE)
       return(wide)
     },

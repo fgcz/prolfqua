@@ -295,7 +295,7 @@ Merging both results.
 
 ```{r mergeResults}
 
-merged <- prolfqua::addContrastResults(prefer = contr,add = mC)$merged
+merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
 plotter <- merged$get_Plotter()
 tmp <- plotter$volcano()
 tmp$FDR
@@ -305,7 +305,7 @@ tmp$FDR
 Look at proteins which could not be fitted using the linear model, if any.
 
 ```{r mergedMore}
-merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
+merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
 moreProt$data <- moreProt$data |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)

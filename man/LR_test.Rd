@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{LR_test}
 \alias{LR_test}
-\title{likelihood ratio test}
+\title{Likelihood ratio test}
 \usage{
 LR_test(
   modelProteinF,
@@ -27,7 +27,7 @@ LR_test(
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }
 \description{
-likelihood ratio test
+Likelihood ratio test
 }
 \examples{
 #todo add example
@@ -44,7 +44,6 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
@@ -55,8 +54,9 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_hierarchies_line}
 \alias{plot_hierarchies_line}
-\title{extracts the relevant information from the configuration to make the plot.}
+\title{Plot peptide intensities of protein as a function of the sample and factor}
 \usage{
 plot_hierarchies_line(
   res,
@@ -22,7 +22,7 @@ plot_hierarchies_line(
 \item{separate}{if heavy and light show in one plot or with separate y axis?}
 }
 \description{
-extracts the relevant information from the configuration to make the plot.
+Plot peptide intensities of protein as a function of the sample and factor
 }
 \examples{
 
@@ -56,7 +56,7 @@ show.legend = TRUE)
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},

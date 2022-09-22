@@ -48,7 +48,8 @@ plot_hierarchies_line_default <- function(data,
   return(p)
 }
 
-#' extracts the relevant information from the configuration to make the plot.
+#' Plot peptide intensities of protein as a function of the sample and factor
+#'
 #' @export
 #' @param res data.frame
 #' @param proteinName title of plot
@@ -118,7 +119,9 @@ plot_hierarchies_line <- function(res,
 
 
 
-#' generates peptide level plots for all Proteins
+#' Generates peptide level plots for all Proteins
+#'
+#' @seealso \code{\link{plot_hierarchies_line}}
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
@@ -174,7 +177,7 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE){
 
 
 
-#' add quantline to plot
+#' Add protein estimate to plot of peptide intensities
 #' @export
 #' @family aggregation
 #' @family plotting
@@ -208,7 +211,8 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 
 
 
-#' compute Tukeys median polish from peptide or precursor intensities
+#' Compute Tukey's median polish from peptide or precursor intensities
+#'
 #' @family aggregation
 #' @param x a matrix
 #' @param name if TRUE returns the name of the summary column
@@ -243,7 +247,10 @@ medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
   return(pdata)
 }
 
-#' Extract intensity column in wide format
+#' Extract response column of a protein into matrix
+#'
+#' Used to apply the median polish function working on matrices to a tidy table
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -261,7 +268,7 @@ medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
 #' nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) |>
 #'  dplyr::distinct() |> nrow()
 #'
-#' xx <- extractIntensities(x,configur)
+#' xx <- response_as_matrix(x,configur)
 #' stopifnot(dim(xx)==c(nn,20))
 #'
 #' # change hierarchyDepth ###################
@@ -277,10 +284,10 @@ medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
 #' nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) |>
 #'  dplyr::distinct() |> nrow()
 #'
-#' xx <- extractIntensities(x,conf)
+#' xx <- response_as_matrix(x,conf)
 #' stopifnot(dim(xx)==c(nn,20))
 #'
-extractIntensities <- function(pdata, config ){
+response_as_matrix <- function(pdata, config ){
   table <- config$table
   .extractInt(pdata, table$get_work_intensity(),
               setdiff(table$hierarchyKeys(), table$hkeysDepth()),
@@ -434,7 +441,8 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 
 
 
-#' summarize proteins using MASS:rlm
+#' Summarize proteins using MASS:rlm
+#'
 #' @keywords internal
 #' @family aggregation
 #' @param pdata data
@@ -488,7 +496,9 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
   return(res)
 }
 
-#' same as summarize robust but with config
+#' Same as summarize robust but with config
+#'
+#' @seealso \code{\link{summarizeRobust}}
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguraton
@@ -508,6 +518,7 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' bb <- summarizeRobust_config(x, conf)
 #'
 #' prolfqua:::.reestablish_condition(x,bb, conf)
+#'
 summarizeRobust_config <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
@@ -597,7 +608,8 @@ aggregate_intensity <- function(data, config, .func)
   return(list(data = unnested, config = newconfig))
 }
 
-#' Plot feature data and result of aggretation
+#' Plot feature data and result of aggregation
+#'
 #' @param data data.frame before aggregation
 #' @param config AnalyisConfiguration
 #' @param data_aggr data.frame after aggregation
@@ -668,9 +680,9 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 }
 
 
-#' aggregates top N intensities
+#' Aggregates top N intensities
 #'
-#' run \link{rankPrecursorsByIntensity} first
+#' run \link{rank_peptide_by_intensity} first
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @param func function to use for aggregation
@@ -684,7 +696,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' dd <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- dd$config
 #' res <- dd$data
-#' ranked <- rankPrecursorsByIntensity(res,config)
+#' ranked <- rank_peptide_by_intensity(res,config)
 #'
 #' mean_f <- function(x, name = FALSE){
 #'  if(name){return("mean")};mean(x, na.rm=TRUE)
@@ -693,7 +705,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #'  if(name){return("sum")};sum(x, na.rm = TRUE)
 #'  }
 #'
-#' resTOPN <- aggregateTopNIntensities(
+#' resTOPN <- aggregate_intensity_topN(
 #'  ranked,
 #'  config,
 #'  .func = mean_f,
@@ -711,7 +723,7 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #'  show.legend=TRUE)
 #' stopifnot( "ggplot" %in% class(tmpRob$plots[[4]]) )
 #'
-aggregateTopNIntensities <- function(pdata , config, .func, N = 3){
+aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 
   xcall <- as.list( match.call() )
   newcol <- make.names(paste0("srm_",.func(name = TRUE),"_",xcall$N))
@@ -787,7 +799,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
   message("starting aggregation")
 
   xnested <- xnested |>
-    dplyr::mutate(spreadMatrix = map(data, function(x,config){pb$tick(); extractIntensities(x, config)}, config))
+    dplyr::mutate(spreadMatrix = map(data, function(x,config){pb$tick(); response_as_matrix(x, config)}, config))
 
   #xnested <- xnested |>
   #  dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
@@ -821,7 +833,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
         dplyr::ungroup()
 
       if (value == "wide") {
-        wide <- prolfqua::toWideConfig(unnested, newconfig)
+        wide <- prolfqua::tidy_to_wide_config(unnested, newconfig)
         wide$config <- newconfig
         return(wide)
       }

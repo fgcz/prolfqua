@@ -29,7 +29,7 @@ xx$config$table$workIntensity
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{robust_scale}()},

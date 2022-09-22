@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_hierarchies_line_df}
 \alias{plot_hierarchies_line_df}
-\title{generates peptide level plots for all Proteins}
+\title{Generates peptide level plots for all Proteins}
 \usage{
 plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 }
@@ -12,7 +12,7 @@ plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 \item{config}{AnalysisConfiguration}
 }
 \description{
-generates peptide level plots for all Proteins
+Generates peptide level plots for all Proteins
 }
 \examples{
 
@@ -48,9 +48,11 @@ config$table$hierarchyDepth = 2
 
 }
 \seealso{
+\code{\link{plot_hierarchies_line}}
+
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
+\code{\link{aggregate_intensity_topN}()},
 \code{\link{aggregate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolishPlydf_config}()},
