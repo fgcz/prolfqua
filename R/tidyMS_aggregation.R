@@ -1,4 +1,3 @@
-
 # Functions - Plotting ----
 # Plot peptide and fragments
 plot_hierarchies_line_default <- function(data,
@@ -119,7 +118,7 @@ plot_hierarchies_line <- function(res,
 
 
 
-#' Generates peptide level plots for all Proteins
+#' Generates peptide level plots for all proteins
 #'
 #' @seealso \code{\link{plot_hierarchies_line}}
 #' @export
@@ -211,7 +210,9 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 
 
 
-#' Compute Tukey's median polish from peptide or precursor intensities
+#' Median polish estimate of e.g. protein from peptide intensities
+#'
+#' Compute Tukey's median polish estimate of a protein from peptide or precursor intensities
 #'
 #' @family aggregation
 #' @param x a matrix
@@ -222,14 +223,14 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 #'
 #' @examples
 #'
-#' medpolishPly(name = TRUE)
+#' medpolish_estimate(name = TRUE)
 #' gg <- matrix(runif(20),4,5)
 #' rownames(gg) <- paste0("A",1:4)
 #' colnames(gg) <- make.names(1:5)
 #' gg
-#' mx <- medpolishPly(gg)
+#' mx <- medpolish_estimate(gg)
 #'
-medpolishPly <- function(x, name = FALSE, sampleName = "sampleName" ){
+medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
   if (name) {
     return("medpolish")
   }
@@ -293,7 +294,10 @@ response_as_matrix <- function(pdata, config ){
               setdiff(table$hierarchyKeys(), table$hkeysDepth()),
               table$sampleName)
 }
-#' medpolish dataframe
+
+#' Median polish estimates of e.g. protein abundances for entire data.frame
+#'
+#' @seealso \code{\link{medpolish_estimate}}
 #' @param pdata data.frame
 #' @param expression column name with intensities
 #' @param feature column name e.g. peptide ids
@@ -316,21 +320,24 @@ response_as_matrix <- function(pdata, config ){
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- medpolishPlydf(x,
+#' bb <- medpolish_estimate_df(x,
 #'  expression = conf$table$get_work_intensity(),
 #'   feature = feature,
 #'    sampleName = conf$table$sampleName)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-medpolishPlydf <- function(pdata, expression, feature, sampleName  ){
+medpolish_estimate_df <- function(pdata, expression, feature, sampleName  ){
   bb <- .extractInt(pdata,
     expression = expression,
      feature = feature,
       sampleName =  sampleName)
-   medpolishPly(bb, sampleName = sampleName)
-
+   medpolish_estimate(bb, sampleName = sampleName)
 }
-#' medpolish Ply df config
+
+
+#' Median polish estimates of e.g. protein abundances for entire data.frame
+#'
+#' @seealso \code{\link{medpolish_estimate_df}}
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @family aggregation
@@ -348,16 +355,16 @@ medpolishPlydf <- function(pdata, expression, feature, sampleName  ){
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- medpolishPlydf_config(x,conf)
+#' bb <- medpolish_estimate_dfconfig(x,conf)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-medpolishPlydf_config <- function(pdata, config, name=FALSE){
+medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
   if (name) {
     return("medpolish")
   }
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
-  res <- medpolishPlydf(pdata,
+  res <- medpolish_estimate_df(pdata,
                  expression = config$table$get_work_intensity(),
                  feature = feature,
                  sampleName = config$table$sampleName)
@@ -365,7 +372,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 }
 
 
-.summarizeRobust <- function(pdata, expression, feature , samples = "samples", maxIt = 20) {
+.rlm_estimate <- function(pdata, expression, feature , samples = "samples", maxIt = 20) {
   data <- pdata |> select_at(c(samples, feature, expression)) |> na.omit()
   ##If there is only one 1 peptide for all samples return expression of that peptide
   expname <- paste0("mean.",expression)
@@ -441,7 +448,7 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 
 
 
-#' Summarize proteins using MASS:rlm
+#' Estimate e.g. protein abundance from peptides using MASS:rlm
 #'
 #' @keywords internal
 #' @family aggregation
@@ -455,21 +462,21 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #'
 #' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 #'
-#' bb <- summarizeRobust(xx , "expression", "feature", "samples", maxIt = 20)
+#' bb <- rlm_estimate(xx , "expression", "feature", "samples", maxIt = 20)
 #' bb
 #'
 #' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
-#' summarizeRobust(xx2, "log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust(prolfqua_data('data_checksummarizationrobust87'),"log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust(prolfqua_data('data_checksummarizerobust69'),"log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(prolfqua_data('data_checksummarizationrobust87'),"log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(prolfqua_data('data_checksummarizerobust69'),"log2Area", "peptide_Id", "sampleName")
 #' res <- vector(100,mode = "list")
 #' for (i in seq_len(100)) {
 #'   xx3 <- xx2
 #'   xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
-#'   res[[i]] <- list(data = xx3, summary = summarizeRobust(xx3, "log2Area", "peptide_Id", "sampleName"))
+#'   res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sampleName"))
 #' }
-#' summarizeRobust(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
-#' summarizeRobust(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 #'
 #'
 #' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
@@ -482,26 +489,28 @@ medpolishPlydf_config <- function(pdata, config, name=FALSE){
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- summarizeRobust(x,
+#' bb <- rlm_estimate(x,
 #'  expression = conf$table$get_work_intensity(),
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
 #'
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
+rlm_estimate <- function(pdata, expression, feature , samples, maxIt = 20) {
   pdata <- unite(pdata, "feature", all_of(feature))
 
-  res <- .summarizeRobust(pdata, expression, feature = "feature", samples, maxIt = maxIt)
+  res <- .rlm_estimate(pdata, expression, feature = "feature", samples, maxIt = maxIt)
   return(res)
 }
 
-#' Same as summarize robust but with config
+#' Estimate protein abundance from peptide abundances using MASS::rlm
 #'
-#' @seealso \code{\link{summarizeRobust}}
+#'
+#'
+#' @seealso \code{\link{rlm_estimate}}
 #' @export
 #' @param pdata data.frame
-#' @param config AnalysisConfiguraton
+#' @param config \code{\link{AnalysisConfiguraton}}
 #' @family aggregation
 #' @keywords internal
 #' @examples
@@ -515,21 +524,24 @@ summarizeRobust <- function(pdata, expression, feature , samples, maxIt = 20) {
 #'
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
-#' bb <- summarizeRobust_config(x, conf)
+#' bb <- rlm_estimate_dfconfig(x, conf)
 #'
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-summarizeRobust_config <- function(pdata, config, name= FALSE){
+rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
-  summarizeRobust(pdata, expression = config$table$get_work_intensity(),
+  rlm_estimate(pdata, expression = config$table$get_work_intensity(),
                   feature = feature,
                   samples = config$table$sampleName
                   , maxIt = 20)
 }
 
-#' old2new config
+#' Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
+#' prolfqua 0.5
+#' @param list with data = data.frame and config = AnalysisConfiguration
+#' @return  list with data and AnalysisConfiguration
 #' @export
 #'
 old2new <- function(dd_old) {
@@ -550,8 +562,9 @@ old2new <- function(dd_old) {
   return(dd)
 }
 
-#' Summarizes the intensities within hierarchy
+#' Aggregates e.g. protein abundances from peptide abundances
 #'
+#' @seealso \code{\link{medpolish_estimate_dfconfig}} \code{\link{rlm_estimate_dfconfig}}
 #' @param func - a function working on a matrix of intensities for each protein.
 #' @return returns list with data (data.frame) and config (AnalysisConfiguration)
 #' @family aggregation
@@ -567,9 +580,9 @@ old2new <- function(dd_old) {
 #'
 #' data <- prolfqua::transform_work_intensity(data, config, log2)
 #' colnames(data)
-#' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
+#' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
 #'
-#' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
+#' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
 #' names(bbMed$data)
 #' names(bbRob$data)
 #' length(bbMed$data$medpolish)
@@ -579,7 +592,7 @@ old2new <- function(dd_old) {
 #' plot(bbMed$data$medpolish[1:100], bbRob$data$lmrob[1:100])
 #' abline(0,1)
 #'
-aggregate_intensity <- function(data, config, .func)
+estimate_intensity <- function(data, config, .func)
 {
   makeName <- .func(name = TRUE)
   config <- config$clone(deep = TRUE)
@@ -625,20 +638,20 @@ aggregate_intensity <- function(data, config, .func)
 #' data <- dd$data
 #'
 #' data <- prolfqua::transform_work_intensity(data, config, log2)
-#' bbMed <- aggregate_intensity(data, config, .func = medpolishPlydf_config)
-#' tmpMed <- plot_aggregation(data, config, bbMed$data, bbMed$config)
+#' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
+#' tmpMed <- plot_estimate(data, config, bbMed$data, bbMed$config)
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[2]]))
 #' tmpMed$plots[[3]]
 #'
-#' bbRob <- aggregate_intensity(data, config, .func = summarizeRobust_config)
-#' tmpRob <- plot_aggregation(data, config, bbRob$data, bbRob$config)
+#' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
+#' tmpRob <- plot_estimate(data, config, bbRob$data, bbRob$config)
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 #' tmpRob$plots[[3]]
 #'
 #'
-plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
+plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
   hierarchy_ID <- "hierarchy_ID"
   xnested <- data |> group_by(!!!syms(config$table$hkeysDepth())) |> nest()
   xnested <- xnested |> tidyr::unite(hierarchy_ID , !!!syms(config$table$hkeysDepth()))
@@ -715,8 +728,8 @@ plot_aggregation <- function(data, config, data_aggr, config_reduced, show.legen
 #' # stopifnot(dim(resTOPN$data) == c(3260, 8))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
 #' config$table$get_work_intensity()
-#' #debug(plot_aggregation)
-#' tmpRob <- plot_aggregation(ranked,
+#' #debug(plot_estimate)
+#' tmpRob <- plot_estimate(ranked,
 #'  config,
 #'  resTOPN$data,
 #'  resTOPN$config,
@@ -766,19 +779,19 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
-#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 #'
 #' res <- x("unnest")
 #' x("unnest")$data |> dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
 #' config <- bb$config$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 1
-#' x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+#' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 #'
 #' x("unnest")$data
 #' xnested <- x()
 #' dd <- x(value = "plot")
 #'
-#' dd$medpolishPly[[1]]
+#' dd$medpolish_estimate[[1]]
 #'
 #' dd$plot[[2]]
 #'
@@ -829,7 +842,7 @@ intensity_summary_by_hkeys <- function(data, config, func)
     }else if (value == "unnest" || value == "wide") {
       unnested <- xnested |>
         dplyr::select(config$table$hkeysDepth(), makeName) |>
-        tidyr::unnest(cols = c(medpolishPly)) |>
+        tidyr::unnest(cols = c(medpolish_estimate)) |>
         dplyr::ungroup()
 
       if (value == "wide") {
@@ -864,15 +877,15 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 #'
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' res <- medpolish_protein_quants(istar_data,
+#' res <- medpolish_protein_estimates(istar_data,
 #' istar$config )
 #'
 #' head(res("unnest")$data)
 #'
-medpolish_protein_quants <- function(data, config){
+medpolish_protein_estimates <- function(data, config){
   protintensity <- prolfqua::intensity_summary_by_hkeys(data ,
                                                           config,
-                                                          medpolishPly)
+                                                          medpolish_estimate)
   return(protintensity)
 }
 

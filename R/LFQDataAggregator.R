@@ -77,7 +77,7 @@ LFQDataAggregator <- R6::R6Class(
                 "Use LFQData$get_Transformer to transform the data.",
                 self$lfq$config$table$workIntensity,)
       }
-      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = medpolishPlydf_config)
+      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -93,7 +93,7 @@ LFQDataAggregator <- R6::R6Class(
                 self$lfq$config$table$workIntensity,)
       }
 
-      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = summarizeRobust_config)
+      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -129,7 +129,7 @@ LFQDataAggregator <- R6::R6Class(
       if (is.null(self$lfq_agg)) {
         stop("please aggregate the data first")
       }
-      df <- prolfqua::plot_aggregation(
+      df <- prolfqua::plot_estimate(
         self$lfq$data,
         self$lfq$config,
         self$lfq_agg$data,

@@ -140,12 +140,12 @@ invisible(lapply(HLfigs$plot[1:3], print))
 ```{r summarizeProteinMedpolish}
 skylineconfigHL$table$hkeysDepth()
 
-HLfigs3 <- prolfqua::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolishPly)
+HLfigs3 <- prolfqua::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolish_estimate)
 HLfigs3 <- HLfigs3("nested")
 HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hkeysDepth())
 
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) |>
-  plot_hierarchies_add_quantline(HLfigs3$medpolishPly[[2]],"medpolish", skylineconfigHL)
+  plot_hierarchies_add_quantline(HLfigs3$medpolish_estimate[[2]],"medpolish", skylineconfigHL)
 p
 
 ```
@@ -153,7 +153,7 @@ p
 ```{r writeSummaries ,eval=TRUE}
 
 HLfigs3 <- HLfigs3 |>
-  dplyr::mutate(figsMed = purrr::map2(plot, medpolishPly, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
+  dplyr::mutate(figsMed = purrr::map2(plot, medpolish_estimate, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
 #pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
 invisible(lapply(HLfigs3$figsMed[2:5], print))
@@ -163,8 +163,8 @@ invisible(lapply(HLfigs3$figsMed[2:5], print))
 # Get Protein intensities
 
 ```{r plotProteinIntensities, fig.cap="Plot protein intensities"}
-prots <- HLfigs3 |> dplyr::select(as.character(proteinIDsymbol),  medpolishPly) |> 
-  tidyr::unnest(cols = "medpolishPly")
+prots <- HLfigs3 |> dplyr::select(as.character(proteinIDsymbol),  medpolish_estimate) |> 
+  tidyr::unnest(cols = "medpolish_estimate")
 
 ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
   ggplot2::geom_point() +

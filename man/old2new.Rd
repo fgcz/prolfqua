@@ -2,10 +2,18 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{old2new}
 \alias{old2new}
-\title{old2new config}
+\title{Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
+prolfqua 0.5}
 \usage{
 old2new(dd_old)
 }
+\arguments{
+\item{list}{with data = data.frame and config = AnalysisConfiguration}
+}
+\value{
+list with data and AnalysisConfiguration
+}
 \description{
-old2new config
+Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
+prolfqua 0.5
 }

@@ -1,5 +1,9 @@
 # ContrastsSaintExpress ----
-#' ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
+#' Wrapper to results produced by SAINTexpress
+#'
+#' SAINT express writes
+#'
+#'
 #'
 #' @export
 #' @family modelling

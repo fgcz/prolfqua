@@ -9,18 +9,18 @@ Internal Functions by category
 \seealso{
 Other aggregation: 
 \code{\link{aggregate_intensity_topN}()},
-\code{\link{aggregate_intensity}()},
+\code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 
 Other benchmarking: 
 \code{\link{Benchmark}},
@@ -48,7 +48,7 @@ Other configuration:
 
 Other deprecated: 
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 
@@ -116,12 +116,12 @@ Other FragPipe:
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

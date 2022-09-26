@@ -49,7 +49,7 @@ Other workflows:
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{deprecated}

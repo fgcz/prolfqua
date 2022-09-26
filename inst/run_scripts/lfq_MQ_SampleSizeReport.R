@@ -119,7 +119,7 @@ results <- normalize_log2_robscale(res$data, resPep$config)
 
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())
-protintensity <- medpolish_protein_quants( results$data, results$config )
+protintensity <- medpolish_protein_estimates( results$data, results$config )
 xx <- protintensity("unnest")
 data <- prolfqua::apply_to_response_matrix(xx$data, xx$config, .func = robust_scale)
 

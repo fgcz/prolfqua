@@ -7,10 +7,13 @@
 #' @param obj data.frame
 #' @param idcol columns to extract uniprot id's from
 #'
-#' @example
+#' @examples
+#'
 #' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' head(bb$data)
-#' tmp <- get_UniprotID_from_fasta_header(bb$data[1:3], idcolumn = "Protein.Name")
+#' colnames(bb$data)
+#' tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
+#' tmp$UniprotID <- NULL
+#' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 {

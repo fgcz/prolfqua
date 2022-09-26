@@ -2,11 +2,14 @@
 % Please edit documentation in R/ContrastsSaintExpress.R
 \name{ContrastsSaintExpress}
 \alias{ContrastsSaintExpress}
-\title{ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)}
+\title{Wrapper to results produced by SAINTexpress}
 \description{
-ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
+Wrapper to results produced by SAINTexpress
 
-ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
+Wrapper to results produced by SAINTexpress
+}
+\details{
+SAINT express writes
 }
 \seealso{
 \code{\link{summary_ROPECA_median_p.scaled}}

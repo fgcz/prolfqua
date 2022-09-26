@@ -17,6 +17,15 @@ data.frame
 \description{
 Extracts uniprot ID
 }
+\examples{
+
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+colnames(bb$data)
+tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
+tmp$UniprotID <- NULL
+tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
+stopifnot("UniprotID" \%in\%  colnames(tmp))
+}
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

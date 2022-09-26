@@ -11,7 +11,6 @@
 #'
 #' @family modelling
 #' @export
-#' @examples
 #'
 #'
 #'

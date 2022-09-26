@@ -45,8 +45,8 @@ print(dim(resTOPN$data))
 # stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$get_work_intensity()
-#debug(plot_aggregation)
-tmpRob <- plot_aggregation(ranked,
+#debug(plot_estimate)
+tmpRob <- plot_estimate(ranked,
  config,
  resTOPN$data,
  resTOPN$config,
@@ -57,18 +57,18 @@ stopifnot( "ggplot" \%in\% class(tmpRob$plots[[4]]) )
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity}()},
+\code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 }
 \concept{aggregation}
 \keyword{internal}
