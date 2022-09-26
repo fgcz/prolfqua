@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        r-version: [4.1.0]
+        r-version: [4.2.0]
     steps:
       - uses: actions/checkout@v2
 
@@ -41,7 +41,7 @@ jobs:
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest','logger', 'multcomp', 'pROC'));
           pkgs <- c(pkgs, c('pheatmap', 'prozor', 'plotly', 'progress', 'purrr', 'readr'));
           pkgs <- c(pkgs, c('readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr'));
-          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl', 'proDA')) ;
+          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl', 'proDA', 'devtools')) ;
           lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}});
         shell: Rscript {0}
       - name: Cache R packages
@@ -59,7 +59,7 @@ jobs:
         run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
       - name: install fgcz/prolfqua
-        run: install_github("fgcz/prolfqua")
+        run: devtools::install_github("fgcz/prolfqua")
         shell: Rscript {0}
       - name: codecov
         run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
