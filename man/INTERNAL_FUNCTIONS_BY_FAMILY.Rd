@@ -28,15 +28,13 @@ Other benchmarking:
 \code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 
-Other concrete_configuration: 
-\code{\link{concrete_AnalysisTableAnnotation}}
-
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
@@ -54,15 +52,9 @@ Other deprecated:
 
 Other MaxQuant: 
 \code{\link{MaxQuant}},
-\code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()},
-\code{\link{tidyMQ_allPeptides}()},
-\code{\link{tidyMQ_from_Sites}()},
-\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
-\code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()}
+\code{\link{tidyMQ_ProteinGroups}()}
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
@@ -78,7 +70,6 @@ Other modelling:
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
@@ -96,9 +87,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
@@ -108,7 +97,6 @@ Other modelling:
 Other FragPipe: 
 \code{\link{FragPipe}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_peptides}()},
 \code{\link{tidy_FragPipe_combined_protein_deprec}()},
 \code{\link{tidy_FragPipe_combined_protein}()}
 

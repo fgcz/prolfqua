@@ -45,7 +45,7 @@ if(FALSE){
 render_MQSummary_rmd(analysis,
   config ,
   projectConfig,
-  workdir= ".") # tempdir(check = FALSE))
+  workdir= tempdir()) # tempdir(check = FALSE))
 }
 }
 \seealso{

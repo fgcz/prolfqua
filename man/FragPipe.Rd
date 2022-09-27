@@ -10,7 +10,6 @@ Convert FragPipe outputs into tidy tables. For more details see functions listed
 Other FragPipe: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_peptides}()},
 \code{\link{tidy_FragPipe_combined_protein_deprec}()},
 \code{\link{tidy_FragPipe_combined_protein}()}
 }

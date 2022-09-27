@@ -31,6 +31,7 @@ Other configuration:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},

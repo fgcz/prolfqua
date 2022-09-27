@@ -329,62 +329,6 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   return(gg)
 }
 
-#' plot intensities per interaction with Two
-#'  independent random effects removed (1|A) + (1|B)
-#'  @param m model
-#'  @param legend.position none
-#'  @param firstlast todo
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' #todo look up example
-#'
-plot_lmer_peptide_noRandom_TWO <- function(m, legend.position = "none", firstlast = TRUE){
-
-  updateDataWithRandom <- function(data, m, i, randeffect){
-    rand_i <- randeffect[i]
-    ran <- lme4::ranef(m)[[rand_i]]
-    name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
-    colnames(ran) <- name
-    ran <- tibble::as_tibble(ran,rownames = rand_i)
-    ran <- dplyr::inner_join(data, ran, by = rand_i)
-    ran_res <- ran |> dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - !!sym(name))
-    ran_res
-  }
-
-  data <- m@frame
-  if (firstlast) {
-    i1 <- 1;  i2 <- 2
-  } else {
-    i1 <- 2;  i2 <- 1
-  }
-  randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
-  ran_res <- updateDataWithRandom(data, m, i1, randeffect)
-  ran_res <- updateDataWithRandom(ran_res, m, i2, randeffect)
-
-  #randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
-  #rand_i <- randeffect[i]
-  #ran <- ranef(m)[[rand_i]]
-  #name <- paste0(gsub("[()]","",colnames(ran)),"_", rand_i)
-  #colnames(ran) <- name
-  #ran <- as_tibble(ran,rownames = rand_i)
-  #ran_res <- dplyr::inner_join(ran_res, ran, by = rand_i)
-  #ran_res <- ran_res |> dplyr::mutate(int_randcorrected  = int_randcorrected  - !!sym(name))
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  ran_res <- make_interaction_column(ran_res,interactionColumns, sep = ":" )
-
-  meanx <- function(x){mean(x,na.rm = TRUE)}
-  gg <- ggplot(ran_res,aes(x = .data$interaction , y = .data$int_randcorrected,
-                           color = !!sym(randeffect[i1]))) +
-    geom_point(position = position_jitterdodge(jitter.width = 0.2))
-  gg <- gg + stat_summary(fun = meanx, colour = "black", geom = "point",
-                          shape = 12, size = 3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0),legend.position = legend.position)
-  gg <- gg + geom_boxplot(alpha = 0.1)
-  gg
-  return(gg)
-}
 
 
 #' Add predicted values for each interaction
@@ -425,22 +369,6 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 }
 
 
-#' Plotting two independent random effects
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' #todo
-#'
-plot_lmer_model_and_data_TWO <- function(m,
-                                         proteinID,
-                                         legend.position = "none" ,
-                                         firstlast= TRUE){
-  gg <- plot_lmer_peptide_noRandom_TWO(m, legend.position = legend.position, firstlast = firstlast)
-  gg <- plot_lmer_predicted_interactions(gg, m)
-  gg <- gg + ggtitle(proteinID)
-  gg
-}
 
 
 
@@ -1139,38 +1067,6 @@ contrasts_linfct_write <- function(results,
 
 # HELPER ----
 
-#' get coefficients from all models
-#' @export
-#' @family modelling
-#' @keywords internal
-get_model_coefficients <- function(modeldata, config){
-  l_coeff <- function(m){
-    if (!is.null(m)) {
-      res <- as.numeric(coefficients(m))
-      return(res)
-    }
-    return(numeric())
-  }
-
-  n_coeff <- function(m){
-    if (!is.null(m)) {
-      res <- names(coefficients(m))
-      return(res)
-    }
-    return(character())
-  }
-
-  xx <- modeldata |>
-    dplyr::mutate(coefficients_values = purrr::map(.data$linear_model, l_coeff)) |>
-    dplyr::mutate(coefficients_names = purrr::map(.data$linear_model, n_coeff))
-
-  xxs <- xx |> dplyr::select( config$table$hkeysDepth(),
-                               .data$coefficients_values,
-                               .data$coefficients_names)
-  xxxn <- xxs |> unnest_legacy()
-  xxcoef <- xxxn |> spread(.data$coefficients_names,.data$coefficients_values)
-  return(xxcoef)
-}
 
 
 # ROPECA ----
@@ -1301,34 +1197,4 @@ summary_ROPECA_median_p.scaled <- function(
   return(ungroup( summarized.protein ))
 }
 
-# simulate pairwise experiment data.
-createPairedData <- function(Nsubject = 20, Nprotein = 10){
-  xd <- data.frame(Subject = sort(rep(LETTERS[1:Nsubject],times = 2)),
-                   Treatment = rep(c("placebo", "treatment"),Nsubject))
-  xd <- replicate(Nprotein, xd ,simplify = FALSE)
-  for (i in 1:Nprotein) {
-    xd[[i]]$proteinID <- letters[i]
-  }
-  dd <- Reduce(rbind, xd)
-  dd <- dd |> unite(col = "sampleID", .data$Subject, .data$Treatment, remove = FALSE)
 
-
-  dd$intensity <- stats::rnorm(nrow(dd), mean = 10, sd = 2)
-
-  dd1 <- filter(dd, .data$proteinID %in% letters[1:6])
-  dd1 <- dplyr::sample_n(dd1, 7 )
-  dd2 <- filter(dd, .data$proteinID %in% letters[7:10])
-  dNA <- bind_rows(dd1,dd2)
-
-
-  annotation <- select(dNA, .data$sampleID, .data$Subject, .data$Treatment) |> distinct()
-  rownames(annotation) <- annotation$sampleID
-
-  wideData <- dNA |> tidyr::pivot_wider(id_cols = .data$proteinID,
-                                         names_from = "sampleID",
-                                         values_from = .data$intensity)
-  withRowNames <- data.frame(wideData)
-  rownames(withRowNames) <- withRowNames$proteinID
-  withRowNames$proteinID <- NULL
-  withRowNames <- as.matrix(withRowNames)
-}

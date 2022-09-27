@@ -1,30 +1,31 @@
-
-
-
-
 # AnalysisConfiguration ----
+#'
 #' Analysis Configuration
+#' @description
+#' Analysis Configuration
+#'
 #' @keywords internal
 #' @family configuration
 #' @export
 #'
-AnalysisConfiguration <- R6::R6Class("AnalysisConfiguration",
-                                     public = list(
-                                       #' @field sep separator to use when uniting columns is necessary
-                                       sep = "~",
-                                       #' @field table AnalysisTableAnnotation
-                                       table = NULL,
-                                       #' @field parameter AnalysisParameter
-                                       parameter = NULL,
-                                       #' @description
-                                       #' create AnalysisConfiguration
-                                       #' @param analysisTableAnnotation instance of AnalysisTableAnnotation
-                                       #' @param analysisParameter instance of AnalysisParameter
-                                       initialize = function(analysisTableAnnotation, analysisParameter = AnalysisParameters$new()){
-                                         self$table <- analysisTableAnnotation
-                                         self$parameter <- analysisParameter
-                                       }
-                                     )
+AnalysisConfiguration <- R6::R6Class(
+  "AnalysisConfiguration",
+  public = list(
+    #' @field sep separator to use when uniting columns is necessary
+    sep = "~",
+    #' @field table AnalysisTableAnnotation
+    table = NULL,
+    #' @field parameter AnalysisParameter
+    parameter = NULL,
+    #' @description
+    #' create AnalysisConfiguration
+    #' @param analysisTableAnnotation instance of AnalysisTableAnnotation
+    #' @param analysisParameter instance of AnalysisParameter
+    initialize = function(analysisTableAnnotation, analysisParameter = AnalysisParameters$new()){
+      self$table <- analysisTableAnnotation
+      self$parameter <- analysisParameter
+    }
+  )
 )
 
 #' Make reduced hierarchy configuration
@@ -376,8 +377,8 @@ hierarchy_counts_sample <- function(pdata,
       return(summary)
     }else{
       long <- summary |> tidyr::gather("key",
-                                        "nr",-dplyr::one_of(configuration$table$isotopeLabel,
-                                                            configuration$table$sampleName))
+                                       "nr",-dplyr::one_of(configuration$table$isotopeLabel,
+                                                           configuration$table$sampleName))
       if (value == "long") {
         return(long)
       }else if (value == "plot") {

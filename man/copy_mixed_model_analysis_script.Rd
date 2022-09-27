@@ -12,4 +12,7 @@ copy_mixed_model_analysis_script(workdir = getwd())
 \description{
 copy all files need to run mixed model analysis.
 }
+\examples{
+copy_mixed_model_analysis_script(workdir = tempdir())
+}
 \keyword{internal}

@@ -9,14 +9,8 @@ Convert MaxQuant outputs into tidy tables. For more details see functions listed
 \seealso{
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
 \code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()},
-\code{\link{tidyMQ_allPeptides}()},
-\code{\link{tidyMQ_from_Sites}()},
-\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
-\code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()}
+\code{\link{tidyMQ_ProteinGroups}()}
 }
 \concept{MaxQuant}

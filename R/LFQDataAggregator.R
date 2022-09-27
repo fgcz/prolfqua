@@ -36,8 +36,9 @@
 #' # lfqAggregator$write_plots(".")
 #' protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 #' protPlotter$heatmap()
-#'
-#'
+#' \dontrun{
+#' lfqAggregator$write_plots(tempdir())
+#' }
 LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",
   public = list(
@@ -154,10 +155,8 @@ LFQDataAggregator <- R6::R6Class(
         pb$tick()
       }
       dev.off()
-      self$filepath = filepath
       invisible(filepath)
     }
-
   ),
   private = list(
     .topN = function(.func, N = 3){

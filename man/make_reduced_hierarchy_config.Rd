@@ -39,6 +39,7 @@ Other configuration:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},

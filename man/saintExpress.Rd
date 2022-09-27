@@ -83,9 +83,9 @@ res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
 
 stopifnot(names(res) == c( "inter", "prey",  "bait"))
 if(!Sys.info()["sysname"] == "Darwin") {
-  res <- runSaint(res)
+  res <- runSaint(res, filedir = tempdir())
 } else {
- testthat::expect_error(runSaint(res))
+ testthat::expect_error(runSaint(res, filedir = tempdir()))
 }
 
 }

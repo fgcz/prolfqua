@@ -49,7 +49,8 @@
 #' @param workdir directory where to copy file - default is current working directory.
 #' @keywords internal
 #' @export
-#'
+#' @examples
+#' copy_mixed_model_analysis_script(workdir = tempdir())
 copy_mixed_model_analysis_script <- function(workdir = getwd()){
   runscripts <- c("fgcz_formatting/fgcz_header.html",
                   "fgcz_formatting/fgcz_footer.html",
@@ -67,7 +68,8 @@ copy_mixed_model_analysis_script <- function(workdir = getwd()){
 #' @param workdir directory where to copy file - default is current working directory.
 #' @keywords internal
 #' @export
-#'
+#' @examples
+#' copy_SAINTe_doc(workdir = tempdir())
 copy_SAINTe_doc <- function(workdir = getwd()){
   runscripts <- c("SaintExpress/SAINTexpress-manual.docx")
   .scriptCopyHelperVec(runscripts, workdir = workdir)
@@ -130,7 +132,7 @@ copy_SAINTe_doc <- function(workdir = getwd()){
 #' render_MQSummary_rmd(analysis,
 #'   config ,
 #'   projectConfig,
-#'   workdir= ".") # tempdir(check = FALSE))
+#'   workdir= tempdir()) # tempdir(check = FALSE))
 #' }
 render_MQSummary_rmd <-
   function(pdata,

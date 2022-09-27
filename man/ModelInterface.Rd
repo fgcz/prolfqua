@@ -12,12 +12,12 @@ R6 interface class representing modelling result
 
 mi <- ModelInterface$new()
 
-testthat::expect_error(int$get_coefficients())
-testthat::expect_error(int$get_anova())
-testthat::expect_error(int$coef_histogram())
-testthat::expect_error(int$coef_volcano())
-testthat::expect_error(int$coef_pairs())
-testthat::expect_error(int$anova_histogram())
+testthat::expect_error(mi$get_coefficients())
+testthat::expect_error(mi$get_anova())
+testthat::expect_error(mi$coef_histogram())
+testthat::expect_error(mi$coef_volcano())
+testthat::expect_error(mi$coef_pairs())
+testthat::expect_error(mi$anova_histogram())
 
 
 }

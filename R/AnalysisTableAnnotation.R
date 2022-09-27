@@ -3,7 +3,6 @@
 #' Create Annotation
 #' @description
 #' Annotates Data Table
-#' @keywords internal
 #' @family configuration
 #' @export
 #' @examples
@@ -17,6 +16,7 @@
 #' ata$id_vars()
 #' ata$value_vars()
 #' ata$annotation_vars()
+#' ac <- AnalysisConfiguration$new(ata)
 #'
 AnalysisTableAnnotation <- R6::R6Class(
   "AnalysisTableAnnotation",

@@ -41,8 +41,9 @@ pMean$plots[[2]]
 # lfqAggregator$write_plots(".")
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 protPlotter$heatmap()
-
-
+\dontrun{
+lfqAggregator$write_plots(tempdir())
+}
 }
 \seealso{
 Other LFQData: 

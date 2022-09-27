@@ -2,7 +2,6 @@
 #' Analysis parameters
 #' @description
 #' Analysis parameters
-#' @keywords internal
 #' @family configuration
 #' @export
 AnalysisParameters <- R6::R6Class(

@@ -7,6 +7,13 @@
 #' @param inputAnnotation annotation
 #' @param fileName column name to join on.
 #' @export
+#' @examples
+#' protein_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+#'
+#' inputAnnotation <- system.file("samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx",package = "prolfqua")
+#' startdata <- prolfqua::tidyMQ_ProteinGroups(protein_txt)
+#' tmp <- add_annotation(startdata,inputAnnotation )
+#' stopifnot(ncol(tmp) == ncol(startdata) + 3)
 #'
 add_annotation <- function(intensityData,
                            inputAnnotation,
@@ -56,7 +63,7 @@ add_annotation <- function(intensityData,
 #'
 #' config$parameter$min_nr_of_notNA  <- 3
 #' #debug(workflow_correlation_preprocessing_protein_intensities)
-#' runLong <- FALSE
+#' runLong <- TRUE
 #' if(runLong){
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 #' names(res)
