@@ -2,7 +2,6 @@
 [![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://codecov.io/gh/fgcz/prolfqua)
 
 
-
 <img src="man/figures/imgfile.png" width="200">
 
 # prolfqua - a R package for Proteomics Differential Expression Analysis
