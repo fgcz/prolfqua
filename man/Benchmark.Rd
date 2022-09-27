@@ -9,10 +9,8 @@ Benchmark R6 class
 Benchmark R6 class
 }
 \examples{
-#library(ggpubr)
 
 dd <- dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic))
-head(dd)
 dd <- dd |> dplyr::mutate(avgInt = (c1 + c2)/2)
 ttd <- ionstar_bench_preprocess(dd)
 medpol_benchmark <- make_benchmark(ttd$data,
@@ -58,11 +56,17 @@ benchmark$plot_FDPvsTPR()
 benchmark$plot_FDRvsFDP()
 benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
 benchmark$complete(FALSE)
-benchmark$pAUC_summaries()$ftable$content
+benchmark$missing_contrasts()
+stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4 + 1))
 benchmark$complete(TRUE)
-benchmark$pAUC_summaries()$ftable$content
-
-
+stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4+1))
+missum <- benchmark$missing_contrasts()$summary
+stopifnot(nrow(missum) == 4)
+stopifnot(ncol(missum) == 2)
+# returns number of statistics
+stopifnot(nrow(benchmark$n_confusion_benchmark()) == 4 * (4 + 1))
+stopifnot(nrow(benchmark$n_confusion_FDRvsFDP()) == 2 * (4 + 1))
+benchmark$pAUC()
 }
 \seealso{
 Other benchmarking: 

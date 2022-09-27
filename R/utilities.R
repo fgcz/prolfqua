@@ -496,38 +496,7 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
   }
 }
 
-#' table facade to easily switch implementations
-#' @export
-#' @family utilities
-#' @keywords internal
-table_facade.list <- function(parlist, kable=TRUE){
-  table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
-}
 
-
-
-.string.to.colors <- function(string, colors = NULL){
-  if (is.factor(string)) {
-    string = as.character(string)
-  }
-  if (!is.null(colors)) {
-    if (length(colors) != length(unique(string))) {
-      stop("The number of colors must be equal to the number of unique elements.")
-    }
-    else {
-      conv = cbind(unique(string), colors)
-    }
-  } else {
-    conv = cbind(unique(string), rainbow(length(unique(string))))
-  }
-  unlist(lapply(string, FUN = function(x){conv[which(conv[,1] == x),2]}))
-}
-
-.number.to.colors = function(value, colors = c("red", "blue"), num = 100){
-  cols = colorRampPalette(colors)(num)
-  cols = 	cols[findInterval(value, vec = seq(from = min(value), to = max(value), length.out = num))]
-  cols
-}
 
 # @examples
 #

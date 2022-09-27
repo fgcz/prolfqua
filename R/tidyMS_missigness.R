@@ -413,18 +413,6 @@ get_contrast <- function(data,
 }
 
 
-get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, global = TRUE){
-  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
-  imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-  imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
-  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
-  imputedProt$group_1_name <- NULL
-  imputedProt$group_2_name <- NULL
-  imputedProt$group_1 <- NULL
-  imputedProt$group_2 <- NULL
-
-  return(imputedProt)
-}
 
 #' compute contrasts based on peptide fold changes
 #'

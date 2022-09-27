@@ -9,11 +9,11 @@ LFQData R6 class
 LFQData R6 class
 }
 \examples{
-istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+istar <- old2new(prolfqua_data('data_ionstar'))
 
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-#LFQData$debug("rename_response")
 lfqdata <- LFQData$new(data, istar$config)
+lfqdata$filter_proteins_by_peptide_count()
 tmp <- lfqdata$to_wide()
 stopifnot("data.frame" \%in\% class(tmp$data))
 tmp <- lfqdata$to_wide(as.matrix = TRUE)
@@ -21,7 +21,13 @@ stopifnot("matrix" \%in\% class(tmp$data))
 lfqdata$factors()
 stopifnot(lfqdata$is_transformed()==FALSE)
 lfqdata$summarize_hierarchy()
-lfqdata$omit_NA()
+
+# filter for missing values
+f1 <- lfqdata$omit_NA(nrNA = 0)
+stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
+
+f2 <- lfqdata$omit_NA(factorDepth = 0)
+stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
 lfqdata$response()
 lfqdata$rename_response("peptide.intensity")
@@ -35,6 +41,21 @@ stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
 stopifnot("LFQDataWriter" \%in\% class(lfqdata$get_Writer()))
 stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
 
+lfqdata2 <- lfqdata$get_copy()
+lfqdata2$data <- lfqdata2$data[1:500,]
+res <- lfqdata$filter_difference(lfqdata2)
+stopifnot(nrow(res$data) == nrow(lfqdata$data) - 500)
+tmp <- lfqdata$get_sample(40, seed = 4)
+stopifnot(nrow(tmp$hierarchy()) == 40)
+
+if(require("SummarizedExperiment")){
+   tmp <- LFQDataToSummarizedExperiment(lfqdata)
+}
+
+lw <- lfqdata$get_Writer()
+stopifnot(names(lw$get_wide()) \%in\% c("data", "annotation"))
+
+stopifnot("data.frame" \%in\% class(lw$get_long()))
 
 }
 \seealso{
@@ -70,13 +91,13 @@ Other LFQData:
 \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
 \item \href{#method-LFQData-subject_Id}{\code{LFQData$subject_Id()}}
 \item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
-\item \href{#method-LFQData-intensity_column}{\code{LFQData$intensity_column()}}
 \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-LFQData-omit_NA}{\code{LFQData$omit_NA()}}
 \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-LFQData-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
+\item \href{#method-LFQData-hierarchy}{\code{LFQData$hierarchy()}}
 \item \href{#method-LFQData-response}{\code{LFQData$response()}}
 \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
@@ -191,19 +212,6 @@ logical
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-intensity_column"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-intensity_column}{}}}
-\subsection{Method \code{intensity_column()}}{
-return name of intensity column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$intensity_column()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-name of intensity column
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-remove_small_intensities"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-remove_small_intensities}{}}}
 \subsection{Method \code{remove_small_intensities()}}{
@@ -244,7 +252,7 @@ Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0, factorDepth = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0, factorDepth = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -304,7 +312,7 @@ list with data, annotation, and configuration
 \if{html}{\out{<a id="method-LFQData-factors"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-factors}{}}}
 \subsection{Method \code{factors()}}{
-Annotation table.
+Annotation table
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$factors()}\if{html}{\out{</div>}}
 }
@@ -312,6 +320,16 @@ Annotation table.
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-hierarchy}{}}}
+\subsection{Method \code{hierarchy()}}{
+Hierarchy table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-response"></a>}}

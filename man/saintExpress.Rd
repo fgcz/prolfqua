@@ -62,7 +62,6 @@ look at https://www.jessesadler.com/post/network-analysis-with-r/
 https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 }
 \examples{
-\donttest{
 
 bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
 new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
@@ -83,8 +82,10 @@ res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
                    )
 
 stopifnot(names(res) == c( "inter", "prey",  "bait"))
-
-undebug(runSaint)
-res <- runSaint(res)
+if(!Sys.info()["sysname"] == "Darwin") {
+  res <- runSaint(res)
+} else {
+ testthat::expect_error(runSaint(res))
 }
+
 }

@@ -337,7 +337,8 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 }
 
 
-#' apply Function To matrix
+#' Apply function requiring a matrix to tidy table
+#'
 #' @param data data.frame
 #' @param config AnalysisConfiguration
 #' @param .func function

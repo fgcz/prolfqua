@@ -1,9 +1,10 @@
 # LFQDataWriter -----
+#'
 #' Write LFQData, or provide outputs for writing.
 #'
 #' @family LFQData
 #'
-#'
+#' @seealso \code{\link{LFQData}}
 #' @export
 #'
 LFQDataWriter <- R6::R6Class(
@@ -28,7 +29,7 @@ LFQDataWriter <- R6::R6Class(
       self$prefix = prefix
     },
     #' @description
-    #' get Data in long format for writing
+    #' Get data in long format for writing
     #' @return tibble
     get_long = function(){
       #' gets data formatted for writing
@@ -37,7 +38,7 @@ LFQDataWriter <- R6::R6Class(
         self$lfq$config)
     },
     #' @description
-    #' get Data in Wide format for writing
+    #' Get data in Wide format for writing
     #' @return list with data and annotation
     get_wide = function(){
       #' gets data formatted for writing

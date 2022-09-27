@@ -1,5 +1,18 @@
 # ModelInterface -----
 #' R6 interface class representing modelling result
+#' @export
+#' @examples
+#'
+#' mi <- ModelInterface$new()
+#'
+#' testthat::expect_error(int$get_coefficients())
+#' testthat::expect_error(int$get_anova())
+#' testthat::expect_error(int$coef_histogram())
+#' testthat::expect_error(int$coef_volcano())
+#' testthat::expect_error(int$coef_pairs())
+#' testthat::expect_error(int$anova_histogram())
+#'
+#'
 ModelInterface <- R6::R6Class(
   "ModelInterface",
   public = list(

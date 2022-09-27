@@ -58,9 +58,9 @@ filter_proteins_by_peptide_count <-
 #'
 filter_difference <- function(x, y, config){
   if (nrow(y) > nrow(x)) {
-    dplyr::anti_join(y, x, by = config$table$idVars())
+    dplyr::anti_join(y, x, by = config$table$id_vars())
   }else{
-    dplyr::anti_join(x, y, by = config$table$idVars())
+    dplyr::anti_join(x, y, by = config$table$id_vars())
   }
 }
 

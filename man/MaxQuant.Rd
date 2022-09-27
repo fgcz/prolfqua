@@ -11,7 +11,6 @@ Other MaxQuant:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
-\code{\link{tidyMQ_PeptideProtein}()},
 \code{\link{tidyMQ_Peptides}()},
 \code{\link{tidyMQ_ProteinGroups}()},
 \code{\link{tidyMQ_allPeptides}()},

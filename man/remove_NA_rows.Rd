@@ -38,7 +38,6 @@ Other utilities:
 \code{\link{pairs_w_abline}()},
 \code{\link{panel_cor}()},
 \code{\link{panel_hist}()},
-\code{\link{table_facade.list}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

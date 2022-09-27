@@ -9,6 +9,8 @@ Write LFQData, or provide outputs for writing.
 Write LFQData, or provide outputs for writing.
 }
 \seealso{
+\code{\link{LFQData}}
+
 Other LFQData: 
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
@@ -68,7 +70,7 @@ initialize class
 \if{html}{\out{<a id="method-LFQDataWriter-get_long"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataWriter-get_long}{}}}
 \subsection{Method \code{get_long()}}{
-get Data in long format for writing
+Get data in long format for writing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$get_long()}\if{html}{\out{</div>}}
 }
@@ -82,7 +84,7 @@ gets data formatted for writing
 \if{html}{\out{<a id="method-LFQDataWriter-get_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataWriter-get_wide}{}}}
 \subsection{Method \code{get_wide()}}{
-get Data in Wide format for writing
+Get data in Wide format for writing
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$get_wide()}\if{html}{\out{</div>}}
 }

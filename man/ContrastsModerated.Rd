@@ -32,9 +32,10 @@ contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
 
 csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
-
+colnames(csi$to_wide())
+csi$get_contrast_sides()
 csi$get_contrasts()
-contrast$get_contrasts()
+
 
 merged <- merge_contrasts_results(contrast, csi)
 merged$more$get_contrasts() |> dim()

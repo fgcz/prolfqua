@@ -6,6 +6,17 @@
 #' @keywords internal
 #' @family configuration
 #' @export
+#' @examples
+#'
+#' ata <- AnalysisTableAnnotation$new()
+#' ata$fileName = "rawfile.column"
+#' ata$hierarchy[["protein"]] = "protein.column"
+#' ata$factors[["explanatory"]] = "explanatory.column"
+#' ata$set_work_intensity("abundance")
+#' ata$id_required()
+#' ata$id_vars()
+#' ata$value_vars()
+#' ata$annotation_vars()
 #'
 AnalysisTableAnnotation <- R6::R6Class(
   "AnalysisTableAnnotation",
@@ -107,27 +118,27 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @description
     #' Id Columns which must be in the input data frame
     #' @return character array
-    idRequired = function(){
-      idVars <- c(
+    id_required = function(){
+      id_vars <- c(
         self$fileName,
-        purrr::map_chr(self$factors,"colnames"),
+        unlist(self$factors),
         unlist(self$hierarchy),
         self$isotopeLabel
       )
-      return(idVars)
+      return(id_vars)
     },
     #' @description
     #' get names of columns annotating values (e.g. intensities)
     #' @return character array
-    idVars = function(){
+    id_vars = function(){
       "Id Columns which must be in the output data frame"
-      idVars <- c(
+      id_vars <- c(
         self$fileName,
         names(self$factors),
         names(self$hierarchy),
         self$isotopeLabel,
         self$sampleName)
-      return(idVars)
+      return(id_vars)
     },
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)

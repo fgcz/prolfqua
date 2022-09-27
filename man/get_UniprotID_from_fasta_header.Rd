@@ -37,7 +37,6 @@ Other utilities:
 \code{\link{panel_cor}()},
 \code{\link{panel_hist}()},
 \code{\link{remove_NA_rows}()},
-\code{\link{table_facade.list}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

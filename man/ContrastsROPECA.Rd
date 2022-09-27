@@ -44,6 +44,8 @@ mod <- build_model(
  dim(tmp)
  pl <- contrast$get_Plotter()
  contrast$to_wide()
+ contrast$get_linfct()
+ contrast$get_contrast_sides()
  pl$histogram()
  pl$ma_plot()
 

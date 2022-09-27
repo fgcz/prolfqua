@@ -8,6 +8,19 @@ R6 interface class representing modelling result
 
 R6 interface class representing modelling result
 }
+\examples{
+
+mi <- ModelInterface$new()
+
+testthat::expect_error(int$get_coefficients())
+testthat::expect_error(int$get_anova())
+testthat::expect_error(int$coef_histogram())
+testthat::expect_error(int$coef_volcano())
+testthat::expect_error(int$coef_pairs())
+testthat::expect_error(int$anova_histogram())
+
+
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

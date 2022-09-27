@@ -12,8 +12,6 @@
 #' @family modelling
 #' @export
 #'
-#'
-#'
 ContrastsSimpleImpute <- R6::R6Class(
   "ContrastsSimpleImpute",
   inherit = ContrastsInterface,

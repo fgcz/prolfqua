@@ -4,6 +4,7 @@
 #' @param fasta list of sequences created with \code{\link[seqinr]{read.fasta}}
 #' @param id_col column with protein ids/accessions.
 #' @export
+#'
 add_protein_lengths <- function(
   intdata,
   fasta,
@@ -29,7 +30,6 @@ add_protein_lengths <- function(
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
 #' @examples
-#' \donttest{
 #'
 #' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
 #' new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
@@ -50,10 +50,12 @@ add_protein_lengths <- function(
 #'                    )
 #'
 #' stopifnot(names(res) == c( "inter", "prey",  "bait"))
-#'
-#' undebug(runSaint)
-#' res <- runSaint(res)
+#' if(!Sys.info()["sysname"] == "Darwin") {
+#'   res <- runSaint(res, filedir = tempdir())
+#' } else {
+#'  testthat::expect_error(runSaint(res, filedir = tempdir()))
 #' }
+#'
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
                                 proteinID = "protein_Id",
@@ -147,7 +149,7 @@ runSaint <- function(si,
                    stderr = TRUE,
                    wait = TRUE)
   } else {
-    stop("System",Sys.info()["sysname"] , "not supported.")
+    stop("System",Sys.info()["sysname"] , " not supported.")
   }
 
   message(cat(out,sep = "\n"))

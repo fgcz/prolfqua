@@ -1,6 +1,13 @@
 # ContrastsInterface ----
 #' Base class for all Contrasts classes
 #' @export
+#' @examples
+#' int <- ContrastsInterface$new()
+#' testthat::expect_error(int$get_contrast_sides())
+#' testthat::expect_error(int$get_contrasts())
+#' testthat::expect_error(int$get_Plotter())
+#' testthat::expect_error(int$to_wide())
+#' int$column_description()
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(

@@ -32,7 +32,7 @@ prolfqua::model_summary(mod)
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 contrastX$get_contrasts()
 contrastX$column_description()
-
+contrastX$to_wide()
 }
 \seealso{
 Other modelling: 

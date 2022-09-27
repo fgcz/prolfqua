@@ -156,46 +156,6 @@ tidyMQ_merged <- function(txt_directory){
   return(resProt_Pep_Evidence)
 }
 
-#' Generating mq from proteinGroups, peptide.txt and modifiedPeptideSequence
-#' @param txt_directory or zip
-#'
-#' @family MaxQuant
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' #txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
-#' #allData <- tidyMQ_PeptideProtein(txt_directory)
-#'
-tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
-  if (grepl("\\.zip$",tolower(txt_directory))) {
-    proteins_txt <- read.csv(unz(txt_directory,"proteinGroups.txt"),
-                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-    peptides_txt <- read.csv(unz(txt_directory,"peptides.txt"),
-                             header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-    mod_spec_peptides_txt <- read.csv(unz(txt_directory,"modificationSpecificPeptides.txt"),
-                                      header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-
-  }else{
-    proteins_txt <- file.path(txt_directory, "proteinGroups.txt")
-    peptides_txt <- file.path(txt_directory, "peptides.txt")
-    mod_spec_peptides_txt <- file.path(txt_directory, "modificationSpecificPeptides.txt")
-  }
-  mq_proteins <- tidyMQ_ProteinGroups(proteins_txt)
-  mq_peptides <- tidyMQ_Peptides(peptides_txt)
-  mq_modSpecPeptides <- tidyMQ_modificationSpecificPeptides(mod_spec_peptides_txt)
-
-  resProt_Pep <- inner_join(mq_proteins,mq_peptides, by = c("protein.group.id", "raw.file"))
-
-  if (.all) {
-    return(list(resProt_Pep = resProt_Pep,
-                mq_proteins = mq_proteins,
-                mq_peptides = mq_peptides,
-                mq_modSpecPeptides = mq_modSpecPeptides))
-  }else{
-    return(resProt_Pep)
-  }
-}
 
 #' parse MQ modificationSpecificPeptides.txt
 #' @param MQPeptides data.frame generated with read.csv("peptide.txt",sep = "\\t", stringsAsFactors = FALSE)

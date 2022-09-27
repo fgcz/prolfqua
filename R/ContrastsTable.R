@@ -14,10 +14,15 @@
 #' lfqdata <- LFQData$new(data, configur)
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 #' "dilution.c-e" = "dilution.c - dilution.b")
-#' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
-#' ctr <- tmp$get_contrasts()
-#' xcx <- ContrastsTable$new(ctr, subject_Id = tmp$subject_Id, modelName = tmp$modelName)
+#' csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+#' ctr <- csi$get_contrasts()
+#' csi$subject_Id
+#' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+#' xcx$get_contrasts()
 #' xcx$get_Plotter()$volcano()
+#' stopifnot(is.null(xcx$get_contrast_sides()))
+#' stopifnot(is.null(xcx$get_linfct()))
+#' stopifnot(ncol(xcx$to_wide()) == 8)
 #'
 ContrastsTable <- R6::R6Class(
   "ContrastsTable",

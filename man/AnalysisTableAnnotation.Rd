@@ -6,6 +6,19 @@
 \description{
 Annotates Data Table
 }
+\examples{
+
+ata <- AnalysisTableAnnotation$new()
+ata$fileName = "rawfile.column"
+ata$hierarchy[["protein"]] = "protein.column"
+ata$factors[["explanatory"]] = "explanatory.column"
+ata$set_work_intensity("abundance")
+ata$id_required()
+ata$id_vars()
+ata$value_vars()
+ata$annotation_vars()
+
+}
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
@@ -66,8 +79,8 @@ Other configuration:
 \item \href{#method-AnalysisTableAnnotation-factor_keys_depth}{\code{AnalysisTableAnnotation$factor_keys_depth()}}
 \item \href{#method-AnalysisTableAnnotation-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
 \item \href{#method-AnalysisTableAnnotation-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
-\item \href{#method-AnalysisTableAnnotation-idRequired}{\code{AnalysisTableAnnotation$idRequired()}}
-\item \href{#method-AnalysisTableAnnotation-idVars}{\code{AnalysisTableAnnotation$idVars()}}
+\item \href{#method-AnalysisTableAnnotation-id_required}{\code{AnalysisTableAnnotation$id_required()}}
+\item \href{#method-AnalysisTableAnnotation-id_vars}{\code{AnalysisTableAnnotation$id_vars()}}
 \item \href{#method-AnalysisTableAnnotation-value_vars}{\code{AnalysisTableAnnotation$value_vars()}}
 \item \href{#method-AnalysisTableAnnotation-annotation_vars}{\code{AnalysisTableAnnotation$annotation_vars()}}
 \item \href{#method-AnalysisTableAnnotation-clone}{\code{AnalysisTableAnnotation$clone()}}
@@ -184,12 +197,12 @@ array of column names
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-idRequired"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-idRequired}{}}}
-\subsection{Method \code{idRequired()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-id_required"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-id_required}{}}}
+\subsection{Method \code{id_required()}}{
 Id Columns which must be in the input data frame
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idRequired()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$id_required()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -197,12 +210,12 @@ character array
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-idVars"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-idVars}{}}}
-\subsection{Method \code{idVars()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-id_vars"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-id_vars}{}}}
+\subsection{Method \code{id_vars()}}{
 get names of columns annotating values (e.g. intensities)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$idVars()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$id_vars()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

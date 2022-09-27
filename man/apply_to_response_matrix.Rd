@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{apply_to_response_matrix}
 \alias{apply_to_response_matrix}
-\title{apply Function To matrix}
+\title{Apply function requiring a matrix to tidy table}
 \usage{
 apply_to_response_matrix(data, config, .func, .funcname = NULL)
 }
@@ -16,7 +16,7 @@ apply_to_response_matrix(data, config, .func, .funcname = NULL)
 \item{.funcname}{name of function (used for creating new column)}
 }
 \description{
-apply Function To matrix
+Apply function requiring a matrix to tidy table
 }
 \examples{
 

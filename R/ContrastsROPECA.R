@@ -40,6 +40,8 @@
 #'  dim(tmp)
 #'  pl <- contrast$get_Plotter()
 #'  contrast$to_wide()
+#'  contrast$get_linfct()
+#'  contrast$get_contrast_sides()
 #'  pl$histogram()
 #'  pl$ma_plot()
 #'
@@ -76,13 +78,13 @@ ContrastsROPECA <- R6::R6Class(
     #' show names of contrasts
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast$get_contrast_sides()
+      self$Contrast$get_contrast_sides()
     },
     #' @description
     #' get linear function used to determine contrasts
     #' @return data.frame
     get_linfct = function(){
-      self$contrast$get_linfct()
+      self$Contrast$get_linfct()
     },
     #' @description
     #' get contrasts

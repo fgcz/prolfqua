@@ -169,7 +169,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     data[[configuration$table$isotopeLabel]] <- "light"
   }
 
-  data <- data |> dplyr::select(c(configuration$table$idVars(),configuration$table$value_vars()))
+  data <- data |> dplyr::select(c(configuration$table$id_vars(),configuration$table$value_vars()))
 
   if (cc) {
     data <- complete_cases( data , configuration)
@@ -478,9 +478,9 @@ summarize_hierarchy <- function(pdata,
 #'
 spread_response_by_IsotopeLabel <- function(resData, config){
   table <- config$table
-  idVars <- table$idVars()
-  resData2 <- resData |> dplyr::select(c(idVars, table$value_vars()) )
-  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(idVars)  )
+  id_vars <- table$id_vars()
+  resData2 <- resData |> dplyr::select(c(id_vars, table$value_vars()) )
+  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(id_vars)  )
   resData2 <- resData2 |>  tidyr::unite("temp", table$isotopeLabel, .data$variable )
   HLData <- resData2 |> tidyr::spread(.data$temp,.data$value)
   invisible(HLData)

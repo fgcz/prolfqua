@@ -493,7 +493,18 @@ fitFDistRobustly_LG <- function(x, df1, covariate=NULL, winsor.tail.p=c(0.05,0.1
 #' \code{var.prior} The location of prior distribution. A vector if \code{covariate} is non-\code{NULL}, otherwise a scalar.
 #' \code{df.prior} The degrees of freedom of prior distribution. A vector if \code{robust=TRUE}, otherwise a scalar.
 #' @export
-squeezeVarRob <- function(var, df, covariate=NULL, robust=FALSE, winsor.tail.p=c(0.05,0.1), min_df=1)
+#' @examples
+#' var <- rexp(1000)
+#' df <- sample( 3:10, 1000, replace = TRUE)
+#' tmp <- squeezeVarRob(var, df)
+#' tmp <- squeezeVarRob(var, df, robust = TRUE)
+#'
+squeezeVarRob <- function(var,
+                          df,
+                          covariate=NULL,
+                          robust=FALSE,
+                          winsor.tail.p=c(0.05,0.1),
+                          min_df=1)
   # Empirical Bayes posterior variances
   #	Adapted from Gordon Smyth
   # Based on version created 2 March 2004.  Last modified 5 May 2016.

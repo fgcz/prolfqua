@@ -37,3 +37,10 @@ A list with components:
 \description{
 This function squeezes a set of sample variances together by computing empirical Bayes posterior means in a way that is robust against the presence of very small non-integer degrees of freedom values.
 }
+\examples{
+var <- rexp(1000)
+df <- sample( 3:10, 1000, replace = TRUE)
+tmp <- squeezeVarRob(var, df)
+tmp <- squeezeVarRob(var, df, robust = TRUE)
+
+}
