@@ -22,7 +22,6 @@ config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 res <- tidy_to_wide_config(analysis, config)
 res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
-head(res$data)
 res <- scale(res$data)
 
 }

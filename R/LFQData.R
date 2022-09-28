@@ -200,8 +200,7 @@ LFQData <- R6::R6Class(
     rename_response = function(newname = "Intensity"){
       if((newname %in% colnames(self$data))){
         msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
-        logger::log_info(msg)
-        logger::log_error("provide different name.")
+        message(msg)
       } else {
         old <- self$config$table$pop_work_intensity()
         self$config$table$set_work_intensity(newname)
