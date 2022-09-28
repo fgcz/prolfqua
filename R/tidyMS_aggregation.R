@@ -676,19 +676,6 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= 
   }
   xnested_all$plots <- plots
 
-  # original version
-  if (FALSE) {
-    xnested_all <- xnested_all |>
-      dplyr::mutate(plots = map2(data, !!sym(hierarchy_ID) ,
-                                 plot_hierarchies_line,
-                                 config = config,
-                                 show.legend = show.legend ))
-
-    xnested_all <- xnested_all |>
-      dplyr::mutate(plots = map2(plots, other,
-                                plot_hierarchies_add_quantline,
-                                config_reduced$table$get_work_intensity(), config ))
-  }
   return(xnested_all)
 }
 

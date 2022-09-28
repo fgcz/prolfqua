@@ -63,6 +63,20 @@ NULL
 # usethis::use_data(data_basicModel_p1807, compress = TRUE, overwrite = TRUE)
 # file.remove("data/basicModel_p1807.rda")
 
+#' SAINT express output
+#'
+#' SAINT express output produced by running the function
+#' \code{\link{runSaint}}
+#'
+#' @seealso \code{\link{runSaint}}
+#' @family data
+#' @keywords internal
+#' @docType data
+#' @format a linear model
+"data_SAINTe_output"
+
+
+
 #' Model for debugging
 #' @family data
 #' @keywords internal

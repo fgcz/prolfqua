@@ -31,18 +31,19 @@ prolfqua::model_summary(mod)
 #Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 contrastX$get_contrasts()
+contrastX$get_contrast_sides()
 contrastX$column_description()
-contrastX$to_wide()
+stopifnot(dim(contrastX$to_wide()) == c(160,7))
 }
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_proDA}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},

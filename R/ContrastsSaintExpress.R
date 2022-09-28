@@ -8,8 +8,17 @@
 #' @export
 #' @family modelling
 #'
-ContrastsSaintExpress <- R6::R6Class(
-  "ContrastsSaint",
+#' @examples
+#' seout <- prolfqua_data("data_SAINTe_output")
+#' cse <- ContrastsSAINTexpress$new(seout$list)
+#' stopifnot(dim(cse$to_wide()) == c(64,13))
+#' cse$get_contrast_sides()
+#' stopifnot(dim(cse$get_contrasts()) == c(236,7))
+#' cse$get_linfct()
+#' pl <- cse$get_Plotter()
+#' stopifnot(c("gg", "ggplot") %in% class(pl$volcano()$BFDR))
+ContrastsSAINTexpress <- R6::R6Class(
+  "ContrastsSAINTexpress",
   inherit = ContrastsInterface,
   public = list(
     #' @field contrast_result data.frame with the contrast computation results
@@ -50,11 +59,11 @@ ContrastsSaintExpress <- R6::R6Class(
     #' show contrasts
     #' @return data.frame
     get_contrast_sides = function(){
-      # extract contrast sides
-      tt <- self$contrasts[grep("-",self$contrasts)]
-      tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
-        tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
+      dd <- self$contrast_result
+      baits <- unique(dd$Bait)
+      tt <- data.frame(contrast = paste0(baits, " vs Control"),
+                       group_1  = baits,
+                       group_2 = "Control")
       return(tt)
     },
     #' @description

@@ -1039,31 +1039,6 @@ adjust_p_values <- function(
 
 }
 
-#' write results of `contrasts_linfct`
-#' @keywords internal
-#' @export
-#'
-contrasts_linfct_write <- function(results,
-                                   config,
-                                   path,
-                                   modelName = "Model",
-                                   prefix = "Contrasts",
-                                   columns = c("estimate", "p.value", "p.value.adjusted")){
-
-  subject_Id <- config$table$hkeysDepth()
-
-  if (!is.null(path)) {
-    fileLong <- paste0(prefix, "_", modelName)
-    message("Writing: ", fileLong, "\n")
-    lfq_write_table(separate_hierarchy(results, config) , path = path , name = fileLong)
-    fileWide <- paste0(prefix, "_", modelName, "_PIVOT")
-    message("Writing: ", fileWide, "\n")
-    resultswide <- pivot_model_contrasts_2_Wide(results,
-                                                subject_Id = subject_Id,
-                                                columns = columns)
-    lfq_write_table(separate_hierarchy(resultswide, config), path = path, name = fileWide)
-  }
-}
 
 # HELPER ----
 

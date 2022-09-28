@@ -26,8 +26,9 @@
 #' #Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' contrastX$get_contrasts()
+#' contrastX$get_contrast_sides()
 #' contrastX$column_description()
-#' contrastX$to_wide()
+#' stopifnot(dim(contrastX$to_wide()) == c(160,7))
 Contrasts <- R6::R6Class(
   "Contrast",
   inherit = ContrastsInterface,
