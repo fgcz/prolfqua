@@ -120,17 +120,14 @@ runSaint <- function(si,
     readr::write_tsv(si[[i]], file = filen , col_names = FALSE)
   }
 
-  pkg <- find.package("prolfqua")
-
   if (Sys.info()["sysname"] == "Windows") {
     if (spc) {
-      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-spc.exe"
+      exeS2 <- system.file("SaintExpress/bin/Windows64/SAINTexpress-spc.exe", package = "prolfqua")
     } else {
-      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-int.exe"
+      exeS2 <- system.file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", pacakge = "prolfqua")
     }
-    exeT <- file.path(pkg, exeS2)
 
-    out <- system2(exeT,
+    out <- system2(exeS2,
                    args = paths,
                    stdout = TRUE,
                    stderr = TRUE,
@@ -138,13 +135,12 @@ runSaint <- function(si,
                    minimized = TRUE)
   } else if (Sys.info()["sysname"] == "Linux") {
     if (spc) {
-      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-spc"
+      exeS2 <-  system.file("SaintExpress/bin/Linux64/SAINTexpress-spc",  package = "prolfqua")
     } else {
-      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-int"
+      exeS2 <-  system.file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
     }
-    exeT <- file.path(pkg, exeS2)
 
-    out <- system2(exeT,
+    out <- system2(exeS2,
                    args = paths,
                    stdout = TRUE,
                    stderr = TRUE,
