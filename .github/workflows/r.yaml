@@ -59,9 +59,9 @@ jobs:
       - name: rcmdcheck::rcmdcheck
         run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
-      - name: codecov
-        run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
-        shell: Rscript {0}
+#      - name: codecov
+#        run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
+#        shell: Rscript {0}
       - name: List files in home directory
         run: find $R_LIBS_SITE -type f > files.txt
       - uses: actions/upload-artifact@v2
