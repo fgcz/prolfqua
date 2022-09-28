@@ -545,12 +545,6 @@ missigness_histogram <- function(x,
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if(FALSE){
-    p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
-      ggplot2::geom_histogram(alpha = 0.2, position = "identity") +
-      ggplot2::facet_grid(as.formula(formula)) +
-      ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
-  }
   if (!config$table$is_intensity_transformed) {
     p <- p + ggplot2::scale_x_log10()
   }

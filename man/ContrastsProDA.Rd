@@ -8,6 +8,35 @@ ContrastsProDA Wrapper to results produced by proDA
 
 ContrastsProDA Wrapper to results produced by proDA
 }
+\examples{
+
+istar <- old2new( prolfqua_data('data_ionstar')$normalized() )
+istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 10))
+lfd <- LFQData$new(istar_data, istar$config)
+se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
+
+fit <- proDA::proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
+contr <- list()
+
+contrasts <- c("dilution_(9/7.5)_1.2" = "dilution.e - dilution.d",
+               "dilution_(7.5/6)_1.25" = "dilution.d - dilution.c")
+contr[["dilution_(9/7.5)_1.2"]] <- data.frame(
+  contrast = "dilution_(9/7.5)_1.2",
+  proDA::test_diff(fit, contrast = "dilution.e - dilution.d"))
+contr[["dilution_(7.5/6)_1.25"]] <- data.frame(
+  contrast = "dilution_(7.5/6)_1.25",
+  proDA::test_diff(fit, contrast = "dilution.d - dilution.c"))
+
+bb <- dplyr::bind_rows(contr)
+cproDA <- ContrastsProDA$new(bb, contrasts = contrasts, subject_Id = "name")
+cproDA$get_contrasts() |> head()
+cproDA$get_linfct()
+contsides <- cproDA$get_contrast_sides()
+stopifnot(ncol(cproDA$to_wide()) == c(7))
+tmp <- cproDA$get_Plotter()
+tmp$volcano()$pval
+tmp$volcano()$adj_pval
+}
 \seealso{
 \code{\link{summary_ROPECA_median_p.scaled}}
 
@@ -60,13 +89,19 @@ Other modelling:
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{contrast}}{named vector of length 1.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-ContrastsProDA-new}{\code{ContrastsProDA$new()}}
 \item \href{#method-ContrastsProDA-get_contrast_sides}{\code{ContrastsProDA$get_contrast_sides()}}
 \item \href{#method-ContrastsProDA-get_linfct}{\code{ContrastsProDA$get_linfct()}}
-\item \href{#method-ContrastsProDA-add}{\code{ContrastsProDA$add()}}
 \item \href{#method-ContrastsProDA-get_contrasts}{\code{ContrastsProDA$get_contrasts()}}
 \item \href{#method-ContrastsProDA-get_Plotter}{\code{ContrastsProDA$get_Plotter()}}
 \item \href{#method-ContrastsProDA-to_wide}{\code{ContrastsProDA$to_wide()}}
@@ -88,9 +123,9 @@ Other modelling:
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$new(
   contrastsdf,
-  contrast,
-  subject_Id = "protein_Id",
-  modelName = "ContrastSaint"
+  contrasts,
+  subject_Id = "name",
+  modelName = "ContrastProDA"
 )}\if{html}{\out{</div>}}
 }
 
@@ -110,15 +145,6 @@ Other modelling:
 \subsection{Method \code{get_linfct()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_linfct()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsProDA-add"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsProDA-add}{}}}
-\subsection{Method \code{add()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$add(...)}\if{html}{\out{</div>}}
 }
 
 }
@@ -147,7 +173,11 @@ get contrasts
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{Contrast_Plotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_Plotter(fcthreshold = 1, bfdrthreshold = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_Plotter(
+  fcthreshold = 1,
+  fdrthreshold = 0.1,
+  tstatthreshold = 5
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -166,7 +196,7 @@ get \code{\link{Contrast_Plotter}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$to_wide(columns = c("SaintScore", "BFDR"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$to_wide(columns = c("t_statistic", "adj_pval"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

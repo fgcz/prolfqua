@@ -4,8 +4,9 @@ library(tidyverse)
 library(covr)
 
 # compute test coverage
-coverage <- package_coverage(type = "all")
+x <- package_coverage(type = "all")
 x <- coverage
+#zero_coverage(x)
 by = "line"
 group = "functions"
 df <- tally_coverage(x, by = by)
