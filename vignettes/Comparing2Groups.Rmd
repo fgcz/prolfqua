@@ -118,7 +118,7 @@ adata <- setup_analysis(startdata, config)
 Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
 
 ```{r removeSmallIntensities}
-lfqdata <- LFQData$new(adata, config)
+lfqdata <- prolfqua::LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 lfqdata$factors()
 ```
