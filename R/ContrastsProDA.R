@@ -1,11 +1,10 @@
-# ContrastsSaintExpress ----
-#' ContrastsSaintExpress Wrapper to results produced by SaintExpress (list.txt file)
+#' ContrastsProDA Wrapper to results produced by proDA
 #'
 #' @export
 #' @family modelling
 #'
-Contrasts_proDA <- R6::R6Class(
-  "Contrasts_proDA",
+ContrastsProDA <- R6::R6Class(
+  "ContrastsProDA",
   inherit = prolfqua::ContrastsInterface,
   public = list (
     contrast_result = NULL,

@@ -17,6 +17,7 @@ Model for debugging
 Other data: 
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_IonstarProtein_subsetNorm}},
+\code{\link{data_SAINTe_output}},
 \code{\link{data_Yeast2Factor}},
 \code{\link{data_benchmarkExample}},
 \code{\link{data_checksummarizationrobust87}},

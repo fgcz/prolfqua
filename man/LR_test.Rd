@@ -30,17 +30,40 @@ LR_test(
 Likelihood ratio test
 }
 \examples{
-#todo add example
+data_Yeast2Factor <- prolfqua::old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
+pMerged <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
+
+pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
+pMerged$config$table$get_work_intensity()
+pMerged$factors()
+
+formula_condition_and_Batches <-
+  prolfqua::strategy_lm("transformedIntensity ~ condition_ + batch_")
+modCB <- prolfqua::build_model(
+  pMerged$data,
+  formula_condition_and_Batches,
+  subject_Id = pMerged$config$table$hierarchyKeys() )
+
+formula_condition <-
+  prolfqua::strategy_lm("transformedIntensity ~ condition_")
+modC <- prolfqua::build_model(
+  pMerged$data,
+  formula_condition,
+  subject_Id = pMerged$config$table$hierarchyKeys() )
+
+tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+hist(tmp$likelihood_ratio_test.pValue)
+
 }
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{Model}},
