@@ -20,11 +20,11 @@ Typically used with results of \code{\link{Contrasts}} and \code{\link{Contrasts
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
