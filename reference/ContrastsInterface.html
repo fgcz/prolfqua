@@ -164,6 +164,42 @@ Base class for all Contrasts classes"><!-- mathjax --><script src="https://cdnjs
 
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">int</span> <span class="op">&lt;-</span> <span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">int</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           column_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> modelName   modelName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contrast     contrast</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd         avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff             diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FDR               FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic   statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> std.error   std.error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> df                 df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p.value       p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low     conf.low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high   conf.high</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma           sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                            description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> modelName                                                                                type of model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contrast                                                      name of difference e.g. group1_vs_group2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd                                                  mean abundance value of protein in all samples</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff                                                                       difference among conditions</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FDR                                                                               false discovery rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic                                                                                 t-statistics</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> std.error                                                                               standard error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> df                                                                                  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p.value                                                                                        p-value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low                                                         lower value of 95 confidence interval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high                                                         high value of 95 confidence interval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

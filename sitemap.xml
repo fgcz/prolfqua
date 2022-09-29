@@ -76,22 +76,19 @@
     <loc>/reference/ContrastsModerated.html</loc>
   </url>
   <url>
-    <loc>/reference/ContrastsROPECA.html</loc>
+    <loc>/reference/ContrastsPlotter.html</loc>
   </url>
   <url>
-    <loc>/reference/ContrastsSaintExpress.html</loc>
+    <loc>/reference/ContrastsProDA.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ContrastsROPECA.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsSimpleImpute.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Contrasts_Plotter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Contrasts_proDA.html</loc>
   </url>
   <url>
     <loc>/reference/FragPipe.html</loc>
@@ -142,7 +139,7 @@
     <loc>/reference/ProjectStructure.html</loc>
   </url>
   <url>
-    <loc>/reference/R6extractValues.html</loc>
+    <loc>/reference/R6_extract_values.html</loc>
   </url>
   <url>
     <loc>/reference/RowAnnotProtein.html</loc>
@@ -151,25 +148,19 @@
     <loc>/reference/UpSet_interaction_missing_stats.html</loc>
   </url>
   <url>
-    <loc>/reference/addContrastResults.html</loc>
-  </url>
-  <url>
     <loc>/reference/add_annotation.html</loc>
   </url>
   <url>
     <loc>/reference/adjust_p_values.html</loc>
   </url>
   <url>
-    <loc>/reference/aggregateTopNIntensities.html</loc>
-  </url>
-  <url>
     <loc>/reference/aggregate_contrast.html</loc>
   </url>
   <url>
-    <loc>/reference/aggregate_intensity.html</loc>
+    <loc>/reference/aggregate_intensity_topN.html</loc>
   </url>
   <url>
-    <loc>/reference/applyToIntensityMatrix.html</loc>
+    <loc>/reference/apply_to_response_matrix.html</loc>
   </url>
   <url>
     <loc>/reference/build_model.html</loc>
@@ -178,7 +169,7 @@
     <loc>/reference/complete_cases.html</loc>
   </url>
   <url>
-    <loc>/reference/concrete_AnalysisTableAnnotation.html</loc>
+    <loc>/reference/concrete_AnalysisConfiguration.html</loc>
   </url>
   <url>
     <loc>/reference/contrasts_linfct.html</loc>
@@ -187,16 +178,22 @@
     <loc>/reference/contrasts_linfct_deprec.html</loc>
   </url>
   <url>
-    <loc>/reference/contrasts_linfct_write.html</loc>
-  </url>
-  <url>
     <loc>/reference/copy_SAINTe_doc.html</loc>
   </url>
   <url>
     <loc>/reference/copy_mixed_model_analysis_script.html</loc>
   </url>
   <url>
+    <loc>/reference/cor_jackknife_matrix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/cor_order.html</loc>
+  </url>
+  <url>
     <loc>/reference/data_IonstarProtein_subsetNorm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/data_SAINTe_output.html</loc>
   </url>
   <url>
     <loc>/reference/data_Yeast2Factor.html</loc>
@@ -259,7 +256,7 @@
     <loc>/reference/dot-summarise_missing_contrasts.html</loc>
   </url>
   <url>
-    <loc>/reference/extractIntensities.html</loc>
+    <loc>/reference/estimate_intensity.html</loc>
   </url>
   <url>
     <loc>/reference/filter_byQValue.html</loc>
@@ -274,9 +271,6 @@
     <loc>/reference/filter_proteins_by_peptide_count.html</loc>
   </url>
   <url>
-    <loc>/reference/gatherItBack.html</loc>
-  </url>
-  <url>
     <loc>/reference/get_UniprotID_from_fasta_header.html</loc>
   </url>
   <url>
@@ -287,9 +281,6 @@
   </url>
   <url>
     <loc>/reference/get_imputed_contrasts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_model_coefficients.html</loc>
   </url>
   <url>
     <loc>/reference/get_p_values_pbeta.html</loc>
@@ -322,7 +313,10 @@
     <loc>/reference/isSingular_lm.html</loc>
   </url>
   <url>
-    <loc>/reference/jackknifeMatrix.html</loc>
+    <loc>/reference/jackknife.html</loc>
+  </url>
+  <url>
+    <loc>/reference/jackknife_matrix.html</loc>
   </url>
   <url>
     <loc>/reference/lfq_power_t_test_proteins.html</loc>
@@ -358,22 +352,25 @@
     <loc>/reference/make_reduced_hierarchy_config.html</loc>
   </url>
   <url>
-    <loc>/reference/markDecorrelated.html</loc>
+    <loc>/reference/mark_decorelated.html</loc>
   </url>
   <url>
     <loc>/reference/matrix_to_tibble.html</loc>
   </url>
   <url>
-    <loc>/reference/medpolishPly.html</loc>
+    <loc>/reference/medpolish_estimate.html</loc>
   </url>
   <url>
-    <loc>/reference/medpolishPlydf.html</loc>
+    <loc>/reference/medpolish_estimate_df.html</loc>
   </url>
   <url>
-    <loc>/reference/medpolishPlydf_config.html</loc>
+    <loc>/reference/medpolish_estimate_dfconfig.html</loc>
   </url>
   <url>
-    <loc>/reference/medpolish_protein_quants.html</loc>
+    <loc>/reference/medpolish_protein_estimates.html</loc>
+  </url>
+  <url>
+    <loc>/reference/merge_contrasts_results.html</loc>
   </url>
   <url>
     <loc>/reference/missigness_histogram.html</loc>
@@ -388,10 +385,10 @@
     <loc>/reference/missingness_per_condition_cumsum.html</loc>
   </url>
   <url>
-    <loc>/reference/modelSummary.html</loc>
+    <loc>/reference/model_analyse.html</loc>
   </url>
   <url>
-    <loc>/reference/model_analyse.html</loc>
+    <loc>/reference/model_summary.html</loc>
   </url>
   <url>
     <loc>/reference/moderated_p_limma.html</loc>
@@ -403,7 +400,7 @@
     <loc>/reference/ms_bench_auc.html</loc>
   </url>
   <url>
-    <loc>/reference/multigroupVolcano.html</loc>
+    <loc>/reference/multigroup_volcano.html</loc>
   </url>
   <url>
     <loc>/reference/my_contest.html</loc>
@@ -421,7 +418,7 @@
     <loc>/reference/my_glht.html</loc>
   </url>
   <url>
-    <loc>/reference/my_jackknife.html</loc>
+    <loc>/reference/names_to_matrix.html</loc>
   </url>
   <url>
     <loc>/reference/normalize_log2_robscale.html</loc>
@@ -433,28 +430,28 @@
     <loc>/reference/nr_B_in_A_per_sample.html</loc>
   </url>
   <url>
+    <loc>/reference/old2new.html</loc>
+  </url>
+  <url>
     <loc>/reference/pairs_smooth.html</loc>
   </url>
   <url>
     <loc>/reference/pairs_w_abline.html</loc>
   </url>
   <url>
-    <loc>/reference/panel.cor.html</loc>
+    <loc>/reference/panel_cor.html</loc>
   </url>
   <url>
-    <loc>/reference/panel.hist.html</loc>
+    <loc>/reference/panel_hist.html</loc>
   </url>
   <url>
     <loc>/reference/pivot_model_contrasts_2_Wide.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_MQ_intensity_vs_retention_time.html</loc>
-  </url>
-  <url>
     <loc>/reference/plot_NA_heatmap.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_aggregation.html</loc>
+    <loc>/reference/plot_estimate.html</loc>
   </url>
   <url>
     <loc>/reference/plot_heatmap.html</loc>
@@ -484,13 +481,7 @@
     <loc>/reference/plot_lmer_model_and_data.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_lmer_model_and_data_TWO.html</loc>
-  </url>
-  <url>
     <loc>/reference/plot_lmer_peptide_noRandom.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_lmer_peptide_noRandom_TWO.html</loc>
   </url>
   <url>
     <loc>/reference/plot_lmer_peptide_predictions.html</loc>
@@ -529,16 +520,16 @@
     <loc>/reference/prolfqua_data.html</loc>
   </url>
   <url>
-    <loc>/reference/rankPrecursorsByIntensity.html</loc>
+    <loc>/reference/rank_by_NA.html</loc>
   </url>
   <url>
-    <loc>/reference/rankPrecursorsByNAs.html</loc>
+    <loc>/reference/rank_peptide_by_intensity.html</loc>
   </url>
   <url>
-    <loc>/reference/removeLarge_Q_Values.html</loc>
+    <loc>/reference/remove_NA_rows.html</loc>
   </url>
   <url>
-    <loc>/reference/removeNArows.html</loc>
+    <loc>/reference/remove_large_QValues.html</loc>
   </url>
   <url>
     <loc>/reference/remove_small_intensities.html</loc>
@@ -548,6 +539,18 @@
   </url>
   <url>
     <loc>/reference/render_SummarizeFiltering_rmd.html</loc>
+  </url>
+  <url>
+    <loc>/reference/response_as_matrix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/response_matrix_as_tibble.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rlm_estimate.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rlm_estimate_dfconfig.html</loc>
   </url>
   <url>
     <loc>/reference/robust_scale.html</loc>
@@ -574,10 +577,7 @@
     <loc>/reference/setup_analysis.html</loc>
   </url>
   <url>
-    <loc>/reference/split2table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/spreadValueVarsIsotopeLabel.html</loc>
+    <loc>/reference/spread_response_by_IsotopeLabel.html</loc>
   </url>
   <url>
     <loc>/reference/squeezeVarRob.html</loc>
@@ -586,13 +586,7 @@
     <loc>/reference/strategy.html</loc>
   </url>
   <url>
-    <loc>/reference/summariseQValues.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarizeRobust.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarizeRobust_config.html</loc>
+    <loc>/reference/summarise_QValues.html</loc>
   </url>
   <url>
     <loc>/reference/summarize_hierarchy.html</loc>
@@ -607,16 +601,10 @@
     <loc>/reference/table_facade.html</loc>
   </url>
   <url>
-    <loc>/reference/table_facade.list.html</loc>
-  </url>
-  <url>
     <loc>/reference/table_factors.html</loc>
   </url>
   <url>
     <loc>/reference/tidyMQ_Evidence.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_PeptideProtein.html</loc>
   </url>
   <url>
     <loc>/reference/tidyMQ_Peptides.html</loc>
@@ -625,25 +613,7 @@
     <loc>/reference/tidyMQ_ProteinGroups.html</loc>
   </url>
   <url>
-    <loc>/reference/tidyMQ_allPeptides.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_from_Sites.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_from_modSpecific_to_peptide.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_merged.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_modificationSpecificPeptides.html</loc>
-  </url>
-  <url>
     <loc>/reference/tidy_FragPipe_MSstats_csv.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_FragPipe_combined_peptides.html</loc>
   </url>
   <url>
     <loc>/reference/tidy_FragPipe_combined_protein.html</loc>
@@ -652,22 +622,13 @@
     <loc>/reference/tidy_FragPipe_combined_protein_deprec.html</loc>
   </url>
   <url>
-    <loc>/reference/toWide.html</loc>
+    <loc>/reference/tidy_to_wide.html</loc>
   </url>
   <url>
-    <loc>/reference/toWideConfig.html</loc>
+    <loc>/reference/tidy_to_wide_config.html</loc>
   </url>
   <url>
     <loc>/reference/transform_work_intensity.html</loc>
-  </url>
-  <url>
-    <loc>/reference/transitionCorrelations.html</loc>
-  </url>
-  <url>
-    <loc>/reference/transitionCorrelationsJack.html</loc>
-  </url>
-  <url>
-    <loc>/reference/volcano_Plotly.html</loc>
   </url>
   <url>
     <loc>/reference/workflow_DIA_NA_preprocessing.html</loc>

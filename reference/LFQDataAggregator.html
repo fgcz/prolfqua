@@ -141,7 +141,7 @@ aggregates intensities</p>
 <li><p><a href="#method-LFQDataAggregator-write_plots"><code>LFQDataAggregator$write_plots()</code></a></p></li>
 <li><p><a href="#method-LFQDataAggregator-clone"><code>LFQDataAggregator$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQDataAggregator-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LFQDataAggregator.html">LFQDataAggregator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfq</span>, prefix <span class="op">=</span> <span class="st">"protein"</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -319,7 +319,7 @@ aggregates intensities</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
@@ -334,10 +334,11 @@ aggregates intensities</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-in"><span><span class="va">pmed</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pmed</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 3 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row(s) containing missing values (geom_path).</span>
 <span class="r-plt img"><img src="LFQDataAggregator-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">lmrob</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
@@ -346,11 +347,10 @@ aggregates intensities</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'rlm' failed to converge in 20 steps</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'rlm' failed to converge in 20 steps</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'rlm' failed to converge in 20 steps</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'rlm' failed to converge in 20 steps</span>
 <span class="r-in"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">prob</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 3 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row(s) containing missing values (geom_path).</span>
 <span class="r-plt img"><img src="LFQDataAggregator-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqCopy</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -362,9 +362,8 @@ aggregates intensities</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
 <span class="r-in"><span><span class="va">pSum</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pSum</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous y-axis</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous y-axis</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row(s) containing missing values (geom_path).</span>
 <span class="r-plt img"><img src="LFQDataAggregator-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">mean_topN</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -372,14 +371,15 @@ aggregates intensities</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
 <span class="r-in"><span><span class="va">pMean</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pMean</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 3 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row(s) containing missing values (geom_path).</span>
 <span class="r-in"><span><span class="co"># lfqAggregator$write_plots(".")</span></span></span>
 <span class="r-in"><span><span class="va">protPlotter</span> <span class="op">&lt;-</span> <span class="va">lfqAggregator</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">protPlotter</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataAggregator-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">lfqAggregator</span><span class="op">$</span><span class="fu">write_plots</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>

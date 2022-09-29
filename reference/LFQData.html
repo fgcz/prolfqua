@@ -133,15 +133,15 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <li><p><a href="#method-LFQData-get_copy"><code>LFQData$get_copy()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_sample"><code>LFQData$get_sample()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_subset"><code>LFQData$get_subset()</code></a></p></li>
-<li><p><a href="#method-LFQData-subjectId"><code>LFQData$subjectId()</code></a></p></li>
+<li><p><a href="#method-LFQData-subject_Id"><code>LFQData$subject_Id()</code></a></p></li>
 <li><p><a href="#method-LFQData-is_transformed"><code>LFQData$is_transformed()</code></a></p></li>
-<li><p><a href="#method-LFQData-intensity_column"><code>LFQData$intensity_column()</code></a></p></li>
 <li><p><a href="#method-LFQData-remove_small_intensities"><code>LFQData$remove_small_intensities()</code></a></p></li>
 <li><p><a href="#method-LFQData-filter_proteins_by_peptide_count"><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
 <li><p><a href="#method-LFQData-omit_NA"><code>LFQData$omit_NA()</code></a></p></li>
 <li><p><a href="#method-LFQData-complete_cases"><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href="#method-LFQData-to_wide"><code>LFQData$to_wide()</code></a></p></li>
 <li><p><a href="#method-LFQData-factors"><code>LFQData$factors()</code></a></p></li>
+<li><p><a href="#method-LFQData-hierarchy"><code>LFQData$hierarchy()</code></a></p></li>
 <li><p><a href="#method-LFQData-response"><code>LFQData$response()</code></a></p></li>
 <li><p><a href="#method-LFQData-rename_response"><code>LFQData$rename_response()</code></a></p></li>
 <li><p><a href="#method-LFQData-hierarchy_counts"><code>LFQData$hierarchy_counts()</code></a></p></li>
@@ -155,7 +155,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <li><p><a href="#method-LFQData-filter_difference"><code>LFQData$filter_difference()</code></a></p></li>
 <li><p><a href="#method-LFQData-clone"><code>LFQData$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQData-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, is_pep <span class="op">=</span> <span class="cn">TRUE</span>, prefix <span class="op">=</span> <span class="st">"ms_"</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -220,17 +220,17 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><p>data frame with columns containing subjectId</p></dd>
+<dd><p>data frame with columns containing subject_Id</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-LFQData-subjectId"></a><div class="section">
-<h3 id="method-subjectid-">Method <code>subjectId()</code><a class="anchor" aria-label="anchor" href="#method-subjectid-"></a></h3>
+</div><p></p><hr><a id="method-LFQData-subject_Id"></a><div class="section">
+<h3 id="method-subject-id-">Method <code>subject_Id()</code><a class="anchor" aria-label="anchor" href="#method-subject-id-"></a></h3>
 <p>get subject ID columns</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">subjectId</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">subject_Id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -254,22 +254,10 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>logical</p>
 </div>
 
-</div><p></p><hr><a id="method-LFQData-intensity_column"></a><div class="section">
-<h3 id="method-intensity-column-">Method <code>intensity_column()</code><a class="anchor" aria-label="anchor" href="#method-intensity-column-"></a></h3>
-<p>return name of intensity column</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">intensity_column</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>name of intensity column</p>
-</div>
-
 </div><p></p><hr><a id="method-LFQData-remove_small_intensities"></a><div class="section">
 <h3 id="method-remove-small-intensities-">Method <code><a href="remove_small_intensities.html">remove_small_intensities()</a></code><a class="anchor" aria-label="anchor" href="#method-remove-small-intensities-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">remove_small_intensities</span><span class="op">(</span>threshold <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -282,19 +270,19 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>self</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-filter_proteins_by_peptide_count"></a><div class="section">
 <h3 id="method-filter-proteins-by-peptide-count-">Method <code><a href="filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-proteins-by-peptide-count-"></a></h3>
 <p>remove proteins with less than X peptides</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>self</p>
 </div>
 
@@ -303,8 +291,8 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <p>Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span>, factorDepth <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span>, factorDepth <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -320,14 +308,14 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>LFQData with NA omitted.</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-complete_cases"></a><div class="section">
 <h3 id="method-complete-cases-">Method <code><a href="complete_cases.html">complete_cases()</a></code><a class="anchor" aria-label="anchor" href="#method-complete-cases-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">complete_cases</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -340,14 +328,14 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>self</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>converts the data to wide</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -360,21 +348,29 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>list with data, annotation, and configuration</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-factors"></a><div class="section">
 <h3 id="method-factors-">Method <code>factors()</code><a class="anchor" aria-label="anchor" href="#method-factors-"></a></h3>
-<p>Annotation table.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<p>Annotation table</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>data.frame</p>
 </div>
+
+</div><p></p><hr><a id="method-LFQData-hierarchy"></a><div class="section">
+<h3 id="method-hierarchy-">Method <code>hierarchy()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-"></a></h3>
+<p>Hierarchy table</p><div class="section">
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-LFQData-response"></a><div class="section">
 <h3 id="method-response-">Method <code>response()</code><a class="anchor" aria-label="anchor" href="#method-response-"></a></h3>
@@ -384,7 +380,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -420,7 +416,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -432,7 +428,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>LFQDataPlotter</p>
 </div>
 
@@ -452,7 +448,7 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>LFQDataPlotter</p>
 </div>
 
@@ -464,7 +460,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>LFQDataSummarizer</p>
 </div>
 
@@ -484,7 +480,7 @@ it will be removed</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>LFQDataStats</p>
 </div>
 
@@ -496,7 +492,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>LFQDataTransformer</p>
 </div>
 
@@ -508,7 +504,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>LFQDataAggregator</p>
 </div>
 
@@ -533,7 +529,7 @@ it will be removed</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>LFQData</p>
 </div>
 
@@ -559,96 +555,74 @@ it will be removed</p><div class="section">
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#LFQData$debug("rename_response")</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">LFQData</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> removing proteins with less than2 peptpides</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"data.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"matrix"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    raw.file                                               sampl…¹ dilut…² run_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b03_10_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~10    a       10    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> b03_11_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~11    a       11    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> b03_20_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~20    a       20    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> b03_21_150304_human_ecoli_a_3ul_3um_column_95_hcd_ot_… a~21    a       21    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> b03_02_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~02    b       02    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> b03_09_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~09    b       09    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> b03_12_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~12    b       12    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b03_19_150304_human_ecoli_b_3ul_3um_column_95_hcd_ot_… b~19    b       19    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> b03_03_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~03    c       03    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> b03_08_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~08    c       08    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b03_13_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~13    c       13    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> b03_18_150304_human_ecoli_c_3ul_3um_column_95_hcd_ot_… c~18    c       18    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> b03_04_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~04    d       04    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> b03_07_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~07    d       07    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> b03_14_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~14    d       14    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> b03_17_150304_human_ecoli_d_3ul_3um_column_95_hcd_ot_… d~17    d       17    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> b03_05_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~05    e       05    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b03_06_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~06    e       06    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> b03_15_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~15    e       15    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> b03_16_150304_human_ecoli_e_3ul_3um_column_95_hcd_ot_… e~16    e       16    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​sampleName, ²​dilution.</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName dilution. run_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a~10       a         10    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a~11       a         11    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a~20       a         20    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a~21       a         21    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> b~02       b         02    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> b~09       b         09    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> b~12       b         12    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b~19       b         19    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> c~03       c         03    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> c~08       c         08    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> c~13       c         13    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> c~18       c         18    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> d~04       d         04    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> d~07       d         07    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> d~14       d         14    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> d~17       d         17    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> e~05       e         05    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> e~06       e         06    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> e~15       e         15    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> e~16       e         16    </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 64 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 59 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       isotope_n peptide_Id_n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~18~NA                        1           34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P34955~32~NA                        1           13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__Q28107~41~NA                        1            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__Q3SZR3~50~NA                        1            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O00148|DX39A_HUMAN~156~O00148         1           11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|O15511|ARPC5_HUMAN~313~O15511         1            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|O95373|IPO7_HUMAN~600~O95373          1           26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P00505|AATM_HUMAN~667~P00505          1           12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P02924|ARAF_ECOLI~705~P02924          1            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 54 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O75436|VP26A_HUMAN~482~O75436         1            7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O95373|IPO7_HUMAN~600~O95373          1           26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P00505|AATM_HUMAN~667~P00505          1           12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P02924|ARAF_ECOLI~705~P02924          1            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P04150|GCR_HUMAN~721~P04150           1            5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P07951|TPM2_HUMAN~829~P07951          1           21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P08238|HS90B_HUMAN~837~P08238         1           41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 49 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
-<span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># filter for missing values</span></span></span>
+<span class="r-in"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LFQData&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     complete_cases: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     config: AnalysisConfiguration, R6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     data: tbl_df, tbl, data.frame</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     factors: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     filter_difference: function (other) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     filter_proteins_by_peptide_count: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Aggregator: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Stats: function (stats = c("everything", "interaction", "all")) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Summariser: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Transformer: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Writer: function (format = "xlsx") </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_copy: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_sample: function (size = 100, seed = NULL) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_subset: function (x) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_counts: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (data, config, is_pep = TRUE, prefix = "ms_") </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     intensity_column: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     is_pep: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     is_transformed: function (is_transformed) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     omit_NA: function (nrNA = 0, factorDepth = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     prefix: ms_</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     remove_small_intensities: function (threshold = 4) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rename_response: function (newname = "Intensity") </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     response: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     subjectId: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     summarize_hierarchy: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     to_wide: function (as.matrix = FALSE) </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">f1</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>factorDepth <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id")</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "peptide.intensity"</span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"peptide.intensity"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> peptide.intensity  already in data : protein_Id raw.file sampleName dilution. run_Id isotope peptide_Id peptide.intensity pep nr_peptide_Id_IN_protein_Id .</span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "peptide.intensity"</span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -663,6 +637,83 @@ it will be removed</p><div class="section">
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"LFQDataWriter"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Writer</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"LFQDataAggregator"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lfqdata2</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqdata2</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">lfqdata2</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">filter_difference</span><span class="op">(</span><span class="va">lfqdata2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">-</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_sample</span><span class="op">(</span><span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling 40protein_Id</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">40</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: SummarizedExperiment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MatrixGenerics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: matrixStats</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘MatrixGenerics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedSds, rowWeightedVars</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomicRanges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, append,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: S4Vectors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘S4Vectors’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘Biobase’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:MatrixGenerics’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMedians</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     anyMissing, rowMedians</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lw</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Writer</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lw</span><span class="op">$</span><span class="fu">get_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"annotation"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"data.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lw</span><span class="op">$</span><span class="fu">get_long</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

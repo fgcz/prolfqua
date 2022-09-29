@@ -109,21 +109,21 @@
     <h2>See also</h2>
     <div class="dont-index"><p>Other aggregation: 
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="aggregateTopNIntensities.html">aggregateTopNIntensities</a>()</code>,
-<code><a href="aggregate_intensity.html">aggregate_intensity</a>()</code>,
-<code><a href="medpolishPlydf_config.html">medpolishPlydf_config</a>()</code>,
-<code><a href="medpolishPlydf.html">medpolishPlydf</a>()</code>,
-<code><a href="medpolishPly.html">medpolishPly</a>()</code>,
-<code><a href="medpolish_protein_quants.html">medpolish_protein_quants</a>()</code>,
-<code><a href="plot_aggregation.html">plot_aggregation</a>()</code>,
+<code><a href="aggregate_intensity_topN.html">aggregate_intensity_topN</a>()</code>,
+<code><a href="estimate_intensity.html">estimate_intensity</a>()</code>,
+<code><a href="medpolish_estimate_dfconfig.html">medpolish_estimate_dfconfig</a>()</code>,
+<code><a href="medpolish_estimate_df.html">medpolish_estimate_df</a>()</code>,
+<code><a href="medpolish_estimate.html">medpolish_estimate</a>()</code>,
+<code><a href="medpolish_protein_estimates.html">medpolish_protein_estimates</a>()</code>,
+<code><a href="plot_estimate.html">plot_estimate</a>()</code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a>()</code>,
 <code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df</a>()</code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line</a>()</code>,
-<code><a href="summarizeRobust_config.html">summarizeRobust_config</a>()</code>,
-<code><a href="summarizeRobust.html">summarizeRobust</a>()</code></p>
+<code><a href="rlm_estimate_dfconfig.html">rlm_estimate_dfconfig</a>()</code>,
+<code><a href="rlm_estimate.html">rlm_estimate</a>()</code></p>
 <p>Other deprecated: 
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="medpolish_protein_quants.html">medpolish_protein_quants</a>()</code>,
+<code><a href="medpolish_protein_estimates.html">medpolish_protein_estimates</a>()</code>,
 <code><a href="workflow_DIA_NA_preprocessing.html">workflow_DIA_NA_preprocessing</a>()</code>,
 <code><a href="workflow_correlation_preprocessing_protein_intensities.html">workflow_correlation_preprocessing_protein_intensities</a>()</code></p></div>
     </div>
@@ -132,12 +132,12 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolishPly</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolish_estimate</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
@@ -161,56 +161,54 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolishPly</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolish_estimate</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">x</span><span class="op">(</span><span class="st">"unnest"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,260 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                     sampl…¹ dilut…² run_Id raw.f…³ isotope medpo…⁴</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P21589|5NTD_HUMAN~1527~P21… b~02    b       02     b03_02… light    5.33<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P21589|5NTD_HUMAN~1527~P21… c~03    c       03     b03_03… light    5.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P21589|5NTD_HUMAN~1527~P21… d~04    d       04     b03_04… light    5.18<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|P21589|5NTD_HUMAN~1527~P21… e~05    e       05     b03_05… light    4.89<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P21589|5NTD_HUMAN~1527~P21… e~06    e       06     b03_06… light    4.68<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P21589|5NTD_HUMAN~1527~P21… d~07    d       07     b03_07… light    4.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P21589|5NTD_HUMAN~1527~P21… c~08    c       08     b03_08… light    4.93<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P21589|5NTD_HUMAN~1527~P21… b~09    b       09     b03_09… light    4.62<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P21589|5NTD_HUMAN~1527~P21… a~10    a       10     b03_10… light    4.78<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P21589|5NTD_HUMAN~1527~P21… a~11    a       11     b03_11… light    6.15<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3,250 more rows, and abbreviated variable names ¹​sampleName,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​dilution., ³​raw.file, ⁴​medpolish</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,260 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       sampleName dilution. run_Id isotope medpol…¹</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P21589|5NTD_HUMAN~1527~P21589 b~02       b         02     light     5.33<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P21589|5NTD_HUMAN~1527~P21589 c~03       c         03     light     5.31<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P21589|5NTD_HUMAN~1527~P21589 d~04       d         04     light     5.18<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|P21589|5NTD_HUMAN~1527~P21589 e~05       e         05     light     4.89<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P21589|5NTD_HUMAN~1527~P21589 e~06       e         06     light     4.68<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P21589|5NTD_HUMAN~1527~P21589 d~07       d         07     light     4.31<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P21589|5NTD_HUMAN~1527~P21589 c~08       c         08     light     4.93<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P21589|5NTD_HUMAN~1527~P21589 b~09       b         09     light     4.62<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P21589|5NTD_HUMAN~1527~P21589 a~10       a         10     light     4.78<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P21589|5NTD_HUMAN~1527~P21589 a~11       a         11     light     6.15<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3,250 more rows, and abbreviated variable name ¹​medpolish</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">xnested</span> <span class="op">&lt;-</span> <span class="fu">x</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">x</span><span class="op">(</span>value <span class="op">=</span> <span class="st">"plot"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">medpolishPly</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName dilution. run_Id raw.file                          isotope medpo…¹</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b~02       b         02     b03_02_150304_human_ecoli_b_3ul_… light    5.33<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> c~03       c         03     b03_03_150304_human_ecoli_c_3ul_… light    5.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> d~04       d         04     b03_04_150304_human_ecoli_d_3ul_… light    5.18<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> e~05       e         05     b03_05_150304_human_ecoli_e_3ul_… light    4.89<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> e~06       e         06     b03_06_150304_human_ecoli_e_3ul_… light    4.68<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> d~07       d         07     b03_07_150304_human_ecoli_d_3ul_… light    4.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> c~08       c         08     b03_08_150304_human_ecoli_c_3ul_… light    4.93<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b~09       b         09     b03_09_150304_human_ecoli_b_3ul_… light    4.62<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a~10       a         10     b03_10_150304_human_ecoli_a_3ul_… light    4.78<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a~11       a         11     b03_11_150304_human_ecoli_a_3ul_… light    6.15<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b~12       b         12     b03_12_150304_human_ecoli_b_3ul_… light    5.75<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> c~13       c         13     b03_13_150304_human_ecoli_c_3ul_… light    5.01<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> d~14       d         14     b03_14_150304_human_ecoli_d_3ul_… light    5.90<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> e~15       e         15     b03_15_150304_human_ecoli_e_3ul_… light    6.13<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> e~16       e         16     b03_16_150304_human_ecoli_e_3ul_… light    5.68<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> d~17       d         17     b03_17_150304_human_ecoli_d_3ul_… light    5.99<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> c~18       c         18     b03_18_150304_human_ecoli_c_3ul_… light    5.78<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b~19       b         19     b03_19_150304_human_ecoli_b_3ul_… light    6.00<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> a~20       a         20     b03_20_150304_human_ecoli_a_3ul_… light    5.70<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> a~21       a         21     b03_21_150304_human_ecoli_a_3ul_… light    5.60<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable name ¹​medpolish</span></span>
+<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">medpolish_estimate</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName dilution. run_Id isotope medpolish</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b~02       b         02     light   53<span style="text-decoration: underline;">281</span>919.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> c~03       c         03     light   53<span style="text-decoration: underline;">108</span>622.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> d~04       d         04     light   51<span style="text-decoration: underline;">768</span>575 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> e~05       e         05     light   48<span style="text-decoration: underline;">923</span>212.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> e~06       e         06     light   46<span style="text-decoration: underline;">757</span>962.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> d~07       d         07     light   43<span style="text-decoration: underline;">139</span>562.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> c~08       c         08     light   49<span style="text-decoration: underline;">301</span>991.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b~09       b         09     light   46<span style="text-decoration: underline;">173</span>388.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a~10       a         10     light   47<span style="text-decoration: underline;">789</span>438.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a~11       a         11     light   61<span style="text-decoration: underline;">505</span>569.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b~12       b         12     light   57<span style="text-decoration: underline;">534</span>412.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> c~13       c         13     light   50<span style="text-decoration: underline;">100</span>838.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> d~14       d         14     light   58<span style="text-decoration: underline;">970</span>725 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> e~15       e         15     light   61<span style="text-decoration: underline;">280</span>338.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> e~16       e         16     light   56<span style="text-decoration: underline;">780</span>612.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> d~17       d         17     light   59<span style="text-decoration: underline;">887</span>225 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> c~18       c         18     light   57<span style="text-decoration: underline;">788</span>409.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b~19       b         19     light   60<span style="text-decoration: underline;">040</span>838.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> a~20       a         20     light   57<span style="text-decoration: underline;">032</span>150 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> a~21       a         21     light   55<span style="text-decoration: underline;">993</span>412.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>

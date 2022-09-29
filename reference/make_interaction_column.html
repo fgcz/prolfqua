@@ -100,14 +100,15 @@
 <code><a href="AnalysisParameters.html">AnalysisParameters</a></code>,
 <code><a href="AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="R6extractValues.html">R6extractValues</a>()</code>,
+<code><a href="R6_extract_values.html">R6_extract_values</a>()</code>,
 <code><a href="complete_cases.html">complete_cases</a>()</code>,
+<code><a href="concrete_AnalysisConfiguration.html">concrete_AnalysisConfiguration</a></code>,
 <code><a href="make_reduced_hierarchy_config.html">make_reduced_hierarchy_config</a>()</code>,
 <code><a href="sample_subset.html">sample_subset</a>()</code>,
 <code><a href="separate_factors.html">separate_factors</a>()</code>,
 <code><a href="separate_hierarchy.html">separate_hierarchy</a>()</code>,
 <code><a href="setup_analysis.html">setup_analysis</a>()</code>,
-<code><a href="spreadValueVarsIsotopeLabel.html">spreadValueVarsIsotopeLabel</a>()</code>,
+<code><a href="spread_response_by_IsotopeLabel.html">spread_response_by_IsotopeLabel</a>()</code>,
 <code><a href="table_factors.html">table_factors</a>()</code></p></div>
     </div>
 
@@ -118,17 +119,17 @@
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">make_interaction_column</span><span class="op">(</span><span class="va">xx</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>,<span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">make_interaction_column</span><span class="op">(</span><span class="va">xx</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">factorKeys</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "dilution." "run_Id"   </span>
 <span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="fu">make_interaction_column</span><span class="op">(</span><span class="va">analysis</span>,</span></span>
-<span class="r-in"><span>   <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">fkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25,780 × 11</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id   raw.f…¹ sampl…² dilut…³ run_Id isotope pepti…⁴ pepti…⁵       pep</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

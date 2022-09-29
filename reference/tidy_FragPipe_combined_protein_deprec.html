@@ -125,10 +125,44 @@
 <code><a href="FragPipe.html">FragPipe</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="tidy_FragPipe_MSstats_csv.html">tidy_FragPipe_MSstats_csv</a>()</code>,
-<code><a href="tidy_FragPipe_combined_peptides.html">tidy_FragPipe_combined_peptides</a>()</code>,
 <code><a href="tidy_FragPipe_combined_protein.html">tidy_FragPipe_combined_protein</a>()</code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">prottsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"samples/FragPipe/combined_protein_small.tsv"</span>,</span></span>
+<span class="r-in"><span>package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu">tidy_FragPipe_combined_protein_deprec</span><span class="op">(</span><span class="va">prottsv</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> annotation columns : protein.group</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> subgroup</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> protein</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> protein.id</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> entry.name</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gene.names</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> protein.length</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> organism</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> protein.existence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> description</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> protein.probability</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> top.peptide.probability</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> unique.stripped.peptides</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summarized.total.spectral.count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summarized.unique.spectral.count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summarized.razor.spectral.count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup", "raw.file")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein.group", "subgroup")</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span> <span class="op">==</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19980</span>,<span class="fl">27</span><span class="op">)</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

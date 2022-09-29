@@ -292,7 +292,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
@@ -347,19 +347,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.68287 25.15174 25.12019 25.08622 24.80592 24.73614 25.07810 25.09245 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.82226 25.29796 25.20434 25.22604 24.97819 24.87117 25.25723 25.21275 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.89330 24.74021 24.75330 25.17360 24.78644 24.68931 24.99929 25.18035 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.99828 24.83677 24.92877 25.29852 24.87023 24.78342 25.12092 25.25866 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.70044 24.67336 25.08095 25.14659 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.83336 24.78721 25.17030 25.25875 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.255347 2.246753 2.160955 2.162943 2.298421 2.228560 2.170967 2.227343 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.185330 2.162038 2.097566 2.085924 2.228783 2.228607 2.150204 2.063501 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.298089 2.287971 2.173511 2.318457 2.192229 2.138568 2.180769 2.259110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.184155 2.194266 2.130177 2.177846 2.154376 2.075119 2.119533 2.191296 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.146780 2.246040 2.192085 2.218676 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.162801 2.068178 2.111257 2.175317 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataTransformer-2.png" alt="" width="700" height="433"></span>
@@ -370,42 +370,22 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: vsn</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, append,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "sampleName", "peptide_Id")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.83987 24.92509 24.93010 24.91523 24.83717 24.93236 24.86341 24.93696 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.97162 25.06459 24.99641 25.06521 24.99525 25.06568 25.04634 25.06215 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.95099 24.99070 24.93273 24.98258 24.92009 24.93832 24.84016 25.03468 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.06685 25.10421 25.09865 25.11202 25.00309 25.03260 24.98010 25.11241 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.92383 24.89669 24.96051 25.01931 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25.05435 25.01643 25.04059 25.12656 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.255347 2.246753 2.160955 2.162943 2.298421 2.228560 2.170967 2.227343 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.185330 2.162038 2.097566 2.085924 2.228783 2.228607 2.150204 2.063501 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.298089 2.287971 2.173511 2.318457 2.192229 2.138568 2.180769 2.259110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.184155 2.194266 2.130177 2.177846 2.154376 2.075119 2.119533 2.191296 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.146780 2.246040 2.192085 2.218676 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.162801 2.068178 2.111257 2.175317 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

@@ -96,28 +96,27 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
     <h2>See also</h2>
     <div class="dont-index"><p>Other modelling: 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
+<code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
+<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
-<code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code>ContrastsSAINTexpress</code>,
 <code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
-<code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
-<code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
-<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
-<code><a href="get_model_coefficients.html">get_model_coefficients</a>()</code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta</a>()</code>,
 <code><a href="isSingular_lm.html">isSingular_lm</a>()</code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a>()</code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
-<code><a href="modelSummary.html">modelSummary</a>()</code>,
+<code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
+<code><a href="model_summary.html">model_summary</a>()</code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a>()</code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma</a>()</code>,
 <code><a href="my_contest.html">my_contest</a>()</code>,
@@ -126,9 +125,7 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
 <code><a href="my_contrast.html">my_contrast</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
-<code><a href="plot_lmer_model_and_data_TWO.html">plot_lmer_model_and_data_TWO</a>()</code>,
 <code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
-<code><a href="plot_lmer_peptide_noRandom_TWO.html">plot_lmer_peptide_noRandom_TWO</a>()</code>,
 <code><a href="plot_lmer_peptide_noRandom.html">plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions</a>()</code>,
 <code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
@@ -274,7 +271,7 @@ create Contrast</p><div class="section">
 
 </div><p></p><hr><a id="method-Contrast-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>return <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>
+<p>return <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>
 creates Contrast_Plotter</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -294,7 +291,7 @@ creates Contrast_Plotter</p><div class="section">
 </div>
 <div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p><code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code></p>
+<p><code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p>
 </div>
 
 </div><p></p><hr><a id="method-Contrast-to_wide"></a><div class="section">
@@ -341,7 +338,7 @@ creates Contrast_Plotter</p><div class="section">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fitting mixed effects model to peptide data</span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">istar_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span> ,<span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span></span></span>
@@ -441,8 +438,20 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $exists</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1   162 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $isSingular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    79    83 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span> <span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dil.a_vs_b"</span> <span class="op">=</span> <span class="st">"dilution.a - dilution.b"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"dil.e_vs_b"</span> <span class="op">=</span> <span class="st">"dilution.e - dilution.b"</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#Contrasts$debug("get_contrasts")</span></span></span>
 <span class="r-in"><span><span class="va">contrastX</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
@@ -469,6 +478,12 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   avgAbd &lt;dbl&gt;, and abbreviated variable names ¹​modelName, ²​protein_Id,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​contrast, ⁴​std.error, ⁵​statistic, ⁶​conf.low, ⁷​conf.high</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
+<span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast   group_1    group_2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.a_vs_b dilution.a dilution.b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dil.e_vs_b dilution.e dilution.b</span>
 <span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           column_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> modelName   modelName</span>
@@ -496,7 +511,7 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> conf.low                                                         lower value of 95 confidence interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> conf.high                                                         high value of 95 confidence interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).</span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrastX</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">160</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>

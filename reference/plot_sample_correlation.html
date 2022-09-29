@@ -106,15 +106,15 @@
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other plotting: 
-<code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
+<code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats</a>()</code>,
-<code><a href="medpolishPlydf.html">medpolishPlydf</a>()</code>,
+<code><a href="medpolish_estimate_df.html">medpolish_estimate_df</a>()</code>,
 <code><a href="missigness_histogram.html">missigness_histogram</a>()</code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a>()</code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition</a>()</code>,
 <code><a href="plot_NA_heatmap.html">plot_NA_heatmap</a>()</code>,
-<code><a href="plot_aggregation.html">plot_aggregation</a>()</code>,
+<code><a href="plot_estimate.html">plot_estimate</a>()</code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor</a>()</code>,
 <code><a href="plot_heatmap.html">plot_heatmap</a>()</code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a>()</code>,
@@ -129,7 +129,7 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -138,7 +138,7 @@
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="remove_small_intensities.html">remove_small_intensities</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="transform_work_intensity.html">transform_work_intensity</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, <span class="va">log2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_peptide.intensity</span>
-<span class="r-in"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="toWideConfig.html">toWideConfig</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="tidy_to_wide_config.html">tidy_to_wide_config</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu">plot_sample_correlation</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_sample_correlation-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>

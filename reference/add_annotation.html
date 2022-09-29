@@ -113,6 +113,18 @@ for an usage example see run_script lfq_mixed_model_inference</p>
 
 </dl></div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">protein_txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"samples/maxquant_txt/tiny2.zip"</span>,package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx"</span>,package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="tidyMQ_ProteinGroups.html">tidyMQ_ProteinGroups</a></span><span class="op">(</span><span class="va">protein_txt</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /private/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T/RtmpuvJC2O/temp_libpathd0786cdd422c/prolfqua/samples/maxquant_txt/tiny2.zip</span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">add_annotation</span><span class="op">(</span><span class="va">startdata</span>,<span class="va">inputAnnotation</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">startdata</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

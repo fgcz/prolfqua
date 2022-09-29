@@ -97,28 +97,27 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
     <div class="dont-index"><p><code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a></code></p>
 <p>Other modelling: 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
+<code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
+<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
-<code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code>ContrastsSAINTexpress</code>,
 <code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
-<code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
-<code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
-<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
-<code><a href="get_model_coefficients.html">get_model_coefficients</a>()</code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta</a>()</code>,
 <code><a href="isSingular_lm.html">isSingular_lm</a>()</code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a>()</code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
-<code><a href="modelSummary.html">modelSummary</a>()</code>,
+<code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
+<code><a href="model_summary.html">model_summary</a>()</code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a>()</code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma</a>()</code>,
 <code><a href="my_contest.html">my_contest</a>()</code>,
@@ -127,9 +126,7 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 <code><a href="my_contrast.html">my_contrast</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
-<code><a href="plot_lmer_model_and_data_TWO.html">plot_lmer_model_and_data_TWO</a>()</code>,
 <code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
-<code><a href="plot_lmer_peptide_noRandom_TWO.html">plot_lmer_peptide_noRandom_TWO</a>()</code>,
 <code><a href="plot_lmer_peptide_noRandom.html">plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions</a>()</code>,
 <code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
@@ -240,7 +237,7 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 
 </div><p></p><hr><a id="method-ContrastsTable-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>get <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code></p><div class="section">
+<p>get <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -259,7 +256,7 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 </div>
 <div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p><code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code></p>
+<p><code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p>
 </div>
 
 </div><p></p><hr><a id="method-ContrastsTable-to_wide"></a><div class="section">
@@ -305,15 +302,15 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"dilution.b - dilution.a"</span>,</span></span>
 <span class="r-in"><span><span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"dilution.c - dilution.b"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, contrasts <span class="op">=</span> <span class="va">Contrasts</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ctr</span> <span class="op">&lt;-</span> <span class="va">tmp</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, contrasts <span class="op">=</span> <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ctr</span> <span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.b</span>
@@ -321,11 +318,34 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.b</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id", "contrast")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_Id <span class="op">=</span> <span class="va">tmp</span><span class="op">$</span><span class="va">subject_Id</span>, modelName <span class="op">=</span> <span class="va">tmp</span><span class="op">$</span><span class="va">modelName</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="va">subject_Id</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id" "peptide_Id"</span>
+<span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_Id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_Id</span>, modelName <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,578 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName   contr…¹ prote…² pepti…³   diff avgAbd    df sigma std.e…⁴ stati…⁵</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAvera… diluti… CON__P… VHKECC…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332   0.259   0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> groupAvera… diluti… sp|O15… AYLQQLR  4.13   0.345     1 0.332   0.259  15.9  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> groupAvera… diluti… sp|O60… SKPVFS… -<span style="color: #BB0000;">2.48</span>  -<span style="color: #BB0000;">0.477</span>     1 0.332   0.259  -<span style="color: #BB0000;">9.57</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> groupAvera… diluti… sp|O60… AAIQSQ… -<span style="color: #BB0000;">0.176</span>  0.118     1 0.332   0.259  -<span style="color: #BB0000;">0.677</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> groupAvera… diluti… sp|O60… KYVLDD… -<span style="color: #BB0000;">0.258</span> -<span style="color: #BB0000;">2.72</span>      1 0.332   0.259  -<span style="color: #BB0000;">0.996</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> groupAvera… diluti… sp|O75… IYFLLVR  0     -<span style="color: #BB0000;">2.38</span>      1 0.332   0.259   0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> groupAvera… diluti… sp|O95… VTNTTP…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332   0.259   0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> groupAvera… diluti… sp|P00… PMYSNP…  0     -<span style="color: #BB0000;">1.79</span>      1 0.332   0.259   0    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAvera… diluti… sp|P04… LLEESI… -<span style="color: #BB0000;">0.557</span> -<span style="color: #BB0000;">1.83</span>      1 0.332   0.259  -<span style="color: #BB0000;">2.15</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAvera… diluti… sp|P0A… AAELAG… -<span style="color: #BB0000;">0.478</span> -<span style="color: #BB0000;">0.886</span>     1 0.332   0.259  -<span style="color: #BB0000;">1.85</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,568 more rows, 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;, and abbreviated variable names ¹​contrast,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​protein_Id, ³​peptide_Id, ⁴​std.error, ⁵​statistic</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
 <span class="r-plt img"><img src="ContrastsTable-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">xcx</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

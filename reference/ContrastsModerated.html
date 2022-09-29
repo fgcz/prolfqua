@@ -96,29 +96,28 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a></code></p>
 <p>Other modelling: 
+<code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
+<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
-<code><a href="ContrastsSaintExpress.html">ContrastsSaintExpress</a></code>,
+<code>ContrastsSAINTexpress</code>,
 <code><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
-<code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code>,
-<code><a href="Contrasts_proDA.html">Contrasts_proDA</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
-<code><a href="addContrastResults.html">addContrastResults</a>()</code>,
 <code><a href="build_model.html">build_model</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
-<code><a href="get_model_coefficients.html">get_model_coefficients</a>()</code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta</a>()</code>,
 <code><a href="isSingular_lm.html">isSingular_lm</a>()</code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a>()</code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
-<code><a href="modelSummary.html">modelSummary</a>()</code>,
+<code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
+<code><a href="model_summary.html">model_summary</a>()</code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a>()</code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma</a>()</code>,
 <code><a href="my_contest.html">my_contest</a>()</code>,
@@ -127,9 +126,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <code><a href="my_contrast.html">my_contrast</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
-<code><a href="plot_lmer_model_and_data_TWO.html">plot_lmer_model_and_data_TWO</a>()</code>,
 <code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
-<code><a href="plot_lmer_peptide_noRandom_TWO.html">plot_lmer_peptide_noRandom_TWO</a>()</code>,
 <code><a href="plot_lmer_peptide_noRandom.html">plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions</a>()</code>,
 <code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
@@ -248,7 +245,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 
 </div><p></p><hr><a id="method-ContrastsModerated-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>get <code><a href="Contrasts_Plotter.html">Contrasts_Plotter</a></code></p><div class="section">
+<p>get <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsModerated</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -309,7 +306,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">istar_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span> ,<span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pepIntensity</span> <span class="op">&lt;-</span> <span class="va">istar_data</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -318,6 +315,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-in"><span><span class="va">ld</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pepIntensity</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lProt</span> <span class="op">&lt;-</span> <span class="va">ld</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-in"><span><span class="va">lProt</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity  ~ dilution."</span><span class="op">)</span></span></span>
@@ -337,41 +335,31 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">csi</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 63 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    model…¹ prote…² contr…³     diff std.e…⁴ avgAbd stati…⁵    df p.value conf.…⁶</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTe… sp|P21… dil.b_… -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">1</span>   0.046<span style="text-decoration: underline;">6</span>  1.18  -<span style="color: #BB0000;">0.978</span>   16.5  0.342  -<span style="color: #BB0000;">0.187</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTe… sp|P46… dil.b_… -<span style="color: #BB0000;">0.249</span>    0.277  -<span style="color: #BB0000;">1.87</span>  -<span style="color: #BB0000;">0.947</span>   15.5  0.358  -<span style="color: #BB0000;">0.982</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTe… sp|Q9Y… dil.b_…  0.013<span style="text-decoration: underline;">9</span>   0.074<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.739</span>  0.192   16.5  0.850  -<span style="color: #BB0000;">0.202</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTe… sp|Q9Y… dil.b_… -<span style="color: #BB0000;">0.199</span>    0.234  -<span style="color: #BB0000;">0.674</span> -<span style="color: #BB0000;">0.892</span>   16.5  0.385  -<span style="color: #BB0000;">0.867</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTe… sp|O00… dil.b_… -<span style="color: #BB0000;">0.007</span><span style="color: #BB0000; text-decoration: underline;">00</span>  0.027<span style="text-decoration: underline;">7</span>  1.21  -<span style="color: #BB0000;">0.226</span>   16.5  0.824  -<span style="color: #BB0000;">0.099</span><span style="color: #BB0000; text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTe… sp|P07… dil.b_…  0.089<span style="text-decoration: underline;">6</span>   0.038<span style="text-decoration: underline;">1</span>  1.04   2.26    16.5  0.037<span style="text-decoration: underline;">7</span> -<span style="color: #BB0000;">0.029</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTe… sp|P25… dil.b_…  0.062<span style="text-decoration: underline;">4</span>   0.040<span style="text-decoration: underline;">9</span>  1.05   1.48    16.5  0.157  -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTe… sp|P41… dil.b_…  0.001<span style="text-decoration: underline;">20</span>  0.041<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.127</span>  0.028<span style="text-decoration: underline;">4</span>  16.5  0.978  -<span style="color: #BB0000;">0.126</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTe… sp|P50… dil.b_…  0.053<span style="text-decoration: underline;">4</span>   0.050<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.962</span>  1.06    16.5  0.303  -<span style="color: #BB0000;">0.097</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTe… sp|Q03… dil.b_…  0.037<span style="text-decoration: underline;">7</span>   0.033<span style="text-decoration: underline;">1</span> -<span style="color: #BB0000;">1.56</span>   1.07    16.5  0.301  -<span style="color: #BB0000;">0.068</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 53 more rows, 3 more variables: conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FDR &lt;dbl&gt;, and abbreviated variable names ¹​modelName, ²​protein_Id,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​contrast, ⁴​std.error, ⁵​statistic, ⁶​conf.low</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id"         "diff.dil.b_vs_a"    "p.value.dil.b_vs_a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "FDR.dil.b_vs_a"    </span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast   group_1    group_2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.b_vs_a dilution.a dilution.b</span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="addContrastResults.html">addContrastResults</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">csi</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">csi</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">more</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2 13</span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">merged</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 66 13</span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">same</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 62 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64 13</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cslf</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -380,11 +368,11 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-in"><span><span class="va">cp</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cp</span><span class="op">$</span><span class="fu">histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_bin).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite values (stat_bin).</span>
 <span class="r-plt img"><img src="ContrastsModerated-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_bin).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite values (stat_bin).</span>
 <span class="r-plt img"><img src="ContrastsModerated-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">cp</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -392,7 +380,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-plt img"><img src="ContrastsModerated-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">cp</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (geom_point).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing missing values (geom_point).</span>
 <span class="r-plt img"><img src="ContrastsModerated-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

@@ -112,16 +112,13 @@
     <div class="dont-index"><p>Other utilities: 
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="get_UniprotID_from_fasta_header.html">get_UniprotID_from_fasta_header</a>()</code>,
-<code><a href="jackknifeMatrix.html">jackknifeMatrix</a>()</code>,
-<code><a href="multigroupVolcano.html">multigroupVolcano</a>()</code>,
-<code><a href="my_jackknife.html">my_jackknife</a>()</code>,
+<code><a href="multigroup_volcano.html">multigroup_volcano</a>()</code>,
+<code><a href="names_to_matrix.html">names_to_matrix</a>()</code>,
 <code><a href="pairs_smooth.html">pairs_smooth</a>()</code>,
 <code><a href="pairs_w_abline.html">pairs_w_abline</a>()</code>,
-<code><a href="panel.cor.html">panel.cor</a>()</code>,
-<code><a href="panel.hist.html">panel.hist</a>()</code>,
-<code><a href="removeNArows.html">removeNArows</a>()</code>,
-<code><a href="split2table.html">split2table</a>()</code>,
-<code><a href="table_facade.list.html">table_facade.list</a>()</code>,
+<code><a href="panel_cor.html">panel_cor</a>()</code>,
+<code><a href="panel_hist.html">panel_hist</a>()</code>,
+<code><a href="remove_NA_rows.html">remove_NA_rows</a>()</code>,
 <code><a href="table_facade.html">table_facade</a>()</code></p></div>
     </div>
 
@@ -135,13 +132,13 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row.names      V1      V2     V3     V4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A         -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.030</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.846 -<span style="color: #BB0000;">0.328</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B          0.519   0.525  -<span style="color: #BB0000;">0.142</span>  0.421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">0.253</span>   1.15    0.580  0.664</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D          0.751   0.261   0.440  0.901</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E          0.852   0.102   0.972  0.571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   row.names      V1     V2      V3      V4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A          0.217   1.18  -<span style="color: #BB0000;">0.090</span><span style="color: #BB0000; text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B          0.718   0.305 -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">7</span>  1.36  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">0.090</span><span style="color: #BB0000; text-decoration: underline;">8</span>  0.183 -<span style="color: #BB0000;">1.52</span>    0.266 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D         -<span style="color: #BB0000;">0.648</span>  -<span style="color: #BB0000;">0.375</span> -<span style="color: #BB0000;">0.337</span>  -<span style="color: #BB0000;">1.65</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E          0.390   0.360  1.10    1.44  </span>
 <span class="r-in"><span><span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">is.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>

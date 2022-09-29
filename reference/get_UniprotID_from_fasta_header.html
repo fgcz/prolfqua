@@ -113,20 +113,34 @@
     <h2>See also</h2>
     <div class="dont-index"><p>Other utilities: 
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="jackknifeMatrix.html">jackknifeMatrix</a>()</code>,
 <code><a href="matrix_to_tibble.html">matrix_to_tibble</a>()</code>,
-<code><a href="multigroupVolcano.html">multigroupVolcano</a>()</code>,
-<code><a href="my_jackknife.html">my_jackknife</a>()</code>,
+<code><a href="multigroup_volcano.html">multigroup_volcano</a>()</code>,
+<code><a href="names_to_matrix.html">names_to_matrix</a>()</code>,
 <code><a href="pairs_smooth.html">pairs_smooth</a>()</code>,
 <code><a href="pairs_w_abline.html">pairs_w_abline</a>()</code>,
-<code><a href="panel.cor.html">panel.cor</a>()</code>,
-<code><a href="panel.hist.html">panel.hist</a>()</code>,
-<code><a href="removeNArows.html">removeNArows</a>()</code>,
-<code><a href="split2table.html">split2table</a>()</code>,
-<code><a href="table_facade.list.html">table_facade.list</a>()</code>,
+<code><a href="panel_cor.html">panel_cor</a>()</code>,
+<code><a href="panel_hist.html">panel_hist</a>()</code>,
+<code><a href="remove_NA_rows.html">remove_NA_rows</a>()</code>,
 <code><a href="table_facade.html">table_facade</a>()</code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "protein_Id"                  "raw.file"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "sampleName"                  "dilution."                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "run_Id"                      "isotope"                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "peptide_Id"                  "peptide.intensity"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "pep"                         "nr_peptide_Id_IN_protein_Id"</span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="separate_hierarchy.html">separate_hierarchy</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">UniprotID</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">get_UniprotID_from_fasta_header</span><span class="op">(</span><span class="va">tmp</span>, idcolumn <span class="op">=</span> <span class="st">"top_protein"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"UniprotID"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
