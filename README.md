@@ -1,10 +1,6 @@
 [![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
 [![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://codecov.io/gh/fgcz/prolfqua)
-<<<<<<< HEAD
-[![biorxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2022.06.07.494524-brightgreen)](https://doi.org/10.1101/2022.06.07.494524)
-=======
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2022.06.07.494524-ligtgreen)](https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524)
->>>>>>> 219bc3da97144ba9c8b6fcd305e25410ee1e11d6
 
 <img src="man/figures/imgfile.png" width="200">
 
