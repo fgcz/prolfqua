@@ -131,7 +131,7 @@ tidyMQ_Evidence <- function(Evidence){
 #' @keywords internal
 #' @examples
 #'
-#' txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
+#' txt_directory <- system.file("samples/maxquant_txt/tiny2.zip", package = "prolfqua")
 #' allData <- tidyMQ_merged(txt_directory)
 #'
 tidyMQ_merged <- function(txt_directory){
@@ -164,7 +164,7 @@ tidyMQ_merged <- function(txt_directory){
 #' @keywords internal
 #' @examples
 #'
-#' #txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
+#' #txt_directory <- system.file("samples/maxquant_txt/tiny2.zip", package = "prolfqua")
 #' #allData <- tidyMQ_PeptideProtein(txt_directory)
 #'
 tidyMQ_PeptideProtein <- function(txt_directory, .all = FALSE){
@@ -303,7 +303,7 @@ tidyMQ_modificationSpecificPeptides <- function(MQPeptides){
 #' @examples
 #'
 #'
-#' peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
+#' peptide_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
 #'

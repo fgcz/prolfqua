@@ -15,7 +15,7 @@ protein group id and peptide id.
 }
 \examples{
 
-txt_directory <- system.file("samples/maxquant_txt/tiny2.ZIP", package = "prolfqua")
+txt_directory <- system.file("samples/maxquant_txt/tiny2.zip", package = "prolfqua")
 allData <- tidyMQ_merged(txt_directory)
 
 }
