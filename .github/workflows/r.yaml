@@ -50,30 +50,18 @@ jobs:
         with:
             path:  ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV3-prolfqua
-<<<<<<< HEAD
-=======
       - name: install local prolfqua
         run: remotes::install_local('.')
         shell: Rscript {0}
->>>>>>> 219bc3da97144ba9c8b6fcd305e25410ee1e11d6
       - name: Install prolfquadata
         run: remotes::install_gitlab("wolski/prolfquadata", host="gitlab.bfabric.org")
         shell: Rscript {0}
       - name: rcmdcheck::rcmdcheck
         run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
-<<<<<<< HEAD
-      - name: install fgcz/prolfqua
-        run: BiocManager::install('devtools'); devtools::install_github("fgcz/prolfqua")
-        shell: Rscript {0}
       - name: codecov
-        run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
+        run: covr::codecov(type = "all", token=Sys.getenv('CODECOV_TOKEN'))
         shell: Rscript {0}
-=======
-#      - name: codecov
-#        run: covr::codecov(type = "all",token=Sys.getenv('CODECOV_TOKEN'))
-#        shell: Rscript {0}
->>>>>>> 219bc3da97144ba9c8b6fcd305e25410ee1e11d6
       - name: List files in home directory
         run: find $R_LIBS_SITE -type f > files.txt
       - uses: actions/upload-artifact@v2
