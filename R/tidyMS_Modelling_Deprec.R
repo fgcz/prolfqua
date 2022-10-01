@@ -27,7 +27,6 @@
 #' factor_levelContrasts <- contrasts_linfct_deprec( m,
 #'                            factor_contrasts,
 #'                        subject_Id = "protein_Id")
-#' head(factor_levelContrasts)
 #' m$linear_model[[1]]
 #' my_contest(m$linear_model[[1]], factor_contrasts )
 #'

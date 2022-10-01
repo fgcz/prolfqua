@@ -8,6 +8,14 @@ Base class for all Contrasts classes
 
 Base class for all Contrasts classes
 }
+\examples{
+int <- ContrastsInterface$new()
+testthat::expect_error(int$get_contrast_sides())
+testthat::expect_error(int$get_contrasts())
+testthat::expect_error(int$get_Plotter())
+testthat::expect_error(int$to_wide())
+int$column_description()
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

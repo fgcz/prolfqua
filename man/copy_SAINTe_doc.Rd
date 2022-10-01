@@ -12,4 +12,7 @@ copy_SAINTe_doc(workdir = getwd())
 \description{
 copy SAINTexpress doc file
 }
+\examples{
+copy_SAINTe_doc(workdir = tempdir())
+}
 \keyword{internal}

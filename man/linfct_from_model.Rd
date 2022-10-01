@@ -15,13 +15,17 @@ get linfct from model
 \examples{
 
 m <- prolfqua_data('data_basicModel_p1807')
+# debug(linfct_from_model)
 linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
 linfct$linfct_interactions
 
 m <- prolfqua_data('data_interactionModel_p1807')
+# debug(.coeff_weights_factor_levels)
+undebug(linfct_from_model)
 linfct <- linfct_from_model(m)
+
 all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
 linfct$linfct_interactions
@@ -42,28 +46,27 @@ linfct_from_model(m)
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -72,9 +75,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},

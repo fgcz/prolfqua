@@ -21,13 +21,13 @@ summarize_hierarchy(
 \item{factors}{which factors to include}
 }
 \description{
-Summarize hierarchy counts
+E.g compute number of peptides for each protein
 }
 \examples{
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -38,10 +38,10 @@ summarize_hierarchy(data, configur, factors = character())
 summarize_hierarchy(data, configur,
  hierarchy = configur$table$hkeysDepth() )
 summarize_hierarchy(data, configur,
- hierarchy = NULL, factors = configur$table$fkeysDepth() )
+ hierarchy = NULL, factors = configur$table$factor_keys_depth() )
 configur$table$hierarchyDepth = 1
 summarize_hierarchy(data, configur,
- factors = configur$table$fkeysDepth())
+ factors = configur$table$factor_keys_depth())
 configur$table$hierarchyDepth = 2
 summarize_hierarchy(data, configur)
 configur$table$hierarchyDepth = 3

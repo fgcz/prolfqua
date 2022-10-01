@@ -11,7 +11,7 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelFunction <-
 #'   strategy_lm("transformedIntensity  ~ dilution.")
@@ -40,6 +40,8 @@
 #'  dim(tmp)
 #'  pl <- contrast$get_Plotter()
 #'  contrast$to_wide()
+#'  contrast$get_linfct()
+#'  contrast$get_contrast_sides()
 #'  pl$histogram()
 #'  pl$ma_plot()
 #'
@@ -76,13 +78,13 @@ ContrastsROPECA <- R6::R6Class(
     #' show names of contrasts
     #' @return data.frame
     get_contrast_sides = function(){
-      self$contrast$get_contrast_sides()
+      self$Contrast$get_contrast_sides()
     },
     #' @description
     #' get linear function used to determine contrasts
     #' @return data.frame
     get_linfct = function(){
-      self$contrast$get_linfct()
+      self$Contrast$get_linfct()
     },
     #' @description
     #' get contrasts
@@ -128,14 +130,14 @@ ContrastsROPECA <- R6::R6Class(
       return(res)
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
-    #' @return \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
+    #' @return \code{\link{ContrastsPlotter}}
     #' @param FDRthreshold FDR threshold
     #' @param FCthreshold FC threshold
     get_Plotter = function(FDRthreshold = 0.1,
                            FCthreshold = 2){
       contrast_result <- self$get_contrasts()
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
         fcthresh = FCthreshold,

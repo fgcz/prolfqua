@@ -11,7 +11,7 @@ Estimate contrasts using Wald Test
 \examples{
 
 # Fitting mixed effects model to peptide data
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- old2new( prolfqua_data('data_ionstar')$normalized() )
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 20))
 
 modelFunction <-
@@ -25,38 +25,40 @@ mod <- build_model(
  modelFunction,
  subject_Id = config$table$hkeysDepth())
 
+prolfqua::model_summary(mod)
  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
     "dil.e_vs_b" = "dilution.e - dilution.b" )
+#Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 contrastX$get_contrasts()
+contrastX$get_contrast_sides()
 contrastX$column_description()
-
+stopifnot(dim(contrastX$to_wide()) == c(160,7))
 }
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -65,9 +67,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
@@ -201,7 +201,7 @@ data.frame with contrasts
 \if{html}{\out{<a id="method-Contrast-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-Contrast-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-return \code{\link{Contrasts_Plotter}}
+return \code{\link{ContrastsPlotter}}
 creates Contrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
@@ -217,7 +217,7 @@ creates Contrast_Plotter
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}

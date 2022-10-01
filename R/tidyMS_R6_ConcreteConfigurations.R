@@ -1,23 +1,23 @@
-#' generate instances of AnalysisTableAnnotation
+#' Cenerate instances of AnalysisTableAnnotation
 #'
 #' configurations examples of or various signal processing software outputs
-#'
-#' @family concrete_configuration
-#' @name concrete_AnalysisTableAnnotation
+#' @rdname concrete_AnalysisConfiguration
+#' @family configuration
+#' @name concrete_AnalysisConfiguration
 NULL
 
 
-#' @describeIn concrete_AnalysisTableAnnotation create a Skyline configuration
+#' Create a Skyline configuration
+#'
 #'
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue annotation_QValue
+#' @rdname concrete_AnalysisConfiguration
 #' @export
-#' @family concrete_configuration
-#' @keywords internal
 #' @examples
 #' skylineconfig <- create_config_Skyline()
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#' skylineconfig$table$factorKeys()
+#' skylineconfig$table$factor_keys()
 #' skylineconfig$table$hierarchyKeys()
 create_config_Skyline <- function(isotopeLabel="Isotope.Label",
                                   ident_qValue="annotation_QValue"){
@@ -32,18 +32,17 @@ create_config_Skyline <- function(isotopeLabel="Isotope.Label",
 
   #
   atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity("Area")
+  atable$set_work_intensity("Area")
   atable$isotopeLabel = isotopeLabel
   anaparam <- AnalysisParameters$new()
   AnalysisConfiguration$new(atable, anaparam)
 }
 
-#' @describeIn concrete_AnalysisTableAnnotation Create Spectronaut configuration
+#' Create Spectronaut configuration
 #' @param isotopeLabel Isotope.Label
 #' @param ident_qValue EG.Qvalue
 #' @export
-#' @keywords internal
-#' @family concrete_configuration
+#' @rdname concrete_AnalysisConfiguration
 #' @examples
 #' spectronautconfig <- create_config_Spectronaut_Peptide()
 #' config <- create_config_Spectronaut_Peptide()
@@ -71,7 +70,7 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
   AnalysisConfiguration$new(atable, anaparam)
 }
 
-#' @describeIn concrete_AnalysisTableAnnotation MaxQuant peptide file configuration
+#' MaxQuant peptide file configuration
 #'
 #' file must be read with tidyMQ_Peptides, you will still need to add the
 #' factors (explanatory variables).
@@ -79,9 +78,10 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
 #' @param ident_qValue pep
 #' @param intensity peptide.intensity
 #' @param isotopeLabel isotope
-#' @keywords internal
+#' @rdname concrete_AnalysisConfiguration
 #' @export
-#' @family concrete_configuration
+#' @examples
+#' tmp <- create_config_MQ_peptide()
 #'
 create_config_MQ_peptide <- function(ident_qValue = "pep",
                                   intensity = "peptide.intensity",
@@ -94,7 +94,7 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
   atable$hierarchyDepth <- 1
   #
   atable$ident_qValue = ident_qValue
-  atable$setWorkIntensity(intensity)
+  atable$set_work_intensity(intensity)
   atable$isotopeLabel = isotopeLabel
 
   anaparam <- AnalysisParameters$new()
@@ -104,11 +104,13 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
   return(configuration)
 }
 
-#' @describeIn concrete_AnalysisTableAnnotation Create configuration for MSFragger output
+#' Create configuration for MSFragger output
 #'
-#' @family concrete_configuration
-#' @keywords internal
+#' @rdname concrete_AnalysisConfiguration
 #' @export
+#' @examples
+#'create_config_MSFragger_MSstats()
+#'
 create_config_MSFragger_MSstats <- function(){
   ## Tell LFQ Service what column is what.
   atable <- AnalysisTableAnnotation$new()
@@ -117,7 +119,7 @@ create_config_MSFragger_MSstats <- function(){
   atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
   atable$fileName = "Run"
   atable$ident_qValue = "pep"
-  atable$setWorkIntensity("Intensity")
+  atable$set_work_intensity("Intensity")
   atable$isotopeLabel = "IsotopeLabelType"
   anaparam <- AnalysisParameters$new()
   anaparam$min_peptides_protein <- 2

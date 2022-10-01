@@ -8,8 +8,9 @@
 #' @examples
 #'
 #' #library(prolfqua)
-#' data('data_IonstarProtein_subsetNorm')
-#' istar <- data_IonstarProtein_subsetNorm
+#' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
+#' new <- old2new(list(config = bb1$config$clone( deep = TRUE), data = bb1$data))
+#' istar <- LFQData$new(new$data, new$config)
 #'
 #' istar$data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
@@ -180,9 +181,9 @@ LFQDataPlotter <- R6::R6Class(
         limit <- samples |> sample(max)
         ldata <- dataTransformed |>
           dplyr::filter(!!sym(config$table$sampleName) %in% limit)
-        prolfqua::pairs_smooth( prolfqua::toWideConfig(ldata, config, as.matrix = TRUE)$data )
+        prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data )
       }else{
-        prolfqua::pairs_smooth( prolfqua::toWideConfig(dataTransformed, config, as.matrix = TRUE)$data )
+        prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(dataTransformed, config, as.matrix = TRUE)$data )
       }
       NULL
     },

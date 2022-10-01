@@ -3,9 +3,20 @@
 #' Create Annotation
 #' @description
 #' Annotates Data Table
-#' @keywords internal
 #' @family configuration
 #' @export
+#' @examples
+#'
+#' ata <- AnalysisTableAnnotation$new()
+#' ata$fileName = "rawfile.column"
+#' ata$hierarchy[["protein"]] = "protein.column"
+#' ata$factors[["explanatory"]] = "explanatory.column"
+#' ata$set_work_intensity("abundance")
+#' ata$id_required()
+#' ata$id_vars()
+#' ata$value_vars()
+#' ata$annotation_vars()
+#' ac <- AnalysisConfiguration$new(ata)
 #'
 AnalysisTableAnnotation <- R6::R6Class(
   "AnalysisTableAnnotation",
@@ -39,42 +50,41 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @field is_intensity_transformed are the intensities transformed for constant variance
     is_intensity_transformed = FALSE,
     #' @description
-    #' add name of intensity column
+    #' Add name of intensity column
     #' @param colName name of intensity column
-    setWorkIntensity = function(colName){
+    set_work_intensity = function(colName){
       self$workIntensity <- c(self$workIntensity, colName)
     },
     #' @description
-    #' get name of working intensity column
-    getWorkIntensity = function(){
+    #' Get name of working intensity column
+    get_work_intensity = function(){
       return(tail(self$workIntensity, n = 1))
     },
     #' @description
-    #' remove last name in array of working intensity column names
-    popWorkIntensity = function(){
+    #' Remove last name in array of working intensity column names
+    pop_work_intensity = function(){
       res <- self$workIntensity[length(self$workIntensity)]
       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
       return(res)
     },
 
 
-    #' @field factors names of columns containing factors (annotions)
+    #' @field factors Names of columns containing factors (annotions)
     factors = list(), # ordering is important - first is considered the main
-    #' @field factorDepth facet plot according to the first or the first two factors (factorDepth can be 1 or 2)
+    #' @field factorDepth number of relevant factors (used by plotting functions etc)
     factorDepth = 1,
     #' @description
-    #' get factor keys
+    #' Get factor keys
     #' @return array with keys
-    factorKeys = function(){
+    factor_keys = function(){
       return(names(self$factors))
     },
     #' @description
-    #' get factor keys till factorDepth
-    fkeysDepth = function(){
+    #' Get factor keys till factorDepth
+    factor_keys_depth = function(){
       res <- head(self$factors, n = self$factorDepth)
       return(names(res))
     },
-
 
     #' @field hierarchy list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)
     hierarchy = list(),
@@ -108,40 +118,40 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @description
     #' Id Columns which must be in the input data frame
     #' @return character array
-    idRequired = function(){
-      idVars <- c(
+    id_required = function(){
+      id_vars <- c(
         self$fileName,
-        purrr::map_chr(self$factors,"colnames"),
+        unlist(self$factors),
         unlist(self$hierarchy),
         self$isotopeLabel
       )
-      return(idVars)
+      return(id_vars)
     },
     #' @description
     #' get names of columns annotating values (e.g. intensities)
     #' @return character array
-    idVars = function(){
+    id_vars = function(){
       "Id Columns which must be in the output data frame"
-      idVars <- c(
+      id_vars <- c(
         self$fileName,
         names(self$factors),
         names(self$hierarchy),
         self$isotopeLabel,
         self$sampleName)
-      return(idVars)
+      return(id_vars)
     },
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
-    valueVars = function(){
+    value_vars = function(){
       "Columns containing values"
-      valueVars <- c( self$getWorkIntensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+      valueVars <- c( self$get_work_intensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
       return(valueVars)
     },
     #' @description
     #' get names of columns with sample annotations
     #'
-    annotationVars = function(){
-      annotationVars <- c(self$fileName, self$sampleName, self$factorKeys() )
+    annotation_vars = function(){
+      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys() )
       return(annotationVars)
     }
   )

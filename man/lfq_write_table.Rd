@@ -24,7 +24,7 @@ Facade to writing data frame into various file formats.
 \examples{
 x<- data.frame(a = 1:3, b = 4:6 )
 
-# lfq_write_table(x, "." , "test", format = c( "csv", "xlsx",  "html"))
+lfq_write_table(x, tempdir() , "test", format = c( "csv", "xlsx",  "html"))
 
 }
 \keyword{internal}

@@ -26,7 +26,7 @@ filter QVAlues and NA's and factor information
 \examples{
 
 rm(list=ls())
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -49,7 +49,7 @@ Other workflows:
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{deprecated}

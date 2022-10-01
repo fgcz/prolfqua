@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_hierarchies_line_df}
 \alias{plot_hierarchies_line_df}
-\title{generates peptide level plots for all Proteins}
+\title{Generates peptide level plots for all proteins}
 \usage{
 plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 }
@@ -12,12 +12,12 @@ plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 \item{config}{AnalysisConfiguration}
 }
 \description{
-generates peptide level plots for all Proteins
+Generates peptide level plots for all proteins
 }
 \examples{
 
 
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
@@ -31,7 +31,7 @@ config$table$is_intensity_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
 config <-  istar$config
 res <- plot_hierarchies_line_df(istar_data, config)
@@ -48,31 +48,33 @@ config$table$hierarchyDepth = 2
 
 }
 \seealso{
+\code{\link{plot_hierarchies_line}}
+
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
-\code{\link{aggregate_intensity}()},
+\code{\link{aggregate_intensity_topN}()},
+\code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

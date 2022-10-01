@@ -16,27 +16,27 @@ visualize correlation among samples
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 
 analysis <- remove_small_intensities(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
-mm <- toWideConfig(analysis, config, as.matrix = TRUE)
+mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 class(plot_sample_correlation(analysis, config))
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

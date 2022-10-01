@@ -7,7 +7,7 @@
 #'
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -24,8 +24,6 @@
 #'
 #' mod$modelDF
 #' aovtable  <- mod$get_anova()
-#' head(aovtable)
-#' unique(aovtable$factor)
 #' mod$get_coefficients()
 #' mod$coef_histogram()
 #' mod$coef_volcano()
@@ -146,7 +144,7 @@ Model <- R6::R6Class(
       fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_",self$modelName,".pdf")
       VolcanoPlot <- Model_Coeff |>
         dplyr::filter(factor != "(Intercept)") |>
-        prolfqua::multigroupVolcano(
+        prolfqua::multigroup_volcano(
           effect = "Estimate",
           significance = "Pr...t..",
           contrast = "factor",

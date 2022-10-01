@@ -7,17 +7,22 @@
 #' @family modelling
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config$clone(deep=TRUE)
 #' configur$table$hierarchyDepth <- 2
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 #' "dilution.c-e" = "dilution.c - dilution.b")
-#' tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
-#' ctr <- tmp$get_contrasts()
-#' xcx <- ContrastsTable$new(ctr, subject_Id = tmp$subject_Id, modelName = tmp$modelName)
+#' csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+#' ctr <- csi$get_contrasts()
+#' csi$subject_Id
+#' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+#' xcx$get_contrasts()
 #' xcx$get_Plotter()$volcano()
+#' stopifnot(is.null(xcx$get_contrast_sides()))
+#' stopifnot(is.null(xcx$get_linfct()))
+#' stopifnot(ncol(xcx$to_wide()) == 8)
 #'
 ContrastsTable <- R6::R6Class(
   "ContrastsTable",
@@ -62,13 +67,13 @@ ContrastsTable <- R6::R6Class(
       self$contrast_result
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
     #' @param FCthreshold fold change threshold
     #' @param FDRthreshold fdr threshold
-    #' @return \code{\link{Contrasts_Plotter}}
+    #' @return \code{\link{ContrastsPlotter}}
     #'
     get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1){
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,

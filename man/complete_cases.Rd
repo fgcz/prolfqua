@@ -12,11 +12,12 @@ complete_cases(pdata, config)
 \item{config}{AnlalysisConfiguration}
 }
 \description{
-Complete cases
+The tidy table does not need to contain missing data.
+This function re-establishes the missing observations in a sample.
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -31,14 +32,15 @@ Other configuration:
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

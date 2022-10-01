@@ -22,7 +22,6 @@ Other FragPipe:
 \code{\link{FragPipe}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_peptides}()},
 \code{\link{tidy_FragPipe_combined_protein_deprec}()}
 }
 \concept{FragPipe}

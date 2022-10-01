@@ -1,10 +1,11 @@
-#' add protein lengths from fasta file to data frame (id_col - protein id column.)
+#' Add protein lengths from fasta file to data frame (id_col - protein id column.)
 #' @rdname saintExpress
 #' @param intdata data.frame
 #' @param fasta list of sequences created with \code{\link[seqinr]{read.fasta}}
 #' @param id_col column with protein ids/accessions.
 #' @export
-addProteinLengths <- function(
+#'
+add_protein_lengths <- function(
   intdata,
   fasta,
   id_col = "protein_Id" ){
@@ -29,9 +30,10 @@ addProteinLengths <- function(
 #' @param baitCol column with bait definition (condition)
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
 #' @examples
-#' \donttest{
 #'
-#' xx <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#' new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#' xx <- LFQData$new(new$data, new$config)
 #' exampleDat <- xx$data |> dplyr::mutate(CorT = dplyr::case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #' # sample protein lengths
 #'
@@ -48,10 +50,13 @@ addProteinLengths <- function(
 #'                    )
 #'
 #' stopifnot(names(res) == c( "inter", "prey",  "bait"))
-#'
-#' undebug(runSaint)
-#' res <- runSaint(res)
+#' if(!Sys.info()["sysname"] == "Darwin") {
+#'   data_SAINTe_output <- runSaint(res, filedir = tempdir())
+#'   #usethis::use_data(data_SAINTe_output)
+#' } else {
+#'  testthat::expect_error(runSaint(res, filedir = tempdir()))
 #' }
+#'
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
                                 proteinID = "protein_Id",
@@ -92,6 +97,7 @@ protein_2localSaint <- function(xx,
 #' Network visualization.
 #' look at https://www.jessesadler.com/post/network-analysis-with-r/
 #' https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
+#'
 #' @export
 #' @rdname saintExpress
 #' @param si output of protein_2localSaint function
@@ -114,17 +120,14 @@ runSaint <- function(si,
     readr::write_tsv(si[[i]], file = filen , col_names = FALSE)
   }
 
-  pkg <- find.package("prolfqua")
-
   if (Sys.info()["sysname"] == "Windows") {
     if (spc) {
-      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-spc.exe"
+      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-spc.exe", package = "prolfqua")
     } else {
-      exeS2 <- "SaintExpress\\bin\\Windows64\\SAINTexpress-int.exe"
+      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", pacakge = "prolfqua")
     }
-    exeT <- file.path(pkg, exeS2)
 
-    out <- system2(exeT,
+    out <- system2(exeS2,
                    args = paths,
                    stdout = TRUE,
                    stderr = TRUE,
@@ -132,19 +135,18 @@ runSaint <- function(si,
                    minimized = TRUE)
   } else if (Sys.info()["sysname"] == "Linux") {
     if (spc) {
-      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-spc"
+      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-spc",  package = "prolfqua")
     } else {
-      exeS2 <- "SaintExpress/bin/Linux64/SAINTexpress-int"
+      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
     }
-    exeT <- file.path(pkg, exeS2)
 
-    out <- system2(exeT,
+    out <- system2(exeS2,
                    args = paths,
                    stdout = TRUE,
                    stderr = TRUE,
                    wait = TRUE)
   } else {
-    stop("System",Sys.info()["sysname"] , "not supported.")
+    stop("System",Sys.info()["sysname"] , " not supported.")
   }
 
   message(cat(out,sep = "\n"))

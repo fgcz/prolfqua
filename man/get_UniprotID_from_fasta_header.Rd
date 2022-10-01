@@ -17,20 +17,26 @@ data.frame
 \description{
 Extracts uniprot ID
 }
+\examples{
+
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+colnames(bb$data)
+tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
+tmp$UniprotID <- NULL
+tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
+stopifnot("UniprotID" \%in\%  colnames(tmp))
+}
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
+\code{\link{multigroup_volcano}()},
+\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
-\code{\link{table_facade.list}()},
+\code{\link{panel_cor}()},
+\code{\link{panel_hist}()},
+\code{\link{remove_NA_rows}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

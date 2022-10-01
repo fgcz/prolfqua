@@ -7,6 +7,13 @@
 #' @param inputAnnotation annotation
 #' @param fileName column name to join on.
 #' @export
+#' @examples
+#' protein_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+#'
+#' inputAnnotation <- system_file("samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx",package = "prolfqua")
+#' startdata <- prolfqua::tidyMQ_ProteinGroups(protein_txt)
+#' tmp <- add_annotation(startdata,inputAnnotation )
+#' stopifnot(ncol(tmp) == ncol(startdata) + 3)
 #'
 add_annotation <- function(intensityData,
                            inputAnnotation,
@@ -48,8 +55,7 @@ add_annotation <- function(intensityData,
 #'
 #'
 #'
-#' rm(list=ls())
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -57,7 +63,7 @@ add_annotation <- function(intensityData,
 #'
 #' config$parameter$min_nr_of_notNA  <- 3
 #' #debug(workflow_correlation_preprocessing_protein_intensities)
-#' runLong <- FALSE
+#' runLong <- TRUE
 #' if(runLong){
 #' res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 #' names(res)
@@ -71,7 +77,7 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   stat_qval <- hierarchy_counts(data_NA_QVal, config)
 
   # remove transitions with large numbers of NA's
-  data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
+  data_NA_QVal <- rank_by_NA(data_NA_QVal, config)
   data_NA_QVal <- data_NA_QVal |> dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   if(nrow(data_NA_QVal) == 0){
     warning("no rows left after filtering for min_nr_of_notNA")
@@ -86,17 +92,17 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
   # filter decorrelated.
 
   data_NA_QVal <- transform_work_intensity(data_NA_QVal, config, log2)
-  data_NA_QVal <- markDecorrelated(data_NA_QVal, config, minCorrelation = minCorrelation)
+  data_NA_QVal <- mark_decorelated(data_NA_QVal, config, minCorrelation = minCorrelation)
   keepCorrelated <- dplyr::filter(data_NA_QVal, .data$srm_decorelated == FALSE)
 
   stat_correlated  <- hierarchy_counts(keepCorrelated, config)
 
   # TODO check if you are not aggregating log transformed intensities
   # rank precursors by intensity
-  keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
+  keepCorrelated <- rank_peptide_by_intensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
   mean_na <- function(x, name=FALSE){if(name){return("mean_na")};mean(x, na.rm = TRUE)}
-  proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed, config, .func = mean_na, N = 3)
+  proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed, config, .func = mean_na, N = 3)
 
   # collect stats
   stats <- list(stat_input = stat_input,
@@ -120,10 +126,9 @@ workflow_correlation_preprocessing_protein_intensities <- function(pdata, config
 #' @family workflows
 #' @export
 #' @examples
-#' rm(list=ls())
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -139,7 +144,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
   stat_qval <- hierarchy_counts(data_NA_QVal, config)
 
   # remove transitions with large numbers of NA's
-  data_NA_QVal <- rankPrecursorsByNAs(data_NA_QVal, config)
+  data_NA_QVal <- rank_by_NA(data_NA_QVal, config)
   data_NA_QVal <- data_NA_QVal |> dplyr::filter(.data$srm_NrNotNAs > config$parameter$min_nr_of_notNA)
   stat_min_nr_of_notNA <- hierarchy_counts(data_NA_QVal, config)
 
@@ -150,11 +155,11 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 
   # filter decorrelated.
   data_NA_QVal <- transform_work_intensity(data_NA_QVal, config, log2)
-  data_NA_QVal <- markDecorrelated(data_NA_QVal, config, minCorrelation = minCorrelation)
+  data_NA_QVal <- mark_decorelated(data_NA_QVal, config, minCorrelation = minCorrelation)
   keepCorrelated <- dplyr::filter(data_NA_QVal, .data$srm_decorelated == FALSE)
 
   stat_correlated  <- hierarchy_counts(keepCorrelated, config)
-  keepCorrelated <- rankPrecursorsByIntensity(keepCorrelated, config)
+  keepCorrelated <- rank_peptide_by_intensity(keepCorrelated, config)
   qvalFiltImputed <- impute_correlationBased(keepCorrelated, config)
 
 
@@ -181,7 +186,7 @@ workflow_corr_filter_impute <- function(pdata, config, minCorrelation =0.6){
 #' @examples
 #'
 #' rm(list=ls())
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

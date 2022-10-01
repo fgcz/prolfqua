@@ -1,10 +1,20 @@
 #' Extracts uniprot ID
+#'
 #' @export
 #' @keywords internal
 #' @family utilities
 #' @return data.frame
 #' @param obj data.frame
 #' @param idcol columns to extract uniprot id's from
+#'
+#' @examples
+#'
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' colnames(bb$data)
+#' tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
+#' tmp$UniprotID <- NULL
+#' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
+#' stopifnot("UniprotID" %in%  colnames(tmp))
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 {
   map <- df |> dplyr::select(idcolumn) |> distinct() |>
@@ -34,11 +44,11 @@ get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 #' obj = matrix(rnorm(10*10),ncol=10)
 #' dim(obj)
 #' obj[3,3] = NA
-#' x1 = removeNArows(obj, thresh=0)
+#' x1 = remove_NA_rows(obj, thresh=0)
 #' stopifnot(all(c(9,10)==dim(x1)))
-#' x2 = removeNArows(obj, thresh=1)
+#' x2 = remove_NA_rows(obj, thresh=1)
 #' stopifnot(all(c(10,10)==dim(x2)))
-removeNArows <- function(obj, thresh=0 )
+remove_NA_rows <- function(obj, thresh=0 )
 {
   x <- apply(obj,1,function(x){sum(is.na(x))})
   obj <- obj[!(x > thresh),]
@@ -54,8 +64,8 @@ removeNArows <- function(obj, thresh=0 )
 #'
 #' @examples
 #' dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
-#' split2table(dat,split="\\_|\\/")
-split2table <- function(names,split="\\||\\_")
+#' names_to_matrix(dat,split="\\_|\\/")
+names_to_matrix <- function(names,split="\\||\\_")
 {
   cnamessplit <- stringr::str_split(as.character(names),pattern = split)
   protnam <- do.call("rbind",cnamessplit)
@@ -87,14 +97,14 @@ split2table <- function(names,split="\\||\\_")
 #'
 #' show <- prolfqua_data('data_multigroupFC') |>
 #'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
-#' prolfqua::multigroupVolcano( show,
+#' prolfqua::multigroup_volcano( show,
 #' effect="logFC",
 #' significance = "adj.P.Val",
 #' contrast="Condition",
 #' colour=NULL,
 #' label="Name",
 #' maxNrOfSignificantText = 300)
-multigroupVolcano <- function(.data,
+multigroup_volcano <- function(.data,
                               effect = "fc",
                               significance = "p.adjust",
                               contrast = "condition",
@@ -110,7 +120,7 @@ multigroupVolcano <- function(.data,
 {
   misspX <- tidyr::unite(.data, "label", label)
 
-  p <- .multigroupVolcano(misspX,
+  p <- .multigroup_volcano(misspX,
                           effect = effect,
                           significance = significance,
                           contrast = contrast,
@@ -137,7 +147,7 @@ multigroupVolcano <- function(.data,
   return(p)
 }
 
-.multigroupVolcano <- function(data,
+.multigroup_volcano <- function(data,
                                effect = "fc",
                                significance = "p.adjust",
                                contrast = "contrast",
@@ -221,20 +231,23 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 
 
 # @TODO think of making it public.
-#' copute jack knive
+#' Compute jackknive resampling on matrix
 #' @param xdata matrix
 #' @param .method method i.e. cor, parameters
 #' @param ... further parameters to .method
 #' @return list with all jackknife matrices
 #' @export
-#' @family utilities
+#' @return list of matrices
+#' @family transitioncorrlation
 #' @keywords internal
 #' @examples
 #' xx <- matrix(rnorm(20), ncol=4)
 #' cortest <- function(x){print(dim(x));cor(x)}
-#' my_jackknife(xx, cortest)
-#' my_jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
-my_jackknife <- function(xdata, .method, ... ) {
+#' jackknife(xx, cortest)
+#' tmp <- jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
+#' stopifnot(length(tmp) == 3)
+#' stopifnot(length(tmp[[2]]) == nrow(xx))
+jackknife <- function(xdata, .method, ... ) {
   x <- seq_len(nrow(xdata))
   call <- match.call()
   n <- length(x)
@@ -249,25 +262,26 @@ my_jackknife <- function(xdata, .method, ... ) {
 }
 
 #' Compute correlation matrix with jack
+#' @seealso jackknife
 #' @param dataX data.frame with transition intensities per peptide
 #' @param distmethod dist or correlation method working with matrix i.e. cor
 #' @param ... further parameters to method
 #' @export
-#' @family utilities
+#' @family transitioncorrlation
 #' @keywords internal
-#' @return summarizes results producced with my_jackknife
+#' @return summarizes results producced with jackknife
 #' @examples
 #' dataX <- matrix(rnorm(20), ncol=4)
 #' rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
 #' colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
-#' tmp <- my_jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
-#' res <- jackknifeMatrix(dataX, cor)
+#' tmp <- jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
+#' res <- jackknife_matrix(dataX, cor)
 #' res
-#' dim(res)
-#' res <- jackknifeMatrix(dataX, cor, method="spearman")
-#' dim(res)
-#' res
-jackknifeMatrix <- function(dataX, distmethod , ... ){
+#' stopifnot(dim(res) == c(4,4))
+#' res <- jackknife_matrix(dataX, cor, method="spearman")
+#' stopifnot(dim(res) == c(4,4))
+
+jackknife_matrix <- function(dataX, distmethod , ... ){
   if (is.null(colnames(dataX))) {
     colnames(dataX) <- paste("C", seq_len(ncol(dataX)), sep = "")
   }
@@ -276,7 +290,7 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
   }
 
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
-    tmp <- my_jackknife( dataX, distmethod, ... )
+    tmp <- jackknife( dataX, distmethod, ... )
     x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
     dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
     ddd <- dd |>
@@ -290,8 +304,55 @@ jackknifeMatrix <- function(dataX, distmethod , ... ){
     return(dddd)
   }else{
     message("Could not compute correlation, nr rows : " , nrow(dataX) )
+    return(NULL)
   }
 }
+
+#' Compute correlation matrix
+#' @param dataX data.frame with transition intensities per peptide
+#' @export
+#' @keywords internal
+#' @family transitioncorrlation
+#' @examples
+#' list <- prolfqua_data('data_correlatedPeptideList')
+#' cor_order(data_correlatedPeptideList[[1]])
+cor_order <- function(dataX) {
+  if (nrow(dataX) > 1) {
+    ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
+    dd <- stats::cor(t(ordt), use = "pairwise.complete.obs", method = "spearman")
+    return(dd)
+  }else{
+    message("Could not compute correlation, nr rows : " , nrow(dataX) )
+  }
+}
+
+#' Compute correlation matrix with jackknife resampling
+#
+#' @param dataX data.frame with e.g. transition intensities per peptide or pepitde intensities per protein
+#' @export
+#' @keywords internal
+#' @family transitioncorrlation
+#' @examples
+#' dd <- prolfqua_data("data_correlatedPeptideList")
+#'
+#' class(dd[[1]])
+#' dd[[1]][1,2] <- NA
+#' cor_jackknife_matrix(dd[[1]])
+#'
+cor_jackknife_matrix <- function(dataX,
+                                       distmethod =
+                                         function(x){cor(x, use = "pairwise.complete.obs", method = "pearson")}) {
+  if (nrow(dataX) > 1) {
+    ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
+    xpep <- t(ordt)
+    res <- prolfqua::jackknife_matrix(xpep, distmethod)
+  }else{
+    message("Could not compute correlation, nr rows : ", nrow(dataX))
+    res <- NULL
+  }
+  return(res)
+}
+
 
 #' normal pairs plot with different pch and plus abline
 #' @param dataframe data matrix or data.frame as normally passed to pairs
@@ -339,7 +400,7 @@ pairs_w_abline <- function(dataframe,
 #' @keywords internal
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
-panel.hist <- function(x, ...)
+panel_hist <- function(x, ...)
 {
   usr <- par("usr")
   on.exit(par(usr))
@@ -359,7 +420,7 @@ panel.hist <- function(x, ...)
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
-panel.cor <- function(x, y, digits = 2, ...)
+panel_cor <- function(x, y, digits = 2, ...)
 {
   usr <- par("usr")
   on.exit(par(usr))
@@ -395,7 +456,7 @@ panel.cor <- function(x, y, digits = 2, ...)
 #' @examples
 #' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
 #' pairs_smooth(tmp,main="small data", legend=TRUE)
-#' pairs_smooth(tmp,main="small data", diag.panel=panel.hist)
+#' pairs_smooth(tmp,main="small data", diag.panel=panel_hist)
 #' pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
 pairs_smooth <- function(dataframe, legend = FALSE, ...) {
@@ -418,7 +479,7 @@ pairs_smooth <- function(dataframe, legend = FALSE, ...) {
                          text.col = 3)
       }
     }
-    , lower.panel = panel.cor,
+    , lower.panel = panel_cor,
     ...
   )
 }
@@ -435,38 +496,7 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
   }
 }
 
-#' table facade to easily switch implementations
-#' @export
-#' @family utilities
-#' @keywords internal
-table_facade.list <- function(parlist, kable=TRUE){
-  table_facade(parlist$content, digits = parlist$digits, caption = parlist$caption )
-}
 
-
-
-.string.to.colors <- function(string, colors = NULL){
-  if (is.factor(string)) {
-    string = as.character(string)
-  }
-  if (!is.null(colors)) {
-    if (length(colors) != length(unique(string))) {
-      stop("The number of colors must be equal to the number of unique elements.")
-    }
-    else {
-      conv = cbind(unique(string), colors)
-    }
-  } else {
-    conv = cbind(unique(string), rainbow(length(unique(string))))
-  }
-  unlist(lapply(string, FUN = function(x){conv[which(conv[,1] == x),2]}))
-}
-
-.number.to.colors = function(value, colors = c("red", "blue"), num = 100){
-  cols = colorRampPalette(colors)(num)
-  cols = 	cols[findInterval(value, vec = seq(from = min(value), to = max(value), length.out = num))]
-  cols
-}
 
 # @examples
 #
@@ -550,10 +580,10 @@ table_facade.list <- function(parlist, kable=TRUE){
 #' dataB <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
 #' condition = rep("B",5), Prey = LETTERS[1:5],modelName = c("A","A","B","B","B"))
 #' data <- dplyr::bind_rows(data, dataB)
-#' bc <- volcano_Plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
+#' bc <- volcano_plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 #' bc |> plotly::subplot()
 #'
-volcano_Plotly <- function(.data,
+volcano_plotly <- function(.data,
                            effect = "fc",
                            significance = "BFDR",
                            contrast = "condition",
@@ -599,4 +629,35 @@ volcano_Plotly <- function(.data,
   )
   return(xd)
 }
+
+
+
+#' load data from prolfqua
+#' @param datastr name of dataset
+#' @param package default prolfqua
+#' @export
+#' @family data
+prolfqua_data <- function(datastr, package="prolfqua"){
+  data(list = datastr, package = package)
+  return(eval(parse(text = datastr)))
+}
+
+
+#' case sensitive version of system.file
+#'
+#' @export
+#' @examples
+#'
+#' testthat::expect_error(system_file("samples/maxquant_txt/tiny2.ZIP"))
+#' system_file("samples/maxquant_txt/tiny2.zip")
+#'
+system_file <- function(x , package = "prolfqua"){
+  file <- system_file(x,
+                      package = "prolfqua",
+                      mustWork = TRUE)
+  stopifnot(basename(file) %in% list.files(dirname(file)))
+  return(file)
+}
+
+
 

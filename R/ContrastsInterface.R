@@ -1,6 +1,13 @@
 # ContrastsInterface ----
 #' Base class for all Contrasts classes
 #' @export
+#' @examples
+#' int <- ContrastsInterface$new()
+#' testthat::expect_error(int$get_contrast_sides())
+#' testthat::expect_error(int$get_contrasts())
+#' testthat::expect_error(int$get_Plotter())
+#' testthat::expect_error(int$to_wide())
+#' int$column_description()
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(
@@ -56,7 +63,9 @@ ContrastsInterface <- R6::R6Class(
 
 
 # Merge contrasts ----
-#' add contrast results from two different functions. Typically used with Contrast and Cotnrast simple imputed.
+#' Merge contrast results coming from two different model.
+#'
+#' Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsSimpleImputed}}
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
@@ -64,7 +73,7 @@ ContrastsInterface <- R6::R6Class(
 #' @export
 #' @family modelling
 #'
-addContrastResults <- function(prefer, add, modelName = "mergedModel"){
+merge_contrasts_results <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
   cB <- add$get_contrasts()
 

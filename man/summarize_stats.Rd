@@ -40,48 +40,41 @@ summarize stats output (compute quantiles)
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config)
-head(res1)
-#View(res1)
 d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-head(d)
 d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-head(d)
 #CON__P02769~18~NA VHKECCHGDLLECADDR
 d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-res1 |> dplyr::filter(dilution. == "pooled")
 
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats_all(data, config)
 d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-head(d)
 d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-head(d)
 #CON__P02769~18~NA VHKECCHGDLLECADDR
 d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 res1 |> dplyr::filter(dilution. == "pooled")
 
 library(ggplot2)
-bb1 <- prolfqua_data('data_ionstar')$filtered()
+bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "CV")
 stats_res
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
-config$table$getWorkIntensity()
+config$table$get_work_intensity()
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "sd")

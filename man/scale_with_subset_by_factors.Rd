@@ -2,17 +2,26 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{scale_with_subset_by_factors}
 \alias{scale_with_subset_by_factors}
-\title{scale within factor levels (e.g. use for pulldown data)}
+\title{Scale using a subset of the data, within factor levels (e.g. use for pulldown data)}
 \usage{
-scale_with_subset_by_factors(data, subset, config, preserveMean = TRUE)
+scale_with_subset_by_factors(data, subset, config, preserveMean = FALSE)
+}
+\arguments{
+\item{data}{tibble with data}
+
+\item{subset}{tibble with subset of the data which will be used to derive scaling parameters}
+
+\item{config}{configuration}
+
+\item{preserveMean}{default FALSE then set mean to 0}
 }
 \description{
-scale within factor levels (e.g. use for pulldown data)
+This method reduces the variance within the group.
 }
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data
@@ -26,7 +35,7 @@ res <- scale_with_subset_by_factors(res, res, conf)
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},

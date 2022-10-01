@@ -53,7 +53,7 @@ atable <- AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majProtID")
 atable$hierarchyDepth <- 1
-atable$setWorkIntensity("mq.protein.intensity")
+atable$set_work_intensity("mq.protein.intensity")
 config <- AnalysisConfiguration$new(atable)
 
 
@@ -81,8 +81,8 @@ GRP2$transformedlfqData <- transformed
 ################## Run Modelling ###############
 
 
-formula_Condition <-  strategy_lm(paste0(transformed$config$table$getWorkIntensity(), " ~ ",
-                                         transformed$config$table$fkeysDepth()))
+formula_Condition <-  strategy_lm(paste0(transformed$config$table$get_work_intensity(), " ~ ",
+                                         transformed$config$table$factor_keys_depth()))
 # specify model definition
 modelName  <- "Model"
 
@@ -101,7 +101,7 @@ conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
-res <- prolfqua::addContrastResults(conrM, conMI)
+res <- prolfqua::merge_contrasts_results(conrM, conMI)
 
 GRP2$contrResult <- res$merged$get_contrasts()
 GRP2$contrMerged <- res$merged$get_Plotter()

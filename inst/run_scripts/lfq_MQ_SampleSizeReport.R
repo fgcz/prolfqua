@@ -49,21 +49,21 @@ if (!dir.exists(outputDir)) {
 summarize_stats_raw_transformed <- function(resDataStart, config){
   config_tmp <- config$clone(deep = TRUE)
   stats_res <- summarize_stats(resDataStart, config_tmp)
-  wide <- toWideConfig( resDataStart,config_tmp)
+  wide <- tidy_to_wide_config( resDataStart,config_tmp)
   stats_raw <- inner_join(stats_res,
                           wide$data,
                           by = config_tmp$table$hierarchyKeys())
 
   resDataStart <- transform_work_intensity(resDataStart, config_tmp, log2)
-  data <- prolfqua::applyToIntensityMatrix(resDataStart, config_tmp, .func = robust_scale)
+  data <- prolfqua::apply_to_response_matrix(resDataStart, config_tmp, .func = robust_scale)
 
   stats_res_transformed <- summarize_stats(data, config_tmp)
-  wide <- toWideConfig( data,config_tmp)
+  wide <- tidy_to_wide_config( data,config_tmp)
   stats_transformed <- inner_join(stats_res_transformed,
                                   wide$data,
                                   by = config_tmp$table$hierarchyKeys())
   peptideStats <- inner_join(stats_raw, stats_transformed,
-                             by = c( config_tmp$table$factorKeys(),config_tmp$table$hierarchyKeys() ),
+                             by = c( config_tmp$table$factor_keys(),config_tmp$table$hierarchyKeys() ),
                              suffix = c(".raw",".transformed") )
   return(peptideStats)
 }
@@ -119,9 +119,9 @@ results <- normalize_log2_robscale(res$data, resPep$config)
 
 
 #rmarkdown::render("MQSummary2.Rmd", params=list(configuration = config$clone(deep=TRUE), data = resDataStart), output_format = bookdown::pdf_document2())
-protintensity <- medpolish_protein_quants( results$data, results$config )
+protintensity <- medpolish_protein_estimates( results$data, results$config )
 xx <- protintensity("unnest")
-data <- prolfqua::applyToIntensityMatrix(xx$data, xx$config, .func = robust_scale)
+data <- prolfqua::apply_to_response_matrix(xx$data, xx$config, .func = robust_scale)
 
 
 stats_res <- summarize_stats(data, xx$config, all = FALSE)
@@ -130,7 +130,7 @@ stats_res <- summarize_stats(data, xx$config, all = FALSE)
 data_wide <-
   inner_join(
     stats_res,
-    toWideConfig(data, xx$config)$data,
+    tidy_to_wide_config(data, xx$config)$data,
     by = xx$config$table$hkeysDepth(),
     suffix = c(".factor", "")
   )
@@ -144,7 +144,7 @@ lfq_write_table(
 )
 
 lfq_write_table(
-  toWideConfig(data, xx$config)$annotation,
+  tidy_to_wide_config(data, xx$config)$annotation,
   path = outputDir,
   name = paste0("r_", filename, "_annotation"),
   format = "xlsx"

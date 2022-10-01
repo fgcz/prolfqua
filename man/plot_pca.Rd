@@ -13,7 +13,7 @@ plot PCA
 
 
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(istar$data) == 25780)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
@@ -28,15 +28,15 @@ plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

@@ -7,9 +7,9 @@
 interaction_missing_stats(
   pdata,
   config,
-  factors = config$table$fkeysDepth(),
+  factors = config$table$factor_keys_depth(),
   hierarchy = config$table$hierarchyKeys(),
-  workIntensity = config$table$getWorkIntensity()
+  workIntensity = config$table$get_work_intensity()
 )
 }
 \arguments{
@@ -29,14 +29,14 @@ compute missingness statistics per hierarchy and factor level
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 
 configur$parameter$qVal_individual_threshold <- 0.01
-xx <- prolfqua::removeLarge_Q_Values(data,
+xx <- prolfqua::remove_large_QValues(data,
    configur)
 xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))

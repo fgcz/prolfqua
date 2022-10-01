@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{scale_with_subset}
 \alias{scale_with_subset}
-\title{scale_with_subset}
+\title{Scale data using a subset of the data}
 \usage{
 scale_with_subset(
   data,
@@ -12,14 +12,25 @@ scale_with_subset(
   get_scales = TRUE
 )
 }
+\arguments{
+\item{data}{the whole dataset}
+
+\item{subset}{a subset of the dataset}
+
+\item{config}{configuration}
+
+\item{get_scales}{return a list of transformed data and the scaling parameters}
+
+\item{perserveMean}{default FASE - sets mean to zero}
+}
 \description{
-scale_with_subset
+this should reduce the overall variance.
 }
 \examples{
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data
@@ -34,7 +45,7 @@ stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},

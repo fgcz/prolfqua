@@ -2,12 +2,19 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{sample_subset}
 \alias{sample_subset}
-\title{sample subset of data}
+\title{Sample subset of proteins/peptides/precursors}
 \usage{
 sample_subset(size, pdata, config)
 }
+\arguments{
+\item{pdata}{tidy table}
+
+\item{config}{\code{\link{AnalysisConfiguration}}}
+
+\item{n}{size of sample}
+}
 \description{
-sample subset of data
+Sample subset of proteins/peptides/precursors
 }
 \seealso{
 Other configuration: 
@@ -15,14 +22,15 @@ Other configuration:
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

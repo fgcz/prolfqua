@@ -9,7 +9,7 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -19,7 +19,7 @@
 #' plot_intensity_distribution_violin(analysis, config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$getWorkIntensity() )) +
+  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$get_work_intensity() )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun.y = median, geom = "point", size = 1, color = "black")
@@ -38,7 +38,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -47,7 +47,7 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' plot_intensity_distribution_density(analysis, config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes_string(x = config$table$getWorkIntensity(),
+  p <- ggplot(pdata, aes_string(x = config$table$get_work_intensity(),
                                 colour = config$table$sampleName )) +
     geom_line(stat = "density")
   if (!config$table$is_intensity_transformed) {
@@ -69,17 +69,17 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
 #' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
-#' mm <- toWideConfig(analysis, config, as.matrix = TRUE)
+#' mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 #' class(plot_sample_correlation(analysis, config))
 plot_sample_correlation <- function(pdata, config){
-  matrix <- toWideConfig(pdata, config, as.matrix = TRUE)$data
+  matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
     corrplot::corrplot.mixed(M,upper = "ellipse",
@@ -117,7 +117,7 @@ plot_sample_correlation <- function(pdata, config){
 #' @examples
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' conf <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -173,10 +173,10 @@ plot_hierarchies_boxplot <- function(pdata,
   isotopeLabel <- config$table$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
 
-  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$fkeysDepth()))
+  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$factor_keys_depth()))
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
-                                y = config$table$getWorkIntensity(),
+                                y = config$table$get_work_intensity(),
                                 color = color
   )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
@@ -207,7 +207,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  iostar <- prolfqua_data('data_ionstar')$filtered()
+#'  iostar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
@@ -221,7 +221,10 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
 #'  res$boxplot[[1]]
 #'
-#'  iostar <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#'  iostar <- LFQData$new(new$data, new$config)
+#'
 #'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'  unique(iostar$data$protein_Id)
@@ -263,7 +266,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
@@ -278,7 +281,7 @@ plot_heatmap_cor <- function(data,
                              color = colorRampPalette(c("white", "red"))(1024),
                              ...){
 
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
 
@@ -288,7 +291,7 @@ plot_heatmap_cor <- function(data,
     cres <- cres^2
   }
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -323,7 +326,7 @@ plot_heatmap_cor <- function(data,
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -343,14 +346,14 @@ plot_heatmap <- function(data,
     return(NULL)
   }
 
-  wide <-  toWideConfig(data, config , as.matrix = TRUE)
+  wide <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
   resdata <- t(scale(t(wide$data)))
-  resdataf <- prolfqua::removeNArows(resdata,floor(ncol(resdata)*na_fraction))
+  resdataf <- prolfqua::remove_NA_rows(resdata,floor(ncol(resdata)*na_fraction))
 
   if (nrow(resdataf) >= 3) {
     gg <- stats::hclust( stats::dist( resdataf ))
@@ -391,8 +394,9 @@ plot_heatmap <- function(data,
 #' @family plotting
 #' @export
 #' @examples
-#' istar <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'
+#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#' istar <- LFQData$new(new$data, new$config)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #' dev.off()
@@ -412,12 +416,12 @@ plot_raster <- function(data,
     return(NULL)
   }
   arrange <- match.arg(arrange)
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   resdata <- res$data
 
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -457,7 +461,7 @@ plot_raster <- function(data,
 #' @examples
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
 #'
@@ -473,12 +477,12 @@ plot_NA_heatmap <- function(data,
                             config,
                             limitrows = 10000,
                             distance = "binary"){
-  res <-  toWideConfig(data, config , as.matrix = TRUE)
+  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
   stopifnot(annot[[config$table$sampleName]] == colnames(res))
 
-  factors <- dplyr::select_at(annot, config$table$factorKeys())
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$table$sampleName]]
 
@@ -532,7 +536,7 @@ plot_NA_heatmap <- function(data,
 #'
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- istar$config$clone(deep=TRUE)
 #' analysis <- istar$data
@@ -545,14 +549,14 @@ plot_NA_heatmap <- function(data,
 #' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 #'
 plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
-  wide <- toWideConfig(data, config ,as.matrix = TRUE)
+  wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
   xx <- as_tibble(prcomp(ff)$x, rownames = config$table$sampleName)
   xx <- inner_join(wide$annotation, xx)
 
 
-  sh <- config$table$factorKeys()[2]
+  sh <- config$table$factor_keys()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   }else{
@@ -564,7 +568,7 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_y = 0.25 )
 
   x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
-                      color = !!sym(config$table$factorKeys()[1]),
+                      color = !!sym(config$table$factor_keys()[1]),
                       text = !!sym(config$table$sampleName))) +
     point +
     if (add_txt) {text}

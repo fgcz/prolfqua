@@ -8,19 +8,19 @@ Internal Functions by category
 }
 \seealso{
 Other aggregation: 
-\code{\link{aggregateTopNIntensities}()},
-\code{\link{aggregate_intensity}()},
+\code{\link{aggregate_intensity_topN}()},
+\code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 
 Other benchmarking: 
 \code{\link{Benchmark}},
@@ -28,67 +28,57 @@ Other benchmarking:
 \code{\link{make_benchmark}()},
 \code{\link{ms_bench_auc}()}
 
-Other concrete_configuration: 
-\code{\link{concrete_AnalysisTableAnnotation}}
-
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 
 Other deprecated: 
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 
 Other MaxQuant: 
 \code{\link{MaxQuant}},
-\code{\link{plot_MQ_intensity_vs_retention_time}()},
 \code{\link{tidyMQ_Evidence}()},
-\code{\link{tidyMQ_PeptideProtein}()},
 \code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()},
-\code{\link{tidyMQ_allPeptides}()},
-\code{\link{tidyMQ_from_Sites}()},
-\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
-\code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()}
+\code{\link{tidyMQ_ProteinGroups}()}
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -97,9 +87,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
@@ -109,19 +97,18 @@ Other modelling:
 Other FragPipe: 
 \code{\link{FragPipe}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_peptides}()},
 \code{\link{tidy_FragPipe_combined_protein_deprec}()},
 \code{\link{tidy_FragPipe_combined_protein}()}
 
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
@@ -134,7 +121,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other preprocessing: 
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},
@@ -162,17 +149,14 @@ Other summary:
 
 Other utilities: 
 \code{\link{get_UniprotID_from_fasta_header}()},
-\code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
+\code{\link{multigroup_volcano}()},
+\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
-\code{\link{table_facade.list}()},
+\code{\link{panel_cor}()},
+\code{\link{panel_hist}()},
+\code{\link{remove_NA_rows}()},
 \code{\link{table_facade}()}
 
 Other vignetteHelpers: 

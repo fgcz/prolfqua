@@ -121,13 +121,14 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
-#' head(res1)
-#' poolvar(res1, config)
+#' pv <- poolvar(res1, config)
+#' stopifnot(nrow(pv) == nrow(res1)/5)
+#'
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
   resp <- res1 |> nest(data = -all_of(config$table$hierarchyKeys()) )
@@ -139,7 +140,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
   pooled =  bind_rows(pooled)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
-  resp <- resp |> mutate(!!config$table$factorKeys()[1] := "pooled")
+  resp <- resp |> mutate(!!config$table$factor_keys()[1] := "pooled")
   return(resp)
 }
 
@@ -155,26 +156,21 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
-#' head(res1)
-#' #View(res1)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' head(d)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' res1 |> dplyr::filter(dilution. == "pooled")
 #'
 summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
-  intsym <- sym(config$table$getWorkIntensity())
+  intsym <- sym(config$table$get_work_intensity())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$fkeysDepth()) )) |>
+    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factor_keys_depth()) )) |>
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = stats::sd(!!intsym, na.rm = TRUE),
@@ -182,7 +178,7 @@ summarize_stats <- function(pdata, config){
                      mean = mean(!!intsym, na.rm = TRUE),.groups = "drop_last") |>  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor |>
-    dplyr::mutate(dplyr::across(config$table$fkeysDepth(), as.character))
+    dplyr::mutate(dplyr::across(config$table$factor_keys_depth(), as.character))
   if (config$table$is_intensity_transformed == FALSE) {
     hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
   }
@@ -201,22 +197,20 @@ summarize_stats <- function(pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats_all(data, config)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' head(d)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 #' res1 |> dplyr::filter(dilution. == "pooled")
 #'
 summarize_stats_all <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
-  intsym <- sym(config$table$getWorkIntensity())
+  intsym <- sym(config$table$get_work_intensity())
   hierarchy <- pdata |>
     dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) |>
     dplyr::summarize(n = dplyr::n(),
@@ -225,7 +219,7 @@ summarize_stats_all <- function(pdata, config){
                      var = sd(!!intsym,na.rm = TRUE),
                      mean = mean(!!intsym,na.rm = TRUE))
 
-  hierarchy <- dplyr::mutate(hierarchy, !!config$table$factorKeys()[1] := "All")
+  hierarchy <- dplyr::mutate(hierarchy, !!config$table$factor_keys()[1] := "All")
   hierarchyFactor <- hierarchy
   if (config$table$is_intensity_transformed == FALSE) {
     hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
@@ -244,17 +238,17 @@ summarize_stats_all <- function(pdata, config){
 #' @family stats
 #' @examples
 #' library(ggplot2)
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' stats_res <- summarize_stats(data, config)
 #' summarize_stats_quantiles(stats_res, config)
 #' summarize_stats_quantiles(stats_res, config, stats = "CV")
 #'stats_res
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
-#' config$table$getWorkIntensity()
+#' config$table$get_work_intensity()
 #' stats_res <- summarize_stats(data, config)
 #' summarize_stats_quantiles(stats_res, config)
 #' summarize_stats_quantiles(stats_res, config, stats = "sd")
@@ -277,16 +271,16 @@ summarize_stats_quantiles <- function(stats_res,
 
   stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
   xx2 <- stats_res |>
-    dplyr::group_by(!!!syms(config$table$fkeysDepth())) |>
+    dplyr::group_by(!!!syms(config$table$factor_keys_depth())) |>
     tidyr::nest()
 
 
   sd_quantile_res2 <- xx2 |>
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  |>
-    dplyr::select(!!!syms(c(config$table$fkeysDepth(),q_column))) |>
+    dplyr::select(!!!syms(c(config$table$factor_keys_depth(),q_column))) |>
     tidyr::unnest(cols = c(q_column))
 
-  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$table$fkeysDepth())
+  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$table$factor_keys_depth())
   wide <- xx |>  spread("interaction", .data$quantiles)
   return(list(long = sd_quantile_res2, wide = wide))
 }
@@ -331,7 +325,7 @@ summarize_stats_quantiles <- function(stats_res,
 #'
 #' #library(ggplot2)
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' stats_res <- summarize_stats(data2, config)
@@ -376,7 +370,7 @@ lfq_power_t_test_quantiles_V2 <-
 #' @family stats
 #' @examples
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #'
@@ -439,11 +433,11 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @family stats
 #' @examples
 #'
-#'
 #' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-#' config <- bb1$config$clone( deep = TRUE)
-#' data2 <- bb1$data
-#' ldata <- LFQData$new(data2, config)
+#'
+#' new <- old2new(list(config = bb1$config$clone( deep = TRUE), data = bb1$data))
+#' ldata <- LFQData$new(new$data, new$config)
+#'
 #' ldata <- ldata$get_sample(20)
 #' stats_res <- summarize_stats(ldata$data, ldata$config)
 #'
@@ -472,7 +466,6 @@ lfq_power_t_test_proteins <- function(stats_res,
   return(sampleSizes)
 }
 
-
 #' plot density distribution or ecdf of sd, mean or CV
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
@@ -485,7 +478,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -498,7 +491,7 @@ plot_stat_density <- function(pdata,
                               ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(pdata, aes_string(x = stat, colour = config$table$factorKeys()[1] )) +
+  p <- ggplot(pdata, aes_string(x = stat, colour = config$table$factor_keys()[1] )) +
     geom_line(stat = ggstat)
   return(p)
 }
@@ -515,7 +508,7 @@ plot_stat_density <- function(pdata,
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data2 <- bb1$data
 #' res <- summarize_stats(data2, config)
@@ -528,7 +521,7 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
   res <- pdata |> dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
-    geom_line(stat = ggstat) + facet_wrap(config$table$factorKeys()[1])
+    geom_line(stat = ggstat) + facet_wrap(config$table$factor_keys()[1])
   return(p)
 }
 
@@ -543,7 +536,7 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -553,7 +546,7 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' plot_stat_violin(res, config, stat = "CV")
 plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
   stat <- match.arg(stat)
-  p <- ggplot(pdata, aes_string(x = config$table$factorKeys()[1], y = stat  )) +
+  p <- ggplot(pdata, aes_string(x = config$table$factor_keys()[1], y = stat  )) +
     geom_violin() + ggplot2::stat_summary(fun.y = median,
                                           geom = "point", size = 1, color = "black")
 
@@ -570,7 +563,7 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -587,7 +580,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
     dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
-  p <- ggplot(top50, aes_string(x = config$table$factorKeys()[1], y = stat)) +
+  p <- ggplot(top50, aes_string(x = config$table$factor_keys()[1], y = stat)) +
     geom_violin() +
     stat_summary(fun = median.quartile, geom = 'point', shape = 3) +
     stat_summary(fun = median, geom = 'point', shape = 1) +
@@ -607,7 +600,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
+#' bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' config <- bb1$config$clone( deep = TRUE)
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
@@ -616,27 +609,27 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #' datalog2 <- transform_work_intensity(data, config, log2)
 #' statlog2 <- summarize_stats(datalog2, config)
 #' plot_stdv_vs_mean(statlog2, config)
-#' config$table$getWorkIntensity()
-#' config$table$popWorkIntensity()
+#' config$table$get_work_intensity()
+#' config$table$pop_work_intensity()
 #' datasqrt <- transform_work_intensity(data, config, sqrt)
 #' ressqrt <- summarize_stats(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
 plot_stdv_vs_mean <- function(pdata, config, size=2000){
   summary <- pdata |>
-    group_by_at(config$table$fkeysDepth()) |>
+    group_by_at(config$table$factor_keys_depth()) |>
     dplyr::summarize(n = n(),.groups = "drop")
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>
-    group_by_at(config$table$fkeysDepth()) |>
+    group_by_at(config$table$factor_keys_depth()) |>
     sample_n(size = size) |>
     ungroup()
 
   p <- ggplot(pdata, aes(x = mean, y = sd)) +
     geom_point() +
     geom_smooth(method = "loess") +
-    facet_wrap(config$table$fkeysDepth(), nrow = 1) +
+    facet_wrap(config$table$factor_keys_depth(), nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   return(p)
 }

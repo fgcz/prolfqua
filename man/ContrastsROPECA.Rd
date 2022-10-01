@@ -15,7 +15,7 @@ ROPECA optimizes the reproducibility of statistical testing
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   strategy_lm("transformedIntensity  ~ dilution.")
@@ -44,6 +44,8 @@ mod <- build_model(
  dim(tmp)
  pl <- contrast$get_Plotter()
  contrast$to_wide()
+ contrast$get_linfct()
+ contrast$get_contrast_sides()
  pl$histogram()
  pl$ma_plot()
 
@@ -53,28 +55,27 @@ mod <- build_model(
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -83,9 +84,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
@@ -207,7 +206,7 @@ data.frame
 \if{html}{\out{<a id="method-ContrastsROPECA-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrasts_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)}\if{html}{\out{</div>}}
 }
@@ -222,7 +221,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}

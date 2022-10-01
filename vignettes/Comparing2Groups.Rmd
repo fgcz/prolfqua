@@ -104,7 +104,7 @@ atable$factors[["dilution."]] = "sample"
 We also need to specify the column containing the protein abundances.
 
 ```{r specifyIntensity}
-atable$setWorkIntensity("mq.protein.intensity")
+atable$set_work_intensity("mq.protein.intensity")
 ```
 
 Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
@@ -118,7 +118,7 @@ adata <- setup_analysis(startdata, config)
 Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
 
 ```{r removeSmallIntensities}
-lfqdata <- LFQData$new(adata, config)
+lfqdata <- prolfqua::LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 lfqdata$factors()
 ```
@@ -202,7 +202,7 @@ p
 
 
 ```{r defineContrasts}
-transformed$config$table$getWorkIntensity()
+transformed$config$table$get_work_intensity()
 
 formula_Condition <-  strategy_lm("transformedIntensity ~ dilution.")
 
@@ -295,7 +295,7 @@ Merging both results.
 
 ```{r mergeResults}
 
-merged <- prolfqua::addContrastResults(prefer = contr,add = mC)$merged
+merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
 plotter <- merged$get_Plotter()
 tmp <- plotter$volcano()
 tmp$FDR
@@ -305,7 +305,7 @@ tmp$FDR
 Look at proteins which could not be fitted using the linear model, if any.
 
 ```{r mergedMore}
-merged <- prolfqua::addContrastResults(prefer = contr,add = mC)
+merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
 moreProt$data <- moreProt$data |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)

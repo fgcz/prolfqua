@@ -24,8 +24,7 @@ correlation preprocessing
 
 
 
-rm(list=ls())
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -33,7 +32,7 @@ data$nr_peptide_Id_IN_protein_Id <- NULL
 
 config$parameter$min_nr_of_notNA  <- 3
 #debug(workflow_correlation_preprocessing_protein_intensities)
-runLong <- FALSE
+runLong <- TRUE
 if(runLong){
 res <- workflow_correlation_preprocessing_protein_intensities(data,config)
 names(res)
@@ -50,7 +49,7 @@ Other workflows:
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_DIA_NA_preprocessing}()}
 }
 \concept{deprecated}

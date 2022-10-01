@@ -4,11 +4,11 @@
 #' @export
 #' @family LFQData
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar'))
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' #LFQData$debug("rename_response")
 #' lfqdata <- LFQData$new(data, istar$config)
+#' lfqdata$filter_proteins_by_peptide_count()
 #' tmp <- lfqdata$to_wide()
 #' stopifnot("data.frame" %in% class(tmp$data))
 #' tmp <- lfqdata$to_wide(as.matrix = TRUE)
@@ -16,7 +16,13 @@
 #' lfqdata$factors()
 #' stopifnot(lfqdata$is_transformed()==FALSE)
 #' lfqdata$summarize_hierarchy()
-#' lfqdata$omit_NA()
+#'
+#' # filter for missing values
+#' f1 <- lfqdata$omit_NA(nrNA = 0)
+#' stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
+#'
+#' f2 <- lfqdata$omit_NA(factorDepth = 0)
+#' stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 #'
 #' lfqdata$response()
 #' lfqdata$rename_response("peptide.intensity")
@@ -30,6 +36,21 @@
 #' stopifnot("LFQDataWriter" %in% class(lfqdata$get_Writer()))
 #' stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
 #'
+#' lfqdata2 <- lfqdata$get_copy()
+#' lfqdata2$data <- lfqdata2$data[1:500,]
+#' res <- lfqdata$filter_difference(lfqdata2)
+#' stopifnot(nrow(res$data) == nrow(lfqdata$data) - 500)
+#' tmp <- lfqdata$get_sample(40, seed = 4)
+#' stopifnot(nrow(tmp$hierarchy()) == 40)
+#'
+#' if(require("SummarizedExperiment")){
+#'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
+#' }
+#'
+#' lw <- lfqdata$get_Writer()
+#' stopifnot(names(lw$get_wide()) %in% c("data", "annotation"))
+#'
+#' stopifnot("data.frame" %in% class(lw$get_long()))
 #'
 LFQData <- R6::R6Class(
   "LFQData",
@@ -65,21 +86,21 @@ LFQData <- R6::R6Class(
     #' @param size size of subset default 100
     #' @param seed set seed
     get_sample = function(size = 100, seed = NULL){
-      if(!is.null(seed)){ set.seed( seed )}
+      if(!is.null(seed)){ set.seed( seed ) }
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subset of data
-    #' @param x data frame with columns containing subjectId
+    #' @param x data frame with columns containing subject_Id
     get_subset = function(x){
-      x <- select(x, all_of(self$subjectId())) |> distinct()
+      x <- select(x, all_of(self$subject_Id())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
-    subjectId = function(){
+    subject_Id = function(){
       return(self$config$table$hkeysDepth())
     },
     #' @description
@@ -92,12 +113,6 @@ LFQData <- R6::R6Class(
       }else{
         self$config$table$is_intensity_transformed = is_transformed
       }
-    },
-    #' @description
-    #' return name of intensity column
-    #' @return name of intensity column
-    intensity_column = function(){
-      return(self$config$table$getWorkIntensity())
     },
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
@@ -124,9 +139,9 @@ LFQData <- R6::R6Class(
     #' @param nrNA number of NA values
     #' @param factorDepth you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment
     #' @return LFQData with NA omitted.
-    omit_NA = function(nrNA = 0, factorDepth = FALSE){
-      if (!factorDepth)
-      {
+    #'
+    omit_NA = function(nrNA = 0, factorDepth = NULL){
+      if (is.null(factorDepth)) {
         missing <- interaction_missing_stats(self$data, self$config)
       } else {
         cfg <- self$config$clone(deep = TRUE)
@@ -156,21 +171,28 @@ LFQData <- R6::R6Class(
     #' @param as.matrix return as data.frame or matrix
     #' @return list with data, annotation, and configuration
     to_wide = function(as.matrix = FALSE){
-      wide <- prolfqua::toWideConfig(self$data, self$config, as.matrix = as.matrix)
+      wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
       wide$config <- self$config$clone(deep = TRUE)
       return(wide)
     },
     #' @description
-    #' Annotation table.
+    #' Annotation table
     #' @return data.frame
     factors = function(){
       prolfqua::table_factors(self$data, self$config)
     },
     #' @description
+    #' Hierarchy table
+    hierarchy = function(){
+      hk <- self$config$table$hkeysDepth()
+      hkdf <- self$data |> select(all_of(hk)) |> distinct()
+      return(hkdf)
+    },
+    #' @description
     #' name of response variable
     #' @return data.frame
     response = function(){
-      self$config$table$getWorkIntensity()
+      self$config$table$get_work_intensity()
     },
     #' @description
     #' new name of response variable
@@ -178,11 +200,10 @@ LFQData <- R6::R6Class(
     rename_response = function(newname = "Intensity"){
       if((newname %in% colnames(self$data))){
         msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
-        logger::log_info(msg)
-        logger::log_error("provide different name.")
+        message(msg)
       } else {
-        old <- self$config$table$popWorkIntensity()
-        self$config$table$setWorkIntensity(newname)
+        old <- self$config$table$pop_work_intensity()
+        self$config$table$set_work_intensity(newname)
         self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }
     },

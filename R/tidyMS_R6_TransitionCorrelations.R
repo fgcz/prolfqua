@@ -1,6 +1,6 @@
 # Direct intensity manipulation ----
 
-#' remove rows were qVal_individual_threshold exceeded
+#' Remove rows when qVal_individual_threshold is exceeded
 #'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
@@ -15,14 +15,14 @@
 #'
 #'
 #'
-#' res <- removeLarge_Q_Values(analysis, config)
-removeLarge_Q_Values <- function(pdata, config){
+#' res <- remove_large_QValues(analysis, config)
+remove_large_QValues <- function(pdata, config, qValThreshold = config$parameter$qVal_individual_threshold){
   pdata <- pdata |>
-    dplyr::filter(!!sym(config$table$ident_qValue) < config$parameter$qVal_individual_threshold)
+    dplyr::filter(!!sym(config$table$ident_qValue) < qValThreshold)
   return(pdata)
 }
 
-#' remove rows where intensity lower then threshold
+#' Remove rows when intensity lower then threshold
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #' @return data.frame
@@ -35,14 +35,14 @@ removeLarge_Q_Values <- function(pdata, config){
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
 #'
-#' config$table$getWorkIntensity()
+#' config$table$get_work_intensity()
 #'
 #' res1 <- remove_small_intensities(analysis, config, threshold=1 )
 #' res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
 #' stopifnot(nrow(res1) >  nrow(res1000))
 #'
 remove_small_intensities <- function(pdata, config, threshold = 1){
-  resData <- pdata |> dplyr::filter(!!sym(config$table$getWorkIntensity()) >= threshold)
+  resData <- pdata |> dplyr::filter(!!sym(config$table$get_work_intensity()) >= threshold)
   return(resData)
 }
 #' Transform intensity
@@ -80,16 +80,16 @@ transform_work_intensity <- function(pdata,
 
   if (is.null(intesityNewName)) {
     .funcname <- if (is.null(.funcname)) {deparse(.call$.func)}else{.funcname}
-    newcol <- paste(.funcname, config$table$getWorkIntensity(), sep = "_")
+    newcol <- paste(.funcname, config$table$get_work_intensity(), sep = "_")
   }else{
     newcol <- intesityNewName
   }
 
-  #pdata <- pdata |> dplyr::mutate_at(config$table$getWorkIntensity(),
+  #pdata <- pdata |> dplyr::mutate_at(config$table$get_work_intensity(),
   #                                    .funs = funs(!!sym(newcol) := .func(.)))
-  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$getWorkIntensity())))
+  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$get_work_intensity())))
 
-  config$table$setWorkIntensity(newcol)
+  config$table$set_work_intensity(newcol)
   message("Column added : ", newcol)
   config$table$is_intensity_transformed = TRUE
 
@@ -104,7 +104,9 @@ transform_work_intensity <- function(pdata,
 
 # Summarize Q Values ----
 #'
-#' Compute QValue summaries for each precursor
+#' Compute QValue summaries for each precursor or peptide or protein
+#'
+#'
 #' adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 #' srm_QValueNR - nr of precursors passing the threshold
 #' @param pdata data.frame
@@ -120,11 +122,12 @@ transform_work_intensity <- function(pdata,
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
-#' res <- summariseQValues(analysis, config)
+#' res <- summarise_QValues(analysis, config)
 #' stopifnot(c("srm_QValueMin", "srm_QValueNR") %in% colnames(res))
 #' hist(unique(res$srm_QValueMin))
 #' hist(unique(res$srm_QValueNR))
-summariseQValues <- function(pdata,
+#'
+summarise_QValues <- function(pdata,
                              config
 ){
   QValueMin <- "srm_QValueMin"
@@ -150,7 +153,7 @@ summariseQValues <- function(pdata,
   return(pdata)
 }
 
-#' filter data by max and min Q Value threshold
+#' Filter data by individual and experiment wide thresholds
 #'
 #' employs parameters ident_qValue, qVal_minNumber_below_experiment_threshold,
 #' qVal_individual_threshold and qVal_experiment_threshold
@@ -167,8 +170,8 @@ summariseQValues <- function(pdata,
 #' summarize_hierarchy(res, config)
 #'
 filter_byQValue <- function(pdata, config){
-  data_NA <- removeLarge_Q_Values(pdata, config)
-  data_NA <- summariseQValues(data_NA, config)
+  data_NA <- remove_large_QValues(pdata, config)
+  data_NA <- summarise_QValues(data_NA, config)
   data_NA_QVal <- data_NA |>
     dplyr::filter( !!sym("srm_QValueMin") < config$parameter$qVal_experiment_threshold )
 }
@@ -189,10 +192,11 @@ filter_byQValue <- function(pdata, config){
 
 
 
-#' transform long to wide
+#' Transform tidy table into a table with a column of responses for each sample
+#'
 #' @export
 #' @keywords internal
-toWide <- function(data,
+tidy_to_wide <- function(data,
                    rowIDs ,
                    columnLabels ,
                    value
@@ -212,12 +216,11 @@ toWide <- function(data,
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,config)
-#' res <- toWideConfig(analysis, config)
-#' res <- toWideConfig(analysis, config, as.matrix = TRUE)
-#' head(res$data)
+#' res <- tidy_to_wide_config(analysis, config)
+#' res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 #' res <- scale(res$data)
 #'
-toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
+tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
   if (fileName) {
     newcolname <- config$table$fileName
   }else{
@@ -225,12 +228,12 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
   }
 
   ids <- dplyr::select_at(data,
-                       c( config$table$sampleName, config$table$fileName, config$table$factorKeys())) |>
+                       c( config$table$sampleName, config$table$fileName, config$table$factor_keys())) |>
     dplyr::distinct() |> dplyr::arrange_at(newcolname)
 
-  res <- toWide( data, c(config$table$hierarchyKeys()) ,
+  res <- tidy_to_wide( data, c(config$table$hierarchyKeys()) ,
                  newcolname,
-                 value = config$table$getWorkIntensity() )
+                 value = config$table$get_work_intensity() )
   if (as.matrix) {
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
     names <- res |> dplyr::select_at(config$table$hierarchyKeys()) |>
@@ -241,7 +244,7 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
   return(list(data = res, annotation = ids))
 }
 
-#' make it long
+#' Takes matrix of responses and converts into tibble
 #'
 #' @param pdata (matrix)
 #' @param value name of column to store values in. (see `gather`)
@@ -255,14 +258,14 @@ toWideConfig <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep=
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' conf <- dd$config_f()
 #' analysis <- dd$analysis(dd$data,conf)
-#' res <- toWideConfig(analysis, conf, as.matrix = TRUE)
+#' res <- tidy_to_wide_config(analysis, conf, as.matrix = TRUE)
 #'
 #' res <- scale(res$data)
-#' xx <- gatherItBack(res,"srm_intensityScaled", conf)
-#' xx <- gatherItBack(res,"srm_intensityScaled", conf,analysis)
-#' conf$table$getWorkIntensity() == "srm_intensityScaled"
+#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
+#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf,analysis)
+#' conf$table$get_work_intensity() == "srm_intensityScaled"
 #'
-gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
+response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   pdata <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
@@ -271,7 +274,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
   pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchyKeys(), sep = sep)
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
-    config$table$setWorkIntensity(value)
+    config$table$set_work_intensity(value)
   }
   return(pdata)
 }
@@ -295,7 +298,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -308,7 +311,7 @@ gatherItBack <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
 #'
 #'
 get_robscales <- function(data, config){
-  data <- toWideConfig(data, config, as.matrix = TRUE)$data
+  data <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
   scales <- .get_robscales(data)
   return(scales)
 }
@@ -333,7 +336,8 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 }
 
 
-#' apply Function To matrix
+#' Apply function requiring a matrix to tidy table
+#'
 #' @param data data.frame
 #' @param config AnalysisConfiguration
 #' @param .func function
@@ -344,42 +348,50 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
-#' res <- applyToIntensityMatrix(data, conf, .func = base::scale)
+#' res <- apply_to_response_matrix(data, conf, .func = base::scale)
 #' stopifnot("peptide.intensity_base..scale" %in% colnames(res))
-#' stopifnot("peptide.intensity_base..scale" == conf$table$getWorkIntensity())
+#' stopifnot("peptide.intensity_base..scale" == conf$table$get_work_intensity())
 #' conf <- bb$config$clone(deep=TRUE)
 #' conf$table$workIntensity <- "peptide.intensity"
-#' res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = robust_scale)
+#' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 #' # Normalize data using the vsn method from bioconductor
 #'
 #' if( require("vsn")){
-#'  res <- applyToIntensityMatrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+#'  res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
 #' }
 #'
-applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
+apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
   .call <- as.list( match.call() )
   .funcname <- if (is.null(.funcname)) { deparse(.call$.func) } else {.funcname}
-  colname <- make.names( paste( config$table$getWorkIntensity(), .funcname, sep = "_"))
-  mat <- toWideConfig(data, config, as.matrix = TRUE)$data
+  colname <- make.names( paste( config$table$get_work_intensity(), .funcname, sep = "_"))
+  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
-  data <- gatherItBack(mat, colname, config, data)
+  data <- response_matrix_as_tibble(mat, colname, config, data)
   return(data)
 }
 
-#' scale_with_subset
+#' Scale data using a subset of the data
+#'
+#' this should reduce the overall variance.
+#'
 #' @export
 #' @keywords internal
+#' @param data the whole dataset
+#' @param subset a subset of the dataset
+#' @param config configuration
+#' @param perserveMean default FASE - sets mean to zero
+#' @param get_scales return a list of transformed data and the scaling parameters
 #' @family preprocessing
 #' @examples
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -392,12 +404,12 @@ applyToIntensityMatrix <- function(data, config, .func, .funcname = NULL){
 #' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE){
 
-  colname <- make.names( paste( config$table$getWorkIntensity(), "subset_scaled", sep = "_"))
-  subset <- toWideConfig(subset, config, as.matrix = TRUE)$data
+  colname <- make.names( paste( config$table$get_work_intensity(), "subset_scaled", sep = "_"))
+  subset <- tidy_to_wide_config(subset, config, as.matrix = TRUE)$data
 
 
   scales <- .get_robscales(subset)
-  mat <- toWideConfig(data, config, as.matrix = TRUE)$data
+  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
   mat = sweep(mat, 2, scales$medians, "-")
   if (!any(scales$mads == 0)) {
     mads <- scales$mads/mean(scales$mads)
@@ -409,7 +421,7 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
   meanmed <- mean(scales$medians)
   addmean <- if (preserveMean) {meanmed} else {0}
   mat <- mat + addmean
-  data <- gatherItBack(mat, colname, config, data)
+  data <- response_matrix_as_tibble(mat, colname, config, data)
   if (get_scales) {
     return(list(data = data, scales = scales))
   } else {
@@ -417,16 +429,21 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
   }
 }
 
-#' scale within factor levels (e.g. use for pulldown data)
+#' Scale using a subset of the data, within factor levels (e.g. use for pulldown data)
+#'
+#' This method reduces the variance within the group.
 #'
 #' @export
 #' @keywords internal
-#'
+#' @param data tibble with data
+#' @param subset tibble with subset of the data which will be used to derive scaling parameters
+#' @param config configuration
+#' @param preserveMean default FALSE then set mean to 0
 #' @family preprocessing
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
@@ -436,10 +453,10 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #' res <- scale_with_subset_by_factors(res, res, conf)
 #'
 #'
-scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = TRUE){
+scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = FALSE){
   config <- config$clone(deep = TRUE)
-  dl <- group_by(data, across(config$table$fkeysDepth())) |> nest()
-  sl <- group_by(subset, across(config$table$fkeysDepth())) |> nest()
+  dl <- group_by(data, across(config$table$factor_keys_depth())) |> nest()
+  sl <- group_by(subset, across(config$table$factor_keys_depth())) |> nest()
   cf <- config$clone(deep = TRUE)
   cf$table$factors <- NULL
   cf$table$factorDepth <- 0
@@ -466,7 +483,7 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
   resb <- dl
   resb$data <- res
   resb <- dplyr::ungroup( unnest(resb, cols = (names(resb))) )
-  config$table$setWorkIntensity(cf$table$getWorkIntensity())
+  config$table$set_work_intensity(cf$table$get_work_intensity())
   return(list(data = resb, config = config, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
 }
 
@@ -480,7 +497,7 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = T
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' xx <- normalize_log2_robscale(istar_data, istar$config)
 #' names(xx)
@@ -491,14 +508,14 @@ normalize_log2_robscale <- function(pdata, config){
   pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
   pepConfig$table$is_intensity_transformed = TRUE
 
-  pepIntensityNormalized <- applyToIntensityMatrix(pepIntensityNormalized,
+  pepIntensityNormalized <- apply_to_response_matrix(pepIntensityNormalized,
                                                    pepConfig,
                                                    .func = robust_scale)
 
   pepIntensityNormalized <- pepIntensityNormalized |>
-    dplyr::rename(transformedIntensity = pepConfig$table$getWorkIntensity())
-  pepConfig$table$popWorkIntensity()
-  pepConfig$table$setWorkIntensity("transformedIntensity")
+    dplyr::rename(transformedIntensity = pepConfig$table$get_work_intensity())
+  pepConfig$table$pop_work_intensity()
+  pepConfig$table$set_work_intensity("transformedIntensity")
 
   return(list(data = pepIntensityNormalized, config = pepConfig))
 }
@@ -514,32 +531,36 @@ normalize_log2_robscale <- function(pdata, config){
 }
 
 .decorelatedPly <- function(pdata, corThreshold = 0.7){
-  res <- prolfqua::transitionCorrelationsJack(pdata)
+  res <- prolfqua::cor_jackknife_matrix(pdata)
   decorelated <- .findDecorrelated(res,threshold = corThreshold)
   tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
-#' marks uncorrelated peptides
+#' Marks peptides which do not correlate with other peptides of a protein
+#'
+#' It computes the pairwise correlation among all peptides and marks those
+#' with with a corralation less then minCorrelation to all other peptides
 #'
 #' @export
 #' @keywords internal
+#' @param data data
+#' @param config configuration
+#' @param minCorrelation smallest allowed correlation
 #' @section TODO: do something with warnings of type "the standard deviation is zero".
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #'
-#'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
-#' dataI <- markDecorrelated(data, conf)
-#' head(dataI)
+#' dataI <- mark_decorelated(data, conf)
 #'
-markDecorrelated <- function(data , config, minCorrelation = 0.7){
+mark_decorelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()
   qvalFiltX <- qvalFiltX |>
-    dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
+    dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
   HLfigs2 <- qvalFiltX |>
     dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 |>
@@ -567,14 +588,20 @@ simpleImpute <- function(data){
   res[is.na(res)] <- imp[is.na(res)]
   return(res)
 }
-#' imputation based on correlation assumption
+
+#' Imputate missing peptide intensities to maximize peptide correlationion
+#'
+#' Assumes the peptide intensities are correlation assumption
+#'
 #' @export
+#' @param x data
+#' @param config configuration
 #' @keywords internal
 #' @examples
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #' mean(is.na(data$peptide.intensity))
@@ -586,9 +613,9 @@ simpleImpute <- function(data){
 impute_correlationBased <- function(x , config){
   x <- complete_cases(x, config)
   nestedX <- x |>  dplyr::group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
-  nestedX <- nestedX |> dplyr::mutate(spreadMatrix = map(data, extractIntensities, config))
+  nestedX <- nestedX |> dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
 
-  gatherItback <- function(x,config){
+  response_matrix_as_tibble <- function(x,config){
     x <- dplyr::bind_cols(
       row = rownames(x),
       tibble::as_tibble(x)
@@ -598,13 +625,13 @@ impute_correlationBased <- function(x , config){
 
   nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$spreadMatrix, simpleImpute))
 
-  nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$imputed, gatherItback, config))
+  nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$imputed, response_matrix_as_tibble, config))
   unnest_res <- nestedX |> dplyr::select(config$table$hkeysDepth(), "imputed") |> tidyr::unnest(cols = .data$imputed)
   unnest_res <- unnest_res |> tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
                           by = c(config$table$hierarchyKeys(), config$table$sampleName) )
-  config$table$setWorkIntensity("srm_ImputedIntensity")
+  config$table$set_work_intensity("srm_ImputedIntensity")
   return(qvalFiltX)
 }
 
@@ -642,7 +669,7 @@ impute_correlationBased <- function(x , config){
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -665,7 +692,8 @@ impute_correlationBased <- function(x , config){
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
 #' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' nr_B_in_A(bb$data, bb$config)
+#' new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#' nr_B_in_A(new$data, new$config)
 #' #undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
   levelA <- config$table$hkeysDepth()
@@ -685,16 +713,15 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @family summary
 #' @examples
-#'
-#'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
 #' nr_B_in_A_per_sample(data, configur, nested =FALSE)
 #' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
+#' new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#' nr_B_in_A_per_sample(new$data, new$config, nested=FALSE)
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   cf <- config
 
@@ -705,7 +732,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   }
   data <- prolfqua::complete_cases(data, cf)
   data <- data |>
-    dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$getWorkIntensity())) ~ 1,
+    dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$get_work_intensity())) ~ 1,
                                             TRUE ~ 0))
   pepStats <- data |> group_by_at(c(cf$table$hkeysDepth(), cf$table$sampleName)) |>
     summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
@@ -713,7 +740,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   annotColumns <- c(cf$table$fileName,
                     cf$table$sampleName,
                     cf$table$hkeysDepth(),
-                    cf$table$fkeysDepth(),
+                    cf$table$factor_keys_depth(),
                     cf$table$isotopeLabel)
   annotation <- data |>
     dplyr::select(!!!syms(annotColumns) ) |>
@@ -728,7 +755,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <- function(data,
            config,
-           column = config$table$getWorkIntensity(),
+           column = config$table$get_work_intensity(),
            fun = function(x){ mean(x, na.rm = TRUE)},
            summaryColumn = "srm_meanInt",
            rankColumn = "srm_meanIntRank",
@@ -762,16 +789,16 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
-#' res <- removeLarge_Q_Values(analysis, config)
-#' #debug(rankPrecursorsByIntensity)
-#' res <- rankPrecursorsByIntensity(res,config)
+#' res <- remove_large_QValues(analysis, config)
+#' #debug(rank_peptide_by_intensity)
+#' res <- rank_peptide_by_intensity(res,config)
 #' X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
 #' X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
-rankPrecursorsByIntensity <- function(pdata, config){
+rank_peptide_by_intensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$getWorkIntensity(),
+  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$get_work_intensity(),
                                fun = function(x){ mean(x, na.rm = TRUE)},
                                summaryColumn = summaryColumn,
                                rankColumn = rankColumn,
@@ -785,7 +812,8 @@ rankPrecursorsByIntensity <- function(pdata, config){
 
 # Summarise NAs on lowest hierarchy ----
 
-#' Ranks precursors by NAs (adds new column .NARank)
+#' Ranks peptides/precursors of a protein by NAs (adds new column .NARank)
+#'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
 #'
@@ -797,21 +825,21 @@ rankPrecursorsByIntensity <- function(pdata, config){
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
-#' res <- removeLarge_Q_Values(analysis, config)
-#' res <- rankPrecursorsByNAs(res,config)
+#' res <- remove_large_QValues(analysis, config)
+#' res <- rank_by_NA(res,config)
 #' colnames(res)
 #' x <- res |>
 #'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
 #'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
-#' stopifnot(sum(!is.na(res[[config$table$getWorkIntensity()[1]]])) == x)
+#' stopifnot(sum(!is.na(res[[config$table$get_work_intensity()[1]]])) == x)
 #' res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
 #'  dplyr::distinct() |>
 #'  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
-rankPrecursorsByNAs <- function(pdata, config){
+rank_by_NA <- function(pdata, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
   pdata <- .rankProteinPrecursors(pdata, config,
-                                column = config$table$getWorkIntensity(),
+                                column = config$table$get_work_intensity(),
                                 fun = function(x){sum(!is.na(x))},
                                 summaryColumn = summaryColumn,
                                 rankColumn = rankColumn,
@@ -821,16 +849,14 @@ rankPrecursorsByNAs <- function(pdata, config){
   return(pdata)
 }
 
-#' removes measurments with less than percent=60 missing values in factor_level = 1
+#' Removes measurments with more than some percentage of not smissing values
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#'
+#' @param percent percent of missing values
 #' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
-#'
-#' rm(list=ls())
 #'
 #'
 #' bb <- prolfqua_data('data_spectronautDIA250_A')
@@ -838,11 +864,15 @@ rankPrecursorsByNAs <- function(pdata, config){
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' config$parameter$min_nr_of_notNA  <- 20
 #' data <- analysis
-#' data <- removeLarge_Q_Values(data, config)
-#' hierarchy_counts(data, config)
+#' data <- remove_large_QValues(data, config)
+#' hc <- hierarchy_counts(data, config)
+#' res <- filter_factor_levels_by_missing(data, config,percent = 80)
+#' hc80 <-  hierarchy_counts(res, config)
 #' res <- filter_factor_levels_by_missing(data, config,percent = 60)
-#' data1 <- complete_cases(data, config)
 #' hierarchy_counts(res, config)
+#' hc60 <-  hierarchy_counts(res, config)
+#' stopifnot(all(hc60 >= hc80)) # since 80% missing is more stringent than 60%
+#' stopifnot(all(hc >= hc60))
 #' summarize_hierarchy(res,config) |>
 #'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
 #'
@@ -851,12 +881,12 @@ filter_factor_levels_by_missing <- function(pdata,
                                             percent = 60){
   table <- config$table
   summaryColumn = "srm_NrNotNAs"
-  column <- table$getWorkIntensity()
+  column <- table$get_work_intensity()
 
   pdata <- complete_cases( pdata , config)
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- pdata |>
-    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$fkeysDepth() ))) |>
+    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factor_keys_depth() ))) |>
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) |>
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) |>  dplyr::ungroup()
 

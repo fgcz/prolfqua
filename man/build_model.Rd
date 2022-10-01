@@ -2,13 +2,13 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{build_model}
 \alias{build_model}
-\title{build from data and modelFunction Model}
+\title{Build protein models from data}
 \usage{
 build_model(
   data,
   modelFunction,
   subject_Id = if ("LFQData" \%in\% class(data)) {
-     data$subjectId()
+     data$subject_Id()
  } else {
     
     "protein_Id"
@@ -29,11 +29,11 @@ build_model(
 a object of class \code{\link{Model}}
 }
 \description{
-build from data and modelFunction Model
+Build protein models from data
 }
 \examples{
 # library(tidyverse)
-D <- prolfqua_data('data_ionstar')$normalized()
+D <- old2new(prolfqua_data('data_ionstar')$normalized())
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"
@@ -57,6 +57,7 @@ mod <- prolfqua:::build_model(
  LFQData$new(pepIntensity, config),
  formula_randomPeptide,
  modelName = modelName)
+model_summary(mod)
 
 }
 \seealso{
@@ -64,28 +65,27 @@ mod <- prolfqua:::build_model(
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -94,9 +94,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},

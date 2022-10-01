@@ -1,4 +1,4 @@
-#' likelihood ratio test
+#' Likelihood ratio test
 #' @family modelling
 #' @export
 #' @param modelProteinF table with models (see build model)
@@ -8,7 +8,30 @@
 #' @param subject_Id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
-#' #todo add example
+#' data_Yeast2Factor <- prolfqua::old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
+#' pMerged <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
+#'
+#' pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
+#' pMerged$config$table$get_work_intensity()
+#' pMerged$factors()
+#'
+#' formula_condition_and_Batches <-
+#'   prolfqua::strategy_lm("transformedIntensity ~ condition_ + batch_")
+#' modCB <- prolfqua::build_model(
+#'   pMerged$data,
+#'   formula_condition_and_Batches,
+#'   subject_Id = pMerged$config$table$hierarchyKeys() )
+#'
+#' formula_condition <-
+#'   prolfqua::strategy_lm("transformedIntensity ~ condition_")
+#' modC <- prolfqua::build_model(
+#'   pMerged$data,
+#'   formula_condition,
+#'   subject_Id = pMerged$config$table$hierarchyKeys() )
+#'
+#' tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+#' hist(tmp$likelihood_ratio_test.pValue)
+#'
 LR_test <- function(modelProteinF,
                     modelName,
                     modelProteinF_Int,
@@ -49,7 +72,7 @@ LR_test <- function(modelProteinF,
 }
 
 
-#' build from data and modelFunction Model
+#' Build protein models from data
 #'
 #'
 #'
@@ -65,7 +88,7 @@ LR_test <- function(modelProteinF,
 #' @export
 #' @examples
 #' # library(tidyverse)
-#' D <- prolfqua_data('data_ionstar')$normalized()
+#' D <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #'
 #' modelName <- "f_condtion_r_peptide"
@@ -89,10 +112,11 @@ LR_test <- function(modelProteinF,
 #'  LFQData$new(pepIntensity, config),
 #'  formula_randomPeptide,
 #'  modelName = modelName)
+#' model_summary(mod)
 #'
 build_model <- function(data,
                         modelFunction,
-                        subject_Id = if ("LFQData" %in% class(data)) {data$subjectId()} else {"protein_Id"},
+                        subject_Id = if ("LFQData" %in% class(data)) {data$subject_Id()} else {"protein_Id"},
                         modelName = modelFunction$model_name){
 
   dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
@@ -106,12 +130,12 @@ build_model <- function(data,
                     subject_Id = subject_Id))
 }
 
-#' summarize modelling and error reporting
+#' Summarize modelling and error reporting
 #' @param mod model table see \code{\link{build_model}}
 #' @keywords internal
 #' @family modelling
 #' @export
-modelSummary <- function(mod){
+model_summary <- function(mod){
   res <- list()
   res$exists <- table(mod$modelDF$exists_lmer)
   res$isSingular <- table(mod$modelDF$isSingular)

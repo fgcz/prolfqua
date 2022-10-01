@@ -2,18 +2,23 @@
 % Please edit documentation in R/tidyMS_R6_TransitionCorrelations.R
 \name{impute_correlationBased}
 \alias{impute_correlationBased}
-\title{imputation based on correlation assumption}
+\title{Imputate missing peptide intensities to maximize peptide correlationion}
 \usage{
 impute_correlationBased(x, config)
 }
+\arguments{
+\item{x}{data}
+
+\item{config}{configuration}
+}
 \description{
-imputation based on correlation assumption
+Assumes the peptide intensities are correlation assumption
 }
 \examples{
 
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))

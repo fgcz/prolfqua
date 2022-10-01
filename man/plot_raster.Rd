@@ -28,8 +28,9 @@ plot_raster(
 plot heatmap without any clustering (use to show NA's)
 }
 \examples{
-istar <- prolfqua_data('data_IonstarProtein_subsetNorm')
-
+ bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+ new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+istar <- LFQData$new(new$data, new$config)
 config <- istar$config$clone(deep=TRUE)
 analysis <- istar$data
 dev.off()
@@ -41,15 +42,15 @@ plot_raster(analysis, config, show_rownames = TRUE)
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

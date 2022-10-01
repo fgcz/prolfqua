@@ -52,7 +52,7 @@ config$table$factors[["sex"]] = "sex"
 config$table$factors[["age"]] = "age"
 config$table$factors[["Sample_id"]] = "Sample.Name"
 
-x <- R6extractValues(config)
+x <- R6_extract_values(config)
 
 ```
 
@@ -73,8 +73,8 @@ config <- specnautconfig()
 
 config$table$factors
 config$table$hierarchy
-config$table$valueVars()
-config$table$idVars()
+config$table$value_vars()
+config$table$id_vars()
 
 #'
 
@@ -123,8 +123,8 @@ First we remove precursors with QValue larger than `qVal_individual_threshold`.
 
 ```{r}
 config$parameter$qVal_individual_threshold
-longNoDecoy <- removeLarge_Q_Values(longNoDecoy, config)
-longQSummaries <- summariseQValues(longNoDecoy, config)
+longNoDecoy <- remove_large_QValues(longNoDecoy, config)
+longQSummaries <- summarise_QValues(longNoDecoy, config)
 
 knitr::kable(head(prolfqua::interaction_missing_stats(longQSummaries, config)$data))
 
@@ -149,7 +149,7 @@ prolfqua::hierarchy_counts(qvalFilt, config)
 The next code snipped computes the number of observed values for each precursor, than keeps only the precursors with more than $20$ observations.
 
 ```{r}
-longQNASummaries <- rankPrecursorsByNAs(qvalFilt, config)
+longQNASummaries <- rank_by_NA(qvalFilt, config)
 longQNASummaries <- longQNASummaries |>
   dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(prolfqua::hierarchy_counts(longQNASummaries, config))
@@ -180,12 +180,12 @@ qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries,config)
 
 # Correlation Filtering
 
-First mark de-correlated transitions using `markDecorrelated`.
+First mark de-correlated transitions using `mark_decorelated`.
 
 
 ```{r markdecorellated}
 qvalFiltV <- transform_work_intensity(qvalFiltV$data, config, log2)
-xx <- markDecorrelated(qvalFiltV, config, minCorrelation = 0.5 )
+xx <- mark_decorelated(qvalFiltV, config, minCorrelation = 0.5 )
 mean(xx$srm_decorelated)
 
 ```
@@ -217,7 +217,7 @@ print(plot_heatmap_cor(qvalFiltCorr, config))
 
 ```{r rankprec}
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorr, config)
-qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
+qvalFiltImputed <- rank_peptide_by_intensity(qvalFiltImputed, config)
 
 ```
 
@@ -227,7 +227,7 @@ qvalFiltImputed <- rankPrecursorsByIntensity(qvalFiltImputed, config)
 mean_na <- function(x, name = FALSE){
   if(name){return("mean_na")};
   mean(x,na.rm = TRUE)}
-proteinIntensities <- aggregateTopNIntensities(qvalFiltImputed,
+proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed,
                                                config,
                                                .func = mean_na,
                                                N = 3)$data

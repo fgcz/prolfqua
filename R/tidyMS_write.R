@@ -10,7 +10,7 @@
 #' @examples
 #' x<- data.frame(a = 1:3, b = 4:6 )
 #'
-#' # lfq_write_table(x, "." , "test", format = c( "csv", "xlsx",  "html"))
+#' lfq_write_table(x, tempdir() , "test", format = c( "csv", "xlsx",  "html"))
 #'
 lfq_write_table <- function(x, path, name, format = c("xlsx","csv","html"))
 {
@@ -20,7 +20,7 @@ lfq_write_table <- function(x, path, name, format = c("xlsx","csv","html"))
     message("writing csv")
     path_csv <- file.path(path,paste0(name,".csv"))
     file_paths$csv <- path_csv
-    readr::write_csv(x, path = path_csv)
+    readr::write_csv(x, file = path_csv)
   }
   if ( "xlsx" %in% lfq_write_format ) {
     message("writing xlsx")

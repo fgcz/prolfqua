@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{plot_hierarchies_add_quantline}
 \alias{plot_hierarchies_add_quantline}
-\title{add quantline to plot}
+\title{Add protein estimate to plot of peptide intensities}
 \usage{
 plot_hierarchies_add_quantline(p, data, aes_y, configuration)
 }
 \description{
-add quantline to plot
+Add protein estimate to plot of peptide intensities
 }
 \examples{
 #todo
@@ -15,29 +15,29 @@ add quantline to plot
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
-\code{\link{aggregate_intensity}()},
+\code{\link{aggregate_intensity_topN}()},
+\code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_boxplot_df}()},

@@ -8,7 +8,7 @@ missigness_histogram(
   x,
   config,
   showempty = FALSE,
-  factors = config$table$fkeysDepth(),
+  factors = config$table$factor_keys_depth(),
   alpha = 0.1
 )
 }
@@ -17,7 +17,7 @@ Histogram summarizing missigness
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')
+bb <- old2new(prolfqua_data('data_ionstar'))
 configur <- bb$config
 data <- bb$data
 xx <- complete_cases(data, configur)
@@ -25,7 +25,7 @@ missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
-bx <- prolfqua_data('data_ionstar')$normalized()
+bx <- old2new(prolfqua_data('data_ionstar')$normalized())
 configur <- bx$config
 data <- bx$data
 data <- complete_cases(data, configur)
@@ -33,17 +33,18 @@ missingPrecNorm <- interaction_missing_stats(data, configur)
 
 missigness_histogram(data, configur, showempty=FALSE)
 missigness_histogram(data, configur, showempty=TRUE)
+
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

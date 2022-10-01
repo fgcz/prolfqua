@@ -12,7 +12,7 @@ compute median and standard deviation for each sample
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data
@@ -28,7 +28,7 @@ abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},

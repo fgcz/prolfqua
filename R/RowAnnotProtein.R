@@ -1,23 +1,3 @@
-
-.annotProtein <- function(
-    startdata,
-    Accession,
-    revpattern = "^REV_",
-    contpattern = "zz"){
-
-  GRP2 <- list()
-  distinctprotid <- startdata |> select(pID = !!sym(Accession)) |> distinct()
-  distinctprotid <- distinctprotid |> mutate(
-    proteinAnnot = case_when(grepl(revpattern,pID) ~ "REV",
-                             grepl(contpattern,pID) ~ "CON",
-                             TRUE ~ "FW"))
-  GRP2$percentOfContaminants <-  round(mean(distinctprotid$proteinAnnot == "CON") * 100, digits = 2)
-  GRP2$percentOfFalsePositives <- round(mean(distinctprotid$proteinAnnot == "REV") * 100, digits = 2)
-  GRP2$totalNrOfProteins <- sum( table( distinctprotid$proteinAnnot ) )
-  GRP2$NrOfProteinsNoDecoys <- sum(distinctprotid$proteinAnnot == "FW")
-  return(list(stats = GRP2, distinctprotid = distinctprotid))
-}
-
 # RowAnnotProtein ----
 #' Decorates LFQData with a row annotation and some protein specific functions.
 #'
@@ -25,7 +5,7 @@
 #' @family LFQData
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #'
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)

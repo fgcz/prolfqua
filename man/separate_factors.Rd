@@ -2,7 +2,7 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{separate_factors}
 \alias{separate_factors}
-\title{separates factor columns into starting columns}
+\title{Separates factor columns into starting columns}
 \usage{
 separate_factors(data, config)
 }
@@ -12,7 +12,14 @@ separate_factors(data, config)
 \item{config}{AnlalysisConfiguration}
 }
 \description{
-separates factor columns into starting columns
+Separates factor columns into starting columns
+}
+\examples{
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+dt <- separate_factors(bb$data, bb$config)
+setdiff(colnames(dt), colnames(bb$data))
+stopifnot(ncol(bb$data) < ncol(dt))
+
 }
 \seealso{
 Other configuration: 
@@ -20,14 +27,15 @@ Other configuration:
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

@@ -20,7 +20,7 @@ plot stddev vs mean to asses stability of variance
 
 
 
-bb1 <- prolfqua_data('data_ionstar')$filtered()
+bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
 config <- bb1$config$clone( deep = TRUE)
 data <- bb1$data
 res <- summarize_stats(data, config)
@@ -29,8 +29,8 @@ plot_stdv_vs_mean(res, config)
 datalog2 <- transform_work_intensity(data, config, log2)
 statlog2 <- summarize_stats(datalog2, config)
 plot_stdv_vs_mean(statlog2, config)
-config$table$getWorkIntensity()
-config$table$popWorkIntensity()
+config$table$get_work_intensity()
+config$table$pop_work_intensity()
 datasqrt <- transform_work_intensity(data, config, sqrt)
 ressqrt <- summarize_stats(datasqrt, config)
 plot_stdv_vs_mean(ressqrt, config)

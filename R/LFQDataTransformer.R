@@ -6,7 +6,7 @@
 #'
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -122,9 +122,9 @@ LFQDataTransformer <- R6::R6Class(
       self$lfq$data  <- scales$data
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data |>
-          dplyr::rename(!!colname := self$lfq$config$table$getWorkIntensity())
-        self$lfq$config$table$popWorkIntensity()
-        self$lfq$config$table$setWorkIntensity(colname)
+          dplyr::rename(!!colname := self$lfq$config$table$get_work_intensity())
+        self$lfq$config$table$pop_work_intensity()
+        self$lfq$config$table$set_work_intensity(colname)
       }
       invisible(self)
 
@@ -162,7 +162,7 @@ LFQDataTransformer <- R6::R6Class(
     intensity_matrix = function(.func = robust_scale, force = FALSE){
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list( match.call() )
-        r <- prolfqua::applyToIntensityMatrix(
+        r <- prolfqua::apply_to_response_matrix(
           self$lfq$data,
           self$lfq$config,
           .func = .func,

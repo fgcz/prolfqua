@@ -11,14 +11,14 @@
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- prolfqua::removeLarge_Q_Values(data,
+#' xx <- prolfqua::remove_large_QValues(data,
 #'    configur)
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
@@ -41,9 +41,9 @@
 #'
 interaction_missing_stats <- function(pdata,
                                       config,
-                                      factors = config$table$fkeysDepth(),
+                                      factors = config$table$factor_keys_depth(),
                                       hierarchy = config$table$hierarchyKeys(),
-                                      workIntensity = config$table$getWorkIntensity())
+                                      workIntensity = config$table$get_work_intensity())
 {
   pdata <- complete_cases(pdata, config)
   table <- config$table
@@ -78,43 +78,38 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' #library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #'
-#' xx <- prolfqua::removeLarge_Q_Values(data, configur)
+#' xx <- prolfqua::remove_large_QValues(data, configur)
 #' xx <- complete_cases(xx, configur)
-#'
+#' nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
+#'     length(unique(xx$dilution.))
 #' tmp <- interaction_missing_stats(xx, configur)
-#' #debug(.missigness_impute_interactions)
+#' stopifnot(nrow(tmp$data) == nrPepTimesDilution)
 #' fun <- .missigness_impute_interactions(xx, configur)
 #'
 #' long <- fun("long")
-#' head(long)
-#'
-#' debugData <- fun(DEBUG=TRUE)
-#' names(debugData)
-#' head(debugData$long)
-#' sum(is.na(xx$long$nrReplicates))
-#' xxx <- (fun("nrReplicates"))
+#' nrow(long) == nrPepTimesDilution
 #' alldata <- fun("all")
-#' head(xxx)
+#' stopifnot(length(names(alldata)) == 5)
 #'
 #' imputed <- fun("imputed")
+#' stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #' missing <- fun("nrMeasured")
+#' stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'
 #'  meanArea <- fun("mean")
+#' stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'  print(sum(is.na(meanArea$mean.dilution.a)))
-#'  #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
 #'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
-#' tmp <- fun("allWide")
-#' tmp
+#'
 .missigness_impute_interactions <- function(pdata,
                                             config,
-                                            factors = config$table$fkeysDepth(),
+                                            factors = config$table$factor_keys_depth(),
                                             probs = 0.1,
                                             global = TRUE){
   mstats <- interaction_missing_stats(pdata, config, factors = factors)
@@ -231,19 +226,17 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
 #'
 #' res <- missigness_impute_factors_interactions(xx, configur)
-#' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-#' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
 #' long <- missigness_impute_factors_interactions(xx, configur, value = "long")
-#' long
+#' dim(long)
 #'
 missigness_impute_factors_interactions <-
   function(pdata,
@@ -261,7 +254,7 @@ missigness_impute_factors_interactions <-
       probs = probs,
       global = global)
     if (config$table$factorDepth > 1 ) { # if 1 only then done
-      for (factor in config$table$fkeysDepth()) {
+      for (factor in config$table$factor_keys_depth()) {
         fac_fun[[factor]] <- .missigness_impute_interactions(
           pdata,
           config,
@@ -299,7 +292,7 @@ missigness_impute_factors_interactions <-
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config
 #' data <- bb$data
 #'
@@ -310,7 +303,6 @@ missigness_impute_factors_interactions <-
 #'
 #' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
 #' imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
-#' head(imputed)
 #'
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
@@ -366,7 +358,7 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -413,18 +405,6 @@ get_contrast <- function(data,
 }
 
 
-get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, global = TRUE){
-  imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" ,probs = probs, global = global)
-  imputed <- get_contrast(ungroup(imputed), config$table$hierarchyKeys(), contrasts)
-  imputedProt <- aggregate_contrast(ungroup(imputed),  subject_Id =  config$table$hkeysDepth())
-  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
-  imputedProt$group_1_name <- NULL
-  imputedProt$group_2_name <- NULL
-  imputedProt$group_1 <- NULL
-  imputedProt$group_2 <- NULL
-
-  return(imputedProt)
-}
 
 #' compute contrasts based on peptide fold changes
 #'
@@ -444,25 +424,23 @@ get_imputed_contrasts_deprec <- function(data, config, contrasts, probs = 0.03, 
 #'
 #'
 #' library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bb$config
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- prolfqua::removeLarge_Q_Values(data, configur)
+#' data <- prolfqua::remove_large_QValues(data, configur)
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' #debug(get_imputed_contrasts)
 #' res <- get_imputed_contrasts(data, configur, Contrasts)
-#' head(res)
 #'
-#' #if(FALSE){
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
 #' imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
-#' #}
+#'
 get_imputed_contrasts <- function(pepIntensity,
                                      config,
                                      Contr,
@@ -507,7 +485,7 @@ get_imputed_contrasts <- function(pepIntensity,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')
+#' bb <- old2new(prolfqua_data('data_ionstar'))
 #' configur <- bb$config
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
@@ -515,7 +493,7 @@ get_imputed_contrasts <- function(pepIntensity,
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' bx <- prolfqua_data('data_ionstar')$normalized()
+#' bx <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' configur <- bx$config
 #' data <- bx$data
 #' data <- complete_cases(data, configur)
@@ -523,10 +501,11 @@ get_imputed_contrasts <- function(pepIntensity,
 #'
 #' missigness_histogram(data, configur, showempty=FALSE)
 #' missigness_histogram(data, configur, showempty=TRUE)
+#'
 missigness_histogram <- function(x,
                                  config,
                                  showempty = FALSE,
-                                 factors = config$table$fkeysDepth(),
+                                 factors = config$table$factor_keys_depth(),
                                  alpha = 0.1){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config , factors)$data
@@ -545,10 +524,10 @@ missigness_histogram <- function(x,
 
   }
 
-  factors <- table$fkeysDepth()
+  factors <- table$factor_keys_depth()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
-  meanarea <- paste0("mean_", config$table$getWorkIntensity())
+  meanarea <- paste0("mean_", config$table$get_work_intensity())
   missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
 
   p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
@@ -556,12 +535,6 @@ missigness_histogram <- function(x,
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if(FALSE){
-    p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
-      ggplot2::geom_histogram(alpha = 0.2, position = "identity") +
-      ggplot2::facet_grid(as.formula(formula)) +
-      ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
-  }
   if (!config$table$is_intensity_transformed) {
     p <- p + ggplot2::scale_x_log10()
   }
@@ -576,7 +549,7 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -587,7 +560,7 @@ missigness_histogram <- function(x,
 #' res$data
 missingness_per_condition_cumsum <- function(x,
                                              config,
-                                             factors = config$table$fkeysDepth()){
+                                             factors = config$table$factor_keys_depth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config,factors)$data
 
@@ -617,7 +590,7 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -627,7 +600,7 @@ missingness_per_condition_cumsum <- function(x,
 #' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #'
-missingness_per_condition <- function(x, config, factors = config$table$fkeysDepth()){
+missingness_per_condition <- function(x, config, factors = config$table$factor_keys_depth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$table$hierarchyKeys(),1)
@@ -657,7 +630,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -666,7 +639,7 @@ missingness_per_condition <- function(x, config, factors = config$table$fkeysDep
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
   nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchyKeys(),
-                                            names_from = cf$table$fkeysDepth(),
+                                            names_from = cf$table$factor_keys_depth(),
                                             values_from = !!rlang::sym("nrMeasured"))
 
   hl <- length(cf$table$hierarchyKeys())

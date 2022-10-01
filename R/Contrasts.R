@@ -6,7 +6,7 @@
 #' @examples
 #'
 #' # Fitting mixed effects model to peptide data
-#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- old2new( prolfqua_data('data_ionstar')$normalized() )
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 20))
 #'
 #' modelFunction <-
@@ -20,12 +20,15 @@
 #'  modelFunction,
 #'  subject_Id = config$table$hkeysDepth())
 #'
+#' prolfqua::model_summary(mod)
 #'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
 #'     "dil.e_vs_b" = "dilution.e - dilution.b" )
+#' #Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' contrastX$get_contrasts()
+#' contrastX$get_contrast_sides()
 #' contrastX$column_description()
-#'
+#' stopifnot(dim(contrastX$to_wide()) == c(160,7))
 Contrasts <- R6::R6Class(
   "Contrast",
   inherit = ContrastsInterface,
@@ -158,17 +161,17 @@ Contrasts <- R6::R6Class(
 
     },
     #' @description
-    #' return \code{\link{Contrasts_Plotter}}
+    #' return \code{\link{ContrastsPlotter}}
     #' creates Contrast_Plotter
     #' @param FCthreshold fold change threshold to show in plots
     #' @param FDRthreshold FDR threshold to show in plots
-    #' @return \code{\link{Contrasts_Plotter}}
+    #' @return \code{\link{ContrastsPlotter}}
     get_Plotter = function(
     FCthreshold = 1,
     FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,

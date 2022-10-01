@@ -108,7 +108,7 @@ resDataLog <-
   prolfqua::transform_work_intensity(resData , skylineconfig, log2)
 
 figs3 <-
-  intensity_summary_by_hkeys(resDataLog, skylineconfig, medpolishPly)
+  intensity_summary_by_hkeys(resDataLog, skylineconfig, medpolish_estimate)
 figs3 <- figs3("nested")
 ```
 
@@ -123,7 +123,7 @@ figs3 <-
     skylineconfig
   ))
 plot_hierarchies_add_quantline(figs3$plotlog[[1]],
-                               figs3$medpolishPly[[1]],
+                               figs3$medpolish_estimate[[1]],
                                "medpolish",
                                skylineconfig)
 
@@ -131,7 +131,7 @@ figs3 <-
   figs3 |> dplyr::mutate(
     figsMed = purrr::map2(
       plotlog,
-      medpolishPly,
+      medpolish_estimate,
       plot_hierarchies_add_quantline,
       "medpolish" ,
       skylineconfig
@@ -156,8 +156,8 @@ dev.off()
 ```{r getProtQuants}
 table <- skylineconfig$table
 protIntensity <-
-  figs3 |> dplyr::select(table$hierarchyKeys()[1], medpolishPly) |>
-  tidyr::unnest(cols = "medpolishPly")
+  figs3 |> dplyr::select(table$hierarchyKeys()[1], medpolish_estimate) |>
+  tidyr::unnest(cols = "medpolish_estimate")
 
 ```
 

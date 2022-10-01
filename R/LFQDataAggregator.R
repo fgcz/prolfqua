@@ -7,7 +7,7 @@
 #' @family LFQData
 #'
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -36,8 +36,9 @@
 #' # lfqAggregator$write_plots(".")
 #' protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 #' protPlotter$heatmap()
-#'
-#'
+#' \dontrun{
+#' lfqAggregator$write_plots(tempdir())
+#' }
 LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",
   public = list(
@@ -77,7 +78,7 @@ LFQDataAggregator <- R6::R6Class(
                 "Use LFQData$get_Transformer to transform the data.",
                 self$lfq$config$table$workIntensity,)
       }
-      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = medpolishPlydf_config)
+      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -93,7 +94,7 @@ LFQDataAggregator <- R6::R6Class(
                 self$lfq$config$table$workIntensity,)
       }
 
-      res <- aggregate_intensity(self$lfq$data, self$lfq$config, .func = summarizeRobust_config)
+      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -129,7 +130,7 @@ LFQDataAggregator <- R6::R6Class(
       if (is.null(self$lfq_agg)) {
         stop("please aggregate the data first")
       }
-      df <- prolfqua::plot_aggregation(
+      df <- prolfqua::plot_estimate(
         self$lfq$data,
         self$lfq$config,
         self$lfq_agg$data,
@@ -154,10 +155,8 @@ LFQDataAggregator <- R6::R6Class(
         pb$tick()
       }
       dev.off()
-      self$filepath = filepath
       invisible(filepath)
     }
-
   ),
   private = list(
     .topN = function(.func, N = 3){
@@ -166,9 +165,8 @@ LFQDataAggregator <- R6::R6Class(
                 "top N works with raw data.",
                 self$lfq$config$table$workIntensity)
       }
-
-      ranked <- rankPrecursorsByIntensity(self$lfq$data , self$lfq$config)
-      resTOPN <- aggregateTopNIntensities(ranked, self$lfq$config, .func = .func, N = N)
+      ranked <- rank_peptide_by_intensity(self$lfq$data , self$lfq$config)
+      resTOPN <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = N)
       self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     }

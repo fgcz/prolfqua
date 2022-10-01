@@ -21,7 +21,7 @@ Keep only those proteins with 2 IDENTIFIED peptides
 
 
 
-istar <- prolfqua_data('data_ionstar')$Pep()
+istar <- old2new(prolfqua_data('data_ionstar')$Pep())
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
@@ -32,7 +32,7 @@ stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{applyToIntensityMatrix}()},
+\code{\link{apply_to_response_matrix}()},
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},

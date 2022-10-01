@@ -6,7 +6,7 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
@@ -28,11 +28,12 @@
 #' bb <- contrast$get_contrasts()
 #'
 #' csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
-#'
+#' colnames(csi$to_wide())
+#' csi$get_contrast_sides()
 #' csi$get_contrasts()
-#' contrast$get_contrasts()
 #'
-#' merged <- addContrastResults(contrast, csi)
+#'
+#' merged <- merge_contrasts_results(contrast, csi)
 #' merged$more$get_contrasts() |> dim()
 #' merged$merged$get_contrasts() |> dim()
 #' merged$same$get_contrasts() |> dim()
@@ -125,7 +126,7 @@ ContrastsModerated <- R6::R6Class(
       return(contrast_result)
     },
     #' @description
-    #' get \code{\link{Contrasts_Plotter}}
+    #' get \code{\link{ContrastsPlotter}}
     #' @param FCthreshold fold change threshold to show in plots
     #' @param FDRthreshold FDR threshold to show in plots
     #'
@@ -134,7 +135,7 @@ ContrastsModerated <- R6::R6Class(
     FDRthreshold = 0.1
     ){
       contrast_result <- self$get_contrasts()
-      res <- Contrasts_Plotter$new(
+      res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,

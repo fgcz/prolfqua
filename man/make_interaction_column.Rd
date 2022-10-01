@@ -15,15 +15,15 @@ xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 analysis <- bb$data
 
-config$table$factorKeys()
+config$table$factor_keys()
 config$table$factorDepth <- 1
 make_interaction_column(analysis,
-   config$table$fkeysDepth())
+   config$table$factor_keys_depth())
 
 }
 \seealso{
@@ -32,14 +32,15 @@ Other configuration:
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

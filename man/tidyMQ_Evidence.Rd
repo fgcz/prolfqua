@@ -14,7 +14,7 @@ read evidence file
 }
 \examples{
 
-evidence_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+evidence_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)
 }
@@ -22,15 +22,8 @@ mq_evidence <- tidyMQ_Evidence(evidence_txt)
 Other MaxQuant: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{MaxQuant}},
-\code{\link{plot_MQ_intensity_vs_retention_time}()},
-\code{\link{tidyMQ_PeptideProtein}()},
 \code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()},
-\code{\link{tidyMQ_allPeptides}()},
-\code{\link{tidyMQ_from_Sites}()},
-\code{\link{tidyMQ_from_modSpecific_to_peptide}()},
-\code{\link{tidyMQ_merged}()},
-\code{\link{tidyMQ_modificationSpecificPeptides}()}
+\code{\link{tidyMQ_ProteinGroups}()}
 }
 \concept{MaxQuant}
 \keyword{internal}

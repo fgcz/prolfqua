@@ -12,7 +12,7 @@ Decorates LFQData with methods to aggregate protein intensities
 aggregates intensities
 }
 \examples{
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- old2new(prolfqua_data('data_ionstar')$filtered())
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 
@@ -41,8 +41,9 @@ pMean$plots[[2]]
 # lfqAggregator$write_plots(".")
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 protPlotter$heatmap()
-
-
+\dontrun{
+lfqAggregator$write_plots(tempdir())
+}
 }
 \seealso{
 Other LFQData: 

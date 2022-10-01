@@ -18,28 +18,25 @@ Summarizes the intensities within hierarchy
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)
 data <- bb$data
-x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
+x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 
 res <- x("unnest")
-x("unnest")$data |> dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
+res$data |> dim()
+
 config <- bb$config$clone(deep = TRUE)
 config$table$hierarchyDepth <- 1
-x <- intensity_summary_by_hkeys(data, config, func = medpolishPly)
 
-x("unnest")$data
-xnested <- x()
+x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 dd <- x(value = "plot")
-
-dd$medpolishPly[[1]]
+stopifnot(nrow(dd) == length(unique(bb$data$protein_Id)))
 
 dd$plot[[2]]
 
 # example how to add peptide count information
-
 tmp <- summarize_hierarchy(data, config)
 tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 
@@ -47,22 +44,22 @@ tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregateTopNIntensities}()},
-\code{\link{aggregate_intensity}()},
-\code{\link{medpolishPlydf_config}()},
-\code{\link{medpolishPlydf}()},
-\code{\link{medpolishPly}()},
-\code{\link{medpolish_protein_quants}()},
-\code{\link{plot_aggregation}()},
+\code{\link{aggregate_intensity_topN}()},
+\code{\link{estimate_intensity}()},
+\code{\link{medpolish_estimate_dfconfig}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate}()},
+\code{\link{medpolish_protein_estimates}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{summarizeRobust_config}()},
-\code{\link{summarizeRobust}()}
+\code{\link{rlm_estimate_dfconfig}()},
+\code{\link{rlm_estimate}()}
 
 Other deprecated: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{medpolish_protein_quants}()},
+\code{\link{medpolish_protein_estimates}()},
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }

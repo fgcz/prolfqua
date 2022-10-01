@@ -49,6 +49,8 @@ data <- eval(params$data)
 
 local_project_conf <- params$project_conf
 local_config <- eval(params$configuration)
+tmp <- prolfqua::old2new(list(data = data, config = local_config))
+local_config <- tmp$config
 
 if (is.null(local_project_conf)) {
   local_project_conf <- list()
@@ -88,7 +90,7 @@ While the overall number of `r if(params$pep){"proteins and peptides"}else{"prot
 ```{r hierarchyCounts}
 library(rlang)
 library(prolfqua)
-lfqdata <- LFQData$new(data, local_config)
+lfqdata <- prolfqua::LFQData$new(data, local_config)
 
 x <- lfqdata$hierarchy_counts()
 #knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
@@ -368,9 +370,9 @@ sampleSize2 <- sampleSize2 |> dplyr::mutate(delta = paste0("delta = ", delta))
 ggplot2::ggplot(sampleSize2, ggplot2::aes(x = probs, y = N)) +
   ggplot2::geom_bar(stat = "identity", color = "black", fill = "white") +
   ggplot2::geom_text(ggplot2::aes(label = N), nudge_y = nudgeval) + 
-  ggplot2::facet_wrap(as.formula(paste0("~ ", "delta + " , paste0( lfqdata$config$table$fkeysDepth(), collapse = " + " ))))
+  ggplot2::facet_wrap(as.formula(paste0("~ ", "delta + " , paste0( lfqdata$config$table$factor_keys_depth(), collapse = " + " ))))
    
-tmp <- sampleSize2 |> tidyr::pivot_wider(id_cols = c("probs","sdtrimmed", lfqdata$config$table$fkeysDepth()), names_from =  delta, values_from = N  )
+tmp <- sampleSize2 |> tidyr::pivot_wider(id_cols = c("probs","sdtrimmed", lfqdata$config$table$factor_keys_depth()), names_from =  delta, values_from = N  )
 
 ```
 

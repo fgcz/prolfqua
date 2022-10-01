@@ -4,13 +4,17 @@
 \alias{missingness_per_condition}
 \title{Summarize missing in condtion as barplot}
 \usage{
-missingness_per_condition(x, config, factors = config$table$fkeysDepth())
+missingness_per_condition(
+  x,
+  config,
+  factors = config$table$factor_keys_depth()
+)
 }
 \description{
 Summarize missing in condtion as barplot
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
@@ -23,14 +27,14 @@ print(res$figure)
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

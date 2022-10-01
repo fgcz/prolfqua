@@ -2,8 +2,7 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{setup_analysis}
 \alias{setup_analysis}
-\title{Extracts columns relevant for a configuration from a data frame
-and create new columns i sampleName column etc.}
+\title{Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}}
 \usage{
 setup_analysis(data, configuration, cc = TRUE)
 }
@@ -16,7 +15,7 @@ setup_analysis(data, configuration, cc = TRUE)
 }
 \description{
 Extracts columns relevant for a configuration from a data frame
-and create new columns i sampleName column etc.
+and create new columns e.g. sampleName column etc.
 }
 \examples{
 
@@ -33,14 +32,15 @@ Other configuration:
 \code{\link{AnalysisParameters}},
 \code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6extractValues}()},
+\code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},
+\code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
-\code{\link{spreadValueVarsIsotopeLabel}()},
+\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()}
 }
 \concept{configuration}

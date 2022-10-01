@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6Model.R
 \name{LR_test}
 \alias{LR_test}
-\title{likelihood ratio test}
+\title{Likelihood ratio test}
 \usage{
 LR_test(
   modelProteinF,
@@ -27,36 +27,58 @@ LR_test(
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }
 \description{
-likelihood ratio test
+Likelihood ratio test
 }
 \examples{
-#todo add example
+data_Yeast2Factor <- prolfqua::old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
+pMerged <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
+
+pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
+pMerged$config$table$get_work_intensity()
+pMerged$factors()
+
+formula_condition_and_Batches <-
+  prolfqua::strategy_lm("transformedIntensity ~ condition_ + batch_")
+modCB <- prolfqua::build_model(
+  pMerged$data,
+  formula_condition_and_Batches,
+  subject_Id = pMerged$config$table$hierarchyKeys() )
+
+formula_condition <-
+  prolfqua::strategy_lm("transformedIntensity ~ condition_")
+modC <- prolfqua::build_model(
+  pMerged$data,
+  formula_condition,
+  subject_Id = pMerged$config$table$hierarchyKeys() )
+
+tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+hist(tmp$likelihood_ratio_test.pValue)
+
 }
 \seealso{
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -65,9 +87,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},

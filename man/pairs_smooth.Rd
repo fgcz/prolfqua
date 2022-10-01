@@ -19,7 +19,7 @@ smoothScatter pairs
 \examples{
 tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
 pairs_smooth(tmp,main="small data", legend=TRUE)
-pairs_smooth(tmp,main="small data", diag.panel=panel.hist)
+pairs_smooth(tmp,main="small data", diag.panel=panel_hist)
 pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 }
 \seealso{
@@ -28,16 +28,13 @@ also \code{\link{pairs}}
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{get_UniprotID_from_fasta_header}()},
-\code{\link{jackknifeMatrix}()},
 \code{\link{matrix_to_tibble}()},
-\code{\link{multigroupVolcano}()},
-\code{\link{my_jackknife}()},
+\code{\link{multigroup_volcano}()},
+\code{\link{names_to_matrix}()},
 \code{\link{pairs_w_abline}()},
-\code{\link{panel.cor}()},
-\code{\link{panel.hist}()},
-\code{\link{removeNArows}()},
-\code{\link{split2table}()},
-\code{\link{table_facade.list}()},
+\code{\link{panel_cor}()},
+\code{\link{panel_hist}()},
+\code{\link{remove_NA_rows}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

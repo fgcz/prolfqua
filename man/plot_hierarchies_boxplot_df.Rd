@@ -25,7 +25,7 @@ generates peptide level plots for all Proteins
 }
 \examples{
 
- iostar <- prolfqua_data('data_ionstar')$filtered()
+ iostar <- old2new(prolfqua_data('data_ionstar')$filtered())
  iostar$data <- iostar$data |>
    dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
  unique(iostar$data$protein_Id)
@@ -39,7 +39,10 @@ generates peptide level plots for all Proteins
                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
  res$boxplot[[1]]
 
- iostar <- prolfqua_data('data_IonstarProtein_subsetNorm')
+ bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+ new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+ iostar <- LFQData$new(new$data, new$config)
+
  iostar$data <- iostar$data |>
    dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
  unique(iostar$data$protein_Id)
@@ -56,15 +59,15 @@ generates peptide level plots for all Proteins
 }
 \seealso{
 Other plotting: 
-\code{\link{Contrasts_Plotter}},
+\code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{medpolishPlydf}()},
+\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{plot_NA_heatmap}()},
-\code{\link{plot_aggregation}()},
+\code{\link{plot_estimate}()},
 \code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},

@@ -26,12 +26,18 @@ tidy_FragPipe_combined_protein_deprec(
 \description{
 FragPipe read FragPipe combined protein files up to Version 15
 }
+\examples{
+
+prottsv <- system_file("samples/FragPipe/combined_protein_small.tsv",
+package = "prolfqua")
+prot <- tidy_FragPipe_combined_protein_deprec(prottsv)
+stopifnot( dim(prot) ==c(19980,27))
+}
 \seealso{
 Other FragPipe: 
 \code{\link{FragPipe}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_peptides}()},
 \code{\link{tidy_FragPipe_combined_protein}()}
 }
 \concept{FragPipe}

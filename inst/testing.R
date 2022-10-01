@@ -1,6 +1,6 @@
 library(tidyverse)
 library(prolfqua)
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- old2new(prolfqua_data('data_ionstar')$normalized())
 istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
@@ -77,7 +77,7 @@ result <- select(result , -all_of(c("n","estimate_mad")))
 var = summarize_stats(ld$data, ld$config)
 
 pooled <- poolvar(var, ld$config, method = "V1")
-pooled <- dplyr::select(pooled ,-all_of(c(ld$config$table$fkeysDepth()[1],"var")))
+pooled <- dplyr::select(pooled ,-all_of(c(ld$config$table$factor_keys_depth()[1],"var")))
 result <- dplyr::inner_join(result, pooled, by = ld$config$table$hkeysDepth())
 
 resultNA <- result[result$n == 0, ]

@@ -10,17 +10,22 @@ holds results when contrasts are added.
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- old2new(prolfqua_data('data_ionstar')$normalized())
 configur <- bb$config$clone(deep=TRUE)
 configur$table$hierarchyDepth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 "dilution.c-e" = "dilution.c - dilution.b")
-tmp <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
-ctr <- tmp$get_contrasts()
-xcx <- ContrastsTable$new(ctr, subject_Id = tmp$subject_Id, modelName = tmp$modelName)
+csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+ctr <- csi$get_contrasts()
+csi$subject_Id
+xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+xcx$get_contrasts()
 xcx$get_Plotter()$volcano()
+stopifnot(is.null(xcx$get_contrast_sides()))
+stopifnot(is.null(xcx$get_linfct()))
+stopifnot(ncol(xcx$to_wide()) == 8)
 
 }
 \seealso{
@@ -28,28 +33,27 @@ xcx$get_Plotter()$volcano()
 
 Other modelling: 
 \code{\link{ContrastsModerated}},
+\code{\link{ContrastsPlotter}},
+\code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSaintExpress}},
+\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsSimpleImpute}},
-\code{\link{Contrasts_Plotter}},
-\code{\link{Contrasts_proDA}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
-\code{\link{addContrastResults}()},
 \code{\link{build_model}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
-\code{\link{get_model_coefficients}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{modelSummary}()},
+\code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
+\code{\link{model_summary}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
@@ -58,9 +62,7 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data_TWO}()},
 \code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom_TWO}()},
 \code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{plot_lmer_predicted_interactions}()},
@@ -172,7 +174,7 @@ get contrasts
 \if{html}{\out{<a id="method-ContrastsTable-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsTable-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrasts_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
 }
@@ -187,7 +189,7 @@ get \code{\link{Contrasts_Plotter}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{\link{Contrasts_Plotter}}
+\code{\link{ContrastsPlotter}}
 }
 }
 \if{html}{\out{<hr>}}
