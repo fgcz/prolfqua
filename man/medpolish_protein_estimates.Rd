@@ -12,12 +12,13 @@ median polish from normalized peptide intensities
 \examples{
 
 istar <- old2new(prolfqua_data('data_ionstar')$normalized())
-
-istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+istar_data <- istar$data
 res <- medpolish_protein_estimates(istar_data,
 istar$config )
 
-head(res("unnest")$data)
+dr <- res("unnest")$data
+stopifnot(nrow(dr) ==
+length(unique(istar$data$protein_Id )) * length(unique(istar$data$raw.file)))
 
 }
 \seealso{

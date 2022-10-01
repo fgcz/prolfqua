@@ -34,7 +34,6 @@ conf$table$hierarchyDepth = 1
 xnested <- data |>
  dplyr::group_by_at(conf$table$hkeysDepth()) |>
  tidyr::nest()
-head(xnested)
 
 x <- xnested$data[[1]]
 nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) |>

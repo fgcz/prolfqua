@@ -47,7 +47,6 @@ factor_levelContrasts <- contrasts_linfct(m,
                                          subject_Id = "protein_Id")
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-head(mmm)
 plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
 abline(0,1, col = 2)
 

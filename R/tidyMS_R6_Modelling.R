@@ -307,8 +307,6 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
   ran <- tibble::as_tibble(ran,rownames = randeffect)
   colnames(ran) <- gsub("[()]","",colnames(ran))
-  head(data)
-  head(ran)
   ran <- dplyr::inner_join(data, ran, by = randeffect)
 
   ran <- ran |> dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - .data$Intercept)
@@ -823,9 +821,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @keywords internal
 #' @examples
 #' dd <- prolfqua_data('data_factor_levelContrasts')
-#' head(dd)
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
-#' tmp
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
                                          columns = c("estimate", "p.value","p.value.adjusted"),
@@ -874,7 +870,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'                            factor_contrasts,
 #'                        subject_Id = "protein_Id")
-#' head(factor_levelContrasts)
 #' m$linear_model[[1]]
 #' my_contest(m$linear_model[[1]],factor_contrasts )
 #'
@@ -986,7 +981,6 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #'                                          subject_Id = "protein_Id")
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#' head(mmm)
 #' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
 #' abline(0,1, col = 2)
 #'

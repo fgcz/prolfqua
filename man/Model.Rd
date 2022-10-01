@@ -29,8 +29,6 @@ mod <- prolfqua::build_model(
 
 mod$modelDF
 aovtable  <- mod$get_anova()
-head(aovtable)
-unique(aovtable$factor)
 mod$get_coefficients()
 mod$coef_histogram()
 mod$coef_volcano()

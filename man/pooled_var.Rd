@@ -52,8 +52,9 @@ config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config)
-head(res1)
-poolvar(res1, config)
+pv <- poolvar(res1, config)
+stopifnot(nrow(pv) == nrow(res1)/5)
+
 }
 \seealso{
 Other stats: 

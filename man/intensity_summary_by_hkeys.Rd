@@ -25,21 +25,18 @@ data <- bb$data
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 
 res <- x("unnest")
-x("unnest")$data |> dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
+res$data |> dim()
+
 config <- bb$config$clone(deep = TRUE)
 config$table$hierarchyDepth <- 1
+
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
-
-x("unnest")$data
-xnested <- x()
 dd <- x(value = "plot")
-
-dd$medpolish_estimate[[1]]
+stopifnot(nrow(dd) == length(unique(bb$data$protein_Id)))
 
 dd$plot[[2]]
 
 # example how to add peptide count information
-
 tmp <- summarize_hierarchy(data, config)
 tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 

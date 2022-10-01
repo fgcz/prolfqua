@@ -35,7 +35,6 @@ used in Acetylation project p2916
 }
 \examples{
 
-#library(prolfqua)
 bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
@@ -44,30 +43,26 @@ configur$parameter$qVal_individual_threshold <- 0.01
 
 xx <- prolfqua::remove_large_QValues(data, configur)
 xx <- complete_cases(xx, configur)
-
+nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
+    length(unique(xx$dilution.))
 tmp <- interaction_missing_stats(xx, configur)
-#debug(.missigness_impute_interactions)
+stopifnot(nrow(tmp$data) == nrPepTimesDilution)
 fun <- .missigness_impute_interactions(xx, configur)
 
 long <- fun("long")
-head(long)
-
-debugData <- fun(DEBUG=TRUE)
-names(debugData)
-head(debugData$long)
-sum(is.na(xx$long$nrReplicates))
-xxx <- (fun("nrReplicates"))
+nrow(long) == nrPepTimesDilution
 alldata <- fun("all")
-head(xxx)
+stopifnot(length(names(alldata)) == 5)
 
 imputed <- fun("imputed")
+stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 missing <- fun("nrMeasured")
+stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 
  meanArea <- fun("mean")
+stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
  print(sum(is.na(meanArea$mean.dilution.a)))
- #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
-tmp <- fun("allWide")
-tmp
+
 }
 \keyword{internal}

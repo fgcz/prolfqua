@@ -643,4 +643,21 @@ prolfqua_data <- function(datastr, package="prolfqua"){
 }
 
 
+#' case sensitive version of system.file
+#'
+#' @export
+#' @examples
+#'
+#' testthat::expect_error(system_file("samples/maxquant_txt/tiny2.ZIP"))
+#' system_file("samples/maxquant_txt/tiny2.zip")
+#'
+system_file <- function(x , package = "prolfqua"){
+  file <- system_file(x,
+                      package = "prolfqua",
+                      mustWork = TRUE)
+  stopifnot(basename(file) %in% list.files(dirname(file)))
+  return(file)
+}
+
+
 

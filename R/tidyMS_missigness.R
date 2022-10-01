@@ -78,7 +78,6 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' #library(prolfqua)
 #' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
@@ -87,31 +86,27 @@ interaction_missing_stats <- function(pdata,
 #'
 #' xx <- prolfqua::remove_large_QValues(data, configur)
 #' xx <- complete_cases(xx, configur)
-#'
+#' nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
+#'     length(unique(xx$dilution.))
 #' tmp <- interaction_missing_stats(xx, configur)
-#' #debug(.missigness_impute_interactions)
+#' stopifnot(nrow(tmp$data) == nrPepTimesDilution)
 #' fun <- .missigness_impute_interactions(xx, configur)
 #'
 #' long <- fun("long")
-#' head(long)
-#'
-#' debugData <- fun(DEBUG=TRUE)
-#' names(debugData)
-#' head(debugData$long)
-#' sum(is.na(xx$long$nrReplicates))
-#' xxx <- (fun("nrReplicates"))
+#' nrow(long) == nrPepTimesDilution
 #' alldata <- fun("all")
-#' head(xxx)
+#' stopifnot(length(names(alldata)) == 5)
 #'
 #' imputed <- fun("imputed")
+#' stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #' missing <- fun("nrMeasured")
+#' stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'
 #'  meanArea <- fun("mean")
+#' stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'  print(sum(is.na(meanArea$mean.dilution.a)))
-#'  #stopifnot(sum(is.na(meanArea$mean.dilution.a)) == 59)
 #'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
-#' tmp <- fun("allWide")
-#' tmp
+#'
 .missigness_impute_interactions <- function(pdata,
                                             config,
                                             factors = config$table$factor_keys_depth(),
@@ -238,12 +233,10 @@ interaction_missing_stats <- function(pdata,
 #' xx <- complete_cases(data, configur)
 #'
 #' res <- missigness_impute_factors_interactions(xx, configur)
-#' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-#' head(res)
 #' res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
 #' long <- missigness_impute_factors_interactions(xx, configur, value = "long")
-#' long
+#' dim(long)
 #'
 missigness_impute_factors_interactions <-
   function(pdata,
@@ -310,7 +303,6 @@ missigness_impute_factors_interactions <-
 #'
 #' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
 #' imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
-#' head(imputed)
 #'
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
@@ -442,15 +434,13 @@ get_contrast <- function(data,
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' #debug(get_imputed_contrasts)
 #' res <- get_imputed_contrasts(data, configur, Contrasts)
-#' head(res)
 #'
-#' #if(FALSE){
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
 #' imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
-#' #}
+#'
 get_imputed_contrasts <- function(pepIntensity,
                                      config,
                                      Contr,

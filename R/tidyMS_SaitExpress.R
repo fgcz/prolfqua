@@ -122,9 +122,9 @@ runSaint <- function(si,
 
   if (Sys.info()["sysname"] == "Windows") {
     if (spc) {
-      exeS2 <- system.file("SaintExpress/bin/Windows64/SAINTexpress-spc.exe", package = "prolfqua")
+      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-spc.exe", package = "prolfqua")
     } else {
-      exeS2 <- system.file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", pacakge = "prolfqua")
+      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", pacakge = "prolfqua")
     }
 
     out <- system2(exeS2,
@@ -135,9 +135,9 @@ runSaint <- function(si,
                    minimized = TRUE)
   } else if (Sys.info()["sysname"] == "Linux") {
     if (spc) {
-      exeS2 <-  system.file("SaintExpress/bin/Linux64/SAINTexpress-spc",  package = "prolfqua")
+      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-spc",  package = "prolfqua")
     } else {
-      exeS2 <-  system.file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
+      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
     }
 
     out <- system2(exeS2,

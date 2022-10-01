@@ -33,7 +33,6 @@ meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
 
 imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
 imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
-head(imputed)
 
 imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
 plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)

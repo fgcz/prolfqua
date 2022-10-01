@@ -29,7 +29,7 @@ contr[["dilution_(7.5/6)_1.25"]] <- data.frame(
 
 bb <- dplyr::bind_rows(contr)
 cproDA <- ContrastsProDA$new(bb, contrasts = contrasts, subject_Id = "name")
-cproDA$get_contrasts() |> head()
+x <- cproDA$get_contrasts()
 cproDA$get_linfct()
 contsides <- cproDA$get_contrast_sides()
 stopifnot(ncol(cproDA$to_wide()) == c(7))

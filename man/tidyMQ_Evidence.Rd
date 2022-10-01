@@ -14,7 +14,7 @@ read evidence file
 }
 \examples{
 
-evidence_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+evidence_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 mq_evidence <- tidyMQ_Evidence(evidence_txt)
 }

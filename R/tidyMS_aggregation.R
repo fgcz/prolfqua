@@ -279,7 +279,6 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #' xnested <- data |>
 #'  dplyr::group_by_at(conf$table$hkeysDepth()) |>
 #'  tidyr::nest()
-#' head(xnested)
 #'
 #' x <- xnested$data[[1]]
 #' nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) |>
@@ -769,21 +768,18 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 #'
 #' res <- x("unnest")
-#' x("unnest")$data |> dplyr::select(config$table$hierarchyKeys()[1] , "medpolish")
+#' res$data |> dim()
+#'
 #' config <- bb$config$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 1
+#'
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
-#'
-#' x("unnest")$data
-#' xnested <- x()
 #' dd <- x(value = "plot")
-#'
-#' dd$medpolish_estimate[[1]]
+#' stopifnot(nrow(dd) == length(unique(bb$data$protein_Id)))
 #'
 #' dd$plot[[2]]
 #'
 #' # example how to add peptide count information
-#'
 #' tmp <- summarize_hierarchy(data, config)
 #' tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hkeysDepth())
 #'
@@ -862,12 +858,13 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @examples
 #'
 #' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
-#'
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar_data <- istar$data
 #' res <- medpolish_protein_estimates(istar_data,
 #' istar$config )
 #'
-#' head(res("unnest")$data)
+#' dr <- res("unnest")$data
+#' stopifnot(nrow(dr) ==
+#' length(unique(istar$data$protein_Id )) * length(unique(istar$data$raw.file)))
 #'
 medpolish_protein_estimates <- function(data, config){
   protintensity <- prolfqua::intensity_summary_by_hkeys(data ,

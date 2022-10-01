@@ -15,7 +15,9 @@ parse MQ peptides.txt
 \examples{
 
 
-peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
+peptide_txt <- system_file("samples/maxquant_txt/tiny2.zip",
+ package = "prolfqua")
+
 peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 mq_peptides <- tidyMQ_Peptides(peptides_txt)
 

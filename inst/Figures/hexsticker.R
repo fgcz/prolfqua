@@ -15,7 +15,7 @@ sticker(imgurl,
         u_color = "white")
 
 
-imgurl <- system.file("figures/cat.png", package="hexSticker")
+imgurl <- system_file("figures/cat.png", package="hexSticker")
 sticker(imgurl, package="hexSticker", p_size=20, s_x=1, s_y=.75, s_width=.6,
         filename="cat.png")
 
@@ -43,6 +43,6 @@ sticker(imgurl,
         u_color = "black")
 
 
-#imgurl <- system.file("figures/cat.png", package="hexSticker")
+#imgurl <- system_file("figures/cat.png", package="hexSticker")
 sticker(imgurl, package="hexSticker", p_size=20, s_x=1, s_y=.75, s_width=.6,
         fil4X43ename="cat.png")

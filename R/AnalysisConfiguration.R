@@ -465,7 +465,6 @@ summarize_hierarchy <- function(pdata,
 #' data <- bb$data
 #'
 #' x<-spread_response_by_IsotopeLabel(data,configur)
-#' head(x)
 #'
 #' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' configur <- bb$config_f()
@@ -475,7 +474,6 @@ summarize_hierarchy <- function(pdata,
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' x <- spread_response_by_IsotopeLabel(analysis, conf)
-#' head(x[,5:ncol(x)])
 #'
 spread_response_by_IsotopeLabel <- function(resData, config){
   table <- config$table

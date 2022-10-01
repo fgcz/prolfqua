@@ -14,7 +14,7 @@ NULL
 #'
 #' @examples
 #' library(prolfqua)
-#' protein_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+#' protein_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 #' protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
 #'
@@ -73,7 +73,7 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
 #' @family MaxQuant
 #' @examples
 #'
-#' evidence_txt <- system.file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+#' evidence_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
 #' evidence_txt <- read.csv(unz(evidence_txt,"evidence.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
 #' mq_evidence <- tidyMQ_Evidence(evidence_txt)
 tidyMQ_Evidence <- function(Evidence){
@@ -126,7 +126,9 @@ tidyMQ_Evidence <- function(Evidence){
 #' @examples
 #'
 #'
-#' peptide_txt <- system.file("samples/maxquant_txt/tiny2.ZIP",package = "prolfqua")
+#' peptide_txt <- system_file("samples/maxquant_txt/tiny2.zip",
+#'  package = "prolfqua")
+#'
 #' peptides_txt <- read.csv(unz(peptide_txt, "peptides.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
 #' mq_peptides <- tidyMQ_Peptides(peptides_txt)
 #'

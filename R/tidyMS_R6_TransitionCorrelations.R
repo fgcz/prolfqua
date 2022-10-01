@@ -550,14 +550,12 @@ normalize_log2_robscale <- function(pdata, config){
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #'
-#'
 #' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
 #' dataI <- mark_decorelated(data, conf)
-#' head(dataI)
 #'
 mark_decorelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()

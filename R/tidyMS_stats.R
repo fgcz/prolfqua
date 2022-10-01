@@ -126,8 +126,9 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
-#' head(res1)
-#' poolvar(res1, config)
+#' pv <- poolvar(res1, config)
+#' stopifnot(nrow(pv) == nrow(res1)/5)
+#'
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
   resp <- res1 |> nest(data = -all_of(config$table$hierarchyKeys()) )
@@ -160,15 +161,10 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
-#' head(res1)
-#' #View(res1)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' head(d)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' res1 |> dplyr::filter(dilution. == "pooled")
 #'
 summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
@@ -207,9 +203,7 @@ summarize_stats <- function(pdata, config){
 #'
 #' res1 <- summarize_stats_all(data, config)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' head(d)
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' head(d)
 #' #CON__P02769~18~NA VHKECCHGDLLECADDR
 #' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 #' res1 |> dplyr::filter(dilution. == "pooled")
