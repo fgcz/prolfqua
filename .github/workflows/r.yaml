@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        r-version: [4.1.0]
+        r-version: [4.2.0]
     steps:
       - uses: actions/checkout@v2
 
@@ -22,7 +22,7 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
       - name: Install Linux packages
-        run: sudo apt-get install -y curl libcurl4-openssl-dev libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
+        run: sudo apt-get install -y unzip curl libcurl4-openssl-dev libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex pandoc-citeproc lmodern
       - name: Cache R packages
         id: cache-rpkgs
         uses: actions/cache@v2
@@ -35,13 +35,13 @@ jobs:
         run: |
           install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org');
           pkgs <- c('DT', 'MASS');
-          pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'docopt'));
+          pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'covr', 'docopt'));
           pkgs <- c(pkgs, c('dplyr', 'forcats', 'ggbeeswarm',  'ggplot2'));
           pkgs <- c(pkgs, c('ggpubr', 'ggrepel', 'ggridges', 'htmlwidgets', 'knitr'));
           pkgs <- c(pkgs, c('limma', 'lme4', 'lmerTest','logger', 'multcomp', 'pROC'));
           pkgs <- c(pkgs, c('pheatmap', 'prozor', 'plotly', 'progress', 'purrr', 'readr'));
           pkgs <- c(pkgs, c('readxl', 'rlang', 'rmarkdown', 'testthat', 'tibble', 'tidyr'));
-          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl')) ;
+          pkgs <- c(pkgs, c('vsn', 'yaml', 'writexl', 'proDA')) ;
           lapply(pkgs, function(i){if (!i %in% installed.packages()){BiocManager::install(i)}});
         shell: Rscript {0}
       - name: Cache R packages
@@ -50,15 +50,18 @@ jobs:
         with:
             path:  ~/work/_temp/Library/
             key: ${{ runner.os }}-RpkgsV3-prolfqua
-
+      - name: install local prolfqua
+        run: remotes::install_local('.')
+        shell: Rscript {0}
       - name: Install prolfquadata
         run: remotes::install_gitlab("wolski/prolfquadata", host="gitlab.bfabric.org")
         shell: Rscript {0}
-
       - name: rcmdcheck::rcmdcheck
         run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
         shell: Rscript {0}
-
+      - name: codecov
+        run: covr::codecov(type = "all", token=Sys.getenv('CODECOV_TOKEN'))
+        shell: Rscript {0}
       - name: List files in home directory
         run: find $R_LIBS_SITE -type f > files.txt
       - uses: actions/upload-artifact@v2
@@ -72,7 +75,6 @@ jobs:
             name: prolfqua CI Rcheck directory
             path: check/prolfqua.Rcheck
             if-no-files-found: warn
-
 #      - uses: actions/upload-artifact@v2
 #        with:
 #            name: R_LIBS_SITE directory

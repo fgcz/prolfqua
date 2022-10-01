@@ -124,7 +124,7 @@ runSaint <- function(si,
     if (spc) {
       exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-spc.exe", package = "prolfqua")
     } else {
-      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", pacakge = "prolfqua")
+      exeS2 <- system_file("SaintExpress/bin/Windows64/SAINTexpress-int.exe", package = "prolfqua")
     }
 
     out <- system2(exeS2,
