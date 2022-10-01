@@ -33,7 +33,7 @@ jobs:
       - name: Install required R packages from CRAN and Bioconductor
         if: steps.cache-rpkgsV2.outputs.cache-hit != 'true'
         run: |
-          install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org');
+          install.packages(c('BiocManager', 'remotes', 'rmarkdown', 'roxygen2', 'testthat', 'rcmdcheck'), repos='https://cloud.r-project.org'); BiocManager::install(version = '3.15');
           pkgs <- c('DT', 'MASS');
           pkgs <- c(pkgs,c('bookdown', 'broom','conflicted', 'corrplot', 'covr', 'docopt'));
           pkgs <- c(pkgs, c('dplyr', 'forcats', 'ggbeeswarm',  'ggplot2'));
