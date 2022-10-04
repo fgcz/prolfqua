@@ -35,11 +35,20 @@ ContrastsProDA <- R6::R6Class(
   "ContrastsProDA",
   inherit = prolfqua::ContrastsInterface,
   public = list (
+    #' @field  contrast_result contrast result
     contrast_result = NULL,
+    #' @field modelName model name
     modelName = character(),
+    #' @field subject_Id columns with protein ID's
     subject_Id = character(),
-    #' @field contrast named vector of length 1.
+    #' @field contrasts named vector of length 1.
     contrasts = character(),
+    #' @description
+    #' initialize
+    #' @param contrastsdf data.frame returned by proDA
+    #' @param contrasts  contrasts
+    #' @param subject_Id column name with protein ID's
+    #' @param modelName name of model default value ContrastProDA
     initialize = function(contrastsdf,
                           contrasts,
                           subject_Id = "name",
@@ -50,11 +59,14 @@ ContrastsProDA <- R6::R6Class(
       }
       self$contrast_result = contrastsdf
       self$subject_Id = subject_Id
-      self$modelName = modelName
+      self$modelName = modelNames
       self$contrasts = contrasts
       self$contrast_result <- contrastsdf
 
     },
+    #' @description
+    #' show names of contrasts
+    #' @return data.frame
     get_contrast_sides = function(){
       # extract contrast sides
       tt <- self$contrasts[grep("-",self$contrasts)]
@@ -63,22 +75,22 @@ ContrastsProDA <- R6::R6Class(
         tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
+    #' @description
+    #' get linear function used to determine contrasts
+    #' @return data.frame
     get_linfct = function(){
       NULL
     },
-
     #' @description
     #' get contrasts
-    #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
-    #' @param all should all columns be returned (default FALSE)
-    #' @param global use a global linear function (determined by get_linfct)
-
+    #' @param all (default FALSE)
     get_contrasts = function(all = FALSE){
       return(self$contrast_result)
     },
     #' @description get \code{\link{Contrast_Plotter}}
     #' @param fcthreshold fold change threshold to show
-    #' @param scthreshold BFDR threshold to show in the heatmap.
+    #' @param fdrthreshold FDR threshold
+    #' @param tstatthreshold t statistics threshold
     get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1, tstatthreshold = 5){
       res <- ContrastsPlotter$new(
         self$contrast_result,
@@ -93,7 +105,7 @@ ContrastsProDA <- R6::R6Class(
       return(res)
     },
     #' @description convert to wide format
-    #' @param columns value column default SaintScore, BFDR
+    #' @param columns value column default t_statistic, adj_pval
     to_wide = function(columns = c("t_statistic", "adj_pval")){
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(
