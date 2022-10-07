@@ -93,7 +93,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summarize_hierarchy</span><span class="op">(</span></span>
 <span>  <span class="va">pdata</span>,</span>
 <span>  <span class="va">config</span>,</span>
-<span>  hierarchy <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  hierarchy <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  factors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -169,7 +169,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 153 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>,</span></span>
-<span class="r-in"><span> hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span> hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 163 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       isotope_n peptide_Id_n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>

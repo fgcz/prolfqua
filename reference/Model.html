@@ -373,13 +373,13 @@ R6 class representing modelling result"><!-- mathjax --><script src="https://cdn
 <span class="r-in"><span>   model_name <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pepIntensity</span> <span class="op">&lt;-</span> <span class="va">istar_data</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
-<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id"</span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span> <span class="va">pepIntensity</span>,</span></span>
 <span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
 <span class="r-in"><span> modelName <span class="op">=</span> <span class="va">modelName</span>,</span></span>
-<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span></span></span>

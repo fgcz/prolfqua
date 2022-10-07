@@ -176,7 +176,9 @@
 <li><p><a href="#method-AnalysisTableAnnotation-pop_response"><code>AnalysisTableAnnotation$pop_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-factor_keys"><code>AnalysisTableAnnotation$factor_keys()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-factor_keys_depth"><code>AnalysisTableAnnotation$factor_keys_depth()</code></a></p></li>
+<li><p><a href="#method-AnalysisTableAnnotation-hierarchy_keys"><code>AnalysisTableAnnotation$hierarchy_keys()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-hierarchyKeys"><code>AnalysisTableAnnotation$hierarchyKeys()</code></a></p></li>
+<li><p><a href="#method-AnalysisTableAnnotation-hierarchy_keys_depth"><code>AnalysisTableAnnotation$hierarchy_keys_depth()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-hkeysDepth"><code>AnalysisTableAnnotation$hkeysDepth()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-id_required"><code>AnalysisTableAnnotation$id_required()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-id_vars"><code>AnalysisTableAnnotation$id_vars()</code></a></p></li>
@@ -243,11 +245,11 @@
 </div>
 
 
-</div><p></p><hr><a id="method-AnalysisTableAnnotation-hierarchyKeys"></a><div class="section">
-<h3 id="method-hierarchykeys-">Method <code>hierarchyKeys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchykeys-"></a></h3>
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-hierarchy_keys"></a><div class="section">
+<h3 id="method-hierarchy-keys-">Method <code>hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-"></a></h3>
 <p>get hierarchy keys</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span>rev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span>rev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -263,17 +265,17 @@
 <p>array of column names</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisTableAnnotation-hkeysDepth"></a><div class="section">
-<h3 id="method-hkeysdepth-">Method <code>hkeysDepth()</code><a class="anchor" aria-label="anchor" href="#method-hkeysdepth-"></a></h3>
-<p>get hierarchy keys up to depth</p><div class="section">
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-hierarchyKeys"></a><div class="section">
+<h3 id="method-hierarchykeys-">Method <code>hierarchyKeys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchykeys-"></a></h3>
+<p>get hierarchy keys</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span>rev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>names</code></dt>
-<dd><p>if TRUE names only if FALSE key value pairs</p></dd>
+<p></p><div class="arguments"><dl><dt><code>rev</code></dt>
+<dd><p>return in reverse order</p></dd>
 
 
 </dl><p></p></div>
@@ -283,34 +285,74 @@
 <p>array of column names</p>
 </div>
 
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-hierarchy_keys_depth"></a><div class="section">
+<h3 id="method-hierarchy-keys-depth-">Method <code>hierarchy_keys_depth()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-depth-"></a></h3>
+<p>get hierarchy keys up to depth</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>names</code></dt>
+<dd><p>if TRUE names only if FALSE key value pairs</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>array of column names</p>
+</div>
+
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-hkeysDepth"></a><div class="section">
+<h3 id="method-hkeysdepth-">Method <code>hkeysDepth()</code><a class="anchor" aria-label="anchor" href="#method-hkeysdepth-"></a></h3>
+<p>get hierarchy keys up to depth</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>names</code></dt>
+<dd><p>if TRUE names only if FALSE key value pairs</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>array of column names</p>
+</div>
+
 </div><p></p><hr><a id="method-AnalysisTableAnnotation-id_required"></a><div class="section">
 <h3 id="method-id-required-">Method <code>id_required()</code><a class="anchor" aria-label="anchor" href="#method-id-required-"></a></h3>
 <p>Id Columns which must be in the input data frame</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">id_required</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>character array</p>
 </div>
 
 </div><p></p><hr><a id="method-AnalysisTableAnnotation-id_vars"></a><div class="section">
 <h3 id="method-id-vars-">Method <code>id_vars()</code><a class="anchor" aria-label="anchor" href="#method-id-vars-"></a></h3>
 <p>get names of columns annotating values (e.g. intensities)</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">id_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>character array</p>
 </div>
 
 </div><p></p><hr><a id="method-AnalysisTableAnnotation-value_vars"></a><div class="section">
 <h3 id="method-value-vars-">Method <code>value_vars()</code><a class="anchor" aria-label="anchor" href="#method-value-vars-"></a></h3>
 <p>get names of columns containing observations e.g. (intensity, qValue, mz or rt)</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">value_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -318,7 +360,7 @@
 </div><p></p><hr><a id="method-AnalysisTableAnnotation-annotation_vars"></a><div class="section">
 <h3 id="method-annotation-vars-">Method <code>annotation_vars()</code><a class="anchor" aria-label="anchor" href="#method-annotation-vars-"></a></h3>
 <p>get names of columns with sample annotations</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">annotation_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -326,12 +368,12 @@
 </div><p></p><hr><a id="method-AnalysisTableAnnotation-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

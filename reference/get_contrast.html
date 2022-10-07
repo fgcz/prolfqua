@@ -90,13 +90,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_contrast</span><span class="op">(</span><span class="va">data</span>, <span class="va">hierarchyKeys</span>, <span class="va">contrasts</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_contrast</span><span class="op">(</span><span class="va">data</span>, <span class="va">hierarchy_keys</span>, <span class="va">contrasts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>hierarchyKeys of Analysis Configuration</p></dd>
+<dd><p>hierarchy_keys of Analysis Configuration</p></dd>
 
 
 <dt>contrasts</dt>
@@ -131,14 +131,14 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> missigness_impute_factors_interactions : imputed</span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, value <span class="op">=</span> <span class="st">"nrMeasured"</span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">get_contrast</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">get_contrast</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> aVSe=dilution.a - dilution.e</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> aVSb=dilution.a - dilution.b</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, value <span class="op">=</span> <span class="st">"imputed"</span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">get_contrast</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">get_contrast</span><span class="op">(</span><span class="va">xx</span>, <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> aVSe=dilution.a - dilution.e</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> aVSb=dilution.a - dilution.b</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">)</span></span></span>
