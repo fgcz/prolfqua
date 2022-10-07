@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -132,10 +132,10 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolish_estimate</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
@@ -143,72 +143,18 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">x</span><span class="op">(</span><span class="st">"unnest"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">x</span><span class="op">(</span><span class="st">"unnest"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchyKeys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> , <span class="st">"medpolish"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,260 × 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       medpolish</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P21589|5NTD_HUMAN~1527~P21589 53<span style="text-decoration: underline;">281</span>919.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P21589|5NTD_HUMAN~1527~P21589 53<span style="text-decoration: underline;">108</span>622.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P21589|5NTD_HUMAN~1527~P21589 51<span style="text-decoration: underline;">768</span>575 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|P21589|5NTD_HUMAN~1527~P21589 48<span style="text-decoration: underline;">923</span>212.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P21589|5NTD_HUMAN~1527~P21589 46<span style="text-decoration: underline;">757</span>962.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P21589|5NTD_HUMAN~1527~P21589 43<span style="text-decoration: underline;">139</span>562.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P21589|5NTD_HUMAN~1527~P21589 49<span style="text-decoration: underline;">301</span>991.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P21589|5NTD_HUMAN~1527~P21589 46<span style="text-decoration: underline;">173</span>388.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P21589|5NTD_HUMAN~1527~P21589 47<span style="text-decoration: underline;">789</span>438.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P21589|5NTD_HUMAN~1527~P21589 61<span style="text-decoration: underline;">505</span>569.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3,250 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3260    6</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">intensity_summary_by_hkeys</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, func <span class="op">=</span> <span class="va">medpolish_estimate</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">x</span><span class="op">(</span><span class="st">"unnest"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,260 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       sampleName dilution. run_Id isotope medpol…¹</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P21589|5NTD_HUMAN~1527~P21589 b~02       b         02     light     5.33<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P21589|5NTD_HUMAN~1527~P21589 c~03       c         03     light     5.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P21589|5NTD_HUMAN~1527~P21589 d~04       d         04     light     5.18<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|P21589|5NTD_HUMAN~1527~P21589 e~05       e         05     light     4.89<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P21589|5NTD_HUMAN~1527~P21589 e~06       e         06     light     4.68<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P21589|5NTD_HUMAN~1527~P21589 d~07       d         07     light     4.31<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P21589|5NTD_HUMAN~1527~P21589 c~08       c         08     light     4.93<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P21589|5NTD_HUMAN~1527~P21589 b~09       b         09     light     4.62<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P21589|5NTD_HUMAN~1527~P21589 a~10       a         10     light     4.78<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P21589|5NTD_HUMAN~1527~P21589 a~11       a         11     light     6.15<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3,250 more rows, and abbreviated variable name ¹​medpolish</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
-<span class="r-in"><span><span class="va">xnested</span> <span class="op">&lt;-</span> <span class="fu">x</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">x</span><span class="op">(</span>value <span class="op">=</span> <span class="st">"plot"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">medpolish_estimate</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName dilution. run_Id isotope medpolish</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b~02       b         02     light   53<span style="text-decoration: underline;">281</span>919.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> c~03       c         03     light   53<span style="text-decoration: underline;">108</span>622.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> d~04       d         04     light   51<span style="text-decoration: underline;">768</span>575 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> e~05       e         05     light   48<span style="text-decoration: underline;">923</span>212.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> e~06       e         06     light   46<span style="text-decoration: underline;">757</span>962.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> d~07       d         07     light   43<span style="text-decoration: underline;">139</span>562.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> c~08       c         08     light   49<span style="text-decoration: underline;">301</span>991.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> b~09       b         09     light   46<span style="text-decoration: underline;">173</span>388.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a~10       a         10     light   47<span style="text-decoration: underline;">789</span>438.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a~11       a         11     light   61<span style="text-decoration: underline;">505</span>569.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> b~12       b         12     light   57<span style="text-decoration: underline;">534</span>412.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> c~13       c         13     light   50<span style="text-decoration: underline;">100</span>838.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> d~14       d         14     light   58<span style="text-decoration: underline;">970</span>725 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> e~15       e         15     light   61<span style="text-decoration: underline;">280</span>338.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> e~16       e         16     light   56<span style="text-decoration: underline;">780</span>612.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> d~17       d         17     light   59<span style="text-decoration: underline;">887</span>225 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> c~18       c         18     light   57<span style="text-decoration: underline;">788</span>409.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> b~19       b         19     light   60<span style="text-decoration: underline;">040</span>838.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> a~20       a         20     light   57<span style="text-decoration: underline;">032</span>150 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> a~21       a         21     light   55<span style="text-decoration: underline;">993</span>412.</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dd</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 15 rows containing missing values (geom_point).</span>
@@ -216,7 +162,6 @@
 <span class="r-plt img"><img src="intensity_summary_by_hkeys-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example how to add peptide count information</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_hierarchy.html">summarize_hierarchy</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="fu">x</span><span class="op">(</span><span class="st">"wide"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span>, by <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

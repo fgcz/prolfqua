@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -130,8 +130,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
+<span class="r-in"><span><span class="va">bb</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">25780</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
@@ -151,7 +152,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 153 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, factors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 163 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       isotope_n peptide_Id_n</span>
@@ -167,7 +167,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 153 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>,</span></span>
 <span class="r-in"><span> hierarchy <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
@@ -185,7 +184,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|O15145|ARPC3_HUMAN~283~O15145         1            3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 153 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>,</span></span>
 <span class="r-in"><span> hierarchy <span class="op">=</span> <span class="cn">NULL</span>, factors <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 4</span></span>
@@ -214,7 +212,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         sp|O15145|ARPC3_HUMAN~283~O15145         1            3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 805 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,289 × 3</span></span>
@@ -232,7 +229,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA EYEATLEECCAK            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA FKDLGEEHFK              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,279 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,289 × 3</span></span>
@@ -250,7 +246,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA EYEATLEECCAK            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA FKDLGEEHFK              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,279 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,289 × 3</span></span>
@@ -268,7 +263,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA EYEATLEECCAK            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA FKDLGEEHFK              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1,279 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

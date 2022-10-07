@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -153,20 +153,6 @@
 <span class="r-in"><span>                           <span class="va">factor_contrasts</span>,</span></span>
 <span class="r-in"><span>                       subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">factor_levelContrasts</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id   lhs   estim…¹ std.e…²    df stati…³ conf.…⁴ conf.…⁵ p.value sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|O43707|A… Cond…  -<span style="color: #BB0000;">0.168</span>   0.184  185.  -<span style="color: #BB0000;">0.911</span> -<span style="color: #BB0000;">0.530</span>    0.195 3.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|O43707|A… Cond…   0.519   0.172  183.   3.01   0.179    0.859 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|O43707|A… Cond…   0.370   0.174  181.   2.13   0.026<span style="text-decoration: underline;">7</span>   0.712 3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|O43707|A… Cond…   0.687   0.188  185.   3.66   0.317    1.06  3.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|O43707|A… Cond…   0.537   0.189  186.   2.84   0.164    0.911 5.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|O43707|A… Cond…  -<span style="color: #BB0000;">0.150</span>   0.179  185.  -<span style="color: #BB0000;">0.836</span> -<span style="color: #BB0000;">0.503</span>    0.204 4.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: isSingular &lt;lgl&gt;, sigma.model &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.residual.model &lt;dbl&gt;, and abbreviated variable names ¹​estimate,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​std.error, ³​statistic, ⁴​conf.low, ⁵​conf.high</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `colnames()` to see all variable names</span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear mixed model fit by REML ['lmerModLmerTest']</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula: formula</span>

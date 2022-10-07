@@ -18,7 +18,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -94,8 +94,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a></code></p>
-<p>Other modelling: 
+    <div class="dont-index"><p>Other modelling: 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
@@ -139,15 +138,19 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
     </div>
     <div id="public-fields">
     <h2>Public fields</h2>
-    <p></p><div class="r6-fields"><dl><dt><code>contrast</code></dt>
-<dd><p>named vector of length 1.</p></dd>
+    <p></p><div class="r6-fields"><dl><dt><code>contrast_result</code></dt>
+<dd><p>contrast result</p></dd>
 
 
-</dl><p></p></div>
-    </div>
-    <div id="active-bindings">
-    <h2>Active bindings</h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>contrast</code></dt>
+<dt><code>modelName</code></dt>
+<dd><p>model name</p></dd>
+
+
+<dt><code>subject_Id</code></dt>
+<dd><p>columns with protein ID's</p></dd>
+
+
+<dt><code>contrasts</code></dt>
 <dd><p>named vector of length 1.</p></dd>
 
 
@@ -170,8 +173,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description"><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsProDA-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-
-<div class="section">
+<p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsProDA.html">ContrastsProDA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">contrastsdf</span>,</span>
@@ -181,24 +183,50 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>contrastsdf</code></dt>
+<dd><p>data.frame returned by proDA</p></dd>
+
+
+<dt><code>contrasts</code></dt>
+<dd><p>contrasts</p></dd>
+
+
+<dt><code>subject_Id</code></dt>
+<dd><p>column name with protein ID's</p></dd>
+
+
+<dt><code>modelName</code></dt>
+<dd><p>name of model default value ContrastProDA</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-ContrastsProDA-get_contrast_sides"></a><div class="section">
 <h3 id="method-get-contrast-sides-">Method <code>get_contrast_sides()</code><a class="anchor" aria-label="anchor" href="#method-get-contrast-sides-"></a></h3>
-
-<div class="section">
+<p>show names of contrasts</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsProDA</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>data.frame</p>
+</div>
 
 </div><p></p><hr><a id="method-ContrastsProDA-get_linfct"></a><div class="section">
 <h3 id="method-get-linfct-">Method <code>get_linfct()</code><a class="anchor" aria-label="anchor" href="#method-get-linfct-"></a></h3>
-
-<div class="section">
+<p>get linear function used to determine contrasts</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsProDA</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>data.frame</p>
+</div>
 
 </div><p></p><hr><a id="method-ContrastsProDA-get_contrasts"></a><div class="section">
 <h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
@@ -208,13 +236,9 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </div>
 
 <div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>all</code></dt>
-<dd><p>should all columns be returned (default FALSE)</p></dd>
-
-
-<dt><code>global</code></dt>
-<dd><p>use a global linear function (determined by get_linfct)</p></dd>
+<dd><p>(default FALSE)</p></dd>
 
 
 </dl><p></p></div>
@@ -232,13 +256,17 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fcthreshold</code></dt>
 <dd><p>fold change threshold to show</p></dd>
 
 
-<dt><code>scthreshold</code></dt>
-<dd><p>BFDR threshold to show in the heatmap.</p></dd>
+<dt><code>fdrthreshold</code></dt>
+<dd><p>FDR threshold</p></dd>
+
+
+<dt><code>tstatthreshold</code></dt>
+<dd><p>t statistics threshold</p></dd>
 
 
 </dl><p></p></div>
@@ -252,9 +280,9 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>columns</code></dt>
-<dd><p>value column default SaintScore, BFDR</p></dd>
+<dd><p>value column default t_statistic, adj_pval</p></dd>
 
 
 </dl><p></p></div>
@@ -268,7 +296,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>directory</p></dd>
 
@@ -288,7 +316,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -303,7 +331,8 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">istar_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span> ,<span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfd</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar_data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment</a></span><span class="op">(</span><span class="va">lfd</span><span class="op">)</span></span></span>
@@ -323,28 +352,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cproDA</span> <span class="op">&lt;-</span> <span class="va">ContrastsProDA</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bb</span>, contrasts <span class="op">=</span> <span class="va">contrasts</span>, subject_Id <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cproDA</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               contrast                                      name      pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 dilution_(9/7.5)_1.2            CON__P02769~18~NA~lfq~AEFVEVTK 0.5412364</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 dilution_(9/7.5)_1.2       CON__P02769~18~NA~lfq~DDPHACYSTVFDK 0.6406301</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 dilution_(9/7.5)_1.2     CON__P02769~18~NA~lfq~DDPHACYSTVFDKLK 0.2656873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 dilution_(9/7.5)_1.2 CON__P02769~18~NA~lfq~ECCHGDLLECADDRADLAK 0.8283837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 dilution_(9/7.5)_1.2        CON__P02769~18~NA~lfq~ETYGDMADCCEK 0.6828054</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 dilution_(9/7.5)_1.2        CON__P02769~18~NA~lfq~EYEATLEECCAK 0.1590587</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    adj_pval        diff t_statistic         se df avg_abundance n_approx n_obs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9936359 -0.13946082  -0.6251979 0.22306667 15     4.2898582       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9936359 -0.03574700  -0.4764353 0.07503014 15     3.0979020       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9936359 -0.60903297  -1.1561891 0.52675898 15     0.6478544       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.9936359  0.03722741   0.2205931 0.16876055 15    -0.9808191       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.9936359 -0.11355041  -0.4166920 0.27250443 15    -0.3402561       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.9936359 -0.88507142  -1.4819371 0.59723952 15    -0.1598702       20    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       modelName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ContrastProDA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 ContrastProDA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 ContrastProDA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 ContrastProDA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 ContrastProDA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 ContrastProDA</span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">cproDA</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cproDA</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">contsides</span> <span class="op">&lt;-</span> <span class="va">cproDA</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -354,6 +362,7 @@ ContrastsProDA Wrapper to results produced by proDA"><!-- mathjax --><script src
 <span class="r-plt img"><img src="ContrastsProDA-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">adj_pval</span></span></span>
 <span class="r-plt img"><img src="ContrastsProDA-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -174,7 +174,8 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># library(tidyverse)</span></span></span>
-<span class="r-in"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">D</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">D</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">D</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">D</span><span class="op">$</span><span class="va">data</span> ,<span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"f_condtion_r_peptide"</span></span></span>
@@ -194,6 +195,7 @@
 <span class="r-in"><span> modelName <span class="op">=</span> <span class="va">modelName</span>,</span></span>
 <span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hkeysDepth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>WARN :Error: number of levels of each grouping factor must be &lt; number of observations (problems: sampleName)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
@@ -232,6 +234,7 @@
 <span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
 <span class="r-in"><span> modelName <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>WARN :Error: number of levels of each grouping factor must be &lt; number of observations (problems: sampleName)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
@@ -267,13 +270,13 @@
 <span class="r-in"><span><span class="fu"><a href="model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   68 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1    63 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $isSingular</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    36    32 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    31    32 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

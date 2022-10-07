@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Witold
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">29 September, 2022</h4>
+            <h4 data-toc-skip class="date">07 October, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/ModelWithInteractions.Rmd" class="external-link"><code>../vignettes/ModelWithInteractions.Rmd</code></a></small>
       <div class="hidden name"><code>ModelWithInteractions.Rmd</code></div>
@@ -202,7 +202,7 @@ analysis, i.e, the column containing the explanatory variables.</p>
 <p>We also need to specify the column containing the protein
 abundances.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">atable</span><span class="op">$</span><span class="fu">set_work_intensity</span><span class="op">(</span><span class="st">"mq.protein.intensity"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">atable</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="st">"mq.protein.intensity"</span><span class="op">)</span></span></code></pre></div>
 <p>Finally we create the <code>AnalysisConfiguration</code> which needs
 the <code>AnalysisTableAnnotation</code> we just created and the
 <code>AnalysisParameters</code>.</p>

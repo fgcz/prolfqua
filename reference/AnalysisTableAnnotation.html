@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -142,12 +142,12 @@
 <dd><p>column which contains the intensities</p></dd>
 
 
-<dt><code>is_intensity_transformed</code></dt>
+<dt><code>is_response_transformed</code></dt>
 <dd><p>are the intensities transformed for constant variance</p></dd>
 
 
 <dt><code>factors</code></dt>
-<dd><p>Names of columns containing factors (annotions)</p></dd>
+<dd><p>Names of columns containing factors (annotations)</p></dd>
 
 
 <dt><code>factorDepth</code></dt>
@@ -171,9 +171,9 @@
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-AnalysisTableAnnotation-new"><code>AnalysisTableAnnotation$new()</code></a></p></li>
-<li><p><a href="#method-AnalysisTableAnnotation-set_work_intensity"><code>AnalysisTableAnnotation$set_work_intensity()</code></a></p></li>
-<li><p><a href="#method-AnalysisTableAnnotation-get_work_intensity"><code>AnalysisTableAnnotation$get_work_intensity()</code></a></p></li>
-<li><p><a href="#method-AnalysisTableAnnotation-pop_work_intensity"><code>AnalysisTableAnnotation$pop_work_intensity()</code></a></p></li>
+<li><p><a href="#method-AnalysisTableAnnotation-set_response"><code>AnalysisTableAnnotation$set_response()</code></a></p></li>
+<li><p><a href="#method-AnalysisTableAnnotation-get_response"><code>AnalysisTableAnnotation$get_response()</code></a></p></li>
+<li><p><a href="#method-AnalysisTableAnnotation-pop_response"><code>AnalysisTableAnnotation$pop_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-factor_keys"><code>AnalysisTableAnnotation$factor_keys()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-factor_keys_depth"><code>AnalysisTableAnnotation$factor_keys_depth()</code></a></p></li>
 <li><p><a href="#method-AnalysisTableAnnotation-hierarchyKeys"><code>AnalysisTableAnnotation$hierarchyKeys()</code></a></p></li>
@@ -191,11 +191,11 @@
 </div>
 
 
-</div><p></p><hr><a id="method-AnalysisTableAnnotation-set_work_intensity"></a><div class="section">
-<h3 id="method-set-work-intensity-">Method <code>set_work_intensity()</code><a class="anchor" aria-label="anchor" href="#method-set-work-intensity-"></a></h3>
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-set_response"></a><div class="section">
+<h3 id="method-set-response-">Method <code>set_response()</code><a class="anchor" aria-label="anchor" href="#method-set-response-"></a></h3>
 <p>Add name of intensity column</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">set_work_intensity</span><span class="op">(</span><span class="va">colName</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="va">colName</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -207,19 +207,19 @@
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisTableAnnotation-get_work_intensity"></a><div class="section">
-<h3 id="method-get-work-intensity-">Method <code>get_work_intensity()</code><a class="anchor" aria-label="anchor" href="#method-get-work-intensity-"></a></h3>
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-get_response"></a><div class="section">
+<h3 id="method-get-response-">Method <code>get_response()</code><a class="anchor" aria-label="anchor" href="#method-get-response-"></a></h3>
 <p>Get name of working intensity column</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">get_work_intensity</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-AnalysisTableAnnotation-pop_work_intensity"></a><div class="section">
-<h3 id="method-pop-work-intensity-">Method <code>pop_work_intensity()</code><a class="anchor" aria-label="anchor" href="#method-pop-work-intensity-"></a></h3>
+</div><p></p><hr><a id="method-AnalysisTableAnnotation-pop_response"></a><div class="section">
+<h3 id="method-pop-response-">Method <code>pop_response()</code><a class="anchor" aria-label="anchor" href="#method-pop-response-"></a></h3>
 <p>Remove last name in array of working intensity column names</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">pop_work_intensity</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">pop_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -350,7 +350,7 @@
 <span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"rawfile.column"</span></span></span>
 <span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"protein.column"</span></span></span>
 <span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"explanatory"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"explanatory.column"</span></span></span>
-<span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="fu">set_work_intensity</span><span class="op">(</span><span class="st">"abundance"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="st">"abundance"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ata</span><span class="op">$</span><span class="fu">id_required</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               explanatory              protein </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "rawfile.column" "explanatory.column"     "protein.column" </span>

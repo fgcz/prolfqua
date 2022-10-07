@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -142,43 +142,7 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_factor_levelContrasts'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dd</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Compound     lhs   sigma    df estim…¹ std.e…² stati…³ p.value conf.…⁴ conf.…⁵</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 4.85_649.01… Mort… 0.987   115  0.128    0.193   0.659   0.511  -<span style="color: #BB0000;">0.256</span>   0.511</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 4.85_649.01… Inte… 0.987   115  0.038<span style="text-decoration: underline;">4</span>   0.183   0.210   0.834  -<span style="color: #BB0000;">0.324</span>   0.401</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 4.85_649.01… NRSN… 0.987   115  0.173    0.222   0.777   0.439  -<span style="color: #BB0000;">0.268</span>   0.613</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 4.85_649.01… NRSN… 0.987   115 -<span style="color: #BB0000;">0.047</span><span style="color: #BB0000; text-decoration: underline;">1</span>   0.222  -<span style="color: #BB0000;">0.212</span>   0.833  -<span style="color: #BB0000;">0.487</span>   0.393</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 4.85_649.01… NRSN… 0.987   115 -<span style="color: #BB0000;">0.220</span>    0.221  -<span style="color: #BB0000;">0.993</span>   0.323  -<span style="color: #BB0000;">0.658</span>   0.219</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 5.05_635.00… Mort… 0.719   115  0.104    0.141   0.741   0.460  -<span style="color: #BB0000;">0.175</span>   0.383</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 4 more variables: isSingular &lt;lgl&gt;, sigma.model &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.residual.model &lt;dbl&gt;, p.value.adjusted &lt;dbl&gt;, and abbreviated variable</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   names ¹​estimate, ²​std.error, ³​statistic, ⁴​conf.low, ⁵​conf.high</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `colnames()` to see all variable names</span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">pivot_model_contrasts_2_Wide</span><span class="op">(</span><span class="va">dd</span>, subject_Id <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 30 × 16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Compound     estima…¹ estim…² estim…³ estim…⁴ estim…⁵ p.val…⁶ p.val…⁷ p.val…⁸</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 4.85_649.01…  0.038<span style="text-decoration: underline;">4</span>   0.128   0.173  -<span style="color: #BB0000;">0.047</span><span style="color: #BB0000; text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.220</span>    0.834  0.511    0.439</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5.05_635.00…  0.009<span style="text-decoration: underline;">72</span>  0.104   0.118  -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">9</span> -<span style="color: #BB0000;">0.141</span>    0.942  0.460    0.467</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5.11_366.05…  0.245   -<span style="color: #BB0000;">0.278</span>   0.367   0.205  -<span style="color: #BB0000;">0.163</span>    0.185  0.156    0.103</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5.12_260.02…  0.160   -<span style="color: #BB0000;">0.431</span>   0.077<span style="text-decoration: underline;">2</span>  0.019<span style="text-decoration: underline;">5</span> -<span style="color: #BB0000;">0.057</span><span style="color: #BB0000; text-decoration: underline;">6</span>   0.490  0.080<span style="text-decoration: underline;">9</span>   0.784</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5.12_302.66…  0.370   -<span style="color: #BB0000;">0.253</span>   0.303   0.223  -<span style="color: #BB0000;">0.079</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.220  0.426    0.409</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5.12_476.01… -<span style="color: #BB0000;">0.004</span><span style="color: #BB0000; text-decoration: underline;">71</span>  0.436  -<span style="color: #BB0000;">0.025</span><span style="color: #BB0000; text-decoration: underline;">6</span>  0.436   0.462    0.986  0.129    0.938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5.13_363.04… -<span style="color: #BB0000;">0.626</span>   -<span style="color: #BB0000;">0.255</span>  -<span style="color: #BB0000;">0.403</span>   0.264   0.667    0.125  0.554    0.414</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5.16_166.01…  0.236   -<span style="color: #BB0000;">0.283</span>  -<span style="color: #BB0000;">0.346</span>  -<span style="color: #BB0000;">0.154</span>   0.192    0.197  0.144    0.120</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5.16_242.38…  0.176   -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">3</span> -<span style="color: #BB0000;">0.270</span>   0.175   0.445    0.533  0.807    0.430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5.16_277.08… -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">2</span>  -<span style="color: #BB0000;">0.132</span>   0.099<span style="text-decoration: underline;">9</span>  0.338   0.238    0.828  0.430    0.602</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 20 more rows, 7 more variables: `p.value.NRSNRS_3 - NRSNRS_5` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.NRSNRS_4 - NRSNRS_5` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.adjusted.InterventionCTRL - InterventionINT` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.adjusted.MortalityM0 - MortalityM1` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.adjusted.NRSNRS_3 - NRSNRS_4` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.adjusted.NRSNRS_3 - NRSNRS_5` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `p.value.adjusted.NRSNRS_4 - NRSNRS_5` &lt;dbl&gt;, and abbreviated variable …</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
 </code></pre></div>
     </div>
   </div>

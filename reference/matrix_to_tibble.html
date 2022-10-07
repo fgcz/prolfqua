@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -129,16 +129,14 @@
 <span class="r-in"><span><span class="fu">matrix_to_tibble</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Using compatibility `.name_repair`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row.names      V1     V2      V3      V4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A          0.217   1.18  -<span style="color: #BB0000;">0.090</span><span style="color: #BB0000; text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B          0.718   0.305 -<span style="color: #BB0000;">0.093</span><span style="color: #BB0000; text-decoration: underline;">7</span>  1.36  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">0.090</span><span style="color: #BB0000; text-decoration: underline;">8</span>  0.183 -<span style="color: #BB0000;">1.52</span>    0.266 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D         -<span style="color: #BB0000;">0.648</span>  -<span style="color: #BB0000;">0.375</span> -<span style="color: #BB0000;">0.337</span>  -<span style="color: #BB0000;">1.65</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E          0.390   0.360  1.10    1.44  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   row.names     V1     V2       V3     V4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A          1.45  -<span style="color: #BB0000;">0.195</span>  0.005<span style="text-decoration: underline;">98</span>  0.440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B         -<span style="color: #BB0000;">0.173</span>  1.75   0.562    0.964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">0.624</span>  0.617  0.151    0.203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D          0.205 -<span style="color: #BB0000;">0.557</span>  0.425   -<span style="color: #BB0000;">0.433</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">0.543</span> -<span style="color: #BB0000;">0.797</span> -<span style="color: #BB0000;">0.829</span>    1.42 </span>
 <span class="r-in"><span><span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">is.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>

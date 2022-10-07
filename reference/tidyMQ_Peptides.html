@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -112,7 +112,9 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">peptide_txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"samples/maxquant_txt/tiny2.ZIP"</span>,package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">peptide_txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="system_file.html">system_file</a></span><span class="op">(</span><span class="st">"samples/maxquant_txt/tiny2.zip"</span>,</span></span>
+<span class="r-in"><span> package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">peptides_txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">unz</a></span><span class="op">(</span><span class="va">peptide_txt</span>, <span class="st">"peptides.txt"</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mq_peptides</span> <span class="op">&lt;-</span> <span class="fu">tidyMQ_Peptides</span><span class="op">(</span><span class="va">peptides_txt</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

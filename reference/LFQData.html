@@ -18,7 +18,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <li><p><a href="#method-LFQData-filter_difference"><code>LFQData$filter_difference()</code></a></p></li>
 <li><p><a href="#method-LFQData-clone"><code>LFQData$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQData-new"></a><div class="section">
-<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, is_pep <span class="op">=</span> <span class="cn">TRUE</span>, prefix <span class="op">=</span> <span class="st">"ms_"</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -555,18 +555,35 @@ it will be removed</p><div class="section">
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">LFQData</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> removing proteins with less than2 peptpides</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"data.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"matrix"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 791 × 22</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id    pepti…¹ `a~10` `a~11` `a~20` `a~21` `b~02` `b~09` `b~12` `b~19`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~… AEFVEV… 3.29<span style="color: #949494;">e</span>8 6.06<span style="color: #949494;">e</span>8 6.07<span style="color: #949494;">e</span>8 5.72<span style="color: #949494;">e</span>8 2.98<span style="color: #949494;">e</span>8 4.48<span style="color: #949494;">e</span>8 6.26<span style="color: #949494;">e</span>8 6.58<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~… DDPHAC… 1.81<span style="color: #949494;">e</span>8 2.33<span style="color: #949494;">e</span>8 2.31<span style="color: #949494;">e</span>8 2.27<span style="color: #949494;">e</span>8 1.86<span style="color: #949494;">e</span>8 1.74<span style="color: #949494;">e</span>8 2.73<span style="color: #949494;">e</span>8 2.18<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~… DDPHAC… 3.40<span style="color: #949494;">e</span>7 4.62<span style="color: #949494;">e</span>7 4.91<span style="color: #949494;">e</span>7 4.83<span style="color: #949494;">e</span>7 3.31<span style="color: #949494;">e</span>7 2.98<span style="color: #949494;">e</span>7 5.69<span style="color: #949494;">e</span>7 5.02<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~… ECCHGD… 8.05<span style="color: #949494;">e</span>6 1.30<span style="color: #949494;">e</span>7 1.48<span style="color: #949494;">e</span>7 1.27<span style="color: #949494;">e</span>7 1.12<span style="color: #949494;">e</span>7 9.86<span style="color: #949494;">e</span>6 1.44<span style="color: #949494;">e</span>7 1.19<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~… ETYGDM… 1.18<span style="color: #949494;">e</span>7 3.99<span style="color: #949494;">e</span>7 2.24<span style="color: #949494;">e</span>7 2.54<span style="color: #949494;">e</span>7 2.17<span style="color: #949494;">e</span>7 1.23<span style="color: #949494;">e</span>7 2.87<span style="color: #949494;">e</span>7 1.89<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~… EYEATL… 1.64<span style="color: #949494;">e</span>7 3.08<span style="color: #949494;">e</span>7 2.86<span style="color: #949494;">e</span>7 3.17<span style="color: #949494;">e</span>7 1.95<span style="color: #949494;">e</span>7 1.53<span style="color: #949494;">e</span>7 2.82<span style="color: #949494;">e</span>7 2.77<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~… FKDLGE… 8.31<span style="color: #949494;">e</span>8 1.18<span style="color: #949494;">e</span>9 1.45<span style="color: #949494;">e</span>9 1.62<span style="color: #949494;">e</span>9 9.71<span style="color: #949494;">e</span>8 9.16<span style="color: #949494;">e</span>8 1.50<span style="color: #949494;">e</span>9 1.44<span style="color: #949494;">e</span>9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~… HLVDEP… 1.91<span style="color: #949494;">e</span>9 2.20<span style="color: #949494;">e</span>9 2.35<span style="color: #949494;">e</span>9 2.32<span style="color: #949494;">e</span>9 2.08<span style="color: #949494;">e</span>9 1.78<span style="color: #949494;">e</span>9 2.40<span style="color: #949494;">e</span>9 2.19<span style="color: #949494;">e</span>9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~… HPEYAV… 4.41<span style="color: #949494;">e</span>7 6.28<span style="color: #949494;">e</span>7 4.71<span style="color: #949494;">e</span>7 6.38<span style="color: #949494;">e</span>7 4.90<span style="color: #949494;">e</span>7 6.99<span style="color: #949494;">e</span>7 5.70<span style="color: #949494;">e</span>7 7.28<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~… HPYFYA… 1.43<span style="color: #949494;">e</span>8 2.26<span style="color: #949494;">e</span>8 2.10<span style="color: #949494;">e</span>8 1.84<span style="color: #949494;">e</span>8 1.84<span style="color: #949494;">e</span>8 1.70<span style="color: #949494;">e</span>8 1.91<span style="color: #949494;">e</span>8 2.10<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 781 more rows, 12 more variables: `c~03` &lt;dbl&gt;, `c~08` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `c~13` &lt;dbl&gt;, `c~18` &lt;dbl&gt;, `d~04` &lt;dbl&gt;, `d~07` &lt;dbl&gt;, `d~14` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `d~17` &lt;dbl&gt;, `e~05` &lt;dbl&gt;, `e~06` &lt;dbl&gt;, `e~15` &lt;dbl&gt;, `e~16` &lt;dbl&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable name ¹​peptide_Id</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $annotation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName dilution. run_Id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
@@ -590,23 +607,41 @@ it will be removed</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> e~06       e         06    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> e~15       e         15    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> e~16       e         16    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rowdata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 791 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id        peptide_Id         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~18~NA AEFVEVTK           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA DDPHACYSTVFDK      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~18~NA DDPHACYSTVFDKLK    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~18~NA ECCHGDLLECADDRADLAK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~18~NA ETYGDMADCCEK       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~18~NA EYEATLEECCAK       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~18~NA FKDLGEEHFK         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~18~NA HLVDEPQNLIK        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA HPEYAVSVLLR        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA HPYFYAPELLYYANK    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 781 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $config</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;AnalysisConfiguration&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (analysisTableAnnotation, analysisParameter = AnalysisParameters$new()) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     parameter: AnalysisParameters, R6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sep: ~</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     table: AnalysisTableAnnotation, R6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> , <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> , <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"data.frame"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"matrix"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 59 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       isotope_n peptide_Id_n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~18~NA                        1           34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|L0R819|ASURF_HUMAN~152~L0R819         1            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|O14745|NHRF1_HUMAN~240~O14745         1           11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O75436|VP26A_HUMAN~482~O75436         1            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O95373|IPO7_HUMAN~600~O95373          1           26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|P00505|AATM_HUMAN~667~P00505          1           12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P02924|ARAF_ECOLI~705~P02924          1            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P04150|GCR_HUMAN~721~P04150           1            5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P07951|TPM2_HUMAN~829~P07951          1           21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P08238|HS90B_HUMAN~837~P08238         1           41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 49 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63  3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter for missing values</span></span></span>
 <span class="r-in"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
@@ -645,70 +680,6 @@ it will be removed</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling 40protein_Id</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">40</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>   <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: SummarizedExperiment</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MatrixGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: matrixStats</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘MatrixGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedSds, rowWeightedVars</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomicRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, append,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: S4Vectors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘S4Vectors’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘Biobase’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:MatrixGenerics’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMedians</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     anyMissing, rowMedians</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lw</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Writer</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lw</span><span class="op">$</span><span class="fu">get_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"annotation"</span><span class="op">)</span><span class="op">)</span></span></span>

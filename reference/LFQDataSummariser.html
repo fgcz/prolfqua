@@ -18,7 +18,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <li><p><a href="#method-LFQDataSummariser-plot_missingness_per_group_cumsum"><code>LFQDataSummariser$plot_missingness_per_group_cumsum()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-clone"><code>LFQDataSummariser$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQDataSummariser-new"></a><div class="section">
-<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/LFQDataSummariser.html">LFQDataSummariser</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -254,7 +254,8 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -318,7 +319,6 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> light   c~03       protein_Id    62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> light   c~08       protein_Id    62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 30 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataSummariser-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -339,7 +339,6 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         CON__P02769~… HPYFYA… light         4     0  1.91<span style="color: #949494;">e</span>8  1.97<span style="color: #949494;">e</span>8       4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 4,030 more rows, and abbreviated variable names ¹​peptide_Id,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​nrReplicates, ³​meanArea, ⁴​medianArea, ⁵​nrMeasured</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summaries</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nrReplicates" "nrNAs"        "nrMeasured"   "meanArea"     "medianArea"  </span>
