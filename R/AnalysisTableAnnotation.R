@@ -94,7 +94,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' get hierarchy keys
     #' @param rev return in reverse order
     #' @return array of column names
-    hierarchyKeys = function(rev = FALSE){
+    hierarchy_keys = function(rev = FALSE){
       if (rev) {
         return(rev(names(self$hierarchy)))
       }else{
@@ -102,10 +102,18 @@ AnalysisTableAnnotation <- R6::R6Class(
       }
     },
     #' @description
+    #' get hierarchy keys
+    #' @param rev return in reverse order
+    #' @return array of column names
+    hierarchyKeys = function(rev= FALSE){
+      self$hierarchy_keys(rev = rev)
+    },
+
+    #' @description
     #' get hierarchy keys up to depth
     #' @param names if TRUE names only if FALSE key value pairs
     #' @return array of column names
-    hkeysDepth = function(names = TRUE){
+    hierarchy_keys_depth = function(names = TRUE){
       res <- head( self$hierarchy,n = self$hierarchyDepth)
       res <- if (names) {
         names(res)
@@ -114,6 +122,14 @@ AnalysisTableAnnotation <- R6::R6Class(
       }
       return(res)
     },
+    #' @description
+    #' get hierarchy keys up to depth
+    #' @param names if TRUE names only if FALSE key value pairs
+    #' @return array of column names
+    hkeysDepth = function(names = TRUE){
+      self$hierarchy_keys_depth(names = names)
+    },
+
 
     #' @description
     #' Id Columns which must be in the input data frame

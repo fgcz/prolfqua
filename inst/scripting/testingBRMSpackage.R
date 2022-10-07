@@ -12,7 +12,7 @@ datacomp <- prolfqua::complete_cases(data, config)
 data <- datacomp |> rename(condition = condition_, batch = batch_)
 
 
-data_split <- data |> dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()
+data_split <- data |> dplyr::group_by_at(config$table$hierarchy_keys()[1]) |> tidyr::nest()
 
 
 data_split$data[[1]]

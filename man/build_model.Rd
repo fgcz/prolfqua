@@ -52,7 +52,7 @@ mod <- prolfqua:::build_model(
  pepIntensity,
  formula_randomPeptide,
  modelName = modelName,
- subject_Id = config$table$hkeysDepth())
+ subject_Id = config$table$hierarchy_keys_depth())
 
 mod <- prolfqua:::build_model(
  LFQData$new(pepIntensity, config),

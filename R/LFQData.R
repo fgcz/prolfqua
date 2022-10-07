@@ -100,7 +100,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' get subject ID columns
     subject_Id = function(){
-      return(self$config$table$hkeysDepth())
+      return(self$config$table$hierarchy_keys_depth())
     },
     #' @description
     #' is data trasfromed
@@ -148,11 +148,11 @@ LFQData <- R6::R6Class(
         missing <- interaction_missing_stats(self$data, cfg)
       }
       notNA <- missing$data |> dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA |> group_by_at(self$config$table$hierarchyKeys()) |>
+      sumN <- notNA |> group_by_at(self$config$table$hierarchy_keys()) |>
         summarise(n = n())
       notNA <- sumN |> dplyr::filter(n == max(n))
 
-      notNA <- notNA |> dplyr::select(self$config$table$hierarchyKeys())
+      notNA <- notNA |> dplyr::select(self$config$table$hierarchy_keys())
       notNAdata <- dplyr::inner_join( notNA, self$data) |> ungroup()
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
@@ -183,7 +183,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' Hierarchy table
     hierarchy = function(){
-      hk <- self$config$table$hkeysDepth()
+      hk <- self$config$table$hierarchy_keys_depth()
       hkdf <- self$data |> select(all_of(hk)) |> distinct()
       return(hkdf)
     },

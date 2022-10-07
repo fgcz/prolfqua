@@ -8,7 +8,7 @@ interaction_missing_stats(
   pdata,
   config,
   factors = config$table$factor_keys_depth(),
-  hierarchy = config$table$hierarchyKeys(),
+  hierarchy = config$table$hierarchy_keys(),
   workIntensity = config$table$get_response()
 )
 }
@@ -47,11 +47,11 @@ stopifnot(length(unique(x$protein_Id)) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
  factors= character(),
-  hierarchy = configur$table$hierarchyKeys()[1])$data
+  hierarchy = configur$table$hierarchy_keys()[1])$data
 stopifnot(nrow(tmp) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
-  hierarchy = configur$table$hierarchyKeys()[1])$data
+  hierarchy = configur$table$hierarchy_keys()[1])$data
 stopifnot(sum(is.na(tmp$nrMeasured))==0)
 tmp
 

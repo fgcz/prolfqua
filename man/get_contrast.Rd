@@ -4,10 +4,10 @@
 \alias{get_contrast}
 \title{Compute fold changes given Contrasts}
 \usage{
-get_contrast(data, hierarchyKeys, contrasts)
+get_contrast(data, hierarchy_keys, contrasts)
 }
 \arguments{
-\item{data}{hierarchyKeys of Analysis Configuration}
+\item{data}{hierarchy_keys of Analysis Configuration}
 
 \item{contrasts}{list of contrasts to compute}
 }
@@ -26,11 +26,11 @@ data <- complete_cases(data, configur)
 Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
 message("missigness_impute_factors_interactions : imputed")
 xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
-imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 
 xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
 
-imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 head(imputed)
 
 }

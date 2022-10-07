@@ -61,7 +61,7 @@ yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
 
 
 ```{r plotHierarchies, fig.cap="transitions in one plot."}
-proteinIDsymbol <- rlang::sym(skylineconfig$table$hierarchyKeys()[1])
+proteinIDsymbol <- rlang::sym(skylineconfig$table$hierarchy_keys()[1])
 
 xnested <- resData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
 plot_hierarchies_line(xnested$data[[2]],
@@ -138,11 +138,11 @@ invisible(lapply(HLfigs$plot[1:3], print))
 # Compute a protein level summary
 
 ```{r summarizeProteinMedpolish}
-skylineconfigHL$table$hkeysDepth()
+skylineconfigHL$table$hierarchy_keys_depth()
 
 HLfigs3 <- prolfqua::intensity_summary_by_hkeys(HLData, skylineconfigHL, medpolish_estimate)
 HLfigs3 <- HLfigs3("nested")
-HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hkeysDepth())
+HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hierarchy_keys_depth())
 
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) |>
   plot_hierarchies_add_quantline(HLfigs3$medpolish_estimate[[2]],"medpolish", skylineconfigHL)

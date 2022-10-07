@@ -220,7 +220,7 @@ Contrasts <- c("dila - dilb" = "dilution.a - dilution.b",
 mod <- prolfqua::build_model(
   transformed$data,
   formula_Condition,
-  subject_Id = transformed$config$table$hierarchyKeys() )
+  subject_Id = transformed$config$table$hierarchy_keys() )
 
 ```
 

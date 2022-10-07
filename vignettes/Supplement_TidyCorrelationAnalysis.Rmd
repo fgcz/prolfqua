@@ -191,7 +191,7 @@ mean(xx$srm_decorelated)
 ```
 
 ```{r shownotcorrelated}
-nested <- xx |> group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
+nested <- xx |> group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
 
 plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
   geom_line(aes_string(linetype = "srm_decorelated"), lwd = 0.2) 
@@ -237,21 +237,21 @@ proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed,
 
 ```{r doplottingOFProtein}
 # nest transtions
-xnested <- qvalFiltImputed |> group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
+xnested <- qvalFiltImputed |> group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
 
 
 plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
 plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
 #plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
-figs3 <- xnested |> dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchyKeys()[1])),plot_hierarchies_line, config))
+figs3 <- xnested |> dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchy_keys()[1])),plot_hierarchies_line, config))
 figs3
 
 ff <- proteinIntensities |> 
-  group_by_at(config$table$hierarchyKeys()[1]) |> 
+  group_by_at(config$table$hierarchy_keys()[1]) |> 
   tidyr::nest(.key = "topNIntensity")
 
-figs4 <- dplyr::inner_join(figs3,ff, by = config$table$hierarchyKeys()[1])
+figs4 <- dplyr::inner_join(figs3,ff, by = config$table$hierarchy_keys()[1])
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
 plot_hierarchies_add_quantline(figs4$plotlog[[2]], figs4$topNIntensity[[2]], "srm_mean_na_3", config)
@@ -259,7 +259,7 @@ plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "sr
 
 
 nrPep <- qvalFiltImputed |> 
-  select_at(c(config$table$hierarchyKeys()[1], "nr_peptide_Id_IN_protein_Id")) |> 
+  select_at(c(config$table$hierarchy_keys()[1], "nr_peptide_Id_IN_protein_Id")) |> 
   distinct()
 
 nrPep

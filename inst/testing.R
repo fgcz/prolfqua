@@ -27,20 +27,20 @@ get_imputed_contrasts_V2 <- function(pepIntensity,
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
 
   lt <- long
-  imp <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = imputed_b)
+  imp <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = imputed_b)
   lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == max(nrNAs) , nrNAs , 0) )
-  nr <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = nrNAs_b)
+  nr <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = nrNAs_b)
 
-  imputed <- get_contrast(ungroup(imp), config$table$hierarchyKeys(), Contr)
-  nrs <- get_contrast(ungroup(nr),  config$table$hierarchyKeys(), Contr)
+  imputed <- get_contrast(ungroup(imp), config$table$hierarchy_keys(), Contr)
+  nrs <- get_contrast(ungroup(nr),  config$table$hierarchy_keys(), Contr)
 
-  nrs <- nrs |> select(all_of(c(config$table$hierarchyKeys(),"contrast", "estimate" )))
+  nrs <- nrs |> select(all_of(c(config$table$hierarchy_keys(),"contrast", "estimate" )))
   nrs <- nrs |> rename(indic = estimate)
   imputed <- inner_join(imputed, nrs)
   imputed2 <- imputed |> mutate(estimate = ifelse(indic < 0 & estimate < 0, 0, estimate))
   imputed2 <- imputed2 |> mutate(estimate = ifelse(indic > 0 & estimate > 0, 0, estimate))
 
-  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hkeysDepth())
+  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hierarchy_keys_depth())
   imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
   imputedProt$group_1_name <- NULL
   imputedProt$group_2_name <- NULL
@@ -78,7 +78,7 @@ var = summarize_stats(ld$data, ld$config)
 
 pooled <- poolvar(var, ld$config, method = "V1")
 pooled <- dplyr::select(pooled ,-all_of(c(ld$config$table$factor_keys_depth()[1],"var")))
-result <- dplyr::inner_join(result, pooled, by = ld$config$table$hkeysDepth())
+result <- dplyr::inner_join(result, pooled, by = ld$config$table$hierarchy_keys_depth())
 
 resultNA <- result[result$n == 0, ]
 resultnotNa <- result[result$n != 0,]
@@ -99,5 +99,5 @@ result$conf.high <- result$estimate_median + prqt * (result$sdT)
 
 
 
-long2 <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchyKeys())), interaction)
+long2 <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
 dim(long2)

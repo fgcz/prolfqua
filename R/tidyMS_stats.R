@@ -131,7 +131,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #'
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
-  resp <- res1 |> nest(data = -all_of(config$table$hierarchyKeys()) )
+  resp <- res1 |> nest(data = -all_of(config$table$hierarchy_keys()) )
   pooled <- vector(length = length(resp$data), mode = "list")
   for (i in seq_along(resp$data)) {
     #print(i)
@@ -170,7 +170,7 @@ summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms( c(config$table$hierarchyKeys(), config$table$factor_keys_depth()) )) |>
+    dplyr::group_by(!!!syms( c(config$table$hierarchy_keys(), config$table$factor_keys_depth()) )) |>
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = stats::sd(!!intsym, na.rm = TRUE),
@@ -212,7 +212,7 @@ summarize_stats_all <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchy <- pdata |>
-    dplyr::group_by(!!!syms( config$table$hierarchyKeys() )) |>
+    dplyr::group_by(!!!syms( config$table$hierarchy_keys() )) |>
     dplyr::summarize(n = dplyr::n(),
                      not_na = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym,na.rm = TRUE),

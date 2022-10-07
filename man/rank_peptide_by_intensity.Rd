@@ -26,8 +26,8 @@ analysis <- bb$analysis(bb$data, bb$config_f())
 res <- remove_large_QValues(analysis, config)
 #debug(rank_peptide_by_intensity)
 res <- rank_peptide_by_intensity(res,config)
-X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
+X <-res |> dplyr::select(c(config$table$hierarchy_keys(),
  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
+X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1], "srm_meanIntRank"  )))
 }
 \keyword{internal}

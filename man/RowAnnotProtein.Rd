@@ -70,7 +70,7 @@ initialize
 \describe{
 \item{\code{lfqdata}}{data frame from \code{\link{setup_analysis}}}
 
-\item{\code{row_annot}}{data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}}
+\item{\code{row_annot}}{data frame with row annotation. Must have columns matching \code{config$table$hierarchy_keys_depth()}}
 }
 \if{html}{\out{</div>}}
 }

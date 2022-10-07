@@ -89,7 +89,7 @@ modelName  <- "Model"
 mod <- prolfqua::build_model(
   transformed$data,
   formula_Condition,
-  subject_Id = transformed$config$table$hierarchyKeys() )
+  subject_Id = transformed$config$table$hierarchy_keys() )
 
 GRP2$models <- mod
 

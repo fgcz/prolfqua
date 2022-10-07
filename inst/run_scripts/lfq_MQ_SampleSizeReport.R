@@ -52,7 +52,7 @@ summarize_stats_raw_transformed <- function(resDataStart, config){
   wide <- tidy_to_wide_config( resDataStart,config_tmp)
   stats_raw <- inner_join(stats_res,
                           wide$data,
-                          by = config_tmp$table$hierarchyKeys())
+                          by = config_tmp$table$hierarchy_keys())
 
   resDataStart <- transform_work_intensity(resDataStart, config_tmp, log2)
   data <- prolfqua::apply_to_response_matrix(resDataStart, config_tmp, .func = robust_scale)
@@ -61,9 +61,9 @@ summarize_stats_raw_transformed <- function(resDataStart, config){
   wide <- tidy_to_wide_config( data,config_tmp)
   stats_transformed <- inner_join(stats_res_transformed,
                                   wide$data,
-                                  by = config_tmp$table$hierarchyKeys())
+                                  by = config_tmp$table$hierarchy_keys())
   peptideStats <- inner_join(stats_raw, stats_transformed,
-                             by = c( config_tmp$table$factor_keys(),config_tmp$table$hierarchyKeys() ),
+                             by = c( config_tmp$table$factor_keys(),config_tmp$table$hierarchy_keys() ),
                              suffix = c(".raw",".transformed") )
   return(peptideStats)
 }
@@ -131,7 +131,7 @@ data_wide <-
   inner_join(
     stats_res,
     tidy_to_wide_config(data, xx$config)$data,
-    by = xx$config$table$hkeysDepth(),
+    by = xx$config$table$hierarchy_keys_depth(),
     suffix = c(".factor", "")
   )
 

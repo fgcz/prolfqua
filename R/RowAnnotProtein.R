@@ -28,10 +28,10 @@ RowAnnotProtein <-
                 pID = character(),
                 #' @description initialize
                 #' @param lfqdata data frame from \code{\link{setup_analysis}}
-                #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hkeysDepth()}
+                #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hierarchy_keys_depth()}
                 initialize = function(lfqdata, row_annot){
                   stopifnot(lfqdata$config$table$hierarchyDepth == 1)
-                  self$pID = lfqdata$config$table$hkeysDepth()
+                  self$pID = lfqdata$config$table$hierarchy_keys_depth()
                   if (!missing(row_annot)) {
                     row_annot <- dplyr::filter(row_annot, !!sym(self$pID) %in% lfqdata$data[[self$pID]] )
                     stopifnot(self$pID %in% colnames(row_annot))

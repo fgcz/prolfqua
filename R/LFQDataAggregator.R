@@ -57,12 +57,12 @@ LFQDataAggregator <- R6::R6Class(
     #' @param lfq LFQData
     #' @param prefix default protein
     initialize = function(lfq, prefix = "protein"){
-      if ( length(lfq$config$table$hierarchyKeys()) == 1 ) {
-        stop("no hierarchies to aggregate from: ",  lfq$config$table$hierarchyKeys())
+      if ( length(lfq$config$table$hierarchy_keys()) == 1 ) {
+        stop("no hierarchies to aggregate from: ",  lfq$config$table$hierarchy_keys())
       }
-      if (length(lfq$config$table$hierarchyKeys()) == lfq$config$table$hierarchyDepth) {
+      if (length(lfq$config$table$hierarchy_keys()) == lfq$config$table$hierarchyDepth) {
         stop("no hierarchies to aggregate from: ",
-             lfq$config$table$hierarchyKeys(),
+             lfq$config$table$hierarchy_keys(),
              ", hierarchyDepth :",
              lfq$config$table$hierarchyDepth)
       }

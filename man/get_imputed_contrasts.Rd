@@ -37,8 +37,8 @@ res <- get_imputed_contrasts(data, configur, Contrasts)
 config <- configur
 contrasts <- Contrasts
 imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
-imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
-imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+imputed <- get_contrast(imputed, config$table$hierarchy_keys(), contrasts)
+imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
 
 }
 \seealso{

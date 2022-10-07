@@ -122,16 +122,16 @@ plot_sample_correlation <- function(pdata, config){
 #' conf <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #' conf$table$hierarchyDepth
-#' conf$table$hkeysDepth()
+#' conf$table$hierarchy_keys_depth()
 #'
 #' xnested <- analysis |>
-#'  dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+#'  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 #'
 #' #debug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
 #'  xnested$protein_Id[[3]],
 #'   conf,
-#'   facet_grid_on =  tail(conf$table$hierarchyKeys(),1))
+#'   facet_grid_on =  tail(conf$table$hierarchy_keys(),1))
 #' stopifnot("ggplot" %in% class(p))
 #'
 #' p <- plot_hierarchies_boxplot(xnested$data[[3]],
@@ -153,7 +153,7 @@ plot_sample_correlation <- function(pdata, config){
 #' res <- plot_hierarchies_boxplot_df(data, config)
 #' res$boxplot[[1]]
 #'
-#' hierarchy = config$table$hkeysDepth()
+#' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
 #' p
@@ -201,7 +201,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param hiearchy e.g. protein_Id default hkeysDepth
+#' @param hiearchy e.g. protein_Id default hierarchy_keys_depth
 #' @param facet_grid_on default NULL
 #' @family plotting
 #' @keywords internal
@@ -215,11 +215,11 @@ plot_hierarchies_boxplot <- function(pdata,
 #'
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
 #'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchyKeys()[1])
+#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchy_keys()[1])
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchyKeys()[1],
-#'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+#'                                     iostar$config$table$hierarchy_keys()[1],
+#'                                     facet_grid_on = iostar$config$table$hierarchy_keys()[2])
 #'  res$boxplot[[1]]
 #'
 #'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
@@ -232,15 +232,15 @@ plot_hierarchies_boxplot <- function(pdata,
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchyKeys()[1])
+#'                                     iostar$config$table$hierarchy_keys()[1])
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchyKeys()[1],
-#'                                     facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+#'                                     iostar$config$table$hierarchy_keys()[1],
+#'                                     facet_grid_on = iostar$config$table$hierarchy_keys()[2])
 #'  res$boxplot[[1]]
 plot_hierarchies_boxplot_df <- function(pdata,
                                         config,
-                                        hierarchy = config$table$hkeysDepth(),
+                                        hierarchy = config$table$hierarchy_keys_depth(),
                                         facet_grid_on = NULL){
 
   xnested <- pdata |> dplyr::group_by_at(hierarchy) |> tidyr::nest()

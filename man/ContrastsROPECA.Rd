@@ -23,12 +23,12 @@ modelFunction <-
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
 config$table$hierarchyDepth <- 2
-config$table$hkeysDepth()
+config$table$hierarchy_keys_depth()
 
 mod <- build_model(
  pepIntensity,
  modelFunction,
- subject_Id = config$table$hkeysDepth())
+ subject_Id = config$table$hierarchy_keys_depth())
 
  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
 

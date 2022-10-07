@@ -220,11 +220,11 @@ workflow_DIA_NA_preprocessing <- function(pdata,
 
   stat_naFilter <- hierarchy_counts(resNACondition, config)
   protID <- summarize_hierarchy(resNACondition,config) |>
-    dplyr::filter(!!sym(paste0(config$table$hierarchyKeys()[hierarchy_level],"_n"))
+    dplyr::filter(!!sym(paste0(config$table$hierarchy_keys()[hierarchy_level],"_n"))
                   >= min_peptides_protein)
 
   data_NA_QVal_condition <- protID |>
-    dplyr::select(config$table$hierarchyKeys()[1]) |>
+    dplyr::select(config$table$hierarchy_keys()[1]) |>
     dplyr::inner_join(resNACondition)
 
   # Complete cases

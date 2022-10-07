@@ -26,11 +26,11 @@ res <- remove_large_QValues(analysis, config)
 res <- rank_by_NA(res,config)
 colnames(res)
 x <- res |>
-  dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
+  dplyr::select(config$table$hierarchy_keys()[1], config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
 stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
-res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
+res |> dplyr::select(c(config$table$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
  dplyr::distinct() |>
- dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
+ dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1],"srm_NrNotNARank")))
 }
 \keyword{internal}

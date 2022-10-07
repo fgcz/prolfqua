@@ -24,7 +24,7 @@ data <- bb$data
 
 x <- hierarchy_counts(data, config)
 x$protein_Id
-stopifnot(ncol(x) == length(config$table$hierarchyKeys()) + 1)
+stopifnot(ncol(x) == length(config$table$hierarchy_keys()) + 1)
 # select non existing protein
 data <- data |> dplyr::filter( protein_Id == "XYZ")
 tmp <- hierarchy_counts(data, config)

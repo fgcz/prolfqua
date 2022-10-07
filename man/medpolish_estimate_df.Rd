@@ -31,9 +31,9 @@ data <- bb$data
 
 conf$table$hierarchyDepth = 1
 xnested <- data |>
-  dplyr::group_by_at(conf$table$hkeysDepth()) |> tidyr::nest()
+  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 
-feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
+feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- medpolish_estimate_df(x,
  expression = conf$table$get_response(),

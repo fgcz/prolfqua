@@ -19,10 +19,10 @@ configur <- bb$config
 data <- bb$data
 
 xnested <- data |>
- dplyr::group_by_at( configur$table$hkeysDepth() ) |>
+ dplyr::group_by_at( configur$table$hierarchy_keys_depth() ) |>
  tidyr::nest()
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys() ,  configur$table$hkeysDepth()) ) |>
+nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys() ,  configur$table$hierarchy_keys_depth()) ) |>
  dplyr::distinct() |> nrow()
 
 xx <- response_as_matrix(x,configur)
@@ -33,11 +33,11 @@ conf <- configur$clone(deep=TRUE)
 conf$table$hierarchyDepth = 1
 
 xnested <- data |>
- dplyr::group_by_at(conf$table$hkeysDepth()) |>
+ dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
  tidyr::nest()
 
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchyKeys(),  configur$table$hkeysDepth()) ) |>
+nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys(),  configur$table$hierarchy_keys_depth()) ) |>
  dplyr::distinct() |> nrow()
 
 xx <- response_as_matrix(x,conf)

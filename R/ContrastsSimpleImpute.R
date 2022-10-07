@@ -55,7 +55,7 @@ ContrastsSimpleImpute <- R6::R6Class(
                           method = "V1",
                           global = TRUE,
                           present = 1){
-      self$subject_Id = lfqdata$config$table$hkeysDepth()
+      self$subject_Id = lfqdata$config$table$hierarchy_keys_depth()
       self$contrasts = contrasts
       self$modelName = modelName
       self$lfqdata = lfqdata
@@ -81,8 +81,8 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @param all FALSE, do not show all columns (default)
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result)) {
-        if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchyKeys())) {
-          stop("hierarchy depth < hierarchyKeys(). Please aggregate first.")
+        if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchy_keys())) {
+          stop("hierarchy depth < hierarchy_keys(). Please aggregate first.")
         } else {
 
           result = get_imputed_contrasts(
@@ -101,7 +101,7 @@ ContrastsSimpleImpute <- R6::R6Class(
           pooled <- poolvar(var, self$lfqdata$config, method = self$method)
           pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$factor_keys_depth()[1],"var")))
 
-          result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hkeysDepth())
+          result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hierarchy_keys_depth())
 
           resultNA <- result[result$n == 0, ]
           resultnotNa <- result[result$n != 0,]

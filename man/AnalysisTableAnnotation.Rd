@@ -78,7 +78,9 @@ Other configuration:
 \item \href{#method-AnalysisTableAnnotation-pop_response}{\code{AnalysisTableAnnotation$pop_response()}}
 \item \href{#method-AnalysisTableAnnotation-factor_keys}{\code{AnalysisTableAnnotation$factor_keys()}}
 \item \href{#method-AnalysisTableAnnotation-factor_keys_depth}{\code{AnalysisTableAnnotation$factor_keys_depth()}}
+\item \href{#method-AnalysisTableAnnotation-hierarchy_keys}{\code{AnalysisTableAnnotation$hierarchy_keys()}}
 \item \href{#method-AnalysisTableAnnotation-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
+\item \href{#method-AnalysisTableAnnotation-hierarchy_keys_depth}{\code{AnalysisTableAnnotation$hierarchy_keys_depth()}}
 \item \href{#method-AnalysisTableAnnotation-hkeysDepth}{\code{AnalysisTableAnnotation$hkeysDepth()}}
 \item \href{#method-AnalysisTableAnnotation-id_required}{\code{AnalysisTableAnnotation$id_required()}}
 \item \href{#method-AnalysisTableAnnotation-id_vars}{\code{AnalysisTableAnnotation$id_vars()}}
@@ -158,6 +160,26 @@ Get factor keys till factorDepth
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-hierarchy_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-hierarchy_keys}{}}}
+\subsection{Method \code{hierarchy_keys()}}{
+get hierarchy keys
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hierarchy_keys(rev = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rev}}{return in reverse order}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+array of column names
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisTableAnnotation-hierarchyKeys"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-hierarchyKeys}{}}}
 \subsection{Method \code{hierarchyKeys()}}{
@@ -170,6 +192,26 @@ get hierarchy keys
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{rev}}{return in reverse order}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+array of column names
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-hierarchy_keys_depth"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-hierarchy_keys_depth}{}}}
+\subsection{Method \code{hierarchy_keys_depth()}}{
+get hierarchy keys up to depth
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$hierarchy_keys_depth(names = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{names}}{if TRUE names only if FALSE key value pairs}
 }
 \if{html}{\out{</div>}}
 }

@@ -203,7 +203,7 @@ get_complete_model_fit <- function(modelProteinF){
 #'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
 #' mr <- model_analyse( ionstar$data,
 #'  formula_randomPeptide,
-#'  subject_Id = ionstar$config$table$hkeysDepth())
+#'  subject_Id = ionstar$config$table$hierarchy_keys_depth())
 #' get_complete_model_fit(mr$modelProtein)
 model_analyse <- function(pepIntensity,
                           modelFunction,

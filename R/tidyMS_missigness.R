@@ -29,11 +29,11 @@
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
 #'  factors= character(),
-#'   hierarchy = configur$table$hierarchyKeys()[1])$data
+#'   hierarchy = configur$table$hierarchy_keys()[1])$data
 #' stopifnot(nrow(tmp) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
-#'   hierarchy = configur$table$hierarchyKeys()[1])$data
+#'   hierarchy = configur$table$hierarchy_keys()[1])$data
 #' stopifnot(sum(is.na(tmp$nrMeasured))==0)
 #' tmp
 #'
@@ -42,7 +42,7 @@
 interaction_missing_stats <- function(pdata,
                                       config,
                                       factors = config$table$factor_keys_depth(),
-                                      hierarchy = config$table$hierarchyKeys(),
+                                      hierarchy = config$table$hierarchy_keys(),
                                       workIntensity = config$table$get_response())
 {
   pdata <- complete_cases(pdata, config)
@@ -154,7 +154,7 @@ interaction_missing_stats <- function(pdata,
     }else{
       mstats <- mstats |> dplyr::select(-one_of(factors))
 
-      pid <- config$table$hkeysDepth()
+      pid <- config$table$hierarchy_keys_depth()
       nrReplicates <- mstats |>
         dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") |>
@@ -274,7 +274,7 @@ missigness_impute_factors_interactions <-
     } else {
       intfact <- purrr::reduce(fac_res,
                                dplyr::inner_join,
-                               by = c(config$table$hierarchyKeys(),
+                               by = c(config$table$hierarchy_keys(),
                                       config$table$isotopeLabel, "value"))
 
     }
@@ -299,13 +299,13 @@ missigness_impute_factors_interactions <-
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 #' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-#' mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
-#' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+#' mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
+#' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
 #'
 #' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
-#' imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
+#' imputed <- get_contrast(imputed, configur$table$hierarchy_keys(), Contrasts)
 #'
-#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hierarchy_keys_depth())
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 #' abline(c(0,1), col=2, pch = "*")
 #' dim(meanProt)
@@ -353,7 +353,7 @@ aggregate_contrast <- function(
 #' @keywords internal
 #' @family imputation
 #' @param data data.frame
-#' @param data hierarchyKeys of Analysis Configuration
+#' @param data hierarchy_keys of Analysis Configuration
 #' @param contrasts list of contrasts to compute
 #' @export
 #' @examples
@@ -368,15 +368,15 @@ aggregate_contrast <- function(
 #' Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
 #' message("missigness_impute_factors_interactions : imputed")
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
-#' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+#' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 #'
 #' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
 #'
-#' imputed <- get_contrast(xx, configur$table$hierarchyKeys(), Contrasts)
+#' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 #' head(imputed)
 #'
 get_contrast <- function(data,
-                         hierarchyKeys,
+                         hierarchy_keys,
                          contrasts)
 {
 
@@ -392,7 +392,7 @@ get_contrast <- function(data,
     sides <- intersect(sides,colnames(data))
 
     df  <- dplyr::select(data ,
-                  c( hierarchyKeys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
+                  c( hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
 
     df$group_1_name <- sides[1]
     df$group_2_name <- sides[2]
@@ -439,8 +439,8 @@ get_contrast <- function(data,
 #' config <- configur
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
-#' imputed <- get_contrast(imputed, config$table$hierarchyKeys(), contrasts)
-#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hkeysDepth())
+#' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), contrasts)
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
 #'
 get_imputed_contrasts <- function(pepIntensity,
                                      config,
@@ -453,24 +453,24 @@ get_imputed_contrasts <- function(pepIntensity,
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
   x3 <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
 
-  long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchyKeys())), interaction)
+  long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
 
   lt <- long
-  imp <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = imputed_b)
+  imp <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = imputed_b)
   lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == nrReplicates , 1 , 0) )
-  nr <- lt |> pivot_wider(id_cols = config$table$hierarchyKeys(), names_from = interaction, values_from = nrNAs_b)
+  nr <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = nrNAs_b)
 
-  imputed <- get_contrast(ungroup(imp), config$table$hierarchyKeys(), Contr)
-  nrs <- get_contrast(ungroup(nr),  config$table$hierarchyKeys(), Contr)
+  imputed <- get_contrast(ungroup(imp), config$table$hierarchy_keys(), Contr)
+  nrs <- get_contrast(ungroup(nr),  config$table$hierarchy_keys(), Contr)
 
-  nrs <- nrs |> select(all_of(c(config$table$hierarchyKeys(),"contrast", "estimate" )))
+  nrs <- nrs |> select(all_of(c(config$table$hierarchy_keys(),"contrast", "estimate" )))
   nrs <- nrs |> rename(indic = estimate)
   imputed <- inner_join(imputed, nrs)
   imputed2 <- imputed |> mutate(estimate = ifelse(indic < 0 & estimate < 0, 0, estimate))
   imputed2 <- imputed2 |> mutate(estimate = ifelse(indic > 0 & estimate > 0, 0, estimate))
 
-  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hkeysDepth())
+  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hierarchy_keys_depth())
   imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
   imputedProt$group_1_name <- NULL
   imputedProt$group_2_name <- NULL
@@ -604,7 +604,7 @@ missingness_per_condition_cumsum <- function(x,
 missingness_per_condition <- function(x, config, factors = config$table$factor_keys_depth()){
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config, factors)$data
-  hierarchyKey <- tail(config$table$hierarchyKeys(),1)
+  hierarchyKey <- tail(config$table$hierarchy_keys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <- missingPrec |> group_by_at(c(table$isotopeLabel,
                                       factors,"nrNAs","nrReplicates")) |>
@@ -639,11 +639,11 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 #' tmp <- UpSet_interaction_missing_stats(data, configur)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
-  nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchyKeys(),
+  nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchy_keys(),
                                             names_from = cf$table$factor_keys_depth(),
                                             values_from = !!rlang::sym("nrMeasured"))
 
-  hl <- length(cf$table$hierarchyKeys())
+  hl <- length(cf$table$hierarchy_keys())
   nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
   nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] >= tr] <- 1
   return(as.data.frame(nrMiss))

@@ -21,11 +21,11 @@ bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
-hierarchy <- config$table$hierarchyKeys()
+hierarchy <- config$table$hierarchy_keys()
 res <- nr_B_in_A(data, config)
 
 res$data |>
-  dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) |>
+  dplyr::select_at(c(config$table$hierarchy_keys_depth(),  res$name)) |>
   dplyr::distinct() |>
   dplyr::pull() |> table()
 

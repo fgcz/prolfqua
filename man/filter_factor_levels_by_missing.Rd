@@ -37,7 +37,7 @@ hc60 <-  hierarchy_counts(res, config)
 stopifnot(all(hc60 >= hc80)) # since 80\% missing is more stringent than 60\%
 stopifnot(all(hc >= hc60))
 summarize_hierarchy(res,config) |>
- dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
+ dplyr::filter(!!rlang::sym(paste0(config$table$hierarchy_keys()[2],"_n")) > 1)
 
 }
 \keyword{internal}

@@ -134,9 +134,9 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   table <- configuration$table
   for (i in seq_along(table$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(table$hierarchyKeys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchy_keys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
-  data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchyKeys() )))
+  data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchy_keys() )))
 
   for (i in seq_along(table$factors))
   {
@@ -195,7 +195,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' stopifnot(ncol(dt) >= ncol(bb$data))
 #'
 separate_hierarchy <- function(data, config){
-  for (hkey in config$table$hkeysDepth()) {
+  for (hkey in config$table$hierarchy_keys_depth()) {
     if (length(config$table$hierarchy[[hkey]]) == 1 && hkey == config$table$hierarchy[[hkey]]) {
 
     }else {
@@ -254,7 +254,7 @@ separate_factors <- function(data, config) {
 complete_cases <- function(pdata, config) {
   message("completing cases")
   fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factor_keys())
-  hkeys <- c(config$table$isotopeLabel, config$table$hierarchyKeys())
+  hkeys <- c(config$table$isotopeLabel, config$table$hierarchy_keys())
   res <- tidyr::complete(
     pdata,
     tidyr::nesting(!!!syms(fkeys)),
@@ -273,7 +273,7 @@ complete_cases <- function(pdata, config) {
 #' @family configuration
 #'
 sample_subset <- function(size, pdata, config){
-  hk <- config$table$hkeysDepth()
+  hk <- config$table$hierarchy_keys_depth()
   message("Sampling ", size, paste(hk, collapse = "," ) )
   hkdf <- pdata |> select(all_of(hk)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
@@ -335,13 +335,13 @@ table_factors <- function(pdata, configuration){
 #'
 #' x <- hierarchy_counts(data, config)
 #' x$protein_Id
-#' stopifnot(ncol(x) == length(config$table$hierarchyKeys()) + 1)
+#' stopifnot(ncol(x) == length(config$table$hierarchy_keys()) + 1)
 #' # select non existing protein
 #' data <- data |> dplyr::filter( protein_Id == "XYZ")
 #' tmp <- hierarchy_counts(data, config)
 #' stopifnot(nrow(tmp) == 0)
 hierarchy_counts <- function(pdata, config){
-  hierarchy <- config$table$hierarchyKeys()
+  hierarchy <- config$table$hierarchy_keys()
   res <- pdata |>
     dplyr::group_by_at(config$table$isotopeLabel) |>
     dplyr::summarise_at( hierarchy, n_distinct )
@@ -373,7 +373,7 @@ hierarchy_counts <- function(pdata, config){
 hierarchy_counts_sample <- function(pdata,
                                     configuration)
 {
-  hierarchy <- configuration$table$hierarchyKeys()
+  hierarchy <- configuration$table$hierarchy_keys()
   summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$get_response() ))) |>
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) |>
     dplyr::summarise_at( hierarchy, n_distinct )
@@ -430,7 +430,7 @@ hierarchy_counts_sample <- function(pdata,
 #' summarize_hierarchy(data, configur, factors = character())
 #'
 #' summarize_hierarchy(data, configur,
-#'  hierarchy = configur$table$hkeysDepth() )
+#'  hierarchy = configur$table$hierarchy_keys_depth() )
 #' summarize_hierarchy(data, configur,
 #'  hierarchy = NULL, factors = configur$table$factor_keys_depth() )
 #' configur$table$hierarchyDepth = 1
@@ -445,10 +445,10 @@ hierarchy_counts_sample <- function(pdata,
 #'
 summarize_hierarchy <- function(pdata,
                                 config,
-                                hierarchy = config$table$hkeysDepth(),
+                                hierarchy = config$table$hierarchy_keys_depth(),
                                 factors = character())
 {
-  all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchyKeys() )
+  all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchy_keys() )
 
   precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
   x3 <- precursor |> dplyr::group_by_at(c(factors, hierarchy)) |>

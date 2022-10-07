@@ -7,7 +7,7 @@
 plot_hierarchies_boxplot_df(
   pdata,
   config,
-  hierarchy = config$table$hkeysDepth(),
+  hierarchy = config$table$hierarchy_keys_depth(),
   facet_grid_on = NULL
 )
 }
@@ -18,7 +18,7 @@ plot_hierarchies_boxplot_df(
 
 \item{facet_grid_on}{default NULL}
 
-\item{hiearchy}{e.g. protein_Id default hkeysDepth}
+\item{hiearchy}{e.g. protein_Id default hierarchy_keys_depth}
 }
 \description{
 generates peptide level plots for all Proteins
@@ -33,11 +33,11 @@ generates peptide level plots for all Proteins
 
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
  res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchyKeys()[1])
+ res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchy_keys()[1])
  res$boxplot[[1]]
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$table$hierarchyKeys()[1],
-                                    facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+                                    iostar$config$table$hierarchy_keys()[1],
+                                    facet_grid_on = iostar$config$table$hierarchy_keys()[2])
  res$boxplot[[1]]
 
  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
@@ -50,11 +50,11 @@ generates peptide level plots for all Proteins
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
  res$boxplot[[1]]
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$table$hierarchyKeys()[1])
+                                    iostar$config$table$hierarchy_keys()[1])
  res$boxplot[[1]]
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$table$hierarchyKeys()[1],
-                                    facet_grid_on = iostar$config$table$hierarchyKeys()[2])
+                                    iostar$config$table$hierarchy_keys()[1],
+                                    facet_grid_on = iostar$config$table$hierarchy_keys()[2])
  res$boxplot[[1]]
 }
 \seealso{

@@ -29,13 +29,13 @@ data <- bb$data
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
 mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
-mean <- get_contrast(mean, configur$table$hierarchyKeys(), Contrasts)
-meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hkeysDepth())
+mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
+meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
 
 imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
-imputed <- get_contrast(imputed, configur$table$hierarchyKeys(), Contrasts)
+imputed <- get_contrast(imputed, configur$table$hierarchy_keys(), Contrasts)
 
-imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hkeysDepth())
+imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hierarchy_keys_depth())
 plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 abline(c(0,1), col=2, pch = "*")
 dim(meanProt)

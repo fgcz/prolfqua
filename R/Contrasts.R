@@ -14,12 +14,12 @@
 #' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
 #'
 #' config <- istar$config
-#' config$table$hkeysDepth()
+#' config$table$hierarchy_keys_depth()
 #'
 #' mod <- build_model(
 #'  istar$data,
 #'  modelFunction,
-#'  subject_Id = config$table$hkeysDepth())
+#'  subject_Id = config$table$hierarchy_keys_depth())
 #'
 #' prolfqua::model_summary(mod)
 #'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",

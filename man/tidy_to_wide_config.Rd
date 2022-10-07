@@ -12,6 +12,9 @@ tidy_to_wide_config(
   sep = "~lfq~"
 )
 }
+\value{
+list with data, rowdata, and annotation (colData)
+}
 \description{
 transform long to wide
 }

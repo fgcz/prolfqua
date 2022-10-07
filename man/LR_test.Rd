@@ -42,14 +42,14 @@ formula_condition_and_Batches <-
 modCB <- prolfqua::build_model(
   pMerged$data,
   formula_condition_and_Batches,
-  subject_Id = pMerged$config$table$hierarchyKeys() )
+  subject_Id = pMerged$config$table$hierarchy_keys() )
 
 formula_condition <-
   prolfqua::strategy_lm("transformedIntensity ~ condition_")
 modC <- prolfqua::build_model(
   pMerged$data,
   formula_condition,
-  subject_Id = pMerged$config$table$hierarchyKeys() )
+  subject_Id = pMerged$config$table$hierarchy_keys() )
 
 tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
 hist(tmp$likelihood_ratio_test.pValue)

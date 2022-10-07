@@ -58,7 +58,7 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
 mod <- prolfqua::build_model(
   pMerged$data,
   formula_Batches,
-  subject_Id = pMerged$config$table$hierarchyKeys() )
+  subject_Id = pMerged$config$table$hierarchy_keys() )
 
 ```
 

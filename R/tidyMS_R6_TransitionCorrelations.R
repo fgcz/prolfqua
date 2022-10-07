@@ -133,7 +133,7 @@ summarise_QValues <- function(pdata,
   QValueMin <- "srm_QValueMin"
   QValueNR <- "srm_QValueNR"
 
-  precursorIDs <- config$table$hierarchyKeys()
+  precursorIDs <- config$table$hierarchy_keys()
   fileName <- config$table$fileName
   QValue  <- config$table$ident_qValue
   qVal_minNumber_below_experiment_threshold <- config$parameter$qVal_minNumber_below_experiment_threshold
@@ -211,7 +211,7 @@ tidy_to_wide <- function(data,
 #' transform long to wide
 #' @export
 #' @keywords internal
-#' @return
+#' @return list with data, rowdata, and annotation (colData)
 #' @examples
 #'
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
@@ -234,14 +234,14 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
                        c( config$table$sampleName, config$table$fileName, config$table$factor_keys())) |>
     dplyr::distinct() |> dplyr::arrange_at(newcolname)
 
-  res <- tidy_to_wide( data, c(config$table$hierarchyKeys()) ,
+  res <- tidy_to_wide( data, c(config$table$hierarchy_keys()) ,
                  newcolname,
                  value = config$table$get_response() )
-  rowdata <- res |> dplyr::select_at(config$table$hierarchyKeys())
+  rowdata <- res |> dplyr::select_at(config$table$hierarchy_keys())
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchyKeys())))
+    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchy_keys())))
     names <- rowdata |>
-      tidyr::unite("precursor_id", !!!dplyr::syms(config$table$hierarchyKeys()), sep = sep) |> dplyr::pull()
+      tidyr::unite("precursor_id", !!!dplyr::syms(config$table$hierarchy_keys()), sep = sep) |> dplyr::pull()
     rownames(resMat) <- names
     res <- resMat
   }
@@ -275,7 +275,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     tibble::as_tibble(pdata)
   )
   pdata <- tidyr::gather(pdata,key = !!config$table$sampleName, value = !!value, 2:ncol(pdata))
-  pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchyKeys(), sep = sep)
+  pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchy_keys(), sep = sep)
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
     config$table$set_response(value)
@@ -567,18 +567,18 @@ normalize_log2_robscale <- function(pdata, config){
 #' dataI <- mark_decorelated(data, conf)
 #'
 mark_decorelated <- function(data , config, minCorrelation = 0.7){
-  qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchyKeys()[1]) |> tidyr::nest()
+  qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchy_keys()[1]) |> tidyr::nest()
   qvalFiltX <- qvalFiltX |>
     dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
   HLfigs2 <- qvalFiltX |>
     dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
   unnest_res <- HLfigs2 |>
-    dplyr::select(config$table$hierarchyKeys()[1], "srmDecor") |> tidyr::unnest()
+    dplyr::select(config$table$hierarchy_keys()[1], "srmDecor") |> tidyr::unnest()
   unnest_res <- unnest_res |>
     tidyr::separate(col = "row",
-                    into = config$table$hierarchyKeys()[-1],
+                    into = config$table$hierarchy_keys()[-1],
                     sep = "~lfq~")
-  qvalFiltX <- dplyr::inner_join(x = data, y = unnest_res, by = c(config$table$hierarchyKeys()) )
+  qvalFiltX <- dplyr::inner_join(x = data, y = unnest_res, by = c(config$table$hierarchy_keys()) )
   return(qvalFiltX)
 }
 
@@ -622,7 +622,7 @@ simpleImpute <- function(data){
 #'
 impute_correlationBased <- function(x , config){
   x <- complete_cases(x, config)
-  nestedX <- x |>  dplyr::group_by_at(config$table$hkeysDepth()) |> tidyr::nest()
+  nestedX <- x |>  dplyr::group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
   nestedX <- nestedX |> dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
 
   response_matrix_as_tibble <- function(x,config){
@@ -636,11 +636,11 @@ impute_correlationBased <- function(x , config){
   nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$spreadMatrix, simpleImpute))
 
   nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$imputed, response_matrix_as_tibble, config))
-  unnest_res <- nestedX |> dplyr::select(config$table$hkeysDepth(), "imputed") |> tidyr::unnest(cols = .data$imputed)
-  unnest_res <- unnest_res |> tidyr::separate("row",config$table$hierarchyKeys()[-1], sep = "~lfq~" )
+  unnest_res <- nestedX |> dplyr::select(config$table$hierarchy_keys_depth(), "imputed") |> tidyr::unnest(cols = .data$imputed)
+  unnest_res <- unnest_res |> tidyr::separate("row",config$table$hierarchy_keys()[-1], sep = "~lfq~" )
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
-                          by = c(config$table$hierarchyKeys(), config$table$sampleName) )
+                          by = c(config$table$hierarchy_keys(), config$table$sampleName) )
   config$table$set_response("srm_ImputedIntensity")
   return(qvalFiltX)
 }
@@ -652,17 +652,21 @@ impute_correlationBased <- function(x , config){
 }
 
 .nr_B_in_A <- function(data,
-                      levelA,
-                      levelB,
-                      merge = TRUE){
+                       levelA,
+                       levelB,
+                       merge = TRUE){
   namA <- paste(levelA, collapse = "_")
   namB <- paste(levelB, collapse = "_")
   c_name <- .make_name_AinB(namA, namB)
+  if (!c_name %in% colnames(data) ) {
+    data$c_name <- NULL
+  }
   tmp <- data |>
     dplyr::select_at(c(levelA, levelB)) |>
     dplyr::distinct() |>
     dplyr::group_by_at(levelA) |>
     dplyr::summarize(!!c_name := n())
+
   if (!merge) {
     return(tmp)
   }
@@ -684,11 +688,11 @@ impute_correlationBased <- function(x , config){
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
-#' hierarchy <- config$table$hierarchyKeys()
+#' hierarchy <- config$table$hierarchy_keys()
 #' res <- nr_B_in_A(data, config)
 #'
 #' res$data |>
-#'   dplyr::select_at(c(config$table$hkeysDepth(),  res$name)) |>
+#'   dplyr::select_at(c(config$table$hierarchy_keys_depth(),  res$name)) |>
 #'   dplyr::distinct() |>
 #'   dplyr::pull() |> table()
 #'
@@ -739,8 +743,8 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   cf <- config
 
-  levelA <- cf$table$hkeysDepth()
-  levelB <- cf$table$hierarchyKeys()[length(levelA) + 1]
+  levelA <- cf$table$hierarchy_keys_depth()
+  levelB <- cf$table$hierarchy_keys()[length(levelA) + 1]
   if (is.na(levelB)) {
     warning("here is no B in A")
   }
@@ -748,20 +752,20 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   data <- data |>
     dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$get_response())) ~ 1,
                                             TRUE ~ 0))
-  pepStats <- data |> group_by_at(c(cf$table$hkeysDepth(), cf$table$sampleName)) |>
+  pepStats <- data |> group_by_at(c(cf$table$hierarchy_keys_depth(), cf$table$sampleName)) |>
     summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
 
   annotColumns <- c(cf$table$fileName,
                     cf$table$sampleName,
-                    cf$table$hkeysDepth(),
+                    cf$table$hierarchy_keys_depth(),
                     cf$table$factor_keys_depth(),
                     cf$table$isotopeLabel)
   annotation <- data |>
     dplyr::select(!!!syms(annotColumns) ) |>
     distinct()
 
-  res <- inner_join(annotation, pepStats, by = c(cf$table$sampleName, cf$table$hkeysDepth() ))
-  res <-  if (nested) {res |> group_by_at(cf$table$hkeysDepth()) |> nest()} else {res}
+  res <- inner_join(annotation, pepStats, by = c(cf$table$sampleName, cf$table$hierarchy_keys_depth() ))
+  res <-  if (nested) {res |> group_by_at(cf$table$hierarchy_keys_depth()) |> nest()} else {res}
   return(res)
 }
 
@@ -778,12 +782,12 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   table <- config$table
 
   summaryPerPrecursor <- data |>
-    dplyr::group_by(!!!syms(table$hierarchyKeys())) |>
+    dplyr::group_by(!!!syms(table$hierarchy_keys())) |>
      dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
 
   groupedByProtein <- summaryPerPrecursor |>
-    dplyr::arrange(!!sym( table$hierarchyKeys()[1])) |>
-    dplyr::group_by(!!sym( table$hierarchyKeys()[1]))
+    dplyr::arrange(!!sym( table$hierarchy_keys()[1])) |>
+    dplyr::group_by(!!sym( table$hierarchy_keys()[1]))
   rankedBySummary <- groupedByProtein |>
     dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
 
@@ -806,9 +810,9 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' res <- remove_large_QValues(analysis, config)
 #' #debug(rank_peptide_by_intensity)
 #' res <- rank_peptide_by_intensity(res,config)
-#' X <-res |> dplyr::select(c(config$table$hierarchyKeys(),
+#' X <-res |> dplyr::select(c(config$table$hierarchy_keys(),
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-#' X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1], "srm_meanIntRank"  )))
+#' X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1], "srm_meanIntRank"  )))
 rank_peptide_by_intensity <- function(pdata, config){
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
@@ -843,12 +847,12 @@ rank_peptide_by_intensity <- function(pdata, config){
 #' res <- rank_by_NA(res,config)
 #' colnames(res)
 #' x <- res |>
-#'   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
+#'   dplyr::select(config$table$hierarchy_keys()[1], config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
 #'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
-#' res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
+#' res |> dplyr::select(c(config$table$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
 #'  dplyr::distinct() |>
-#'  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))
+#'  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1],"srm_NrNotNARank")))
 rank_by_NA <- function(pdata, config){
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
@@ -888,7 +892,7 @@ rank_by_NA <- function(pdata, config){
 #' stopifnot(all(hc60 >= hc80)) # since 80% missing is more stringent than 60%
 #' stopifnot(all(hc >= hc60))
 #' summarize_hierarchy(res,config) |>
-#'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchyKeys()[2],"_n")) > 1)
+#'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchy_keys()[2],"_n")) > 1)
 #'
 filter_factor_levels_by_missing <- function(pdata,
                                             config,
@@ -900,14 +904,14 @@ filter_factor_levels_by_missing <- function(pdata,
   pdata <- complete_cases( pdata , config)
   nrNA = function(x){sum(!is.na(x))}
   summaryPerPrecursor <- pdata |>
-    dplyr::group_by(!!!syms( c(table$hierarchyKeys(), table$factor_keys_depth() ))) |>
+    dplyr::group_by(!!!syms( c(table$hierarchy_keys(), table$factor_keys_depth() ))) |>
      dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) |>
     dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) |>  dplyr::ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor |> dplyr::filter(.data$fraction > percent)
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered |>
-    dplyr::select(c(table$hierarchyKeys())) |> dplyr::distinct()
-  stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchyKeys()))
+    dplyr::select(c(table$hierarchy_keys())) |> dplyr::distinct()
+  stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchy_keys()))
   res <- summaryPerPrecursorFiltered |> left_join(pdata)
   return( dplyr::ungroup(res))
 }
