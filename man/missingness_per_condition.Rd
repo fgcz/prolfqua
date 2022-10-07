@@ -14,9 +14,9 @@ missingness_per_condition(
 Summarize missing in condtion as barplot
 }
 \examples{
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config$clone(deep=TRUE)
+configur <- old2new(bb$config$clone(deep=TRUE))
 data <- bb$data
 
 res <- missingness_per_condition(data, configur)

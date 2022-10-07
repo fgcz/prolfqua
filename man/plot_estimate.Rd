@@ -20,8 +20,9 @@ Plot feature data and result of aggregation
 }
 \examples{
 
-dd <- old2new(prolfqua_data('data_ionstar')$filtered())
-config <- dd$config
+dd <- prolfqua_data('data_ionstar')$filtered()
+
+config <- old2new(dd$config)
 data <- dd$data
 
 data <- prolfqua::transform_work_intensity(data, config, log2)

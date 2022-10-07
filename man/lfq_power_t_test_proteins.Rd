@@ -30,9 +30,8 @@ Compute theoretical sample sizes from factor level standard deviations
 
 bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
 
-new <- old2new(list(config = bb1$config$clone( deep = TRUE), data = bb1$data))
-ldata <- LFQData$new(new$data, new$config)
 
+ldata <- LFQData$new(bb1$data, old2new(bb1$config))
 ldata <- ldata$get_sample(20)
 stats_res <- summarize_stats(ldata$data, ldata$config)
 

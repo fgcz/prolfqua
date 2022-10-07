@@ -31,9 +31,9 @@ should generalize at some stage
 }
 \examples{
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config
+configur <- old2new(bb$config)
 data <- bb$data
 xx <- complete_cases(data, configur)
 

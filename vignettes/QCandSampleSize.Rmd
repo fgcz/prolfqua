@@ -49,8 +49,7 @@ data <- eval(params$data)
 
 local_project_conf <- params$project_conf
 local_config <- eval(params$configuration)
-tmp <- prolfqua::old2new(list(data = data, config = local_config))
-local_config <- tmp$config
+local_config <- prolfqua::old2new(local_config)
 
 if (is.null(local_project_conf)) {
   local_project_conf <- list()

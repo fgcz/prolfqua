@@ -33,7 +33,8 @@ Build protein models from data
 }
 \examples{
 # library(tidyverse)
-D <- old2new(prolfqua_data('data_ionstar')$normalized())
+D <- prolfqua_data('data_ionstar')$normalized()
+D$config <- old2new(D$config)
 D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"

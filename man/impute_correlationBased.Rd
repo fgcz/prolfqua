@@ -18,7 +18,8 @@ Assumes the peptide intensities are correlation assumption
 
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
+bb <- prolfqua_data('data_ionstar')$normalized()
+bb$config <- old2new(bb$config)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))

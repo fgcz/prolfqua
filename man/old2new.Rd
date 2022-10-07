@@ -5,7 +5,7 @@
 \title{Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
 prolfqua 0.5}
 \usage{
-old2new(dd_old)
+old2new(config)
 }
 \arguments{
 \item{list}{with data = data.frame and config = AnalysisConfiguration}
@@ -16,4 +16,9 @@ list with data and AnalysisConfiguration
 \description{
 Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
 prolfqua 0.5
+}
+\examples{
+dd <- prolfqua_data('data_ionstar')$filtered()
+dd$config <- old2new(dd$config)
+
 }

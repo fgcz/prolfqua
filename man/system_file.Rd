@@ -10,7 +10,6 @@ system_file(x, package = "prolfqua")
 case sensitive version of system.file
 }
 \examples{
-undebug(system_file)
 testthat::expect_error(system_file("samples/maxquant_txt/tiny2.ZIP"))
 system_file("samples/maxquant_txt/tiny2.zip")
 

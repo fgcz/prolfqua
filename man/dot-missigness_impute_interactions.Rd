@@ -35,9 +35,9 @@ used in Acetylation project p2916
 }
 \examples{
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config
+configur <- old2new(bb$config)
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 

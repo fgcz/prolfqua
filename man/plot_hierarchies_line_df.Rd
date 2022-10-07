@@ -17,29 +17,29 @@ Generates peptide level plots for all proteins
 \examples{
 
 
-istar <- old2new(prolfqua_data('data_ionstar')$normalized())
+istar <- prolfqua_data('data_ionstar')$normalized()
 
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
-config <-  istar$config
+config <-  old2new(istar$config)
 
-config$table$is_intensity_transformed <- FALSE
+config$table$is_response_transformed <- FALSE
 #debug(plot_hierarchies_line_df)
 res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
-config$table$is_intensity_transformed <- TRUE
+config$table$is_response_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar_data, config)
 res[[1]]
 
-istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+istar <- prolfqua_data('data_ionstar')$filtered()
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 20))
-config <-  istar$config
+config <-  old2new(istar$config)
 res <- plot_hierarchies_line_df(istar_data, config)
-config$table$is_intensity_transformed
+config$table$is_response_transformed
 res[[1]]
-config$table$is_intensity_transformed <- TRUE
+config$table$is_response_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar_data, config)
-config$table$is_intensity_transformed
+config$table$is_response_transformed
 res[[1]]
 
 #TODO make it work for other hiearachy levels.

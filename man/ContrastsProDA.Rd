@@ -10,7 +10,8 @@ ContrastsProDA Wrapper to results produced by proDA
 }
 \examples{
 
-istar <- old2new( prolfqua_data('data_ionstar')$normalized() )
+istar <- prolfqua_data('data_ionstar')$normalized()
+istar$config <- old2new(istar$config )
 istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 10))
 lfd <- LFQData$new(istar_data, istar$config)
 se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
@@ -36,10 +37,9 @@ stopifnot(ncol(cproDA$to_wide()) == c(7))
 tmp <- cproDA$get_Plotter()
 tmp$volcano()$pval
 tmp$volcano()$adj_pval
+
 }
 \seealso{
-\code{\link{summary_ROPECA_median_p.scaled}}
-
 Other modelling: 
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
@@ -85,14 +85,13 @@ Other modelling:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{contrast}}{named vector of length 1.}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{contrast}}{named vector of length 1.}
+\item{\code{contrast_result}}{contrast result}
+
+\item{\code{modelName}}{model name}
+
+\item{\code{subject_Id}}{columns with protein ID's}
+
+\item{\code{contrasts}}{named vector of length 1.}
 }
 \if{html}{\out{</div>}}
 }
@@ -120,6 +119,7 @@ Other modelling:
 \if{html}{\out{<a id="method-ContrastsProDA-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsProDA-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$new(
   contrastsdf,
@@ -129,24 +129,45 @@ Other modelling:
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contrastsdf}}{data.frame returned by proDA}
+
+\item{\code{contrasts}}{contrasts}
+
+\item{\code{subject_Id}}{column name with protein ID's}
+
+\item{\code{modelName}}{name of model default value ContrastProDA}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsProDA-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsProDA-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
+show names of contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_contrast_sides()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsProDA-get_linfct"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsProDA-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
+get linear function used to determine contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_linfct()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsProDA-get_contrasts"></a>}}
@@ -160,9 +181,7 @@ get contrasts
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{all}}{should all columns be returned (default FALSE)}
-
-\item{\code{global}}{use a global linear function (determined by get_linfct)}
+\item{\code{all}}{(default FALSE)}
 }
 \if{html}{\out{</div>}}
 }
@@ -185,7 +204,9 @@ get \code{\link{Contrast_Plotter}}
 \describe{
 \item{\code{fcthreshold}}{fold change threshold to show}
 
-\item{\code{scthreshold}}{BFDR threshold to show in the heatmap.}
+\item{\code{fdrthreshold}}{FDR threshold}
+
+\item{\code{tstatthreshold}}{t statistics threshold}
 }
 \if{html}{\out{</div>}}
 }
@@ -202,7 +223,7 @@ convert to wide format
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{columns}}{value column default SaintScore, BFDR}
+\item{\code{columns}}{value column default t_statistic, adj_pval}
 }
 \if{html}{\out{</div>}}
 }

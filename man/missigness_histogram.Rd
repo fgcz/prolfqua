@@ -17,16 +17,16 @@ Histogram summarizing missigness
 }
 \examples{
 
-bb <- old2new(prolfqua_data('data_ionstar'))
-configur <- bb$config
+bb <- prolfqua_data('data_ionstar')
+configur <- old2new(bb$config)
 data <- bb$data
 xx <- complete_cases(data, configur)
 missigness_histogram(xx, configur)
 
 missingPrec <- interaction_missing_stats(xx, configur)
 
-bx <- old2new(prolfqua_data('data_ionstar')$normalized())
-configur <- bx$config
+bx <- prolfqua_data('data_ionstar')$normalized()
+configur <- old2new(bx$config)
 data <- bx$data
 data <- complete_cases(data, configur)
 missingPrecNorm <- interaction_missing_stats(data, configur)

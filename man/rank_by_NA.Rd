@@ -28,7 +28,7 @@ colnames(res)
 x <- res |>
   dplyr::select(config$table$hierarchyKeys()[1], config$table$hierarchyKeys(TRUE)[1], "srm_NrNotNAs") |>
   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
-stopifnot(sum(!is.na(res[[config$table$get_work_intensity()[1]]])) == x)
+stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
 res |> dplyr::select(c(config$table$hierarchyKeys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
  dplyr::distinct() |>
  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchyKeys()[1],"srm_NrNotNARank")))

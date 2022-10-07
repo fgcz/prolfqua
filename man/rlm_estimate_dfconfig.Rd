@@ -16,8 +16,8 @@ Estimate protein abundance from peptide abundances using MASS::rlm
 }
 \examples{
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
-conf <- bb$config
+bb <- prolfqua_data('data_ionstar')$filtered()
+conf <- old2new(bb$config)
 data <- bb$data
 conf$table$hierarchyDepth = 1
 xnested <- data |>

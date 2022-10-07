@@ -280,7 +280,24 @@ NULL
 #' @keywords internal
 'data_skylineSRM_HL_A'
 
-# #@usage data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
+# data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
+# data_skylineSRM_HL_A_new <- list()
+# data_skylineSRM_HL_A_new$data <- data_skylineSRM_HL_A$data
+# data_skylineSRM_HL_A_new$config_f <- function(){
+#   skylineconfig_HL <- create_config_Skyline(isotopeLabel = "Isotope.Label",
+#                                             ident_qValue = "annotation_QValue")
+#   skylineconfig_HL$table$factors[["treatment_c"]] <- "Condition2"
+#   skylineconfig_HL$table$factors[["time_c"]] <- "time"
+#   skylineconfig_HL$table$is_response_transformed = FALSE
+#   return(skylineconfig_HL)
+# }
+# data_skylineSRM_HL_A_new$analysis <- function(data,config ){
+#   data$Area[data$Area == 0] <- NA
+#   analysis <- setup_analysis(data, config)
+#   return(analysis)
+# }
+# data_skylineSRM_HL_A <- data_skylineSRM_HL_A_new
+# usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
 
 
 #data_spectronautDIA250_A <- spectronautDIAData250_A

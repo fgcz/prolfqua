@@ -22,8 +22,9 @@ Compute fold changes given Contrasts
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-configur <- bb$config
+bb <- prolfqua_data('data_ionstar')$normalized()
+
+configur <- old2new(bb$config)
 data <- bb$data
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")

@@ -17,9 +17,9 @@ Compute fold changes given Contrasts
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config
+configur <- old2new(bb$config)
 data <- bb$data
 data <- complete_cases(data, configur)
 

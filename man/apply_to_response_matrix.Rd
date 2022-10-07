@@ -21,13 +21,14 @@ Apply function requiring a matrix to tidy table
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 data <- bb$data
 res <- apply_to_response_matrix(data, conf, .func = base::scale)
 stopifnot("peptide.intensity_base..scale" \%in\% colnames(res))
-stopifnot("peptide.intensity_base..scale" == conf$table$get_work_intensity())
+stopifnot("peptide.intensity_base..scale" == conf$table$get_response())
 conf <- bb$config$clone(deep=TRUE)
 conf$table$workIntensity <- "peptide.intensity"
 res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)

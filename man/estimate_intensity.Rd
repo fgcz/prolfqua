@@ -17,8 +17,8 @@ Aggregates e.g. protein abundances from peptide abundances
 }
 \examples{
 
-
-dd <- old2new(prolfqua_data('data_ionstar')$filtered())
+dd <- prolfqua_data('data_ionstar')$filtered()
+dd$config <- old2new(dd$config)
 
 config <- dd$config
 data <- dd$data

@@ -12,7 +12,7 @@ ata <- AnalysisTableAnnotation$new()
 ata$fileName = "rawfile.column"
 ata$hierarchy[["protein"]] = "protein.column"
 ata$factors[["explanatory"]] = "explanatory.column"
-ata$set_work_intensity("abundance")
+ata$set_response("abundance")
 ata$id_required()
 ata$id_vars()
 ata$value_vars()
@@ -57,9 +57,9 @@ Other configuration:
 
 \item{\code{workIntensity}}{column which contains the intensities}
 
-\item{\code{is_intensity_transformed}}{are the intensities transformed for constant variance}
+\item{\code{is_response_transformed}}{are the intensities transformed for constant variance}
 
-\item{\code{factors}}{Names of columns containing factors (annotions)}
+\item{\code{factors}}{Names of columns containing factors (annotations)}
 
 \item{\code{factorDepth}}{number of relevant factors (used by plotting functions etc)}
 
@@ -73,9 +73,9 @@ Other configuration:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-AnalysisTableAnnotation-new}{\code{AnalysisTableAnnotation$new()}}
-\item \href{#method-AnalysisTableAnnotation-set_work_intensity}{\code{AnalysisTableAnnotation$set_work_intensity()}}
-\item \href{#method-AnalysisTableAnnotation-get_work_intensity}{\code{AnalysisTableAnnotation$get_work_intensity()}}
-\item \href{#method-AnalysisTableAnnotation-pop_work_intensity}{\code{AnalysisTableAnnotation$pop_work_intensity()}}
+\item \href{#method-AnalysisTableAnnotation-set_response}{\code{AnalysisTableAnnotation$set_response()}}
+\item \href{#method-AnalysisTableAnnotation-get_response}{\code{AnalysisTableAnnotation$get_response()}}
+\item \href{#method-AnalysisTableAnnotation-pop_response}{\code{AnalysisTableAnnotation$pop_response()}}
 \item \href{#method-AnalysisTableAnnotation-factor_keys}{\code{AnalysisTableAnnotation$factor_keys()}}
 \item \href{#method-AnalysisTableAnnotation-factor_keys_depth}{\code{AnalysisTableAnnotation$factor_keys_depth()}}
 \item \href{#method-AnalysisTableAnnotation-hierarchyKeys}{\code{AnalysisTableAnnotation$hierarchyKeys()}}
@@ -98,12 +98,12 @@ create a new  AnalysisTableAnnotationG
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-set_work_intensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-set_work_intensity}{}}}
-\subsection{Method \code{set_work_intensity()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-set_response"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-set_response}{}}}
+\subsection{Method \code{set_response()}}{
 Add name of intensity column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$set_work_intensity(colName)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$set_response(colName)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -115,22 +115,22 @@ Add name of intensity column
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-get_work_intensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-get_work_intensity}{}}}
-\subsection{Method \code{get_work_intensity()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-get_response"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-get_response}{}}}
+\subsection{Method \code{get_response()}}{
 Get name of working intensity column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$get_work_intensity()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$get_response()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisTableAnnotation-pop_work_intensity"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-pop_work_intensity}{}}}
-\subsection{Method \code{pop_work_intensity()}}{
+\if{html}{\out{<a id="method-AnalysisTableAnnotation-pop_response"></a>}}
+\if{latex}{\out{\hypertarget{method-AnalysisTableAnnotation-pop_response}{}}}
+\subsection{Method \code{pop_response()}}{
 Remove last name in array of working intensity column names
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$pop_work_intensity()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisTableAnnotation$pop_response()}\if{html}{\out{</div>}}
 }
 
 }

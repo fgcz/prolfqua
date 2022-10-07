@@ -23,8 +23,8 @@ run \link{rank_peptide_by_intensity} first
 }
 \examples{
 
-dd <- old2new(prolfqua_data('data_ionstar')$filtered())
-config <- dd$config
+dd <- prolfqua_data('data_ionstar')$filtered()
+config <- old2new(dd$config)
 res <- dd$data
 ranked <- rank_peptide_by_intensity(res,config)
 
@@ -44,7 +44,7 @@ resTOPN <- aggregate_intensity_topN(
 print(dim(resTOPN$data))
 # stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
-config$table$get_work_intensity()
+config$table$get_response()
 #debug(plot_estimate)
 tmpRob <- plot_estimate(ranked,
  config,

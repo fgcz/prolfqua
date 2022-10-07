@@ -9,8 +9,7 @@
 #'
 #' #library(prolfqua)
 #' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-#' new <- old2new(list(config = bb1$config$clone( deep = TRUE), data = bb1$data))
-#' istar <- LFQData$new(new$data, new$config)
+#' istar <- LFQData$new(bb1$data, old2new(bb1$config$clone( deep = TRUE)))
 #'
 #' istar$data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'

@@ -5,7 +5,8 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
+#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar$config <- old2new(istar$config )
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 #' modelName <- "Model"
 #' modelFunction <-

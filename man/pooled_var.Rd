@@ -47,8 +47,8 @@ compute_pooled(y)
 yb <- y |> dplyr::filter(not_na > 1)
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-config <- bb$config
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- old2new(bb$config)
 data <- bb$data
 
 res1 <- summarize_stats(data, config)

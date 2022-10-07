@@ -11,10 +11,10 @@
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -43,7 +43,7 @@ interaction_missing_stats <- function(pdata,
                                       config,
                                       factors = config$table$factor_keys_depth(),
                                       hierarchy = config$table$hierarchyKeys(),
-                                      workIntensity = config$table$get_work_intensity())
+                                      workIntensity = config$table$get_response())
 {
   pdata <- complete_cases(pdata, config)
   table <- config$table
@@ -78,9 +78,9 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #'
@@ -226,9 +226,9 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
 #'
@@ -292,8 +292,9 @@ missigness_impute_factors_interactions <-
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-#' configur <- bb$config
+#' bb <- prolfqua_data('data_ionstar')$normalized()
+#'
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
@@ -358,9 +359,9 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #' data <- complete_cases(data, configur)
 #'
@@ -424,8 +425,8 @@ get_contrast <- function(data,
 #'
 #'
 #' library(prolfqua)
-#' bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-#' configur <- bb$config
+#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
 #' data <- prolfqua::remove_large_QValues(data, configur)
@@ -485,16 +486,16 @@ get_imputed_contrasts <- function(pepIntensity,
 #' @family imputation
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar'))
-#' configur <- bb$config
+#' bb <- prolfqua_data('data_ionstar')
+#' configur <- old2new(bb$config)
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
 #' missigness_histogram(xx, configur)
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' bx <- old2new(prolfqua_data('data_ionstar')$normalized())
-#' configur <- bx$config
+#' bx <- prolfqua_data('data_ionstar')$normalized()
+#' configur <- old2new(bx$config)
 #' data <- bx$data
 #' data <- complete_cases(data, configur)
 #' missingPrecNorm <- interaction_missing_stats(data, configur)
@@ -513,7 +514,7 @@ missigness_histogram <- function(x,
     dplyr::ungroup() |> dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
-    if (config$table$is_intensity_transformed) {
+    if (config$table$is_response_transformed) {
       missingPrec <- missingPrec |>
         dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 1,
                                         .data$meanArea))
@@ -527,7 +528,7 @@ missigness_histogram <- function(x,
   factors <- table$factor_keys_depth()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
-  meanarea <- paste0("mean_", config$table$get_work_intensity())
+  meanarea <- paste0("mean_", config$table$get_response())
   missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
 
   p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
@@ -535,7 +536,7 @@ missigness_histogram <- function(x,
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if (!config$table$is_intensity_transformed) {
+  if (!config$table$is_response_transformed) {
     p <- p + ggplot2::scale_x_log10()
   }
   p
@@ -549,9 +550,9 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- old2new(bb$config$clone(deep=TRUE))
 #' data <- bb$data
 #'
 #' res <- missingness_per_condition_cumsum(data,configur)
@@ -590,9 +591,9 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- old2new(bb$config$clone(deep=TRUE))
 #' data <- bb$data
 #'
 #' res <- missingness_per_condition(data, configur)
@@ -630,9 +631,9 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- old2new(bb$config$clone(deep=TRUE))
 #' data <- bb$data
 #' #debug(UpSet_interaction_missing_stats)
 #' tmp <- UpSet_interaction_missing_stats(data, configur)

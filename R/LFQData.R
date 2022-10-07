@@ -4,18 +4,21 @@
 #' @export
 #' @family LFQData
 #' @examples
-#' istar <- old2new(prolfqua_data('data_ionstar'))
-#'
+#' istar <- prolfqua_data('data_ionstar')
+#' istar$config <- old2new(istar$config)
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$filter_proteins_by_peptide_count()
 #' tmp <- lfqdata$to_wide()
+#' tmp
+#' testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
+#' testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
+#'
 #' stopifnot("data.frame" %in% class(tmp$data))
 #' tmp <- lfqdata$to_wide(as.matrix = TRUE)
 #' stopifnot("matrix" %in% class(tmp$data))
-#' lfqdata$factors()
 #' stopifnot(lfqdata$is_transformed()==FALSE)
-#' lfqdata$summarize_hierarchy()
+#' dim(lfqdata$summarize_hierarchy())
 #'
 #' # filter for missing values
 #' f1 <- lfqdata$omit_NA(nrNA = 0)
@@ -42,10 +45,6 @@
 #' stopifnot(nrow(res$data) == nrow(lfqdata$data) - 500)
 #' tmp <- lfqdata$get_sample(40, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 40)
-#'
-#' if(require("SummarizedExperiment")){
-#'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
-#' }
 #'
 #' lw <- lfqdata$get_Writer()
 #' stopifnot(names(lw$get_wide()) %in% c("data", "annotation"))
@@ -109,9 +108,9 @@ LFQData <- R6::R6Class(
     #' @return logical
     is_transformed = function(is_transformed){
       if (missing(is_transformed)) {
-        return(self$config$table$is_intensity_transformed)
+        return(self$config$table$is_response_transformed)
       }else{
-        self$config$table$is_intensity_transformed = is_transformed
+        self$config$table$is_response_transformed = is_transformed
       }
     },
     #' @description
@@ -192,7 +191,7 @@ LFQData <- R6::R6Class(
     #' name of response variable
     #' @return data.frame
     response = function(){
-      self$config$table$get_work_intensity()
+      self$config$table$get_response()
     },
     #' @description
     #' new name of response variable
@@ -202,8 +201,8 @@ LFQData <- R6::R6Class(
         msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
         message(msg)
       } else {
-        old <- self$config$table$pop_work_intensity()
-        self$config$table$set_work_intensity(newname)
+        old <- self$config$table$pop_response()
+        self$config$table$set_response(newname)
         self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }
     },
@@ -285,13 +284,25 @@ LFQData <- R6::R6Class(
 #' @return SummarizedExperiment (bioconductor)
 #' @family LFQData
 #' @export
+#' @examples
 #'
+#' istar <- prolfqua_data('data_ionstar')
+#' istar$config <- old2new(istar$config)
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
+#' lfqdata$to_wide()
+#' if(require("SummarizedExperiment")){
+#'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
+#' }
+#'
+
 LFQDataToSummarizedExperiment <- function(lfqdata){
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation[[lfqdata$config$table$sampleName]]
-    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(LFQ = wide$data), colData = ann)
+    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(LFQ = wide$data), colData = ann,
+                                                     rowData = wide$rowdata)
     return(se)
   }
 }

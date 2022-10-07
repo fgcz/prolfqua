@@ -37,8 +37,8 @@ AnalysisConfiguration <- R6::R6Class(
 #' @family configuration
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
-#'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -63,8 +63,8 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' # debug(make_interaction_column)
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
-#'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' analysis <- bb$data
@@ -188,7 +188,8 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' @family configuration
 #' @keywords internal
 #' @examples
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' dt <- separate_hierarchy(bb$data, bb$config)
 #' setdiff(colnames(dt) ,colnames(bb$data))
 #' stopifnot(ncol(dt) >= ncol(bb$data))
@@ -214,7 +215,8 @@ separate_hierarchy <- function(data, config){
 #' @keywords internal
 #' @family configuration
 #' @examples
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' dt <- separate_factors(bb$data, bb$config)
 #' setdiff(colnames(dt), colnames(bb$data))
 #' stopifnot(ncol(bb$data) < ncol(dt))
@@ -239,7 +241,9 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
+#'
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -290,7 +294,8 @@ sample_subset <- function(size, pdata, config){
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -322,7 +327,8 @@ table_factors <- function(pdata, configuration){
 #' @family summary
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -355,7 +361,8 @@ hierarchy_counts <- function(pdata, config){
 #'
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -367,7 +374,7 @@ hierarchy_counts_sample <- function(pdata,
                                     configuration)
 {
   hierarchy <- configuration$table$hierarchyKeys()
-  summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$get_work_intensity() ))) |>
+  summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$get_response() ))) |>
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) |>
     dplyr::summarise_at( hierarchy, n_distinct )
 
@@ -413,7 +420,8 @@ hierarchy_counts_sample <- function(pdata,
 #'
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
@@ -459,7 +467,8 @@ summarize_hierarchy <- function(pdata,
 #' @family configuration
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data

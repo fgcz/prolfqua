@@ -117,7 +117,7 @@ atable$factors[["f2."]] = "f2"
 We also need to specify the column containing the protein abundances.
 
 ```{r specifyIntensity}
-atable$set_work_intensity("mq.protein.intensity")
+atable$set_response("mq.protein.intensity")
 ```
 
 Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 

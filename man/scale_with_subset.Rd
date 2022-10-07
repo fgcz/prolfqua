@@ -30,7 +30,8 @@ this should reduce the overall variance.
 
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data

@@ -12,7 +12,8 @@ Used to apply the median polish function working on matrices to a tidy table
 \examples{
 library(dplyr)
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data

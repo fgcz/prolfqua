@@ -29,8 +29,8 @@ Compute theoretical sample sizes from factor level standard deviations
 }
 \examples{
 
-bb1 <- old2new(prolfqua_data('data_ionstar')$normalized())
-config <- bb1$config$clone( deep = TRUE)
+bb1 <- prolfqua_data('data_ionstar')$normalized()
+config <- old2new(bb1$config$clone( deep = TRUE))
 data2 <- bb1$data
 
 res <- lfq_power_t_test_quantiles(data2, config)

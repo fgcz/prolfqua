@@ -30,11 +30,11 @@ LR_test(
 Likelihood ratio test
 }
 \examples{
-data_Yeast2Factor <- prolfqua::old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
-pMerged <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
+data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
+pMerged <- LFQData$new(data_Yeast2Factor$data, prolfqua::old2new(data_Yeast2Factor$config))
 
 pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
-pMerged$config$table$get_work_intensity()
+pMerged$config$table$get_response()
 pMerged$factors()
 
 formula_condition_and_Batches <-

@@ -104,7 +104,7 @@ atable$factors[["dilution."]] = "sample"
 We also need to specify the column containing the protein abundances.
 
 ```{r specifyIntensity}
-atable$set_work_intensity("mq.protein.intensity")
+atable$set_response("mq.protein.intensity")
 ```
 
 Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
@@ -170,7 +170,7 @@ We normalize the data by $\log_2$ transforming and then $z-scaling$.
 ```{r normalizedata}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$table$is_intensity_transformed
+transformed$config$table$is_response_transformed
 
 ```
 
@@ -202,7 +202,7 @@ p
 
 
 ```{r defineContrasts}
-transformed$config$table$get_work_intensity()
+transformed$config$table$get_response()
 
 formula_Condition <-  strategy_lm("transformedIntensity ~ dilution.")
 

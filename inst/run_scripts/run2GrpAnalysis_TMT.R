@@ -51,7 +51,7 @@ atable$factors[["Condition_"]] = "Condition"
 atable$factors[["ID"]] = "ID"
 atable$factorDepth <- 1
 
-atable$set_work_intensity("Abundance")
+atable$set_response("Abundance")
 
 prolfqua::make2grpReport(resAa, atable, GRP2,  Description = "Description", outpath)
 

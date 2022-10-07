@@ -9,18 +9,21 @@ LFQData R6 class
 LFQData R6 class
 }
 \examples{
-istar <- old2new(prolfqua_data('data_ionstar'))
-
+istar <- prolfqua_data('data_ionstar')
+istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
 tmp <- lfqdata$to_wide()
+tmp
+testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
+testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
+
 stopifnot("data.frame" \%in\% class(tmp$data))
 tmp <- lfqdata$to_wide(as.matrix = TRUE)
 stopifnot("matrix" \%in\% class(tmp$data))
-lfqdata$factors()
 stopifnot(lfqdata$is_transformed()==FALSE)
-lfqdata$summarize_hierarchy()
+dim(lfqdata$summarize_hierarchy())
 
 # filter for missing values
 f1 <- lfqdata$omit_NA(nrNA = 0)
@@ -47,10 +50,6 @@ res <- lfqdata$filter_difference(lfqdata2)
 stopifnot(nrow(res$data) == nrow(lfqdata$data) - 500)
 tmp <- lfqdata$get_sample(40, seed = 4)
 stopifnot(nrow(tmp$hierarchy()) == 40)
-
-if(require("SummarizedExperiment")){
-   tmp <- LFQDataToSummarizedExperiment(lfqdata)
-}
 
 lw <- lfqdata$get_Writer()
 stopifnot(names(lw$get_wide()) \%in\% c("data", "annotation"))

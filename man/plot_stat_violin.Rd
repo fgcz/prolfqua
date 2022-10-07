@@ -19,8 +19,8 @@ plot Violin plot of sd CV or mean
 \examples{
 
 
-bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
-config <- bb1$config$clone( deep = TRUE)
+bb1 <- prolfqua_data('data_ionstar')$filtered()
+config <- old2new(bb1$config$clone( deep = TRUE))
 data <- bb1$data
 res <- summarize_stats(data, config)
 res <- summarize_stats(data, config)

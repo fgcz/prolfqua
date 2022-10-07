@@ -61,7 +61,8 @@ plot_hierarchies_line_default <- function(data,
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' analysis <- bb$data
@@ -103,13 +104,13 @@ plot_hierarchies_line <- function(res,
     res,
     proteinName = proteinName,
     sample = config$table$sampleName,
-    intensity = config$table$get_work_intensity(),
+    intensity = config$table$get_response(),
     peptide = peptide,
     fragment = fragment,
     factor = config$table$factor_keys_depth(),
     isotopeLabel = config$table$isotopeLabel,
     separate = separate,
-    log_y = !config$table$is_intensity_transformed,
+    log_y = !config$table$is_response_transformed,
     show.legend = show.legend
   )
   return(res)
@@ -130,29 +131,29 @@ plot_hierarchies_line <- function(res,
 #' @examples
 #'
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
+#' istar <- prolfqua_data('data_ionstar')$normalized()
 #'
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 20))
-#' config <-  istar$config
+#' config <-  old2new(istar$config)
 #'
-#' config$table$is_intensity_transformed <- FALSE
+#' config$table$is_response_transformed <- FALSE
 #' #debug(plot_hierarchies_line_df)
 #' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
-#' config$table$is_intensity_transformed <- TRUE
+#' config$table$is_response_transformed <- TRUE
 #' res <- plot_hierarchies_line_df(istar_data, config)
 #' res[[1]]
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 20))
-#' config <-  istar$config
+#' config <-  old2new(istar$config)
 #' res <- plot_hierarchies_line_df(istar_data, config)
-#' config$table$is_intensity_transformed
+#' config$table$is_response_transformed
 #' res[[1]]
-#' config$table$is_intensity_transformed <- TRUE
+#' config$table$is_response_transformed <- TRUE
 #' res <- plot_hierarchies_line_df(istar_data, config)
-#' config$table$is_intensity_transformed
+#' config$table$is_response_transformed
 #' res[[1]]
 #'
 #' #TODO make it work for other hiearachy levels.
@@ -257,7 +258,8 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #' @examples
 #' library(dplyr)
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- bb$config
 #' data <- bb$data
@@ -289,7 +291,7 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #'
 response_as_matrix <- function(pdata, config ){
   table <- config$table
-  .extractInt(pdata, table$get_work_intensity(),
+  .extractInt(pdata, table$get_response(),
               setdiff(table$hierarchyKeys(), table$hkeysDepth()),
               table$sampleName)
 }
@@ -308,7 +310,8 @@ response_as_matrix <- function(pdata, config ){
 #' @family plotting
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -320,7 +323,7 @@ response_as_matrix <- function(pdata, config ){
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_df(x,
-#'  expression = conf$table$get_work_intensity(),
+#'  expression = conf$table$get_response(),
 #'   feature = feature,
 #'    sampleName = conf$table$sampleName)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
@@ -344,7 +347,8 @@ medpolish_estimate_df <- function(pdata, expression, feature, sampleName  ){
 #' @export
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -364,7 +368,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
   res <- medpolish_estimate_df(pdata,
-                 expression = config$table$get_work_intensity(),
+                 expression = config$table$get_response(),
                  feature = feature,
                  sampleName = config$table$sampleName)
   return(res)
@@ -462,7 +466,6 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 #'
 #' bb <- rlm_estimate(xx , "expression", "feature", "samples", maxIt = 20)
-#' bb
 #'
 #' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
 #' rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
@@ -478,7 +481,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' rlm_estimate(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
@@ -489,11 +493,10 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' feature <- setdiff(conf$table$hierarchyKeys(),  conf$table$hkeysDepth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate(x,
-#'  expression = conf$table$get_work_intensity(),
+#'  expression = conf$table$get_response(),
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
 #'
-#' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
 rlm_estimate <- function(pdata, expression, feature , samples, maxIt = 20) {
   pdata <- unite(pdata, "feature", all_of(feature))
@@ -514,8 +517,8 @@ rlm_estimate <- function(pdata, expression, feature , samples, maxIt = 20) {
 #' @keywords internal
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' conf <- bb$config
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' conf <- old2new(bb$config)
 #' data <- bb$data
 #' conf$table$hierarchyDepth = 1
 #' xnested <- data |>
@@ -531,7 +534,7 @@ rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
   feature <- setdiff(config$table$hierarchyKeys(),  config$table$hkeysDepth())
-  rlm_estimate(pdata, expression = config$table$get_work_intensity(),
+  rlm_estimate(pdata, expression = config$table$get_response(),
                   feature = feature,
                   samples = config$table$sampleName
                   , maxIt = 20)
@@ -542,23 +545,24 @@ rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
 #' @param list with data = data.frame and config = AnalysisConfiguration
 #' @return  list with data and AnalysisConfiguration
 #' @export
+#' @examples
+#' dd <- prolfqua_data('data_ionstar')$filtered()
+#' dd$config <- old2new(dd$config)
 #'
-old2new <- function(dd_old) {
-  dd <- list()
+old2new <- function(config) {
   ata <- AnalysisTableAnnotation$new()
-  ata$factors <- dd_old$config$table$factors
-  ata$factorDepth <- dd_old$config$table$factorDepth
-  ata$workIntensity <- dd_old$config$table$workIntensity
-  ata$hierarchyDepth <- dd_old$config$table$hierarchyDepth
-  ata$hierarchy <- dd_old$config$table$hierarchy
-  ata$isotopeLabel <- dd_old$config$table$isotopeLabel
-  ata$is_intensity_transformed <- dd_old$config$table$is_intensity_transformed
-  ata$ident_qValue <- dd_old$config$table$ident_qValue
-  ata$sampleName <- dd_old$config$table$sampleName
-  ata$isotopeLabel <- dd_old$config$table$isotopeLabel
-  dd$config <- AnalysisConfiguration$new(ata)
-  dd$data <- dd_old$data
-  return(dd)
+  ata$factors <- config$table$factors
+  ata$factorDepth <- config$table$factorDepth
+  ata$workIntensity <- config$table$workIntensity
+  ata$hierarchyDepth <- config$table$hierarchyDepth
+  ata$hierarchy <- config$table$hierarchy
+  ata$isotopeLabel <- config$table$isotopeLabel
+  ata$is_response_transformed <- config$table$is_intensity_transformed
+  ata$ident_qValue <- config$table$ident_qValue
+  ata$sampleName <- config$table$sampleName
+  ata$isotopeLabel <- config$table$isotopeLabel
+  config <- AnalysisConfiguration$new(ata)
+  return(config)
 }
 
 #' Aggregates e.g. protein abundances from peptide abundances
@@ -571,8 +575,8 @@ old2new <- function(dd_old) {
 #' @export
 #' @examples
 #'
-#'
-#' dd <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' dd <- prolfqua_data('data_ionstar')$filtered()
+#' dd$config <- old2new(dd$config)
 #'
 #' config <- dd$config
 #' data <- dd$data
@@ -632,8 +636,9 @@ estimate_intensity <- function(data, config, .func)
 #' @export
 #' @examples
 #'
-#' dd <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' config <- dd$config
+#' dd <- prolfqua_data('data_ionstar')$filtered()
+#'
+#' config <- old2new(dd$config)
 #' data <- dd$data
 #'
 #' data <- prolfqua::transform_work_intensity(data, config, log2)
@@ -668,7 +673,7 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= 
                                 config = config, show.legend = show.legend)
     p2 <- plot_hierarchies_add_quantline(p1,
                                          xnested_all$other[[i]],
-                                         config_reduced$table$get_work_intensity(),
+                                         config_reduced$table$get_response(),
                                          config)
     plots[[i]] <- p2
     pb$tick()
@@ -692,8 +697,8 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= 
 #' @keywords internal
 #' @examples
 #'
-#' dd <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' config <- dd$config
+#' dd <- prolfqua_data('data_ionstar')$filtered()
+#' config <- old2new(dd$config)
 #' res <- dd$data
 #' ranked <- rank_peptide_by_intensity(res,config)
 #'
@@ -713,7 +718,7 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= 
 #' print(dim(resTOPN$data))
 #' # stopifnot(dim(resTOPN$data) == c(3260, 8))
 #' stopifnot( names(resTOPN) %in% c("data", "config") )
-#' config$table$get_work_intensity()
+#' config$table$get_response()
 #' #debug(plot_estimate)
 #' tmpRob <- plot_estimate(ranked,
 #'  config,
@@ -737,7 +742,7 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
                           config$table$isotopeLabel,
                           config$table$factor_keys() ))
   sumTopInt <- topInt |>
-    dplyr::summarize( !!newcol := .func(!!sym(config$table$get_work_intensity())),
+    dplyr::summarize( !!newcol := .func(!!sym(config$table$get_response())),
                       ident_qValue = min(!!sym(config$table$ident_qValue)), .groups = "drop")
 
   newconfig <- make_reduced_hierarchy_config(
@@ -761,16 +766,16 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 #' @examples
 #'
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep = TRUE)
+#' config <- old2new(bb$config$clone(deep = TRUE))
 #' data <- bb$data
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 #'
 #' res <- x("unnest")
 #' res$data |> dim()
 #'
-#' config <- bb$config$clone(deep = TRUE)
+#' config <- old2new(bb$config$clone(deep = TRUE))
 #' config$table$hierarchyDepth <- 1
 #'
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
@@ -857,7 +862,8 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #' @family deprecated
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$normalized())
+#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar$config <- old2new(istar$config)
 #' istar_data <- istar$data
 #' res <- medpolish_protein_estimates(istar_data,
 #' istar$config )

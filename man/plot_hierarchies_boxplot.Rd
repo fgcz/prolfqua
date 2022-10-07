@@ -30,9 +30,9 @@ plot peptides by factors and it's levels.
 \examples{
 
 
-istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+istar <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(istar$data) == 25780)
-conf <- istar$config$clone(deep=TRUE)
+conf <- old2new(istar$config$clone(deep=TRUE))
 analysis <- istar$data
 conf$table$hierarchyDepth
 conf$table$hkeysDepth()

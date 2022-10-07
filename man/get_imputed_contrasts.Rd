@@ -23,8 +23,8 @@ peptide fold change is computed based on the average of intensities in the condi
 
 
 library(prolfqua)
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-configur <- bb$config
+bb <- prolfqua_data('data_ionstar')$normalized()
+configur <- old2new(bb$config)
 data <- bb$data
 configur$parameter$qVal_individual_threshold <- 0.01
 data <- prolfqua::remove_large_QValues(data, configur)

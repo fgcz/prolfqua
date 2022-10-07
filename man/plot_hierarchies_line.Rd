@@ -27,7 +27,8 @@ Plot peptide intensities of protein as a function of the sample and factor
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 analysis <- bb$data

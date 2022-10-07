@@ -8,11 +8,11 @@
 #' @param subject_Id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
-#' data_Yeast2Factor <- prolfqua::old2new(prolfqua::prolfqua_data("data_Yeast2Factor"))
-#' pMerged <- LFQData$new(data_Yeast2Factor$data, data_Yeast2Factor$config)
+#' data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
+#' pMerged <- LFQData$new(data_Yeast2Factor$data, prolfqua::old2new(data_Yeast2Factor$config))
 #'
 #' pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
-#' pMerged$config$table$get_work_intensity()
+#' pMerged$config$table$get_response()
 #' pMerged$factors()
 #'
 #' formula_condition_and_Batches <-
@@ -88,7 +88,8 @@ LR_test <- function(modelProteinF,
 #' @export
 #' @examples
 #' # library(tidyverse)
-#' D <- old2new(prolfqua_data('data_ionstar')$normalized())
+#' D <- prolfqua_data('data_ionstar')$normalized()
+#' D$config <- old2new(D$config)
 #' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
 #'
 #' modelName <- "f_condtion_r_peptide"

@@ -18,16 +18,16 @@ Summarizes the intensities within hierarchy
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep = TRUE)
+config <- old2new(bb$config$clone(deep = TRUE))
 data <- bb$data
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 
 res <- x("unnest")
 res$data |> dim()
 
-config <- bb$config$clone(deep = TRUE)
+config <- old2new(bb$config$clone(deep = TRUE))
 config$table$hierarchyDepth <- 1
 
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)

@@ -11,7 +11,7 @@
 #' ata$fileName = "rawfile.column"
 #' ata$hierarchy[["protein"]] = "protein.column"
 #' ata$factors[["explanatory"]] = "explanatory.column"
-#' ata$set_work_intensity("abundance")
+#' ata$set_response("abundance")
 #' ata$id_required()
 #' ata$id_vars()
 #' ata$value_vars()
@@ -47,29 +47,29 @@ AnalysisTableAnnotation <- R6::R6Class(
 
     #' @field workIntensity column which contains the intensities
     workIntensity = NULL, # could be list with names and functions
-    #' @field is_intensity_transformed are the intensities transformed for constant variance
-    is_intensity_transformed = FALSE,
+    #' @field is_response_transformed are the intensities transformed for constant variance
+    is_response_transformed = FALSE,
     #' @description
     #' Add name of intensity column
     #' @param colName name of intensity column
-    set_work_intensity = function(colName){
+    set_response = function(colName){
       self$workIntensity <- c(self$workIntensity, colName)
     },
     #' @description
     #' Get name of working intensity column
-    get_work_intensity = function(){
+    get_response = function(){
       return(tail(self$workIntensity, n = 1))
     },
     #' @description
     #' Remove last name in array of working intensity column names
-    pop_work_intensity = function(){
+    pop_response = function(){
       res <- self$workIntensity[length(self$workIntensity)]
       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
       return(res)
     },
 
 
-    #' @field factors Names of columns containing factors (annotions)
+    #' @field factors Names of columns containing factors (annotations)
     factors = list(), # ordering is important - first is considered the main
     #' @field factorDepth number of relevant factors (used by plotting functions etc)
     factorDepth = 1,
@@ -144,7 +144,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
     value_vars = function(){
       "Columns containing values"
-      valueVars <- c( self$get_work_intensity(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
       return(valueVars)
     },
     #' @description

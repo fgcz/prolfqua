@@ -4,7 +4,8 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- old2new( prolfqua_data('data_ionstar')$normalized() )
+#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar$config <- old2new(istar$config )
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 10))
 #' lfd <- LFQData$new(istar_data, istar$config)
 #' se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
@@ -30,11 +31,11 @@
 #' tmp <- cproDA$get_Plotter()
 #' tmp$volcano()$pval
 #' tmp$volcano()$adj_pval
-
+#'
 ContrastsProDA <- R6::R6Class(
   "ContrastsProDA",
   inherit = prolfqua::ContrastsInterface,
-  public = list (
+  public = list(
     #' @field  contrast_result contrast result
     contrast_result = NULL,
     #' @field modelName model name
@@ -59,7 +60,7 @@ ContrastsProDA <- R6::R6Class(
       }
       self$contrast_result = contrastsdf
       self$subject_Id = subject_Id
-      self$modelName = modelNames
+      self$modelName = modelName
       self$contrasts = contrasts
       self$contrast_result <- contrastsdf
 

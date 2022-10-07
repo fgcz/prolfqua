@@ -19,7 +19,8 @@ Apply correlation filtering and impute missing values
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data

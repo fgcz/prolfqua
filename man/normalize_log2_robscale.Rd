@@ -19,7 +19,8 @@ normalize data by log2 and robust scaling
 }
 \examples{
 
-istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+istar <- prolfqua_data('data_ionstar')$filtered()
+istar$config <- old2new(istar$config)
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 xx <- normalize_log2_robscale(istar_data, istar$config)
 names(xx)

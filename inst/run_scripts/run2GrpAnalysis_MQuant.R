@@ -53,7 +53,7 @@ atable <- AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("majProtID")
 atable$hierarchyDepth <- 1
-atable$set_work_intensity("mq.protein.intensity")
+atable$set_response("mq.protein.intensity")
 config <- AnalysisConfiguration$new(atable)
 
 
@@ -81,7 +81,7 @@ GRP2$transformedlfqData <- transformed
 ################## Run Modelling ###############
 
 
-formula_Condition <-  strategy_lm(paste0(transformed$config$table$get_work_intensity(), " ~ ",
+formula_Condition <-  strategy_lm(paste0(transformed$config$table$get_response(), " ~ ",
                                          transformed$config$table$factor_keys_depth()))
 # specify model definition
 modelName  <- "Model"

@@ -40,8 +40,8 @@ summarize stats output (compute quantiles)
 \examples{
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-config <- bb$config
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- old2new(bb$config)
 data <- bb$data
 
 res1 <- summarize_stats(data, config)
@@ -52,8 +52,8 @@ d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "V
 
 
 
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-config <- bb$config
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- old2new(bb$config)
 data <- bb$data
 
 res1 <- summarize_stats_all(data, config)
@@ -64,17 +64,17 @@ d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "V
 res1 |> dplyr::filter(dilution. == "pooled")
 
 library(ggplot2)
-bb1 <- old2new(prolfqua_data('data_ionstar')$filtered())
-config <- bb1$config$clone( deep = TRUE)
+bb1 <- prolfqua_data('data_ionstar')$filtered()
+config <- old2new(bb1$config$clone( deep = TRUE))
 data <- bb1$data
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "CV")
 stats_res
-bb <- old2new(prolfqua_data('data_ionstar')$normalized())
-config <- bb$config$clone(deep = TRUE)
+bb <- prolfqua_data('data_ionstar')$normalized()
+config <- old2new(bb$config$clone(deep = TRUE))
 data <- bb$data
-config$table$get_work_intensity()
+config$table$get_response()
 stats_res <- summarize_stats(data, config)
 summarize_stats_quantiles(stats_res, config)
 summarize_stats_quantiles(stats_res, config, stats = "sd")

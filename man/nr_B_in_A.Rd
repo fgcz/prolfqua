@@ -16,7 +16,8 @@ Compute nr of B per A
 }
 \examples{
 
-bb <- old2new(prolfqua_data('data_ionstar')$filtered())
+bb <- prolfqua_data('data_ionstar')$filtered()
+bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
@@ -30,7 +31,8 @@ res$data |>
 
 
 bb <- prolfqua_data('data_skylineSRM_HL_A')
-config <- bb$config_f()
+config <- old2new(bb$config_f())
+
 resDataStart <- bb$analysis(bb$data, bb$config_f())
 
 nr_B_in_A(resDataStart, config)
@@ -39,8 +41,8 @@ config$table$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
 bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
-nr_B_in_A(new$data, new$config)
+bb$config <- old2new(bb$config$clone(deep=TRUE))
+nr_B_in_A(bb$data, bb$config)
 #undebug(nr_B_in_A)
 }
 \keyword{internal}

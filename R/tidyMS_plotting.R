@@ -9,9 +9,9 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' plot_intensity_distribution_violin(analysis, config)
@@ -19,11 +19,11 @@
 #' plot_intensity_distribution_violin(analysis, config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$get_work_intensity() )) +
+  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$get_response() )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun.y = median, geom = "point", size = 1, color = "black")
-  if (!config$table$is_intensity_transformed) {
+  if (!config$table$is_response_transformed) {
     p <- p + scale_y_continuous(trans = 'log10')
   }
   return(p)
@@ -38,19 +38,19 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #' plot_intensity_distribution_density(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' plot_intensity_distribution_density(analysis, config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes_string(x = config$table$get_work_intensity(),
+  p <- ggplot(pdata, aes_string(x = config$table$get_response(),
                                 colour = config$table$sampleName )) +
     geom_line(stat = "density")
-  if (!config$table$is_intensity_transformed) {
+  if (!config$table$is_response_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
   }
   if (!legend) {
@@ -69,9 +69,9 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' analysis <- remove_small_intensities(analysis, config)
@@ -117,9 +117,9 @@ plot_sample_correlation <- function(pdata, config){
 #' @examples
 #'
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' conf <- istar$config$clone(deep=TRUE)
+#' conf <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #' conf$table$hierarchyDepth
 #' conf$table$hkeysDepth()
@@ -176,13 +176,13 @@ plot_hierarchies_boxplot <- function(pdata,
   pdata <- prolfqua::make_interaction_column( pdata , c(config$table$factor_keys_depth()))
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
-                                y = config$table$get_work_intensity(),
+                                y = config$table$get_response(),
                                 color = color
   )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
 
-  if (!config$table$is_intensity_transformed) {
+  if (!config$table$is_response_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   p <- p + geom_boxplot()
@@ -207,7 +207,8 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  iostar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#'  iostar <- prolfqua_data('data_ionstar')$filtered()
+#'  iostar$config <- old2new(iostar$config)
 #'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
 #'  unique(iostar$data$protein_Id)
@@ -222,8 +223,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #'  res$boxplot[[1]]
 #'
 #'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
-#'  iostar <- LFQData$new(new$data, new$config)
+#'  iostar <- LFQData$new(bb$data, old2new(bb$config))
 #'
 #'  iostar$data <- iostar$data |>
 #'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -266,8 +266,8 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @family plotting
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' config <- istar$config$clone(deep=TRUE)
+#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
@@ -326,9 +326,9 @@ plot_heatmap_cor <- function(data,
 #' @family plotting
 #' @examples
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' plot.new()
@@ -395,9 +395,9 @@ plot_heatmap <- function(data,
 #' @export
 #' @examples
 #'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'  new <- old2new(list(config = bb$config$clone( deep = TRUE), data = bb$data))
+#'  new <- list(config = bb$config$clone( deep = TRUE), data = bb$data)
 #' istar <- LFQData$new(new$data, new$config)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #' dev.off()
 #' rs <- plot_raster(analysis, config, show_rownames=FALSE)
@@ -461,8 +461,8 @@ plot_raster <- function(data,
 #' @examples
 #'
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' config <- istar$config$clone(deep=TRUE)
+#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' tmp <- plot_NA_heatmap(analysis, config)
@@ -536,9 +536,9 @@ plot_NA_heatmap <- function(data,
 #'
 #'
 #'
-#' istar <- old2new(prolfqua_data('data_ionstar')$filtered())
+#' istar <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot(nrow(istar$data) == 25780)
-#' config <- istar$config$clone(deep=TRUE)
+#' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
 #'
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)

@@ -11,7 +11,8 @@ median polish from normalized peptide intensities
 }
 \examples{
 
-istar <- old2new(prolfqua_data('data_ionstar')$normalized())
+istar <- prolfqua_data('data_ionstar')$normalized()
+istar$config <- old2new(istar$config)
 istar_data <- istar$data
 res <- medpolish_protein_estimates(istar_data,
 istar$config )

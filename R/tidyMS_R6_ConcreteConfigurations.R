@@ -32,7 +32,7 @@ create_config_Skyline <- function(isotopeLabel="Isotope.Label",
 
   #
   atable$ident_qValue = ident_qValue
-  atable$set_work_intensity("Area")
+  atable$set_response("Area")
   atable$isotopeLabel = isotopeLabel
   anaparam <- AnalysisParameters$new()
   AnalysisConfiguration$new(atable, anaparam)
@@ -94,7 +94,7 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
   atable$hierarchyDepth <- 1
   #
   atable$ident_qValue = ident_qValue
-  atable$set_work_intensity(intensity)
+  atable$set_response(intensity)
   atable$isotopeLabel = isotopeLabel
 
   anaparam <- AnalysisParameters$new()
@@ -119,7 +119,7 @@ create_config_MSFragger_MSstats <- function(){
   atable$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
   atable$fileName = "Run"
   atable$ident_qValue = "pep"
-  atable$set_work_intensity("Intensity")
+  atable$set_response("Intensity")
   atable$isotopeLabel = "IsotopeLabelType"
   anaparam <- AnalysisParameters$new()
   anaparam$min_peptides_protein <- 2

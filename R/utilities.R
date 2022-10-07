@@ -9,9 +9,8 @@
 #'
 #' @examples
 #'
-#' bb <- old2new(prolfqua_data('data_ionstar')$filtered())
-#' colnames(bb$data)
-#' tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' tmp <- prolfqua::separate_hierarchy(bb$data,old2new( bb$config))
 #' tmp$UniprotID <- NULL
 #' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
