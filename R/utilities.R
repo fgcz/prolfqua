@@ -14,6 +14,7 @@
 #' tmp$UniprotID <- NULL
 #' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
+#'
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 {
   map <- df |> dplyr::select(idcolumn) |> distinct() |>
@@ -29,7 +30,6 @@ get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
   res <- dplyr::right_join(map, df, by = idcolumn)
   return(res)
 }
-
 
 #' Removes rows with more than thresh NA's from matrix
 #' @export
@@ -47,12 +47,11 @@ get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
 #' stopifnot(all(c(9,10)==dim(x1)))
 #' x2 = remove_NA_rows(obj, thresh=1)
 #' stopifnot(all(c(10,10)==dim(x2)))
-remove_NA_rows <- function(obj, thresh=0 )
-{
+#'
+remove_NA_rows <- function(obj, thresh=0 ) {
   x <- apply(obj,1,function(x){sum(is.na(x))})
   obj <- obj[!(x > thresh),]
 }
-
 #' splits names and creates a matrix
 #' @export
 #' @keywords internal
