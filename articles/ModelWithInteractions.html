@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Witold
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">07 October, 2022</h4>
+            <h4 data-toc-skip class="date">12 October, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/ModelWithInteractions.Rmd" class="external-link"><code>../vignettes/ModelWithInteractions.Rmd</code></a></small>
       <div class="hidden name"><code>ModelWithInteractions.Rmd</code></div>
@@ -293,11 +293,11 @@ factors treatment and batch.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 10</span></span></span>
 <span><span class="co">##   protein_Id   isSin…¹ nrcoef factor    Df Sum.Sq Mean.Sq F.value Pr..F. FDR.P…²</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> sp|O00401|W… FALSE        4 f1.:f…     1 0.075<span style="text-decoration: underline;">5</span>  0.075<span style="text-decoration: underline;">5</span>   0.710 0.416    0.870</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O43251|R… FALSE        4 f1.:f…     1 0.362   0.362    3.70  0.078<span style="text-decoration: underline;">3</span>   0.870</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O75962|T… FALSE        4 f1.:f…     1 0.033<span style="text-decoration: underline;">5</span>  0.033<span style="text-decoration: underline;">5</span>   0.770 0.397    0.870</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> sp|P02925|R… FALSE        4 f1.:f…     1 0.040<span style="text-decoration: underline;">5</span>  0.040<span style="text-decoration: underline;">5</span>   0.976 0.343    0.870</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> sp|P02931|O… FALSE        4 f1.:f…     1 0.038<span style="text-decoration: underline;">8</span>  0.038<span style="text-decoration: underline;">8</span>   0.457 0.512    0.870</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> sp|O00401|W… FALSE        4 f1.:f…     1 0.075<span style="text-decoration: underline;">5</span>  0.075<span style="text-decoration: underline;">5</span>   0.710 0.416    0.877</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O43251|R… FALSE        4 f1.:f…     1 0.362   0.362    3.70  0.078<span style="text-decoration: underline;">3</span>   0.877</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O75962|T… FALSE        4 f1.:f…     1 0.033<span style="text-decoration: underline;">5</span>  0.033<span style="text-decoration: underline;">5</span>   0.770 0.397    0.877</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> sp|P02925|R… FALSE        4 f1.:f…     1 0.040<span style="text-decoration: underline;">5</span>  0.040<span style="text-decoration: underline;">5</span>   0.976 0.343    0.877</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> sp|P02931|O… FALSE        4 f1.:f…     1 0.038<span style="text-decoration: underline;">8</span>  0.038<span style="text-decoration: underline;">8</span>   0.457 0.512    0.877</span></span>
 <span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​isSingular, ²​FDR.Pr..F.</span></span></span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ANOVA</span><span class="op">$</span><span class="va">factor</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -345,19 +345,22 @@ Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA.
 <p><img src="ModelWithInteractions_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $FDR</span></span></code></pre>
+<pre><code><span><span class="co">## $p.value</span></span></code></pre>
 <p><img src="ModelWithInteractions_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## $FDR</span></span></code></pre>
+<p><img src="ModelWithInteractions_files/figure-html/unnamed-chunk-6-3.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="merge-nonimputed-and-imputed-data-">Merge nonimputed and imputed data.<a class="anchor" aria-label="anchor" href="#merge-nonimputed-and-imputed-data-"></a>
 </h3>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 430  13</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 430  13</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
 <span><span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">cM</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span>

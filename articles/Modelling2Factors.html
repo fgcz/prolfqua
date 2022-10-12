@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Witold
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">07 October, 2022</h4>
+            <h4 data-toc-skip class="date">12 October, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/Modelling2Factors.Rmd" class="external-link"><code>../vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -248,19 +248,22 @@ Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA.
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $FDR</span></span></code></pre>
+<pre><code><span><span class="co">## $p.value</span></span></code></pre>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## $FDR</span></span></code></pre>
+<p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-3-3.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="merge-nonimputed-and-imputed-data-">Merge nonimputed and imputed data.<a class="anchor" aria-label="anchor" href="#merge-nonimputed-and-imputed-data-"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 1695   13</span></span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 2500   13</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
 <span><span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">cM</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span>
@@ -269,7 +272,7 @@ Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA.
 <div class="section level4">
 <h4 id="look-at-proteins-with-significant-interaction-term-">Look at Proteins with significant interaction term.<a class="anchor" aria-label="anchor" href="#look-at-proteins-with-significant-interaction-term-"></a>
 </h4>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="va">contrast_result</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"Interaction"</span> <span class="op">&amp;</span> <span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span></span>
@@ -278,13 +281,13 @@ Proteins with FDR &lt; 0.5 for condition batch interaction in ANOVA.
 <span></span>
 <span><span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">raster</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Modelling2Factors_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+</span></span>
 <span><span class="co">#  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +</span></span>
 <span><span class="co">#  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))</span></span>
 <span></span>
 <span><span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hm</span></span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteins with significant Interactions" width="700"><p class="caption">
