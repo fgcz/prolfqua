@@ -542,8 +542,8 @@ rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
 
 #' Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
 #' prolfqua 0.5
-#' @param list with data = data.frame and config = AnalysisConfiguration
-#' @return  list with data and AnalysisConfiguration
+#' @param config an old (as stored in the example data) AnalysisConfiguration
+#' @return  a new AnalysisConfiguration
 #' @export
 #' @examples
 #' dd <- prolfqua_data('data_ionstar')$filtered()

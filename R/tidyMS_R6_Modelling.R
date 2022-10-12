@@ -48,13 +48,16 @@ strategy_lmer <- function(modelstr,
   return(res)
 }
 
-#' Create custom lm model
+#' Create linear model
+#'
+#' The strategy contains functions to fit the model but also compute the contrasts etc.
 #' @rdname strategy
 #' @export
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report
 #' @family modelling
+#' @return list with model function, contrast computation function etc.
 #' @examples
 #' tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
@@ -89,7 +92,51 @@ strategy_lm <- function(modelstr,
 }
 
 
-#' Create custom quasibinomial glm model
+#' Create robust linear regression model
+#'
+#' The strategy contains functions to fit the model but also compute the contrasts etc.
+#'
+#' @rdname strategy
+#' @export
+#' @param modelstr model formula
+#' @param model_name name of model
+#' @param report_columns columns to report
+#' @family modelling
+#' @return list with model function, contrast computation function etc.
+#' @examples
+#' tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
+#' tmp$model_fun(get_formula = TRUE)
+#' tmp$isSingular
+strategy_rlm <- function(modelstr,
+                        model_name = "Model",
+                        report_columns = c("statistic",
+                                           "p.value",
+                                           "p.value.adjusted",
+                                           "moderated.p.value",
+                                           "moderated.p.value.adjusted")
+) {
+  formula <- as.formula(modelstr)
+  model_fun <- function(x, pb, get_formula = FALSE){
+    if (get_formula) {
+      return(formula)
+    }
+    if (!missing(pb)) {
+      pb$tick()
+    }
+    modelTest <- tryCatch(MASS::rlm( formula , data = x , method = "M" ),
+                          error = .ehandler)
+    return(modelTest)
+  }
+  res <- list(model_fun = model_fun,
+              isSingular = isSingular_lm,
+              contrast_fun = my_contrast_V2,
+              model_name = model_name,
+              report_columns = report_columns,
+              is_mixed = FALSE)
+  return(res)
+}
+
+#' Create quasibinomial glm model
 #' @export
 #' @rdname strategy
 #' @param modelstr model formula
@@ -159,7 +206,7 @@ isSingular_lm <- function(m){
   if (anyNA) {
     return(TRUE)
   } else {
-    if (df.residual(m) > 0) {
+    if (df.residual(m) >= 2) {
       return(FALSE)
     }
     return(TRUE)
@@ -179,7 +226,7 @@ get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF |> dplyr::filter(.data$exists_lmer == TRUE)
   modelProteinF <- modelProteinF |> dplyr::filter(.data$nrcoeff_not_NA == max(.data$nrcoeff_not_NA)) |>
     dplyr::arrange(dplyr::desc(.data$nrcoeff_not_NA))
-  # modelProteinF <- modelProteinF |> dplyr::filter(df.residual > 0)
+  modelProteinF <- modelProteinF |> dplyr::filter(df.residual > 1)
   return(modelProteinF)
 }
 
@@ -386,8 +433,11 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
 
-  coeffs <- coefficients(summary(m))[,'Estimate']
-
+  if("rlm" %in% class(m)){
+    coeffs <- coefficients(summary(m))[,'Value']
+  } else {
+    coeffs <- coefficients(summary(m))[,'Estimate']
+  }
   inter <- unique(data$interaction)
   mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
   rownames(mm) <- inter
@@ -732,7 +782,9 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #'
 my_contrast_V2 <- function(m, linfct,confint = 0.95){
   Sigma.hat <- vcov(m)
-  coef <- coefficients(m)
+
+  coef <- na.omit(coefficients(m))
+
   res <- vector(nrow(linfct), mode = "list")
   for (i in seq_len(nrow(linfct))) {
     linfct_v <- linfct[i,,drop = FALSE]
@@ -747,7 +799,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
       res[[i]] <- my_contrast(m,linfct_v_red,
                               coef = coef_red,
-                              Sigma.hat = Sigma.hat_red,confint = confint)
+                              Sigma.hat = Sigma.hat_red, confint = confint)
     }else{
       res[[i]] <-  data.frame(lhs = rownames(linfct_v),
                               sigma = sigma(m),

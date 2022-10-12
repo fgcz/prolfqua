@@ -420,6 +420,7 @@ get_contrast <- function(data,
 #' @keywords internal
 #' @family missingness
 #' @family modelling
+#' @return data.frame with name of contrast, ID, number of observations (if with aggregation), median, mad, and avgAbd
 #' @export
 #' @examples
 #'
@@ -447,19 +448,19 @@ get_imputed_contrasts <- function(pepIntensity,
                                      Contr,
                                      present = 1,
                                      global = TRUE){
-  if(! present > 0) {
+  if (!present > 0) {
     stop("At least 1 observation in interaction to infer LOD.")
   }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
-  x3 <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
+  LOD <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
-  long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), x3, meanArea))
+  long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), LOD, meanArea))
 
   lt <- long
   imp <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = imputed_b)
-  lt <- lt |> mutate(nrNAs_b = ifelse( nrNAs == nrReplicates , 1 , 0) )
-  nr <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = nrNAs_b)
+  lt <- lt |> mutate(is_missing = ifelse( nrNAs == nrReplicates , 1 , 0) )
+  nr <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = is_missing)
 
   imputed <- get_contrast(ungroup(imp), config$table$hierarchy_keys(), Contr)
   nrs <- get_contrast(ungroup(nr),  config$table$hierarchy_keys(), Contr)

@@ -37,6 +37,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     global = logical(),
     #' @field present default 1, presence in interaction to infer limit of detection.
     present = 1,
+    minsd = 1,
     #' @description
     #' initialize
     #' @param lfqdata LFQData
@@ -54,7 +55,8 @@ ContrastsSimpleImpute <- R6::R6Class(
                           modelName = "groupAverage",
                           method = "V1",
                           global = TRUE,
-                          present = 1){
+                          present = 1,
+                          minsd = 1){
       self$subject_Id = lfqdata$config$table$hierarchy_keys_depth()
       self$contrasts = contrasts
       self$modelName = modelName
@@ -64,6 +66,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       private$method = method
       self$global  = global
       self$present = present
+      self$minsd = minsd
     },
     #' @description
     #' get contrasts sides
@@ -103,14 +106,20 @@ ContrastsSimpleImpute <- R6::R6Class(
 
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hierarchy_keys_depth())
 
-          resultNA <- result[result$n == 0, ]
-          resultnotNa <- result[result$n != 0,]
-          meandf <- resultnotNa |> summarize(n = 1, df = 1, sd = mean(sd),sdT = mean(sdT))
-          resultNA$n <- 0
-          resultNA$df <- 1
-          resultNA$sd <- meandf$sd
-          resultNA$sdT <- meandf$sdT
-          result <- bind_rows(resultNA, resultnotNa)
+          result_sd_zero <- result[result$n == 0, ]
+          resultnot_zero <- result[result$n > 0,]
+          meandf <- resultnot_zero |> summarize(n = 1, df = 1, sd = mean(sd, na.rm=TRUE), sdT = mean(sdT, na.rm = TRUE))
+
+          meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, self$minsd)
+          meandf$sdT <-  ifelse(meandf$sdT > 0, meandf$sdT, self$minsd)
+
+          result_sd_zero$df <- 1
+          result_sd_zero$sd <- meandf$sd
+          result_sd_zero$sdT <- meandf$sdT
+          result <- bind_rows(result_sd_zero, resultnot_zero)
+
+          result <- result |> mutate(sd = ifelse(sd > 0 , sd, meandf$sd))
+          result <- result |> mutate(sdT = ifelse(sdT > 0 , sdT, meandf$sdT))
 
           result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sdT,
                                   p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
@@ -141,7 +150,7 @@ ContrastsSimpleImpute <- R6::R6Class(
       res <- ContrastsPlotter$new(
         self$get_contrasts(),
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "FDR", thresh = 0.1)),
+        volcano = list(list(score = "p.value", thresh = 0.1),list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         modelName = "modelName",

@@ -117,7 +117,7 @@ Contrasts <- R6::R6Class(
       if (is.null(self$contrast_result) ) {
         message("determine linear functions:")
         linfct <- self$get_linfct(global = self$global)
-        contrast_sides <- self$get_contrast_sides()
+        #contrast_sides <- self$get_contrast_sides()
         message("compute contrasts:")
         contrast_result <- contrasts_linfct(
           self$models,
@@ -176,7 +176,8 @@ Contrasts <- R6::R6Class(
         contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,
-        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
+        volcano = list(list(score = "p.value", thresh = FDRthreshold),
+                       list(score = "FDR", thresh = FDRthreshold)),
         histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                          list(score = "FDR", xlim = c(0,1,0.05))),
         score = list(list(score = "statistic", thresh = 5)),

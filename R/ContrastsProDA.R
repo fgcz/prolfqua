@@ -118,6 +118,7 @@ ContrastsProDA <- R6::R6Class(
     },
     #' @description write results
     #' @param path directory
+    #' @param filename file to write to
     #' @param format default xlsx \code{\link{lfq_write_table}}
     write = function(path, filename, format = "xlsx"){
       filename <- if (missing(filename)) {self$modelName} else (filename )
