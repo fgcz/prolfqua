@@ -1,6 +1,6 @@
 ---
 title: "Modelling with Interactions."
-author: "Witold Wolski"
+author: "Witold E. Wolski"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default

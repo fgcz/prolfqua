@@ -1,6 +1,6 @@
 ---
 title: "QC and Sample Size Estimation"
-author: "Witold Wolski"
+author: "Witold E. Wolski"
 date: "14/12/2020"
 output: html_document
 vignette: >

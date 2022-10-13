@@ -1,6 +1,6 @@
 ---
 title: "Quality Control & Sample Size Estimation"
-author: "WEW@FGCZ.ETHZ.CH"
+author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
