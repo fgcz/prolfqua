@@ -198,7 +198,7 @@ plots density of the standard deviation
 stats$density_median()
 ```
 
-TODO(WEW): Please describe figure.
+TODO(WEW): Please describe the figure.
 
 ```{r experiment, include = FALSE}
 chsq <- na.omit(stats$statsdf$sd^2)
