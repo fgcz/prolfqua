@@ -158,7 +158,7 @@ transformed <- lt$log2()$robscale()$lfq
 transformed$config$table$is_response_transformed
 ```
 
-plots the intensity distrubtion:
+plots the intensity distribution:
 ```{r plotDensities, fig.cap="Normalized intensities."}
 pl <- transformed$get_Plotter()
 pl$intensity_distribution_density()
@@ -198,7 +198,8 @@ plots density of the standard deviation
 stats$density_median()
 ```
 
-TODO(WEW): what is shown here?
+TODO(WEW): Please describe figure.
+
 ```{r experiment, include = FALSE}
 chsq <- na.omit(stats$statsdf$sd^2)
 plot(density(chsq[chsq < 10]))
