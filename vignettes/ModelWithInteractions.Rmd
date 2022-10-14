@@ -15,33 +15,37 @@ bibliography:
   - prolfqua.bib
 ---
 
+TODO(wew,jg): Can you please add a oneliner of the purpose of the vignette?
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-
 ```{r}
-a <- c(a = 3,b = 4.5, c = 6, d = 7.5, e = 9)
-f1 <- list(l1 = 3,l2 = 4.5)
+a <- c(a = 3, b = 4.5, c = 6, d = 7.5, e = 9)
+f1 <- list(l1 = 3, l2 = 4.5)
 f2 <- list(l1 = 0, l2 = 3) 
 
-a =  f1$l1 + f2$l1
-b = f1$l2 + f2$l1
-c = f1$l1 + f2$l2
-d = f1$l2 + f2$l2
-c(a,b,c,d)
-
+a <- f1$l1 + f2$l1
+b <- f1$l2 + f2$l1
+c <- f1$l1 + f2$l2
+d <- f1$l2 + f2$l2
+c(a, b, c, d)
 ```
+
+First, we load the data and do the configuration.
 
 ```{r LoadDataAndConfigure}
 datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
-inputMQfile <-  file.path(datadir, "tiny2.zip")
+inputMQfile <- file.path(datadir, "tiny2.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ```
 
-Read the sample annotation. The sample annotation must contain the `raw.file` name and the explanatory variables of your experiment, e.g. treatment, timepoint, genetic background, or other factors which you would like to check for confounding.
+Read the sample annotation. The sample annotation must contain the `raw.file`
+name and the explanatory variables of your experiment, e.g. treatment,
+time point, genetic background, or other factors which you would like to check
+for confounding.
 
 
 ```{r readAnnotation}
@@ -50,11 +54,12 @@ head(annotation)
 annotation <- annotation |> dplyr::filter(sample != "e")
 annotation <- annotation |> 
   dplyr::mutate(f1 = dplyr::case_when(sample %in% c("a","c") ~ "l1", TRUE ~ "l2"),
-                f2 = dplyr::case_when(sample %in% c("a","b") ~ "l1", TRUE ~ "l2")) |>
+    f2 = dplyr::case_when(sample %in% c("a","b") ~ "l1", TRUE ~ "l2")) |>
   dplyr::arrange(sample)
 ```
 
-Merge the annotation with quantitative data using `inner_join` joining by `raw.file`.
+Merge the annotation with quantitative data using `inner_join` joining by
+`raw.file`.
 
 ```{r addAnnotationToData}
 startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
@@ -62,49 +67,45 @@ startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
 
 We remove all proteins identified only by a single peptide.
 
-
 ```{r filterForAtLeastTwoPeptides}
 startdata <- dplyr::filter(startdata, nr.peptides > 1)
 ```
 
-
-Then you need to _tell_ `prolfqua` which columns in the data frame contain what information. You do it using the `AnalysisTableAnnotation` class.
+Then you need to _tell_ `prolfqua` which columns in the data frame contain what
+information. You do it using the `AnalysisTableAnnotation` class.
 
 ```{r setupConfigs}
 atable <- prolfqua::AnalysisTableAnnotation$new()
 ```
 
-The `AnalysisTableAnnotation` has the following fields that need to be populated:
-
+The `AnalysisTableAnnotation` has the following fields that need to be
+populated:
 - fileName
 - hierarchy
 - factors
 - workingIntensity
+, and we will discuss it in more detail below.
 
-, and we will discuss in more detail next.
-
-
-The `fileName` is the column with the raw file names, however for labelled TMT experiments, it can be used to hold the name of the TMT channel.
+The `fileName` is the column with the raw file names, however for labelled TMT
+experiments, it can be used to hold the name of the TMT channel.
 
 ```{r specifyRawFile}
 atable$fileName = "raw.file"
 ```
 
 The `hierarchy` field describes the structure of the MS data e.g, 
-
 - protein 
 - peptides
 - modified peptides
 - precursor
-
-In case of the MQ proteinGroups file we have data on protein level.
+In case of the MaxQuant `proteinGroups.txt` file we have data on protein level.
 
 ```{r specifyProteinID}
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
-
 ```
 
-In addition you need to describe the `factors` of the analysis, i.e, the column containing the explanatory variables. 
+In addition, we need to describe the `factors` of the analysis, i.e., the column
+containing the explanatory variables. 
 
 ```{r specifyFactors}
 atable$factors[["f1."]] = "f1"
@@ -118,15 +119,16 @@ We also need to specify the column containing the protein abundances.
 atable$set_response("mq.protein.intensity")
 ```
 
-Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
+Finally, we create the `AnalysisConfiguration`, which needs the
+`AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
 
 ```{r createAnalysisConfig}
 config <- prolfqua::AnalysisConfiguration$new(atable)
 adata <- prolfqua::setup_analysis(startdata, config)
-
 ```
 
-Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
+Create the `LFQData` class instance and remove zeros from data.
+Of note, the MaxQuant software encodes missing values with zero.
 
 ```{r removeSmallIntensities}
 lfqdata <- prolfqua::LFQData$new(adata, config)
@@ -134,15 +136,13 @@ lfqdata$remove_small_intensities()
 lfqdata$factors()
 ```
 
-
-```{r}
-hm <- lfqdata$get_Plotter()$heatmap()
-```
+Below, the code snippet graphs the heatmap of the protein abundances and a
+hierarchical clustering.
 
 ```{r plotHeatmap}
+hm <- lfqdata$get_Plotter()$heatmap()
 hm
 ```
-
 
 ```{r}
 tr <- lfqdata$get_Transformer()
@@ -150,20 +150,19 @@ lfqTrans <- tr$log2()$lfq
 lfqTrans$get_Plotter()$intensity_distribution_density()
 lfqTrans$response()
 lfqTrans$rename_response("abundance")
-
 ```
-
 
 # Model Fitting
 
+defines the contrasts
 
 ```{r specifyModel}
-
-formula_Batches <-
-  prolfqua::strategy_lm("abundance ~ f1. * f2. ")
+formula_Batches <- prolfqua::strategy_lm("abundance ~ f1. * f2. ")
 
 # specify model definition
 modelName  <- "Model"
+
+# TODO(wew): why debug?
 DEBUG <- TRUE
 
 Contrasts <- c("f1.l1vsf1.l2" = "f1.l1 - f1.l2",
@@ -172,37 +171,38 @@ Contrasts <- c("f1.l1vsf1.l2" = "f1.l1 - f1.l2",
                "f1l1vsf1l2_gv_f2.l2" = "`f1.l1:f2.l2` - `f1.l2:f2.l2`",
                "Interaction" = "`f1l1vsf1l2_gv_f2.l1` - `f1l1vsf1l2_gv_f2.l2`"
                )
-
 ```
 
+The following line fits the model.
 
 ```{r buildModel}
-
-mod <- prolfqua::build_model(
-  lfqTrans,
-  formula_Batches)
-
+mod <- prolfqua::build_model(lfqTrans, formula_Batches)
 ```
-
 
 
 ```{r anovaPvaluePlots, fig.cap="p-value distributions for ANOVA analysis."}
 mod$anova_histogram(what = "FDR.Pr..F.")
-
 ```
 
 ## ANOVA
 
-Examine proteins with a significant interaction between the two factors treatment and batch.
+Examine proteins with a significant interaction between the two factors
+treatment and batch.
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
-ANOVA |> dplyr::filter(factor == "f1.:f2.") |> dplyr::arrange(FDR.Pr..F.) |> head(5)
+ANOVA |>
+  dplyr::filter(factor == "f1.:f2.") |>
+  dplyr::arrange(FDR.Pr..F.) |>
+  head(5)
+
 ANOVA$factor |> unique()
 protIntSig <- ANOVA |> dplyr::filter(factor == "f1.") |>
   dplyr::filter(FDR.Pr..F. < 0.25)
+
 protInt <-  lfqTrans$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
+protInt$data <- protInt$data[protInt$data$protein_Id %in%
+                               protIntSig$protein_Id, ]
 ```
 
 
@@ -218,38 +218,41 @@ contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts
 contrdf <- contr$get_contrasts()
 ```
 
-```{r}
+
+The code snippets graph the volcano and ma plot.
+```{r graphVolcano}
 plotter <- contr$get_Plotter()
 plotter$volcano()
 plotter$ma_plot()
-
 ```
-
-
 
 ## Annalyse contrasts with missing data imputation
 
 ```{r}
 lfqTrans$config$table$factorDepth <- 2
-#ContrastsSimpleImpute$debug("get_contrasts")
-contrSimple <- prolfqua::ContrastsSimpleImpute$new(lfqdata = lfqTrans, Contrasts)
+# ContrastsSimpleImpute$debug("get_contrasts")
+contrSimple <- prolfqua::ContrastsSimpleImpute$new(lfqdata = lfqTrans,
+                                                   Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
-#na.omit(contrdfSimple)
+# na.omit(contrdfSimple)
 pl <- contrSimple$get_Plotter()
 pl$histogram_diff()
 pl$volcano()
 ```
 
-
 ## Merge nonimputed and imputed data.
 
-```{r}
 
+
+```{r mergeNonImpyted}
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
 
 mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
 cM <- mergedContrasts$get_Plotter()
+```
+
+```{r plotNergeNonImpyted}
 plot <- cM$volcano()
 plot$FDR
 ```
