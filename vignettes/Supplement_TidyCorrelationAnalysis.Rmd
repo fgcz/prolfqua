@@ -11,6 +11,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+bibliography:
+  - prolfqua.bib
 ---
 
 
@@ -265,5 +267,16 @@ nrPep <- qvalFiltImputed |>
 nrPep
 
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
+
 
 
