@@ -115,7 +115,8 @@ initialize
   modelName = "groupAverage",
   method = "V1",
   global = TRUE,
-  present = 1
+  present = 1,
+  minsd = 1
 )}\if{html}{\out{</div>}}
 }
 

@@ -26,6 +26,7 @@ x1 = remove_NA_rows(obj, thresh=0)
 stopifnot(all(c(9,10)==dim(x1)))
 x2 = remove_NA_rows(obj, thresh=1)
 stopifnot(all(c(10,10)==dim(x2)))
+
 }
 \seealso{
 Other utilities: 
