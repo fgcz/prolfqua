@@ -1,13 +1,14 @@
 ---
 title: "Creating prolfqua Configurations"
-author: "Witold Wolski"
-date: "14/12/2020"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Creating prolfqua Configurations} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-
+bibliography:
+  - prolfqua.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -73,5 +74,15 @@ With this, it is possible for example to use the `get_Summariser` function to vi
 smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
 
 

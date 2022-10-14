@@ -1,14 +1,16 @@
 ---
-title: "Comparing Two Groups"
-author: "Witold Wolski"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+title: "Comparing Two Groups with prolfqua"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Comparing Two Groups} 
+  %\VignetteIndexEntry{Comparing Two Groups with prolfqua} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+bibliography:
+  - prolfqua.bib
 ---
 
 
@@ -369,3 +371,14 @@ dotplot(res , showCategory = 30)
 ```{r upsetplot, fig.cap="Upset Plot", eval = evalAll}
 enrichplot::upsetplot(res)
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
+

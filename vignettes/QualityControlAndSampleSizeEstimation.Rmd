@@ -1,7 +1,7 @@
 ---
 title: "QC and Sample Size Estimation"
-author: "Witold Wolski"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{QC and Sample Size Estimation} 
@@ -9,8 +9,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+bibliography:
+  - prolfqua.bib
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -36,13 +37,12 @@ Read the annotation with the meta information that is associated with the sample
 
 ```{r readAnnotation}
 annotation <- readxl::read_xlsx(inputAnnotation)
-
 ```
 
 
 ```{r joinAnnoAndData}
 startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
-head(startdata)
+startdata |> head()
 ```
 
 First, we want to remove all proteins identified only by a single peptide.
@@ -58,8 +58,8 @@ The `hierarchy` describes the structure of the MS data. In this case we have onl
 In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables which in this benchmark dataset is the dilution specified as sample in the annotation table.
 You also need to specify the column containing the protein identifiers and the protein intensities.
 
-```{r setupAnalysisTableAnnotation}
 
+```{r setupAnalysisTableAnnotation}
 atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
@@ -72,7 +72,6 @@ atable$factorDepth <- 1
 config <- prolfqua::AnalysisConfiguration$new(atable)
 
 adata <- prolfqua::setup_analysis(startdata, config)
-
 ```
 
 
@@ -83,12 +82,12 @@ lfqdata <- prolfqua::LFQData$new(adata, config)
 lfqdata$remove_small_intensities()
 ```
 
-You can convert the data into a data frame in wide format, where the intensities of each sample occupy their own columns.
+You can convert the data into a data frame in a wide format, where the
+intensities of each sample occupy their columns.
 
 ```{r showHowToWide}
 lfqdata$to_wide()$data[1:3,1:8]
 ```
-
 
 ## Visualization of not normalized data
 
@@ -99,7 +98,6 @@ lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 ```
 
-
 ### Visualization of missing data
 
 Often it also makes sense to look into the part of the data that is not quantified in all samples. Therefore several functions for the missingess are available. In the `NA_heatmap` function it is possible to see if some missing proteins are specific for one particular dilution or if they appear randomly in all samples.
@@ -108,6 +106,7 @@ Often it also makes sense to look into the part of the data that is not quantifi
 nah <- lfqplotter$NA_heatmap()
 ```
 
+Prints missing heatmap:
 ```{r printMissingHeatmap, fig.cap="Heatmap, black - missing protein intensities, white - present"}
 nah
 ```
@@ -140,13 +139,14 @@ prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stat
 
 ```{r cvDistr, fig.cap="Distribution of CV's"}
 stats$density_median()
-
 ```
 
 In the next figure we show the dependency of the standard deviation with respect to the mean intensitiy of the proteins.
 
 ```{r stdvVSmean, fig.cap="Scatter plot of standard deviation vs mean"}
-stdm_raw <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
+stdm_raw <- stats$stdv_vs_mean(size = 10000) +
+  ggplot2::scale_x_log10() +
+  ggplot2::scale_y_log10()
 stdm_raw
 ```
 
@@ -156,11 +156,10 @@ stdm_raw
 Next, we want to normalize the data by first $\log_2$ transforming it and then z-scaling.
 The $log_2$ stabilizes the variance, while the z-scaling removes systematic differences from the samples.
 
-```{r normalizedata}
+```{r normalizeData}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
 transformed$config$table$is_response_transformed
-
 ```
 
 Again we want to look into the distribution of the intensities in our samples after normalization.
@@ -170,16 +169,17 @@ pl <- transformed$get_Plotter()
 pl$intensity_distribution_density()
 ```
 
+plots matrix scatter plot in the upper right matrix and some statistics in the
+lower left matrix.
+
 ```{r plotScatterMatrix, fig.cap = "Scatterplot matrix"}
 pl$pairs_smooth()
 ```
 
-```{r createHeatmap}
-p <- pl$heatmap()
-```
-
+plots protein heatmap:
 ```{r plotheatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
-p
+p <- pl$heatmap() 
+p 
 ```
 
 We can also look at the correlation among the samples or look at a PCA plot.
@@ -196,33 +196,36 @@ hc
 pl$pca()
 ```
 
+prints the standard deviations:
 ```{r showStandardDeviations}
 stats <- transformed$get_Stats()
 prolfqua::table_facade(stats$stats_quantiles()$wide, "Standard deviations")
-
 ```
 
+
+plots density of the standard deviation
 
 ```{r sddensity, fig.cap="Density of the standard deviation"}
 stats$density_median()
 ```
 
+TODO(WEW): Please describe the figure.
+
 ```{r experiment, include = FALSE}
 chsq <- na.omit(stats$statsdf$sd^2)
 plot(density(chsq[chsq < 10]))
 x <- seq(0,50, length = 1000)
-lines(x*median(chsq) , dchisq(x, df = 4 ), col = 2)
-
+lines(x * median(chsq), dchisq(x, df = 4 ), col = 2)
 ```
 
-Check for heteroskedasticity. After transformation the sd should be independent of the mean intensity.
+Check for heteroskedasticity. After transformation,
+the standard deviation should be independent of the mean intensity.
 
 ```{r checkForHeteroskedasticity, fig.cap="Scatter plot of sd vs mean of protein intensity"}
 stdm_trans <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_trans
 #gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
 ```
-
 
 
 ## Estimate sample size
@@ -239,10 +242,8 @@ transformedA$data <- transformedA$data |> dplyr::filter(dilution.  == "a")
 stats <- transformedA$get_Stats()
 ```
 
-
 ```{r fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
 stats$density(ggstat = "ecdf")
-  
 ```
 
 The table indicates that for this kind of data - if a two-fold change for 90% of all the proteins should be accurately quantified with a power of 0.8 (at 0.05 significance level) one would need to have 10 samples in each group.
@@ -267,26 +268,34 @@ sampleSize |>
 It is also possible to get the statistics for each protein in each group. The information includes group size, number of observations, standard deviation, variance, mean.
 
 ```{r stats, eval = TRUE}
-head(stats$stats())
+stats$stats() |> head()
 ```
 
 You can also estimate the sample size needed to perform differential expression analysis for each protein, given the `power`, `delta`, and `sig.level`.
 The next figure shows the distribution of needed sample sizes for all proteins with a power of 0.8 at signifiance level 0.05 for a two fold change (delta = 1).
 
 ```{r statsWithN, eval = TRUE}
-
 x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
 x <- x |> dplyr::filter(dilution. == "a") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
-
 ```
 
 
 ```{r fig.cap="Distribution of the required sample sizes for two fold change thresholds for all the proteins."}
-x |> ggplot2::ggplot(ggplot2::aes(x = N)) + ggplot2::geom_histogram() + ggplot2::facet_wrap(~delta) + ggplot2::xlim(0,100)
-
+x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
+  ggplot2::geom_histogram() +
+  ggplot2::facet_wrap(~delta) +
+  ggplot2::xlim(0,100)
 ```
 
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
 
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
 
 
