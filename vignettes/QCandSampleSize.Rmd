@@ -1,6 +1,6 @@
 ---
-title: "Quality Control & Sample Size Estimation"
-author: "Witold Wolski"
+title: "Quality Control and Sample Size Estimation"
+author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
@@ -17,7 +17,7 @@ params:
   plot_sd_vs_mean: FALSE
   pep: TRUE
 vignette: >
-  %\VignetteIndexEntry{Quality Control & Sample Size Estimation}
+  %\VignetteIndexEntry{Quality Control and Sample Size Estimation}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
   editor_options:
@@ -27,6 +27,8 @@ header-includes:
   - \usepackage[english]{babel}
   - \usepackage{blindtext}
   - \usepackage{float}
+bibliography:
+  - prolfqua.bib
 ---
 
 
@@ -415,3 +417,15 @@ prolfqua::table_facade(
 ```{r resetTheme, include=FALSE}
 ggplot2::theme_set(old.theme)
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
+
+
