@@ -1,5 +1,5 @@
 ---
-title: "Modelling Dataset with two Factors."
+title: "Modelling dataset with two Factors"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output:
@@ -11,6 +11,8 @@ vignette: |
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+bibliography:
+  - prolfqua.bib
 ---
 
 
@@ -157,3 +159,15 @@ hm <- protInt$get_Plotter()$heatmap()
 ```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
 hm
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
+
+

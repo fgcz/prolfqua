@@ -7,7 +7,8 @@ vignette: >
   %\VignetteIndexEntry{Creating prolfqua Configurations} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-
+bibliography:
+  - prolfqua.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -60,4 +61,15 @@ analysis_data <- prolfqua::setup_analysis(xx, config)
 prolfqua::summarize_hierarchy(analysis_data, config)
 
 ```
+
+The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+# References
+
 
