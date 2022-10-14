@@ -194,7 +194,7 @@ pl$pairs_smooth()
 p <- pl$heatmap_cor()
 ```
 
-```{r plotheatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
+```{r plotHeatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
 p
 ```
 
