@@ -1,7 +1,7 @@
 ---
 title: "QC and Sample Size Estimation"
 author: "Witold Wolski"
-date: "14/12/2020"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{QC and Sample Size Estimation} 
@@ -16,11 +16,14 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+# Purpose
+In this vignette we demonstrate how several descriptive statistics or diagnostic quality control plots can be generated for a dataset. For this, a proteinGroups file from the MaxQuant software is read and the "prolfqua specific" configuration is set up.
+Afterwards a first look into the data, is transformed and normalized and some useful plots are illustrated for the full dataset. 
+While then filtering to only one single condition with four replicates we want to estimate how many samples are necessairy to properly quantify a two-fold change for 90% of all the proteins with a power of 0.8.
 
 # Loading data
 
-
-Load the data from MaxQuant proteinGroups.txt file.
+Load the data from MaxQuant. In this case here we direclty load protein level data from the proteinGroups.txt file.
 
 ```{r LoadDataAndConfigure}
 datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
@@ -29,37 +32,33 @@ inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ```
 
-Read the annotation with the explanatory variables.
+Read the annotation with the meta information that is associated with the samples.
 
-```{r}
+```{r readAnnotation}
 annotation <- readxl::read_xlsx(inputAnnotation)
 
 ```
 
 
-```{r}
+```{r joinAnnoAndData}
 startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
 head(startdata)
 ```
 
-For the sample size estimation we will use bio-reps from the _a_ dilution. 
-We also remove all proteins identified only by a single peptide.
+First, we want to remove all proteins identified only by a single peptide.
 
-
-```{r}
-startdata <- startdata |> dplyr::filter(sample  == "a")
+```{r filterForOnePeptide}
 startdata <- startdata |> dplyr::filter(nr.peptides > 1)
-
 ```
 
 
 We need to _tell_ `prolfqua` which columns in the table contain what information. This is done using the `AnalysisTableAnnotation` class.
 
-The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements.
-In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables.
+The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements and therefore `hierarchyDepht` is equal to _one_.
+In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables which in this benchmark dataset is the dilution specified as sample in the annotation table.
 You also need to specify the column containing the protein identifiers and the protein intensities.
 
-```{r}
+```{r setupAnalysisTableAnnotation}
 
 atable <- prolfqua::AnalysisTableAnnotation$new()
 atable$fileName = "raw.file"
@@ -70,16 +69,14 @@ atable$factors[["dilution."]] = "sample"
 atable$factors[["Run_ID"]] = "run_ID"
 atable$factorDepth <- 1
 
-
 config <- prolfqua::AnalysisConfiguration$new(atable)
-
 
 adata <- prolfqua::setup_analysis(startdata, config)
 
 ```
 
 
-Create the LFQData class instance, remove zeros from data.
+Further steps are the creation of the LFQData class instance and the usual standard preprocessing such as the removal of zeros from data.
 
 ```{r filterdata}
 lfqdata <- prolfqua::LFQData$new(adata, config)
@@ -88,14 +85,16 @@ lfqdata$remove_small_intensities()
 
 You can convert the data into a data frame in wide format, where the intensities of each sample occupy their own columns.
 
-```{r}
-lfqdata$to_wide()$data[1:3,]
+```{r showHowToWide}
+lfqdata$to_wide()$data[1:3,1:8]
 ```
 
 
 ## Visualization of not normalized data
 
-```{r makeMissingHeatmap}
+Next we show how the data is distributed before transformation and normalization.
+
+```{r intensityDistribution}
 lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 ```
@@ -103,7 +102,9 @@ lfqplotter$intensity_distribution_density()
 
 ### Visualization of missing data
 
-```{r}
+Often it also makes sense to look into the part of the data that is not quantified in all samples. Therefore several functions for the missingess are available. In the `NA_heatmap` function it is possible to see if some missing proteins are specific for one particular dilution or if they appear randomly in all samples.
+
+```{r makeMissingHeatmap}
 nah <- lfqplotter$NA_heatmap()
 ```
 
@@ -111,22 +112,25 @@ nah <- lfqplotter$NA_heatmap()
 nah
 ```
 
+Also in the next two figures we show how many missing values are found in the respective conditions and how many proteins do not have missing data and how complete the measurements are for each group.
 
-
-```{r fig.cap="# of proteins with 0,1,...N missing values"}
+```{r summaryPerGroup, fig.cap="# of proteins with 0,1,...N missing values"}
 lfqdata$get_Summariser()$plot_missingness_per_group()
 ```
 
-```{r fig.cap="Cumulative sum of the # of proteins with 0,1,...N missing values"}
+```{r cumSumSummary, fig.cap="Cumulative sum of the # of proteins with 0,1,...N missing values"}
 lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
 ```
 
-```{r fig.cap="Intensity distribution of proteins depending on # of missing values"}
+In the `missigness_histogram` we can check if there is a dependency towards the protein intensity for missing data.
+
+```{r missingnessHist, fig.cap="Intensity distribution of proteins depending on # of missing values"}
 lfqplotter$missigness_histogram()
 ```
 
 # Computing standard deviations, mean and CV.
 
+Other important statistics that can be easily calculated from the object are coefficient of variation, means and standard deviations.
 
 ```{r PlotCVDistributions}
 stats <- lfqdata$get_Stats()
@@ -134,13 +138,14 @@ prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stat
 ```
 
 
-```{r fig.cap="Distribution of CV's"}
+```{r cvDistr, fig.cap="Distribution of CV's"}
 stats$density_median()
 
 ```
 
+In the next figure we show the dependency of the standard deviation with respect to the mean intensitiy of the proteins.
 
-```{r fig.cap="Scatter plot of standard deviation vs mean"}
+```{r stdvVSmean, fig.cap="Scatter plot of standard deviation vs mean"}
 stdm_raw <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_raw
 ```
@@ -148,7 +153,7 @@ stdm_raw
 
 ## Normalize protein intensities
 
-We normalize the data by first $\log_2$ transforming it and then z-scaling.
+Next, we want to normalize the data by first $\log_2$ transforming it and then z-scaling.
 The $log_2$ stabilizes the variance, while the z-scaling removes systematic differences from the samples.
 
 ```{r normalizedata}
@@ -157,6 +162,8 @@ transformed <- lt$log2()$robscale()$lfq
 transformed$config$table$is_response_transformed
 
 ```
+
+Again we want to look into the distribution of the intensities in our samples after normalization.
 
 ```{r plotDensities, fig.cap="Normalized intensities."}
 pl <- transformed$get_Plotter()
@@ -175,14 +182,22 @@ p <- pl$heatmap()
 p
 ```
 
-We can also look at the correlation among the samples.
+We can also look at the correlation among the samples or look at a PCA plot.
 
-```{r heatmapCor, fig.cap="Heatmap based on sample correlations, Rows - samples, Columns - samples", fig.align=5, fig.height=5}
+```{r heatmapCor}
 hc <- pl$heatmap_cor()
 ```
 
-```{r plotHeatmapCor}
+```{r plotHeatmapCor, fig.cap="Heatmap based on sample correlations, Rows - samples, Columns - samples", fig.align=5, fig.height=5}
 hc
+```
+
+```{r doPCA}
+pca <- pl$pca()
+```
+
+```{r plotPCA, fig.cap="Principal component analysis for all samples", fig.align=5, fig.height=5}
+pca
 ```
 
 
@@ -216,6 +231,16 @@ stdm_trans
 
 
 ## Estimate sample size
+
+For the sample size estimation we will now focus on only one condition and the different bio-reps from the _a_ dilution.
+
+```{r}
+#startdata <- startdata |> dplyr::filter(sample  == "a")
+transformedA <- transformed$get_copy()
+transformedA <- transformedA$data |> dplyr::filter(dilution.  == "a")
+
+```
+
 
 
 ```{r fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
