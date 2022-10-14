@@ -54,7 +54,7 @@ startdata <- startdata |> dplyr::filter(nr.peptides > 1)
 
 We need to _tell_ `prolfqua` which columns in the table contain what information. This is done using the `AnalysisTableAnnotation` class.
 
-The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements and therefore `hierarchyDepht` is equal to _one_.
+The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements and therefore `hierarchyDepht` is equal to $1$.
 In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables which in this benchmark dataset is the dilution specified as sample in the annotation table.
 You also need to specify the column containing the protein identifiers and the protein intensities.
 
@@ -192,14 +192,9 @@ hc <- pl$heatmap_cor()
 hc
 ```
 
-```{r doPCA}
-pca <- pl$pca()
+```{r doPCA, fig.cap="Principal component analysis for all samples", fig.align=5, fig.height=7}
+pl$pca()
 ```
-
-```{r plotPCA, fig.cap="Principal component analysis for all samples", fig.align=5, fig.height=5}
-pca
-```
-
 
 ```{r showStandardDeviations}
 stats <- transformed$get_Stats()
@@ -233,14 +228,16 @@ stdm_trans
 ## Estimate sample size
 
 For the sample size estimation we will now focus on only one condition and the different bio-reps from the _a_ dilution.
+In this condition all samples have the same concentration and we want to check variability within this group. 
+Like this we can estimate how many samples are necessary per group to quantify properly a two-fold change (delta of 1) for 90% of all the proteins with a power of 0.8 and significance level of 0.05.
 
+First, we need to filter our data for `dilution.` _a_ only.
 ```{r}
 #startdata <- startdata |> dplyr::filter(sample  == "a")
 transformedA <- transformed$get_copy()
-transformedA <- transformedA$data |> dplyr::filter(dilution.  == "a")
-
+transformedA$data <- transformedA$data |> dplyr::filter(dilution.  == "a")
+stats <- transformedA$get_Stats()
 ```
-
 
 
 ```{r fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
@@ -248,7 +245,7 @@ stats$density(ggstat = "ecdf")
   
 ```
 
-
+The table indicates that for this kind of data - if a two-fold change for 90% of all the proteins should be accurately quantified with a power of 0.8 (at 0.05 significance level) one would need to have 10 samples in each group.
 
 ```{r estimateSampleSizes}
 sampleSize <- stats$power_t_test_quantiles() |> 
@@ -256,6 +253,8 @@ sampleSize <- stats$power_t_test_quantiles() |>
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
 
 ```
+
+The table summarises visually how many samples are needed for different expected differences (in log2-scale) and different portions of all proteins. 
 
 ```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
 sampleSize |>
@@ -265,14 +264,14 @@ sampleSize |>
 
 ```
 
-Getting statistics for each protein in each group. The information includes group size, number of observations, standard deviation, variance, mean.
+It is also possible to get the statistics for each protein in each group. The information includes group size, number of observations, standard deviation, variance, mean.
 
 ```{r stats, eval = TRUE}
 head(stats$stats())
 ```
 
 You can also estimate the sample size needed to perform differential expression analysis for each protein, given the `power`, `delta`, and `sig.level`.
-
+The next figure shows the distribution of needed sample sizes for all proteins with a power of 0.8 at signifiance level 0.05 for a two fold change (delta = 1).
 
 ```{r statsWithN, eval = TRUE}
 
@@ -283,7 +282,7 @@ prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 ```
 
 
-```{r fig.cap="Distribution of the required sample sizes for three fold change thresholds for all the proteins."}
+```{r fig.cap="Distribution of the required sample sizes for two fold change thresholds for all the proteins."}
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) + ggplot2::geom_histogram() + ggplot2::facet_wrap(~delta) + ggplot2::xlim(0,100)
 
 ```
