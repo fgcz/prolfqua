@@ -20,14 +20,14 @@ bibliography:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-
 # Purpose
-In this vignette we demonstrate 
-
+In this vignette we demonstrate how to integrate more than one factor into the linear models. Here, we show how to model the data with two factors plus the interaction thereof. The underlying dataset is generated in a course that is held on a yearly base. The context is that yeast is in one condition grown on glucose and in the other condition yeast is grown on glycerol and ethanol. Here we are looking into the results of two different coursess where of course different people in the wetlab and here even with different LC-MS instruments are involved. It is therefore important to include the batch variable for these two _similar_ datasets. 
+For demonstration purposes we are also modelling the interaction between the two explanatory variables _batch_ and _condition_. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch while the same protein is more abundant in the Ethanol condition in the other batch.
 
 # Model Fitting
 
 For more details how the dataset `data_Yeast2Factor` was created we refer you to the prolfquabenchmark vignettes.
+Interesting here is the definition of the model. If interaction shall be included in the model a _asterix_ should be used while if no interaction should be taken into account a _plus_ should be used in the model definition.
 
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
@@ -37,7 +37,6 @@ data_Yeast2Factor <- prolfqua::LFQData$new(data_Yeast2Factor$data, prolfqua::old
 
 pMerged <- data_Yeast2Factor
 pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
-pMerged$config$table$get_response()
 pMerged$factors()
 
 
@@ -45,33 +44,22 @@ formula_Batches <-
   prolfqua::strategy_lm("transformedIntensity ~ condition_ * batch_ ")
 
 # specify model definition
-modelName  <- "Model"
-DEBUG <- TRUE
-
 Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
                "p2370 - p2691" = "batch_p2370 - batch_p2691",
                "Glucose_vs_Ethanol_gv_p2370" = "`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`",
                "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
-               "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"
-)
-
+               "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`")
 ```
-
 
 
 ```{r buildModel}
-
-mod <- prolfqua::build_model(
-  pMerged$data,
-  formula_Batches,
+mod <- prolfqua::build_model(pMerged$data, formula_Batches,
   subject_Id = pMerged$config$table$hierarchy_keys() )
-
 ```
 
 
-
 ```{r anovaPvaluePlots, fig.cap="p-value distributions for ANOVA analysis."}
-mod$anova_histogram()
+mod$anova_histogram()$plot
 ```
 
 ## ANOVA
@@ -87,46 +75,39 @@ protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
 ```
 
+These proteins (here the top five) can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
 
-```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.5 for condition batch interaction in ANOVA."}
+```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.05 for condition batch interaction in ANOVA."}
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 ```
 
-# Compute contrasts
+# Compute and analyse with the specified contrasts 
 
 ```{r computeModeratedContrasts}
 contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
-#contr$get_contrasts_sides()
 contrdf <- contr$get_contrasts()
 ```
 
-```{r}
+```{r visualiseResults}
 plotter <- contr$get_Plotter()
 plotter$volcano()
 plotter$ma_plot()
-
 ```
 
+## Analyse contrasts with missing data imputation
 
-
-## Annalyse contrasts with missing data imputation
-
-```{r}
+```{r prepareForGroupAverageImputation}
 pMerged$config$table$factor_keys_depth()
-#ContrastsSimpleImpute$debug("get_contrasts")
 contrSimple <- prolfqua::ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
-#na.omit(contrdfSimple)
 pl <- contrSimple$get_Plotter()
 pl$histogram_diff()
 pl$volcano()
-
 ```
-
 
 ## Merge nonimputed and imputed data.
 
-```{r}
+```{r doGroupAverageImputation}
 
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
@@ -137,11 +118,9 @@ plot <- cM$volcano()
 plot$FDR
 ```
 
-
-
 ### Look at Proteins with significant interaction term.
 
-```{r}
+```{r visualiseSomeProteins, fig.cap="Heatmap for proteins that are quantified only in one condition."}
 
 sigInteraction <- mergedContrasts$contrast_result |> 
   dplyr::filter(contrast == "Interaction" & FDR < 0.2)
@@ -150,17 +129,11 @@ protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
 
 protInt$get_Plotter()$raster()
-#ggplot(data=protInt$data ,aes(x=sampleName,y=protein_Id,fill=transformedIntensity))+
-#  geom_tile()   + scale_fill_distiller(palette = "RdYlBu") +
-#  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 hm <- protInt$get_Plotter()$heatmap()
-
 ```
 
-
-
-```{r interactionHeatmap, fig.cap="Proteins with significant Interactions"}
+```{r interactionHeatmap, fig.cap="Proteinheatmap for proteins with significant Interactions"}
 hm
 ```
 
