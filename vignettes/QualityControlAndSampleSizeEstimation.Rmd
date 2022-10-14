@@ -122,7 +122,7 @@ lfqdata$get_Summariser()$plot_missingness_per_group()
 lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
 ```
 
-In the `missigness_histogram` we can check if there is a dependency towards the protein intensity for missing data.
+In the `missigness_histogram` we can check if there is a dependency between NAs (and the number of NAs for earch protein) with respect to the protein intensity.
 
 ```{r missingnessHist, fig.cap="Intensity distribution of proteins depending on # of missing values"}
 lfqplotter$missigness_histogram()
