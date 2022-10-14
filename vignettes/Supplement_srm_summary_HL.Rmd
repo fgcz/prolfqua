@@ -12,6 +12,8 @@ vignette: >
   %\VignetteIndexEntry{Supplement - Summarize heavy light Peptide Level Measurements}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography:
+  - prolfqua.bib
 ---
 
 
