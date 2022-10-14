@@ -33,19 +33,19 @@ LFQData R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
+      <a href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a>
     </li>
     <li>
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions.</a>
+      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions</a>
     </li>
     <li>
-      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+      <a href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
     </li>
     <li>
-      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
+      <a href="../articles/QCandSampleSize.html">Quality Control and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -565,23 +565,23 @@ it will be removed</p><div class="section">
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 746 × 22</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    prote…¹ pepti…²  `a~10` `a~11`  `a~20`  `a~21`  `b~02`  `b~09`  `b~12` `b~19`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P… AELADQ… <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  7.98<span style="color: #949494;">e</span>6 <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>  4.95<span style="color: #949494;">e</span>6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P… ILSLAQ…  9.10<span style="color: #949494;">e</span>6 8.73<span style="color: #949494;">e</span>6  1.76<span style="color: #949494;">e</span>7  1.73<span style="color: #949494;">e</span>7  9.55<span style="color: #949494;">e</span>6  6.99<span style="color: #949494;">e</span>6  2.20<span style="color: #949494;">e</span>7 1.16<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P… LLLFSP…  6.21<span style="color: #949494;">e</span>6 1.07<span style="color: #949494;">e</span>7  6.63<span style="color: #949494;">e</span>6  5.05<span style="color: #949494;">e</span>6  5.83<span style="color: #949494;">e</span>6  7.39<span style="color: #949494;">e</span>6  6.83<span style="color: #949494;">e</span>6 5.54<span style="color: #949494;">e</span>6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P… AEFVEV…  3.29<span style="color: #949494;">e</span>8 6.06<span style="color: #949494;">e</span>8  6.07<span style="color: #949494;">e</span>8  5.72<span style="color: #949494;">e</span>8  2.98<span style="color: #949494;">e</span>8  4.48<span style="color: #949494;">e</span>8  6.26<span style="color: #949494;">e</span>8 6.58<span style="color: #949494;">e</span>8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P… DDPHAC…  1.81<span style="color: #949494;">e</span>8 2.33<span style="color: #949494;">e</span>8  2.31<span style="color: #949494;">e</span>8  2.27<span style="color: #949494;">e</span>8  1.86<span style="color: #949494;">e</span>8  1.74<span style="color: #949494;">e</span>8  2.73<span style="color: #949494;">e</span>8 2.18<span style="color: #949494;">e</span>8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P… DDPHAC…  3.40<span style="color: #949494;">e</span>7 4.62<span style="color: #949494;">e</span>7  4.91<span style="color: #949494;">e</span>7  4.83<span style="color: #949494;">e</span>7  3.31<span style="color: #949494;">e</span>7  2.98<span style="color: #949494;">e</span>7  5.69<span style="color: #949494;">e</span>7 5.02<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P… ECCHGD…  8.05<span style="color: #949494;">e</span>6 1.30<span style="color: #949494;">e</span>7  1.48<span style="color: #949494;">e</span>7  1.27<span style="color: #949494;">e</span>7  1.12<span style="color: #949494;">e</span>7  9.86<span style="color: #949494;">e</span>6  1.44<span style="color: #949494;">e</span>7 1.19<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P… ETYGDM…  1.18<span style="color: #949494;">e</span>7 3.99<span style="color: #949494;">e</span>7  2.24<span style="color: #949494;">e</span>7  2.54<span style="color: #949494;">e</span>7  2.17<span style="color: #949494;">e</span>7  1.23<span style="color: #949494;">e</span>7  2.87<span style="color: #949494;">e</span>7 1.89<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P… EYEATL…  1.64<span style="color: #949494;">e</span>7 3.08<span style="color: #949494;">e</span>7  2.86<span style="color: #949494;">e</span>7  3.17<span style="color: #949494;">e</span>7  1.95<span style="color: #949494;">e</span>7  1.53<span style="color: #949494;">e</span>7  2.82<span style="color: #949494;">e</span>7 2.77<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P… FKDLGE…  8.31<span style="color: #949494;">e</span>8 1.18<span style="color: #949494;">e</span>9  1.45<span style="color: #949494;">e</span>9  1.62<span style="color: #949494;">e</span>9  9.71<span style="color: #949494;">e</span>8  9.16<span style="color: #949494;">e</span>8  1.50<span style="color: #949494;">e</span>9 1.44<span style="color: #949494;">e</span>9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 736 more rows, 12 more variables: `c~03` &lt;dbl&gt;, `c~08` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 742 × 22</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id    pepti…¹ `a~10` `a~11` `a~20` `a~21` `b~02` `b~09` `b~12` `b~19`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~… AEFVEV… 3.29<span style="color: #949494;">e</span>8 6.06<span style="color: #949494;">e</span>8 6.07<span style="color: #949494;">e</span>8 5.72<span style="color: #949494;">e</span>8 2.98<span style="color: #949494;">e</span>8 4.48<span style="color: #949494;">e</span>8 6.26<span style="color: #949494;">e</span>8 6.58<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~… DDPHAC… 1.81<span style="color: #949494;">e</span>8 2.33<span style="color: #949494;">e</span>8 2.31<span style="color: #949494;">e</span>8 2.27<span style="color: #949494;">e</span>8 1.86<span style="color: #949494;">e</span>8 1.74<span style="color: #949494;">e</span>8 2.73<span style="color: #949494;">e</span>8 2.18<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~… DDPHAC… 3.40<span style="color: #949494;">e</span>7 4.62<span style="color: #949494;">e</span>7 4.91<span style="color: #949494;">e</span>7 4.83<span style="color: #949494;">e</span>7 3.31<span style="color: #949494;">e</span>7 2.98<span style="color: #949494;">e</span>7 5.69<span style="color: #949494;">e</span>7 5.02<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~… ECCHGD… 8.05<span style="color: #949494;">e</span>6 1.30<span style="color: #949494;">e</span>7 1.48<span style="color: #949494;">e</span>7 1.27<span style="color: #949494;">e</span>7 1.12<span style="color: #949494;">e</span>7 9.86<span style="color: #949494;">e</span>6 1.44<span style="color: #949494;">e</span>7 1.19<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~… ETYGDM… 1.18<span style="color: #949494;">e</span>7 3.99<span style="color: #949494;">e</span>7 2.24<span style="color: #949494;">e</span>7 2.54<span style="color: #949494;">e</span>7 2.17<span style="color: #949494;">e</span>7 1.23<span style="color: #949494;">e</span>7 2.87<span style="color: #949494;">e</span>7 1.89<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~… EYEATL… 1.64<span style="color: #949494;">e</span>7 3.08<span style="color: #949494;">e</span>7 2.86<span style="color: #949494;">e</span>7 3.17<span style="color: #949494;">e</span>7 1.95<span style="color: #949494;">e</span>7 1.53<span style="color: #949494;">e</span>7 2.82<span style="color: #949494;">e</span>7 2.77<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~… FKDLGE… 8.31<span style="color: #949494;">e</span>8 1.18<span style="color: #949494;">e</span>9 1.45<span style="color: #949494;">e</span>9 1.62<span style="color: #949494;">e</span>9 9.71<span style="color: #949494;">e</span>8 9.16<span style="color: #949494;">e</span>8 1.50<span style="color: #949494;">e</span>9 1.44<span style="color: #949494;">e</span>9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~… HLVDEP… 1.91<span style="color: #949494;">e</span>9 2.20<span style="color: #949494;">e</span>9 2.35<span style="color: #949494;">e</span>9 2.32<span style="color: #949494;">e</span>9 2.08<span style="color: #949494;">e</span>9 1.78<span style="color: #949494;">e</span>9 2.40<span style="color: #949494;">e</span>9 2.19<span style="color: #949494;">e</span>9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~… HPEYAV… 4.41<span style="color: #949494;">e</span>7 6.28<span style="color: #949494;">e</span>7 4.71<span style="color: #949494;">e</span>7 6.38<span style="color: #949494;">e</span>7 4.90<span style="color: #949494;">e</span>7 6.99<span style="color: #949494;">e</span>7 5.70<span style="color: #949494;">e</span>7 7.28<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~… HPYFYA… 1.43<span style="color: #949494;">e</span>8 2.26<span style="color: #949494;">e</span>8 2.10<span style="color: #949494;">e</span>8 1.84<span style="color: #949494;">e</span>8 1.84<span style="color: #949494;">e</span>8 1.70<span style="color: #949494;">e</span>8 1.91<span style="color: #949494;">e</span>8 2.10<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 732 more rows, 12 more variables: `c~03` &lt;dbl&gt;, `c~08` &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `c~13` &lt;dbl&gt;, `c~18` &lt;dbl&gt;, `d~04` &lt;dbl&gt;, `d~07` &lt;dbl&gt;, `d~14` &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `d~17` &lt;dbl&gt;, `e~05` &lt;dbl&gt;, `e~06` &lt;dbl&gt;, `e~15` &lt;dbl&gt;, `e~16` &lt;dbl&gt;, and</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​protein_Id, ²​peptide_Id</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable name ¹​peptide_Id</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $annotation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 3</span></span>
@@ -609,20 +609,20 @@ it will be removed</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> e~16       e         16    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rowdata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 746 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 742 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id        peptide_Id         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P01030~9~NA  AELADQAASWLTR      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P01030~9~NA  ILSLAQDQVGGSAEK    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P01030~9~NA  LLLFSPSVVR         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~18~NA AEFVEVTK           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~18~NA DDPHACYSTVFDK      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~18~NA DDPHACYSTVFDKLK    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~18~NA ECCHGDLLECADDRADLAK</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~18~NA ETYGDMADCCEK       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA EYEATLEECCAK       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA FKDLGEEHFK         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 736 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~18~NA AEFVEVTK           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA DDPHACYSTVFDK      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__P02769~18~NA DDPHACYSTVFDKLK    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> CON__P02769~18~NA ECCHGDLLECADDRADLAK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CON__P02769~18~NA ETYGDMADCCEK       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> CON__P02769~18~NA EYEATLEECCAK       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CON__P02769~18~NA FKDLGEEHFK         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CON__P02769~18~NA HLVDEPQNLIK        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CON__P02769~18~NA HPEYAVSVLLR        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> CON__P02769~18~NA HPYFYAPELLYYANK    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 732 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $config</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;AnalysisConfiguration&gt;</span>
@@ -641,7 +641,7 @@ it will be removed</p><div class="section">
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"matrix"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54  3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 57  3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter for missing values</span></span></span>
 <span class="r-in"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>

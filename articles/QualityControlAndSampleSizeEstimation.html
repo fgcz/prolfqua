@@ -50,19 +50,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
+      <a href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a>
     </li>
     <li>
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions.</a>
+      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions</a>
     </li>
     <li>
-      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+      <a href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
     </li>
     <li>
-      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
+      <a href="../articles/QCandSampleSize.html">Quality Control and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -106,10 +106,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>QC and Sample Size Estimation</h1>
-                        <h4 data-toc-skip class="author">Witold
+                        <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">14/12/2020</h4>
+            <h4 data-toc-skip class="date">2022-10-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>../vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="hidden name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -119,20 +119,35 @@ Wolski</h4>
     
     
 <div class="section level2">
+<h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
+</h2>
+<p>In this vignette we demonstrate how several descriptive statistics or
+diagnostic quality control plots can be generated for a dataset. For
+this, a proteinGroups file from the MaxQuant software is read and the
+“prolfqua specific” configuration is set up. Afterwards a first look
+into the data, is transformed and normalized and some useful plots are
+illustrated for the full dataset. While then filtering to only one
+single condition with four replicates we want to estimate how many
+samples are necessairy to properly quantify a two-fold change for 90% of
+all the proteins with a power of 0.8.</p>
+</div>
+<div class="section level2">
 <h2 id="loading-data">Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<p>Load the data from MaxQuant proteinGroups.txt file.</p>
+<p>Load the data from MaxQuant. In this case here we direclty load
+protein level data from the proteinGroups.txt file.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/find.package.html" class="external-link">find.package</a></span><span class="op">(</span><span class="st">"prolfqua"</span><span class="op">)</span> , <span class="st">"samples/maxquant_txt"</span><span class="op">)</span></span>
 <span><span class="va">inputMQfile</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"tiny2.zip"</span><span class="op">)</span></span>
 <span><span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"annotation_Ionstar2018_PXD003881.xlsx"</span><span class="op">)</span></span>
 <span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/tidyMQ_ProteinGroups.html">tidyMQ_ProteinGroups</a></span><span class="op">(</span><span class="va">inputMQfile</span><span class="op">)</span></span></code></pre></div>
-<p>Read the annotation with the explanatory variables.</p>
+<p>Read the annotation with the meta information that is associated with
+the samples.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="va">inputAnnotation</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span>, by <span class="op">=</span> <span class="st">"raw.file"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">startdata</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">startdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 14</span></span></span>
 <span><span class="co">##   raw.file   run_ID date  sample prote…¹ major…² nr.pe…³ fasta…⁴ prote…⁵ prote…⁶</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -146,20 +161,20 @@ Wolski</h4>
 <span><span class="co">## <span style="color: #949494;">#   mq.protein.lfq.intensity &lt;dbl&gt;, mq.protein.ms.ms.count &lt;int&gt;, and</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​protein.ids, ²​majority.protein.ids,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   ³​nr.peptides, ⁴​fasta.headers, ⁵​protein.group.id, ⁶​protein.score</span></span></span></code></pre>
-<p>For the sample size estimation we will use bio-reps from the
-<em>a</em> dilution. We also remove all proteins identified only by a
-single peptide.</p>
+<p>First, we want to remove all proteins identified only by a single
+peptide.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">sample</span>  <span class="op">==</span> <span class="st">"a"</span><span class="op">)</span></span>
-<span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nr.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="va">startdata</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nr.peptides</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>We need to <em>tell</em> <code>prolfqua</code> which columns in the
 table contain what information. This is done using the
 <code>AnalysisTableAnnotation</code> class.</p>
 <p>The <code>hierarchy</code> describes the structure of the MS data. In
-this case we have only protein level measurements. In addition you need
-to describe the factors of the analysis, i.e, the column containing the
-explanatory variables. You also need to specify the column containing
-the protein identifiers and the protein intensities.</p>
+this case we have only protein level measurements and therefore
+<code>hierarchyDepht</code> is equal to <span class="math inline">\(1\)</span>. In addition you need to describe the
+factors of the analysis, i.e, the column containing the explanatory
+variables which in this benchmark dataset is the dilution specified as
+sample in the annotation table. You also need to specify the column
+containing the protein identifiers and the protein intensities.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">atable</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"raw.file"</span></span>
@@ -170,37 +185,44 @@ the protein identifiers and the protein intensities.</p>
 <span><span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Run_ID"</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"run_ID"</span></span>
 <span><span class="va">atable</span><span class="op">$</span><span class="va">factorDepth</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
-<span></span>
 <span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">startdata</span>, <span class="va">config</span><span class="op">)</span></span></code></pre></div>
-<p>Create the LFQData class instance, remove zeros from data.</p>
+<p>Further steps are the creation of the LFQData class instance and the
+usual standard preprocessing such as the removal of zeros from data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">adata</span>, <span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">remove_small_intensities</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>You can convert the data into a data frame in wide format, where the
-intensities of each sample occupy their own columns.</p>
+<p>You can convert the data into a data frame in a wide format, where
+the intensities of each sample occupy their columns.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
-<span><span class="co">##   protein_Id              `a~10`   `a~11`   `a~20`   `a~21`</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CON__P02668           20<span style="text-decoration: underline;">452</span>000 25<span style="text-decoration: underline;">329</span>000 25<span style="text-decoration: underline;">253</span>000 24<span style="text-decoration: underline;">138</span>000</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O00401|WASL_HUMAN  49<span style="text-decoration: underline;">876</span>000 78<span style="text-decoration: underline;">810</span>000 49<span style="text-decoration: underline;">344</span>000 59<span style="text-decoration: underline;">340</span>000</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O14683|P5I11_HUMAN 45<span style="text-decoration: underline;">303</span>000 17<span style="text-decoration: underline;">463</span>000 52<span style="text-decoration: underline;">937</span>000 60<span style="text-decoration: underline;">960</span>000</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
+<span><span class="co">##   protein_Id              `a~10`   `a~11`   `a~20`   `a~21` `b~02` `b~09` `b~12`</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CON__P02668           20<span style="text-decoration: underline;">452</span>000 25<span style="text-decoration: underline;">329</span>000 25<span style="text-decoration: underline;">253</span>000 24<span style="text-decoration: underline;">138</span>000 2.68<span style="color: #949494;">e</span>7 1.71<span style="color: #949494;">e</span>7 3.18<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O00401|WASL_HUMAN  49<span style="text-decoration: underline;">876</span>000 78<span style="text-decoration: underline;">810</span>000 49<span style="text-decoration: underline;">344</span>000 59<span style="text-decoration: underline;">340</span>000 4.03<span style="color: #949494;">e</span>7 6.64<span style="color: #949494;">e</span>7 8.08<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O14683|P5I11_HUMAN 45<span style="text-decoration: underline;">303</span>000 17<span style="text-decoration: underline;">463</span>000 52<span style="text-decoration: underline;">937</span>000 60<span style="text-decoration: underline;">960</span>000 5.03<span style="color: #949494;">e</span>7 3.70<span style="color: #949494;">e</span>7 1.42<span style="color: #949494;">e</span>7</span></span></code></pre>
 <div class="section level3">
 <h3 id="visualization-of-not-normalized-data">Visualization of not normalized data<a class="anchor" aria-label="anchor" href="#visualization-of-not-normalized-data"></a>
 </h3>
+<p>Next we show how the data is distributed before transformation and
+normalization.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqplotter</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="QualityControlAndSampleSizeEstimation_files/figure-html/makeMissingHeatmap-1.png" width="700"></p>
+<p><img src="QualityControlAndSampleSizeEstimation_files/figure-html/intensityDistribution-1.png" width="700"></p>
 <div class="section level4">
 <h4 id="visualization-of-missing-data">Visualization of missing data<a class="anchor" aria-label="anchor" href="#visualization-of-missing-data"></a>
 </h4>
+<p>Often it also makes sense to look into the part of the data that is
+not quantified in all samples. Therefore several functions for the
+missingess are available. In the <code>NA_heatmap</code> function it is
+possible to see if some missing proteins are specific for one particular
+dilution or if they appear randomly in all samples.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nah</span> <span class="op">&lt;-</span> <span class="va">lfqplotter</span><span class="op">$</span><span class="fu">NA_heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Prints missing heatmap:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nah</span></span></code></pre></div>
 <div class="figure">
@@ -208,24 +230,30 @@ intensities of each sample occupy their own columns.</p>
 Heatmap, black - missing protein intensities, white - present
 </p>
 </div>
+<p>Also in the next two figures we show how many missing values are
+found in the respective conditions and how many proteins do not have
+missing data and how complete the measurements are for each group.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">plot_missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-7-1.png" alt="# of proteins with 0,1,...N missing values" width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/summaryPerGroup-1.png" alt="# of proteins with 0,1,...N missing values" width="700"><p class="caption">
 # of proteins with 0,1,…N missing values
 </p>
 </div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">plot_missingness_per_group_cumsum</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-8-1.png" alt="Cumulative sum of the # of proteins with 0,1,...N missing values" width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/cumSumSummary-1.png" alt="Cumulative sum of the # of proteins with 0,1,...N missing values" width="700"><p class="caption">
 Cumulative sum of the # of proteins with 0,1,…N missing values
 </p>
 </div>
+<p>In the <code>missigness_histogram</code> we can check if there is a
+dependency between NAs (and the number of NAs for earch protein) with
+respect to the protein intensity.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">missigness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-9-1.png" alt="Intensity distribution of proteins depending on # of missing values" width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/missingnessHist-1.png" alt="Intensity distribution of proteins depending on # of missing values" width="700"><p class="caption">
 Intensity distribution of proteins depending on # of missing values
 </p>
 </div>
@@ -235,6 +263,8 @@ Intensity distribution of proteins depending on # of missing values
 <div class="section level2">
 <h2 id="computing-standard-deviations-mean-and-cv-">Computing standard deviations, mean and CV.<a class="anchor" aria-label="anchor" href="#computing-standard-deviations-mean-and-cv-"></a>
 </h2>
+<p>Other important statistics that can be easily calculated from the
+object are coefficient of variation, means and standard deviations.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"quantile of "</span>,<span class="va">stats</span><span class="op">$</span><span class="va">stat</span> <span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -244,54 +274,82 @@ Intensity distribution of proteins depending on # of missing values
 <th align="right">probs</th>
 <th align="right">a</th>
 <th align="right">All</th>
+<th align="right">b</th>
+<th align="right">c</th>
+<th align="right">d</th>
+<th align="right">e</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="right">0.10</td>
 <td align="right">9.993088</td>
-<td align="right">9.993088</td>
+<td align="right">13.45674</td>
+<td align="right">9.50443</td>
+<td align="right">10.50083</td>
+<td align="right">9.816257</td>
+<td align="right">11.81279</td>
 </tr>
 <tr class="even">
 <td align="right">0.25</td>
 <td align="right">12.742718</td>
-<td align="right">12.742718</td>
+<td align="right">17.27817</td>
+<td align="right">12.21082</td>
+<td align="right">14.46669</td>
+<td align="right">12.060028</td>
+<td align="right">14.45046</td>
 </tr>
 <tr class="odd">
 <td align="right">0.50</td>
 <td align="right">20.783568</td>
-<td align="right">20.783568</td>
+<td align="right">24.99997</td>
+<td align="right">19.28001</td>
+<td align="right">18.95460</td>
+<td align="right">18.908048</td>
+<td align="right">22.08057</td>
 </tr>
 <tr class="even">
 <td align="right">0.75</td>
 <td align="right">29.616325</td>
-<td align="right">29.616325</td>
+<td align="right">34.46159</td>
+<td align="right">29.02860</td>
+<td align="right">27.98157</td>
+<td align="right">31.380660</td>
+<td align="right">32.88253</td>
 </tr>
 <tr class="odd">
 <td align="right">0.90</td>
 <td align="right">42.777323</td>
-<td align="right">42.777323</td>
+<td align="right">49.18627</td>
+<td align="right">37.57644</td>
+<td align="right">40.90806</td>
+<td align="right">42.644015</td>
+<td align="right">47.61966</td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density_median</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-10-1.png" alt="Distribution of CV's" width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/cvDistr-1.png" alt="Distribution of CV's" width="700"><p class="caption">
 Distribution of CV’s
 </p>
 </div>
+<p>In the next figure we show the dependency of the standard deviation
+with respect to the mean intensitiy of the proteins.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stdm_raw</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stdv_vs_mean</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">stdm_raw</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stdv_vs_mean</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">stdm_raw</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-11-1.png" alt="Scatter plot of standard deviation vs mean" width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/stdvVSmean-1.png" alt="Scatter plot of standard deviation vs mean" width="700"><p class="caption">
 Scatter plot of standard deviation vs mean
 </p>
 </div>
 <div class="section level3">
 <h3 id="normalize-protein-intensities">Normalize protein intensities<a class="anchor" aria-label="anchor" href="#normalize-protein-intensities"></a>
 </h3>
-<p>We normalize the data by first <span class="math inline">\(\log_2\)</span> transforming it and then
+<p>Next, we want to normalize the data by first <span class="math inline">\(\log_2\)</span> transforming it and then
 z-scaling. The <span class="math inline">\(log_2\)</span> stabilizes the
 variance, while the z-scaling removes systematic differences from the
 samples.</p>
@@ -300,6 +358,8 @@ samples.</p>
 <span><span class="va">transformed</span> <span class="op">&lt;-</span> <span class="va">lt</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span>
 <span><span class="va">transformed</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">is_response_transformed</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<p>Again we want to look into the distribution of the intensities in our
+samples after normalization.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -308,6 +368,8 @@ samples.</p>
 Normalized intensities.
 </p>
 </div>
+<p>plots matrix scatter plot in the upper right matrix and some
+statistics in the lower left matrix.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">pairs_smooth</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -316,59 +378,106 @@ Scatterplot matrix
 </p>
 </div>
 <pre><code><span><span class="co">## NULL</span></span></code></pre>
+<p>plots protein heatmap:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span> </span>
+<span><span class="va">p</span> </span></code></pre></div>
 <div class="figure" style="text-align: 5">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/plotheatmap-1.png" alt="Heatmap, Rows - proteins, Columns - samples" width="700"><p class="caption">
 Heatmap, Rows - proteins, Columns - samples
 </p>
 </div>
-<p>We can also look at the correlation among the samples.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<p>We can also look at the correlation among the samples or look at a
+PCA plot.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc</span></span></code></pre></div>
-<p><img src="QualityControlAndSampleSizeEstimation_files/figure-html/plotHeatmapCor-1.png" width="700"></p>
+<div class="figure" style="text-align: 5">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/plotHeatmapCor-1.png" alt="Heatmap based on sample correlations, Rows - samples, Columns - samples" width="700"><p class="caption">
+Heatmap based on sample correlations, Rows - samples, Columns - samples
+</p>
+</div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">pca</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: 5">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/doPCA-1.png" alt="Principal component analysis for all samples" width="700"><p class="caption">
+Principal component analysis for all samples
+</p>
+</div>
+<p>prints the standard deviations:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="st">"Standard deviations"</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <caption>Standard deviations</caption>
+<colgroup>
+<col width="9%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">probs</th>
 <th align="right">a</th>
 <th align="right">All</th>
+<th align="right">b</th>
+<th align="right">c</th>
+<th align="right">d</th>
+<th align="right">e</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="right">0.10</td>
-<td align="right">0.1252330</td>
-<td align="right">0.1252330</td>
+<td align="right">0.1311911</td>
+<td align="right">0.1935702</td>
+<td align="right">0.1076577</td>
+<td align="right">0.1075439</td>
+<td align="right">0.1844607</td>
+<td align="right">0.1528772</td>
 </tr>
 <tr class="even">
 <td align="right">0.25</td>
-<td align="right">0.1799588</td>
-<td align="right">0.1799588</td>
+<td align="right">0.1885206</td>
+<td align="right">0.2783449</td>
+<td align="right">0.1537401</td>
+<td align="right">0.1628612</td>
+<td align="right">0.2235209</td>
+<td align="right">0.2364888</td>
 </tr>
 <tr class="odd">
 <td align="right">0.50</td>
-<td align="right">0.2593594</td>
-<td align="right">0.2593594</td>
+<td align="right">0.2716987</td>
+<td align="right">0.3499546</td>
+<td align="right">0.2172518</td>
+<td align="right">0.2716880</td>
+<td align="right">0.3652402</td>
+<td align="right">0.3397208</td>
 </tr>
 <tr class="even">
 <td align="right">0.75</td>
-<td align="right">0.3766977</td>
-<td align="right">0.3766977</td>
+<td align="right">0.3946195</td>
+<td align="right">0.5313554</td>
+<td align="right">0.3895039</td>
+<td align="right">0.3958056</td>
+<td align="right">0.4933377</td>
+<td align="right">0.4897446</td>
 </tr>
 <tr class="odd">
 <td align="right">0.90</td>
-<td align="right">0.6998894</td>
-<td align="right">0.6998894</td>
+<td align="right">0.7331874</td>
+<td align="right">0.7603745</td>
+<td align="right">0.6134632</td>
+<td align="right">0.5726586</td>
+<td align="right">0.7187534</td>
+<td align="right">0.5801679</td>
 </tr>
 </tbody>
 </table>
+<p>plots density of the standard deviation</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density_median</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -376,8 +485,9 @@ Heatmap, Rows - proteins, Columns - samples
 Density of the standard deviation
 </p>
 </div>
-<p>Check for heteroskedasticity. After transformation the sd should be
-independent of the mean intensity.</p>
+<p>TODO(WEW): Please describe the figure.</p>
+<p>Check for heteroskedasticity. After transformation, the standard
+deviation should be independent of the mean intensity.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stdm_trans</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stdv_vs_mean</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">stdm_trans</span></span></code></pre></div>
@@ -392,15 +502,33 @@ Scatter plot of sd vs mean of protein intensity
 <div class="section level3">
 <h3 id="estimate-sample-size">Estimate sample size<a class="anchor" aria-label="anchor" href="#estimate-sample-size"></a>
 </h3>
+<p>For the sample size estimation we will now focus on only one
+condition and the different bio-reps from the <em>a</em> dilution. In
+this condition all samples have the same concentration and we want to
+check variability within this group. Like this we can estimate how many
+samples are necessary per group to quantify properly a two-fold change
+(delta of 1) for 90% of all the proteins with a power of 0.8 and
+significance level of 0.05.</p>
+<p>First, we need to filter our data for <code>dilution.</code>
+<em>a</em> only.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#startdata &lt;- startdata |&gt; dplyr::filter(sample  == "a")</span></span>
+<span><span class="va">transformedA</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">transformedA</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">transformedA</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dilution.</span>  <span class="op">==</span> <span class="st">"a"</span><span class="op">)</span></span>
+<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">transformedA</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density</span><span class="op">(</span>ggstat <span class="op">=</span> <span class="st">"ecdf"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-12-1.png" alt="Empirical cumulative density function of the standard deviation for all the proteins in the dataset." width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-2-1.png" alt="Empirical cumulative density function of the standard deviation for all the proteins in the dataset." width="700"><p class="caption">
 Empirical cumulative density function of the standard deviation for all
 the proteins in the dataset.
 </p>
 </div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<p>The table indicates that for this kind of data - if a two-fold change
+for 90% of all the proteins should be accurately quantified with a power
+of 0.8 (at 0.05 significance level) one would need to have 10 samples in
+each group.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dilution.</span> <span class="op">!=</span> <span class="st">"All"</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">sampleSize</span>, <span class="st">"Sample sizes. delta - Effect size, N - samplesize"</span><span class="op">)</span></span></code></pre></div>
@@ -419,169 +547,174 @@ the proteins in the dataset.
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.10</td>
-<td align="right">0.1252330</td>
-<td align="right">0.1252330</td>
-<td align="right">2.184177</td>
+<td align="right">0.1311911</td>
+<td align="right">0.1311911</td>
+<td align="right">2.242037</td>
 <td align="right">3</td>
 <td align="right">0.59</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.25</td>
-<td align="right">0.1799588</td>
-<td align="right">0.1799588</td>
-<td align="right">2.822134</td>
+<td align="right">0.1885206</td>
+<td align="right">0.1885206</td>
+<td align="right">2.945789</td>
 <td align="right">3</td>
 <td align="right">0.59</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.50</td>
-<td align="right">0.2593594</td>
-<td align="right">0.2593594</td>
-<td align="right">4.246057</td>
+<td align="right">0.2716987</td>
+<td align="right">0.2716987</td>
+<td align="right">4.523938</td>
 <td align="right">5</td>
 <td align="right">0.59</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.75</td>
-<td align="right">0.3766977</td>
-<td align="right">0.3766977</td>
-<td align="right">7.492883</td>
-<td align="right">8</td>
+<td align="right">0.3946195</td>
+<td align="right">0.3946195</td>
+<td align="right">8.105266</td>
+<td align="right">9</td>
 <td align="right">0.59</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.90</td>
-<td align="right">0.6998894</td>
-<td align="right">0.6998894</td>
-<td align="right">23.090693</td>
-<td align="right">24</td>
+<td align="right">0.7331874</td>
+<td align="right">0.7331874</td>
+<td align="right">25.239037</td>
+<td align="right">26</td>
 <td align="right">0.59</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.10</td>
-<td align="right">0.1252330</td>
-<td align="right">0.1252330</td>
-<td align="right">1.772983</td>
+<td align="right">0.1311911</td>
+<td align="right">0.1311911</td>
+<td align="right">1.797167</td>
 <td align="right">2</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.25</td>
-<td align="right">0.1799588</td>
-<td align="right">0.1799588</td>
-<td align="right">2.014966</td>
+<td align="right">0.1885206</td>
+<td align="right">0.1885206</td>
+<td align="right">2.057610</td>
 <td align="right">3</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.50</td>
-<td align="right">0.2593594</td>
-<td align="right">0.2593594</td>
-<td align="right">2.476882</td>
+<td align="right">0.2716987</td>
+<td align="right">0.2716987</td>
+<td align="right">2.563856</td>
 <td align="right">3</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.75</td>
-<td align="right">0.3766977</td>
-<td align="right">0.3766977</td>
-<td align="right">3.502452</td>
+<td align="right">0.3946195</td>
+<td align="right">0.3946195</td>
+<td align="right">3.700244</td>
 <td align="right">4</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.90</td>
-<td align="right">0.6998894</td>
-<td align="right">0.6998894</td>
-<td align="right">8.762314</td>
-<td align="right">9</td>
+<td align="right">0.7331874</td>
+<td align="right">0.7331874</td>
+<td align="right">9.501957</td>
+<td align="right">10</td>
 <td align="right">1.00</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.10</td>
-<td align="right">0.1252330</td>
-<td align="right">0.1252330</td>
-<td align="right">1.535918</td>
+<td align="right">0.1311911</td>
+<td align="right">0.1311911</td>
+<td align="right">1.546931</td>
 <td align="right">2</td>
 <td align="right">2.00</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.25</td>
-<td align="right">0.1799588</td>
-<td align="right">0.1799588</td>
-<td align="right">1.637050</td>
+<td align="right">0.1885206</td>
+<td align="right">0.1885206</td>
+<td align="right">1.653093</td>
 <td align="right">2</td>
 <td align="right">2.00</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.50</td>
-<td align="right">0.2593594</td>
-<td align="right">0.2593594</td>
-<td align="right">1.790985</td>
+<td align="right">0.2716987</td>
+<td align="right">0.2716987</td>
+<td align="right">1.816385</td>
 <td align="right">2</td>
 <td align="right">2.00</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">0.75</td>
-<td align="right">0.3766977</td>
-<td align="right">0.3766977</td>
-<td align="right">2.056740</td>
+<td align="right">0.3946195</td>
+<td align="right">0.3946195</td>
+<td align="right">2.102976</td>
 <td align="right">3</td>
 <td align="right">2.00</td>
 </tr>
 <tr class="odd">
 <td align="left">a</td>
 <td align="right">0.90</td>
-<td align="right">0.6998894</td>
-<td align="right">0.6998894</td>
-<td align="right">3.228005</td>
+<td align="right">0.7331874</td>
+<td align="right">0.7331874</td>
+<td align="right">3.395886</td>
 <td align="right">4</td>
 <td align="right">2.00</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<p>The table summarises visually how many samples are needed for
+different expected differences (in log2-scale) and different portions of
+all proteins.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampleSize</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">probs</span><span class="op">)</span> , y <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">delta</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-13-1.png" alt="Estimated sample sizes for various FC levels and various quantiles of the standard deviation." width="700"><p class="caption">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-3-1.png" alt="Estimated sample sizes for various FC levels and various quantiles of the standard deviation." width="700"><p class="caption">
 Estimated sample sizes for various FC levels and various quantiles of
 the standard deviation.
 </p>
 </div>
-<p>Getting statistics for each protein in each group. The information
-includes group size, number of observations, standard deviation,
-variance, mean.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>It is also possible to get the statistics for each protein in each
+group. The information includes group size, number of observations,
+standard deviation, variance, mean.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">##   protein_Id            dilution.     n not_na     sd     var  mean</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CON__P02668           a             4      4 0.060<span style="text-decoration: underline;">3</span> 0.003<span style="text-decoration: underline;">64</span>  24.5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O00401|WASL_HUMAN  a             4      4 0.247  0.061<span style="text-decoration: underline;">1</span>   25.8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O14683|P5I11_HUMAN a             4      4 0.915  0.838    25.3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> sp|O43251|RFOX2_HUMAN a             4      4 0.290  0.084<span style="text-decoration: underline;">2</span>   24.7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> sp|O43395|PRPF3_HUMAN a             4      4 0.263  0.069<span style="text-decoration: underline;">2</span>   26.5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> sp|O75962|TRIO_HUMAN  a             4      4 0.370  0.137    26.9</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CON__P02668           a             4      4 0.063<span style="text-decoration: underline;">2</span> 0.003<span style="text-decoration: underline;">99</span>  24.3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|O00401|WASL_HUMAN  a             4      4 0.259  0.067<span style="text-decoration: underline;">1</span>   25.6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|O14683|P5I11_HUMAN a             4      4 0.959  0.920    25.1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> sp|O43251|RFOX2_HUMAN a             4      4 0.304  0.092<span style="text-decoration: underline;">4</span>   24.5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> sp|O43395|PRPF3_HUMAN a             4      4 0.276  0.075<span style="text-decoration: underline;">9</span>   26.3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> sp|O75962|TRIO_HUMAN  a             4      4 0.387  0.150    26.8</span></span></code></pre>
 <p>You can also estimate the sample size needed to perform differential
 expression analysis for each protein, given the <code>power</code>,
-<code>delta</code>, and <code>sig.level</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code>delta</code>, and <code>sig.level</code>. The next figure shows
+the distribution of needed sample sizes for all proteins with a power of
+0.8 at signifiance level 0.05 for a two fold change (delta = 1).</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test</span><span class="op">(</span>delta <span class="op">=</span> <span class="fl">1</span>,power <span class="op">=</span> <span class="fl">0.8</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dilution.</span> <span class="op">==</span> <span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>,<span class="va">protein_Id</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>,<span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Sample size for each protein"</span><span class="op">)</span></span></code></pre></div>
@@ -617,94 +750,151 @@ expression analysis for each protein, given the <code>power</code>,
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">2</td>
-<td align="right">1.7739102</td>
-<td align="right">3.1467575</td>
-<td align="right">22.97323</td>
+<td align="right">1.8583058</td>
+<td align="right">3.4533005</td>
+<td align="right">22.66320</td>
 <td align="right">1</td>
-<td align="right">50.37564</td>
-<td align="right">51</td>
+<td align="right">55.18607</td>
+<td align="right">56</td>
 </tr>
 <tr class="even">
 <td align="left">sp|Q6R327|RICTR_HUMAN</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">3</td>
-<td align="right">1.2749781</td>
-<td align="right">1.6255691</td>
-<td align="right">23.75844</td>
+<td align="right">1.3356365</td>
+<td align="right">1.7839248</td>
+<td align="right">23.48576</td>
 <td align="right">1</td>
-<td align="right">26.51329</td>
-<td align="right">27</td>
+<td align="right">28.99600</td>
+<td align="right">29</td>
 </tr>
 <tr class="odd">
 <td align="left">sp|Q92896|GSLG1_HUMAN</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">4</td>
-<td align="right">0.9887662</td>
-<td align="right">0.9776585</td>
-<td align="right">22.74865</td>
+<td align="right">1.0358077</td>
+<td align="right">1.0728976</td>
+<td align="right">22.42793</td>
 <td align="right">1</td>
-<td align="right">16.36531</td>
-<td align="right">17</td>
+<td align="right">17.85532</td>
+<td align="right">18</td>
 </tr>
 <tr class="even">
 <td align="left">sp|O14683|P5I11_HUMAN</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">4</td>
-<td align="right">0.9154357</td>
-<td align="right">0.8380226</td>
-<td align="right">25.26318</td>
+<td align="right">0.9589885</td>
+<td align="right">0.9196590</td>
+<td align="right">25.06210</td>
 <td align="right">1</td>
-<td align="right">14.18273</td>
-<td align="right">15</td>
+<td align="right">15.45842</td>
+<td align="right">16</td>
 </tr>
 <tr class="odd">
 <td align="left">sp|Q12933|TRAF2_HUMAN</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">3</td>
-<td align="right">0.8529473</td>
-<td align="right">0.7275191</td>
-<td align="right">22.86506</td>
+<td align="right">0.8935271</td>
+<td align="right">0.7983907</td>
+<td align="right">22.54989</td>
 <td align="right">1</td>
-<td align="right">12.45794</td>
-<td align="right">13</td>
+<td align="right">13.56386</td>
+<td align="right">14</td>
 </tr>
 <tr class="even">
 <td align="left">sp|Q6NYC1|JMJD6_HUMAN</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">4</td>
-<td align="right">0.8255164</td>
-<td align="right">0.6814774</td>
-<td align="right">23.59539</td>
+<td align="right">0.8647912</td>
+<td align="right">0.7478639</td>
+<td align="right">23.31496</td>
 <td align="right">1</td>
-<td align="right">11.74020</td>
-<td align="right">12</td>
+<td align="right">12.77528</td>
+<td align="right">13</td>
 </tr>
 <tr class="odd">
 <td align="left">sp|P28635|METQ_ECOLI</td>
 <td align="left">a</td>
 <td align="right">4</td>
 <td align="right">4</td>
-<td align="right">0.7959310</td>
-<td align="right">0.6335061</td>
-<td align="right">23.74717</td>
+<td align="right">0.8337982</td>
+<td align="right">0.6952194</td>
+<td align="right">23.47395</td>
 <td align="right">1</td>
-<td align="right">10.99315</td>
-<td align="right">11</td>
+<td align="right">11.95436</td>
+<td align="right">12</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">delta</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">delta</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-14-1.png" alt="Distribution of the required sample sizes for three fold change thresholds for all the proteins." width="700"><p class="caption">
-Distribution of the required sample sizes for three fold change
-thresholds for all the proteins.
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-4-1.png" alt="Distribution of the required sample sizes for two fold change thresholds for all the proteins." width="700"><p class="caption">
+Distribution of the required sample sizes for two fold change thresholds
+for all the proteins.
 </p>
+</div>
+<p>The <code>prolfqua</code> package is described in <span class="citation">(Wolski et al. 2022)</span>.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
+<span><span class="co">## Running under: macOS Monterey 12.6</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib</span></span>
+<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] ggrepel_0.9.1      Rcpp_1.0.9         lattice_0.20-45    tidyr_1.2.1       </span></span>
+<span><span class="co">##  [5] assertthat_0.2.1   rprojroot_2.0.3    conflicted_1.1.0   digest_0.6.29     </span></span>
+<span><span class="co">##  [9] utf8_1.2.2         R6_2.5.1           cellranger_1.1.0   evaluate_0.17     </span></span>
+<span><span class="co">## [13] highr_0.9          httr_1.4.4         ggplot2_3.3.6      pillar_1.8.1      </span></span>
+<span><span class="co">## [17] rlang_1.0.6        lazyeval_0.2.2     readxl_1.4.1       prolfqua_0.4.5    </span></span>
+<span><span class="co">## [21] data.table_1.14.2  jquerylib_0.1.4    Matrix_1.5-1       rmarkdown_2.17    </span></span>
+<span><span class="co">## [25] pkgdown_2.0.6      splines_4.2.1      textshaping_0.3.6  desc_1.4.2        </span></span>
+<span><span class="co">## [29] labeling_0.4.2     stringr_1.4.1      htmlwidgets_1.5.4  pheatmap_1.0.12   </span></span>
+<span><span class="co">## [33] munsell_0.5.0      compiler_4.2.1     xfun_0.33          pkgconfig_2.0.3   </span></span>
+<span><span class="co">## [37] systemfonts_1.0.4  mgcv_1.8-40        htmltools_0.5.3    tidyselect_1.2.0  </span></span>
+<span><span class="co">## [41] tibble_3.1.8       gridExtra_2.3      fansi_1.0.3        viridisLite_0.4.1 </span></span>
+<span><span class="co">## [45] dplyr_1.0.10       withr_2.5.0        MASS_7.3-58.1      grid_4.2.1        </span></span>
+<span><span class="co">## [49] nlme_3.1-160       jsonlite_1.8.2     gtable_0.3.1       lifecycle_1.0.3   </span></span>
+<span><span class="co">## [53] DBI_1.1.3          magrittr_2.0.3     scales_1.2.1       KernSmooth_2.23-20</span></span>
+<span><span class="co">## [57] cli_3.4.1          stringi_1.7.8      cachem_1.0.6       farver_2.1.1      </span></span>
+<span><span class="co">## [61] fs_1.5.2           bslib_0.4.0        ellipsis_0.3.2     ragg_1.2.3        </span></span>
+<span><span class="co">## [65] generics_0.1.3     vctrs_0.4.2        RColorBrewer_1.1-3 tools_4.2.1       </span></span>
+<span><span class="co">## [69] forcats_0.5.2      glue_1.6.2         purrr_0.3.5        fastmap_1.1.0     </span></span>
+<span><span class="co">## [73] yaml_2.3.5         colorspace_2.0-3   memoise_2.0.1      plotly_4.10.0     </span></span>
+<span><span class="co">## [77] knitr_1.40         sass_0.4.2</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Wolski2022.06.07.494524" class="csl-entry">
+Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
+Schlapbach, and Christian Panse. 2022. <span>“Prolfqua: A Comprehensive
+<span class="nocase">R-package</span> for Proteomics Differential
+Expression Analysis.”</span> <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2022.06.07.494524" class="external-link">https://doi.org/10.1101/2022.06.07.494524</a>.
 </div>
 </div>
 </div>

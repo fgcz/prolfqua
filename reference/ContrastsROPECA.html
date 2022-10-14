@@ -33,19 +33,19 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
+      <a href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a>
     </li>
     <li>
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions.</a>
+      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions</a>
     </li>
     <li>
-      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+      <a href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
     </li>
     <li>
-      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
+      <a href="../articles/QCandSampleSize.html">Quality Control and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -359,49 +359,49 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
 <span class="r-msg co"><span class="r-pr">#&gt;</span> compute contrasts:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "peptide_Id", "contrast")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 794  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 800  14</span>
 <span class="r-in"><span> <span class="va">contrM</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrM</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 794  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 800  14</span>
 <span class="r-in"><span> <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contrM</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 61 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 64 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id   contr…¹     n     diff statis…² avgAbd beta.…³ FDR.b…⁴</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ROPECA    CON__P01030… dil.b_…     3 -<span style="color: #BB0000;">5.57</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.211</span>   -<span style="color: #BB0000;">1.85</span>    0.928    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ROPECA    CON__P02769… dil.b_…    33  8.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.004<span style="text-decoration: underline;">02</span>  3.46    1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ROPECA    CON__Q3SZR3… dil.b_…     7 -<span style="color: #BB0000;">4.39</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> -<span style="color: #BB0000;">0.043</span><span style="color: #BB0000; text-decoration: underline;">8</span>   1.19    1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ROPECA    sp|O00148|D… dil.b_…    11  6.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.217    1.19    0.993    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ROPECA    sp|O14745|N… dil.b_…    11 -<span style="color: #BB0000;">3.35</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.182</span>   -<span style="color: #BB0000;">0.306</span>   0.997    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ROPECA    sp|O15145|A… dil.b_…     3 -<span style="color: #BB0000;">3.72</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.185</span>    2.54    0.944    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ROPECA    sp|O15511|A… dil.b_…     4 -<span style="color: #BB0000;">5.30</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.414</span>    0.864   0.808    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ROPECA    sp|O75436|V… dil.b_…     7  1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> -<span style="color: #BB0000;">0.005</span><span style="color: #BB0000; text-decoration: underline;">56</span> -<span style="color: #BB0000;">0.137</span>   1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ROPECA    sp|O95361|T… dil.b_…     2 <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>   <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ROPECA    sp|O95373|I… dil.b_…    26  2.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.124    1.54    1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 51 more rows, and abbreviated variable names ¹​contrast, ²​statistic,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ROPECA    CON__P02769… dil.b_…    33  8.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.004<span style="text-decoration: underline;">02</span>  3.46  1.00<span style="color: #949494;">e</span>+0  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ROPECA    CON__P34955… dil.b_…    13 -<span style="color: #BB0000;">1.16</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.110</span>    2.85  1.00<span style="color: #949494;">e</span>+0  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ROPECA    sp|L0R819|A… dil.b_…     2  2.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.707   -<span style="color: #BB0000;">1.23</span>  8.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ROPECA    sp|O14548|C… dil.b_…     2  2.44<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.095<span style="text-decoration: underline;">9</span>  -<span style="color: #BB0000;">0.802</span> 9.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ROPECA    sp|O43660|P… dil.b_…     7  1.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.047<span style="text-decoration: underline;">3</span>  -<span style="color: #BB0000;">1.02</span>  1.00<span style="color: #949494;">e</span>+0  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ROPECA    sp|O60220|T… dil.b_…     1  4.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.412    1.41  6.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ROPECA    sp|O75937|D… dil.b_…     4 -<span style="color: #BB0000;">9.18</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.879</span>    0.166 3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ROPECA    sp|O95373|I… dil.b_…    26  2.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.124    1.54  1.00<span style="color: #949494;">e</span>+0  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ROPECA    sp|P00505|A… dil.b_…    12 -<span style="color: #BB0000;">5.25</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> -<span style="color: #BB0000;">0.202</span>    1.11  9.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ROPECA    sp|P02924|A… dil.b_…     6  7.36<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  3.79    -<span style="color: #BB0000;">1.64</span>  5.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.012<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 54 more rows, and abbreviated variable names ¹​contrast, ²​statistic,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​beta.based.significance, ⁴​FDR.beta.based.significance</span></span>
 <span class="r-in"><span> <span class="co">#ContrastsROPECA$debug("to_wide")</span></span></span>
 <span class="r-in"><span> <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61  9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64  9</span>
 <span class="r-in"><span> <span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">contrast</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 61 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 64 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id                       diff.dil.b_vs_a beta.based.signifi…¹ FDR.b…²</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P01030~9~NA                       -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">7</span>                  0.933    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P02769~18~NA                       0.000<span style="text-decoration: underline;">881</span>                1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> CON__Q3SZR3~50~NA                      -<span style="color: #BB0000;">0.004</span><span style="color: #BB0000; text-decoration: underline;">39</span>                 1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O00148|DX39A_HUMAN~156~O00148        0.067<span style="text-decoration: underline;">3</span>                  0.995    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O14745|NHRF1_HUMAN~240~O14745       -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">5</span>                  0.998    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|O15145|ARPC3_HUMAN~283~O15145       -<span style="color: #BB0000;">0.037</span><span style="color: #BB0000; text-decoration: underline;">2</span>                  0.948    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|O15511|ARPC5_HUMAN~313~O15511       -<span style="color: #BB0000;">0.053</span><span style="color: #BB0000; text-decoration: underline;">0</span>                  0.821    1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|O75436|VP26A_HUMAN~482~O75436        0.001<span style="text-decoration: underline;">34</span>                 1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|O95361|TRI16_HUMAN~598~O95361       <span style="color: #BB0000;">NA</span>                      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|O95373|IPO7_HUMAN~600~O95373         0.022<span style="text-decoration: underline;">0</span>                  1.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 51 more rows, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> CON__P02769~18~NA                       0.000<span style="text-decoration: underline;">881</span>              1.00     1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> CON__P34955~32~NA                      -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">6</span>                1.00     1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|L0R819|ASURF_HUMAN~152~L0R819        0.271                 0.835    1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|O14548|COX7R_HUMAN~221~O14548        0.024<span style="text-decoration: underline;">4</span>                0.976    1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|O43660|PLRG1_HUMAN~356~O43660        0.015<span style="text-decoration: underline;">1</span>                1.00     1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|O60220|TIM8A_HUMAN~391~O60220        0.043<span style="text-decoration: underline;">0</span>                0.672    1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|O75937|DNJC8_HUMAN~527~O75937       -<span style="color: #BB0000;">0.091</span><span style="color: #BB0000; text-decoration: underline;">8</span>                0.366    1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|O95373|IPO7_HUMAN~600~O95373         0.022<span style="text-decoration: underline;">0</span>                1.00     1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P00505|AATM_HUMAN~667~P00505        -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">5</span>                0.999    1.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|P02924|ARAF_ECOLI~705~P02924         0.736                 0.001<span style="text-decoration: underline;">04</span>  0.022<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 54 more rows, and abbreviated variable names</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​beta.based.significance.dil.b_vs_a,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​FDR.beta.based.significance.dil.b_vs_a</span></span>
 <span class="r-in"><span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -415,15 +415,12 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.b_vs_a dilution.b dilution.a</span>
 <span class="r-in"><span> <span class="va">pl</span><span class="op">$</span><span class="fu">histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $beta.based.significance</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_bin).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR.beta.based.significance</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (stat_bin).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span> <span class="va">pl</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (geom_point).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

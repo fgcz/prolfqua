@@ -35,19 +35,19 @@ for an usage example see run_script lfq_mixed_model_inference"><!-- mathjax --><
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Comparing2Groups.html">Comparing Two Groups</a>
+      <a href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a>
     </li>
     <li>
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions.</a>
+      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions</a>
     </li>
     <li>
-      <a href="../articles/Modelling2Factors.html">Modelling Dataset with two Factors.</a>
+      <a href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
     </li>
     <li>
-      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
+      <a href="../articles/QCandSampleSize.html">Quality Control and Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -119,7 +119,7 @@ for an usage example see run_script lfq_mixed_model_inference</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">inputAnnotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="system_file.html">system_file</a></span><span class="op">(</span><span class="st">"samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx"</span>,package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="tidyMQ_ProteinGroups.html">tidyMQ_ProteinGroups</a></span><span class="op">(</span><span class="va">protein_txt</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /private/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T/Rtmpt2mg9K/temp_libpath8ac57f3220ed/prolfqua/samples/maxquant_txt/tiny2.zip</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /private/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T/Rtmpzsb48X/temp_libpathe6d922524d88/prolfqua/samples/maxquant_txt/tiny2.zip</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">add_annotation</span><span class="op">(</span><span class="va">startdata</span>,<span class="va">inputAnnotation</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">startdata</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
