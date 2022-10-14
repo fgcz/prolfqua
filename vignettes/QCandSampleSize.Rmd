@@ -1,7 +1,7 @@
 ---
-title: "Quality Control and Sample Size Estimation"
-author: "Witold E. Wolski"
-date: "`r Sys.Date()`"
+title: "Quality Control & Sample Size Estimation"
+author: "Witold Wolski"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
     toc: yes
@@ -17,7 +17,7 @@ params:
   plot_sd_vs_mean: FALSE
   pep: TRUE
 vignette: >
-  %\VignetteIndexEntry{Quality Control and Sample Size Estimation}
+  %\VignetteIndexEntry{Quality Control & Sample Size Estimation}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
   editor_options:
@@ -27,8 +27,6 @@ header-includes:
   - \usepackage[english]{babel}
   - \usepackage{blindtext}
   - \usepackage{float}
-bibliography:
-  - prolfqua.bib
 ---
 
 
@@ -70,6 +68,10 @@ old.theme <- ggplot2::theme_set(ggplot2::theme_classic())
 
 \clearpage
 
+# Purpose
+In this vignette we demonstrate how `prolfqua` and its functions can be used to generate structured reports e.g. for a standard service application workflow.
+Here, we again will use the ionstar benchmark data to show how one can easily generate diagnostic plots and estimate a meaningful sample size for a given expected observable difference in mean for protein intensities.
+
 # Introduction
 
 - Workunit: `r local_project_conf$workunit_Id`
@@ -94,11 +96,10 @@ library(prolfqua)
 lfqdata <- prolfqua::LFQData$new(data, local_config)
 
 x <- lfqdata$hierarchy_counts()
-#knitr::kable(data.frame(NR = x), caption =paste0("Nr of" , if(params$pep){"proteins and peptides"}else{"proteins"} , " detected in all samples."),format="html") 
 
 prolfqua::table_facade( 
   data.frame(NR = x),
-  caption = paste0("Nr of",
+  caption = paste0("Nr of ",
                    if(params$pep){"proteins and peptides"}
                    else
                    {"proteins"} ,
@@ -108,7 +109,7 @@ prolfqua::table_facade(
 
 
 
-```{r}
+```{r defineNrSamples}
 
 nrSamples <- nrow(lfqdata$factors())
 width = max(8, nrSamples*0.2)
@@ -124,7 +125,7 @@ summarizer$plot_hierarchy_counts_sample()
 ```
 
 
-```{r}
+```{r summarizeHier}
 x3 <- lfqdata$summarize_hierarchy()
 
 ```
@@ -135,7 +136,7 @@ x3 <- lfqdata$summarize_hierarchy()
 
 Ideally, we identify each `r if(params$pep){"peptide"}else{"protein"}` in all of the samples. However, because of the limit of detection (LOD) low-intensity `r if(params$pep){"peptides"}else{"proteins"}` might not be observed in all samples. Ideally, the LOD should be the only source of missingness in biological replicates. The following figures help us to verify the reproducibility of the measurement at the level of missing data.
 
-```{r}
+```{r defineHeight}
 height <- max(7, nrSamples * 0.1)
 ```
 
@@ -151,7 +152,7 @@ gridExtra::grid.arrange(p, xx3, xx4, ncol = 1)
 
 ```
 
-(ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample.
+(ref:missingnessHeatmap) Heatmap of missing `r if(params$pep){"peptide"}else{"protein"}` quantifications clustered by sample, black - missing intensities, white - present.
 
 ```{r preparemissingnessHeatmap, include=FALSE}
 pNAmap <- plotter$NA_heatmap()
@@ -326,8 +327,6 @@ sd_quantile_res2 <- st$stats_quantiles(probs = c(0.5, 0.6, 0.7, 0.8, 0.9))$wide
 ```
 
 ```{r printSDTable}
-#knitr::kable(sd_quantile_res2,  digits = 3,
-#             caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.", format="html") 
 prolfqua::table_facade(sd_quantile_res2,
   caption = "Summary of the distribution of standard deviations at the 50th, 60th, 70th, 80th and 90th percentile.")
 
@@ -336,7 +335,6 @@ prolfqua::table_facade(sd_quantile_res2,
 (ref:overviewHeat) Sample and `r if(params$pep){"peptide"}else{"protein"}` Heatmap.
 
 ```{r prepareoverviewHeat, include = FALSE}
-
 hm <- plotter$heatmap()
 width = max(10, nrSamples * 0.15)
 ```
@@ -417,15 +415,3 @@ prolfqua::table_facade(
 ```{r resetTheme, include=FALSE}
 ggplot2::theme_set(old.theme)
 ```
-
-The `prolfqua` package is described in [@Wolski2022.06.07.494524].
-
-# Session Info
-
-```{r}
-sessionInfo()
-```
-
-# References
-
-
