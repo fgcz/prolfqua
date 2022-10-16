@@ -37,6 +37,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     global = logical(),
     #' @field present default 1, presence in interaction to infer limit of detection.
     present = 1,
+    #' @field minsd default 1, if standard deviation can not be estimated, what is the prior minimum sd, default = 1s
     minsd = 1,
     #' @description
     #' initialize
@@ -48,6 +49,7 @@ ContrastsSimpleImpute <- R6::R6Class(
     #' @param method internal default V1
     #' @param global default TRUE use all or per condition data to impute from
     #' @param present in at most how many samples the protein should be observed
+    #' @param minsd if sd can not be infered, what is the prior sd?
     initialize = function(lfqdata,
                           contrasts,
                           confint = 0.95,

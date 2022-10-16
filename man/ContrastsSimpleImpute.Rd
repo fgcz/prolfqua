@@ -80,6 +80,8 @@ Other modelling:
 \item{\code{global}}{Take global or local values for imputation}
 
 \item{\code{present}}{default 1, presence in interaction to infer limit of detection.}
+
+\item{\code{minsd}}{default 1, if standard deviation can not be estimated, what is the prior minimum sd, default = 1s}
 }
 \if{html}{\out{</div>}}
 }
@@ -138,6 +140,8 @@ initialize
 \item{\code{global}}{default TRUE use all or per condition data to impute from}
 
 \item{\code{present}}{in at most how many samples the protein should be observed}
+
+\item{\code{minsd}}{if sd can not be infered, what is the prior sd?}
 }
 \if{html}{\out{</div>}}
 }
