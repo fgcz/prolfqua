@@ -16,6 +16,18 @@ summary_ROPECA_median_p.scaled(
 )
 }
 \arguments{
+\item{contrasts_data}{data frame}
+
+\item{contrast}{name of column with contrast identifier}
+
+\item{subject_Id}{name of column with typically protein Id}
+
+\item{estimate}{name of column with effect size estimate}
+
+\item{statistic}{statistic name of column with statistic (typically t-statistics)}
+
+\item{p.value}{name of column with moderated.p.value}
+
 \item{max.n}{used to limit the number of peptides in probablity computation.}
 }
 \value{
@@ -27,10 +39,11 @@ takes p-value of the scaled p-value
 }
 \examples{
 
+set.seed(10)
 nrPep <- 10000
 nrProtein <- 800
 p.value <- runif(nrPep)
-estimate <- runif(nrPep)
+estimate <- rnorm(nrPep)
 avgAbd <- runif(nrPep)
 protein_Id <- sample(1:800, size = nrPep,
   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
@@ -38,7 +51,7 @@ protein_Id <- sample(1:800, size = nrPep,
 plot(table(table(protein_Id)))
 
 testdata <- data.frame(contrast = "contrast1",
-   protein_Id = protein_Id,
+  protein_Id = protein_Id,
   estimate = estimate,
   pseudo_estimate = estimate,
   p.value = p.value,
@@ -55,16 +68,24 @@ xx2 <- summary_ROPECA_median_p.scaled(testdata,
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 1)
-mad(xx2$estimate, na.rm=TRUE)
+testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409)
+testthat::expect_equal(median(xx2$estimate), -0.006874857)
+testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
+testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
 
+# Uniform distribution
 hist(testdata$p.value)
 hist(xx30$median.p.scaled, breaks = 20)
 hist(xx2$median.p.scaled, breaks = 20)
+# shows that beta.based.significance has NO uniform distribution
+# although H0 is true for all cases.
+
 hist(xx30$beta.based.significance, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
+
 hist(xx2$median.p.value, breaks = 20)
 hist(xx2$beta.based.significance, breaks = 20)
-hist(xx2$mad.estimate)
+hist(estimate)
 
 }
 \seealso{

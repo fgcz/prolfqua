@@ -20,12 +20,12 @@
 #' tmp$isSingular
 #'
 strategy_lmer <- function(modelstr,
-                                   model_name = "Model",
-                                   report_columns = c("statistic",
-                                                      "p.value",
-                                                      "p.value.adjusted",
-                                                      "moderated.p.value",
-                                                      "moderated.p.value.adjusted")
+                          model_name = "Model",
+                          report_columns = c("statistic",
+                                             "p.value",
+                                             "p.value.adjusted",
+                                             "moderated.p.value",
+                                             "moderated.p.value.adjusted")
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb , get_formula = FALSE){
@@ -36,7 +36,7 @@ strategy_lmer <- function(modelstr,
       pb$tick()
     }
     modelTest <- tryCatch( lmerTest::lmer( formula , data = x ),
-                          error = .ehandler)
+                           error = .ehandler)
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -63,12 +63,12 @@ strategy_lmer <- function(modelstr,
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 strategy_lm <- function(modelstr,
-                                 model_name = "Model",
-                                 report_columns = c("statistic",
-                                                    "p.value",
-                                                    "p.value.adjusted",
-                                                    "moderated.p.value",
-                                                    "moderated.p.value.adjusted")
+                        model_name = "Model",
+                        report_columns = c("statistic",
+                                           "p.value",
+                                           "p.value.adjusted",
+                                           "moderated.p.value",
+                                           "moderated.p.value.adjusted")
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE){
@@ -108,12 +108,12 @@ strategy_lm <- function(modelstr,
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 strategy_rlm <- function(modelstr,
-                        model_name = "Model",
-                        report_columns = c("statistic",
-                                           "p.value",
-                                           "p.value.adjusted",
-                                           "moderated.p.value",
-                                           "moderated.p.value.adjusted")
+                         model_name = "Model",
+                         report_columns = c("statistic",
+                                            "p.value",
+                                            "p.value.adjusted",
+                                            "moderated.p.value",
+                                            "moderated.p.value.adjusted")
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE){
@@ -148,12 +148,12 @@ strategy_rlm <- function(modelstr,
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 strategy_glm <- function(modelstr,
-                                  model_name = "Model",
-                                  report_columns = c("statistic",
-                                                     "p.value",
-                                                     "p.value.adjusted",
-                                                     "moderated.p.value",
-                                                     "moderated.p.value.adjusted")
+                         model_name = "Model",
+                         report_columns = c("statistic",
+                                            "p.value",
+                                            "p.value.adjusted",
+                                            "moderated.p.value",
+                                            "moderated.p.value.adjusted")
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE){
@@ -860,11 +860,11 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
   res <- tibble::as_tibble(res, rownames = "lhs")
   res$sigma <- sigma(model)
   res <- res |> dplyr::rename(estimate = "Estimate",
-                               std.error = "Std. Error",
-                               statistic = "t value",
-                               p.value = "Pr(>|t|)",
-                               conf.low = "lower",
-                               conf.high = "upper")
+                              std.error = "Std. Error",
+                              statistic = "t value",
+                              p.value = "Pr(>|t|)",
+                              conf.low = "lower",
+                              conf.high = "upper")
   return(res)
 }
 
@@ -990,7 +990,7 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
   mm <- mm |> dplyr::mutate(moderated.statistic  =  .data$statistic * .data$sigma /  sqrt(.data$moderated.var.post))
   mm <- mm |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
   mm <- mm |> dplyr::mutate(moderated.p.value = 2*pt( abs(.data$moderated.statistic),
-                                                       df = .data$moderated.df.total, lower.tail = FALSE) )
+                                                      df = .data$moderated.df.total, lower.tail = FALSE) )
 
   prqt <- -qt((1 - confint)/2, df = mm$moderated.df.total)
   mm$moderated.conf.low <- mm[[estimate]]  - prqt * sqrt(mm$moderated.var.post)
@@ -1108,6 +1108,11 @@ adjust_p_values <- function(
 #' abline(0,1)
 #' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
 #' abline(0,1)
+#' testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216)
+#' testthat::expect_equal(get_p_values_pbeta(0,10, 3),0)
+#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),1)
+#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10))
+#'
 get_p_values_pbeta <- function(median.p.value,
                                n.obs,
                                max.n = 10){
@@ -1129,6 +1134,12 @@ get_p_values_pbeta <- function(median.p.value,
 #' compute protein level fold changes and p.values (using beta distribution)
 #' takes p-value of the scaled p-value
 #'
+#' @param contrasts_data data frame
+#' @param contrast name of column with contrast identifier
+#' @param subject_Id name of column with typically protein Id
+#' @param estimate name of column with effect size estimate
+#' @param statistic statistic name of column with statistic (typically t-statistics)
+#' @param p.value name of column with moderated.p.value
 #' @param max.n used to limit the number of peptides in probablity computation.
 #' @export
 #' @family modelling
@@ -1138,10 +1149,11 @@ get_p_values_pbeta <- function(median.p.value,
 #'
 #' @examples
 #'
+#' set.seed(10)
 #' nrPep <- 10000
 #' nrProtein <- 800
 #' p.value <- runif(nrPep)
-#' estimate <- runif(nrPep)
+#' estimate <- rnorm(nrPep)
 #' avgAbd <- runif(nrPep)
 #' protein_Id <- sample(1:800, size = nrPep,
 #'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
@@ -1149,7 +1161,7 @@ get_p_values_pbeta <- function(median.p.value,
 #' plot(table(table(protein_Id)))
 #'
 #' testdata <- data.frame(contrast = "contrast1",
-#'    protein_Id = protein_Id,
+#'   protein_Id = protein_Id,
 #'   estimate = estimate,
 #'   pseudo_estimate = estimate,
 #'   p.value = p.value,
@@ -1166,32 +1178,42 @@ get_p_values_pbeta <- function(median.p.value,
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 1)
-#' mad(xx2$estimate, na.rm=TRUE)
+#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409)
+#' testthat::expect_equal(median(xx2$estimate), -0.006874857)
+#' testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
+#' testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
 #'
+#' # Uniform distribution
 #' hist(testdata$p.value)
 #' hist(xx30$median.p.scaled, breaks = 20)
 #' hist(xx2$median.p.scaled, breaks = 20)
+#' # shows that beta.based.significance has NO uniform distribution
+#' # although H0 is true for all cases.
+#'
 #' hist(xx30$beta.based.significance, breaks = 20)
 #' hist(xx2$beta.based.significance, breaks = 20)
+#'
 #' hist(xx2$median.p.value, breaks = 20)
 #' hist(xx2$beta.based.significance, breaks = 20)
-#' hist(xx2$mad.estimate)
+#' hist(estimate)
 #'
 summary_ROPECA_median_p.scaled <- function(
-  contrasts_data,
-  contrast = "contrast",
-  subject_Id = "protein_Id",
-  estimate = "diff",
-  statistic = "statistic",
-  p.value = "moderated.p.value",
-  max.n = 10){
+    contrasts_data,
+    contrast = "contrast",
+    subject_Id = "protein_Id",
+    estimate = "diff",
+    statistic = "statistic",
+    p.value = "moderated.p.value",
+    max.n = 10){
 
   nrpepsPerProt <- contrasts_data |>
     group_by_at(c(subject_Id, contrast)) |>
     dplyr::summarize(n = dplyr::n() )
 
   contrasts_data <- contrasts_data |>
-    dplyr::mutate(scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
+    dplyr::mutate(
+      scaled.p =
+        ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
 
   summarized.protein <- contrasts_data |>
     group_by_at(c(subject_Id, contrast)) |>
