@@ -21,10 +21,10 @@ plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)
 abline(0,1)
 plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
 abline(0,1)
-testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216)
-testthat::expect_equal(get_p_values_pbeta(0,10, 3),0)
-testthat::expect_equal(get_p_values_pbeta(1,10, 3),1)
-testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10))
+testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(0,10, 3),0, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(1,10, 3),1, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
 
 }
 \seealso{
