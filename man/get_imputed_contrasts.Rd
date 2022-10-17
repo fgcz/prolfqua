@@ -15,6 +15,9 @@ get_imputed_contrasts(pepIntensity, config, Contr, present = 1, global = TRUE)
 
 \item{contrast}{list of contrasts}
 }
+\value{
+data.frame with name of contrast, ID, number of observations (if with aggregation), median, mad, and avgAbd
+}
 \description{
 Computes median of fold peptide fold change to obtain protein fold change.
 peptide fold change is computed based on the average of intensities in the conditions.

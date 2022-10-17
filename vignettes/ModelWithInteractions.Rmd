@@ -42,10 +42,7 @@ inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ```
 
-Read the sample annotation. The sample annotation must contain the `raw.file`
-name and the explanatory variables of your experiment, e.g. treatment,
-time point, genetic background, or other factors which you would like to check
-for confounding.
+Read the sample annotation. The sample annotation must contain the `raw.file` name and the explanatory variables of your experiment, e.g. treatment, time point, genetic background, or other factors which you would like to check for confounding.
 
 
 ```{r readAnnotation}
@@ -78,16 +75,14 @@ information. You do it using the `AnalysisTableAnnotation` class.
 atable <- prolfqua::AnalysisTableAnnotation$new()
 ```
 
-The `AnalysisTableAnnotation` has the following fields that need to be
-populated:
+The `AnalysisTableAnnotation` has the following fields that need to be populated:
 - fileName
 - hierarchy
 - factors
 - workingIntensity
 , and we will discuss it in more detail below.
 
-The `fileName` is the column with the raw file names, however for labelled TMT
-experiments, it can be used to hold the name of the TMT channel.
+The `fileName` is the column with the raw file names, however for labelled TMT experiments, it can be used to hold the name of the TMT channel.
 
 ```{r specifyRawFile}
 atable$fileName = "raw.file"
@@ -119,16 +114,14 @@ We also need to specify the column containing the protein abundances.
 atable$set_response("mq.protein.intensity")
 ```
 
-Finally, we create the `AnalysisConfiguration`, which needs the
-`AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
+Finally, we create the `AnalysisConfiguration`, which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
 
 ```{r createAnalysisConfig}
 config <- prolfqua::AnalysisConfiguration$new(atable)
 adata <- prolfqua::setup_analysis(startdata, config)
 ```
 
-Create the `LFQData` class instance and remove zeros from data.
-Of note, the MaxQuant software encodes missing values with zero.
+Create the `LFQData` class instance and remove zeros from data. Of note, the MaxQuant software encodes missing values with zero.
 
 ```{r removeSmallIntensities}
 lfqdata <- prolfqua::LFQData$new(adata, config)
@@ -136,8 +129,7 @@ lfqdata$remove_small_intensities()
 lfqdata$factors()
 ```
 
-Below, the code snippet graphs the heatmap of the protein abundances and a
-hierarchical clustering.
+Below, the code snippet graphs the heatmap of the protein abundances and a hierarchical clustering.
 
 ```{r plotHeatmap}
 hm <- lfqdata$get_Plotter()$heatmap()
@@ -186,8 +178,7 @@ mod$anova_histogram(what = "FDR.Pr..F.")
 
 ## ANOVA
 
-Examine proteins with a significant interaction between the two factors
-treatment and batch.
+Examine proteins with a significant interaction between the two factors treatment and batch.
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()

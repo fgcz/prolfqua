@@ -242,6 +242,8 @@ write results
 \describe{
 \item{\code{path}}{directory}
 
+\item{\code{filename}}{file to write to}
+
 \item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
 }
 \if{html}{\out{</div>}}

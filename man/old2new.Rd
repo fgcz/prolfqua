@@ -8,10 +8,10 @@ prolfqua 0.5}
 old2new(config)
 }
 \arguments{
-\item{list}{with data = data.frame and config = AnalysisConfiguration}
+\item{config}{an old (as stored in the example data) AnalysisConfiguration}
 }
 \value{
-list with data and AnalysisConfiguration
+a new AnalysisConfiguration
 }
 \description{
 Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
