@@ -1108,10 +1108,10 @@ adjust_p_values <- function(
 #' abline(0,1)
 #' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
 #' abline(0,1)
-#' testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216)
-#' testthat::expect_equal(get_p_values_pbeta(0,10, 3),0)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),1)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10))
+#' testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(0,10, 3),0, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),1, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
 #'
 get_p_values_pbeta <- function(median.p.value,
                                n.obs,
@@ -1178,8 +1178,8 @@ get_p_values_pbeta <- function(median.p.value,
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 1)
-#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409)
-#' testthat::expect_equal(median(xx2$estimate), -0.006874857)
+#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
+#' testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
 #' testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
 #' testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
 #'

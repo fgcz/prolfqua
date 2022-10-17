@@ -4,7 +4,7 @@ library(tidyverse)
 library(covr)
 
 # compute test coverage
-x <- package_coverage(type = "all")
+x <- package_coverage(type = "all", quit=FALSE, clean=FALSE)
 x <- coverage
 #zero_coverage(x)
 by = "line"
@@ -17,7 +17,7 @@ percents <- tapply(df$value, df[[group]], FUN = function(x) (sum(x > 0) / length
 by_coverage <- percents[order(percents,
                               names(percents))]
 coveragestats <- data.frame(funcname = names(by_coverage) , coverage = by_coverage)
-coveragestats <- coveragestats |> tidyr::separate("funcname",c("file", "functions"), sep="~")
+coveragestats <- coveragestats |> tidyr::separate("funcname", c("file", "functions"), sep="~")
 View(coveragestats)
 
 coveragestats |> group_by(functions) |> summarize(n = n()) -> nrfn
