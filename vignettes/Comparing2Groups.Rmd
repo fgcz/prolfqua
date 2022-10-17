@@ -256,7 +256,7 @@ mod <- prolfqua::build_model(
 
 ```
 
-TODO(WEW): which plot exactly and why?
+TODO(WEW): In which plot do you see this? How do you see it??
 In the plot, we can see what factors in our model are mostly responsible for the adjusted p-values calculated from an analysis of variance.
 
 ```{r showANOVA, fig.cap="Distribtuion of adjusted p-values (FDR)"}
