@@ -21,13 +21,7 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 # Purpose
 
-This vignette demonstrates how two conditions or groups can be compared and
-statistically evaluated. We will again use the Ionstar dataset processed with
-MaxQuant as LFQ experiment with MBR option. After some standard preprocessing,
-we compare the replicates with the different dilutions with each
-other in the end. The output of such a two-group comparison is usually
-a difference in the mean intensities for quantified proteins (log2 fold-change)
-along with some statistical parameters such as a p-value or an FDR. 
+This vignette demonstrates how two conditions or groups can be compared and statistically evaluated. We will again use the Ionstar dataset processed with MaxQuant as LFQ experiment with MBR option. After some standard preprocessing, we compare the replicates with the different dilutions with each other in the end. The output of such a two-group comparison is usually a difference in the mean intensities for quantified proteins (log2 fold-change) along with some statistical parameters such as a p-value or an FDR. 
 
 # Loading protein abundances from MaxQuant proteinGroups.txt
 
@@ -35,9 +29,7 @@ along with some statistical parameters such as a p-value or an FDR.
 library(prolfqua)
 ```
 
-Specify the path to the MaxQuant `proteinGroups.txt` file. The function
-`tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it
-into a tidy table
+Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy table
 
 ```{r LoadDataAndConfigure}
 ## TODO(WEW): in the tiny data there is NO protein that is missing in one
@@ -49,18 +41,14 @@ inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ```
 
-Read the sample annotation. The sample annotation must contain the `raw.file`
-name and the explanatory variables of your experiment, e.g., treatment,
-timepoint, genetic background, or other `factors` which you would like to check
-for confounding effects.
+Read the sample annotation. The sample annotation must contain the `raw.file` name and the explanatory variables of your experiment, e.g., treatment, timepoint, genetic background, or other `factors` which you would like to check for confounding effects.
 
 ```{r readAnnotation}
 annotation <- readxl::read_xlsx(inputAnnotation)
 head(annotation)
 ```
 
-Merge the annotation with quantitative data using `inner_join` joining by
-`raw.file`.
+Merge the annotation with quantitative data using `inner_join` joining by `raw.file`.
 
 ```{r addAnnotationToData}
 startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
@@ -72,23 +60,20 @@ We remove all proteins identified only by a single peptide.
 startdata <- dplyr::filter(startdata, nr.peptides > 1)
 ```
 
-Then you need to _tell_ `prolfqua` which columns in the data frame contain what
-information. You do it using the `AnalysisTableAnnotation` class.
+Then you need to _tell_ `prolfqua` which columns in the data frame contain what information. You do it using the `AnalysisTableAnnotation` class.
 
 ```{r setupConfigs}
 atable <- AnalysisTableAnnotation$new()
 ```
 
-The `AnalysisTableAnnotation` has the following fields that always need to be
-populated:
+The `AnalysisTableAnnotation` has the following fields that always need to be populated:
 
 - fileName
 - hierarchy
 - factors
 - workingIntensity
 
-The `fileName` is the column with the raw file names, however for labeled TMT
-experiments, it can be used to hold the name of the TMT channel.
+The `fileName` is the column with the raw file names, however for labeled TMT experiments, it can be used to hold the name of the TMT channel.
 
 ```{r specifyRawFile}
 atable$fileName = "raw.file"
@@ -101,18 +86,14 @@ The `hierarchy` field describes the structure of the MS data, e.g.,
 - modified peptides
 - precursor
 
-In the MaxQuant's `proteinGroups.txt` file, we already have the data on protein
-level.
+In the MaxQuant's `proteinGroups.txt` file, we already have the data on protein level.
 
 ```{r specifyProteinID}
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
 
 ```
 
-In addition, you need to describe the `factors` of the analysis, i.e., the
-column containing the explanatory variables. 
-By setting the `factorDepth` variable to $1$, we include only the
-"dilution." variable in the modeling.
+In addition, you need to describe the `factors` of the analysis, i.e., the column containing the explanatory variables.  By setting the `factorDepth` variable to $1$, we include only the "dilution." variable in the modeling.
 
 ```{r specifyFactors}
 atable$factors[["dilution."]] = "sample"
@@ -124,16 +105,14 @@ We also need to specify the column containing the protein abundances.
 atable$set_response("mq.protein.intensity")
 ```
 
-Finally we create the `AnalysisConfiguration` which needs the
-`AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
+Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
 
 ```{r createAnalysisConfig}
 config <- AnalysisConfiguration$new(atable)
 adata <- setup_analysis(startdata, config)
 ```
 
-Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes
-missing values with zero).
+Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
 
 ```{r removeSmallIntensities}
 lfqdata <- prolfqua::LFQData$new(adata, config)
@@ -149,9 +128,7 @@ lfqdata$to_wide()$data[1:3,1:7]
 
 ## Visualization of not normalized data
 
-After this first setting up of the analysis we show now how to normalize the
-proteins and the effect of normalization. Furthermore we use some functions to
-visualize the missing values in our data. 
+After this first setting up of the analysis we show now how to normalize the proteins and the effect of normalization. Furthermore we use some functions to visualize the missing values in our data. 
 
 ```{r getPlotter}
 lfqplotter <- lfqdata$get_Plotter()
@@ -174,9 +151,7 @@ lfqplotter$missigness_histogram()
 
 ### Computing standard deviations, mean and CV.
 
-Other important statistics such as coefficient of variation, means and standard
-deviations can be easily calculated using the `get_Stats` function and
-visualized with a violin plot.
+Other important statistics such as coefficient of variation, means and standard deviations can be easily calculated using the `get_Stats` function and visualized with a violin plot.
 
 ```{r PlotCVDistributions, fig.cap="Violin plots of CVs in the different groups and among all groups"}
 stats <- lfqdata$get_Stats()
@@ -188,7 +163,6 @@ prolfqua::table_facade( stats$stats_quantiles()$wide,
 
 ```{r plotCVsplitbyMedianIntensity, fig.cap="Distribution of CV's for top 50% and bottom 50% proteins by intensity."}
 stats$density_median()
-
 ```
 
 
@@ -226,9 +200,7 @@ p
 
 # Fitting a linear model 
 
-For fitting linear models to the transformed intensities for all our proteins we
-have to first specify the model function and define the contrasts that we want
-to calculate.
+For fitting linear models to the transformed intensities for all our proteins we have to first specify the model function and define the contrasts that we want to calculate.
 
 ```{r defineModelAndContrasts}
 transformed$config$table$get_response()
@@ -252,15 +224,13 @@ mod <- prolfqua::build_model(
 
 ```
 
-In this plot we can see what factors in our model are mostly responsible for the
-adjusted p-values calculated from an analysis of variance.
+In this plot we can see what factors in our model are mostly responsible for the adjusted p-values calculated from an analysis of variance.
 
 ```{r showANOVA, fig.cap="Distribtuion of adjusted p-values (FDR)"}
 mod$anova_histogram("FDR.Pr..F.")
 ```
 
-One also look what proteins do show different abundances in any of our five
-dilutions by looking at the FDR values of the analysis of variane.
+One also look what proteins do show different abundances in any of our five dilutions by looking at the FDR values of the analysis of variane.
 
 ```{r filterDataForFDR}
 aovtable <- mod$get_anova()
@@ -278,23 +248,21 @@ hmSig
 
 # Compute contrasts
 
-Next we do calculate the statistics for our defined contrasts for all the
-proteins. For this we can use the `Contrasts` function.
+Next we do calculate the statistics for our defined contrasts for all the proteins. For this we can use the `Contrasts` function.
 
 ```{r computeContrasts}
 contr <- prolfqua::Contrasts$new(mod, Contrasts)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
-Alternatively, we can moderate the variance and using the Experimental Bayes
-method implemented in `ContrastsModerated`.
+Alternatively, we can moderate the variance and using the Experimental Bayes method implemented in `ContrastsModerated`.
 
 ```{r computeContrastsModerated}
 contr <- prolfqua::ContrastsModerated$new(contr)
 contrdf <- contr$get_contrasts()
 ```
 
-In the next figure it can be seen WEWinputNEEDED.
+In the next figure it can be seen TODO(WEW): input NEEDED.
 
 ```{r plotVolcanos, fig.cap="Volcano plot, Left panel - no moderation, Right panel - with moderation."}
 plotter <- contr$get_Plotter()
@@ -317,11 +285,7 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 
 # Contrasts with missing value imputation
 
-Use this method if there are proteins with no observations in one of the groups.
-With the `ContrastsSimpleImpute` function, we can estimate the difference in
-mean for proteins that are not observed in one group or condition. For this,
-we are using the average expression at percentile 0.05 of the group where the
-protein is not quantified. 
+Use this method if there are proteins with no observations in one of the groups.  With the `ContrastsSimpleImpute` function, we can estimate the difference in mean for proteins that are not observed in one group or condition. For this, we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
 
 ```{r computeMissing, eval=TRUE}
 # ToDo_WeW: in the tiny data there is NO protein that is missing in one condition
@@ -331,8 +295,7 @@ colnames(mC$get_contrasts())
 
 ```
 
-Finally, we are merging the results and giving priority to the results where we
-do not have missing values in one group.
+Finally, we are merging the results and giving priority to the results where we do not have missing values in one group.
 
 ```{r mergeResults, fig.cap="Volcano plots for the two contrasts with missing value imputation from the group_average model."}
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
@@ -356,11 +319,9 @@ moreProt$get_Plotter()$raster()
 
 # GSEA Analyis
 
-We can rank the proteins based on the log2FC or the t-statistic and subject
-them to gene set enrichment analysis (see GSEA).
+We can rank the proteins based on the log2FC or the t-statistic and subject them to gene set enrichment analysis (see GSEA).
 
-This example will run only if the following R packages are installed
-on your machine:
+This example will run only if the following R packages are installed on your machine:
 
 - `r BiocStyle::Biocpkg('clusterProfiler')`
 - `r BiocStyle::Biocpkg('org.Sc.sgd.db')`
