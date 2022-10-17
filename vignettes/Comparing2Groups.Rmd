@@ -219,15 +219,15 @@ p
 
 # Fitting a linear model 
 
-For fitting linear models to the transformed intensities for all our proteins, we have to specify the _model function_ and define the _contrasts_ we want to calculate.
+R's formular interface works as follows: Given is an expression, e.g., `y ~ x`. The response variable `y` is on the left side of the  '~'  operator. On the right side of the formula can be a series of terms connected by a `+` operator or just a single one, as in the example. For more information please read the man page `help(formula)`.
 
-Therefore the method below tells us the response name.
+For fitting linear models to the transformed intensities for all our proteins, we have to specify the _model function_ and define the _contrasts_ we want to calculate. Therefore the method below tells us the response name.
 
 ```{r printResponseVariableName}
 transformed$config$table$get_response()
 ```
 
-Now we can define the model by
+Now we can define the model by using the expression `transformedIntensity ~ dilution.`
 
 ```{r defineModel}
 formula_Condition <- strategy_lm("transformedIntensity ~ dilution.")
@@ -272,12 +272,12 @@ aovtable |> dim()
 ```
 
 ```{r filterDataForFDR}
-xx <- aovtable |>
+aovtbl <- aovtable |>
     dplyr::filter(FDR.Pr..F. < 0.2)
 
 signif <- transformed$get_copy()
 signif$data <- signif$data |>
-    dplyr::filter(protein_Id %in% xx$protein_Id)
+    dplyr::filter(protein_Id %in% aovtbl$protein_Id)
 
 hmSig <- signif$get_Plotter()$heatmap()
 ```
