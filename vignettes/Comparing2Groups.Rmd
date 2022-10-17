@@ -233,7 +233,7 @@ Now we can define the model by
 formula_Condition <- strategy_lm("transformedIntensity ~ dilution.")
 ```
 
-A sanity check shows a a frequencies of the dilutions:
+A sanity check shows a frequencies of the dilutions:
 
 ```{r someDilutionStatistics}
 transformed$data$dilution. |> table()
