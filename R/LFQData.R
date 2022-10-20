@@ -1,9 +1,11 @@
 #LFQData ----
 #'
 #' LFQData R6 class
+#'
 #' @export
 #' @family LFQData
 #' @examples
+#'
 #' istar <- prolfqua_data('data_ionstar')
 #' istar$config <- old2new(istar$config)
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
@@ -69,8 +71,9 @@ LFQData <- R6::R6Class(
     #' @param config configuration
     #' @param is_pep todo
     #' @param prefix will be use as output prefix
-    initialize = function(data, config, is_pep=TRUE, prefix = "ms_") {
-      self$data <- data
+    #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
+    initialize = function(data, config, is_pep=TRUE, prefix = "ms_", setup = FALSE) {
+      self$data <- if (setup) {setup_analysis(data, config)} else {data}
       self$config <- config$clone(deep = TRUE)
       self$is_pep <- is_pep
       self$prefix <- prefix
@@ -85,7 +88,7 @@ LFQData <- R6::R6Class(
     #' @param size size of subset default 100
     #' @param seed set seed
     get_sample = function(size = 100, seed = NULL){
-      if(!is.null(seed)){ set.seed( seed ) }
+      if (!is.null(seed)) {  set.seed( seed ) }
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
