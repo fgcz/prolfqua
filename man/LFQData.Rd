@@ -9,6 +9,7 @@ LFQData R6 class
 LFQData R6 class
 }
 \examples{
+
 istar <- prolfqua_data('data_ionstar')
 istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
@@ -117,7 +118,7 @@ Other LFQData:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE, prefix = "ms_")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE, prefix = "ms_", setup = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -130,6 +131,8 @@ initialize
 \item{\code{is_pep}}{todo}
 
 \item{\code{prefix}}{will be use as output prefix}
+
+\item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
 }
 \if{html}{\out{</div>}}
 }

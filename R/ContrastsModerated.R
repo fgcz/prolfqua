@@ -120,8 +120,14 @@ ContrastsModerated <- R6::R6Class(
                                          group_by_col = "contrast",
                                          newname = "FDR.moderated")
       }
-      contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
       contrast_result <- dplyr::ungroup(contrast_result)
+      if (class(contrast_result$modelName) == "factor") {
+        mname <- factor(paste0(contrast_result$modelName,"_moderated"),
+                        levels = paste0(levels(contrast_result$modelName), "_moderated"))
+      }else{
+        mname <- contrast_result$modelName
+      }
+      contrast_result$modelName <- mname
       stopifnot(all(.requiredContrastColumns %in% colnames(contrast_result)))
 
       return(contrast_result)
