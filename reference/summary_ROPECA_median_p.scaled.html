@@ -41,13 +41,10 @@ takes p-value of the scaled p-value"><!-- mathjax --><script src="https://cdnjs.
       <a href="../articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
     </li>
     <li>
-      <a href="../articles/ModelWithInteractions.html">Modelling with Interactions</a>
-    </li>
-    <li>
       <a href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
     </li>
     <li>
-      <a href="../articles/QCandSampleSize.html">Quality Control and Sample Size Estimation</a>
+      <a href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a>
     </li>
     <li>
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
@@ -108,7 +105,31 @@ takes p-value of the scaled p-value</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>max.n</dt>
+    <dl><dt>contrasts_data</dt>
+<dd><p>data frame</p></dd>
+
+
+<dt>contrast</dt>
+<dd><p>name of column with contrast identifier</p></dd>
+
+
+<dt>subject_Id</dt>
+<dd><p>name of column with typically protein Id</p></dd>
+
+
+<dt>estimate</dt>
+<dd><p>name of column with effect size estimate</p></dd>
+
+
+<dt>statistic</dt>
+<dd><p>statistic name of column with statistic (typically t-statistics)</p></dd>
+
+
+<dt>p.value</dt>
+<dd><p>name of column with moderated.p.value</p></dd>
+
+
+<dt>max.n</dt>
 <dd><p>used to limit the number of peptides in probablity computation.</p></dd>
 
 </dl></div>
@@ -162,10 +183,11 @@ takes p-value of the scaled p-value</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">nrPep</span> <span class="op">&lt;-</span> <span class="fl">10000</span></span></span>
 <span class="r-in"><span><span class="va">nrProtein</span> <span class="op">&lt;-</span> <span class="fl">800</span></span></span>
 <span class="r-in"><span><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">avgAbd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">nrPep</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">protein_Id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">800</span>, size <span class="op">=</span> <span class="va">nrPep</span>,</span></span>
 <span class="r-in"><span>  replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">dexp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span>,length <span class="op">=</span> <span class="fl">800</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -174,7 +196,7 @@ takes p-value of the scaled p-value</p>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>contrast <span class="op">=</span> <span class="st">"contrast1"</span>,</span></span>
-<span class="r-in"><span>   protein_Id <span class="op">=</span> <span class="va">protein_Id</span>,</span></span>
+<span class="r-in"><span>  protein_Id <span class="op">=</span> <span class="va">protein_Id</span>,</span></span>
 <span class="r-in"><span>  estimate <span class="op">=</span> <span class="va">estimate</span>,</span></span>
 <span class="r-in"><span>  pseudo_estimate <span class="op">=</span> <span class="va">estimate</span>,</span></span>
 <span class="r-in"><span>  p.value <span class="op">=</span> <span class="va">p.value</span>,</span></span>
@@ -191,24 +213,31 @@ takes p-value of the scaled p-value</p>
 <span class="r-in"><span>                                    estimate <span class="op">=</span> <span class="st">"estimate"</span>,</span></span>
 <span class="r-in"><span>                                    p.value <span class="op">=</span> <span class="st">"p.value"</span>,</span></span>
 <span class="r-in"><span>                                    max.n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/mad.html" class="external-link">mad</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">estimate</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1514282</span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/mad.html" class="external-link">mad</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">estimate</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,<span class="fl">0.384409</span>, tolerance <span class="op">=</span> <span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span>, <span class="op">-</span><span class="fl">0.006874857</span>, tolerance <span class="op">=</span> <span class="fl">1e-4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="fl">0.819</span>, tolerance <span class="op">=</span> <span class="fl">1e-3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,<span class="fl">0.9234362</span>,tolerance <span class="op">=</span> <span class="fl">1e-3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Uniform distribution</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">testdata</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.scaled</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># shows that beta.based.significance has NO uniform distribution</span></span></span>
+<span class="r-in"><span><span class="co"># although H0 is true for all cases.</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx30</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">median.p.value</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">beta.based.significance</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-8.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">xx2</span><span class="op">$</span><span class="va">mad.estimate</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">estimate</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="summary_ROPECA_median_p.scaled-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
