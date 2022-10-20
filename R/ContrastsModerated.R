@@ -125,7 +125,7 @@ ContrastsModerated <- R6::R6Class(
         mname <- factor(paste0(contrast_result$modelName,"_moderated"),
                         levels = paste0(levels(contrast_result$modelName), "_moderated"))
       }else{
-        mname <- contrast_result$modelName
+        mname <- paste0(contrast_result$modelName,"_moderated")
       }
       contrast_result$modelName <- mname
       stopifnot(all(.requiredContrastColumns %in% colnames(contrast_result)))
