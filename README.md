@@ -26,7 +26,7 @@ To install the package without vignettes from github you can execute in R.
 
 ```
 install.packages('remotes')
-remotes::install_github('fgcz/prolfqua')
+remotes::install_github('fgcz/prolfqua', dependencies = TRUE)
 ```
 
 
@@ -34,7 +34,7 @@ If you want to build the vignettes on your system:
 
 ```
 install.packages('remotes')
-remotes::install_github('fgcz/prolfqua', build_vignettes = TRUE)
+remotes::install_github('fgcz/prolfqua', build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 
