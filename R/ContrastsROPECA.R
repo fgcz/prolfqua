@@ -96,6 +96,7 @@ ContrastsROPECA <- R6::R6Class(
     get_contrasts = function(all = FALSE){
       if (is.null(self$contrast_result)) {
         contrast_result <- self$Contrast$get_contrasts(all = FALSE)
+
         contrast_result <- summary_ROPECA_median_p.scaled(
           contrast_result,
           contrast = "contrast",

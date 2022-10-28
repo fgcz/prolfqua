@@ -1178,6 +1178,7 @@ get_p_values_pbeta <- function(median.p.value,
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 1)
+#'
 #' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
 #' testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
 #' testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
