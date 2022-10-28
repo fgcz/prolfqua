@@ -128,7 +128,7 @@ LFQData <- R6::R6Class(
     #' remove proteins with less than X peptides
     #' @return self
     filter_proteins_by_peptide_count = function(){
-      message("removing proteins with less than",
+      message("removing proteins with less than: ",
               self$config$parameter$min_peptides_protein,
               " peptpides")
       self$data <- prolfqua::filter_proteins_by_peptide_count(self$data, self$config)$data
