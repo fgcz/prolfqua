@@ -55,7 +55,7 @@ which describes our package.
 
 Or run the following example code:
 
-```{r}
+```
 R.version.string; packageVersion("prolfqua")
 
 ## read MQ peptide.txt and annotation table
