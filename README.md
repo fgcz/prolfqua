@@ -8,6 +8,7 @@
 
 The R package contains functions for analyzing mass spectrometry based experiments.
 This package is developed at the [FGCZ](http://fgcz.ch/).
+The package documentation including vignettes can be accessed at https://fgcz.github.io/prolfqua/index.html
 
 # How to install prolfqua?
 
