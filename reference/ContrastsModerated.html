@@ -330,33 +330,24 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-msg co"><span class="r-pr">#&gt;</span> compute contrasts:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">csi</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id"         "diff.dil.b_vs_a"    "p.value.dil.b_vs_a"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "FDR.dil.b_vs_a"    </span>
-<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast   group_1    group_2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.b_vs_a dilution.a dilution.b</span>
-<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">csi</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=dilution.a - dilution.b</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("protein_Id", "contrast")</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">more</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0 13</span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">merged</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 66 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 68 13</span>
 <span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">same</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 66 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 68 13</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cslf</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
