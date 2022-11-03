@@ -15,10 +15,9 @@
 #' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
 #'
-get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
-{
+get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   map <- df |> dplyr::select(idcolumn) |> distinct() |>
-    dplyr::filter(grepl(pattern = "^sp|^tr", !!sym(idcolumn))) |>
+    dplyr::filter(grepl(pattern = "^sp\\||^tr\\|", !!sym(idcolumn))) |>
     tidyr::separate(col = !!sym(idcolumn),
                     sep = "_",
                     into = c("begin",
@@ -27,7 +26,12 @@ get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id")
                     sep = "\\|",
                     into = c("prefix", "UniprotID", "Symbol")) |>
     dplyr::select(-!!sym("prefix"), -!!sym("Symbol"), -!!sym("end"))
-  res <- dplyr::right_join(map, df, by = idcolumn)
+  if (nrow(map) > 0) {
+    res <- dplyr::right_join(map, df, by = idcolumn)
+  } else {
+    warning("No SwissProt (sp) or Trembl (tr) id's were extracted.")
+    res <- df
+  }
   return(res)
 }
 
