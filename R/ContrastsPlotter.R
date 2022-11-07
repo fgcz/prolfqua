@@ -395,15 +395,15 @@ ContrastsPlotter <- R6::R6Class(
       fig <- list()
       for (score in scores) {
         column <- score$score
-        contrasts <- contrasts |>
+        contrasts2 <- contrasts |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
           dplyr::filter(!is.na(!!sym(column))) |>
           dplyr::mutate(!! column := case_when(!!sym(column) < min_score ~ min_score, TRUE ~ !!sym(column)))
         if (plotly) {
-          contrasts <- contrasts |> plotly::highlight_key(~subject_Id)
+          contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_Id)
         }
         p <- prolfqua:::.multigroup_volcano(
-          contrasts,
+          contrasts2,
           effect = self$diff,
           significance = column,
           contrast = self$contrast,
