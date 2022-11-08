@@ -27,7 +27,7 @@ For demonstration purposes we are also modelling the interaction between the two
 # Model Fitting
 
 For more details how the dataset `data_Yeast2Factor` was created we refer you to the prolfquabenchmark vignettes.
-Interesting here is the definition of the model. If interaction shall be included in the model a _asterix_ should be used while if no interaction should be taken into account a _plus_ should be used in the model definition.
+Interesting here is the definition of the model. If interaction shall be included in the model a _asterix_ should be used while if no interaction should be taken into account a _plus_ should be used in the model definition. Also we can directly specify what comparisons we are interested in by specifying the respective contrasts.
 
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
@@ -51,20 +51,22 @@ Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
                "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`")
 ```
 
+We are then building our model as we specified it before for each protein.
 
 ```{r buildModel}
 mod <- prolfqua::build_model(pMerged$data, formula_Batches,
   subject_Id = pMerged$config$table$hierarchy_keys() )
 ```
 
+Now, we can visualize the effect of our factors that are specified in the model. This indicates in an elegant way what factors are the most important ones.
 
-```{r anovaPvaluePlots, fig.cap="p-value distributions for ANOVA analysis."}
+```{r anovaPvaluePlots, fig.cap="Distributions of all p-values from the ANOVA analysis."}
 mod$anova_histogram()$plot
 ```
 
 ## ANOVA
 
-Examine proteins with a significant interaction between the two factors treatment and batch.
+To examine proteins with a significant interaction between the two factors treatment and batch filtering for the factor `condition_:batch_`.
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
@@ -75,39 +77,48 @@ protInt <-  pMerged$get_copy()
 protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
 ```
 
-These proteins (here the top five) can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
+These proteins can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
 
-```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.05 for condition batch interaction in ANOVA."}
+```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.05 for the interaction in the factors condition and batch in an ANOVA."}
 ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
 ```
 
 # Compute and analyse with the specified contrasts 
+
+Next, we want to calculate the statistical results for our group comparisons that have been specified in our contrast definition. Here we are using the moderated statistics which implements the concept of pooled variance for all proteins.
 
 ```{r computeModeratedContrasts}
 contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
 contrdf <- contr$get_contrasts()
 ```
 
-```{r visualiseResults}
+These results can be visualized with e.g a `volcano` or a `MA` plot.
+
+```{r visualiseResults, fig.cap="Volcano and MA plot for result visualisation"}
 plotter <- contr$get_Plotter()
-plotter$volcano()
+plotter$volcano()$FDR
 plotter$ma_plot()
 ```
 
 ## Analyse contrasts with missing data imputation
 
-```{r prepareForGroupAverageImputation}
+Still using the approach above, we can only estimate group averages in case there is at least one measurement for each protein in each group/condition. In the case of missing data for one condition, we can use the `ContrastsSimpleImpute` function where the 10th percentile expression of all proteins is used for the estimate of the missing condition. 
+
+```{r prepareForGroupAverageImputation, fig.cap="Volcano and MA plot for result visualisation for the group average model"}
 pMerged$config$table$factor_keys_depth()
 contrSimple <- prolfqua::ContrastsSimpleImpute$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
 pl$histogram_diff()
-pl$volcano()
+pl$volcano()$FDR
 ```
 
 ## Merge nonimputed and imputed data.
 
-```{r doGroupAverageImputation}
+For the moderated model, we can only get results if we have enough valid data points. With the group average model we can get group estimates for all proteins. Therefore, we are merging the statistics for both approaches while we are preferring the values of the moderated model.
+Also these results can again be visualized in a `volcano` plot.
+
+```{r doGroupAverageImputation, fig.cap="Volcano plot of moderated (black) and impuation (light green) model"}
 
 dim(contr$get_contrasts())
 dim(contrSimple$get_contrasts())
@@ -120,7 +131,7 @@ plot$FDR
 
 ### Look at Proteins with significant interaction term.
 
-```{r visualiseSomeProteins, fig.cap="Heatmap for proteins that are quantified only in one condition."}
+```{r visualiseSomeProteins, fig.cap="Heatmap for proteins that show a FDR < 0.2 for the contrast interaction."}
 
 sigInteraction <- mergedContrasts$contrast_result |> 
   dplyr::filter(contrast == "Interaction" & FDR < 0.2)
